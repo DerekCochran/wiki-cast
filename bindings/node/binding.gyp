@@ -1,7 +1,7 @@
 {
   "targets": [
     {
-      "target_name": "native_binding",
+      "target_name": "wikiparser-node-c-tokenizer",
       "sources": [
         "src/addon.c",
         "../src/accum.c",
