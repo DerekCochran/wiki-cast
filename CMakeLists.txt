@@ -124,8 +124,3 @@ add_test(NAME wikitext_c COMMAND test_wikitext
          ${TEST_WIKI_CONFIG}
          ${CMAKE_CURRENT_SOURCE_DIR}/tests/c/wikitext)
 
-# CLI tool used by JS parity tests (placed under build/extern_tokenizer/parse_table_cli)
-add_executable(parse_table_cli src/tools/parse_table_cli.c)
-target_include_directories(parse_table_cli PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/include)
-target_link_libraries(parse_table_cli wikitokenizer)
-set_target_properties(parse_table_cli PROPERTIES RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/extern_tokenizer)
