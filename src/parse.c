@@ -237,6 +237,55 @@ static Token *parse_gallery_caption_fragment(const char *s, size_t len,
     return inner;
 }
 
+static Token *make_empty_noinclude(Accum *accum)
+{
+    Token *n = token_new(TOKEN_NOINCLUDE, "noinclude");
+    if (!n) return NULL;
+    token_append_text_n(n, "", 0);
+    accum_push(accum, n);
+    return n;
+}
+
+static Token *parse_single_link_token(const char *s, size_t len,
+                                      const ParserConfig *cfg, Accum *accum)
+{
+    if (!s) return NULL;
+
+    char *wrapped = malloc(len + 5);
+    if (!wrapped) return NULL;
+    wrapped[0] = '[';
+    wrapped[1] = '[';
+    memcpy(wrapped + 2, s, len);
+    wrapped[2 + len] = ']';
+    wrapped[3 + len] = ']';
+    wrapped[4 + len] = '\0';
+
+    ThreadBuf tmp_tb;
+    tmp_tb.buf = wrapped;
+    tmp_tb.len = len + 4;
+    tmp_tb.cap = len + 5;
+    tmp_tb.shrink_size = (size_t)-1;
+    tmp_tb.target_size = tmp_tb.cap;
+
+    parse_links(&tmp_tb, cfg, accum, NULL, false);
+
+    Token *tmp = token_new(TOKEN_PLAIN, "imagemap-link-inner");
+    if (!tmp) return NULL;
+    build_from_str(tmp, tmp_tb.buf, tmp_tb.len, accum);
+    build_token_recursive(tmp, accum);
+
+    Token *out = NULL;
+    if (tmp->child_count == 1 && !tmp->children[0].is_text && tmp->children[0].token
+        && tmp->children[0].token->type == TOKEN_LINK) {
+        out = tmp->children[0].token;
+        tmp->children[0].token = NULL;
+    }
+
+    token_free_shallow(tmp);
+    free(tmp_tb.buf);
+    return out;
+}
+
 static void append_fragment_children(Token *dst, Token *frag)
 {
     if (!dst || !frag) return;
@@ -255,65 +304,135 @@ static Token *parse_gallery_image_line(const char *line, size_t line_len,
 {
     if (!line || line_len == 0) return NULL;
 
-    size_t pipe = SIZE_MAX;
-    for (size_t i = 0; i < line_len; i++) {
-        if (line[i] == '|') {
-            pipe = i;
+    char *wrapped = malloc(line_len + 5);
+    if (!wrapped) return NULL;
+    wrapped[0] = '[';
+    wrapped[1] = '[';
+    memcpy(wrapped + 2, line, line_len);
+    wrapped[2 + line_len] = ']';
+    wrapped[3 + line_len] = ']';
+    wrapped[4 + line_len] = '\0';
+
+    ThreadBuf tmp_tb;
+    tmp_tb.buf = wrapped;
+    tmp_tb.len = line_len + 4;
+    tmp_tb.cap = line_len + 5;
+    tmp_tb.shrink_size = (size_t)-1;
+    tmp_tb.target_size = tmp_tb.cap;
+
+    parse_links(&tmp_tb, cfg, accum, NULL, false);
+
+    Token *tmp = token_new(TOKEN_PLAIN, "gallery-line");
+    if (!tmp) return NULL;
+    build_from_str(tmp, tmp_tb.buf, tmp_tb.len, accum);
+    build_token_recursive(tmp, accum);
+
+    Token *out = NULL;
+    if (tmp->child_count == 1 && !tmp->children[0].is_text && tmp->children[0].token
+        && tmp->children[0].token->type == TOKEN_FILE) {
+        out = tmp->children[0].token;
+        tmp->children[0].token = NULL;
+        if (out->type_name) free(out->type_name);
+        out->type_name = strdup("gallery-image");
+    }
+
+    token_free_shallow(tmp);
+    free(tmp_tb.buf);
+    return out;
+}
+
+static Token *parse_imagemap_image_line(const char *line, size_t line_len,
+                                        const ParserConfig *cfg, Accum *accum)
+{
+    if (!line || line_len == 0) return NULL;
+
+    char *wrapped = malloc(line_len + 5);
+    if (!wrapped) return NULL;
+    wrapped[0] = '[';
+    wrapped[1] = '[';
+    memcpy(wrapped + 2, line, line_len);
+    wrapped[2 + line_len] = ']';
+    wrapped[3 + line_len] = ']';
+    wrapped[4 + line_len] = '\0';
+
+    ThreadBuf tmp_tb;
+    tmp_tb.buf = wrapped;
+    tmp_tb.len = line_len + 4;
+    tmp_tb.cap = line_len + 5;
+    tmp_tb.shrink_size = (size_t)-1;
+    tmp_tb.target_size = tmp_tb.cap;
+
+    parse_links(&tmp_tb, cfg, accum, NULL, false);
+
+    Token *tmp = token_new(TOKEN_PLAIN, "imagemap-image-line");
+    if (!tmp) return NULL;
+    build_from_str(tmp, tmp_tb.buf, tmp_tb.len, accum);
+    build_token_recursive(tmp, accum);
+
+    Token *out = NULL;
+    if (tmp->child_count == 1 && !tmp->children[0].is_text && tmp->children[0].token
+        && tmp->children[0].token->type == TOKEN_FILE) {
+        out = tmp->children[0].token;
+        tmp->children[0].token = NULL;
+        if (out->type_name) free(out->type_name);
+        out->type_name = strdup("imagemap-image");
+    }
+
+    token_free_shallow(tmp);
+    free(tmp_tb.buf);
+    return out;
+}
+
+static Token *parse_imagemap_link_line(const char *line, size_t line_len,
+                                       const ParserConfig *cfg, Accum *accum)
+{
+    if (!line || line_len == 0) return NULL;
+
+    size_t open = SIZE_MAX;
+    for (size_t i = 0; i + 1 < line_len; i++) {
+        if (line[i] == '[' && line[i + 1] == '[') {
+            open = i;
             break;
         }
     }
+    if (open == SIZE_MAX) return NULL;
 
-    const char *file_raw = line;
-    size_t file_raw_len = (pipe == SIZE_MAX) ? line_len : pipe;
-
-    const char *file_trim = file_raw;
-    size_t file_trim_len = file_raw_len;
-    trim_view_local(&file_trim, &file_trim_len);
-
-    if (file_trim_len == 0) return NULL;
-    if (!title_is_valid_half_parsed(file_trim, file_trim_len, cfg)) return NULL;
-    if (namespace_from_title(file_trim, file_trim_len, cfg) != 6) return NULL;
-
-    Token *img = token_new(TOKEN_FILE, "gallery-image");
-    if (!img) return NULL;
-    accum_push(accum, img);
-
-    Token *target = token_new(TOKEN_ATOM, "link-target");
-    if (target) {
-        token_append_text_n(target, file_raw, file_raw_len);
-        token_append_child(img, target);
-    }
-
-    size_t base_len = file_trim_len;
-    for (size_t i = 0; i < file_trim_len; i++) {
-        if (file_trim[i] == '#') {
-            base_len = i;
+    size_t close = SIZE_MAX;
+    for (size_t i = open + 2; i + 1 < line_len; i++) {
+        if (line[i] == ']' && line[i + 1] == ']') {
+            close = i;
             break;
         }
     }
-    char *norm = title_normalize(file_trim, base_len);
-    if (norm) img->name = norm;
+    if (close == SIZE_MAX || close <= open + 1) return NULL;
 
-    if (pipe != SIZE_MAX && pipe + 1 <= line_len) {
-        const char *cap_ptr = line + pipe + 1;
-        size_t cap_len = line_len - pipe - 1;
+    Token *t = token_new(TOKEN_PLAIN, "imagemap-link");
+    if (!t) return NULL;
+    accum_push(accum, t);
 
-        Token *param = token_new(TOKEN_PLAIN, "image-parameter");
-        if (param) {
-            param->name = strdup("caption");
-            accum_push(accum, param);
-
-            Token *frag = parse_gallery_caption_fragment(cap_ptr, cap_len, cfg, accum);
-            if (frag) {
-                append_fragment_children(param, frag);
-                token_free_shallow(frag);
-            }
-
-            token_append_child(img, param);
-        }
+    if (open > 0) {
+        token_append_text_n(t, line, open);
+    } else {
+        token_append_text_n(t, "", 0);
     }
 
-    return img;
+    const char *inner = line + open + 2;
+    size_t inner_len = close - (open + 2);
+    Token *link = parse_single_link_token(inner, inner_len, cfg, accum);
+    if (link) {
+        token_append_child(t, link);
+    } else {
+        token_append_text_n(t, line + open, (close + 2) - open);
+    }
+
+    if (close + 2 < line_len) {
+        token_append_text_n(t, line + close + 2, line_len - (close + 2));
+    }
+
+    Token *tail = make_empty_noinclude(accum);
+    if (tail) token_append_child(t, tail);
+
+    return t;
 }
 
 static void postprocess_gallery_ext_inner(Token *t, const ParserConfig *cfg, Accum *accum)
@@ -358,6 +477,75 @@ static void postprocess_gallery_ext_inner(Token *t, const ParserConfig *cfg, Acc
             token_append_child(t, img);
         } else {
             token_append_text_n(t, line_ptr, line_len);
+        }
+
+        line_start = i + 1;
+    }
+
+    for (size_t i = 0; i < t->child_count; i++) {
+        if (!t->children[i].is_text && t->children[i].token) {
+            postprocess_nested_plain(t->children[i].token, cfg, accum);
+        }
+    }
+
+    free(src);
+}
+
+static void postprocess_imagemap_ext_inner(Token *t, const ParserConfig *cfg, Accum *accum)
+{
+    if (!t || !t->type_name || strcmp(t->type_name, "ext-inner") != 0
+        || !t->name || strcmp(t->name, "imagemap") != 0) return;
+
+    bool has_non_text = false;
+    size_t src_len = 0;
+    for (size_t i = 0; i < t->child_count; i++) {
+        if (!t->children[i].is_text) {
+            has_non_text = true;
+        } else {
+            src_len += t->children[i].text_len;
+        }
+    }
+    if (has_non_text || src_len == 0) return;
+
+    char *src = malloc(src_len + 1);
+    if (!src) return;
+    size_t pos = 0;
+    for (size_t i = 0; i < t->child_count; i++) {
+        memcpy(src + pos, t->children[i].text, t->children[i].text_len);
+        pos += t->children[i].text_len;
+    }
+    src[src_len] = '\0';
+
+    for (size_t i = 0; i < t->child_count; i++) {
+        if (t->children[i].is_text) free(t->children[i].text);
+    }
+    t->child_count = 0;
+
+    bool image_seen = false;
+    size_t line_start = 0;
+    for (size_t i = 0; i <= src_len; i++) {
+        if (i != src_len && src[i] != '\n') continue;
+
+        size_t line_len = i - line_start;
+        const char *line_ptr = src + line_start;
+
+        if (line_len == 0) {
+            Token *n = make_empty_noinclude(accum);
+            if (n) token_append_child(t, n);
+        } else {
+            Token *tok = NULL;
+            if (!image_seen) {
+                tok = parse_imagemap_image_line(line_ptr, line_len, cfg, accum);
+                if (tok) image_seen = true;
+            }
+            if (!tok) {
+                tok = parse_imagemap_link_line(line_ptr, line_len, cfg, accum);
+            }
+            if (tok) {
+                token_append_child(t, tok);
+            } else {
+                token_append_text_n(t, line_ptr, line_len);
+            }
         }
 
         line_start = i + 1;
@@ -433,6 +621,12 @@ static void postprocess_nested_plain(Token *t, const ParserConfig *cfg, Accum *a
     if (t->type_name && strcmp(t->type_name, "ext-inner") == 0
         && t->name && strcmp(t->name, "gallery") == 0) {
         postprocess_gallery_ext_inner(t, cfg, accum);
+        return;
+    }
+
+    if (t->type_name && strcmp(t->type_name, "ext-inner") == 0
+        && t->name && strcmp(t->name, "imagemap") == 0) {
+        postprocess_imagemap_ext_inner(t, cfg, accum);
         return;
     }
 

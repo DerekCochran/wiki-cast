@@ -6,7 +6,7 @@ function inspect(wikitext) {
   const token = new Token(wikitext);
   token.type = 'root';
   proto.__orig_parse.call(token, 11, false);
-  result = JSON.stringify(nodeToJSON(token), null, 2);
+  result = JSON.stringify(nodeToJSON(token));
   return result;
 }
 

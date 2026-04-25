@@ -84,10 +84,50 @@ static char braces_get_symbol(const char *name, size_t len,
     free(cleaned);
 
     const char *canonical = NULL;
+    const char *base_orig = trimmed;
+    size_t base_orig_len = n;
+    const char *colon_orig = memchr(trimmed, ':', n);
+    if (colon_orig && colon_orig > trimmed) {
+        base_orig_len = (size_t)(colon_orig - trimmed);
+    }
+
+    char *base_orig_buf = NULL;
+    if (base_orig_len != n) {
+        base_orig_buf = malloc(base_orig_len + 1);
+        if (base_orig_buf) {
+            memcpy(base_orig_buf, trimmed, base_orig_len);
+            base_orig_buf[base_orig_len] = '\0';
+            base_orig = base_orig_buf;
+        }
+    }
+
+    const char *base_lc = lc;
+    size_t base_lc_len = n;
+    const char *colon = strchr(lc, ':');
+    if (colon && colon > lc) {
+        base_lc_len = (size_t)(colon - lc);
+    }
+
+    char *base_buf = NULL;
+    if (base_lc_len != n) {
+        base_buf = malloc(base_lc_len + 1);
+        if (base_buf) {
+            memcpy(base_buf, lc, base_lc_len);
+            base_buf[base_lc_len] = '\0';
+            base_lc = base_buf;
+        }
+    }
+
     if (cfg) {
         canonical = str_map_get_exact(&cfg->parser_function_sensitive, trimmed);
         if (!canonical) {
             canonical = str_map_get_exact(&cfg->parser_function_insensitive, lc);
+        }
+        if (!canonical && base_orig && base_orig[0]) {
+            canonical = str_map_get_exact(&cfg->parser_function_sensitive, base_orig);
+        }
+        if (!canonical && base_lc && base_lc[0]) {
+            canonical = str_map_get_exact(&cfg->parser_function_insensitive, base_lc);
         }
     }
 
@@ -125,10 +165,17 @@ static char braces_get_symbol(const char *name, size_t len,
         if (is_magic_out) *is_magic_out = true;
     } else if (lc[0] == '#') {
         if (is_magic_out) *is_magic_out = true;
-    } else if (cfg && canonical && str_list_contains_ci(&cfg->variable, canonical)) {
+    } else if (cfg && canonical && canonical[0]) {
         if (is_magic_out) *is_magic_out = true;
+    } else if (cfg && base_lc && base_lc[0]) {
+        const char *base_canonical = str_map_get_exact(&cfg->parser_function_insensitive, base_lc);
+        if (base_canonical) {
+            if (is_magic_out) *is_magic_out = true;
+        }
     }
 
+    free(base_buf);
+    free(base_orig_buf);
     free(trimmed);
     free(lc);
     return out;
@@ -218,11 +265,25 @@ static Token *build_template_token(char **parts_restored, const size_t *parts_le
         }
     }
 
+    bool transclude_is_magic = false;
+    size_t magic_title_len = 0;
+    const char *magic_first_arg = NULL;
+    size_t magic_first_arg_len = 0;
+
     if (parts_count > 0 && parts_restored[0]) {
         size_t p0_len = parts_lens[0];
         bool magic = false;
         (void)braces_get_symbol(parts_restored[0], p0_len, cfg, &magic);
         if (magic) {
+            transclude_is_magic = true;
+            magic_title_len = p0_len;
+            const char *colon = memchr(parts_restored[0], ':', p0_len);
+            if (colon) {
+                magic_title_len = (size_t)(colon - parts_restored[0]);
+                magic_first_arg = colon + 1;
+                magic_first_arg_len = p0_len - magic_title_len - 1;
+            }
+
             free(t->type_name);
             t->type_name = strdup("magic-word");
             char *nm = trim_copy(parts_restored[0], p0_len);
@@ -230,12 +291,16 @@ static Token *build_template_token(char **parts_restored, const size_t *parts_le
                 for (char *p = nm; *p; p++) {
                     *p = (char)tolower((unsigned char)*p);
                 }
+                char *colon = strchr(nm, ':');
+                if (colon && colon > nm) {
+                    *colon = '\0';
+                }
                 t->name = nm;
             }
 
             Token *mw_name = token_new(TOKEN_SYNTAX, "magic-word-name");
             if (mw_name) {
-                token_append_text_n(mw_name, parts_restored[0], p0_len);
+                token_append_text_n(mw_name, parts_restored[0], magic_title_len);
                 token_append_child(t, mw_name);
             }
         } else {
@@ -264,6 +329,46 @@ static Token *build_template_token(char **parts_restored, const size_t *parts_le
     }
 
     size_t positional = 1;
+    if (transclude_is_magic && magic_first_arg) {
+        const char *part = magic_first_arg;
+        size_t part_len = magic_first_arg_len;
+        const char *eq = memchr(part, '=', part_len);
+
+        Token *param = token_new(TOKEN_PARAMETER, "parameter");
+        if (param) {
+            param->sep = '\0';
+
+            Token *key_tok = token_new(TOKEN_PLAIN, "parameter-key");
+            Token *val_tok = token_new(TOKEN_PLAIN, "parameter-value");
+            if (key_tok && val_tok) {
+                if (eq) {
+                    size_t key_len = (size_t)(eq - part);
+                    size_t val_len = part_len - key_len - 1;
+                    token_append_text_n(key_tok, part, key_len);
+                    token_append_text_n(val_tok, eq + 1, val_len);
+                    token_append_child(param, key_tok);
+                    token_append_child(param, val_tok);
+
+                    char *pname = trim_copy(part, key_len);
+                    if (pname) param->name = pname;
+                } else {
+                    token_append_child(param, key_tok);
+                    token_append_text_n(val_tok, part, part_len);
+                    token_append_child(param, val_tok);
+
+                    char *pname = strdup("1");
+                    if (pname) param->name = pname;
+                    positional = 2;
+                }
+                token_append_child(t, param);
+            } else {
+                if (key_tok) token_free(key_tok);
+                if (val_tok) token_free(val_tok);
+                token_free(param);
+            }
+        }
+    }
+
     for (size_t k = 1; k < parts_count; k++) {
         if (!parts_restored[k]) continue;
 

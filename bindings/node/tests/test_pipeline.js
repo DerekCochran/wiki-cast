@@ -86,6 +86,12 @@ runTests([
   // Wikitext repro (trimmed): multi-line gallery should keep each image as gallery-image token
   '<gallery>\nFile:Achilles departure Eretria Painter CdM Paris 851.jpg|Achilles and the [[Nereid]] Cymothoe\nFile:Akhilleus embassy Staatliche Antikensammlungen 8770.jpg|The embassy to Achilles, Attic red-figure [[hydria]]\n</gallery>',
 
+  // Wikitext repro: parser-function style magic word with ':' should not become template
+  '(${{formatnum:{{Inflation|US|800|1861|r=-2}}}} in current dollars)',
+
+  // Wikitext repro: imagemap should produce imagemap-image / imagemap-link structure
+  '<imagemap>\nFile:Emancipation proclamation.jpg|thumb|upright=1.25|\'\'[[First Reading of the Emancipation Proclamation of President Lincoln]]\'\'|alt=A dark-haired, bearded, middle-aged man holding documents is seated among seven other men.\npoly 269 892 254 775 193 738 [[Edwin M. Stanton|Edwin Stanton]]\n</imagemap>',
+
   // BEGIN: auto-generated post-processing parity failures (234 cases)
   "<ref>https://example.org/a</ref>",
   "<ref>RFC 2119</ref>",

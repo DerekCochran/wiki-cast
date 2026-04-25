@@ -1,0 +1,8 @@
+# latest native_binding parity input
+# timestamp: 2026-04-25T23:32:56.041Z
+# include: false
+# tidy: false
+
+{|
+| {{T|x=y}} ; -{zh-hans:简;zh-hant:繁;}-
+|}

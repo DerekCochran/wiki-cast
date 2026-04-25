@@ -113,6 +113,7 @@ async function main(argv) {
     const ok = compareSample(text, {
       name: 'export',
       sampleIndex: lineNumber,
+      sampleLabel: `${String(title).replace(/\s+/g, '_')}.wikitext`,
     });
 
     if (!ok) {

@@ -241,12 +241,13 @@ static void token_to_string_rec(const Token *t, ThreadBuf *tb)
         case TOKEN_FILE:
         case TOKEN_CATEGORY:
         case TOKEN_REDIRECT_TARGET: {
-            bool is_gallery_image = (t->type == TOKEN_FILE && t->type_name
-                                     && strcmp(t->type_name, "gallery-image") == 0);
+            bool is_file_line_image = (t->type == TOKEN_FILE && t->type_name
+                                       && (strcmp(t->type_name, "gallery-image") == 0
+                                           || strcmp(t->type_name, "imagemap-image") == 0));
 
             /* Internal links: [[target|text]] — join children with '|' and wrap.
              * Gallery images serialize as plain lines without [[...]]. */
-            if (!is_gallery_image) {
+            if (!is_file_line_image) {
                 thread_buf_append(tb, "[[", 2);
             }
             for (size_t i = 0; i < t->child_count; i++) {
@@ -282,7 +283,7 @@ static void token_to_string_rec(const Token *t, ThreadBuf *tb)
                     token_to_string_rec(c->token, tb);
                 }
             }
-            if (!is_gallery_image) {
+            if (!is_file_line_image) {
                 thread_buf_append(tb, "]]", 2);
             }
             return;
@@ -329,8 +330,12 @@ static void token_to_string_rec(const Token *t, ThreadBuf *tb)
         case TOKEN_TRANSCLUDE: {
             /* Template/magic-word: {{name|params}} */
             thread_buf_append(tb, "{{", 2);
+            bool is_magic_word = (t->type_name && strcmp(t->type_name, "magic-word") == 0);
             for (size_t i = 0; i < t->child_count; i++) {
-                if (i > 0) thread_buf_append_char(tb, '|');
+                if (i > 0) {
+                    if (is_magic_word && i == 1) thread_buf_append_char(tb, ':');
+                    else thread_buf_append_char(tb, '|');
+                }
                 const Child *c = &t->children[i];
                 if (c->is_text) thread_buf_append(tb, c->text, c->text_len);
                 else token_to_string_rec(c->token, tb);

@@ -11,6 +11,8 @@
 #include "parser/external_links.h"
 #include "parser/quotes.h"
 #include "parser/magic_links.h"
+#include "parser/comment_and_ext.h"
+#include "parser/html.h"
 #include "log.h"
 #include <stdlib.h>
 #include <string.h>
@@ -112,12 +114,44 @@ static void append_file_image_params(Token *file_tok,
     if (!file_tok || !text_ptr) return;
 
     size_t seg_start = 0;
+    int tpl_depth = 0;
+    int link_depth = 0;
+
     while (seg_start <= text_len) {
         size_t seg_end = seg_start;
-        while (seg_end < text_len && text_ptr[seg_end] != '|') seg_end++;
+        while (seg_end < text_len) {
+            if (seg_end + 1 < text_len && text_ptr[seg_end] == '{' && text_ptr[seg_end + 1] == '{') {
+                tpl_depth++;
+                seg_end += 2;
+                continue;
+            }
+            if (seg_end + 1 < text_len && text_ptr[seg_end] == '}' && text_ptr[seg_end + 1] == '}' && tpl_depth > 0) {
+                tpl_depth--;
+                seg_end += 2;
+                continue;
+            }
+            if (seg_end + 1 < text_len && text_ptr[seg_end] == '[' && text_ptr[seg_end + 1] == '[') {
+                link_depth++;
+                seg_end += 2;
+                continue;
+            }
+            if (seg_end + 1 < text_len && text_ptr[seg_end] == ']' && text_ptr[seg_end + 1] == ']' && link_depth > 0) {
+                link_depth--;
+                seg_end += 2;
+                continue;
+            }
+            if (text_ptr[seg_end] == '|' && tpl_depth == 0 && link_depth == 0) {
+                break;
+            }
+            seg_end++;
+        }
 
         const char *seg_ptr = text_ptr + seg_start;
         size_t seg_len = seg_end - seg_start;
+
+        const char *match_ptr = seg_ptr;
+        size_t match_len = seg_len;
+        trim_view(&match_ptr, &match_len);
 
         /* Note: Do NOT trim whitespace from image parameters - JavaScript preserves it */
 
@@ -134,7 +168,7 @@ static void append_file_image_params(Token *file_tok,
                     bool has_cap = false;
                     if (!syntax || !name) continue;
 
-                    if (!match_img_syntax(seg_ptr, seg_len, syntax, &cap_ptr, &cap_len, &has_cap)) continue;
+                    if (!match_img_syntax(match_ptr, match_len, syntax, &cap_ptr, &cap_len, &has_cap)) continue;
 
                     param = make_image_param_token(name, accum);
                     if (!param) {
@@ -732,23 +766,43 @@ void parse_links(ThreadBuf *tb, const ParserConfig *cfg, Accum *accum,
             for (size_t ni = 0; ni < title_len; ni++) {
                 if (title_ptr[ni] == '#') { base_len = ni; break; }
             }
+            const char *base_ptr = title_ptr;
+            size_t base_trim_len = base_len;
+            trim_view(&base_ptr, &base_trim_len);
+
             size_t pfx_len  = strlen(iw_pref);
-            size_t full_len = pfx_len + 1 + base_len;
+            size_t full_len = pfx_len + 1 + base_trim_len;
             char *full = malloc(full_len + 1);
             if (full) {
                 memcpy(full, iw_pref, pfx_len);
                 full[pfx_len] = ':';
-                memcpy(full + pfx_len + 1, title_ptr, base_len);
+                memcpy(full + pfx_len + 1, base_ptr, base_trim_len);
                 full[full_len] = '\0';
-                norm = title_normalize(full, full_len);
-                free(full);
+                norm = full;
             }
         } else {
             size_t base_len = title_len;
             for (size_t ni = 0; ni < title_len; ni++) {
                 if (title_ptr[ni] == '#') { base_len = ni; break; }
             }
-            norm = title_normalize(title_ptr, base_len);
+            const char *base_ptr = title_ptr;
+            size_t base_trim_len = base_len;
+            trim_view(&base_ptr, &base_trim_len);
+
+            const char *colon = memchr(base_ptr, ':', base_trim_len);
+            if (!interwiki && ns == 0 && colon && (size_t)(colon - base_ptr) == 4
+                && strncasecmp(base_ptr, "wikt", 4) == 0) {
+                size_t suffix_len = base_trim_len - 5;
+                char *tmp = malloc(5 + suffix_len + 1);
+                if (tmp) {
+                    memcpy(tmp, "Wikt:", 5);
+                    if (suffix_len > 0) memcpy(tmp + 5, colon + 1, suffix_len);
+                    tmp[5 + suffix_len] = '\0';
+                    norm = tmp;
+                }
+            } else {
+                norm = title_normalize(title_ptr, base_len);
+            }
         }
         if (norm) tok->name = norm;
 
@@ -770,9 +824,13 @@ static Token *parse_inner_fragment(const char *s, size_t len, const ParserConfig
     ThreadBuf *inner_tb = &tbufs->scratch;
     wiki_thread_buf_set(inner_tb, s, len);
 
+    if (in_file) {
+        parse_comment_and_ext(inner_tb, cfg, accum, false);
+    }
     parse_braces(inner_tb, cfg, accum);
     if (in_file) {
         /* JS parity: file/gallery parameter text supports internal links. */
+        parse_html(inner_tb, cfg, accum);
         parse_links(inner_tb, cfg, accum, NULL, tidy);
     }
     parse_quotes(inner_tb, cfg, accum, tidy);

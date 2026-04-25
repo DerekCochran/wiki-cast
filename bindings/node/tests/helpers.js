@@ -343,8 +343,8 @@ function compareSample(wikitext, { include = false, tidy = false, name = 'sample
     writeTextFile(gotStringPath, nativeResult.text);
     writeUnifiedDiff(expectedStringPath, gotStringPath, stringDiffPath);
 
-    writeTextFile(expectedJsonPath, JSON.stringify(jsResult.tree, null, 2) + '\n');
-    writeTextFile(gotJsonPath, JSON.stringify(nativeResult.tree, null, 2) + '\n');
+    writeTextFile(expectedJsonPath, JSON.stringify(jsResult.tree) + '\n');
+    writeTextFile(gotJsonPath, JSON.stringify(nativeResult.tree) + '\n');
     writeUnifiedDiff(expectedJsonPath, gotJsonPath, jsonDiffPath);
 
     const astAnalysis = analyzeAstDiff(jsResult.tree, nativeResult.tree);
