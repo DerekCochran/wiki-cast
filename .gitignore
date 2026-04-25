@@ -1,0 +1,45 @@
+# --- Project Specific ---
+data/
+backup_data/
+
+# --- C Development ---
+# Binaries and Object files
+*.o
+*.ko
+*.obj
+*.elf
+*.so
+*.a
+*.la
+*.lo
+
+# Executables
+embs_converter
+
+# --- Python Development ---
+# Byte-code / optimized
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Environments
+.venv/
+node_modules/
+build/
+build_ubsan/
+build_tsan/
+build_asan/
+dist/
+*.egg-info/
+
+# --- VS Code ---
+.vscode/*
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
+*.code-workspace
+
+# --- OS Specific ---
+.DS_Store
+Thumbs.db

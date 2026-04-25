@@ -1,0 +1,10 @@
+#pragma once
+#include "string_util.h"
+#include "config.h"
+#include "accum.h"
+
+/** Parse language-variant converter fragments `-{...}-` (stage 10).
+ *  Operates on the working string `ws` and pushes created ConverterTokens
+ *  into `accum` replacing the original fragments with sentinel markers.
+ */
+void parse_converter(ThreadBuf *tb, const ParserConfig *cfg, Accum *accum);
