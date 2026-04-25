@@ -136,6 +136,36 @@ void build_token_recursive(Token *t, Accum *accum)
 {
     if (!t) return;
 
+    bool has_marker_text = false;
+    bool all_text_children = true;
+    size_t total_text_len = 0;
+
+    for (size_t j = 0; j < t->child_count; j++) {
+        Child *c = &t->children[j];
+        if (!c->is_text) {
+            all_text_children = false;
+            continue;
+        }
+        total_text_len += c->text_len;
+        if (c->text && memchr(c->text, '\x7F', c->text_len)) {
+            has_marker_text = true;
+        }
+    }
+
+    if (has_marker_text && all_text_children) {
+        char *joined = malloc(total_text_len + 1);
+        assert(joined);
+        size_t pos = 0;
+        for (size_t j = 0; j < t->child_count; j++) {
+            Child *c = &t->children[j];
+            memcpy(joined + pos, c->text, c->text_len);
+            pos += c->text_len;
+        }
+        joined[total_text_len] = '\0';
+        build_from_str(t, joined, total_text_len, accum);
+        free(joined);
+    }
+
     /* For each child of t: */
     for (size_t j = 0; j < t->child_count; j++) {
         Child *c = &t->children[j];

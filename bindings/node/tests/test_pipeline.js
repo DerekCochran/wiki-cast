@@ -80,6 +80,12 @@ runTests([
   // Export repro: list markers inside template parameter values should tokenize
   "{{Wikisource-inline|list=\n** \"[[s:A Dictionary of the English Language/A|A]]\" in ''[[s:A Dictionary of the English Language|A Dictionary of the English Language]]'' by [[Samuel Johnson]]\n}}",
 
+  // Wikitext repro: gallery caption containing multiple wikilinks must preserve inline spacing
+  '<gallery>\nFile:Achilles departure Eretria Painter CdM Paris 851.jpg|Achilles and the [[Nereid]] Cymothoe, Attic [[red-figure]] [[kantharos]] from [[Volci]] ([[Cabinet des Médailles]], Bibliothèque nationale, Paris)\n</gallery>',
+
+  // Wikitext repro (trimmed): multi-line gallery should keep each image as gallery-image token
+  '<gallery>\nFile:Achilles departure Eretria Painter CdM Paris 851.jpg|Achilles and the [[Nereid]] Cymothoe\nFile:Akhilleus embassy Staatliche Antikensammlungen 8770.jpg|The embassy to Achilles, Attic red-figure [[hydria]]\n</gallery>',
+
   // BEGIN: auto-generated post-processing parity failures (234 cases)
   "<ref>https://example.org/a</ref>",
   "<ref>RFC 2119</ref>",

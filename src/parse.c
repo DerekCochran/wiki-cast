@@ -49,6 +49,8 @@
 #include <stdio.h>
 #include <stdint.h>
 #include <assert.h>
+#include <ctype.h>
+#include <strings.h>
 
 /* ── Orphan-token cleanup helpers ──────────────────────────────────────────
  *
@@ -179,6 +181,197 @@ static bool should_postprocess_plain(const Token *t)
         || strcmp(t->type_name, "heading-title") == 0;
 }
 
+    static void postprocess_nested_plain(Token *t, const ParserConfig *cfg, Accum *accum);
+
+static void trim_view_local(const char **ptr, size_t *len)
+{
+    const char *s = *ptr;
+    size_t l = *len;
+    size_t a = 0;
+    while (a < l && isspace((unsigned char)s[a])) a++;
+    size_t b = l;
+    while (b > a && isspace((unsigned char)s[b - 1])) b--;
+    *ptr = s + a;
+    *len = b - a;
+}
+
+static int namespace_from_title(const char *title_ptr, size_t title_len, const ParserConfig *cfg)
+{
+    if (!title_ptr || !cfg) return 0;
+    for (size_t i = 0; i < title_len; i++) {
+        if (title_ptr[i] != ':') continue;
+        size_t pre_len = i;
+        for (size_t k = 0; k < cfg->ns_count; k++) {
+            const char *nm = cfg->namespaces[k].name;
+            if (!nm || strlen(nm) != pre_len) continue;
+            if (strncasecmp(nm, title_ptr, pre_len) == 0) {
+                return cfg->namespaces[k].num;
+            }
+        }
+        return 0;
+    }
+    return 0;
+}
+
+static Token *parse_gallery_caption_fragment(const char *s, size_t len,
+                                             const ParserConfig *cfg, Accum *accum)
+{
+    if (!s) return NULL;
+
+    ThreadBuffers *tbufs = wiki_thread_buf_get();
+    ThreadBuf *scratch = &tbufs->scratch;
+    wiki_thread_buf_set(scratch, s, len);
+
+    parse_comment_and_ext(scratch, cfg, accum, false);
+    parse_braces(scratch, cfg, accum);
+    parse_html(scratch, cfg, accum);
+    parse_links(scratch, cfg, accum, NULL, false);
+    parse_quotes(scratch, cfg, accum, false);
+    parse_external_links(scratch, cfg, accum, true);
+    parse_magic_links(scratch, cfg, accum);
+
+    Token *inner = token_new(TOKEN_PLAIN, "text");
+    if (!inner) return NULL;
+    build_from_str(inner, scratch->buf, scratch->len, accum);
+    build_token_recursive(inner, accum);
+    return inner;
+}
+
+static void append_fragment_children(Token *dst, Token *frag)
+{
+    if (!dst || !frag) return;
+    for (size_t ci = 0; ci < frag->child_count; ci++) {
+        if (frag->children[ci].is_text) {
+            token_append_text_n(dst, frag->children[ci].text, frag->children[ci].text_len);
+        } else {
+            token_append_child(dst, frag->children[ci].token);
+            frag->children[ci].token = NULL;
+        }
+    }
+}
+
+static Token *parse_gallery_image_line(const char *line, size_t line_len,
+                                       const ParserConfig *cfg, Accum *accum)
+{
+    if (!line || line_len == 0) return NULL;
+
+    size_t pipe = SIZE_MAX;
+    for (size_t i = 0; i < line_len; i++) {
+        if (line[i] == '|') {
+            pipe = i;
+            break;
+        }
+    }
+
+    const char *file_raw = line;
+    size_t file_raw_len = (pipe == SIZE_MAX) ? line_len : pipe;
+
+    const char *file_trim = file_raw;
+    size_t file_trim_len = file_raw_len;
+    trim_view_local(&file_trim, &file_trim_len);
+
+    if (file_trim_len == 0) return NULL;
+    if (!title_is_valid_half_parsed(file_trim, file_trim_len, cfg)) return NULL;
+    if (namespace_from_title(file_trim, file_trim_len, cfg) != 6) return NULL;
+
+    Token *img = token_new(TOKEN_FILE, "gallery-image");
+    if (!img) return NULL;
+    accum_push(accum, img);
+
+    Token *target = token_new(TOKEN_ATOM, "link-target");
+    if (target) {
+        token_append_text_n(target, file_raw, file_raw_len);
+        token_append_child(img, target);
+    }
+
+    size_t base_len = file_trim_len;
+    for (size_t i = 0; i < file_trim_len; i++) {
+        if (file_trim[i] == '#') {
+            base_len = i;
+            break;
+        }
+    }
+    char *norm = title_normalize(file_trim, base_len);
+    if (norm) img->name = norm;
+
+    if (pipe != SIZE_MAX && pipe + 1 <= line_len) {
+        const char *cap_ptr = line + pipe + 1;
+        size_t cap_len = line_len - pipe - 1;
+
+        Token *param = token_new(TOKEN_PLAIN, "image-parameter");
+        if (param) {
+            param->name = strdup("caption");
+            accum_push(accum, param);
+
+            Token *frag = parse_gallery_caption_fragment(cap_ptr, cap_len, cfg, accum);
+            if (frag) {
+                append_fragment_children(param, frag);
+                token_free_shallow(frag);
+            }
+
+            token_append_child(img, param);
+        }
+    }
+
+    return img;
+}
+
+static void postprocess_gallery_ext_inner(Token *t, const ParserConfig *cfg, Accum *accum)
+{
+    if (!t || !t->type_name || strcmp(t->type_name, "ext-inner") != 0
+        || !t->name || strcmp(t->name, "gallery") != 0) return;
+
+    bool has_non_text = false;
+    size_t src_len = 0;
+    for (size_t i = 0; i < t->child_count; i++) {
+        if (!t->children[i].is_text) {
+            has_non_text = true;
+        } else {
+            src_len += t->children[i].text_len;
+        }
+    }
+    if (has_non_text || src_len == 0) return;
+
+    char *src = malloc(src_len + 1);
+    if (!src) return;
+    size_t pos = 0;
+    for (size_t i = 0; i < t->child_count; i++) {
+        memcpy(src + pos, t->children[i].text, t->children[i].text_len);
+        pos += t->children[i].text_len;
+    }
+    src[src_len] = '\0';
+
+    for (size_t i = 0; i < t->child_count; i++) {
+        if (t->children[i].is_text) free(t->children[i].text);
+    }
+    t->child_count = 0;
+
+    size_t line_start = 0;
+    for (size_t i = 0; i <= src_len; i++) {
+        if (i != src_len && src[i] != '\n') continue;
+
+        size_t line_len = i - line_start;
+        const char *line_ptr = src + line_start;
+
+        Token *img = parse_gallery_image_line(line_ptr, line_len, cfg, accum);
+        if (img) {
+            token_append_child(t, img);
+        } else {
+            token_append_text_n(t, line_ptr, line_len);
+        }
+
+        line_start = i + 1;
+    }
+
+    for (size_t i = 0; i < t->child_count; i++) {
+        if (!t->children[i].is_text && t->children[i].token) {
+            postprocess_nested_plain(t->children[i].token, cfg, accum);
+        }
+    }
+
+    free(src);
+}
+
 static void run_nested_plain_pipeline(ThreadBuf *scratch,
                                       bool is_td_inner,
                                       bool is_ext_inner,
@@ -236,6 +429,12 @@ static void postprocess_nested_plain(Token *t, const ParserConfig *cfg, Accum *a
 
     if (!should_postprocess_plain(t)) return;
     if (t->type == TOKEN_EXT_INNER && t->name && strcmp(t->name, "nowiki") == 0) return;
+
+    if (t->type_name && strcmp(t->type_name, "ext-inner") == 0
+        && t->name && strcmp(t->name, "gallery") == 0) {
+        postprocess_gallery_ext_inner(t, cfg, accum);
+        return;
+    }
 
     bool is_td_inner = strcmp(t->type_name, "td-inner") == 0;
     bool is_ext_inner = strcmp(t->type_name, "ext-inner") == 0;

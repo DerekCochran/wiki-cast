@@ -8,7 +8,19 @@ const Module = require('module');
 
 // Resolve wikiparser-node from this package's node_modules so tests run
 // against the local `extern_tokenizer` copy of `wikiparser-node`.
-const wikiNmDir = path.resolve(__dirname, '..', 'node_modules');
+function resolveWikiNodeModulesDir() {
+  const candidates = [
+    path.resolve(__dirname, '..', 'node_modules'),
+    path.resolve(__dirname, '..', '..', '..', 'node_modules'),
+  ];
+  for (const dir of candidates) {
+    const entry = path.join(dir, 'wikiparser-node', 'dist', 'src', 'index.js');
+    if (fs.existsSync(entry)) return dir;
+  }
+  throw new Error('Unable to locate wikiparser-node in expected node_modules locations');
+}
+
+const wikiNmDir = resolveWikiNodeModulesDir();
 const _origPaths = Module._nodeModulePaths;
 Module._nodeModulePaths = function(from) {
   return [wikiNmDir, ...(_origPaths.call(this, from) || [])];
@@ -30,7 +42,7 @@ if (!proto || !proto.__orig_parse) {
 const MAX_STAGE = 11;
 const LAST_SAMPLE_PATH = '/tmp/wiki_latest_test_input.txt';
 const PERF_LOG_PATH = '/tmp/wikitext_perf.txt';
-const DEFAULT_WIKI_CONFIG = path.resolve(__dirname, '..', '..', 'node_modules', 'wikiparser-node', 'config', 'enwiki.json');
+const DEFAULT_WIKI_CONFIG = path.join(wikiNmDir, 'wikiparser-node', 'config', 'enwiki.json');
 
 if (!process.env.WIKI_CONFIG) {
   process.env.WIKI_CONFIG = DEFAULT_WIKI_CONFIG;
@@ -274,10 +286,10 @@ function runParse(wikitext, parseFn, include = false, tidy = false) {
  * Returns true if both match.
  * Prints OK / FAIL to stdout with diagnostics on failure.
  */
-function compareSample(wikitext, { include = false, tidy = false, name = 'samples', sampleIndex = 1 } = {}) {
+function compareSample(wikitext, { include = false, tidy = false, name = 'samples', sampleIndex = 1, sampleLabel = null } = {}) {
   writeLatestSampleCheckpoint(wikitext, { include, tidy });
 
-  const label = JSON.stringify(wikitext.slice(0, 70));
+  const label = sampleLabel == null ? JSON.stringify(wikitext.slice(0, 70)) : String(sampleLabel);
 
   let jsResult, nativeResult;
 

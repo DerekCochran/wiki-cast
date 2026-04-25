@@ -12,10 +12,23 @@
  * table is switched from JS fallback to the C binding.
  */
 const path = require('path');
+const fs = require('fs');
 /* Prefer the repo-level `node_modules` directory (one level above `tests`).
  * This mirrors `helpers.js` which arranges module paths to include the
  * node_modules directory. */
-const wikiNmDir = path.resolve(__dirname, '..', 'node_modules');
+function resolveWikiNodeModulesDir() {
+	const candidates = [
+		path.resolve(__dirname, '..', 'node_modules'),
+		path.resolve(__dirname, '..', '..', '..', 'node_modules'),
+	];
+	for (const dir of candidates) {
+		const entry = path.join(dir, 'wikiparser-node', 'dist', 'src', 'index.js');
+		if (fs.existsSync(entry)) return dir;
+	}
+	throw new Error('Unable to locate wikiparser-node in expected node_modules locations');
+}
+
+const wikiNmDir = resolveWikiNodeModulesDir();
 const { Token } = require(path.join(wikiNmDir, 'wikiparser-node', 'dist', 'src', 'index.js'));
 const proto = Token.prototype;
 

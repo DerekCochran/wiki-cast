@@ -771,6 +771,10 @@ static Token *parse_inner_fragment(const char *s, size_t len, const ParserConfig
     wiki_thread_buf_set(inner_tb, s, len);
 
     parse_braces(inner_tb, cfg, accum);
+    if (in_file) {
+        /* JS parity: file/gallery parameter text supports internal links. */
+        parse_links(inner_tb, cfg, accum, NULL, tidy);
+    }
     parse_quotes(inner_tb, cfg, accum, tidy);
     if (in_file) {
         parse_external_links(inner_tb, cfg, accum, true);
