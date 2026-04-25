@@ -5,26 +5,13 @@
 **Build**
 
 - Prerequisites: `node` (>= 18), `npm`, `python3`, and a C build toolchain (`make`, `g++`). On Debian/Ubuntu: `sudo apt install build-essential python3`.
-- To build the addon and install dependencies:
-
-```
-cd extern_tokenizer/native_binding
-npm install
-```
-
-- If you prefer using the repository's already-installed `node_modules` (developing in-tree), point the tests at the repo `node_modules`:
-
-```
-# from repository root
-ln -sfn ./extern_tokenizer/node_modules ./extern_tokenizer/native_binding/node_modules
-```
 
 **Run tests (Node integration parity)**
 
 - Run the lightweight native-binding parity tests:
 
 ```
-cd extern_tokenizer/native_binding
+cd bindings/node
 node tests/run_all.js
 ```
 

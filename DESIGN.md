@@ -274,7 +274,7 @@ implemented by hand, mirroring the JS source.
 ## Build System
 
 ```
-extern_tokenizer/
+
     CMakeLists.txt          # top-level; builds libwikiparser.a + test executables
     parser/CMakeLists.txt   # compiles parser stage files
     src/CMakeLists.txt      # compiles token type files

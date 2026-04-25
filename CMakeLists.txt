@@ -66,61 +66,61 @@ function(configure_parser_test target)
 endfunction()
 
 # Parser-specific unit tests (C)
-add_executable(test_parser_redirect tests/c/test_parser_redirect.c)
+add_executable(test_parser_redirect tests/test_parser_redirect.c)
 configure_parser_test(test_parser_redirect)
 add_test(NAME parser_redirect_c COMMAND test_parser_redirect)
 
-add_executable(test_parser_comment_and_ext tests/c/test_parser_comment_and_ext.c)
+add_executable(test_parser_comment_and_ext tests/test_parser_comment_and_ext.c)
 configure_parser_test(test_parser_comment_and_ext)
 add_test(NAME parser_comment_and_ext_c COMMAND test_parser_comment_and_ext)
 
-add_executable(test_parser_braces tests/c/test_parser_braces.c)
+add_executable(test_parser_braces tests/test_parser_braces.c)
 configure_parser_test(test_parser_braces)
 add_test(NAME parser_braces_c COMMAND test_parser_braces)
 
-add_executable(test_parser_html tests/c/test_parser_html.c)
+add_executable(test_parser_html tests/test_parser_html.c)
 configure_parser_test(test_parser_html)
 add_test(NAME parser_html_c COMMAND test_parser_html)
 
-add_executable(test_parser_table tests/c/test_parser_table.c)
+add_executable(test_parser_table tests/test_parser_table.c)
 configure_parser_test(test_parser_table)
 add_test(NAME parser_table_c COMMAND test_parser_table)
 
-add_executable(test_parser_hr_and_double_underscore tests/c/test_parser_hr_and_double_underscore.c)
+add_executable(test_parser_hr_and_double_underscore tests/test_parser_hr_and_double_underscore.c)
 configure_parser_test(test_parser_hr_and_double_underscore)
 add_test(NAME parser_hr_and_double_underscore_c COMMAND test_parser_hr_and_double_underscore)
 
-add_executable(test_parser_links tests/c/test_parser_links.c)
+add_executable(test_parser_links tests/test_parser_links.c)
 configure_parser_test(test_parser_links)
 add_test(NAME parser_links_c COMMAND test_parser_links)
 
-add_executable(test_parser_quotes tests/c/test_parser_quotes.c)
+add_executable(test_parser_quotes tests/test_parser_quotes.c)
 configure_parser_test(test_parser_quotes)
 add_test(NAME parser_quotes_c COMMAND test_parser_quotes)
 
-add_executable(test_parser_external_links tests/c/test_parser_external_links.c)
+add_executable(test_parser_external_links tests/test_parser_external_links.c)
 configure_parser_test(test_parser_external_links)
 add_test(NAME parser_external_links_c COMMAND test_parser_external_links)
 
-add_executable(test_parser_magic_links tests/c/test_parser_magic_links.c)
+add_executable(test_parser_magic_links tests/test_parser_magic_links.c)
 configure_parser_test(test_parser_magic_links)
 add_test(NAME parser_magic_links_c COMMAND test_parser_magic_links)
 
-add_executable(test_parser_list tests/c/test_parser_list.c)
+add_executable(test_parser_list tests/test_parser_list.c)
 configure_parser_test(test_parser_list)
 add_test(NAME parser_list_c COMMAND test_parser_list)
 
-add_executable(test_parser_converter tests/c/test_parser_converter.c)
+add_executable(test_parser_converter tests/test_parser_converter.c)
 configure_parser_test(test_parser_converter)
 add_test(NAME parser_converter_c COMMAND test_parser_converter)
 
-add_executable(test_pipeline tests/c/test_pipeline.c)
+add_executable(test_pipeline tests/test_pipeline.c)
 configure_parser_test(test_pipeline)
 add_test(NAME pipeline_c COMMAND test_pipeline)
 
-add_executable(test_wikitext tests/c/test_wikitext.c)
+add_executable(test_wikitext tests/test_wikitext.c)
 configure_parser_test(test_wikitext)
 add_test(NAME wikitext_c COMMAND test_wikitext
          ${TEST_WIKI_CONFIG}
-         ${CMAKE_CURRENT_SOURCE_DIR}/tests/c/wikitext)
+         ${CMAKE_CURRENT_SOURCE_DIR}/tests/wikitext)
 

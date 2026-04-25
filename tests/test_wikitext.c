@@ -1,4 +1,4 @@
-/* test_wikitext.c — Parse every file in tests/c/wikitext, sorted lexicographically, and print JSON output. */
+/* test_wikitext.c — Parse every file in tests/wikitext, sorted lexicographically, and print JSON output. */
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -239,7 +239,7 @@ int main(int argc, char **argv)
     const char *input_path = NULL;
     if (argc > 2 && argv[2] && argv[2][0] != '\0') input_path = argv[2];
     if (!input_path) input_path = getenv("WIKI_FILE");
-    if (!input_path) input_path = "tests/c/wikitext";
+    if (!input_path) input_path = "tests/wikitext";
 
     struct stat st;
     if (stat(input_path, &st) != 0) {

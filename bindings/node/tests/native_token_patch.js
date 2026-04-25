@@ -14,7 +14,7 @@
 const path = require('path');
 /* Prefer the repo-level `node_modules` directory (one level above `tests`).
  * This mirrors `helpers.js` which arranges module paths to include the
- * extern_tokenizer/node_modules directory. */
+ * node_modules directory. */
 const wikiNmDir = path.resolve(__dirname, '..', 'node_modules');
 const { Token } = require(path.join(wikiNmDir, 'wikiparser-node', 'dist', 'src', 'index.js'));
 const proto = Token.prototype;

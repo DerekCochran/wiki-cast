@@ -55,7 +55,7 @@ make -j
 ```
 
 This produces `libwikitokenizer.a` and test binaries (for example
-`test_stage0`) in `extern_tokenizer/build`.
+`test_stage0`) in `build`.
 
 **Run tests**
 
