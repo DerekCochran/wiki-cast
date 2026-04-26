@@ -44,6 +44,9 @@ static const char *samples[] = {
     "[[Category:Test#section|key]]",
     "[[en:Wikipedia#History]] with anchor",
     "[[File:Mardi&nbsp;Gras&nbsp;Mobile&nbsp;Order of Inca.jpg|thumb|left|upright|Mobile is the birthplace of Mardi Gras in the U.S.]]",
+    /* Image (legacy) syntax tests */
+    "[[Image:Justus Sustermans - Portrait of Galileo Galilei (Uffizi).jpg|left|thumb|upright|[[Galileo Galilei]] is often referred to as the father of [[modern astronomy]]. Portrait by [[Justus Sustermans]].]]",
+    "[[Image:JKepler.jpg|right|thumb|upright|[[Johannes Kepler]], one of the fathers of [[modern astronomy]]]]",
 };
 
 int main(void)

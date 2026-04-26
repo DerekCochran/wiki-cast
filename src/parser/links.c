@@ -605,18 +605,13 @@ void parse_links(ThreadBuf *tb, const ParserConfig *cfg, Accum *accum,
                 continue;
             }
 
-            size_t img_cap = (text_len ? text_len : 0) + (after_len ? after_len : 0) + 256;
+            size_t img_cap = (text_len ? text_len : 0) + 256;
             char  *img_buf = malloc(img_cap);
             assert(img_buf);
             size_t img_len = 0;
             if (text_ptr && text_len > 0) {
                 memcpy(img_buf, text_ptr, text_len);
                 img_len = text_len;
-            }
-            /* If text came from main regex with broken content, also include after */
-            if (after_ptr && after_len > 0) {
-                memcpy(img_buf + img_len, after_ptr, after_len);
-                img_len += after_len;
             }
 
 #define IMG_APPEND(p, n) do { \
