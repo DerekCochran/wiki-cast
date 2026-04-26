@@ -396,12 +396,16 @@ void parse_links(ThreadBuf *tb, const ParserConfig *cfg, Accum *accum,
 
     ensure_link_regexes();
 
-    /* Ensure proto regex compiled */
+    /* Use cached proto regex when available. For temporary config copies
+     * (for example ext-inner parsing), compile function-local regex and
+     * free it before returning to avoid leaking compiled patterns. */
+    pcre2_code *re_proto_local = NULL;
     if (!cfg->regex_links) {
-        ParserConfig *m = (ParserConfig *)cfg;
-        m->regex_links = (ParserConfigRegex *)compile_links_proto(cfg);
+        re_proto_local = compile_links_proto(cfg);
     }
-    pcre2_code *re_proto    = (pcre2_code *)cfg->regex_links;
+    pcre2_code *re_proto    = cfg->regex_links
+        ? (pcre2_code *)cfg->regex_links
+        : re_proto_local;
     pcre2_code *re_main     = cfg->in_ext ? s_re_main_ext : s_re_main;
     pcre2_code *re_img_re   = s_re_img;
     pcre2_code *re_sentinel = s_re_sentinel;
@@ -762,6 +766,7 @@ void parse_links(ThreadBuf *tb, const ParserConfig *cfg, Accum *accum,
     wiki_thread_buf_set(tb, out, out_len);
     free(out);
     free(bits);
+    if (re_proto_local) pcre2_code_free(re_proto_local);
 }
 
 /* Static helper: parse a fragment into a TOKEN_PLAIN with given type_name. */

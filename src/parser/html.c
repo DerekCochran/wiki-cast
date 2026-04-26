@@ -235,6 +235,15 @@ static bool html_attrs_has_attr(const Token *attrs, const char *attr_name)
     return false;
 }
 
+static void accum_rollback_shallow(Accum *accum, size_t saved_count)
+{
+    if (!accum) return;
+    while (accum->count > saved_count) {
+        Token *t = accum->tokens[--accum->count];
+        if (t) token_free_shallow(t);
+    }
+}
+
 void parse_html(ThreadBuf *tb, const ParserConfig *cfg, Accum *accum)
 {
     if (!tb || !tb->buf) return;
@@ -356,8 +365,8 @@ void parse_html(ThreadBuf *tb, const ParserConfig *cfg, Accum *accum)
                         }
 
                         if (reject) {
-                            /* revert accumulator length (loose memory leak similar to JS) */
-                            accum->count = saved_accum;
+                            /* Revert accumulator and free dropped tokens. */
+                            accum_rollback_shallow(accum, saved_accum);
                             ENSURE_CAP(1 + seg_len + 1);
                             out_buf[out_len++] = '<';
                             if (seg_len > 0) { memcpy(out_buf + out_len, seg_start, seg_len); out_len += seg_len; }
