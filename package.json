@@ -10,7 +10,12 @@
   "scripts": {
     "run:all": "node bindings/node/tests/run_all.js",
     "run:export": "node bindings/node/tests/test_export.js",
-    "run:wikitext": "node bindings/node/tests/test_wikitext.js"
+    "run:wikitext": "node bindings/node/tests/test_wikitext.js",
+    "coverage:origjs:clean": "rm -rf .artifacts/v8cov-origjs .artifacts/origjs-usage && mkdir -p .artifacts/v8cov-origjs .artifacts/origjs-usage",
+    "coverage:origjs:collect:core": "NODE_V8_COVERAGE=.artifacts/v8cov-origjs npm run -s run:all && NODE_V8_COVERAGE=.artifacts/v8cov-origjs npm run -s run:wikitext",
+    "coverage:origjs:collect:export": "NODE_V8_COVERAGE=.artifacts/v8cov-origjs npm run -s run:export",
+    "coverage:origjs:analyze": "node scripts/analyze_origjs_coverage.js",
+    "coverage:origjs:report": "npm run -s coverage:origjs:clean && npm run -s coverage:origjs:collect:core && npm run -s coverage:origjs:analyze"
   },
   "dependencies": {
     "compressjs": "^1.0.3",
