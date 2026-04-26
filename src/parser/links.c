@@ -2,6 +2,7 @@
 #include <pcre2.h>
 
 #include "parser/links.h"
+#include "parser/link.h"
 #include "string_util.h"
 #include "token.h"
 #include "accum.h"
@@ -676,7 +677,7 @@ void parse_links(ThreadBuf *tb, const ParserConfig *cfg, Accum *accum,
                 continue;
             }
 
-            /* Build FILE token */
+            /* Build FILE token for image with parameters */
             {
                 const char *tok_text_ptr = img_buf;
                 size_t      tok_text_len = img_len;
@@ -689,17 +690,18 @@ void parse_links(ThreadBuf *tb, const ParserConfig *cfg, Accum *accum,
                     memcpy(out + out_len, img_after, img_after_l); out_len += img_after_l;
                 }
 
-                Token *tok = token_new(TOKEN_FILE, "file");
+                /* Create FILE token with link-target atom */
+                Token *tok = create_link_token(TOKEN_FILE, "file", link_ptr, link_len,
+                                               tok_text_ptr, tok_text_len, NULL,
+                                               cfg, accum, tidy);
                 if (!tok) { free(img_buf); title_free(parsed); free(no_comment); continue; }
-                accum_push(accum, tok);
 
-                Token *atom = token_new(TOKEN_ATOM, "link-target");
-                if (atom) { token_append_text_n(atom, link_ptr, link_len); token_append_child(tok, atom); }
-
+                /* For image files, parse the parameters via append_file_image_params */
                 if (tok_text_ptr) {
                     append_file_image_params(tok, tok_text_ptr, tok_text_len, cfg, accum, tidy);
                 }
 
+                /* Set the normalized title as the token name */
                 if (parsed->title) tok->name = strdup(parsed->title);
 
                 free(img_buf);
@@ -723,17 +725,11 @@ void parse_links(ThreadBuf *tb, const ParserConfig *cfg, Accum *accum,
         memcpy(out + out_len, sent, sent_len); out_len += sent_len;
         if (after_ptr && after_len > 0) { memcpy(out + out_len, after_ptr, after_len); out_len += after_len; }
 
-        Token *tok = token_new(ttype, tname);
+        /* Create the link token with link-target child via factory. */
+        Token *tok = create_link_token(ttype, tname, link_ptr, link_len, 
+                                       text_ptr, text_len, delim_ptr,
+                                       cfg, accum, tidy);
         if (!tok) { title_free(parsed); free(no_comment); continue; }
-        accum_push(accum, tok);
-
-        /* link-target atom */
-        Token *atom = token_new(TOKEN_ATOM, "link-target");
-        if (atom) {
-            /* JS constructor receives the raw regex-captured `link` text. */
-            token_append_text_n(atom, link_ptr, link_len);
-            token_append_child(tok, atom);
-        }
 
         /* JS: if (text === undefined && delimiter) { text = ''; }
          * When delimiter present but text absent, JS creates empty text child. */

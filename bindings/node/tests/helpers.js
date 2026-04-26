@@ -51,18 +51,7 @@ if (!process.env.WIKI_CONFIG) {
 Parser.config = process.env.WIKI_CONFIG;
 
 function writeLatestSampleCheckpoint(wikitext, opts) {
-  const payload = [
-    '# latest native_binding parity input',
-    `# timestamp: ${new Date().toISOString()}`,
-    `# include: ${Boolean(opts && opts.include)}`,
-    `# tidy: ${Boolean(opts && opts.tidy)}`,
-    '',
-    String(wikitext),
-    '',
-  ].join('\n');
-
-  /* Overwrite on every sample so the file always contains the latest attempted input. */
-  fs.writeFileSync(LAST_SAMPLE_PATH, payload, 'utf8');
+  fs.writeFileSync(LAST_SAMPLE_PATH, wikitext, 'utf8');
 }
 
 function ensureDir(dir) {

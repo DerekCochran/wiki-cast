@@ -33,6 +33,7 @@ add_library(wikitokenizer STATIC
     src/parser/table.c
     src/parser/hr_and_double_underscore.c
     src/parser/links.c
+    src/parser/link.c
     src/parser/quotes.c
     src/parser/external_links.c
     src/parser/converter.c

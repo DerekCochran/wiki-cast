@@ -15,18 +15,18 @@ cd bindings/node
 node tests/run_all.js
 ```
 
-- The test harness loads `native_binding/tests/native_token_patch.js` which will attempt to `require('./build/Release/native_binding.node')` (or Debug) and, when present, replace `Token.prototype.parse` with the native `parse` function. When the addon is absent or not exporting `parse`, tests fall back to the original JS implementation.
+- The test harness loads `bindings/node/tests/native_token_patch.js` which will attempt to `require('./build/Release/bindings/node.node')` (or Debug) and, when present, replace `Token.prototype.parse` with the native `parse` function. When the addon is absent or not exporting `parse`, tests fall back to the original JS implementation.
 
 **Files of interest**
 
-- Native shim: [native_binding/src/addon.c](native_binding/src/addon.c)
-- Build: [native_binding/binding.gyp](native_binding/binding.gyp)
-- Test harness & loader: [native_binding/tests/native_token_patch.js](native_binding/tests/native_token_patch.js)
-- Parity tests runner: [native_binding/tests/run_all.js](native_binding/tests/run_all.js)
+- Native shim: [bindings/node/src/addon.c](bindings/node/src/addon.c)
+- Build: [bindings/node/binding.gyp](bindings/node/binding.gyp)
+- Test harness & loader: [bindings/node/tests/native_token_patch.js](bindings/node/tests/native_token_patch.js)
+- Parity tests runner: [bindings/node/tests/run_all.js](bindings/node/tests/run_all.js)
 
 **Notes & Troubleshooting**
 
-- If a test reports `Cannot find module 'wikiparser-node'`, either run `npm install` in `native_binding` or create the symlink to the repo `node_modules` shown above.
+- If a test reports `Cannot find module 'wikiparser-node'`, either run `npm install` in `bindings/node` or create the symlink to the repo `node_modules` shown above.
 - If `node-gyp` fails, ensure Python and build tools are available and that your Node.js version is supported by the installed node-gyp.
 - The suite intentionally does not require the standalone CLI binary; the CLI-related test is excluded from this runner.
 

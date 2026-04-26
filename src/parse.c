@@ -181,69 +181,6 @@ static bool should_postprocess_plain(const Token *t)
         || strcmp(t->type_name, "heading-title") == 0;
 }
 
-static bool accum_index_of_token(const Accum *accum, const Token *token, size_t *index_out)
-{
-    if (!accum || !token) return -1;
-    for (size_t i = 0; i < accum->count; i++) {
-        if (accum->tokens[i] == token) {
-            if (index_out) *index_out = i;
-            return true;
-        }
-    }
-    return false;
-}
-
-static bool serialize_children_with_sentinels(const Token *t, const Accum *accum,
-                                              char **out_buf, size_t *out_len)
-{
-    if (!t || !out_buf || !out_len) return false;
-
-    size_t total = 0;
-    for (size_t i = 0; i < t->child_count; i++) {
-        if (t->children[i].is_text) {
-            total += t->children[i].text_len;
-            continue;
-        }
-
-        size_t idx = 0;
-        if (!accum_index_of_token(accum, t->children[i].token, &idx)) return false;
-
-        char sent[64];
-        size_t sent_len = 0;
-        work_str_sentinel(idx, token_sentinel_char(t->children[i].token->type), sent, &sent_len);
-        total += sent_len;
-    }
-
-    char *joined = malloc(total + 1);
-    if (!joined) return false;
-
-    size_t pos = 0;
-    for (size_t i = 0; i < t->child_count; i++) {
-        if (t->children[i].is_text) {
-            memcpy(joined + pos, t->children[i].text, t->children[i].text_len);
-            pos += t->children[i].text_len;
-            continue;
-        }
-
-        size_t idx = 0;
-        if (!accum_index_of_token(accum, t->children[i].token, &idx)) {
-            free(joined);
-            return false;
-        }
-
-        char sent[64];
-        size_t sent_len = 0;
-        work_str_sentinel(idx, token_sentinel_char(t->children[i].token->type), sent, &sent_len);
-        memcpy(joined + pos, sent, sent_len);
-        pos += sent_len;
-    }
-
-    joined[total] = '\0';
-    *out_buf = joined;
-    *out_len = total;
-    return true;
-}
-
     static void postprocess_nested_plain(Token *t, const ParserConfig *cfg, Accum *accum);
 
 static void trim_view_local(const char **ptr, size_t *len)
@@ -293,13 +230,9 @@ static Token *parse_gallery_caption_fragment(const char *s, size_t len,
     parse_magic_links(scratch, cfg, accum);
 
     Token *inner = token_new(TOKEN_PLAIN, "text");
-    if (!inner) {
-        wiki_thread_buf_release_scratch(scratch);
-        return NULL;
-    }
+    if (!inner) return NULL;
     build_from_str(inner, scratch->buf, scratch->len, accum);
     build_token_recursive(inner, accum);
-    wiki_thread_buf_release_scratch(scratch);
     return inner;
 }
 
@@ -719,40 +652,14 @@ static void postprocess_nested_plain(Token *t, const ParserConfig *cfg, Accum *a
             txt_len += t->children[i].text_len;
         }
     }
-    if (txt_len == 0) {
-        wiki_thread_buf_release_scratch(scratch);
-        return;
-    }
+    if (txt_len == 0) return;
 
     if (has_non_text) {
-        char *joined = NULL;
-        size_t joined_len = 0;
-        if (serialize_children_with_sentinels(t, accum, &joined, &joined_len)) {
-            wiki_thread_buf_set(scratch, joined, joined_len);
-            run_nested_plain_pipeline(scratch, is_td_inner, is_ext_inner, is_heading_title, t, cfg, accum);
-
-            bool unchanged = (scratch->len == joined_len && memcmp(scratch->buf, joined, joined_len) == 0);
-            free(joined);
-
-            if (unchanged) {
-                wiki_thread_buf_release_scratch(scratch);
-                return;
-            }
-
-            build_from_str(t, scratch->buf, scratch->len, accum);
-            build_token_recursive(t, accum);
-            wiki_thread_buf_release_scratch(scratch);
-            return;
-        }
-
         Child *old_children = t->children;
         size_t old_count = t->child_count;
         size_t new_cap = old_count ? old_count : 1;
         Child *new_children = malloc(new_cap * sizeof(Child));
-        if (!new_children) {
-            wiki_thread_buf_release_scratch(scratch);
-            return;
-        }
+        if (!new_children) return;
         size_t new_count = 0;
 
         for (size_t i = 0; i < old_count; i++) {
@@ -831,15 +738,11 @@ static void postprocess_nested_plain(Token *t, const ParserConfig *cfg, Accum *a
         t->children = new_children;
         t->child_count = new_count;
         t->child_cap = new_cap;
-        wiki_thread_buf_release_scratch(scratch);
         return;
     }
 
     char *joined = malloc(txt_len + 1);
-    if (!joined) {
-        wiki_thread_buf_release_scratch(scratch);
-        return;
-    }
+    if (!joined) return;
     size_t pos = 0;
     for (size_t i = 0; i < t->child_count; i++) {
         memcpy(joined + pos, t->children[i].text, t->children[i].text_len);
@@ -852,13 +755,11 @@ static void postprocess_nested_plain(Token *t, const ParserConfig *cfg, Accum *a
 
     if (scratch->len == txt_len && memcmp(scratch->buf, txt, txt_len) == 0) {
         free(joined);
-        wiki_thread_buf_release_scratch(scratch);
         return;
     }
     build_from_str(t, scratch->buf, scratch->len, accum);
     build_token_recursive(t, accum);
     free(joined);
-    wiki_thread_buf_release_scratch(scratch);
 }
 
 static void postprocess_root_braces_fallback(Token *root, const ParserConfig *cfg, Accum *accum)
@@ -874,12 +775,8 @@ static void postprocess_root_braces_fallback(Token *root, const ParserConfig *cf
     wiki_thread_buf_set(scratch, txt, txt_len);
     parse_braces(scratch, cfg, accum);
 
-    if (scratch->len == txt_len && memcmp(scratch->buf, txt, txt_len) == 0) {
-        wiki_thread_buf_release_scratch(scratch);
-        return;
-    }
+    if (scratch->len == txt_len && memcmp(scratch->buf, txt, txt_len) == 0) return;
     build_from_str(root, scratch->buf, scratch->len, accum);
-    wiki_thread_buf_release_scratch(scratch);
 }
 
 static void postprocess_parameter_value_inline(Token *t, const ParserConfig *cfg, Accum *accum)
@@ -902,10 +799,7 @@ static void postprocess_parameter_value_inline(Token *t, const ParserConfig *cfg
     size_t old_count = t->child_count;
     size_t new_cap = old_count ? old_count : 1;
     Child *new_children = malloc(new_cap * sizeof(Child));
-    if (!new_children) {
-        wiki_thread_buf_release_scratch(scratch);
-        return;
-    }
+    if (!new_children) return;
     size_t new_count = 0;
 
     for (size_t i = 0; i < old_count; i++) {
@@ -996,15 +890,12 @@ static void postprocess_parameter_value_inline(Token *t, const ParserConfig *cfg
     t->children = new_children;
     t->child_count = new_count;
     t->child_cap = new_cap;
-    wiki_thread_buf_release_scratch(scratch);
 }
 
 Token *wiki_parse(const char *wikitext, const ParserConfig *cfg,
                   bool include, int max_stage)
 {
     if (!wikitext || !cfg) return NULL;
-
-    wiki_thread_buf_assert_no_leased_scratch("wiki_parse(entry)", NULL);
 
     /* ── Grab a thread-local snapshot of the input ─────────────────────────
      * The caller's string may be modified by another thread while we are
@@ -1108,8 +999,6 @@ Token *wiki_parse(const char *wikitext, const ParserConfig *cfg,
     /* ── Cleanup ─────────────────────────────────────────────────────────── */
     /* no-op: thread buffer owned by TLS */
     accum_free(&accum);
-
-    wiki_thread_buf_assert_no_leased_scratch("wiki_parse(exit)", NULL);
 
     return root;
 }

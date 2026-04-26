@@ -1,4 +1,4 @@
-# latest native_binding parity input
+# latest bindings/node parity input
 # timestamp: 2026-04-25T23:22:29.489Z
 # include: false
 # tidy: false

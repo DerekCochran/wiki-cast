@@ -97,10 +97,16 @@ static Token *build_redirect_token(
     title_free(parsed);
     token_append_child(target_tok, link_atom);
 
-    if (disp && disp_len > 0) {
+    /* JS parity: RedirectTargetToken creates NoincludeToken whenever text?.slice(1)
+     * is not undefined — i.e. whenever the '|' delimiter was present in the input,
+     * even if the display text is empty (e.g. [[target|]]).
+     * disp is non-NULL iff the '|' group was captured by the regex. */
+    if (disp) {
         Token *noinclude = token_new(TOKEN_NOINCLUDE, "noinclude");
         if (!noinclude) return NULL;
-        token_append_text_n(noinclude, disp, disp_len);
+        if (disp_len > 0) {
+            token_append_text_n(noinclude, disp, disp_len);
+        }
         accum_push(accum, noinclude);
         token_append_child(target_tok, noinclude);
     }

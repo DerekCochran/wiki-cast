@@ -44,13 +44,13 @@ try {
 	native = require(path.join(__dirname, '..', 'build', 'Release', 'wikiparser-node-c-tokenizer.node'));
 } catch (e) {
 	try {
-		native = require(path.join(__dirname, '..', 'build', 'Release', 'native_binding.node'));
+		native = require(path.join(__dirname, '..', 'build', 'Release', 'bindings/node.node'));
 	} catch (e2) {
 		try {
 			native = require(path.join(__dirname, '..', 'build', 'Debug', 'wikiparser-node-c-tokenizer.node'));
 		} catch (e3) {
 			try {
-				native = require(path.join(__dirname, '..', 'build', 'Debug', 'native_binding.node'));
+				native = require(path.join(__dirname, '..', 'build', 'Debug', 'bindings/node.node'));
 			} catch (e4) {
 				native = null;
 			}
