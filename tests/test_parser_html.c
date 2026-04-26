@@ -31,6 +31,8 @@ static const char *samples[] = {
     "<span  multiple   spaces=\"here\">content</span>",
     "<img alt=\"\" src=\"/path/to/img.png\" />",
     "<div onclick=\"alert('test')\">event</div>",
+    "<meta data=\"itemprop\" content=\"x\">",
+    "<link data=\"itemprop\" href=\"/x\">",
 };
 
 int main(void)

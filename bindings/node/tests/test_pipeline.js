@@ -65,6 +65,12 @@ runTests([
   // Comment inside template parameter-value nested in ref should stay tokenized
   'A<ref>{{Citation|access-date= 29 June 2011<!--Added by DASHBot-->}}</ref>B',
 
+  // Multiline quotes in parameter-value must be parsed per-line
+  "{{T|v='''a\n''b'''}}",
+
+  // Wikitext repro (An American in Paris): apostrophes inside <score> must stay raw text
+  '<score raw=1 sound=1>\\relative c\'\' { x }</score>',
+
   // HTML tags inside template parameter-value should be tokenized inline
   '{{Citation|title=Effect of land albedo, CO<sub>2</sub>, orography}}',
 

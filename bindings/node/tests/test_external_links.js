@@ -30,4 +30,6 @@ runTests([
   '[http://example.com unclosed',
   // Bracket with &lt; in URL – truncated at entity
   '[http://example.com/a&lt;b Label]',
+  // Preserve exact separator whitespace between URL and label
+  '[https://example.com\tlabel]',
 ], { name: 'external_links' });

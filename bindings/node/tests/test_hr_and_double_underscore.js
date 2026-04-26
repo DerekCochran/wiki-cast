@@ -20,6 +20,12 @@ runTests([
   '__NOEDITSECTION__\n== Section ==',
   // __NEWSECTIONLINK__ keyword
   '__NEWSECTIONLINK__',
+  // Alias keywords should canonicalize token name via config maps
+  '__NOTC__',
+  '__nOtC__',
+  '__NOCC__',
+  '__DISAMBIG__',
+  '__EXPECTED_UNCONNECTED_PAGE__',
   // Double underscore that is NOT a keyword – left as-is
   '__NOTAKEYWORD__',
   // Section heading finalization (detected in stage 1, finalized in stage 4)

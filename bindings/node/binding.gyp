@@ -15,6 +15,7 @@
         "../../src/parser/external_links.c",
         "../../src/parser/hr_and_double_underscore.c",
         "../../src/parser/html.c",
+        "../../src/parser/link.c",
         "../../src/parser/links.c",
         "../../src/parser/list.c",
         "../../src/parser/magic_links.c",

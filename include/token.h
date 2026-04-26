@@ -118,6 +118,12 @@ typedef union {
     struct {
         char *raw_syntax; /* canonical syntax string for image-parameter toString */
     } image_param;
+    struct {
+        char *space;      /* ExtLinkToken separator between URL and text (may be empty) */
+    } ext_link;
+    struct {
+        char *modifier;   /* TranscludeToken modifier prefix, e.g. "subst:" */
+    } transclude;
 } TokenData;
 
 /* ── Token struct ─────────────────────────────────────────────────────────── */

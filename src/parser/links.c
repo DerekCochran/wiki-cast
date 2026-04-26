@@ -741,7 +741,12 @@ void parse_links(ThreadBuf *tb, const ParserConfig *cfg, Accum *accum,
                 append_file_image_params(tok, tp, tl, cfg, accum, tidy);
             } else {
                 Token *lt = parse_inner_fragment(tp, tl, cfg, accum, "link-text", tidy, in_file);
-                if (lt) token_append_child(tok, lt);
+                if (lt) {
+                    if (tl == 0 && lt->child_count == 0) {
+                        token_append_text_n(lt, "", 0);
+                    }
+                    token_append_child(tok, lt);
+                }
             }
         }
 

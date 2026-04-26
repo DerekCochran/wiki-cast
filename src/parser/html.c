@@ -221,6 +221,20 @@ static Token *build_html_attrs(const char *tag_name, const char *attr_str, size_
     return t;
 }
 
+static bool html_attrs_has_attr(const Token *attrs, const char *attr_name)
+{
+    if (!attrs || !attr_name) return false;
+    for (size_t i = 0; i < attrs->child_count; i++) {
+        const Child *c = &attrs->children[i];
+        if (c->is_text || !c->token) continue;
+        const Token *a = c->token;
+        if (a->type == TOKEN_EXT_ATTR && a->name && strcasecmp(a->name, attr_name) == 0) {
+            return true;
+        }
+    }
+    return false;
+}
+
 void parse_html(ThreadBuf *tb, const ParserConfig *cfg, Accum *accum)
 {
     if (!tb || !tb->buf) return;
@@ -330,16 +344,15 @@ void parse_html(ThreadBuf *tb, const ParserConfig *cfg, Accum *accum)
 
                         Token *attrs = build_html_attrs(lcname, attr_ptr, attr_len, accum);
 
-                        /* Special-case: meta/link require itemprop+content/href (approx)
-                         * Mirror the JS behaviour: if condition fails, revert accum and
-                         * treat as plain text. */
+                        /* Special-case: meta/link require itemprop+content/href.
+                         * Mirror JS by checking parsed attrs, not raw substring matches. */
                         bool reject = false;
-                        if (attr_ptr && attr_len > 0) {
-                            bool has_itemprop = str_istr(attr_ptr, attr_len, "itemprop", strlen("itemprop")) != NULL;
-                            if (strcmp(lcname, "meta") == 0 && !(has_itemprop && str_istr(attr_ptr, attr_len, "content", strlen("content")))) reject = true;
-                            if (strcmp(lcname, "link") == 0 && !(has_itemprop && str_istr(attr_ptr, attr_len, "href", strlen("href")))) reject = true;
-                        } else {
-                            if (strcmp(lcname, "meta") == 0 || strcmp(lcname, "link") == 0) reject = true;
+                        if (strcmp(lcname, "meta") == 0 || strcmp(lcname, "link") == 0) {
+                            bool has_itemprop = html_attrs_has_attr(attrs, "itemprop");
+                            bool has_required = strcmp(lcname, "meta") == 0
+                                ? html_attrs_has_attr(attrs, "content")
+                                : html_attrs_has_attr(attrs, "href");
+                            reject = !(has_itemprop && has_required);
                         }
 
                         if (reject) {

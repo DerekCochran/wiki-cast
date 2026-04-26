@@ -244,6 +244,8 @@ static ParserConfig *config_from_cjson(const cJSON *root)
 
             str_list_from_json_object_keys(&cfg->double_underscore[2], du2);
             str_list_from_json_object_keys(&cfg->double_underscore[3], du3);
+            str_map_from_json_object(&cfg->double_underscore_alias[0], du2);
+            str_map_from_json_object(&cfg->double_underscore_alias[1], du3);
         }
     }
 
@@ -362,6 +364,8 @@ void config_free(ParserConfig *cfg)
 
     str_list_free(&cfg->redirection);
     for (int i = 0; i < 4; i++) str_list_free(&cfg->double_underscore[i]);
+    str_map_free(&cfg->double_underscore_alias[0]);
+    str_map_free(&cfg->double_underscore_alias[1]);
 
     free(cfg->protocol);
     str_list_free(&cfg->variants);

@@ -46,6 +46,17 @@ static int strlist_has_lower(const StrList *sl, const char *s, size_t len)
     return 0;
 }
 
+static const char *strmap_get_exact(const StrMap *m, const char *key)
+{
+    if (!m || !key) return NULL;
+    for (size_t i = 0; i < m->count; i++) {
+        if (m->keys[i] && m->values[i] && strcmp(m->keys[i], key) == 0) {
+            return m->values[i];
+        }
+    }
+    return NULL;
+}
+
 /* Lowercase ASCII-only copy */
 static char *lower_copy(const char *s, size_t len)
 {
@@ -265,9 +276,25 @@ void parse_hr_and_double_underscore(ThreadBuf *tb, const ParserConfig *cfg, Accu
                 /* Build DoubleUnderscore token */
                 Token *t = token_new(TOKEN_DOUBLE_UNDERSCORE, "double-underscore");
                 if (t) {
-                    /* name: canonical lowercased form; use input lowercased as canonical */
                     char *lc = lower_copy(key_ptr, key_len);
-                    t->name = lc; /* ownership */
+                    const char *alias = NULL;
+                    if (case_sensitive) {
+                        char *raw = malloc(key_len + 1);
+                        assert(raw);
+                        memcpy(raw, key_ptr, key_len);
+                        raw[key_len] = '\0';
+                        alias = strmap_get_exact(&cfg->double_underscore_alias[1], raw);
+                        free(raw);
+                    } else if (lc) {
+                        alias = strmap_get_exact(&cfg->double_underscore_alias[0], lc);
+                    }
+                    if (alias && alias[0]) {
+                        size_t alen = strlen(alias);
+                        t->name = lower_copy(alias, alen);
+                        free(lc);
+                    } else {
+                        t->name = lc;
+                    }
                     /* inner text: original matched word */
                     token_append_text_n(t, key_ptr, key_len);
                     accum_push(accum, t);
@@ -315,7 +342,7 @@ void parse_hr_and_double_underscore(ThreadBuf *tb, const ParserConfig *cfg, Accu
 
     /* Heading finalization: turn lines like "== Title ==" into heading tokens */
     {
-        const char *hpat = "^((?:\\x00\\d+[cn]\\x7F)*)(={1,6})(.+)\\2((?:\\s|\\x00\\d+[cn]\\x7F)*)$";
+        const char *hpat = "^((?:\\x00\\d+[cn]\\x7F)*)(={1,6})(.+)\\2((?:[ \\t\\f\\v]|\\x00\\d+[cn]\\x7F)*)$";
         PCRE2_SIZE herr_offset;
         int herr_code;
         pcre2_code *hre = pcre2_compile((PCRE2_SPTR)hpat, PCRE2_ZERO_TERMINATED,
@@ -369,6 +396,20 @@ void parse_hr_and_double_underscore(ThreadBuf *tb, const ParserConfig *cfg, Accu
             size_t h_inner_len = (text_e > text_s) ? text_e - text_s : 0;
             const char *h_trail = (trail_e > trail_s) ? tb->buf + trail_s : "";
             size_t h_trail_len = (trail_e > trail_s) ? trail_e - trail_s : 0;
+            size_t post_trail_len = 0;
+            if (h_trail_len > 0) {
+                bool only_line_endings = true;
+                for (size_t ti = 0; ti < h_trail_len; ti++) {
+                    if (h_trail[ti] != '\n' && h_trail[ti] != '\r') {
+                        only_line_endings = false;
+                        break;
+                    }
+                }
+                if (only_line_endings && root_type != TOKEN_ROOT) {
+                    post_trail_len = h_trail_len;
+                    h_trail_len = 0;
+                }
+            }
 
             Token *t = token_new(TOKEN_HEADING, "heading");
             if (t) {
@@ -396,6 +437,15 @@ void parse_hr_and_double_underscore(ThreadBuf *tb, const ParserConfig *cfg, Accu
                 if (out2_len + slen > out_cap2) { out_cap2 = out2_len + slen + 16; out2 = realloc(out2, out_cap2); assert(out2); }
                 memcpy(out2 + out2_len, sent, slen);
                 out2_len += slen;
+                if (post_trail_len > 0) {
+                    if (out2_len + post_trail_len + 1 > out_cap2) {
+                        out_cap2 = out2_len + post_trail_len + 16;
+                        out2 = realloc(out2, out_cap2);
+                        assert(out2);
+                    }
+                    memcpy(out2 + out2_len, h_trail, post_trail_len);
+                    out2_len += post_trail_len;
+                }
             } else {
                 /* fallback: copy original match */
                 if (out2_len + (me - ms) > out_cap2) { out_cap2 = out2_len + (me - ms) + 16; out2 = realloc(out2, out_cap2); assert(out2); }

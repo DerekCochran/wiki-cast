@@ -143,13 +143,19 @@ static Token *build_ext_link_token(Token *url_tok,
 {
     Token *ext = token_new(TOKEN_EXT_LINK, "ext-link");
     if (!ext) return NULL;
+    ext->data.ext_link.space = malloc(space_len + 1);
+    if (!ext->data.ext_link.space) {
+        token_free(ext);
+        return NULL;
+    }
+    if (space && space_len > 0) memcpy(ext->data.ext_link.space, space, space_len);
+    ext->data.ext_link.space[space_len] = '\0';
+
     token_append_child(ext, url_tok);
 
     if (text_len > 0) {
         Token *inner = token_new(TOKEN_PLAIN, "ext-link-text");
         if (!inner) { token_free(ext); return NULL; }
-        (void)space;
-        (void)space_len;
         token_append_text_n(inner, text, text_len);
         accum_push(accum, inner);
         token_append_child(ext, inner);

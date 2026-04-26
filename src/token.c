@@ -81,11 +81,17 @@ static void free_token_data(Token *t)
             free(t->data.redirect.link);
             free(t->data.redirect.display);
             break;
+        case TOKEN_EXT_LINK:
+            free(t->data.ext_link.space);
+            break;
         case TOKEN_EXT:
             free(t->data.ext.name);
             free(t->data.ext.attr);
             free(t->data.ext.inner);
             free(t->data.ext.closing);
+            break;
+        case TOKEN_TRANSCLUDE:
+            free(t->data.transclude.modifier);
             break;
         case TOKEN_INCLUDE:
         case TOKEN_NOINCLUDE:
@@ -237,6 +243,51 @@ static void token_to_string_rec(const Token *t, ThreadBuf *tb)
             return;
         }
 
+        case TOKEN_PLAIN: {
+            if (t->type_name && strcmp(t->type_name, "converter-rule") == 0) {
+                if (t->child_count == 3) {
+                    const Child *from = &t->children[0];
+                    const Child *variant = &t->children[1];
+                    const Child *to = &t->children[2];
+
+                    if (from->is_text) thread_buf_append(tb, from->text, from->text_len);
+                    else token_to_string_rec(from->token, tb);
+
+                    thread_buf_append(tb, "=>", 2);
+
+                    if (variant->is_text) thread_buf_append(tb, variant->text, variant->text_len);
+                    else token_to_string_rec(variant->token, tb);
+
+                    thread_buf_append_char(tb, ':');
+
+                    if (to->is_text) thread_buf_append(tb, to->text, to->text_len);
+                    else token_to_string_rec(to->token, tb);
+                    return;
+                }
+
+                for (size_t i = 0; i < t->child_count; i++) {
+                    if (i > 0) thread_buf_append_char(tb, ':');
+                    const Child *c = &t->children[i];
+                    if (c->is_text) thread_buf_append(tb, c->text, c->text_len);
+                    else token_to_string_rec(c->token, tb);
+                }
+                return;
+            }
+
+            for (size_t i = 0; i < t->child_count; i++) {
+                if (i > 0 && t->sep != '\0') {
+                    thread_buf_append_char(tb, t->sep);
+                }
+                const Child *c = &t->children[i];
+                if (c->is_text) {
+                    thread_buf_append(tb, c->text, c->text_len);
+                } else {
+                    token_to_string_rec(c->token, tb);
+                }
+            }
+            return;
+        }
+
         case TOKEN_LINK:
         case TOKEN_FILE:
         case TOKEN_CATEGORY:
@@ -306,23 +357,27 @@ static void token_to_string_rec(const Token *t, ThreadBuf *tb)
         case TOKEN_EXT_LINK: {
             /* External link: [url label] or [url] */
             thread_buf_append_char(tb, '[');
-            for (size_t i = 0; i < t->child_count; i++) {
-                if (i == 1) {
-                    bool add_space = true;
-                    const Child *c1 = &t->children[i];
-                    if (c1->is_text && c1->text_len >= 1 && c1->text && c1->text[0] == '&') {
-                        add_space = false;
-                    } else if (!c1->is_text && c1->token && c1->token->child_count > 0) {
-                        const Child *inner0 = &c1->token->children[0];
-                        if (inner0->is_text && inner0->text_len >= 1 && inner0->text && inner0->text[0] == '&') {
-                            add_space = false;
-                        }
-                    }
-                    if (add_space) thread_buf_append_char(tb, ' ');
-                }
-                const Child *c = &t->children[i];
+            if (t->child_count > 0) {
+                const Child *c = &t->children[0];
                 if (c->is_text) thread_buf_append(tb, c->text, c->text_len);
                 else token_to_string_rec(c->token, tb);
+
+                if (t->child_count == 1) {
+                    if (t->data.ext_link.space) {
+                        thread_buf_append(tb, t->data.ext_link.space, strlen(t->data.ext_link.space));
+                    }
+                } else {
+                    if (t->data.ext_link.space) {
+                        thread_buf_append(tb, t->data.ext_link.space, strlen(t->data.ext_link.space));
+                    } else {
+                        thread_buf_append_char(tb, ' ');
+                    }
+                    for (size_t i = 1; i < t->child_count; i++) {
+                        const Child *ci = &t->children[i];
+                        if (ci->is_text) thread_buf_append(tb, ci->text, ci->text_len);
+                        else token_to_string_rec(ci->token, tb);
+                    }
+                }
             }
             thread_buf_append_char(tb, ']');
             return;
@@ -344,6 +399,9 @@ static void token_to_string_rec(const Token *t, ThreadBuf *tb)
         case TOKEN_TRANSCLUDE: {
             /* Template/magic-word: {{name|params}} */
             thread_buf_append(tb, "{{", 2);
+            if (t->data.transclude.modifier) {
+                thread_buf_append(tb, t->data.transclude.modifier, strlen(t->data.transclude.modifier));
+            }
             bool is_magic_word = (t->type_name && strcmp(t->type_name, "magic-word") == 0);
             for (size_t i = 0; i < t->child_count; i++) {
                 if (i > 0) {

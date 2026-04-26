@@ -53,6 +53,7 @@ typedef struct {
     /* doubleUnderscore[0]=case-insensitive, [1]=case-sensitive,
        [2]=insensitive→canonical map (keys), [3]=sensitive→canonical map (keys) */
     StrList double_underscore[4];
+     StrMap  double_underscore_alias[2]; /* [0]=insensitive alias map, [1]=sensitive alias map */
 
     /* protocol regex fragment e.g. "https?:|ftp:" */
     char *protocol;

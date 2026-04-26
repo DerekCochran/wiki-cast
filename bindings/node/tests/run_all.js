@@ -17,6 +17,7 @@ const tests = [
   'test_magic_links.js',
   'test_list.js',
   'test_converter.js',
+  'test_zhwiki.js',
   'test_pipeline.js',
 ];
 

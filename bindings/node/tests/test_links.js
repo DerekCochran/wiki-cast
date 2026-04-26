@@ -8,6 +8,8 @@ runTests([
   'See [[Main Page]] for details.',
   // Link with display text
   '[[Page|display text]]',
+  // Delimiter with empty display text should keep empty text child
+  '[[Page|]]',
   // Link with colon prefix (forces link, not category/file)
   '[[:Category:Foo|label]]',
   // Namespace-prefixed link

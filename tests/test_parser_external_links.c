@@ -23,6 +23,7 @@ static const char *samples[] = {
     /* More external link patterns */
     "[http://example.com/path]",
     "[https://api.example.org/v1/endpoint API endpoint]",
+    "[https://example.com\tlabel]",
 };
 
 int main(void)

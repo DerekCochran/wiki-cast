@@ -205,6 +205,40 @@ static char *trim_copy(const char *s, size_t len)
     return out;
 }
 
+static char *lower_copy(const char *s, size_t len)
+{
+    char *out = malloc(len + 1);
+    if (!out) return NULL;
+    for (size_t i = 0; i < len; i++) {
+        out[i] = (char)tolower((unsigned char)s[i]);
+    }
+    out[len] = '\0';
+    return out;
+}
+
+static const char *parser_function_canonical(const ParserConfig *cfg, const char *name, size_t len)
+{
+    if (!cfg || !name || len == 0) return NULL;
+
+    char *trimmed = trim_copy(name, len);
+    if (!trimmed || trimmed[0] == '\0') {
+        free(trimmed);
+        return NULL;
+    }
+
+    const char *canonical = str_map_get_exact(&cfg->parser_function_sensitive, trimmed);
+    if (!canonical) {
+        char *lc = lower_copy(trimmed, strlen(trimmed));
+        if (lc) {
+            canonical = str_map_get_exact(&cfg->parser_function_insensitive, lc);
+            free(lc);
+        }
+    }
+
+    free(trimmed);
+    return canonical;
+}
+
 /* Build a JS-shaped transclude/arg token and push to accum. */
 static Token *build_template_token(char **parts_restored, const size_t *parts_lens,
                                     size_t parts_count,
@@ -265,62 +299,95 @@ static Token *build_template_token(char **parts_restored, const size_t *parts_le
         }
     }
 
+    const char *title_part = (parts_count > 0) ? parts_restored[0] : NULL;
+    size_t title_part_len = (parts_count > 0) ? parts_lens[0] : 0;
+
+    if (title_part && cfg) {
+        const char *colon = memchr(title_part, ':', title_part_len);
+        if (colon) {
+            size_t prefix_len = (size_t)(colon - title_part);
+            char *prefix = trim_copy(title_part, prefix_len);
+            if (prefix && str_list_contains_ci(&cfg->parser_function_subst, prefix)) {
+                size_t mod_len = prefix_len + 1;
+                t->data.transclude.modifier = malloc(mod_len + 1);
+                if (t->data.transclude.modifier) {
+                    memcpy(t->data.transclude.modifier, title_part, mod_len);
+                    t->data.transclude.modifier[mod_len] = '\0';
+                }
+                title_part = colon + 1;
+                title_part_len -= mod_len;
+            }
+            free(prefix);
+        }
+    }
+
     bool transclude_is_magic = false;
+    bool invoke_magic = false;
     size_t magic_title_len = 0;
     const char *magic_first_arg = NULL;
     size_t magic_first_arg_len = 0;
+    size_t params_start_idx = 1;
 
-    if (parts_count > 0 && parts_restored[0]) {
-        size_t p0_len = parts_lens[0];
+    if (title_part && title_part_len > 0) {
+        size_t p0_len = title_part_len;
         bool magic = false;
-        (void)braces_get_symbol(parts_restored[0], p0_len, cfg, &magic);
+        (void)braces_get_symbol(title_part, p0_len, cfg, &magic);
         if (magic) {
             transclude_is_magic = true;
             magic_title_len = p0_len;
-            const char *colon = memchr(parts_restored[0], ':', p0_len);
+            const char *colon = memchr(title_part, ':', p0_len);
             if (colon) {
-                magic_title_len = (size_t)(colon - parts_restored[0]);
+                magic_title_len = (size_t)(colon - title_part);
                 magic_first_arg = colon + 1;
                 magic_first_arg_len = p0_len - magic_title_len - 1;
             }
 
             free(t->type_name);
             t->type_name = strdup("magic-word");
-            char *nm = trim_copy(parts_restored[0], p0_len);
-            if (nm) {
-                for (char *p = nm; *p; p++) {
-                    *p = (char)tolower((unsigned char)*p);
+            const char *canonical = parser_function_canonical(cfg, title_part, magic_title_len);
+            if (canonical) {
+                t->name = strdup(canonical);
+            } else {
+                char *nm = trim_copy(title_part, magic_title_len);
+                if (nm) {
+                    for (char *p = nm; *p; p++) {
+                        *p = (char)tolower((unsigned char)*p);
+                    }
+                    t->name = nm;
                 }
-                char *colon = strchr(nm, ':');
-                if (colon && colon > nm) {
-                    *colon = '\0';
-                }
-                t->name = nm;
             }
+            if (t->name && strcmp(t->name, "invoke") == 0) invoke_magic = true;
 
             Token *mw_name = token_new(TOKEN_SYNTAX, "magic-word-name");
             if (mw_name) {
-                token_append_text_n(mw_name, parts_restored[0], magic_title_len);
+                token_append_text_n(mw_name, title_part, magic_title_len);
                 token_append_child(t, mw_name);
             }
         } else {
             Token *tpl_name = token_new(TOKEN_ATOM, "template-name");
             if (tpl_name) {
-                token_append_text_n(tpl_name, parts_restored[0], p0_len);
+                token_append_text_n(tpl_name, title_part, p0_len);
                 token_append_child(t, tpl_name);
             }
 
-            char *trimmed_name = trim_copy(parts_restored[0], p0_len);
-            const char *name_src = trimmed_name ? trimmed_name : parts_restored[0];
+            char *trimmed_name = trim_copy(title_part, p0_len);
+            const char *name_src = trimmed_name ? trimmed_name : title_part;
             size_t name_len = trimmed_name ? strlen(trimmed_name) : p0_len;
             char *norm = title_normalize(name_src, name_len);
             if (norm && norm[0]) {
-                size_t nn = strlen(norm);
-                char *full = malloc(nn + 10);
-                if (full) {
-                    memcpy(full, "Template:", 9);
-                    memcpy(full + 9, norm, nn + 1);
-                    t->name = full;
+                const char *norm_name = norm;
+                if (norm_name[0] == ':') norm_name++;
+
+                size_t nn = strlen(norm_name);
+                if (strchr(norm_name, ':')) {
+                    t->name = strdup(norm_name);
+                } else {
+                    char *full = malloc(nn + 10);
+                    if (full) {
+                        memcpy(full, "Template:", 9);
+                        memcpy(full + 9, norm_name, nn + 1);
+                        t->name = full;
+                    }
                 }
             }
             free(trimmed_name);
@@ -330,46 +397,62 @@ static Token *build_template_token(char **parts_restored, const size_t *parts_le
 
     size_t positional = 1;
     if (transclude_is_magic && magic_first_arg) {
-        const char *part = magic_first_arg;
-        size_t part_len = magic_first_arg_len;
-        const char *eq = memchr(part, '=', part_len);
-
-        Token *param = token_new(TOKEN_PARAMETER, "parameter");
-        if (param) {
-            param->sep = '\0';
-
-            Token *key_tok = token_new(TOKEN_PLAIN, "parameter-key");
-            Token *val_tok = token_new(TOKEN_PLAIN, "parameter-value");
-            if (key_tok && val_tok) {
-                if (eq) {
-                    size_t key_len = (size_t)(eq - part);
-                    size_t val_len = part_len - key_len - 1;
-                    token_append_text_n(key_tok, part, key_len);
-                    token_append_text_n(val_tok, eq + 1, val_len);
-                    token_append_child(param, key_tok);
-                    token_append_child(param, val_tok);
-
-                    char *pname = trim_copy(part, key_len);
-                    if (pname) param->name = pname;
-                } else {
-                    token_append_child(param, key_tok);
-                    token_append_text_n(val_tok, part, part_len);
-                    token_append_child(param, val_tok);
-
-                    char *pname = strdup("1");
-                    if (pname) param->name = pname;
-                    positional = 2;
+        if (invoke_magic) {
+            Token *mod_tok = token_new(TOKEN_ATOM, "invoke-module");
+            if (mod_tok) {
+                token_append_text_n(mod_tok, magic_first_arg, magic_first_arg_len);
+                token_append_child(t, mod_tok);
+            }
+            if (parts_count > 1 && parts_restored[1]) {
+                Token *fn_tok = token_new(TOKEN_ATOM, "invoke-function");
+                if (fn_tok) {
+                    token_append_text_n(fn_tok, parts_restored[1], parts_lens[1]);
+                    token_append_child(t, fn_tok);
                 }
-                token_append_child(t, param);
-            } else {
-                if (key_tok) token_free(key_tok);
-                if (val_tok) token_free(val_tok);
-                token_free(param);
+                params_start_idx = 2;
+            }
+        } else {
+            const char *part = magic_first_arg;
+            size_t part_len = magic_first_arg_len;
+            const char *eq = memchr(part, '=', part_len);
+
+            Token *param = token_new(TOKEN_PARAMETER, "parameter");
+            if (param) {
+                param->sep = '\0';
+
+                Token *key_tok = token_new(TOKEN_PLAIN, "parameter-key");
+                Token *val_tok = token_new(TOKEN_PLAIN, "parameter-value");
+                if (key_tok && val_tok) {
+                    if (eq) {
+                        size_t key_len = (size_t)(eq - part);
+                        size_t val_len = part_len - key_len - 1;
+                        token_append_text_n(key_tok, part, key_len);
+                        token_append_text_n(val_tok, eq + 1, val_len);
+                        token_append_child(param, key_tok);
+                        token_append_child(param, val_tok);
+
+                        char *pname = trim_copy(part, key_len);
+                        if (pname) param->name = pname;
+                    } else {
+                        token_append_child(param, key_tok);
+                        token_append_text_n(val_tok, part, part_len);
+                        token_append_child(param, val_tok);
+
+                        char *pname = strdup("1");
+                        if (pname) param->name = pname;
+                        positional = 2;
+                    }
+                    token_append_child(t, param);
+                } else {
+                    if (key_tok) token_free(key_tok);
+                    if (val_tok) token_free(val_tok);
+                    token_free(param);
+                }
             }
         }
     }
 
-    for (size_t k = 1; k < parts_count; k++) {
+    for (size_t k = params_start_idx; k < parts_count; k++) {
         if (!parts_restored[k]) continue;
 
         const char *part = parts_restored[k];
@@ -520,9 +603,9 @@ static char braces_arg_symbol(const char *inner, size_t inner_len, const ParserC
 static void parse_simple_args(ThreadBuf *tb, const ParserConfig *cfg, Accum *accum)
 {
     const char *pattern_with_lb =
-        "(?<!\\{)\\{\\{\\{((?:[^\\n{}\\[]|\\[(?!\\[)|\\n(?![=\\x00]))*)\\}\\}\\}(?!\\})";
+        "(?<!\\{)\\{\\{\\{((?:[^\\n{}\\[]|\\[(?!\\[)|\\n(?![\\x00]))*)\\}\\}\\}(?!\\})";
     const char *pattern_fallback =
-        "\\{\\{\\{((?:[^\\n{}\\[]|\\[(?!\\[)|\\n(?![=\\x00]))*)\\}\\}\\}(?!\\})";
+        "\\{\\{\\{((?:[^\\n{}\\[]|\\[(?!\\[)|\\n(?![\\x00]))*)\\}\\}\\}(?!\\})";
 
     PCRE2_SIZE err_offset;
     int err_code;
@@ -580,27 +663,21 @@ static void parse_simple_args(ThreadBuf *tb, const ParserConfig *cfg, Accum *acc
             const char *inner = (cs < ce) ? tb->buf + cs : "";
             size_t inner_len = (cs < ce) ? (ce - cs) : 0;
 
-            if (memchr(inner, '\0', inner_len)) {
+            Token *tok = build_from_inner(inner, inner_len, true,
+                                          NULL, 0, NULL, cfg, accum);
+            if (tok) {
+                size_t idx = accum->count - 1;
+                char sent[64];
+                size_t slen;
+                char sym = braces_arg_symbol(inner, inner_len, cfg);
+                work_str_sentinel(idx, sym, sent, &slen);
+                ENSURE_ARG_CAP(slen);
+                memcpy(out + out_len, sent, slen);
+                out_len += slen;
+            } else {
                 ENSURE_ARG_CAP(me - ms);
                 memcpy(out + out_len, tb->buf + ms, me - ms);
                 out_len += me - ms;
-            } else {
-                Token *tok = build_from_inner(inner, inner_len, true,
-                                              NULL, 0, NULL, cfg, accum);
-                if (tok) {
-                    size_t idx = accum->count - 1;
-                    char sent[64];
-                    size_t slen;
-                    char sym = braces_arg_symbol(inner, inner_len, cfg);
-                    work_str_sentinel(idx, sym, sent, &slen);
-                    ENSURE_ARG_CAP(slen);
-                    memcpy(out + out_len, sent, slen);
-                    out_len += slen;
-                } else {
-                    ENSURE_ARG_CAP(me - ms);
-                    memcpy(out + out_len, tb->buf + ms, me - ms);
-                    out_len += me - ms;
-                }
             }
 
             search_at = me;
@@ -657,14 +734,14 @@ void parse_braces(ThreadBuf *tb, const ParserConfig *cfg, Accum *accum)
      *   |-\{(?:[^\n{}[]|\[(?!\[)|\n(?![=\0]))*\}-/gu
      */
     const char *pattern_with_lb =
-        "(?<!\\{)\\{\\{((?:[^\\n{}\\[]|\\[(?!\\[)|\\n(?![=\\x00]))*)\\}\\}"
-        "|\\{\\{((?:[^\\n{}\\[]|\\[(?!\\[)|\\n(?![=\\x00]))*)\\}\\}(?!\\})"
-        "|\\[\\[(?:[^\\n\\[\\]\\{]|\\n(?![=\\x00]))*\\]\\]"
-        "|-\\{(?:[^\\n{}\\[]|\\[(?!\\[)|\\n(?![=\\x00]))*\\}-";
+        "(?<!\\{)\\{\\{((?:[^\\n{}\\[]|\\[(?!\\[)|\\n(?![\\x00]))*)\\}\\}"
+        "|\\{\\{((?:[^\\n{}\\[]|\\[(?!\\[)|\\n(?![\\x00]))*)\\}\\}(?!\\})"
+        "|\\[\\[(?:[^\\n\\[\\]\\{]|\\n(?![\\x00]))*\\]\\]"
+        "|-\\{(?:[^\\n{}\\[]|\\[(?!\\[)|\\n(?![\\x00]))*\\}-";
     const char *pattern_fallback =
-        "\\{\\{((?:[^\\n{}\\[]|\\[(?!\\[)|\\n(?![=\\x00]))*)\\}\\}(?!\\})"
-        "|\\[\\[(?:[^\\n\\[\\]\\{]|\\n(?![=\\x00]))*\\]\\]"
-        "|-\\{(?:[^\\n{}\\[]|\\[(?!\\[)|\\n(?![=\\x00]))*\\}-";
+        "\\{\\{((?:[^\\n{}\\[]|\\[(?!\\[)|\\n(?![\\x00]))*)\\}\\}(?!\\})"
+        "|\\[\\[(?:[^\\n\\[\\]\\{]|\\n(?![\\x00]))*\\]\\]"
+        "|-\\{(?:[^\\n{}\\[]|\\[(?!\\[)|\\n(?![\\x00]))*\\}-";
 
     if (!cfg->regex_braces) {
         ParserConfig *m = (ParserConfig *)cfg;
@@ -866,6 +943,10 @@ void parse_braces(ThreadBuf *tb, const ParserConfig *cfg, Accum *accum)
         wiki_thread_buf_set(tb, restored_all, restored_len);
         free(restored_all);
     }
+
+    /* JS parity: after innermost {{...}} replacements, outer {{{...}}} may become
+     * simple enough to match (e.g. {{{a|{{T}}}}}). Re-run the simple-arg pass. */
+    parse_simple_args(tb, cfg, accum);
 
     /* Cleanup link_stack */
     for (size_t i = 0; i < link_count; i++) free(link_stack[i]);

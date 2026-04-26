@@ -181,6 +181,35 @@ static bool should_postprocess_plain(const Token *t)
         || strcmp(t->type_name, "heading-title") == 0;
 }
 
+static bool ext_inner_allows_nested_parse(const char *name)
+{
+    if (!name || !*name) return false;
+
+    /* JS ExtToken parity: only specific ext tags parse inner wikitext.
+     * Unlisted tags (for example score/syntaxhighlight/math) are nowiki-like. */
+    return strcmp(name, "pre") == 0
+        || strcmp(name, "indicator") == 0
+        || strcmp(name, "poem") == 0
+        || strcmp(name, "ref") == 0
+        || strcmp(name, "option") == 0
+        || strcmp(name, "combooption") == 0
+        || strcmp(name, "tab") == 0
+        || strcmp(name, "tabs") == 0
+        || strcmp(name, "poll") == 0
+        || strcmp(name, "seo") == 0
+        || strcmp(name, "langconvert") == 0
+        || strcmp(name, "phonos") == 0
+        || strcmp(name, "dynamicpagelist") == 0
+        || strcmp(name, "inputbox") == 0
+        || strcmp(name, "references") == 0
+        || strcmp(name, "choose") == 0
+        || strcmp(name, "combobox") == 0
+        || strcmp(name, "gallery") == 0
+        || strcmp(name, "imagemap") == 0
+        || strcmp(name, "hiero") == 0
+        || strcmp(name, "categorytree") == 0;
+}
+
     static void postprocess_nested_plain(Token *t, const ParserConfig *cfg, Accum *accum);
 
 static void trim_view_local(const char **ptr, size_t *len)
@@ -213,6 +242,8 @@ static int namespace_from_title(const char *title_ptr, size_t title_len, const P
     return 0;
 }
 
+static void parse_quotes_stage6_per_line(ThreadBuf *ws, const ParserConfig *cfg, Accum *accum);
+
 static Token *parse_gallery_caption_fragment(const char *s, size_t len,
                                              const ParserConfig *cfg, Accum *accum)
 {
@@ -225,14 +256,18 @@ static Token *parse_gallery_caption_fragment(const char *s, size_t len,
     parse_braces(scratch, cfg, accum);
     parse_html(scratch, cfg, accum);
     parse_links(scratch, cfg, accum, NULL, false);
-    parse_quotes(scratch, cfg, accum, false);
+    parse_quotes_stage6_per_line(scratch, cfg, accum);
     parse_external_links(scratch, cfg, accum, true);
     parse_magic_links(scratch, cfg, accum);
 
     Token *inner = token_new(TOKEN_PLAIN, "text");
-    if (!inner) return NULL;
+    if (!inner) {
+        wiki_thread_buf_release_scratch(scratch);
+        return NULL;
+    }
     build_from_str(inner, scratch->buf, scratch->len, accum);
     build_token_recursive(inner, accum);
+    wiki_thread_buf_release_scratch(scratch);
     return inner;
 }
 
@@ -592,8 +627,15 @@ static void run_nested_plain_pipeline(ThreadBuf *scratch,
                 hr_root_type = TOKEN_PLAIN;
             }
             parse_hr_and_double_underscore(scratch, cfg, accum, hr_root_type, t->type_name);
-            parse_links(scratch, cfg, accum, NULL, false);
-            parse_quotes(scratch, cfg, accum, false);
+            const ParserConfig *links_cfg = cfg;
+            ParserConfig cfg_local;
+            if (is_ext_inner && cfg) {
+                cfg_local = *cfg;
+                cfg_local.in_ext = true;
+                links_cfg = &cfg_local;
+            }
+            parse_links(scratch, links_cfg, accum, NULL, false);
+            parse_quotes_stage6_per_line(scratch, cfg, accum);
             parse_external_links(scratch, cfg, accum, false);
             parse_magic_links(scratch, cfg, accum);
             if (is_td_inner) {
@@ -606,7 +648,7 @@ static void run_nested_plain_pipeline(ThreadBuf *scratch,
     } else if (is_heading_title) {
         parse_html(scratch, cfg, accum);
         parse_links(scratch, cfg, accum, NULL, false);
-        parse_quotes(scratch, cfg, accum, false);
+        parse_quotes_stage6_per_line(scratch, cfg, accum);
         parse_external_links(scratch, cfg, accum, false);
         parse_magic_links(scratch, cfg, accum);
     }
@@ -624,6 +666,7 @@ static void postprocess_nested_plain(Token *t, const ParserConfig *cfg, Accum *a
 
     if (!should_postprocess_plain(t)) return;
     if (t->type == TOKEN_EXT_INNER && t->name && strcmp(t->name, "nowiki") == 0) return;
+    if (t->type == TOKEN_EXT_INNER && !ext_inner_allows_nested_parse(t->name)) return;
 
     if (t->type_name && strcmp(t->type_name, "ext-inner") == 0
         && t->name && strcmp(t->name, "gallery") == 0) {
@@ -652,14 +695,110 @@ static void postprocess_nested_plain(Token *t, const ParserConfig *cfg, Accum *a
             txt_len += t->children[i].text_len;
         }
     }
-    if (txt_len == 0) return;
+    if (txt_len == 0) {
+        wiki_thread_buf_release_scratch(scratch);
+        return;
+    }
 
     if (has_non_text) {
+        if (is_td_inner) {
+            size_t ser_cap = txt_len + 64;
+            char *ser = malloc(ser_cap);
+            if (ser) {
+                size_t ser_len = 0;
+                bool serializable = true;
+
+                for (size_t i = 0; i < t->child_count; i++) {
+                    Child cur = t->children[i];
+                    if (cur.is_text) {
+                        while (ser_len + cur.text_len + 1 >= ser_cap) {
+                            ser_cap *= 2;
+                            char *grown = realloc(ser, ser_cap);
+                            if (!grown) {
+                                serializable = false;
+                                break;
+                            }
+                            ser = grown;
+                        }
+                        if (!serializable) break;
+                        memcpy(ser + ser_len, cur.text, cur.text_len);
+                        ser_len += cur.text_len;
+                        continue;
+                    }
+
+                    Token *ctok = cur.token;
+                    size_t tok_idx = SIZE_MAX;
+                    for (size_t ai = 0; ai < accum->count; ai++) {
+                        if (accum->tokens[ai] == ctok) {
+                            tok_idx = ai;
+                            break;
+                        }
+                    }
+                    char sym = token_sentinel_char(ctok ? ctok->type : TOKEN_TEXT);
+                    if (tok_idx == SIZE_MAX || sym == '\0') {
+                        serializable = false;
+                        break;
+                    }
+
+                    char marker[64];
+                    size_t mlen = 0;
+                    work_str_sentinel(tok_idx, sym, marker, &mlen);
+
+                    while (ser_len + mlen + 1 >= ser_cap) {
+                        ser_cap *= 2;
+                        char *grown = realloc(ser, ser_cap);
+                        if (!grown) {
+                            serializable = false;
+                            break;
+                        }
+                        ser = grown;
+                    }
+                    if (!serializable) break;
+                    memcpy(ser + ser_len, marker, mlen);
+                    ser_len += mlen;
+                }
+
+                if (serializable) {
+                    wiki_thread_buf_set(scratch, ser, ser_len);
+                    run_nested_plain_pipeline(scratch, is_td_inner, is_ext_inner, is_heading_title, t, cfg, accum);
+
+                    Token *tmp = token_new(TOKEN_PLAIN, t->type_name);
+                    if (tmp) {
+                        build_from_str(tmp, scratch->buf, scratch->len, accum);
+                        build_token_recursive(tmp, accum);
+
+                        for (size_t i = 0; i < t->child_count; i++) {
+                            if (t->children[i].is_text) free(t->children[i].text);
+                        }
+                        free(t->children);
+
+                        t->children = tmp->children;
+                        t->child_count = tmp->child_count;
+                        t->child_cap = tmp->child_cap;
+
+                        tmp->children = NULL;
+                        tmp->child_count = 0;
+                        tmp->child_cap = 0;
+                        token_free_shallow(tmp);
+
+                        free(ser);
+                        wiki_thread_buf_release_scratch(scratch);
+                        return;
+                    }
+                }
+
+                free(ser);
+            }
+        }
+
         Child *old_children = t->children;
         size_t old_count = t->child_count;
         size_t new_cap = old_count ? old_count : 1;
         Child *new_children = malloc(new_cap * sizeof(Child));
-        if (!new_children) return;
+        if (!new_children) {
+            wiki_thread_buf_release_scratch(scratch);
+            return;
+        }
         size_t new_count = 0;
 
         for (size_t i = 0; i < old_count; i++) {
@@ -738,11 +877,15 @@ static void postprocess_nested_plain(Token *t, const ParserConfig *cfg, Accum *a
         t->children = new_children;
         t->child_count = new_count;
         t->child_cap = new_cap;
+        wiki_thread_buf_release_scratch(scratch);
         return;
     }
 
     char *joined = malloc(txt_len + 1);
-    if (!joined) return;
+    if (!joined) {
+        wiki_thread_buf_release_scratch(scratch);
+        return;
+    }
     size_t pos = 0;
     for (size_t i = 0; i < t->child_count; i++) {
         memcpy(joined + pos, t->children[i].text, t->children[i].text_len);
@@ -755,11 +898,13 @@ static void postprocess_nested_plain(Token *t, const ParserConfig *cfg, Accum *a
 
     if (scratch->len == txt_len && memcmp(scratch->buf, txt, txt_len) == 0) {
         free(joined);
+        wiki_thread_buf_release_scratch(scratch);
         return;
     }
     build_from_str(t, scratch->buf, scratch->len, accum);
     build_token_recursive(t, accum);
     free(joined);
+    wiki_thread_buf_release_scratch(scratch);
 }
 
 static void postprocess_root_braces_fallback(Token *root, const ParserConfig *cfg, Accum *accum)
@@ -775,8 +920,12 @@ static void postprocess_root_braces_fallback(Token *root, const ParserConfig *cf
     wiki_thread_buf_set(scratch, txt, txt_len);
     parse_braces(scratch, cfg, accum);
 
-    if (scratch->len == txt_len && memcmp(scratch->buf, txt, txt_len) == 0) return;
+    if (scratch->len == txt_len && memcmp(scratch->buf, txt, txt_len) == 0) {
+        wiki_thread_buf_release_scratch(scratch);
+        return;
+    }
     build_from_str(root, scratch->buf, scratch->len, accum);
+    wiki_thread_buf_release_scratch(scratch);
 }
 
 static void postprocess_parameter_value_inline(Token *t, const ParserConfig *cfg, Accum *accum)
@@ -789,7 +938,13 @@ static void postprocess_parameter_value_inline(Token *t, const ParserConfig *cfg
         }
     }
 
-    if (t->type != TOKEN_PLAIN || !t->type_name || strcmp(t->type_name, "parameter-value") != 0) {
+    if (t->type != TOKEN_PLAIN || !t->type_name) {
+        return;
+    }
+
+    bool is_parameter_value = strcmp(t->type_name, "parameter-value") == 0;
+    bool is_arg_default = strcmp(t->type_name, "arg-default") == 0;
+    if (!is_parameter_value && !is_arg_default) {
         return;
     }
 
@@ -799,7 +954,10 @@ static void postprocess_parameter_value_inline(Token *t, const ParserConfig *cfg
     size_t old_count = t->child_count;
     size_t new_cap = old_count ? old_count : 1;
     Child *new_children = malloc(new_cap * sizeof(Child));
-    if (!new_children) return;
+    if (!new_children) {
+        wiki_thread_buf_release_scratch(scratch);
+        return;
+    }
     size_t new_count = 0;
 
     for (size_t i = 0; i < old_count; i++) {
@@ -822,14 +980,17 @@ static void postprocess_parameter_value_inline(Token *t, const ParserConfig *cfg
         parse_comment_and_ext(scratch, cfg, accum, false);
         parse_braces(scratch, cfg, accum);
         parse_html(scratch, cfg, accum);
-        parse_hr_and_double_underscore(scratch, cfg, accum, TOKEN_PLAIN, "parameter-value");
-        bool has_bang_sentinel = mem_has(scratch->buf, scratch->len, "!\x7F");
-        if (!has_bang_sentinel) {
-            parse_links(scratch, cfg, accum, NULL, false);
-            parse_quotes(scratch, cfg, accum, false);
-            parse_external_links(scratch, cfg, accum, false);
-            parse_magic_links(scratch, cfg, accum);
-            parse_list_skip_first_line(scratch, cfg, accum);
+        if (is_parameter_value) {
+            parse_hr_and_double_underscore(scratch, cfg, accum, TOKEN_PLAIN, "parameter-value");
+            bool has_bang_sentinel = mem_has(scratch->buf, scratch->len, "!\x7F");
+            if (!has_bang_sentinel) {
+                parse_links(scratch, cfg, accum, NULL, false);
+                parse_quotes_stage6_per_line(scratch, cfg, accum);
+                parse_external_links(scratch, cfg, accum, false);
+                parse_magic_links(scratch, cfg, accum);
+                parse_list_skip_first_line(scratch, cfg, accum);
+                parse_converter(scratch, cfg, accum);
+            }
         }
 
         bool unchanged = (scratch->len == txt_len && memcmp(scratch->buf, txt, txt_len) == 0);
@@ -847,7 +1008,7 @@ static void postprocess_parameter_value_inline(Token *t, const ParserConfig *cfg
 
         free(cur.text);
 
-        Token *tmp = token_new(TOKEN_PLAIN, "parameter-value");
+        Token *tmp = token_new(TOKEN_PLAIN, t->type_name);
         if (!tmp) {
             if (new_count >= new_cap) {
                 new_cap *= 2;
@@ -890,6 +1051,49 @@ static void postprocess_parameter_value_inline(Token *t, const ParserConfig *cfg
     t->children = new_children;
     t->child_count = new_count;
     t->child_cap = new_cap;
+    wiki_thread_buf_release_scratch(scratch);
+}
+
+static void parse_quotes_stage6_per_line(ThreadBuf *ws, const ParserConfig *cfg, Accum *accum)
+{
+    if (!ws || !ws->buf) return;
+
+    ThreadBuf *scratch = wiki_thread_buf_acquire_scratch();
+
+    size_t out_cap = ws->len * 2 + 64;
+    char *out = malloc(out_cap);
+    assert(out);
+    size_t out_len = 0;
+
+    size_t line_start = 0;
+    for (size_t i = 0; i <= ws->len; i++) {
+        if (i != ws->len && ws->buf[i] != '\n') continue;
+
+        size_t line_len = i - line_start;
+        wiki_thread_buf_set(scratch, ws->buf + line_start, line_len);
+        parse_quotes(scratch, cfg, accum, false);
+
+        while (out_len + scratch->len + 2 >= out_cap) {
+            out_cap *= 2;
+            out = realloc(out, out_cap);
+            assert(out);
+        }
+        if (scratch->len > 0) {
+            memcpy(out + out_len, scratch->buf, scratch->len);
+            out_len += scratch->len;
+        }
+        if (i != ws->len) {
+            out[out_len++] = '\n';
+        }
+
+        line_start = i + 1;
+    }
+
+    out[out_len] = '\0';
+    wiki_thread_buf_set(ws, out, out_len);
+
+    free(out);
+    wiki_thread_buf_release_scratch(scratch);
 }
 
 Token *wiki_parse(const char *wikitext, const ParserConfig *cfg,
@@ -959,7 +1163,7 @@ Token *wiki_parse(const char *wikitext, const ParserConfig *cfg,
                     parse_links(ws, cfg, &accum, NULL, false);
                     break;
             case 6:  /* parseQuotes */
-                    parse_quotes(ws, cfg, &accum, false);
+                    parse_quotes_stage6_per_line(ws, cfg, &accum);
                     break;
             case 7:  /* parseExternalLinks */
                 parse_external_links(ws, cfg, &accum, false);

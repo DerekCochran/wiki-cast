@@ -59,6 +59,7 @@ target_link_libraries(wikitokenizer
 enable_testing()
 
 set(TEST_WIKI_CONFIG ${CMAKE_CURRENT_SOURCE_DIR}/node_modules/wikiparser-node/config/enwiki.json)
+set(TEST_ZH_WIKI_CONFIG ${CMAKE_CURRENT_SOURCE_DIR}/node_modules/wikiparser-node/config/zhwiki.json)
 
 function(configure_parser_test target)
     target_include_directories(${target} PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/include)
@@ -130,7 +131,8 @@ configure_parser_test_env(parser_list_c)
 add_executable(test_parser_converter tests/test_parser_converter.c)
 configure_parser_test(test_parser_converter)
 add_test(NAME parser_converter_c COMMAND test_parser_converter)
-configure_parser_test_env(parser_converter_c)
+set_tests_properties(parser_converter_c PROPERTIES
+    ENVIRONMENT "WIKI_CONFIG=${TEST_ZH_WIKI_CONFIG}")
 
 add_executable(test_pipeline tests/test_pipeline.c)
 configure_parser_test(test_pipeline)

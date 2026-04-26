@@ -223,11 +223,16 @@ static Token *make_ext_attr(const char *tag_name,
     if (!attr_key) { token_free(t); return NULL; }
     token_append_child(t, attr_key);
 
+    Token *attr_val = NULL;
     if (val) {
-        Token *attr_val = make_attr_value(val, val_len, accum);
-        if (!attr_val) { token_free(t); return NULL; }
-        token_append_child(t, attr_val);
+        attr_val = make_attr_value(val, val_len, accum);
+    } else {
+        /* JS parity: boolean attrs still have attr-value token, but with no text child. */
+        attr_val = token_new(TOKEN_ATTR_VALUE, "attr-value");
+        if (attr_val) accum_push(accum, attr_val);
     }
+    if (!attr_val) { token_free(t); return NULL; }
+    token_append_child(t, attr_val);
 
     accum_push(accum, t);
     return t;

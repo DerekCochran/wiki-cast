@@ -28,6 +28,8 @@ static const char *samples[] = {
     "A<ref>''x'' efficacy is > <sub>2</sub>; ''y'' is > <sub>2</sub>.</ref>B",
     "A<ref>alpha<!--c--></ref>B",
     "A<ref>{{Citation|access-date= 29 June 2011<!--Added by DASHBot-->}}</ref>B",
+    "{{T|v='''a\n''b'''}}",
+    "<score raw=1 sound=1>\\relative c'' { x }</score>",
     "<ref>a<!--c-->b ; -{zh-hans:简;zh-hant:繁;}-</ref>",
     "<ref>---- ; a<!--c-->b</ref>",
     "<ref>-{zh-hans:简;zh-hant:繁;}- ; a<!--c-->b</ref>",
