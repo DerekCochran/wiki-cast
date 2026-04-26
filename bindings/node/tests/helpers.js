@@ -6,21 +6,23 @@ const os = require('os');
 const { spawnSync } = require('child_process');
 const Module = require('module');
 
-// Resolve wikiparser-node from this package's node_modules so tests run
-// against the local `extern_tokenizer` copy of `wikiparser-node`.
-function resolveWikiNodeModulesDir() {
+// Resolve parser root from a local orig-js mirror first, then npm package.
+function resolveWikiRootDir() {
   const candidates = [
-    path.resolve(__dirname, '..', 'node_modules'),
-    path.resolve(__dirname, '..', '..', '..', 'node_modules'),
+    path.resolve(__dirname, '..', '..', '..', 'orig-js'),
+    path.resolve(__dirname, '..', 'orig-js'),
+    path.resolve(__dirname, '..', '..', '..', 'node_modules', 'wikiparser-node'),
+    path.resolve(__dirname, '..', 'node_modules', 'wikiparser-node'),
   ];
   for (const dir of candidates) {
-    const entry = path.join(dir, 'wikiparser-node', 'dist', 'src', 'index.js');
+    const entry = path.join(dir, 'dist', 'src', 'index.js');
     if (fs.existsSync(entry)) return dir;
   }
-  throw new Error('Unable to locate wikiparser-node in expected node_modules locations');
+  throw new Error('Unable to locate parser root in orig-js or node_modules/wikiparser-node');
 }
 
-const wikiNmDir = resolveWikiNodeModulesDir();
+const wikiRootDir = resolveWikiRootDir();
+const wikiNmDir = path.resolve(wikiRootDir, '..');
 const _origPaths = Module._nodeModulePaths;
 Module._nodeModulePaths = function(from) {
   return [wikiNmDir, ...(_origPaths.call(this, from) || [])];
@@ -30,9 +32,9 @@ Module._nodeModulePaths = function(from) {
 const patchPath = path.resolve(__dirname, 'native_token_patch.js');
 const patch = require(patchPath);
 
-const { Token } = require(path.join(wikiNmDir, 'wikiparser-node', 'dist', 'src', 'index.js'));
+const { Token } = require(path.join(wikiRootDir, 'dist', 'src', 'index.js'));
 const proto = Token.prototype;
-const Parser = require(path.join(wikiNmDir, 'wikiparser-node', 'dist', 'index.js'));
+const Parser = require(path.join(wikiRootDir, 'dist', 'index.js'));
 
 if (!proto || !proto.__orig_parse) {
   console.error('Original JS parse() not saved on prototype; aborting');
@@ -42,7 +44,7 @@ if (!proto || !proto.__orig_parse) {
 const MAX_STAGE = 11;
 const LAST_SAMPLE_PATH = '/tmp/wiki_latest_test_input.txt';
 const PERF_LOG_PATH = '/tmp/wikitext_perf.txt';
-const DEFAULT_WIKI_CONFIG = path.join(wikiNmDir, 'wikiparser-node', 'config', 'enwiki.json');
+const DEFAULT_WIKI_CONFIG = path.join(wikiRootDir, 'config', 'enwiki.json');
 
 if (!process.env.WIKI_CONFIG) {
   process.env.WIKI_CONFIG = DEFAULT_WIKI_CONFIG;

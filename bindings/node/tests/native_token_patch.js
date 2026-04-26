@@ -13,23 +13,31 @@
  */
 const path = require('path');
 const fs = require('fs');
-/* Prefer the repo-level `node_modules` directory (one level above `tests`).
- * This mirrors `helpers.js` which arranges module paths to include the
- * node_modules directory. */
-function resolveWikiNodeModulesDir() {
+/* Resolve the exact Token implementation to patch.
+ * Prefer the installed `wikiparser-node/dist/src/index.js` used by helpers.js
+ * so Parser.parse() and Token.prototype share the same module instance.
+ * Keep orig-js candidates as fallback for local scaffolding. */
+function resolveTokenModulePath() {
 	const candidates = [
-		path.resolve(__dirname, '..', 'node_modules'),
-		path.resolve(__dirname, '..', '..', '..', 'node_modules'),
+		path.resolve(__dirname, '..', '..', '..', 'orig-js', 'dist', 'src', 'index.js'),
+		path.resolve(__dirname, '..', 'orig-js', 'dist', 'src', 'index.js'),
+		path.resolve(__dirname, '..', '..', '..', 'orig-js', 'src', 'src', 'index.js'),
+		path.resolve(__dirname, '..', 'orig-js', 'src', 'src', 'index.js'),
+		path.resolve(__dirname, '..', 'node_modules', 'wikiparser-node', 'dist', 'src', 'index.js'),
+		path.resolve(__dirname, '..', '..', '..', 'node_modules', 'wikiparser-node', 'dist', 'src', 'index.js'),
+		path.resolve(__dirname, '..', '..', '..', 'orig-js', 'src', 'index.js'),
+		path.resolve(__dirname, '..', 'orig-js', 'src', 'index.js'),
 	];
-	for (const dir of candidates) {
-		const entry = path.join(dir, 'wikiparser-node', 'dist', 'src', 'index.js');
-		if (fs.existsSync(entry)) return dir;
+
+	for (const file of candidates) {
+		if (fs.existsSync(file)) return file;
 	}
-	throw new Error('Unable to locate wikiparser-node in expected node_modules locations');
+
+	throw new Error('Unable to locate Token module (expected wikiparser-node/dist/src/index.js or orig-js fallback)');
 }
 
-const wikiNmDir = resolveWikiNodeModulesDir();
-const { Token } = require(path.join(wikiNmDir, 'wikiparser-node', 'dist', 'src', 'index.js'));
+const tokenModulePath = resolveTokenModulePath();
+const { Token } = require(tokenModulePath);
 const proto = Token.prototype;
 
 // ── Save the original JS parse method ────────────────────────────────────────
