@@ -47,6 +47,8 @@ static const char *samples[] = {
     /* Image (legacy) syntax tests */
     "[[Image:Justus Sustermans - Portrait of Galileo Galilei (Uffizi).jpg|left|thumb|upright|[[Galileo Galilei]] is often referred to as the father of [[modern astronomy]]. Portrait by [[Justus Sustermans]].]]",
     "[[Image:JKepler.jpg|right|thumb|upright|[[Johannes Kepler]], one of the fathers of [[modern astronomy]]]]",
+    "[[Image:Foo.jpg|caption [[Link]] text]]",
+    "[[Image:Foo.jpg|upright|caption [[Link]] text]]",
 };
 
 int main(void)

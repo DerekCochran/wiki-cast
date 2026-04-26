@@ -144,6 +144,18 @@ static bool str_map_contains_key(const StrMap *m, const char *key)
     return false;
 }
 
+static bool ns_entry_exists_ci(const NsEntry *arr, size_t count,
+                               const char *name, int num)
+{
+    if (!arr || !name) return false;
+    for (size_t i = 0; i < count; i++) {
+        if (arr[i].num == num && arr[i].name && strcasecmp(arr[i].name, name) == 0) {
+            return true;
+        }
+    }
+    return false;
+}
+
 static void str_map_append_dup(StrMap *m, const char *key, const char *value)
 {
     if (!m || !key || !value) return;
@@ -210,6 +222,29 @@ static ParserConfig *config_from_cjson(const cJSON *root)
                 }
             }
             cfg->ns_count = (size_t)k;
+        }
+    }
+
+    /* nsid aliases: {"image": 6, "wp": 4, ...}
+     * Merge into namespace lookup table so normalizeTitle/title parsing
+     * recognizes aliases exactly like JS config.nsid. */
+    {
+        const cJSON *nsid = cJSON_GetObjectItemCaseSensitive(root, "nsid");
+        if (nsid && cJSON_IsObject(nsid)) {
+            const cJSON *item;
+            cJSON_ArrayForEach(item, nsid) {
+                if (!item->string || !cJSON_IsNumber(item)) continue;
+                int nsnum = (int)item->valuedouble;
+                if (ns_entry_exists_ci(cfg->namespaces, cfg->ns_count, item->string, nsnum)) {
+                    continue;
+                }
+                NsEntry *grown = realloc(cfg->namespaces, (cfg->ns_count + 1) * sizeof(NsEntry));
+                assert(grown);
+                cfg->namespaces = grown;
+                cfg->namespaces[cfg->ns_count].name = strdup(item->string);
+                cfg->namespaces[cfg->ns_count].num = nsnum;
+                cfg->ns_count++;
+            }
         }
     }
 
