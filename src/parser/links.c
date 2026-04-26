@@ -564,6 +564,24 @@ void parse_links(ThreadBuf *tb, const ParserConfig *cfg, Accum *accum,
         int ns = parsed->ns;
         bool interwiki = parsed->interwiki && parsed->interwiki[0] != '\0';
 
+        /* ---- Detect broken image/file text from main regex ----
+         * When main regex matches a File namespace link but the regex breaks the text
+         * (leaving unclosed brackets), apply image-collection logic to gather full text.
+         * This happens when text contains '[' but main regex stops early before ']'.
+         */
+        if (!mightBeImg && ns == 6 && !interwiki && text_ptr && text_len > 0 && !force) {
+            /* Check if text has unmatched opening bracket */
+            int bracket_depth = 0;
+            for (size_t ti = 0; ti < text_len; ti++) {
+                if (text_ptr[ti] == '[') bracket_depth++;
+                else if (text_ptr[ti] == ']') bracket_depth--;
+            }
+            /* If brackets are unmatched, apply image-collection logic */
+            if (bracket_depth > 0) {
+                mightBeImg = true; /* Temporarily treat as mightBeImg to apply collection logic */
+            }
+        }
+
         /* ---- mightBeImg: File namespace handling ----
          * JS: else if (mightBeImg) {
          *       if (ns !== 6 || interwiki) { s += "[[" + x; continue; }
@@ -587,13 +605,18 @@ void parse_links(ThreadBuf *tb, const ParserConfig *cfg, Accum *accum,
                 continue;
             }
 
-            size_t img_cap = (text_len ? text_len : 0) + 256;
+            size_t img_cap = (text_len ? text_len : 0) + (after_len ? after_len : 0) + 256;
             char  *img_buf = malloc(img_cap);
             assert(img_buf);
             size_t img_len = 0;
             if (text_ptr && text_len > 0) {
                 memcpy(img_buf, text_ptr, text_len);
                 img_len = text_len;
+            }
+            /* If text came from main regex with broken content, also include after */
+            if (after_ptr && after_len > 0) {
+                memcpy(img_buf + img_len, after_ptr, after_len);
+                img_len += after_len;
             }
 
 #define IMG_APPEND(p, n) do { \

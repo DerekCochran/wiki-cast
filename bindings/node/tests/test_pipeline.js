@@ -344,5 +344,10 @@ runTests([
   "{|\n| {{T|x=y}} ; RFC 2119\n|}",
   "{|\n| {{T|x=y}} ; __NOTOC__\n|}",
   "{|\n| {{T|x=y}} ; -{zh-hans:简;zh-hant:繁;}-\n|}",
+
+  // Image: namespace (alias for File:) with nested link in caption
+  '[[Image:Foo.jpg|caption [[Link]] text]]',
+  '[[Image:Foo.jpg|upright|caption [[Link]] text]]',
+
   // END: auto-generated post-processing parity failures
 ], { name: 'pipeline' });

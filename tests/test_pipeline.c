@@ -47,6 +47,9 @@ static const char *samples[] = {
     "(${{formatnum:{{Inflation|US|800|1861|r=-2}}}} in current dollars)",
     "<imagemap>\nFile:Emancipation proclamation.jpg|thumb|upright=1.25|''[[First Reading of the Emancipation Proclamation of President Lincoln]]''|alt=A dark-haired, bearded, middle-aged man holding documents is seated among seven other men.\npoly 269 892 254 775 193 738 [[Edwin M. Stanton|Edwin Stanton]]\n</imagemap>",
     "{{blockquote|<ref name=\"vra\">x [http://www.protectcivilrights.org/pdf/voting/AlabamaVRA.pdf ''Voting Rights in Alabama (1982–2006)''] {{Webarchive|url=x|date=y}} z</ref>}}",
+    // Image: namespace (alias for File:) with nested link in caption
+    "[[Image:Foo.jpg|caption [[Link]] text]]",
+    "[[Image:Foo.jpg|upright|caption [[Link]] text]]",
 };
 
 int main(void)
