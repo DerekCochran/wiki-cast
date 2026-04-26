@@ -55,11 +55,16 @@ static Token *make_table_attr(const char *key, size_t key_len,
     if (!attr_key) { token_free(t); return NULL; }
     token_append_child(t, attr_key);
 
+    Token *attr_val = NULL;
     if (val) {
-        Token *attr_val = make_attr_value(val, val_len, accum);
-        if (!attr_val) { token_free(t); return NULL; }
-        token_append_child(t, attr_val);
+        attr_val = make_attr_value(val, val_len, accum);
+    } else {
+        /* JS parity: boolean table attrs still include empty attr-value child. */
+        attr_val = token_new(TOKEN_ATTR_VALUE, "attr-value");
+        if (attr_val) accum_push(accum, attr_val);
     }
+    if (!attr_val) { token_free(t); return NULL; }
+    token_append_child(t, attr_val);
 
     accum_push(accum, t);
     return t;
@@ -68,6 +73,40 @@ static Token *make_table_attr(const char *key, size_t key_len,
 static void parse_table_attrs(Token *attrs_tok, const char *attr_str, size_t attr_len, Accum *accum)
 {
     if (!attr_str || attr_len == 0) return;
+
+    /* JS parity: dynamic boolean attrs (e.g. " {{green}} ") should become
+     * dirty-prefix + table-attr + dirty-suffix, not a single dirty token. */
+    if (memchr(attr_str, '=', attr_len) == NULL) {
+        size_t first = 0;
+        while (first < attr_len && (attr_str[first] == ' ' || attr_str[first] == '\t'
+               || attr_str[first] == '\n' || attr_str[first] == '\r'
+               || attr_str[first] == '\f' || attr_str[first] == '\v')) first++;
+        size_t last = attr_len;
+        while (last > first && (attr_str[last - 1] == ' ' || attr_str[last - 1] == '\t'
+               || attr_str[last - 1] == '\n' || attr_str[last - 1] == '\r'
+               || attr_str[last - 1] == '\f' || attr_str[last - 1] == '\v')) last--;
+
+        if (last > first) {
+            const char *k = attr_str + first;
+            size_t klen = last - first;
+            bool dynamic_key = memchr(k, '\0', klen) != NULL
+                || (klen >= 2 && k[0] == '{' && k[1] == '{')
+                || (klen >= 2 && k[0] == '-' && k[1] == '{');
+            if (dynamic_key) {
+                if (first > 0) {
+                    Token *d0 = make_table_attr_dirty(attr_str, first, accum);
+                    if (d0) token_append_child(attrs_tok, d0);
+                }
+                Token *at = make_table_attr(k, klen, NULL, 0, NULL, 0, '\0', '\0', accum);
+                if (at) token_append_child(attrs_tok, at);
+                if (last < attr_len) {
+                    Token *d1 = make_table_attr_dirty(attr_str + last, attr_len - last, accum);
+                    if (d1) token_append_child(attrs_tok, d1);
+                }
+                return;
+            }
+        }
+    }
 
     size_t i = 0;
     char dirty_buf[4096];
@@ -107,8 +146,13 @@ static void parse_table_attrs(Token *attrs_tok, const char *attr_str, size_t att
             valid_key = ((kc >= 'A' && kc <= 'Z') || (kc >= 'a' && kc <= 'z') || (kc >= '0' && kc <= '9') || kc == ':' || kc == '.' || kc == '_' || kc == '-');
         }
         if (!valid_key) {
-            for (size_t k = 0; k < key_len; k++) dirty_buf[dirty_len++] = key[k];
-            continue;
+            bool dynamic_key = memchr(key, '\0', key_len) != NULL
+                || (key_len >= 2 && key[0] == '{' && key[1] == '{')
+                || (key_len >= 2 && key[0] == '-' && key[1] == '{');
+            if (!dynamic_key) {
+                for (size_t k = 0; k < key_len; k++) dirty_buf[dirty_len++] = key[k];
+                continue;
+            }
         }
 
         size_t ws_start = i;
@@ -195,7 +239,43 @@ Token *create_td_token(const char *syntax,
     Token *attrs = token_new(TOKEN_ATTRIBUTES, "table-attrs");
     if (!attrs) return td;
     attrs->name = strdup(cell_attr_name(syntax, syntax_len));
-    parse_table_attrs(attrs, attr, attr_len, accum);
+
+    bool handled_dynamic_boolean_attr = false;
+    if (attr && attr_len > 0 && memchr(attr, '=', attr_len) == NULL) {
+        size_t first = 0;
+        while (first < attr_len && (attr[first] == ' ' || attr[first] == '\t'
+               || attr[first] == '\n' || attr[first] == '\r'
+               || attr[first] == '\f' || attr[first] == '\v')) first++;
+        size_t last = attr_len;
+        while (last > first && (attr[last - 1] == ' ' || attr[last - 1] == '\t'
+               || attr[last - 1] == '\n' || attr[last - 1] == '\r'
+               || attr[last - 1] == '\f' || attr[last - 1] == '\v')) last--;
+
+        if (last > first) {
+            const char *k = attr + first;
+            size_t klen = last - first;
+            bool dynamic_key = memchr(k, '\0', klen) != NULL
+                || (klen >= 2 && k[0] == '{' && k[1] == '{')
+                || (klen >= 2 && k[0] == '-' && k[1] == '{');
+            if (dynamic_key) {
+                if (first > 0) {
+                    Token *d0 = make_table_attr_dirty(attr, first, accum);
+                    if (d0) token_append_child(attrs, d0);
+                }
+                Token *at = make_table_attr(k, klen, NULL, 0, NULL, 0, '\0', '\0', accum);
+                if (at) token_append_child(attrs, at);
+                if (last < attr_len) {
+                    Token *d1 = make_table_attr_dirty(attr + last, attr_len - last, accum);
+                    if (d1) token_append_child(attrs, d1);
+                }
+                handled_dynamic_boolean_attr = true;
+            }
+        }
+    }
+
+    if (!handled_dynamic_boolean_attr) {
+        parse_table_attrs(attrs, attr, attr_len, accum);
+    }
     accum_push(accum, attrs);
     token_append_child(td, attrs);
 

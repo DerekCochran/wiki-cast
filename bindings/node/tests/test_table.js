@@ -20,6 +20,8 @@ runTests([
   'prefix\n{|\n| cell\n|}\nsuffix',
   // Cell with attributes
   '{|\n| style="color:red" | red text\n|}',
+  // Template-like boolean table attribute in a cell
+  '{|\n| {{green}} | x\n|}',
   // Empty table
   '{|\n|}',
   // Table with indented start (dd prefix)

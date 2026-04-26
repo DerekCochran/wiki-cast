@@ -31,6 +31,103 @@
 #include <assert.h>
 #include <stdio.h>
 
+static void sb_reserve(char **buf, size_t *cap, size_t need)
+{
+    while (*cap < need) {
+        *cap *= 2;
+        *buf = realloc(*buf, *cap);
+        assert(*buf);
+    }
+}
+
+static void sb_append(char **buf, size_t *len, size_t *cap, const char *s, size_t n)
+{
+    sb_reserve(buf, cap, *len + n + 1);
+    memcpy(*buf + *len, s, n);
+    *len += n;
+    (*buf)[*len] = '\0';
+}
+
+static void append_key_token_repr(const Token *t, char **buf, size_t *len, size_t *cap)
+{
+    if (!t) return;
+
+    if (t->type == TOKEN_TRANSCLUDE) {
+        sb_append(buf, len, cap, "{{", 2);
+        bool is_magic_word = (t->type_name && strcmp(t->type_name, "magic-word") == 0);
+        for (size_t i = 0; i < t->child_count; i++) {
+            if (i > 0) {
+                if (is_magic_word && i == 1) sb_append(buf, len, cap, ":", 1);
+                else sb_append(buf, len, cap, "|", 1);
+            }
+            const Child *c = &t->children[i];
+            if (c->is_text) {
+                sb_append(buf, len, cap, c->text, c->text_len);
+            } else {
+                append_key_token_repr(c->token, buf, len, cap);
+            }
+        }
+        sb_append(buf, len, cap, "}}", 2);
+        return;
+    }
+
+    if (t->type == TOKEN_PARAMETER && t->child_count >= 2) {
+        const Child *k = &t->children[0];
+        const Child *v = &t->children[1];
+        bool anon = false;
+        if (k->is_text) {
+            anon = k->text_len == 0;
+        } else if (k->token) {
+            anon = k->token->child_count == 0;
+        }
+        if (!anon) {
+            if (k->is_text) sb_append(buf, len, cap, k->text, k->text_len);
+            else append_key_token_repr(k->token, buf, len, cap);
+            sb_append(buf, len, cap, "=", 1);
+        }
+        if (v->is_text) sb_append(buf, len, cap, v->text, v->text_len);
+        else append_key_token_repr(v->token, buf, len, cap);
+        return;
+    }
+
+    for (size_t i = 0; i < t->child_count; i++) {
+        if (i > 0 && t->sep != '\0') {
+            sb_append(buf, len, cap, &t->sep, 1);
+        }
+        const Child *c = &t->children[i];
+        if (c->is_text) {
+            sb_append(buf, len, cap, c->text, c->text_len);
+        } else {
+            append_key_token_repr(c->token, buf, len, cap);
+        }
+    }
+}
+
+static void refresh_attribute_name(Token *t)
+{
+    if (!t || t->type != TOKEN_EXT_ATTR || t->child_count == 0) return;
+
+    Child *key = &t->children[0];
+    char *new_name = NULL;
+
+    if (key->is_text) {
+        new_name = str_trim_lc(key->text, key->text_len);
+    } else if (key->token) {
+        size_t cap = 64, len = 0;
+        char *tmp = malloc(cap);
+        assert(tmp);
+        tmp[0] = '\0';
+        append_key_token_repr(key->token, &tmp, &len, &cap);
+        new_name = str_trim_lc(tmp, len);
+        free(tmp);
+    }
+
+    if (new_name) {
+        free(t->name);
+        t->name = new_name;
+    }
+}
+
 void build_from_str(Token *parent, const char *str, size_t str_len,
                     Accum *accum)
 {
@@ -186,6 +283,11 @@ void build_token_recursive(Token *t, Accum *accum)
             build_token_recursive(c->token, accum);
         }
     }
+
+    /* JS AttributeToken.afterBuild parity: recompute name from attr-key text,
+     * so keys that were sentinel-expanded (for example {{green}}) get the
+     * correct final attribute name. */
+    refresh_attribute_name(t);
 }
 
 void build(Token *root, const ThreadBuf *tb, Accum *accum)

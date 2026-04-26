@@ -71,6 +71,13 @@ runTests([
   // Wikitext repro (An American in Paris): apostrophes inside <score> must stay raw text
   '<score raw=1 sound=1>\\relative c\'\' { x }</score>',
 
+  // List syntax inside ref ext-inner should be parsed through stage 9
+  '<ref>\n* a\n* b\n</ref>',
+
+  // ref nested in poem inside template parameter-value: italics inside ref
+  // ext-inner must still be tokenized as quote tokens
+  "{{Blockquote|<poem><ref>x ''L'Etoile'' (as in ''H'')</ref></poem>}}",
+
   // HTML tags inside template parameter-value should be tokenized inline
   '{{Citation|title=Effect of land albedo, CO<sub>2</sub>, orography}}',
 

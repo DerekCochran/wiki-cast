@@ -16,6 +16,7 @@ static const char *samples[] = {
     "{|\n| outer || {|\n| inner\n|}\n|}",
     "prefix\n{|\n| cell\n|}\nsuffix",
     "{|\n| style=\"color:red\" | red text\n|}",
+    "{|\n| {{green}} | x\n|}",
     "{|\n|}",
     ":{|\n| cell\n|}",
     "{|\n| cell\n|} trailing text",

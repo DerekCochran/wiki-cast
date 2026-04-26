@@ -640,6 +640,8 @@ static void run_nested_plain_pipeline(ThreadBuf *scratch,
             parse_magic_links(scratch, cfg, accum);
             if (is_td_inner) {
                 parse_list(scratch, cfg, accum);
+            } else if (is_ext_inner) {
+                parse_list_skip_first_line(scratch, cfg, accum);
             }
             parse_converter(scratch, cfg, accum);
         } else {
@@ -1052,6 +1054,16 @@ static void postprocess_parameter_value_inline(Token *t, const ParserConfig *cfg
     t->child_count = new_count;
     t->child_cap = new_cap;
     wiki_thread_buf_release_scratch(scratch);
+
+    /* JS parity: any sub-token (e.g. ExtToken with ext-inner) that was
+     * built from this parameter-value text must run the nested-plain pass
+     * so its ext-inner content goes through stages 5..10 just like JS
+     * Token.parseOnce would do for tokens added to the accum. */
+    for (size_t i = 0; i < t->child_count; i++) {
+        if (!t->children[i].is_text && t->children[i].token) {
+            postprocess_nested_plain(t->children[i].token, cfg, accum);
+        }
+    }
 }
 
 static void parse_quotes_stage6_per_line(ThreadBuf *ws, const ParserConfig *cfg, Accum *accum)

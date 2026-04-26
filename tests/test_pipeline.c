@@ -30,6 +30,8 @@ static const char *samples[] = {
     "A<ref>{{Citation|access-date= 29 June 2011<!--Added by DASHBot-->}}</ref>B",
     "{{T|v='''a\n''b'''}}",
     "<score raw=1 sound=1>\\relative c'' { x }</score>",
+    "<ref>\n* a\n* b\n</ref>",
+    "{{Blockquote|<poem><ref>x ''L'Etoile'' (as in ''H'')</ref></poem>}}",
     "<ref>a<!--c-->b ; -{zh-hans:简;zh-hant:繁;}-</ref>",
     "<ref>---- ; a<!--c-->b</ref>",
     "<ref>-{zh-hans:简;zh-hant:繁;}- ; a<!--c-->b</ref>",
