@@ -266,399 +266,415 @@ static void parse_table_attrs(Token *attrs_tok, const char *attr_str, size_t att
 #undef FLUSH_DIRTY
 }
 
-/*
- * Simplified parseTable implementation.
- *
- * This conservative implementation finds top-level table blocks starting
- * with "{|" and ending with the matching "|}" (supports nesting). For
- * each matched block it creates a TOKEN_TABLE token containing the raw
- * table substring as a single text child, pushes it into the accumulator
- * and replaces the matched substring in the working string with a
- * sentinel marker. The approach avoids allocating extra substrings where
- * possible and operates on ThreadBuf buffers directly.
- */
+typedef struct {
+    Token **items;
+    size_t count;
+    size_t cap;
+} TokStack;
+
+static void stack_init(TokStack *st)
+{
+    st->items = NULL;
+    st->count = 0;
+    st->cap = 0;
+}
+
+static void stack_push(TokStack *st, Token *t)
+{
+    if (st->count >= st->cap) {
+        size_t nc = st->cap ? st->cap * 2 : 16;
+        st->items = realloc(st->items, nc * sizeof(Token *));
+        assert(st->items);
+        st->cap = nc;
+    }
+    st->items[st->count++] = t;
+}
+
+static Token *stack_pop(TokStack *st)
+{
+    if (!st || st->count == 0) return NULL;
+    return st->items[--st->count];
+}
+
+static Token *stack_peek(const TokStack *st)
+{
+    if (!st || st->count == 0) return NULL;
+    return st->items[st->count - 1];
+}
+
+static void stack_free(TokStack *st)
+{
+    free(st->items);
+    st->items = NULL;
+    st->count = 0;
+    st->cap = 0;
+}
+
+static int token_is_tr_like(const Token *tok)
+{
+    if (!tok || tok->child_count == 0) return 0;
+    const Child *last = &tok->children[tok->child_count - 1];
+    if (last->is_text || !last->token) return 0;
+    return last->token->type != TOKEN_PLAIN;
+}
+
+static Token *js_pop(Token *top, TokStack *st)
+{
+    if (top && top->type == TOKEN_TD) return stack_pop(st);
+    return top;
+}
+
+static void out_append(char **out_buf, size_t *out_len, size_t *out_cap,
+                       const char *s, size_t n)
+{
+    if (n == 0) return;
+    while (*out_len + n + 1 >= *out_cap) {
+        *out_cap *= 2;
+        *out_buf = realloc(*out_buf, *out_cap);
+        assert(*out_buf);
+    }
+    memcpy(*out_buf + *out_len, s, n);
+    *out_len += n;
+}
+
+static void push_text_like_js(char **out_buf, size_t *out_len, size_t *out_cap,
+                              const char *s, size_t n,
+                              Token *top, const ParserConfig *cfg, Accum *accum)
+{
+    (void)cfg;
+    if (n == 0) return;
+    if (!top) {
+        out_append(out_buf, out_len, out_cap, s, n);
+        return;
+    }
+
+    if (token_is_tr_like(top)) {
+        Token *inter = token_new(TOKEN_PLAIN, "table-inter");
+        if (!inter) return;
+        inter->stage = 3;
+        token_append_text_n(inter, s, n);
+        accum_push(accum, inter);
+        token_append_child(top, inter);
+        return;
+    }
+
+    if (top->child_count > 0) {
+        Child *last = &top->children[top->child_count - 1];
+        if (!last->is_text && last->token) {
+            token_append_text_n(last->token, s, n);
+            return;
+        }
+    }
+
+    token_append_text_n(top, s, n);
+}
+
+static Token *create_table_token(const char *syntax, size_t syntax_len,
+                                 const char *attr, size_t attr_len,
+                                 Accum *accum)
+{
+    Token *table = token_new(TOKEN_TABLE, "table");
+    if (!table) return NULL;
+    accum_push(accum, table);
+
+    Token *syn = token_new(TOKEN_SYNTAX, "table-syntax");
+    if (syn) {
+        token_append_text_n(syn, syntax, syntax_len);
+        accum_push(accum, syn);
+        token_append_child(table, syn);
+    }
+
+    Token *attrs = token_new(TOKEN_ATTRIBUTES, "table-attrs");
+    if (attrs) {
+        attrs->name = strdup("table");
+        parse_table_attrs(attrs, attr, attr_len, accum);
+        accum_push(accum, attrs);
+        token_append_child(table, attrs);
+    }
+
+    return table;
+}
 
 void parse_table(ThreadBuf *tb, const ParserConfig *cfg, Accum *accum)
 {
+    (void)cfg;
     if (!tb || !tb->buf) return;
     ensure_table_regexes();
 
-    size_t out_cap = tb->len * 2 + 64;
+    size_t line_count = 1;
+    for (size_t i = 0; i < tb->len; i++) if (tb->buf[i] == '\n') line_count++;
+
+    const char **lines_ptr = malloc(line_count * sizeof(char *));
+    size_t *lines_len = malloc(line_count * sizeof(size_t));
+    assert(lines_ptr && lines_len);
+
+    size_t li = 0;
+    size_t start = 0;
+    for (size_t i = 0; i <= tb->len; i++) {
+        if (i == tb->len || tb->buf[i] == '\n') {
+            lines_ptr[li] = tb->buf + start;
+            lines_len[li] = i - start;
+            li++;
+            start = i + 1;
+        }
+    }
+    line_count = li;
+
+    size_t out_cap = tb->len * 2 + 128;
     char *out_buf = malloc(out_cap);
     assert(out_buf);
     size_t out_len = 0;
 
-    size_t i = 0;
+    TokStack st;
+    stack_init(&st);
 
-    #define ENSURE_CAP(need) do { \
-        while (out_len + (need) >= out_cap) { out_cap *= 2; out_buf = realloc(out_buf, out_cap); assert(out_buf); } \
-    } while(0)
+    for (size_t i = 0; i < line_count; i++) {
+        const char *out_line = lines_ptr[i];
+        size_t out_line_len = lines_len[i];
+        Token *top = stack_pop(&st);
 
-    while (i < tb->len) {
-        /* Find next opening sequence "{|" (byte-wise, safe with NUL bytes present). */
-        size_t p = SIZE_MAX;
-        for (size_t k = i; k + 1 < tb->len; k++) {
-            if (tb->buf[k] == '{' && tb->buf[k+1] == '|') { p = k; break; }
+        pcre2_match_data *lead_md = NULL;
+        size_t spaces_len = 0;
+        int lead_rc = match_regex(s_re_table_lead, out_line, out_line_len, 0, &lead_md);
+        if (lead_rc > 0) {
+            PCRE2_SIZE *ov = pcre2_get_ovector_pointer(lead_md);
+            spaces_len = ov[1];
         }
+        if (lead_md) pcre2_match_data_free(lead_md);
 
-        if (p == SIZE_MAX) {
-            /* No more tables — copy rest */
-            size_t rest = tb->len - i;
-            ENSURE_CAP(rest + 1);
-            memcpy(out_buf + out_len, tb->buf + i, rest);
-            out_len += rest;
-            break;
-        }
+        const char *line = out_line + spaces_len;
+        size_t line_len = out_line_len - spaces_len;
 
-        /* JS parity: an indented table start creates a dd token before the table. */
-        size_t line_start = p;
-        while (line_start > i && tb->buf[line_start - 1] != '\n') line_start--;
-        size_t dd_len = p - line_start;
-        int only_colons = dd_len > 0;
-        for (size_t d = line_start; only_colons && d < p; d++) {
-            if (tb->buf[d] != ':') only_colons = 0;
-        }
+        pcre2_match_data *start_md = NULL;
+        int start_rc = match_regex(s_re_table_start, line, line_len, 0, &start_md);
+        if (start_rc > 0) {
+            while (top && top->type != TOKEN_TD) top = stack_pop(&st);
 
-        size_t before = only_colons ? (line_start - i) : (p - i);
-        ENSURE_CAP(before + 1);
-        memcpy(out_buf + out_len, tb->buf + i, before);
-        out_len += before;
+            PCRE2_SIZE *ov = pcre2_get_ovector_pointer(start_md);
+            size_t indent_s = (start_rc > 1 && ov[2] != PCRE2_UNSET) ? ov[2] : 0;
+            size_t indent_e = (start_rc > 1 && ov[3] != PCRE2_UNSET) ? ov[3] : 0;
+            size_t more_s = (start_rc > 2 && ov[4] != PCRE2_UNSET) ? ov[4] : 0;
+            size_t more_e = (start_rc > 2 && ov[5] != PCRE2_UNSET) ? ov[5] : 0;
+            size_t syn_s = (start_rc > 3 && ov[6] != PCRE2_UNSET) ? ov[6] : 0;
+            size_t syn_e = (start_rc > 3 && ov[7] != PCRE2_UNSET) ? ov[7] : 0;
+            size_t attr_s = (start_rc > 4 && ov[8] != PCRE2_UNSET) ? ov[8] : 0;
+            size_t attr_e = (start_rc > 4 && ov[9] != PCRE2_UNSET) ? ov[9] : 0;
 
-        if (only_colons) {
-            Token *dd = token_new(TOKEN_DD, "dd");
-            if (dd) {
-                token_append_text_n(dd, tb->buf + line_start, dd_len);
-                accum_push(accum, dd);
-                char dd_marker[64];
-                size_t dd_mlen = 0;
-                work_str_sentinel(accum->count - 1, 'd', dd_marker, &dd_mlen);
-                ENSURE_CAP(dd_mlen + 1);
-                memcpy(out_buf + out_len, dd_marker, dd_mlen);
-                out_len += dd_mlen;
-            } else {
-                ENSURE_CAP(dd_len + 1);
-                memcpy(out_buf + out_len, tb->buf + line_start, dd_len);
-                out_len += dd_len;
+            const char *indent = line + indent_s;
+            size_t indent_len = indent_e - indent_s;
+            const char *more = line + more_s;
+            size_t more_len = more_e - more_s;
+            const char *syn = line + syn_s;
+            size_t syn_len = syn_e - syn_s;
+            const char *attr = (attr_e > attr_s) ? (line + attr_s) : "";
+            size_t attr_len = (attr_e > attr_s) ? (attr_e - attr_s) : 0;
+
+            size_t dd_idx = 0;
+            int has_dd = 0;
+            if (indent_len > 0) {
+                Token *dd = token_new(TOKEN_DD, "dd");
+                if (dd) {
+                    token_append_text_n(dd, indent, indent_len);
+                    accum_push(accum, dd);
+                    dd_idx = accum->count - 1;
+                    has_dd = 1;
+                }
             }
-        }
 
-        /* Find matching closing "|}" with nesting support */
-        size_t depth = 1;
-        size_t j = p + 2;
-        while (j + 1 < tb->len) {
-            if (tb->buf[j] == '{' && tb->buf[j+1] == '|' && (j == p || tb->buf[j - 1] == '\n')) {
-                depth++;
-                j += 2;
-                continue;
+            size_t table_idx = accum->count;
+            Token *table = create_table_token(syn, syn_len, attr, attr_len, accum);
+
+            size_t pre_cap = 4 + spaces_len + more_len + 64 + 64;
+            char *pre = malloc(pre_cap);
+            assert(pre);
+            size_t plen = 0;
+            pre[plen++] = '\n';
+            if (spaces_len > 0) { memcpy(pre + plen, out_line, spaces_len); plen += spaces_len; }
+            if (has_dd) {
+                char m[64]; size_t ml = 0;
+                work_str_sentinel(dd_idx, 'd', m, &ml);
+                memcpy(pre + plen, m, ml); plen += ml;
             }
-            if (tb->buf[j] == '|' && tb->buf[j+1] == '}') { depth--; j += 2; if (depth == 0) break; continue; }
-            j++;
-        }
+            if (more_len > 0) { memcpy(pre + plen, more, more_len); plen += more_len; }
+            if (table) {
+                char m[64]; size_t ml = 0;
+                work_str_sentinel(table_idx, 'b', m, &ml);
+                memcpy(pre + plen, m, ml); plen += ml;
+            }
 
-        if (j + 1 >= tb->len && depth != 0) {
-            /* No closing found — treat the remainder as plain text */
-            size_t rest = tb->len - p;
-            ENSURE_CAP(rest + 1);
-            memcpy(out_buf + out_len, tb->buf + p, rest);
-            out_len += rest;
-            break;
-        }
+            push_text_like_js(&out_buf, &out_len, &out_cap, pre, plen, top, cfg, accum);
+            free(pre);
 
-        /* j points just past the closing pair; substring is [p, j) */
-        size_t tlen = j - p;
-        char *tbl = malloc(tlen + 1);
-        assert(tbl);
-        memcpy(tbl, tb->buf + p, tlen);
-        tbl[tlen] = '\0';
-
-        /* Build a Table token and its child tokens (syntax + attrs + rows/cells).
-         * We push the table token first (JS accumulator ordering), then create
-         * the syntax and attributes tokens and any row/cell tokens that appear
-         * inside the table. */
-        size_t tok_idx = accum->count;
-
-        Token *table = token_new(TOKEN_TABLE, "table");
-        if (!table) {
-            ENSURE_CAP(tlen + 1);
-            memcpy(out_buf + out_len, tb->buf + p, tlen);
-            out_len += tlen;
-            free(tbl);
-            i = p + tlen;
+            if (top) stack_push(&st, top);
+            if (table) stack_push(&st, table);
+            pcre2_match_data_free(start_md);
             continue;
         }
-        accum_push(accum, table);
+        if (start_md) pcre2_match_data_free(start_md);
 
-        /* Extract syntax and attrs from opening line */
-        size_t first_nl = 0;
-        while (first_nl < tlen && tbl[first_nl] != '\n') first_nl++;
-        const char *syntax_ptr = tbl;
-        size_t syntax_len = (tlen >= 2 && tbl[0] == '{' && tbl[1] == '|') ? 2 : 1;
-        const char *attr_ptr = NULL;
-        size_t attr_len = 0;
-        if (first_nl > 0) {
-            pcre2_match_data *md = NULL;
-            int rc = match_regex(s_re_table_start, tbl, first_nl, 0, &md);
-            if (rc > 0) {
-                PCRE2_SIZE *ov = pcre2_get_ovector_pointer(md);
-                if (rc > 3 && ov[6] != PCRE2_UNSET) {
-                    syntax_ptr = tbl + ov[6];
-                    syntax_len = ov[7] - ov[6];
-                }
-                if (rc > 4 && ov[8] != PCRE2_UNSET) {
-                    attr_ptr = tbl + ov[8];
-                    attr_len = ov[9] - ov[8];
-                }
-                pcre2_match_data_free(md);
-            } else {
-                attr_ptr = (first_nl > 2) ? tbl + 2 : NULL;
-                attr_len = (first_nl > 2) ? (first_nl - 2) : 0;
-            }
+        if (!top) {
+            out_append(&out_buf, &out_len, &out_cap, "\n", 1);
+            out_append(&out_buf, &out_len, &out_cap, out_line, out_line_len);
+            continue;
         }
 
-        Token *syn = token_new(TOKEN_SYNTAX, "table-syntax");
-        if (syn) { token_append_text_n(syn, syntax_ptr, syntax_len); accum_push(accum, syn); token_append_child(table, syn); }
-        Token *attrs = token_new(TOKEN_ATTRIBUTES, "table-attrs");
-        if (attrs) {
-            attrs->name = strdup("table");
-            parse_table_attrs(attrs, attr_ptr, attr_len, accum);
-            accum_push(accum, attrs);
-            token_append_child(table, attrs);
+        pcre2_match_data *line_md = NULL;
+        int line_rc = match_regex(s_re_table_line, line, line_len, 0, &line_md);
+        if (line_rc <= 0) {
+            size_t n = out_line_len + 1;
+            char *tmp = malloc(n);
+            tmp[0] = '\n';
+            memcpy(tmp + 1, out_line, out_line_len);
+            push_text_like_js(&out_buf, &out_len, &out_cap, tmp, n, top, cfg, accum);
+            free(tmp);
+            stack_push(&st, top);
+            if (line_md) pcre2_match_data_free(line_md);
+            continue;
         }
 
-        /* Parse the inner lines into rows/cells */
-        size_t inner_start = (first_nl < tlen) ? first_nl + 1 : first_nl;
-        size_t pos = inner_start;
+        PCRE2_SIZE *ov = pcre2_get_ovector_pointer(line_md);
+        size_t closing_s = (line_rc > 1 && ov[2] != PCRE2_UNSET) ? ov[2] : 0;
+        size_t closing_e = (line_rc > 1 && ov[3] != PCRE2_UNSET) ? ov[3] : 0;
+        size_t row_s = (line_rc > 2 && ov[4] != PCRE2_UNSET) ? ov[4] : 0;
+        size_t row_e = (line_rc > 2 && ov[5] != PCRE2_UNSET) ? ov[5] : 0;
+        size_t cell_s = (line_rc > 3 && ov[6] != PCRE2_UNSET) ? ov[6] : 0;
+        size_t cell_e = (line_rc > 3 && ov[7] != PCRE2_UNSET) ? ov[7] : 0;
+        size_t attr_s = (line_rc > 4 && ov[8] != PCRE2_UNSET) ? ov[8] : 0;
+        size_t attr_e = (line_rc > 4 && ov[9] != PCRE2_UNSET) ? ov[9] : 0;
 
-        Token *current_tr = NULL;
-        Token *current_td = NULL;
+        const char *attr = (attr_e > attr_s) ? (line + attr_s) : "";
+        size_t attr_len = (attr_e > attr_s) ? (attr_e - attr_s) : 0;
 
-        while (pos < tlen) {
-            /* find end of line */
-            size_t next_nl = pos;
-            while (next_nl < tlen && tbl[next_nl] != '\n') next_nl++;
-            size_t line_len = next_nl - pos;
-            const char *line = tbl + pos;
-            size_t si = 0;
-            pcre2_match_data *lead_md = NULL;
-            int lead_rc = match_regex(s_re_table_lead, line, line_len, 0, &lead_md);
-            if (lead_rc > 0) {
-                PCRE2_SIZE *ov = pcre2_get_ovector_pointer(lead_md);
-                si = ov[1];
-            }
-            if (lead_md) pcre2_match_data_free(lead_md);
+        if (closing_e > closing_s) {
+            while (top && top->type != TOKEN_TABLE) top = stack_pop(&st);
+            if (top) {
+                size_t clos_len = closing_e - closing_s;
+                size_t syn_len = 1 + spaces_len + clos_len;
+                char *syn = malloc(syn_len);
+                syn[0] = '\n';
+                if (spaces_len > 0) memcpy(syn + 1, out_line, spaces_len);
+                memcpy(syn + 1 + spaces_len, line + closing_s, clos_len);
 
-            const char *body = line + si;
-            size_t body_len = line_len - si;
-
-            if (body_len == 0) {
-                /* empty line inside table — append as plain text to current tr or table */
-                if (current_tr) {
-                    token_append_text_n(current_tr, "\n", 1);
+                Token *clos = token_new(TOKEN_SYNTAX, "table-syntax");
+                if (clos) {
+                    token_append_text_n(clos, syn, syn_len);
+                    accum_push(accum, clos);
+                    token_append_child(top, clos);
                 }
-            } else {
-                pcre2_match_data *line_md = NULL;
-                int line_rc = match_regex(s_re_table_line, body, body_len, 0, &line_md);
-                if (line_rc > 0) {
-                    PCRE2_SIZE *ov = pcre2_get_ovector_pointer(line_md);
-                    size_t closing_s = (line_rc > 1 && ov[2] != PCRE2_UNSET) ? ov[2] : 0;
-                    size_t closing_e = (line_rc > 1 && ov[3] != PCRE2_UNSET) ? ov[3] : 0;
-                    size_t row_s = (line_rc > 2 && ov[4] != PCRE2_UNSET) ? ov[4] : 0;
-                    size_t row_e = (line_rc > 2 && ov[5] != PCRE2_UNSET) ? ov[5] : 0;
-                    size_t cell_s = (line_rc > 3 && ov[6] != PCRE2_UNSET) ? ov[6] : 0;
-                    size_t cell_e = (line_rc > 3 && ov[7] != PCRE2_UNSET) ? ov[7] : 0;
-                    size_t attr_s = (line_rc > 4 && ov[8] != PCRE2_UNSET) ? ov[8] : 0;
-                    size_t attr_e = (line_rc > 4 && ov[9] != PCRE2_UNSET) ? ov[9] : 0;
+                free(syn);
+            }
+            push_text_like_js(&out_buf, &out_len, &out_cap, attr, attr_len, stack_peek(&st), cfg, accum);
+        } else if (row_e > row_s) {
+            top = js_pop(top, &st);
+            if (top && top->type == TOKEN_TR) top = stack_pop(&st);
 
-                    if (closing_e > closing_s) {
-                        /* closing |} syntax */
-                current_td = NULL;
-                        size_t clos_len = closing_e - closing_s;
-                        char *clos = malloc(si + 1 + clos_len);
-                        assert(clos);
-                        clos[0] = '\n';
-                        if (si > 0) memcpy(clos + 1, line, si);
-                        memcpy(clos + 1 + si, body + closing_s, clos_len);
-                        Token *clos_tok = token_new(TOKEN_SYNTAX, "table-syntax");
-                        if (clos_tok) { token_append_text_n(clos_tok, clos, si + 1 + clos_len); accum_push(accum, clos_tok); token_append_child(table, clos_tok); }
-                        free(clos);
-                    } else if (row_e > row_s) {
-                        /* row separator */
-                        size_t row_len = row_e - row_s;
-                        char *synbuf = malloc(si + 1 + row_len);
-                        assert(synbuf);
-                        synbuf[0] = '\n';
-                        if (si > 0) memcpy(synbuf + 1, line, si);
-                        memcpy(synbuf + 1 + si, body + row_s, row_len);
-                        const char *row_attr = (attr_e > attr_s) ? body + attr_s : NULL;
-                        size_t row_attr_len = (attr_e > attr_s) ? (attr_e - attr_s) : 0;
-                        Token *tr = create_tr_token(synbuf, si + 1 + row_len,
-                                                    row_attr, row_attr_len,
-                                                    accum);
-                        if (tr) token_append_child(table, tr);
-                        current_tr = tr;
-                        current_td = NULL;
-                        free(synbuf);
-                    } else if (cell_e > cell_s) {
-                        /* cell line: split into cells on exact JS separator regexes */
-                        char cellChar = body[cell_s];
-                        /* JS parity: '|+' is part of syntax token, not inner content. */
-                        size_t cell_prefix_len = 1;
-                        if (cellChar == '|' && cell_e > cell_s + 1 && body[cell_s + 1] == '+') {
-                            cell_prefix_len = 2;
-                        }
+            size_t row_len = row_e - row_s;
+            size_t syn_len = 1 + spaces_len + row_len;
+            char *syn = malloc(syn_len);
+            syn[0] = '\n';
+            if (spaces_len > 0) memcpy(syn + 1, out_line, spaces_len);
+            memcpy(syn + 1 + spaces_len, line + row_s, row_len);
 
-                        /* attr part after initial cell syntax */
-                        size_t cell_attr_off = cell_e;
-                        size_t rem_len = (cell_attr_off < body_len) ? (body_len - cell_attr_off) : 0;
-                        char *attrbuf = malloc(rem_len + 1);
-                        assert(attrbuf);
-                        if (rem_len > 0) memcpy(attrbuf, body + cell_attr_off, rem_len);
-                        attrbuf[rem_len] = '\0';
+            Token *tr = create_tr_token(syn, syn_len, attr, attr_len, accum);
+            free(syn);
+            if (top && tr) token_append_child(top, tr);
+            if (top) stack_push(&st, top);
+            if (tr) stack_push(&st, tr);
+        } else {
+            top = js_pop(top, &st);
 
-                        /* JS parity: split on exact separator regexes and carry lastSyntax. */
-                        size_t scan = 0;
-                        size_t last = 0;
-                        size_t cur_syn_len = si + cell_prefix_len + 1; /* '\n' + leading bytes */
-                        char *cur_syn = malloc(cur_syn_len + 1);
-                        assert(cur_syn);
-                        cur_syn[0] = '\n';
-                        if (si > 0) memcpy(cur_syn + 1, line, si);
-                        memcpy(cur_syn + 1 + si, body + cell_s, cell_prefix_len);
-                        cur_syn[cur_syn_len] = '\0';
+            const char *cell = line + cell_s;
+            size_t cell_len = cell_e - cell_s;
+            pcre2_code *sep_re = (cell_len == 1 && cell[0] == '!') ? s_re_table_sep_th : s_re_table_sep_td;
 
-                        while (1) {
-                            size_t sep_pos = rem_len;
-                            size_t sep_len = 0;
-                            pcre2_match_data *sep_md = NULL;
-                            pcre2_code *sep_re = (cellChar == '!') ? s_re_table_sep_th : s_re_table_sep_td;
-                            int sep_rc = match_regex(sep_re, attrbuf, rem_len, scan, &sep_md);
-                            if (sep_rc > 0) {
-                                PCRE2_SIZE *sov = pcre2_get_ovector_pointer(sep_md);
-                                sep_pos = sov[0];
-                                sep_len = sov[1] - sov[0];
-                            }
-                            if (sep_md) pcre2_match_data_free(sep_md);
-                            if (sep_len == 0) {
-                                sep_pos = rem_len;
-                            }
+            size_t last_index = 0;
+            size_t last_syn_len = 1 + spaces_len + cell_len;
+            char *last_syn = malloc(last_syn_len);
+            last_syn[0] = '\n';
+            if (spaces_len > 0) memcpy(last_syn + 1, out_line, spaces_len);
+            memcpy(last_syn + 1 + spaces_len, cell, cell_len);
 
-                            size_t seg_len = sep_pos - last;
-                            const char *seg = attrbuf + last;
-                            const char *cell_attrs = NULL;
-                            const char *inner = NULL;
-                            const char *inner_syntax = NULL;
-                            size_t cell_attrs_len = 0;
-                            size_t inner_len = 0;
-                            size_t inner_syntax_len = 0;
+            size_t scan = 0;
+            while (1) {
+                pcre2_match_data *sep_md = NULL;
+                int sep_rc = match_regex(sep_re, attr, attr_len, scan, &sep_md);
+                size_t sep_pos = attr_len;
+                size_t sep_len = 0;
+                if (sep_rc > 0) {
+                    PCRE2_SIZE *sov = pcre2_get_ovector_pointer(sep_md);
+                    sep_pos = sov[0];
+                    sep_len = sov[1] - sov[0];
+                }
+                if (sep_md) pcre2_match_data_free(sep_md);
 
-                            pcre2_match_data *inner_md = NULL;
-                            int inner_rc = match_regex(s_re_td_inner_sep, seg, seg_len, 0, &inner_md);
-                            if (inner_rc > 0) {
-                                PCRE2_SIZE *iov = pcre2_get_ovector_pointer(inner_md);
-                                cell_attrs = seg;
-                                cell_attrs_len = iov[0];
-                                inner_syntax = seg + iov[0];
-                                inner_syntax_len = iov[1] - iov[0];
-                                inner = seg + iov[1];
-                                inner_len = seg_len - iov[1];
-                                if (contains_literal_seq(cell_attrs, cell_attrs_len, "[[")
-                                        || contains_literal_seq(cell_attrs, cell_attrs_len, "-{")) {
-                                    cell_attrs = "";
-                                    cell_attrs_len = 0;
-                                    inner_syntax = "";
-                                    inner_syntax_len = 0;
-                                    inner = seg;
-                                    inner_len = seg_len;
-                                }
-                            } else {
-                                cell_attrs = "";
-                                cell_attrs_len = 0;
-                                inner_syntax = "";
-                                inner_syntax_len = 0;
-                                inner = seg;
-                                inner_len = seg_len;
-                            }
-                            if (inner_md) pcre2_match_data_free(inner_md);
+                size_t seg_len = sep_pos - last_index;
+                const char *seg = attr + last_index;
 
-                            Token *parent = current_tr ? current_tr : table;
-                            Token *td = create_td_token(cur_syn, cur_syn_len,
-                                                    cell_attrs, cell_attrs_len,
-                                                    inner_syntax, inner_syntax_len,
-                                                    inner, inner_len,
-                                                    accum);
-                            if (td) { token_append_child(parent, td); current_td = td; }
+                const char *cell_attrs = "";
+                size_t cell_attrs_len = 0;
+                const char *inner_syntax = "";
+                size_t inner_syntax_len = 0;
+                const char *inner = seg;
+                size_t inner_len = seg_len;
 
-                            if (sep_len == 0) break;
+                pcre2_match_data *inner_md = NULL;
+                int inner_rc = match_regex(s_re_td_inner_sep, seg, seg_len, 0, &inner_md);
+                if (inner_rc > 0) {
+                    PCRE2_SIZE *iov = pcre2_get_ovector_pointer(inner_md);
+                    cell_attrs = seg;
+                    cell_attrs_len = iov[0];
+                    inner_syntax = seg + iov[0];
+                    inner_syntax_len = iov[1] - iov[0];
+                    inner = seg + iov[1];
+                    inner_len = seg_len - iov[1];
 
-                            free(cur_syn);
-                            cur_syn_len = sep_len;
-                            cur_syn = malloc(cur_syn_len + 1);
-                            assert(cur_syn);
-                            memcpy(cur_syn, attrbuf + sep_pos, sep_len);
-                            cur_syn[cur_syn_len] = '\0';
-
-                            last = sep_pos + sep_len;
-                            scan = last;
-                        }
-
-                        free(cur_syn);
-
-                        free(attrbuf);
-                    } else {
-                        /* unmatched line form */
-                        if (current_td != NULL
-                            && current_td->child_count > 2
-                            && !current_td->children[2].is_text
-                            && current_td->children[2].token != NULL) {
-                            Token *inner_tok = current_td->children[2].token;
-                            char *cont = malloc(line_len + 2);
-                            cont[0] = '\n';
-                            memcpy(cont + 1, line, line_len);
-                            cont[line_len + 1] = '\0';
-                            token_append_text_n(inner_tok, cont, line_len + 1);
-                            free(cont);
-                        } else {
-                            token_append_text_n(table, line, line_len);
-                        }
-                    }
-                } else {
-                    /* default: continuation line — append to current TD's inner content
-                     * (with leading newline) so multi-line cell content is preserved. */
-                    if (current_td != NULL
-                        && current_td->child_count > 2
-                        && !current_td->children[2].is_text
-                        && current_td->children[2].token != NULL) {
-                        Token *inner_tok = current_td->children[2].token;
-                        char *cont = malloc(line_len + 2);
-                        cont[0] = '\n';
-                        memcpy(cont + 1, line, line_len);
-                        cont[line_len + 1] = '\0';
-                        token_append_text_n(inner_tok, cont, line_len + 1);
-                        free(cont);
-                    } else {
-                        token_append_text_n(table, line, line_len);
+                    if (contains_literal_seq(cell_attrs, cell_attrs_len, "[[")
+                        || contains_literal_seq(cell_attrs, cell_attrs_len, "-{")) {
+                        cell_attrs = "";
+                        cell_attrs_len = 0;
+                        inner_syntax = "";
+                        inner_syntax_len = 0;
+                        inner = seg;
+                        inner_len = seg_len;
                     }
                 }
-                if (line_md) pcre2_match_data_free(line_md);
+                if (inner_md) pcre2_match_data_free(inner_md);
+
+                Token *td = create_td_token(last_syn, last_syn_len,
+                                            cell_attrs, cell_attrs_len,
+                                            inner_syntax, inner_syntax_len,
+                                            inner, inner_len,
+                                            accum);
+                if (top && td) token_append_child(top, td);
+
+                if (sep_len == 0) {
+                    if (top) stack_push(&st, top);
+                    if (td) stack_push(&st, td);
+                    break;
+                }
+
+                free(last_syn);
+                last_syn_len = sep_len;
+                last_syn = malloc(last_syn_len);
+                memcpy(last_syn, attr + sep_pos, sep_len);
+
+                last_index = sep_pos + sep_len;
+                scan = last_index;
             }
-            pos = next_nl + 1;
+            free(last_syn);
         }
 
-        /* Emit sentinel for table token */
-        char marker[64]; size_t mlen = 0;
-        work_str_sentinel(tok_idx, 'b', marker, &mlen);
-        ENSURE_CAP(mlen);
-        memcpy(out_buf + out_len, marker, mlen);
-        out_len += mlen;
-
-        free(tbl);
-
-        /* Continue after the table */
-        i = p + tlen;
+        pcre2_match_data_free(line_md);
     }
 
-    /* Null-terminate and adopt into ws */
     out_buf[out_len] = '\0';
-    wiki_thread_buf_set(tb, out_buf, out_len);
+    if (out_len > 0) {
+        wiki_thread_buf_set(tb, out_buf + 1, out_len - 1);
+    } else {
+        wiki_thread_buf_set(tb, out_buf, 0);
+    }
     free(out_buf);
+    stack_free(&st);
+    free(lines_ptr);
+    free(lines_len);
 }

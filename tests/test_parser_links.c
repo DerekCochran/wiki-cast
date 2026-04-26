@@ -17,6 +17,7 @@ static const char *samples[] = {
     "[[Page#Section|section link]]",
     "[[File:Image.jpg]]",
     "[[File:Image.jpg|thumb|right|Caption text]]",
+    "[[File:Image.jpg| thumb | upright=0.8 | Caption text]]",
     "[[File:water_reflectivity.jpg]]",
     "[[File:Image.jpg|thumbnail|right|Caption text]]",
     "[[File:Image.jpg|frameless|upright|center]]",

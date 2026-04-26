@@ -20,6 +20,9 @@ runTests([
   // Table with a link in a cell
   '{|\n| [[Page|link]] || plain\n|}',
 
+  // Table cell link text spanning inline HTML must remain one link
+  '{|\n! Modern [[State of matter|state<br />of matter]]\n|}',
+
   // Nested templates
   '{{Outer|{{Inner|arg}}}}',
 

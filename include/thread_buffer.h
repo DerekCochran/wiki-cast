@@ -1,11 +1,13 @@
 /*
  * thread_buffer.h — Per-thread reusable buffers for wiki_parse().
  *
- * Each OS thread gets two dedicated resizable buffers:
+ * Each OS thread gets one dedicated main buffer plus a pool of scratch
+ * buffers that callers lease temporarily:
  *
  *   main    — used to hold the str_tidy() copy of the raw wikitext input,
  *             avoiding a per-call heap allocation for that temporary copy.
- *   scratch — reserved for future use inside parser stages.
+ *   scratch — acquired on demand by parser/helper code so nested functions
+ *             do not step on each other's temporary workspace.
  *
  * Buffers are allocated on first use per thread and freed either when the
  * thread exits (via the pthread TLS destructor) or when
@@ -61,9 +63,12 @@ typedef struct {
 /* ── The pair of buffers owned by one thread ─────────────────────────────── */
 
 typedef struct {
-    ThreadBuf main;
-    ThreadBuf scratch;
-    bool      finalized; /* set by finalize_all; cleared on re-init */
+    ThreadBuf *scratch_pool;
+    bool      *scratch_in_use;
+    size_t     scratch_count;
+    size_t     scratch_cap;
+    ThreadBuf  main;
+    bool       finalized; /* set by finalize_all; cleared on re-init */
 } ThreadBuffers;
 
 /**
@@ -78,6 +83,20 @@ typedef struct {
  *     calls wiki_thread_buf_get() again (which re-initialises the buffers).
  */
 ThreadBuffers *wiki_thread_buf_get(void);
+
+/**
+ * Abort the process if any scratch buffers are still leased on the calling
+ * thread. If ignore_tb points at one pooled scratch buffer, it is excluded
+ * from the check.
+ */
+void wiki_thread_buf_assert_no_leased_scratch(const char *context,
+                                              const ThreadBuf *ignore_tb);
+
+/** Acquire a scratch buffer from the calling thread's scratch pool. */
+ThreadBuf *wiki_thread_buf_acquire_scratch(void);
+
+/** Release a previously acquired scratch buffer back to the scratch pool. */
+void wiki_thread_buf_release_scratch(ThreadBuf *tb);
 
 /**
  * The single authority for all buffer resize decisions.

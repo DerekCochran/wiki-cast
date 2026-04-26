@@ -61,6 +61,97 @@ static void append_numeric_placeholder(char *dst, size_t *len, size_t idx)
     dst[(*len)++] = '\x7F';
 }
 
+static const char *find_substr_cs(const char *hay, size_t hlen,
+                                  const char *needle, size_t nlen)
+{
+    if (!hay || !needle || nlen == 0 || nlen > hlen) return NULL;
+    for (size_t i = 0; i + nlen <= hlen; i++) {
+        if (memcmp(hay + i, needle, nlen) == 0) return hay + i;
+    }
+    return NULL;
+}
+
+static char *token_string_dup(const Token *tok, size_t *out_len)
+{
+    if (!tok) {
+        if (out_len) *out_len = 0;
+        return strdup("");
+    }
+    ThreadBuf *tb = wiki_thread_buf_acquire_scratch();
+    char *s = token_to_string(tok, tb);
+    size_t n = tb->len;
+    char *dup = malloc(n + 1);
+    assert(dup);
+    memcpy(dup, s, n);
+    dup[n] = '\0';
+    wiki_thread_buf_release_scratch(tb);
+    if (out_len) *out_len = n;
+    return dup;
+}
+
+/* JS restore parity used by parseCommentAndExt:
+ * restore(s, accum, 1): expand \0Ng\x7F recursively through mode 2.
+ * restore(s, accum, 2): expand \0Nn\x7F.
+ */
+static char *restore_accum_mode(const char *s, size_t len,
+                                const Accum *accum, int mode,
+                                size_t *out_len)
+{
+    size_t cap = len * 2 + 32;
+    char *out = malloc(cap);
+    assert(out);
+    size_t j = 0;
+
+#define ENSURE_RESTORE_CAP(need) do { \
+    while (j + (need) + 1 >= cap) { \
+        cap *= 2; \
+        out = realloc(out, cap); \
+        assert(out); \
+    } \
+} while (0)
+
+    for (size_t i = 0; i < len; ) {
+        if ((unsigned char)s[i] == '\0') {
+            size_t k = i + 1;
+            while (k < len && s[k] >= '0' && s[k] <= '9') k++;
+            if (k > i + 1 && k + 1 < len && (unsigned char)s[k + 1] == '\x7F') {
+                char ch = s[k];
+                bool should_expand = (mode == 1 && ch == 'g') || (mode == 2 && ch == 'n');
+                if (should_expand) {
+                    size_t idx = 0;
+                    for (size_t d = i + 1; d < k; d++) idx = idx * 10 + (size_t)(s[d] - '0');
+                    Token *ref = accum_get(accum, idx);
+                    if (ref) {
+                        size_t rep_len = 0;
+                        char *rep = token_string_dup(ref, &rep_len);
+                        if (mode == 1 && ch == 'g') {
+                            size_t nested_len = 0;
+                            char *nested = restore_accum_mode(rep, rep_len, accum, 2, &nested_len);
+                            free(rep);
+                            rep = nested;
+                            rep_len = nested_len;
+                        }
+                        ENSURE_RESTORE_CAP(rep_len);
+                        memcpy(out + j, rep, rep_len);
+                        j += rep_len;
+                        free(rep);
+                        i = k + 2;
+                        continue;
+                    }
+                }
+            }
+        }
+
+        ENSURE_RESTORE_CAP(1);
+        out[j++] = s[i++];
+    }
+
+#undef ENSURE_RESTORE_CAP
+    out[j] = '\0';
+    if (out_len) *out_len = j;
+    return out;
+}
+
 /* ── Attribute parsing helpers ───────────────────────────────────────────── */
 
 /**
@@ -729,12 +820,10 @@ static bool handle_onlyinclude(ThreadBuf *tb, const ParserConfig *cfg, Accum *ac
     size_t open_len  = strlen(onlyinclude_open);
     size_t close_len = strlen(onlyinclude_close);
 
-    char *pos_open = (char *)str_istr(tb->buf, tb->len,
-                                       onlyinclude_open, open_len);
+    const char *pos_open = find_substr_cs(tb->buf, tb->len, onlyinclude_open, open_len);
     if (!pos_open) return false;
-    char *pos_close = (char *)str_istr(pos_open + open_len,
-                                        tb->len - (size_t)(pos_open - tb->buf + open_len),
-                                        onlyinclude_close, close_len);
+    size_t after_open_len = tb->len - (size_t)(pos_open - tb->buf + open_len);
+    const char *pos_close = find_substr_cs(pos_open + open_len, after_open_len, onlyinclude_close, close_len);
     if (!pos_close) return false;
 
     char *new_buf = malloc(tb->len * 3 + 256);
@@ -747,27 +836,18 @@ static bool handle_onlyinclude(ThreadBuf *tb, const ParserConfig *cfg, Accum *ac
     char sent_buf[64];
 
     while (1) {
-        const char *next_open = str_istr(remaining, remaining_len,
-                                          onlyinclude_open, open_len);
-        if (!next_open) {
-            if (remaining_len > 0) {
-                size_t noincl_idx = accum->count;
-                Token *ni = token_new(TOKEN_NOINCLUDE, "noinclude");
-                token_append_text_n(ni, remaining, remaining_len);
-                accum_push(accum, ni);
-                size_t sent_len;
-                work_str_sentinel(noincl_idx, 'n', sent_buf, &sent_len);
-                memcpy(new_buf + new_len, sent_buf, sent_len);
-                new_len += sent_len;
-            }
-            break;
-        }
+        const char *next_open = find_substr_cs(remaining, remaining_len, onlyinclude_open, open_len);
+        if (!next_open) break;
 
-        size_t before_len = (size_t)(next_open - remaining);
-        if (before_len > 0) {
+        size_t rel_open = (size_t)(next_open - remaining);
+        size_t tail_after_open = remaining_len - rel_open - open_len;
+        const char *next_close = find_substr_cs(next_open + open_len, tail_after_open, onlyinclude_close, close_len);
+        if (!next_close) break;
+
+        if (rel_open > 0) {
             size_t noincl_idx = accum->count;
             Token *ni = token_new(TOKEN_NOINCLUDE, "noinclude");
-            token_append_text_n(ni, remaining, before_len);
+            token_append_text_n(ni, remaining, rel_open);
             accum_push(accum, ni);
             size_t sent_len;
             work_str_sentinel(noincl_idx, 'n', sent_buf, &sent_len);
@@ -776,34 +856,29 @@ static bool handle_onlyinclude(ThreadBuf *tb, const ParserConfig *cfg, Accum *ac
         }
 
         const char *content_start = next_open + open_len;
-        size_t content_remaining  = remaining_len - before_len - open_len;
-        const char *next_close    = str_istr(content_start, content_remaining,
-                                              onlyinclude_close, close_len);
-        if (!next_close) {
-            size_t onlyi_idx = accum->count;
-            Token *oi = token_new(TOKEN_ONLYINCLUDE, "onlyinclude");
-            token_append_text_n(oi, content_start, content_remaining);
-            accum_push(accum, oi);
-            size_t sent_len;
-            work_str_sentinel(onlyi_idx, 'g', sent_buf, &sent_len);
-            memcpy(new_buf + new_len, sent_buf, sent_len);
-            new_len += sent_len;
-            break;
-        }
-
         size_t content_len = (size_t)(next_close - content_start);
-        size_t onlyi_idx   = accum->count;
+        size_t onlyi_idx = accum->count;
         Token *oi = token_new(TOKEN_ONLYINCLUDE, "onlyinclude");
         token_append_text_n(oi, content_start, content_len);
         accum_push(accum, oi);
-
         size_t sent_len;
         work_str_sentinel(onlyi_idx, 'g', sent_buf, &sent_len);
         memcpy(new_buf + new_len, sent_buf, sent_len);
         new_len += sent_len;
 
-        remaining    = next_close + close_len;
-        remaining_len = remaining_len - before_len - open_len - content_len - close_len;
+        remaining = next_close + close_len;
+        remaining_len = tb->len - (size_t)(remaining - tb->buf);
+    }
+
+    if (remaining_len > 0) {
+        size_t noincl_idx = accum->count;
+        Token *ni = token_new(TOKEN_NOINCLUDE, "noinclude");
+        token_append_text_n(ni, remaining, remaining_len);
+        accum_push(accum, ni);
+        size_t sent_len;
+        work_str_sentinel(noincl_idx, 'n', sent_buf, &sent_len);
+        memcpy(new_buf + new_len, sent_buf, sent_len);
+        new_len += sent_len;
     }
 
     new_buf[new_len] = '\0';
@@ -827,7 +902,7 @@ void parse_comment_and_ext(ThreadBuf *tb, const ParserConfig *cfg,
 
     if (include_only) {
         const char *oi_open = "<onlyinclude>";
-        if (str_istr(tb->buf, tb->len, oi_open, strlen(oi_open))) {
+        if (find_substr_cs(tb->buf, tb->len, oi_open, strlen(oi_open))) {
             if (handle_onlyinclude(tb, cfg, accum)) {
                 return;
             }
@@ -898,7 +973,10 @@ void parse_comment_and_ext(ThreadBuf *tb, const ParserConfig *cfg,
 
         if (substr[0] == '<' && sub_len >= 4 &&
             substr[1] == '!' && substr[2] == '-' && substr[3] == '-') {
-            tok = build_comment_token(substr, sub_len, accum);
+            size_t restored_len = 0;
+            char *restored = restore_accum_mode(substr, sub_len, accum, 1, &restored_len);
+            tok = build_comment_token(restored, restored_len, accum);
+            free(restored);
             ch  = 'c';
 
         } else if (ext_name_s < ext_name_e) {
@@ -939,8 +1017,22 @@ void parse_comment_and_ext(ThreadBuf *tb, const ParserConfig *cfg,
             const char *closing = (close_s < close_e) ? tb->buf + close_s : NULL;
             size_t      clen    = (close_s < close_e) ? close_e - close_s : 0;
 
-            tok = build_include_token(name, name_len, attr, alen, inner, ilen,
+            size_t rattr_len = 0, rinner_len = 0;
+            char *rattr = NULL;
+            char *rinner = NULL;
+            if (attr && alen > 0) {
+                rattr = restore_accum_mode(attr, alen, accum, 1, &rattr_len);
+            }
+            if (inner && ilen > 0) {
+                rinner = restore_accum_mode(inner, ilen, accum, 1, &rinner_len);
+            }
+
+            tok = build_include_token(name, name_len,
+                                      rattr ? rattr : attr, rattr ? rattr_len : alen,
+                                      rinner ? rinner : inner, rinner ? rinner_len : ilen,
                                       closing, clen, accum);
+            free(rattr);
+            free(rinner);
             ch  = 'n';
 
         } else {

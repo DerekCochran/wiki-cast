@@ -101,13 +101,15 @@ PASS [redirect]
 
 **Thread-local buffer pool**
 
-`wiki_parse()` is safe to call from multiple threads simultaneously.  To
-minimise per-call heap allocations each thread maintains a pair of reusable
-buffers (main and scratch) managed by `wiki_thread_buf_get()`:
+`wiki_parse()` is safe to call from multiple threads simultaneously. To
+minimise per-call heap allocations each thread maintains one reusable main
+buffer plus a pool of reusable scratch buffers managed by `wiki_thread_buf_get()`
+and the scratch acquire/release helpers:
 
 - **main** — holds the `str_tidy()` copy of the raw wikitext input; the
   tidied text is then copied into the `WorkStr` for stage processing.
-- **scratch** — reserved for future use inside parser stages.
+- **scratch pool** — temporary parser workspaces acquired on demand so nested
+  helper functions do not step on each other's scratch storage.
 
 Buffers are allocated on first use per thread and freed either when the thread
 exits or when `wiki_thread_buf_finalize_all()` is called at shutdown.
@@ -124,8 +126,8 @@ controlled by environment variables (all values in megabytes):
 |---|---|---|
 | `TOKENIZER_THREAD_BUFFER_MAIN_SHRINK_SIZE_MB` | `10` | If main buffer is larger than this, consider shrinking |
 | `TOKENIZER_THREAD_BUFFER_MAIN_TARGET_SIZE_MB` | `5` | Shrink main buffer down to this size |
-| `TOKENIZER_THREAD_BUFFER_SCRATCH_SHRINK_SIZE_MB` | `10` | If scratch buffer is larger than this, shrink it |
-| `TOKENIZER_THREAD_BUFFER_SCRATCH_TARGET_SIZE_MB` | `5` | Shrink scratch buffer down to this size |
+| `TOKENIZER_THREAD_BUFFER_SCRATCH_SHRINK_SIZE_MB` | `10` | If a scratch buffer is larger than this, shrink it |
+| `TOKENIZER_THREAD_BUFFER_SCRATCH_TARGET_SIZE_MB` | `5` | Shrink scratch buffers down to this size |
 
 **Shutdown / finalize**
 

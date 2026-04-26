@@ -246,16 +246,18 @@ static size_t run_parser_samples(const char *parser_name,
             continue;
         }
 
-        ThreadBuffers *tbufs = wiki_thread_buf_get();
-        char *roundtrip = token_to_string(root, &tbufs->scratch);
+        ThreadBuf *scratch = wiki_thread_buf_acquire_scratch();
+        char *roundtrip = token_to_string(root, scratch);
         if (strcmp(roundtrip, wikitext) != 0) {
             printf("FAIL [%s][%zu] round-trip toString mismatch\n", parser_name, i + 1);
             print_diff_with_tree(wikitext, roundtrip, root, parser_name, i + 1);
             failed++;
+            wiki_thread_buf_release_scratch(scratch);
             token_free(root);
             continue;
         }
 
+        wiki_thread_buf_release_scratch(scratch);
         passed++;
         token_free(root);
     }

@@ -13,6 +13,7 @@ static const char *samples[] = {
     "{{Template|[[Page|label]]}}",
     "== {{PAGENAME}} ==\nContent.",
     "{|\n| [[Page|link]] || plain\n|}",
+    "{|\n! Modern [[State of matter|state<br />of matter]]\n|}",
     "{{Outer|{{Inner|arg}}}}",
     "'''bold''' and ''[[Page|italic link]]''",
     "[[Page]] and [http://example.com external].",

@@ -18,6 +18,7 @@ runTests([
   '[[File:Image.jpg]]',
   // File with options
   '[[File:Image.jpg|thumb|right|Caption text]]',
+  '[[File:Image.jpg| thumb | upright=0.8 | Caption text]]',
   // File target should preserve/canonicalize first-letter case like JS parser
   '[[File:water_reflectivity.jpg]]',
   // File caption that is only a nested wikilink after thumb

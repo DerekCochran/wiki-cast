@@ -39,6 +39,21 @@ function usage() {
   process.exit(1);
 }
 
+function resolveDefaultInputPath(scriptDir) {
+  const candidates = [
+    path.join(scriptDir, '..', '..', 'data', 'enwiki.jsonl.bz2'),
+    path.join(scriptDir, '..', '..', '..', 'data', 'enwiki.jsonl.bz2'),
+  ];
+
+  for (const candidate of candidates) {
+    if (fs.existsSync(candidate)) {
+      return candidate;
+    }
+  }
+
+  return candidates[0];
+}
+
 async function main(argv) {
   const args = argv.slice(2);
   const options = {
@@ -73,8 +88,7 @@ async function main(argv) {
   }
 
   const scriptDir = path.dirname(__filename);
-  const dataDir = path.join(scriptDir, '..', '..', 'data');
-  const inputPath = options.input ?? path.join(dataDir, 'enwiki.jsonl.bz2');
+  const inputPath = options.input ?? resolveDefaultInputPath(scriptDir);
   const inputStream = openInputStream(inputPath);
   const reader = readline.createInterface({ input: inputStream, crlfDelay: Infinity });
   let lineNumber = 0;

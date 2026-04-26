@@ -40,13 +40,21 @@ proto.__orig_parse = proto.parse;
 // Otherwise leave the JS implementation (scaffolding mode).
 let native = null;
 try {
-	// Prefer release build, fall back to debug build.
-	native = require(path.join(__dirname, '..', 'build', 'Release', 'native_binding.node'));
+	// Prefer the addon artifact node-gyp actually rebuilds.
+	native = require(path.join(__dirname, '..', 'build', 'Release', 'wikiparser-node-c-tokenizer.node'));
 } catch (e) {
 	try {
-		native = require(path.join(__dirname, '..', 'build', 'Debug', 'native_binding.node'));
+		native = require(path.join(__dirname, '..', 'build', 'Release', 'native_binding.node'));
 	} catch (e2) {
-		native = null;
+		try {
+			native = require(path.join(__dirname, '..', 'build', 'Debug', 'wikiparser-node-c-tokenizer.node'));
+		} catch (e3) {
+			try {
+				native = require(path.join(__dirname, '..', 'build', 'Debug', 'native_binding.node'));
+			} catch (e4) {
+				native = null;
+			}
+		}
 	}
 }
 if (native && typeof native.parse === 'function') {

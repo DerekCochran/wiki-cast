@@ -267,7 +267,21 @@ static void token_to_string_rec(const Token *t, ThreadBuf *tb)
                            && strcmp(c->token->type_name, "image-parameter") == 0) {
                     const Token *p = c->token;
                     if (p->data.image_param.raw_syntax) {
-                        thread_buf_append(tb, p->data.image_param.raw_syntax, strlen(p->data.image_param.raw_syntax));
+                        const char *syntax = p->data.image_param.raw_syntax;
+                        const char *slot = strstr(syntax, "$1");
+                        if (!slot) {
+                            thread_buf_append(tb, syntax, strlen(syntax));
+                        } else {
+                            size_t pre_len = (size_t)(slot - syntax);
+                            size_t post_len = strlen(slot + 2);
+                            thread_buf_append(tb, syntax, pre_len);
+                            for (size_t pi = 0; pi < p->child_count; pi++) {
+                                const Child *pc = &p->children[pi];
+                                if (pc->is_text) thread_buf_append(tb, pc->text, pc->text_len);
+                                else token_to_string_rec(pc->token, tb);
+                            }
+                            thread_buf_append(tb, slot + 2, post_len);
+                        }
                     } else if (p->name && strcmp(p->name, "caption") == 0) {
                         for (size_t pi = 0; pi < p->child_count; pi++) {
                             const Child *pc = &p->children[pi];
@@ -594,10 +608,12 @@ static void token_to_string_rec(const Token *t, ThreadBuf *tb)
 char *token_to_string(const Token *t, ThreadBuf *tb)
 {
     assert(tb);
+    wiki_thread_buf_assert_no_leased_scratch("token_to_string(entry)", tb);
     tb->len = 0;
     token_to_string_rec(t, tb);
     wiki_thread_buf_reserve(tb, tb->len);
     tb->buf[tb->len] = '\0';
+    wiki_thread_buf_assert_no_leased_scratch("token_to_string(exit)", tb);
     return tb->buf;
 }
 

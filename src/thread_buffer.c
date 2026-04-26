@@ -17,13 +17,15 @@
 #define DEFAULT_MAIN_SHRINK_MB     10
 #define DEFAULT_MAIN_TARGET_MB      5
 #define DEFAULT_SCRATCH_SHRINK_MB  10
-#define DEFAULT_SCRATCH_TARGET_MB   5
+#define DEFAULT_SCRATCH_TARGET_MB   1
 
 /* Byte equivalents, filled in by init_thresholds(). */
 static size_t g_main_shrink_bytes;
 static size_t g_main_target_bytes;
 static size_t g_scratch_shrink_bytes;
 static size_t g_scratch_target_bytes;
+
+#define INITIAL_SCRATCH_POOL_CAP 4
 
 /* ── Env-var helpers ─────────────────────────────────────────────────────── */
 
@@ -119,6 +121,9 @@ static THREAD_LOCAL ThreadBuffers *g_tls_buffers = NULL;
 static pthread_key_t           g_tls_key;
 static pthread_once_t         g_key_once = PTHREAD_ONCE_INIT;
 
+static void free_thread_buf(ThreadBuf *tb);
+static void free_scratch_pool(ThreadBuffers *tb);
+
 /*
  * TLS destructor: called automatically when a thread exits.
  * Frees inner buffers unless finalize_all() already did so, then frees
@@ -134,8 +139,8 @@ static void thread_buffers_destructor(void *ptr)
 
     /* Only free inner buffers if finalize_all() has not already done so. */
     if (!tb->finalized) {
-        free(tb->main.buf);
-        free(tb->scratch.buf);
+        free_thread_buf(&tb->main);
+        free_scratch_pool(tb);
     }
 
     /* Always free the struct itself — finalize_all() intentionally leaves it
@@ -148,6 +153,39 @@ static void create_tls_key(void)
     pthread_key_create(&g_tls_key, thread_buffers_destructor);
 }
 
+static void init_thread_buf(ThreadBuf *tb, size_t shrink_size, size_t target_size)
+{
+    tb->shrink_size = shrink_size;
+    tb->target_size = target_size;
+    tb->buf = malloc(target_size);
+    assert(tb->buf);
+    tb->cap = target_size;
+    tb->len = 0;
+}
+
+static void free_thread_buf(ThreadBuf *tb)
+{
+    if (!tb) return;
+    free(tb->buf);
+    tb->buf = NULL;
+    tb->cap = 0;
+    tb->len = 0;
+}
+
+static void free_scratch_pool(ThreadBuffers *tb)
+{
+    if (!tb) return;
+    for (size_t i = 0; i < tb->scratch_count; i++) {
+        free_thread_buf(&tb->scratch_pool[i]);
+    }
+    free(tb->scratch_pool);
+    free(tb->scratch_in_use);
+    tb->scratch_pool = NULL;
+    tb->scratch_in_use = NULL;
+    tb->scratch_count = 0;
+    tb->scratch_cap = 0;
+}
+
 /* ── Inner buffer allocation ─────────────────────────────────────────────── */
 
 /*
@@ -157,21 +195,63 @@ static void create_tls_key(void)
  */
 static void alloc_inner_buffers(ThreadBuffers *tb)
 {
-    tb->main.shrink_size = g_main_shrink_bytes;
-    tb->main.target_size = g_main_target_bytes;
-    tb->main.buf         = malloc(g_main_target_bytes);
-    assert(tb->main.buf);
-    tb->main.cap         = g_main_target_bytes;
-    tb->main.len         = 0;
-
-    tb->scratch.shrink_size = g_scratch_shrink_bytes;
-    tb->scratch.target_size = g_scratch_target_bytes;
-    tb->scratch.buf         = malloc(g_scratch_target_bytes);
-    assert(tb->scratch.buf);
-    tb->scratch.cap         = g_scratch_target_bytes;
-    tb->scratch.len         = 0;
+    init_thread_buf(&tb->main, g_main_shrink_bytes, g_main_target_bytes);
+    tb->scratch_pool = NULL;
+    tb->scratch_in_use = NULL;
+    tb->scratch_count = 0;
+    tb->scratch_cap = 0;
 
     tb->finalized = false;
+}
+
+void wiki_thread_buf_assert_no_leased_scratch(const char *context,
+                                              const ThreadBuf *ignore_tb)
+{
+    ThreadBuffers *tb = wiki_thread_buf_get();
+    size_t leased_count = 0;
+    size_t leased_cap = 0;
+    size_t leased_len = 0;
+    char details[512];
+    size_t used = 0;
+
+    details[0] = '\0';
+
+    for (size_t i = 0; i < tb->scratch_count; i++) {
+        ThreadBuf *scratch = &tb->scratch_pool[i];
+        if (!tb->scratch_in_use[i] || scratch == ignore_tb) {
+            continue;
+        }
+
+        leased_count++;
+        leased_cap += scratch->cap;
+        leased_len += scratch->len;
+
+        if (used < sizeof(details)) {
+            int wrote = snprintf(details + used, sizeof(details) - used,
+                                 "%s#%zu(cap=%zu,len=%zu)",
+                                 used == 0 ? "" : ", ",
+                                 i, scratch->cap, scratch->len);
+            if (wrote > 0) {
+                size_t wrote_sz = (size_t)wrote;
+                used += wrote_sz < (sizeof(details) - used)
+                    ? wrote_sz
+                    : (sizeof(details) - used);
+            }
+        }
+    }
+
+    if (leased_count == 0) {
+        return;
+    }
+
+    log_fatal("%s: %zu leased scratch buffers remain (total_cap=%zu total_len=%zu)%s%s",
+              context ? context : "thread_buffer",
+              leased_count,
+              leased_cap,
+              leased_len,
+              details[0] ? "; " : "",
+              details);
+    abort();
 }
 
 /* ── Public API ──────────────────────────────────────────────────────────── */
@@ -254,6 +334,54 @@ ThreadBuffers *wiki_thread_buf_get(void)
     return tb;
 }
 
+ThreadBuf *wiki_thread_buf_acquire_scratch(void)
+{
+    ThreadBuffers *tb = wiki_thread_buf_get();
+
+    for (size_t i = 0; i < tb->scratch_count; i++) {
+        if (!tb->scratch_in_use[i]) {
+            tb->scratch_in_use[i] = true;
+            tb->scratch_pool[i].len = 0;
+            return &tb->scratch_pool[i];
+        }
+    }
+
+    if (tb->scratch_count == tb->scratch_cap) {
+        size_t new_cap = tb->scratch_cap ? tb->scratch_cap * 2 : INITIAL_SCRATCH_POOL_CAP;
+        ThreadBuf *new_pool = realloc(tb->scratch_pool, new_cap * sizeof(ThreadBuf));
+        bool *new_in_use = realloc(tb->scratch_in_use, new_cap * sizeof(bool));
+        assert(new_pool && new_in_use);
+        tb->scratch_pool = new_pool;
+        tb->scratch_in_use = new_in_use;
+        for (size_t i = tb->scratch_cap; i < new_cap; i++) {
+            memset(&tb->scratch_pool[i], 0, sizeof(ThreadBuf));
+            tb->scratch_in_use[i] = false;
+        }
+        tb->scratch_cap = new_cap;
+    }
+
+    size_t idx = tb->scratch_count++;
+    init_thread_buf(&tb->scratch_pool[idx], g_scratch_shrink_bytes, g_scratch_target_bytes);
+    tb->scratch_in_use[idx] = true;
+    return &tb->scratch_pool[idx];
+}
+
+void wiki_thread_buf_release_scratch(ThreadBuf *scratch)
+{
+    if (!scratch) return;
+
+    ThreadBuffers *tb = wiki_thread_buf_get();
+    for (size_t i = 0; i < tb->scratch_count; i++) {
+        if (&tb->scratch_pool[i] == scratch) {
+            tb->scratch_in_use[i] = false;
+            tb->scratch_pool[i].len = 0;
+            return;
+        }
+    }
+
+    assert(!"wiki_thread_buf_release_scratch called with non-pooled buffer");
+}
+
 void wiki_thread_buf_set(ThreadBuf *tb, const char *s, size_t len)
 {
     wiki_thread_buf_reserve(tb, len);
@@ -285,15 +413,8 @@ void wiki_thread_buf_finalize_all(void)
          */
         tb->finalized = true;
 
-        free(tb->main.buf);
-        tb->main.buf = NULL;
-        tb->main.cap = 0;
-        tb->main.len = 0;
-
-        free(tb->scratch.buf);
-        tb->scratch.buf = NULL;
-        tb->scratch.cap = 0;
-        tb->scratch.len = 0;
+        free_thread_buf(&tb->main);
+        free_scratch_pool(tb);
 
         /*
          * Do NOT free(tb): the ThreadBuffers struct is still referenced by

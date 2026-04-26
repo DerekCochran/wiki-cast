@@ -164,7 +164,7 @@ void token_to_json(const Token *t, FILE *fp);
 void token_log_json(const Token *t);
 
 /**
- * Recursively serialise a token tree into a thread-local scratch buffer,
+ * Recursively serialise a token tree into a caller-provided buffer,
  * mirroring JS Token.prototype.toString().
  *
  * Children of a token are joined with the token's `sep` character (if

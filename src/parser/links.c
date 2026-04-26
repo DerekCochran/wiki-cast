@@ -51,6 +51,15 @@ static void set_image_param_syntax(Token *param, const char *syntax)
     param->data.image_param.raw_syntax = strdup(syntax);
 }
 
+static void set_image_param_syntax_n(Token *param, const char *syntax, size_t syntax_len)
+{
+    if (!param || !syntax) return;
+    param->data.image_param.raw_syntax = malloc(syntax_len + 1);
+    assert(param->data.image_param.raw_syntax);
+    memcpy(param->data.image_param.raw_syntax, syntax, syntax_len);
+    param->data.image_param.raw_syntax[syntax_len] = '\0';
+}
+
 static bool match_img_syntax(const char *seg, size_t seg_len,
                              const char *syntax,
                              const char **cap_ptr, size_t *cap_len,
@@ -76,19 +85,29 @@ static bool match_img_syntax(const char *seg, size_t seg_len,
     return true;
 }
 
-static char *build_img_syntax(const char *syntax, const char *cap_ptr, size_t cap_len)
+static bool syntax_ends_with_slot(const char *syntax)
 {
-    const char *slot = strstr(syntax, "$1");
-    if (!slot) return strdup(syntax);
+    size_t n = strlen(syntax);
+    return n >= 2 && syntax[n - 2] == '$' && syntax[n - 1] == '1';
+}
 
-    size_t pre_len = (size_t)(slot - syntax);
-    size_t suf_len = strlen(slot + 2);
-    size_t out_len = pre_len + cap_len + suf_len;
+static char *build_img_syntax_template(const char *seg_ptr, size_t seg_len,
+                                       size_t lead_ws_len, size_t trail_ws_len,
+                                       const char *syntax,
+                                       bool slot_at_end)
+{
+    size_t syntax_len = strlen(syntax);
+    size_t tmpl_trail_ws_len = slot_at_end ? 0 : trail_ws_len;
+    size_t out_len = lead_ws_len + syntax_len + tmpl_trail_ws_len;
     char *out = malloc(out_len + 1);
     if (!out) return NULL;
-    memcpy(out, syntax, pre_len);
-    if (cap_len > 0 && cap_ptr) memcpy(out + pre_len, cap_ptr, cap_len);
-    memcpy(out + pre_len + cap_len, slot + 2, suf_len);
+    if (lead_ws_len > 0) memcpy(out, seg_ptr, lead_ws_len);
+    memcpy(out + lead_ws_len, syntax, syntax_len);
+    if (tmpl_trail_ws_len > 0) {
+        memcpy(out + lead_ws_len + syntax_len,
+               seg_ptr + seg_len - tmpl_trail_ws_len,
+               tmpl_trail_ws_len);
+    }
     out[out_len] = '\0';
     return out;
 }
@@ -114,33 +133,22 @@ static void append_file_image_params(Token *file_tok,
     if (!file_tok || !text_ptr) return;
 
     size_t seg_start = 0;
-    int tpl_depth = 0;
-    int link_depth = 0;
+    int conv_depth = 0;
 
     while (seg_start <= text_len) {
         size_t seg_end = seg_start;
         while (seg_end < text_len) {
-            if (seg_end + 1 < text_len && text_ptr[seg_end] == '{' && text_ptr[seg_end + 1] == '{') {
-                tpl_depth++;
+            if (seg_end + 1 < text_len && text_ptr[seg_end] == '-' && text_ptr[seg_end + 1] == '{') {
+                conv_depth++;
                 seg_end += 2;
                 continue;
             }
-            if (seg_end + 1 < text_len && text_ptr[seg_end] == '}' && text_ptr[seg_end + 1] == '}' && tpl_depth > 0) {
-                tpl_depth--;
+            if (seg_end + 1 < text_len && text_ptr[seg_end] == '}' && text_ptr[seg_end + 1] == '-' && conv_depth > 0) {
+                conv_depth--;
                 seg_end += 2;
                 continue;
             }
-            if (seg_end + 1 < text_len && text_ptr[seg_end] == '[' && text_ptr[seg_end + 1] == '[') {
-                link_depth++;
-                seg_end += 2;
-                continue;
-            }
-            if (seg_end + 1 < text_len && text_ptr[seg_end] == ']' && text_ptr[seg_end + 1] == ']' && link_depth > 0) {
-                link_depth--;
-                seg_end += 2;
-                continue;
-            }
-            if (text_ptr[seg_end] == '|' && tpl_depth == 0 && link_depth == 0) {
+            if (text_ptr[seg_end] == '|' && conv_depth == 0) {
                 break;
             }
             seg_end++;
@@ -152,10 +160,13 @@ static void append_file_image_params(Token *file_tok,
         const char *match_ptr = seg_ptr;
         size_t match_len = seg_len;
         trim_view(&match_ptr, &match_len);
+        size_t lead_ws_len = (size_t)(match_ptr - seg_ptr);
+        size_t trail_ws_len = seg_len - lead_ws_len - match_len;
 
         /* Note: Do NOT trim whitespace from image parameters - JavaScript preserves it */
 
-        if (seg_len > 0) {
+        bool is_single_empty = (text_len == 0 && seg_start == 0 && seg_len == 0);
+        if (seg_len > 0 || is_single_empty) {
             Token *param = NULL;
             bool matched = false;
 
@@ -179,6 +190,10 @@ static void append_file_image_params(Token *file_tok,
                     if (has_cap) {
                         const char *vp = cap_ptr;
                         size_t vl = cap_len;
+                        bool slot_at_end = syntax_ends_with_slot(syntax);
+                        if (slot_at_end) {
+                            vl += trail_ws_len;
+                        }
                         /* Note: Do NOT trim the value - JavaScript parser preserves whitespace */
 
                         Token *val = parse_inner_fragment(vp, vl, cfg, accum, "text", tidy, true);
@@ -187,13 +202,15 @@ static void append_file_image_params(Token *file_tok,
                             token_free(val);
                         }
 
-                        char *syn = build_img_syntax(syntax, vp, vl);
+                        char *syn = build_img_syntax_template(seg_ptr, seg_len,
+                                                             lead_ws_len, trail_ws_len,
+                                                             syntax, slot_at_end);
                         if (syn) {
                             set_image_param_syntax(param, syn);
                             free(syn);
                         }
                     } else {
-                        set_image_param_syntax(param, syntax);
+                        set_image_param_syntax_n(param, seg_ptr, seg_len);
                     }
 
                     matched = true;
@@ -229,12 +246,13 @@ static void append_file_image_params(Token *file_tok,
  * JS: /\0\d+[exhbru]\x7F/u
  */
 static pcre2_code *s_re_main     = NULL;  /* inExt=false link regex */
+static pcre2_code *s_re_main_ext = NULL;  /* inExt=true link regex */
 static pcre2_code *s_re_img      = NULL;  /* regexImg */
 static pcre2_code *s_re_sentinel = NULL;  /* \0\d+[exhbru]\x7F */
 
 static void ensure_link_regexes(void)
 {
-    if (s_re_main && s_re_img && s_re_sentinel) return;
+    if (s_re_main && s_re_main_ext && s_re_img && s_re_sentinel) return;
 
     PCRE2_SIZE err_off; int err_code;
 
@@ -248,6 +266,21 @@ static void ensure_link_regexes(void)
             PCRE2_UCHAR8 ebuf[256];
             pcre2_get_error_message(err_code, ebuf, sizeof(ebuf));
             log_error("links re_main compile error at %zu: %s", (size_t)err_off, ebuf);
+        }
+    }
+
+    if (!s_re_main_ext) {
+        /* JS inExt=true:
+         * /^((?:(?!\0\d+!\x7F)[^\n[\]{}|])+)(?:(\||\0\d+!\x7F)([\s\S]*?[^\]]))?\]\]([\s\S]*)$/u
+         */
+        const char *pat =
+            "^((?:(?!\\x00\\d+!\\x7F)[^\\n[\\]{}|])+)(?:(\\||\\x00\\d+!\\x7F)([\\s\\S]*?[^\\]]))?\\]\\]([\\s\\S]*)$";
+        s_re_main_ext = pcre2_compile((PCRE2_SPTR)pat, PCRE2_ZERO_TERMINATED,
+                                      PCRE2_UTF, &err_code, &err_off, NULL);
+        if (!s_re_main_ext) {
+            PCRE2_UCHAR8 ebuf[256];
+            pcre2_get_error_message(err_code, ebuf, sizeof(ebuf));
+            log_error("links re_main_ext compile error at %zu: %s", (size_t)err_off, ebuf);
         }
     }
 
@@ -368,7 +401,7 @@ void parse_links(ThreadBuf *tb, const ParserConfig *cfg, Accum *accum,
         m->regex_links = (ParserConfigRegex *)compile_links_proto(cfg);
     }
     pcre2_code *re_proto    = (pcre2_code *)cfg->regex_links;
-    pcre2_code *re_main     = s_re_main;
+    pcre2_code *re_main     = cfg->in_ext ? s_re_main_ext : s_re_main;
     pcre2_code *re_img_re   = s_re_img;
     pcre2_code *re_sentinel = s_re_sentinel;
 
@@ -801,7 +834,7 @@ void parse_links(ThreadBuf *tb, const ParserConfig *cfg, Accum *accum,
                     norm = tmp;
                 }
             } else {
-                norm = title_normalize(title_ptr, base_len);
+                norm = title_normalize(base_ptr, base_trim_len);
             }
         }
         if (norm) tok->name = norm;
@@ -820,8 +853,7 @@ void parse_links(ThreadBuf *tb, const ParserConfig *cfg, Accum *accum,
 static Token *parse_inner_fragment(const char *s, size_t len, const ParserConfig *cfg, Accum *accum, const char *type_name, bool tidy, bool in_file)
 {
     if (!s) return NULL;
-    ThreadBuffers *tbufs = wiki_thread_buf_get();
-    ThreadBuf *inner_tb = &tbufs->scratch;
+    ThreadBuf *inner_tb = wiki_thread_buf_acquire_scratch();
     wiki_thread_buf_set(inner_tb, s, len);
 
     if (in_file) {
@@ -840,9 +872,13 @@ static Token *parse_inner_fragment(const char *s, size_t len, const ParserConfig
     }
 
     Token *inner = token_new(TOKEN_PLAIN, type_name);
-    if (!inner) return NULL;
+    if (!inner) {
+        wiki_thread_buf_release_scratch(inner_tb);
+        return NULL;
+    }
 
     build_from_str(inner, inner_tb->buf, inner_tb->len, accum);
+    wiki_thread_buf_release_scratch(inner_tb);
 
     return inner;
 }

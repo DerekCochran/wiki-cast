@@ -80,8 +80,8 @@ static bool get_token_config_json(napi_env env, napi_value token, char **json_ou
 }
 
 /* Recursively concatenate token tree text (matches JS token.toString()).
- * This is replaced by token_to_string() in the shared library and uses the
- * thread-local scratch buffer to avoid a separate heap allocation. */
+ * This is replaced by token_to_string() in the shared library and uses a
+ * leased thread-local scratch buffer to avoid a separate heap allocation. */
 
 static napi_value parse_wrapped(napi_env env, napi_callback_info info) {
   napi_status status;
@@ -192,8 +192,8 @@ static napi_value parse_wrapped(napi_env env, napi_callback_info info) {
   fclose(jf);
 
   /* Build the reconstructed string from token tree */
-  ThreadBuffers *tbufs = wiki_thread_buf_get();
-  char *text_buf = token_to_string(root, &tbufs->scratch);
+  ThreadBuf *scratch = wiki_thread_buf_acquire_scratch();
+  char *text_buf = token_to_string(root, scratch);
 
   /* Parse JSON into a JS object: JSON.parse(json_buf) */
   napi_value global, json_obj, parse_fn, js_json_str, root_obj;
@@ -237,6 +237,7 @@ static napi_value parse_wrapped(napi_env env, napi_callback_info info) {
   assert(closure);
   closure->text = strdup(text_buf);
   assert(closure->text);
+  wiki_thread_buf_release_scratch(scratch);
 
   napi_value tostr_fn;
   status = napi_create_function(env, "toString", NAPI_AUTO_LENGTH, tostr_callback, closure, &tostr_fn);

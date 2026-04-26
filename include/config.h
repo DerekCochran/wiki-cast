@@ -82,6 +82,9 @@ typedef struct {
     /* token types to exclude from parsing (e.g. ["html","table"]) */
     StrList excludes;
 
+    /* JS parseLinks toggles regex shape with config.inExt. */
+    bool in_ext;
+
     /* ── Lazily-compiled PCRE2 patterns ─── */
     ParserConfigRegex *regex_redirect;       /* used in parse_redirect */
     ParserConfigRegex *regex_ext[2];         /* [0]=!includeOnly, [1]=includeOnly */
