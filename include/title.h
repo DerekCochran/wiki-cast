@@ -12,9 +12,21 @@ typedef struct {
     char  *main;       /* main title part (after namespace, decoded) */
     char  *prefix;     /* namespace prefix or "" */
     char  *fragment;   /* #fragment part or NULL */
+    char  *interwiki;  /* interwiki prefix or "" */
+    char  *title;      /* normalized full title (without fragment) */
     int    ns;         /* namespace number */
     bool   valid;      /* true if title is acceptable */
 } Title;
+
+/**
+ * Parse a title using the JS halfParsed Title constructor semantics.
+ * Returns an owned Title object even when invalid, unless allocation fails.
+ */
+Title *title_parse_half_parsed(const char *raw, size_t raw_len,
+                               int default_ns,
+                               const ParserConfig *cfg,
+                               bool self_link,
+                               const char *page);
 
 /**
  * Check title validity in halfParsed mode (matches JS Title constructor

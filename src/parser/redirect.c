@@ -90,7 +90,11 @@ static Token *build_redirect_token(
     while (link_main_len > 0 && isspace((unsigned char)link[link_main_len - 1])) {
         link_main_len--;
     }
-    target_tok->name = title_normalize(link, link_main_len);
+    Title *parsed = title_parse_half_parsed(link, link_main_len, 0, NULL, true, "");
+    if (parsed && parsed->title) {
+        target_tok->name = strdup(parsed->title);
+    }
+    title_free(parsed);
     token_append_child(target_tok, link_atom);
 
     if (disp && disp_len > 0) {

@@ -547,55 +547,17 @@ void parse_links(ThreadBuf *tb, const ParserConfig *cfg, Accum *accum,
             continue;
         }
 
-        /* Interwiki detection */
-        int  ns        = 0;
-        bool interwiki = false;
-        size_t iw_consumed = 0;
-        char  *iw_pref = str_extract_interwiki(trim_ptr, trim_len, cfg, &iw_consumed);
-        if (iw_pref) {
-            interwiki = true;
-            if (iw_consumed <= trim_len) {
-                trim_ptr += iw_consumed; trim_len -= iw_consumed;
-            } else {
-                free(iw_pref); free(no_comment);
-                ENSURE_OUT(2 + xlen + 1);
-                out[out_len++] = '['; out[out_len++] = '[';
-                memcpy(out + out_len, x, xlen); out_len += xlen;
-                continue;
-            }
-        }
-
-        /* Title pointer (skip leading ':' if force) */
-        const char *title_ptr = trim_ptr; size_t title_len = trim_len;
-        if (force && title_len > 0) {
-            title_ptr++; title_len--;
-            while (title_len > 0 && isspace((unsigned char)title_ptr[0])) { title_ptr++; title_len--; }
-        }
-
-        bool anchor_only = (title_len > 0 && title_ptr[0] == '#');
-        if (!anchor_only && !title_is_valid_half_parsed(title_ptr, title_len, cfg)) {
-            free(iw_pref); free(no_comment);
+        Title *parsed = title_parse_half_parsed(trim_ptr, trim_len, 0, cfg, true, page);
+        if (!parsed || !parsed->valid) {
+            title_free(parsed);
+            free(no_comment);
             ENSURE_OUT(2 + xlen + 1);
             out[out_len++] = '['; out[out_len++] = '[';
             memcpy(out + out_len, x, xlen); out_len += xlen;
             continue;
         }
-
-        /* Namespace from title prefix before ':' */
-        for (size_t i = 0; i < title_len; i++) {
-            if (title_ptr[i] == ':') {
-                size_t pre_len = i;
-                for (size_t k = 0; k < cfg->ns_count; k++) {
-                    const char *nm = cfg->namespaces[k].name;
-                    if (nm && strlen(nm) == pre_len
-                            && strncasecmp(nm, title_ptr, pre_len) == 0) {
-                        ns = cfg->namespaces[k].num;
-                        break;
-                    }
-                }
-                break;
-            }
-        }
+        int ns = parsed->ns;
+        bool interwiki = parsed->interwiki && parsed->interwiki[0] != '\0';
 
         /* ---- mightBeImg: File namespace handling ----
          * JS: else if (mightBeImg) {
@@ -613,7 +575,7 @@ void parse_links(ThreadBuf *tb, const ParserConfig *cfg, Accum *accum,
          */
         if (mightBeImg) {
             if (ns != 6 || interwiki) {
-                free(iw_pref); free(no_comment);
+                title_free(parsed); free(no_comment);
                 ENSURE_OUT(2 + xlen + 1);
                 out[out_len++] = '['; out[out_len++] = '[';
                 memcpy(out + out_len, x, xlen); out_len += xlen;
@@ -710,7 +672,7 @@ void parse_links(ThreadBuf *tb, const ParserConfig *cfg, Accum *accum,
                 if (link_ptr  && link_len  > 0) { memcpy(out + out_len, link_ptr,  link_len);  out_len += link_len; }
                 if (delim_ptr && delim_len > 0) { memcpy(out + out_len, delim_ptr, delim_len); out_len += delim_len; }
                 if (img_buf   && img_len   > 0) { memcpy(out + out_len, img_buf,   img_len);   out_len += img_len; }
-                free(img_buf); free(iw_pref); free(no_comment);
+                free(img_buf); title_free(parsed); free(no_comment);
                 continue;
             }
 
@@ -728,7 +690,7 @@ void parse_links(ThreadBuf *tb, const ParserConfig *cfg, Accum *accum,
                 }
 
                 Token *tok = token_new(TOKEN_FILE, "file");
-                if (!tok) { free(img_buf); free(iw_pref); free(no_comment); continue; }
+                if (!tok) { free(img_buf); title_free(parsed); free(no_comment); continue; }
                 accum_push(accum, tok);
 
                 Token *atom = token_new(TOKEN_ATOM, "link-target");
@@ -738,16 +700,11 @@ void parse_links(ThreadBuf *tb, const ParserConfig *cfg, Accum *accum,
                     append_file_image_params(tok, tok_text_ptr, tok_text_len, cfg, accum, tidy);
                 }
 
-                size_t base_len = title_len;
-                for (size_t ni = 0; ni < title_len; ni++) {
-                    if (title_ptr[ni] == '#') { base_len = ni; break; }
-                }
-                char *norm = title_normalize(title_ptr, base_len);
-                if (norm) tok->name = norm;
+                if (parsed->title) tok->name = strdup(parsed->title);
 
                 free(img_buf);
             }
-            free(iw_pref); free(no_comment);
+            title_free(parsed); free(no_comment);
             continue;
         } /* end mightBeImg */
 
@@ -767,7 +724,7 @@ void parse_links(ThreadBuf *tb, const ParserConfig *cfg, Accum *accum,
         if (after_ptr && after_len > 0) { memcpy(out + out_len, after_ptr, after_len); out_len += after_len; }
 
         Token *tok = token_new(ttype, tname);
-        if (!tok) { free(iw_pref); free(no_comment); continue; }
+        if (!tok) { title_free(parsed); free(no_comment); continue; }
         accum_push(accum, tok);
 
         /* link-target atom */
@@ -793,53 +750,10 @@ void parse_links(ThreadBuf *tb, const ParserConfig *cfg, Accum *accum,
         }
 
         /* Normalized name */
-        char *norm = NULL;
-        if (interwiki && iw_pref) {
-            size_t base_len = title_len;
-            for (size_t ni = 0; ni < title_len; ni++) {
-                if (title_ptr[ni] == '#') { base_len = ni; break; }
-            }
-            const char *base_ptr = title_ptr;
-            size_t base_trim_len = base_len;
-            trim_view(&base_ptr, &base_trim_len);
-
-            size_t pfx_len  = strlen(iw_pref);
-            size_t full_len = pfx_len + 1 + base_trim_len;
-            char *full = malloc(full_len + 1);
-            if (full) {
-                memcpy(full, iw_pref, pfx_len);
-                full[pfx_len] = ':';
-                memcpy(full + pfx_len + 1, base_ptr, base_trim_len);
-                full[full_len] = '\0';
-                norm = full;
-            }
-        } else {
-            size_t base_len = title_len;
-            for (size_t ni = 0; ni < title_len; ni++) {
-                if (title_ptr[ni] == '#') { base_len = ni; break; }
-            }
-            const char *base_ptr = title_ptr;
-            size_t base_trim_len = base_len;
-            trim_view(&base_ptr, &base_trim_len);
-
-            const char *colon = memchr(base_ptr, ':', base_trim_len);
-            if (!interwiki && ns == 0 && colon && (size_t)(colon - base_ptr) == 4
-                && strncasecmp(base_ptr, "wikt", 4) == 0) {
-                size_t suffix_len = base_trim_len - 5;
-                char *tmp = malloc(5 + suffix_len + 1);
-                if (tmp) {
-                    memcpy(tmp, "Wikt:", 5);
-                    if (suffix_len > 0) memcpy(tmp + 5, colon + 1, suffix_len);
-                    tmp[5 + suffix_len] = '\0';
-                    norm = tmp;
-                }
-            } else {
-                norm = title_normalize(base_ptr, base_trim_len);
-            }
-        }
+        char *norm = parsed->title ? strdup(parsed->title) : NULL;
         if (norm) tok->name = norm;
 
-        free(iw_pref);
+        title_free(parsed);
         free(no_comment);
     } /* end for bi */
 

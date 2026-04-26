@@ -16,6 +16,185 @@
 #include <ctype.h>
 #include <stdio.h>
 
+static char *strndup0(const char *s, size_t len)
+{
+    char *out = malloc(len + 1);
+    if (!out) return NULL;
+    if (len > 0) memcpy(out, s, len);
+    out[len] = '\0';
+    return out;
+}
+
+static char *trim_lc_n(const char *s, size_t len)
+{
+    size_t start = 0;
+    size_t end = len;
+    while (start < end && isspace((unsigned char)s[start])) start++;
+    while (end > start && isspace((unsigned char)s[end - 1])) end--;
+    char *out = malloc(end - start + 1);
+    if (!out) return NULL;
+    for (size_t i = start; i < end; i++) {
+        out[i - start] = (char)tolower((unsigned char)s[i]);
+    }
+    out[end - start] = '\0';
+    return out;
+}
+
+static const char *title_namespace_name(const ParserConfig *cfg, int ns)
+{
+    if (!cfg) return "";
+    for (size_t i = 0; i < cfg->ns_count; i++) {
+        if (cfg->namespaces[i].num == ns && cfg->namespaces[i].name) {
+            return cfg->namespaces[i].name;
+        }
+    }
+    return "";
+}
+
+static int title_lookup_namespace(const ParserConfig *cfg, const char *s, size_t len)
+{
+    if (!cfg || !s) return 0;
+    char *key = trim_lc_n(s, len);
+    if (!key) return 0;
+    int ns = 0;
+    for (size_t i = 0; i < cfg->ns_count; i++) {
+        const char *name = cfg->namespaces[i].name;
+        if (name && strcasecmp(name, key) == 0) {
+            ns = cfg->namespaces[i].num;
+            break;
+        }
+    }
+    free(key);
+    return ns;
+}
+
+static void title_replace_1e9a(char *s)
+{
+    if (!s) return;
+    size_t len = strlen(s);
+    for (size_t i = 0; i + 2 < len; i++) {
+        unsigned char b0 = (unsigned char)s[i];
+        unsigned char b1 = (unsigned char)s[i + 1];
+        unsigned char b2 = (unsigned char)s[i + 2];
+        if (b0 == 0xE1 && b1 == 0xBA && b2 == 0x9A) {
+            s[i] = 'A';
+            s[i + 1] = (char)0xCA;
+            s[i + 2] = (char)0xBE;
+        }
+    }
+}
+
+static char *title_main_from_text(const char *s, size_t len)
+{
+    char *out = strndup0(s, len);
+    if (!out) return NULL;
+    size_t in = 0, out_i = 0;
+    while (out[in] && (out[in] == '_' || isspace((unsigned char)out[in]))) in++;
+    bool last_space = false;
+    for (; out[in]; in++) {
+        char c = out[in];
+        if (c == '_') c = ' ';
+        if (isspace((unsigned char)c)) {
+            if (!last_space) out[out_i++] = ' ';
+            last_space = true;
+        } else {
+            out[out_i++] = c;
+            last_space = false;
+        }
+    }
+    while (out_i > 0 && out[out_i - 1] == ' ') out_i--;
+    out[out_i] = '\0';
+    title_replace_1e9a(out);
+    if (out[0] && islower((unsigned char)out[0])) {
+        out[0] = (char)toupper((unsigned char)out[0]);
+    }
+    return out;
+}
+
+static char *title_compose_resolved(const Title *t, const char *page)
+{
+    if (!t || !t->main || !t->prefix || !t->interwiki) return NULL;
+    size_t pre_len = strlen(t->interwiki);
+    size_t ns_len = strlen(t->prefix);
+    size_t main_len = strlen(t->main);
+    size_t base_len = pre_len + (pre_len ? 1 : 0) + ns_len + (ns_len ? 1 : 0) + main_len;
+    char *base = malloc(base_len + 1);
+    if (!base) return NULL;
+    size_t pos = 0;
+    if (pre_len > 0) {
+        memcpy(base + pos, t->interwiki, pre_len);
+        pos += pre_len;
+        base[pos++] = ':';
+    }
+    if (ns_len > 0) {
+        memcpy(base + pos, t->prefix, ns_len);
+        pos += ns_len;
+        base[pos++] = ':';
+    }
+    memcpy(base + pos, t->main, main_len);
+    pos += main_len;
+    base[pos] = '\0';
+    for (size_t i = 0; i < pos; i++) {
+        if (base[i] == ' ') base[i] = '_';
+    }
+
+    if (base[0] == '/') {
+        size_t page_len = page ? strlen(page) : 0;
+        while (pos > 0 && base[pos - 1] == '/') pos--;
+        char *resolved = malloc(page_len + pos + 1);
+        if (!resolved) {
+            free(base);
+            return NULL;
+        }
+        if (page_len > 0) memcpy(resolved, page, page_len);
+        memcpy(resolved + page_len, base, pos);
+        resolved[page_len + pos] = '\0';
+        free(base);
+        return resolved;
+    }
+
+    if (strncmp(base, "../", 3) == 0 && page && strchr(page, '/')) {
+        size_t level = 0;
+        const char *sub = base;
+        while (strncmp(sub, "../", 3) == 0) {
+            level++;
+            sub += 3;
+        }
+        size_t page_len = strlen(page);
+        size_t dir_count = 1;
+        for (size_t i = 0; i < page_len; i++) {
+            if (page[i] == '/') dir_count++;
+        }
+        if (dir_count > level) {
+            size_t keep = page_len;
+            size_t drops = level;
+            while (keep > 0 && drops > 0) {
+                keep--;
+                if (page[keep] == '/') drops--;
+            }
+            while (keep > 0 && page[keep - 1] != '/') keep--;
+            size_t sub_len = strlen(sub);
+            char *resolved = malloc(keep + (sub_len ? 1 : 0) + sub_len + 1);
+            if (!resolved) {
+                free(base);
+                return NULL;
+            }
+            memcpy(resolved, page, keep);
+            size_t out = keep;
+            if (sub_len > 0 && out > 0 && resolved[out - 1] != '/') resolved[out++] = '/';
+            if (sub_len > 0) {
+                memcpy(resolved + out, sub, sub_len);
+                out += sub_len;
+            }
+            resolved[out] = '\0';
+            free(base);
+            return resolved;
+        }
+    }
+
+    return base;
+}
+
 /* ── Helpers ─────────────────────────────────────────────────────────────── */
 
 /** True if byte b is a hex digit. */
@@ -150,11 +329,29 @@ static char *title_try_percent_decode(const char *s, size_t len, size_t *out_len
 bool title_is_valid_half_parsed(const char *raw, size_t raw_len,
                                 const ParserConfig *cfg)
 {
-    (void)cfg; /* Current Stage 0a validity uses only lexical checks. */
+    Title *t = title_parse_half_parsed(raw, raw_len, 0, cfg, true, "");
+    bool valid = t && t->valid;
+    title_free(t);
+    return valid;
+}
 
-    if (!raw || raw_len == 0) return false;
+Title *title_parse_half_parsed(const char *raw, size_t raw_len,
+                               int default_ns,
+                               const ParserConfig *cfg,
+                               bool self_link,
+                               const char *page)
+{
+    if (!raw) return NULL;
 
-    /* JS uses trimmed.startsWith('../') before decode/normalization. */
+    Title *t = calloc(1, sizeof(*t));
+    if (!t) return NULL;
+    t->prefix = strdup("");
+    t->interwiki = strdup("");
+    if (!t->prefix || !t->interwiki) {
+        title_free(t);
+        return NULL;
+    }
+
     size_t t0 = 0, t1 = raw_len;
     while (t0 < t1 && isspace((unsigned char)raw[t0])) t0++;
     while (t1 > t0 && isspace((unsigned char)raw[t1 - 1])) t1--;
@@ -162,20 +359,29 @@ bool title_is_valid_half_parsed(const char *raw, size_t raw_len,
                     && raw[t0] == '.'
                     && raw[t0 + 1] == '.'
                     && raw[t0 + 2] == '/');
+    bool page_subpage = (page && *page && raw_len - t0 >= 1 && raw[t0] == '/');
 
-    /* decode:true: attempt percent decode; malformed escapes keep original bytes. */
     size_t decoded_len = 0;
     char *pct_decoded = title_try_percent_decode(raw, raw_len, &decoded_len);
-    if (!pct_decoded) return false;
+    if (!pct_decoded) {
+        title_free(t);
+        return NULL;
+    }
 
-    /* title = decodeHtml(title).replace(/[_ ]+/g, ' ').trim() */
     char *html_decoded = str_decode_html_basic(pct_decoded, decoded_len);
     free(pct_decoded);
-    if (!html_decoded) return false;
+    if (!html_decoded) {
+        title_free(t);
+        return NULL;
+    }
 
     size_t html_len = strlen(html_decoded);
     char *norm = malloc(html_len + 1);
-    if (!norm) { free(html_decoded); return false; }
+    if (!norm) {
+        free(html_decoded);
+        title_free(t);
+        return NULL;
+    }
 
     size_t nlen = 0;
     bool last_space = false;
@@ -196,42 +402,138 @@ bool title_is_valid_half_parsed(const char *raw, size_t raw_len,
     while (start < end && isspace((unsigned char)norm[start])) start++;
     while (end > start && isspace((unsigned char)norm[end - 1])) end--;
 
-    /* If title starts with ':', JS strips one and trims. */
-    if (start < end && norm[start] == ':') {
-        start++;
-        while (start < end && isspace((unsigned char)norm[start])) start++;
-    }
-
-    /* Split fragment at first '#'; validity is based on title main part only. */
-    size_t hash = end;
-    for (size_t i = start; i < end; i++) {
-        if (norm[i] == '#') { hash = i; break; }
-    }
-    if (hash < end) {
-        end = hash;
-        while (end > start && isspace((unsigned char)norm[end - 1])) end--;
-    }
-
-    size_t title_len = end - start;
-    if (title_len == 0) { free(norm); return false; }
-
-    /* JS with page:'' rejects ../ subpages (page is defined but empty). */
-    if (subpage) { free(norm); return false; }
-
+    int ns = default_ns;
     const char *title = norm + start;
+    size_t title_len = end - start;
 
-    /* JS condition: decodeHtml(title) === title. */
+    if (subpage || page_subpage) {
+        ns = 0;
+    } else {
+        if (title_len > 0 && title[0] == ':') {
+            ns = 0;
+            title++;
+            title_len--;
+            while (title_len > 0 && isspace((unsigned char)title[0])) {
+                title++;
+                title_len--;
+            }
+        }
+
+        if (default_ns == 0) {
+            size_t iw_consumed = 0;
+            char *iw = str_extract_interwiki(title, title_len, cfg, &iw_consumed);
+            if (iw) {
+                free(t->interwiki);
+                t->interwiki = iw;
+                if (iw_consumed <= title_len) {
+                    title += iw_consumed;
+                    title_len -= iw_consumed;
+                }
+            }
+        }
+
+        const char *colon = memchr(title, ':', title_len);
+        if (colon) {
+            int found = title_lookup_namespace(cfg, title, (size_t)(colon - title));
+            if (found) {
+                ns = found;
+                title_len -= (size_t)(colon + 1 - title);
+                title = colon + 1;
+                while (title_len > 0 && isspace((unsigned char)title[0])) {
+                    title++;
+                    title_len--;
+                }
+            }
+        }
+    }
+    t->ns = ns;
+
+    size_t hash = title_len;
+    for (size_t i = 0; i < title_len; i++) {
+        if (title[i] == '#') {
+            hash = i;
+            break;
+        }
+    }
+    if (hash < title_len) {
+        const char *fragment = title + hash + 1;
+        size_t fragment_len = title_len - hash - 1;
+        while (fragment_len > 0 && isspace((unsigned char)fragment[fragment_len - 1])) fragment_len--;
+        size_t frag_dec_len = 0;
+        char *frag_pct = title_try_percent_decode(fragment, fragment_len, &frag_dec_len);
+        if (frag_pct) {
+            char *frag_html = str_decode_html_basic(frag_pct, frag_dec_len);
+            free(frag_pct);
+            if (frag_html) {
+                size_t flen = strlen(frag_html);
+                while (flen > 0 && isspace((unsigned char)frag_html[flen - 1])) flen--;
+                for (size_t i = 0; i < flen; i++) {
+                    if (frag_html[i] == ' ') frag_html[i] = '_';
+                }
+                frag_html[flen] = '\0';
+                t->fragment = frag_html;
+            }
+        }
+        title_len = hash;
+        while (title_len > 0 && isspace((unsigned char)title[title_len - 1])) title_len--;
+    }
+
+    t->main = title_main_from_text(title, title_len);
+    if (!t->main) {
+        free(norm);
+        title_free(t);
+        return NULL;
+    }
+
+    free(t->prefix);
+    t->prefix = strdup(title_namespace_name(cfg, ns));
+    if (!t->prefix) {
+        free(norm);
+        title_free(t);
+        return NULL;
+    }
+
+    size_t level = 0;
+    const char *sub = title;
+    if (subpage) {
+        while (title_len >= (size_t)((level + 1) * 3) && strncmp(sub, "../", 3) == 0) {
+            level++;
+            sub += 3;
+            title_len -= 3;
+        }
+    }
+
     char *decoded_again = str_decode_html_basic(title, title_len);
-    if (!decoded_again) { free(norm); return false; }
-    size_t again_len = strlen(decoded_again);
-    bool html_idempotent = (again_len == title_len
-                            && memcmp(decoded_again, title, title_len) == 0);
+    bool html_idempotent = decoded_again
+        && strlen(decoded_again) == title_len
+        && memcmp(decoded_again, title, title_len) == 0;
     free(decoded_again);
-    if (!html_idempotent) { free(norm); return false; }
 
-    bool invalid = title_has_invalid_chars(title, title_len);
+    bool page_ok = true;
+    if (level > 0 && page != NULL) {
+        size_t page_parts = 1;
+        for (const char *p = page; *p; ++p) {
+            if (*p == '/') page_parts++;
+        }
+        page_ok = page_parts > level;
+    }
+
+    t->valid = (t->main[0] != '\0'
+                || t->interwiki[0] != '\0'
+                || (self_link && t->ns == 0 && t->fragment != NULL))
+        && html_idempotent
+        && page_ok
+        && !title_has_invalid_chars(sub, strlen(sub));
+
+    t->title = title_compose_resolved(t, page);
+    if (!t->title) {
+        free(norm);
+        title_free(t);
+        return NULL;
+    }
+
     free(norm);
-    return !invalid;
+    return t;
 }
 
 char *title_normalize(const char *raw, size_t raw_len)
@@ -313,5 +615,7 @@ void title_free(Title *t)
     free(t->main);
     free(t->prefix);
     free(t->fragment);
+    free(t->interwiki);
+    free(t->title);
     free(t);
 }
