@@ -20,6 +20,9 @@ runTests([
   // Table with a link in a cell
   '{|\n| [[Page|link]] || plain\n|}',
 
+  // ASCII chset table cell (parity repro candidate)
+  '{|\n| {{chset-cell1 | 123 U+007B: LEFT CURLY BRACKET | [[Left curly bracket|{]] | style=background:#ffffb2}}\n|}',
+
   // Table cell link text spanning inline HTML must remain one link
   '{|\n! Modern [[State of matter|state<br />of matter]]\n|}',
 
@@ -108,6 +111,8 @@ runTests([
   // Wikitext repro: imagemap should produce imagemap-image / imagemap-link structure
   '<imagemap>\nFile:Emancipation proclamation.jpg|thumb|upright=1.25|\'\'[[First Reading of the Emancipation Proclamation of President Lincoln]]\'\'|alt=A dark-haired, bearded, middle-aged man holding documents is seated among seven other men.\npoly 269 892 254 775 193 738 [[Edwin M. Stanton|Edwin Stanton]]\n</imagemap>',
 
+  // Parity test: table fragment from ASCII.wikitext
+  '{|\n| {{chset-left1|0\'\'x\'\'}}\n| {{chset-ctrl1 | 0 U+0000: Control (alias NULL) (alias NUL) | [[Null character|NUL]] }}\n| {{chset-ctrl1 | 1 U+0001: Control (alias START OF HEADING) (alias SOH) | [[Start of heading|SOH]] | style=background:#ffffb2}}\n|}',
   // BEGIN: auto-generated post-processing parity failures (234 cases)
   "<ref>https://example.org/a</ref>",
   "<ref>RFC 2119</ref>",
