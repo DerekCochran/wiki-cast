@@ -6,13 +6,13 @@ const os = require('os');
 const { spawnSync } = require('child_process');
 const Module = require('module');
 
-// Resolve parser root from a local orig-js mirror first, then npm package.
+// Resolve parser root from the installed npm package first, then local orig-js as fallback.
 function resolveWikiRootDir() {
   const candidates = [
-    path.resolve(__dirname, '..', '..', '..', 'orig-js'),
-    path.resolve(__dirname, '..', 'orig-js'),
     path.resolve(__dirname, '..', '..', '..', 'node_modules', 'wikiparser-node'),
     path.resolve(__dirname, '..', 'node_modules', 'wikiparser-node'),
+    path.resolve(__dirname, '..', '..', '..', 'orig-js'),
+    path.resolve(__dirname, '..', 'orig-js'),
   ];
   for (const dir of candidates) {
     const entry = path.join(dir, 'dist', 'src', 'index.js');

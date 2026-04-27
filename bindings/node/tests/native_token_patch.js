@@ -19,12 +19,12 @@ const fs = require('fs');
  * Keep orig-js candidates as fallback for local scaffolding. */
 function resolveTokenModulePath() {
 	const candidates = [
+		path.resolve(__dirname, '..', 'node_modules', 'wikiparser-node', 'dist', 'src', 'index.js'),
+		path.resolve(__dirname, '..', '..', '..', 'node_modules', 'wikiparser-node', 'dist', 'src', 'index.js'),
 		path.resolve(__dirname, '..', '..', '..', 'orig-js', 'dist', 'src', 'index.js'),
 		path.resolve(__dirname, '..', 'orig-js', 'dist', 'src', 'index.js'),
 		path.resolve(__dirname, '..', '..', '..', 'orig-js', 'src', 'src', 'index.js'),
 		path.resolve(__dirname, '..', 'orig-js', 'src', 'src', 'index.js'),
-		path.resolve(__dirname, '..', 'node_modules', 'wikiparser-node', 'dist', 'src', 'index.js'),
-		path.resolve(__dirname, '..', '..', '..', 'node_modules', 'wikiparser-node', 'dist', 'src', 'index.js'),
 		path.resolve(__dirname, '..', '..', '..', 'orig-js', 'src', 'index.js'),
 		path.resolve(__dirname, '..', 'orig-js', 'src', 'index.js'),
 	];
@@ -57,11 +57,7 @@ try {
 		try {
 			native = require(path.join(__dirname, '..', 'build', 'Debug', 'wikiparser-node-c-tokenizer.node'));
 		} catch (e3) {
-			try {
-				native = require(path.join(__dirname, '..', 'build', 'Debug', 'bindings/node.node'));
-			} catch (e4) {
-				native = null;
-			}
+			native = require(path.join(__dirname, '..', 'build', 'Debug', 'bindings/node.node'));
 		}
 	}
 }
