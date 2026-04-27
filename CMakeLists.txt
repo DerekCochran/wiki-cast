@@ -146,3 +146,11 @@ add_test(NAME wikitext_c COMMAND test_wikitext
          ${CMAKE_CURRENT_SOURCE_DIR}/tests/wikitext)
 configure_parser_test_env(wikitext_c)
 
+# Build the Node native addon from bindings/node as part of the CMake build.
+add_custom_target(node_binding ALL
+    COMMAND ${CMAKE_COMMAND} -E echo "Building Node native addon"
+    COMMAND ${CMAKE_COMMAND} -E chdir ${CMAKE_CURRENT_SOURCE_DIR}/bindings/node npx node-gyp rebuild
+    WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/bindings/node
+    DEPENDS wikitokenizer
+)
+

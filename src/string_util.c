@@ -301,6 +301,19 @@ uint32_t utf8_tolower_codepoint(uint32_t cp)
     return cp;
 }
 
+uint32_t utf8_toupper_codepoint(uint32_t cp)
+{
+    /* Fast path for ASCII */
+    if (cp < 128) return (uint32_t)toupper((int)cp);
+    /* Basic Latin-1 uppercase mapping for common accented letters. */
+    if (cp >= 0x00E0 && cp <= 0x00F6) return cp - 0x20;
+    if (cp >= 0x00F8 && cp <= 0x00FE) return cp - 0x20;
+    if (cp == 0x00FF) return 0x0178; /* ÿ -> Ÿ */
+    if (cp == 0x00B5) return 0x039C; /* µ -> Μ */
+    if (cp == 0x00DF) return 0x1E9E; /* ß -> ẞ */
+    return cp;
+}
+
 /* ── str_istr ────────────────────────────────────────────────────────────── */
 
 const char *str_istr(const char *haystack, size_t hlen,

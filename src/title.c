@@ -84,6 +84,73 @@ static void title_replace_1e9a(char *s)
     }
 }
 
+static size_t utf8_encode_codepoint(uint32_t cp, char *out)
+{
+    if (cp < 0x80) {
+        out[0] = (char)cp;
+        return 1;
+    }
+    if (cp < 0x800) {
+        out[0] = (char)(0xC0 | (cp >> 6));
+        out[1] = (char)(0x80 | (cp & 0x3F));
+        return 2;
+    }
+    if (cp < 0x10000) {
+        out[0] = (char)(0xE0 | (cp >> 12));
+        out[1] = (char)(0x80 | ((cp >> 6) & 0x3F));
+        out[2] = (char)(0x80 | (cp & 0x3F));
+        return 3;
+    }
+    out[0] = (char)(0xF0 | (cp >> 18));
+    out[1] = (char)(0x80 | ((cp >> 12) & 0x3F));
+    out[2] = (char)(0x80 | ((cp >> 6) & 0x3F));
+    out[3] = (char)(0x80 | (cp & 0x3F));
+    return 4;
+}
+
+static size_t title_uppercase_first_codepoint(char *s, size_t len)
+{
+    if (len == 0) return 0;
+    int char_len = utf8_char_len((unsigned char)s[0]);
+    if (char_len <= 0 || (size_t)char_len > len) return len;
+
+    uint32_t cp = 0;
+    if (char_len == 1) {
+        cp = (unsigned char)s[0];
+    } else if (char_len == 2) {
+        cp = ((uint32_t)(s[0] & 0x1F) << 6)
+           | ((uint32_t)(unsigned char)s[1] & 0x3F);
+    } else if (char_len == 3) {
+        cp = ((uint32_t)(s[0] & 0x0F) << 12)
+           | ((uint32_t)(unsigned char)s[1] & 0x3F) << 6
+           | ((uint32_t)(unsigned char)s[2] & 0x3F);
+    } else {
+        cp = ((uint32_t)(s[0] & 0x07) << 18)
+           | ((uint32_t)(unsigned char)s[1] & 0x3F) << 12
+           | ((uint32_t)(unsigned char)s[2] & 0x3F) << 6
+           | ((uint32_t)(unsigned char)s[3] & 0x3F);
+    }
+
+    if (cp == 0x00DF) {
+        const char buf[2] = {'S', 'S'};
+        size_t wrote = 2;
+        size_t new_len = len - (size_t)char_len + wrote;
+        memmove(s + wrote, s + char_len, len - (size_t)char_len + 1);
+        memcpy(s, buf, wrote);
+        return new_len;
+    }
+
+    uint32_t up = utf8_toupper_codepoint(cp);
+    if (up == cp) return len;
+
+    char buf[4];
+    size_t wrote = utf8_encode_codepoint(up, buf);
+    size_t new_len = len - (size_t)char_len + wrote;
+    memmove(s + wrote, s + char_len, len - (size_t)char_len + 1);
+    memcpy(s, buf, wrote);
+    return new_len;
+}
+
 static char *title_main_from_text(const char *s, size_t len)
 {
     char *out = strndup0(s, len);
@@ -105,9 +172,8 @@ static char *title_main_from_text(const char *s, size_t len)
     while (out_i > 0 && out[out_i - 1] == ' ') out_i--;
     out[out_i] = '\0';
     title_replace_1e9a(out);
-    if (out[0] && islower((unsigned char)out[0])) {
-        out[0] = (char)toupper((unsigned char)out[0]);
-    }
+    out_i = title_uppercase_first_codepoint(out, out_i);
+    out[out_i] = '\0';
     return out;
 }
 
@@ -591,9 +657,7 @@ char *title_normalize(const char *raw, size_t raw_len)
      * (after namespace/interwiki prefix parsing), not necessarily byte 0 of
      * the full title string.
      */
-    if (out > 0 && islower((unsigned char)result[0])) {
-        result[0] = (char)toupper((unsigned char)result[0]);
-    }
+    out = title_uppercase_first_codepoint(result, out);
 
     size_t cap_at = 0;
     for (size_t i = 0; i < out; i++) {
@@ -602,8 +666,8 @@ char *title_normalize(const char *raw, size_t raw_len)
             break;
         }
     }
-    if (cap_at < out && islower((unsigned char)result[cap_at])) {
-        result[cap_at] = (char)toupper((unsigned char)result[cap_at]);
+    if (cap_at < out) {
+        out = cap_at + title_uppercase_first_codepoint(result + cap_at, out - cap_at);
     }
 
     return result;

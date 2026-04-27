@@ -74,6 +74,9 @@ int utf8_char_len(unsigned char c);
 /* ── Case-fold a single UTF-8 codepoint to lowercase (ASCII-only fast path) ─ */
 uint32_t utf8_tolower_codepoint(uint32_t cp);
 
+/* ── Uppercase a single UTF-8 codepoint (ASCII + Latin-1 support) ─────────── */
+uint32_t utf8_toupper_codepoint(uint32_t cp);
+
 /* ── String search helpers ─────────────────────────────────────────────────── */
 /**
  * Case-insensitive strstr for ASCII-range needles.
