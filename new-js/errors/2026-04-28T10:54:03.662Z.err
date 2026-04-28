@@ -1,0 +1,18 @@
+Error: Cannot find module '../tag/tvar'
+Require stack:
+- /home/djc/git/wikiparser-node-c-tokenizer/new-js/dist/src/tagPair/translate.js
+- /home/djc/git/wikiparser-node-c-tokenizer/new-js/dist/parser/commentAndExt.js
+- /home/djc/git/wikiparser-node-c-tokenizer/new-js/dist/src/index.js
+- /home/djc/git/wikiparser-node-c-tokenizer/bindings/node/tests/native_token_patch.js
+- /home/djc/git/wikiparser-node-c-tokenizer/bindings/node/tests/helpers.js
+- /home/djc/git/wikiparser-node-c-tokenizer/bindings/node/tests/test_braces.js
+    at Module._resolveFilename (node:internal/modules/cjs/loader:1456:15)
+    at defaultResolveImpl (node:internal/modules/cjs/loader:1066:19)
+    at resolveForCJSWithHooks (node:internal/modules/cjs/loader:1071:22)
+    at Module._load (node:internal/modules/cjs/loader:1242:25)
+    at wrapModuleLoad (node:internal/modules/cjs/loader:255:19)
+    at Module.require (node:internal/modules/cjs/loader:1556:12)
+    at require (node:internal/modules/helpers:152:16)
+    at Object.<anonymous> (/home/djc/git/wikiparser-node-c-tokenizer/new-js/dist/src/tagPair/translate.js:41:16)
+    at Module._compile (node:internal/modules/cjs/loader:1812:14)
+    at Object..js (node:internal/modules/cjs/loader:1943:10)

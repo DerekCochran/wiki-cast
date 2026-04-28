@@ -7,6 +7,11 @@ const { spawnSync } = require('child_process');
 
 const { newProto, nativeProto } = require('./native_token_patch.js');
 const MAX_STAGE = 20;
+let proto;
+// Token constructor (derived from the new JS implementation's prototype)
+const Token = newProto && newProto.constructor ? newProto.constructor : null;
+// Parser module (top-level API)
+const Parser = require(path.resolve(__dirname, '..', '..', '..', 'new-js', 'dist', 'index.js'));
 const LAST_SAMPLE_PATH = '/tmp/wiki_latest_test_input.txt';
 const PERF_LOG_PATH = '/tmp/wikitext_perf.txt';
 const DEFAULT_WIKI_CONFIG = path.join(__dirname, '..', '..', '..', 'config', 'enwiki.json');
@@ -212,6 +217,12 @@ function nodeToJSON(node) {
  */
 function runParse(wikitext, parseFn, include = false, tidy = false, runLabel = 'parse') {
   proto = parseFn;
+  // Temporarily patch Token.prototype.parse to use the supplied parse implementation
+  const parseMethod = parseFn && typeof parseFn.parse === 'function' ? parseFn.parse : parseFn;
+  const oldParse = Token && Token.prototype ? Token.prototype.parse : undefined;
+  if (Token && Token.prototype && parseMethod) {
+    Token.prototype.parse = parseMethod;
+  }
   const stageLogDir = process.env.WIKI_STAGE_LOG_DIR;
   let origConsoleLog, origConsoleError, logStream;
   if (stageLogDir) {
@@ -228,7 +239,14 @@ function runParse(wikitext, parseFn, include = false, tidy = false, runLabel = '
     }
   }
   const parseStart = nowNs();
-  const root = Parser.parse(wikitext, include, MAX_STAGE);
+  let root;
+  try {
+    root = Parser.parse(wikitext, include, MAX_STAGE);
+  } finally {
+    if (Token && Token.prototype && typeof oldParse !== 'undefined') {
+      Token.prototype.parse = oldParse;
+    }
+  }
   const parseEnd = nowNs();
   const toStringStart = nowNs();
   const text = String(root.toString());
