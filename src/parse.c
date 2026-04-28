@@ -167,7 +167,7 @@ static void append_native_stage_json(const char *stage_log_dir, int stage, Threa
     snprintf(pathbuf, sizeof(pathbuf), "%s/native-stage.log", stage_log_dir);
     FILE *f = fopen(pathbuf, "a");
     if (!f) return;
-    fprintf(f, "--- Stage %d --\n", stage);
+    fprintf(f, "Stage %d: ", stage);
     /* Emit a root object with childNodes array */
     fputs("{\"type\":\"root\",\"childNodes\":[", f);
 
@@ -210,7 +210,7 @@ static void append_native_stage_json(const char *stage_log_dir, int stage, Threa
         }
     }
 
-    fputs("]}\n\n", f);
+    fputs("]}\n", f);
     fclose(f);
 }
 

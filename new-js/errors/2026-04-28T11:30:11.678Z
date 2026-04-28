@@ -1,0 +1,5 @@
+{|
+| {{chset-left1|0''x''}}
+| {{chset-ctrl1 | 0 U+0000: Control (alias NULL) (alias NUL) | [[Null character|NUL]] }}
+| {{chset-ctrl1 | 1 U+0001: Control (alias START OF HEADING) (alias SOH) | [[Start of heading|SOH]] | style=background:#ffffb2}}
+|}

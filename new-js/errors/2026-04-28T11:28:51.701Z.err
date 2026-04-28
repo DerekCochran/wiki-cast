@@ -1,0 +1,11 @@
+ReferenceError: x is not defined
+    at Token.parse (/home/djc/git/wikiparser-node-c-tokenizer/new-js/dist/src/index.js:360:19)
+    at /home/djc/git/wikiparser-node-c-tokenizer/new-js/dist/index.js:242:30
+    at Object.run (/home/djc/git/wikiparser-node-c-tokenizer/new-js/dist/util/debug.js:26:28)
+    at Object.parse (/home/djc/git/wikiparser-node-c-tokenizer/new-js/dist/index.js:237:37)
+    at runParse (/home/djc/git/wikiparser-node-c-tokenizer/bindings/node/tests/helpers.js:244:19)
+    at compareSample (/home/djc/git/wikiparser-node-c-tokenizer/bindings/node/tests/helpers.js:294:18)
+    at runTests (/home/djc/git/wikiparser-node-c-tokenizer/bindings/node/tests/helpers.js:469:16)
+    at Object.<anonymous> (/home/djc/git/wikiparser-node-c-tokenizer/bindings/node/tests/test_braces.js:6:1)
+    at Module._compile (node:internal/modules/cjs/loader:1812:14)
+    at Object..js (node:internal/modules/cjs/loader:1943:10)
