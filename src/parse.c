@@ -9,14 +9,14 @@
  *   Stage  0: parseRedirect (root only) then parseCommentAndExt
  *   Stage  1: parseBraces
  *   Stage  2: parseHtml
- *   Stage  3: parseTable           (not yet implemented — stub)
- *   Stage  4: parseHrAndDoubleUnderscore (stub)
- *   Stage  5: parseLinks           (stub)
- *   Stage  6: parseQuotes          (stub)
- *   Stage  7: parseExternalLinks   (stub)
- *   Stage  8: parseMagicLinks      (stub)
- *   Stage  9: parseList            (stub)
- *   Stage 10: parseConverter       (stub)
+ *   Stage  3: parseTable
+ *   Stage  4: parseHrAndDoubleUnderscore
+ *   Stage  5: parseLinks
+ *   Stage  6: parseQuotes
+ *   Stage  7: parseExternalLinks
+ *   Stage  8: parseMagicLinks
+ *   Stage  9: parseList
+ *   Stage 10: parseConverter
  *
  * After all requested stages, build() expands sentinel markers into the
  * child token tree.
