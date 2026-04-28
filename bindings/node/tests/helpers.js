@@ -4,53 +4,19 @@ const path = require('path');
 const fs = require('fs');
 const os = require('os');
 const { spawnSync } = require('child_process');
-const Module = require('module');
 
-// Resolve parser root from the installed npm package first, then local orig-js as fallback.
-function resolveWikiRootDir() {
-  const candidates = [
-    path.resolve(__dirname, '..', '..', '..', 'node_modules', 'wikiparser-node'),
-    path.resolve(__dirname, '..', 'node_modules', 'wikiparser-node'),
-    path.resolve(__dirname, '..', '..', '..', 'orig-js'),
-    path.resolve(__dirname, '..', 'orig-js'),
-  ];
-  for (const dir of candidates) {
-    const entry = path.join(dir, 'dist', 'src', 'index.js');
-    if (fs.existsSync(entry)) return dir;
-  }
-  throw new Error('Unable to locate parser root in orig-js or node_modules/wikiparser-node');
-}
-
-const wikiRootDir = resolveWikiRootDir();
-const wikiNmDir = path.resolve(wikiRootDir, '..');
-const _origPaths = Module._nodeModulePaths;
-Module._nodeModulePaths = function(from) {
-  return [wikiNmDir, ...(_origPaths.call(this, from) || [])];
-};
-
-// Load the native patch exactly once from the local tests directory.
-const patchPath = path.resolve(__dirname, 'native_token_patch.js');
-const patch = require(patchPath);
-
-const { Token } = require(path.join(wikiRootDir, 'dist', 'src', 'index.js'));
-const proto = Token.prototype;
-const Parser = require(path.join(wikiRootDir, 'dist', 'index.js'));
-
-if (!proto || !proto.__orig_parse) {
-  console.error('Original JS parse() not saved on prototype; aborting');
-  process.exit(0);
-}
-
-const MAX_STAGE = 11;
+const { newProto, nativeProto } = require('./native_token_patch.js');
+const MAX_STAGE = 20;
 const LAST_SAMPLE_PATH = '/tmp/wiki_latest_test_input.txt';
 const PERF_LOG_PATH = '/tmp/wikitext_perf.txt';
-const DEFAULT_WIKI_CONFIG = path.join(wikiRootDir, 'config', 'enwiki.json');
+const DEFAULT_WIKI_CONFIG = path.join(__dirname, '..', '..', '..', 'config', 'enwiki.json');
 
 if (!process.env.WIKI_CONFIG) {
   process.env.WIKI_CONFIG = DEFAULT_WIKI_CONFIG;
 }
 
-Parser.config = process.env.WIKI_CONFIG;
+newProto.config = process.env.WIKI_CONFIG;
+nativeProto.config = process.env.WIKI_CONFIG;
 
 function writeLatestSampleCheckpoint(wikitext, opts) {
   fs.writeFileSync(LAST_SAMPLE_PATH, wikitext, 'utf8');
@@ -244,32 +210,46 @@ function nodeToJSON(node) {
  * @param {boolean} include
  * @param {boolean} tidy
  */
-function runParse(wikitext, parseFn, include = false, tidy = false) {
-  // Call the high-level Parser.parse exactly like production. When the
-  // caller wants the original JS baseline (proto.__orig_parse), temporarily
-  // restore proto.parse to the original implementation so Parser.parse
-  // exercises the JS codepath.
-  const saved = proto.parse;
-  const needRestore = parseFn === proto.__orig_parse;
-  if (needRestore) proto.parse = proto.__orig_parse;
-  try {
-    const parseStart = nowNs();
-    const root = Parser.parse(wikitext, include, MAX_STAGE);
-    const parseEnd = nowNs();
-    const toStringStart = nowNs();
-    const text = String(root.toString());
-    const toStringEnd = nowNs();
-    return {
-      text,
-      tree: nodeToJSON(root),
-      timing: {
-        parseMs: nsToMsRounded(parseEnd - parseStart),
-        toStringMs: nsToMsRounded(toStringEnd - toStringStart),
-      },
-    };
-  } finally {
-    if (needRestore) proto.parse = saved;
+function runParse(wikitext, parseFn, include = false, tidy = false, runLabel = 'parse') {
+  proto = parseFn;
+  const stageLogDir = process.env.WIKI_STAGE_LOG_DIR;
+  let origConsoleLog, origConsoleError, logStream;
+  if (stageLogDir) {
+    try {
+      ensureDir(stageLogDir);
+      const file = path.join(stageLogDir, `${runLabel}.${Date.now()}.${Math.random().toString(36).slice(2,8)}.console.log`);
+      logStream = fs.createWriteStream(file, { flags: 'a' });
+      origConsoleLog = console.log;
+      origConsoleError = console.error;
+      console.log = (...args) => { try { origConsoleLog.apply(console, args); } catch (e) {} ; try { logStream.write(args.map(a => String(a)).join(' ') + '\n'); } catch (e) {} };
+      console.error = (...args) => { try { origConsoleError.apply(console, args); } catch (e) {} ; try { logStream.write(args.map(a => String(a)).join(' ') + '\n'); } catch (e) {} };
+    } catch (e) {
+      /* best-effort */
+    }
   }
+  const parseStart = nowNs();
+  const root = Parser.parse(wikitext, include, MAX_STAGE);
+  const parseEnd = nowNs();
+  const toStringStart = nowNs();
+  const text = String(root.toString());
+  const toStringEnd = nowNs();
+  if (logStream) {
+    try { logStream.end(); } catch (e) {}
+  }
+  if (origConsoleLog) {
+    console.log = origConsoleLog;
+  }
+  if (origConsoleError) {
+    console.error = origConsoleError;
+  }
+  return {
+    text,
+    tree: nodeToJSON(root),
+    timing: {
+      parseMs: nsToMsRounded(parseEnd - parseStart),
+      toStringMs: nsToMsRounded(toStringEnd - toStringStart),
+    },
+  };
 }
 
 /**
@@ -283,19 +263,32 @@ function compareSample(wikitext, { include = false, tidy = false, name = 'sample
   const label = sampleLabel == null ? JSON.stringify(wikitext.slice(0, 70)) : String(sampleLabel);
 
   let jsResult, nativeResult;
+  // Prepare a per-sample stage log directory and enable stage logging
+  const stageDir = path.join(os.tmpdir(), `wiki_stage_${Date.now()}_${process.pid}_${Math.random().toString(36).slice(2,8)}`);
+  ensureDir(stageDir);
+  const prevStageDir = process.env.WIKI_STAGE_LOG_DIR;
+  const prevStageFlag = process.env.WIKI_STAGE_LOG;
+  process.env.WIKI_STAGE_LOG_DIR = stageDir;
+  process.env.WIKI_STAGE_LOG = '1';
 
   try {
-    jsResult = runParse(wikitext, proto.__orig_parse, include, tidy);
-  } catch (e) {
-    console.log('ERROR (JS)  ', label, e && e.message);
-    return false;
-  }
+    try {
+      jsResult = runParse(wikitext, newProto, include, tidy, 'js');
+    } catch (e) {
+      console.log('ERROR (JS)  ', label, e && e.message);
+      return false;
+    }
 
-  try {
-    nativeResult = runParse(wikitext, proto.parse, include, tidy);
-  } catch (e) {
-    console.log('ERROR (NAT) ', label, e && e.message);
-    return false;
+    try {
+      nativeResult = runParse(wikitext, nativeProto, include, tidy, 'native');
+    } catch (e) {
+      console.log('ERROR (NAT) ', label, e && e.message);
+      return false;
+    }
+  } finally {
+    /* restore any previous env */
+    if (prevStageDir === undefined) delete process.env.WIKI_STAGE_LOG_DIR; else process.env.WIKI_STAGE_LOG_DIR = prevStageDir;
+    if (prevStageFlag === undefined) delete process.env.WIKI_STAGE_LOG; else process.env.WIKI_STAGE_LOG = prevStageFlag;
   }
 
   appendPerfLine(name, sampleIndex, jsResult.timing, nativeResult.timing);
@@ -341,6 +334,96 @@ function compareSample(wikitext, { include = false, tidy = false, name = 'sample
     const astAnalysis = analyzeAstDiff(jsResult.tree, nativeResult.tree);
     writeTextFile(astAnalysisPath, astAnalysis);
 
+    // Copy any stage logs collected into the suite artifact directory
+    try {
+      const stageLogsDst = path.join(suiteDir, 'stage-logs');
+      ensureDir(stageLogsDst);
+      const files = fs.readdirSync(stageDir || os.tmpdir());
+      for (const f of files) {
+        const src = path.join(stageDir, f);
+        const dst = path.join(stageLogsDst, f);
+        try { fs.copyFileSync(src, dst); } catch (e) { /* ignore */ }
+      }
+    } catch (e) {
+      /* best-effort */
+    }
+
+    // Produce consolidated single-file artifacts for expected and got
+    try {
+      const expectedFullPath = path.join(suiteDir, `expected.full.${n}.txt`);
+      const gotFullPath = path.join(suiteDir, `got.full.${n}.txt`);
+
+      function appendHeader(fp, hdr) {
+        fs.appendFileSync(fp, `==== ${hdr} ====` + '\n', 'utf8');
+      }
+
+      // Build expected.full
+      try {
+        fs.writeFileSync(expectedFullPath, '', 'utf8');
+        appendHeader(expectedFullPath, 'INPUT');
+        fs.appendFileSync(expectedFullPath, fs.readFileSync(inputPath, 'utf8') + '\n', 'utf8');
+
+        appendHeader(expectedFullPath, 'EXPECTED STRING');
+        fs.appendFileSync(expectedFullPath, fs.readFileSync(expectedStringPath, 'utf8') + '\n', 'utf8');
+
+        appendHeader(expectedFullPath, 'EXPECTED JSON');
+        fs.appendFileSync(expectedFullPath, fs.readFileSync(expectedJsonPath, 'utf8') + '\n', 'utf8');
+
+        appendHeader(expectedFullPath, 'STAGE LOGS');
+        const sl = fs.readdirSync(stageDir || os.tmpdir());
+        for (const f of sl) {
+          try {
+            fs.appendFileSync(expectedFullPath, `-- ${f} --\n`, 'utf8');
+            const data = fs.readFileSync(path.join(stageDir, f));
+            fs.appendFileSync(expectedFullPath, data);
+            if (!String(data).endsWith('\n')) fs.appendFileSync(expectedFullPath, '\n');
+          } catch (e) {
+            /* ignore per-file read errors */
+          }
+        }
+      } catch (e) {
+        /* best-effort */
+      }
+
+      // Build got.full
+      try {
+        fs.writeFileSync(gotFullPath, '', 'utf8');
+        appendHeader(gotFullPath, 'INPUT');
+        fs.appendFileSync(gotFullPath, fs.readFileSync(inputPath, 'utf8') + '\n', 'utf8');
+
+        appendHeader(gotFullPath, 'GOT STRING');
+        fs.appendFileSync(gotFullPath, fs.readFileSync(gotStringPath, 'utf8') + '\n', 'utf8');
+
+        appendHeader(gotFullPath, 'GOT JSON');
+        fs.appendFileSync(gotFullPath, fs.readFileSync(gotJsonPath, 'utf8') + '\n', 'utf8');
+
+        appendHeader(gotFullPath, 'STAGE LOGS');
+        const sl2 = fs.readdirSync(stageDir || os.tmpdir());
+        for (const f of sl2) {
+          try {
+            fs.appendFileSync(gotFullPath, `-- ${f} --\n`, 'utf8');
+            const data = fs.readFileSync(path.join(stageDir, f));
+            fs.appendFileSync(gotFullPath, data);
+            if (!String(data).endsWith('\n')) fs.appendFileSync(gotFullPath, '\n');
+          } catch (e) {
+            /* ignore */
+          }
+        }
+      } catch (e) {
+        /* best-effort */
+      }
+        // Print locations of consolidated artifacts and stage logs for easy triage
+        try {
+          console.log('  expected full  :', expectedFullPath);
+          console.log('  got full       :', gotFullPath);
+          console.log('  stage logs     :', path.join(suiteDir, 'stage-logs'));
+        } catch (e) {
+          /* best-effort */
+        }
+    } catch (e) {
+      /* best-effort overall */
+    }
+
     console.log('  expected string:', expectedStringPath);
     console.log('  got string     :', gotStringPath);
     console.log('  string diff    :', stringDiffPath);
@@ -382,4 +465,4 @@ function runTests(samples, opts = {}) {
   process.exit(0);
 }
 
-module.exports = { runTests, compareSample, nodeToJSON, Token, proto, patch, MAX_STAGE };
+module.exports = { runTests };

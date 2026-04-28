@@ -51,6 +51,10 @@
 #include <assert.h>
 #include <ctype.h>
 #include <strings.h>
+#include <sys/stat.h>
+#include <unistd.h>
+#include <time.h>
+#include <errno.h>
 
 /* ── Orphan-token cleanup helpers ──────────────────────────────────────────
  *
@@ -132,6 +136,82 @@ static bool mem_has(const char *s, size_t len, const char *needle)
         if (memcmp(s + i, needle, nlen) == 0) return true;
     }
     return false;
+}
+
+/* Write a JSON-escaped string of given length to fp (surrounded by quotes). */
+static void json_write_escaped_len(const char *s, size_t len, FILE *fp)
+{
+    if (!fp) return;
+    fputc('"', fp);
+    for (size_t i = 0; i < len; i++) {
+        unsigned char c = (unsigned char)s[i];
+        if (c == '"') fputs("\\\"", fp);
+        else if (c == '\\') fputs("\\\\", fp);
+        else if (c == '\n') fputs("\\n", fp);
+        else if (c == '\r') fputs("\\r", fp);
+        else if (c == '\t') fputs("\\t", fp);
+        else if (c < 0x20) fprintf(fp, "\\u%04x", c);
+        else fputc(c, fp);
+    }
+    fputc('"', fp);
+}
+
+/* Append a JSON snapshot representing the current root content (ws)
+ * to <stage_log_dir>/native-stage.log. The ws buffer is scanned for
+ * sentinel markers (\0<digits><ch>\x7F) and token entries from the
+ * accumulator are embedded via token_to_json(). */
+static void append_native_stage_json(const char *stage_log_dir, int stage, ThreadBuf *ws, Accum *accum)
+{
+    if (!stage_log_dir || !ws) return;
+    char pathbuf[1024];
+    snprintf(pathbuf, sizeof(pathbuf), "%s/native-stage.log", stage_log_dir);
+    FILE *f = fopen(pathbuf, "a");
+    if (!f) return;
+    fprintf(f, "--- Stage %d --\n", stage);
+    /* Emit a root object with childNodes array */
+    fputs("{\"type\":\"root\",\"childNodes\":[", f);
+
+    bool first = true;
+    size_t pos = 0;
+    while (pos < ws->len) {
+        if ((unsigned char)ws->buf[pos] == '\0') {
+            /* sentinel: \0<digits><ch>\x7F */
+            pos++;
+            size_t numStart = pos;
+            while (pos < ws->len && isdigit((unsigned char)ws->buf[pos])) pos++;
+            size_t numLen = pos - numStart;
+            if (numLen == 0) continue;
+            char numbuf[32];
+            if (numLen >= sizeof(numbuf)) continue;
+            memcpy(numbuf, ws->buf + numStart, numLen);
+            numbuf[numLen] = '\0';
+            long idx = strtol(numbuf, NULL, 10);
+            /* skip the sentinel char and the trailing 0x7F if present */
+            if (pos < ws->len) pos++;
+            if (pos < ws->len && (unsigned char)ws->buf[pos] == 0x7F) pos++;
+
+            if (!first) fputc(',', f);
+            first = false;
+
+            if (idx >= 0 && (size_t)idx < accum->count && accum->tokens[idx]) {
+                token_to_json(accum->tokens[idx], f);
+            } else {
+                fputs("null", f);
+            }
+        } else {
+            size_t start = pos;
+            while (pos < ws->len && (unsigned char)ws->buf[pos] != '\0') pos++;
+            size_t seglen = pos - start;
+            if (!first) fputc(',', f);
+            first = false;
+            fputs("{\"type\":\"text\",\"data\":", f);
+            json_write_escaped_len(ws->buf + start, seglen, f);
+            fputc('}', f);
+        }
+    }
+
+    fputs("]}\n\n", f);
+    fclose(f);
 }
 
 static void parse_list_skip_first_line(ThreadBuf *scratch, const ParserConfig *cfg, Accum *accum)
@@ -1133,6 +1213,21 @@ Token *wiki_parse(const char *wikitext, const ParserConfig *cfg,
     /* ── Working string (mutated by each stage) ─────────────────────────── */
     ThreadBuf *ws = &tbufs->main;
 
+    /* Optional stage logging directory (set via env WIKI_STAGE_LOG_DIR). */
+    const char *stage_log_dir = getenv("WIKI_STAGE_LOG_DIR");
+    char runid[64] = "";
+    if (stage_log_dir) {
+        static int _run_counter = 0;
+        _run_counter++;
+        pid_t pid = getpid();
+        long ts = (long)time(NULL);
+        snprintf(runid, sizeof(runid), "%d-%ld-%d", (int)pid, ts, _run_counter);
+        /* try to create directory if it doesn't exist */
+        if (mkdir(stage_log_dir, 0777) != 0 && errno != EEXIST) {
+            /* non-fatal; best-effort */
+        }
+    }
+
     /* ── Accumulator (holds extracted tokens) ─────────────────────────── */
     Accum accum;
     accum_init(&accum);
@@ -1189,7 +1284,12 @@ Token *wiki_parse(const char *wikitext, const ParserConfig *cfg,
             case 10: /* parseConverter */
                 parse_converter(ws, cfg, &accum);
                 break;
-        }
+            }
+
+            /* If stage logging enabled, append a JSON snapshot to native-stage.log */
+            if (stage_log_dir) {
+                append_native_stage_json(stage_log_dir, stage, ws, &accum);
+            }
     }
 
     /* ── build(): expand sentinel markers into the tree ─────────────────── */

@@ -50,6 +50,7 @@ static const char *samples[] = {
     // Image: namespace (alias for File:) with nested link in caption
     "[[Image:Foo.jpg|caption [[Link]] text]]",
     "[[Image:Foo.jpg|upright|caption [[Link]] text]]",
+    "{|\n| {{chset-cell1 | 123 U+007B: LEFT CURLY BRACKET | [[Left curly bracket|{]] | style=background:#ffffb2}}\n|}",
 };
 
 int main(void)
