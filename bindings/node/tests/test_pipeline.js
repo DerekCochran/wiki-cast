@@ -108,6 +108,9 @@ runTests([
   // Wikitext repro: parser-function style magic word with ':' should not become template
   '(${{formatnum:{{Inflation|US|800|1861|r=-2}}}} in current dollars)',
 
+  // Wikitext repro: ASCII chset table cell with target "." inside a link
+  '{|\n| {{chset-cell1 | 34 U+0022: QUOTATION MARK | [[" ]] }}\n|}',
+
   // Wikitext repro: imagemap should produce imagemap-image / imagemap-link structure
   '<imagemap>\nFile:Emancipation proclamation.jpg|thumb|upright=1.25|\'\'[[First Reading of the Emancipation Proclamation of President Lincoln]]\'\'|alt=A dark-haired, bearded, middle-aged man holding documents is seated among seven other men.\npoly 269 892 254 775 193 738 [[Edwin M. Stanton|Edwin Stanton]]\n</imagemap>',
 

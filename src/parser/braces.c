@@ -240,7 +240,7 @@ static const char *parser_function_canonical(const ParserConfig *cfg, const char
 }
 
 /* Build a JS-shaped transclude/arg token and push to accum. */
-static Token *build_template_token(char **parts_restored, const size_t *parts_lens,
+static Token *build_template_token(const char **parts_restored, const size_t *parts_lens,
                                     size_t parts_count,
                                     bool is_arg, const ParserConfig *cfg, Accum *accum)
 {
@@ -542,7 +542,7 @@ static Token *build_from_inner(const char *inner, size_t inner_len,
         si = j + 1;
     } while (1);
 
-    Token *tok = build_template_token(parts, plens, part_count, is_arg, cfg, accum);
+    Token *tok = build_template_token((const char **)parts, plens, part_count, is_arg, cfg, accum);
     for (size_t p = 0; p < part_count; p++) free(parts[p]);
     free(parts);
     free(plens);
@@ -552,6 +552,439 @@ static Token *build_from_inner(const char *inner, size_t inner_len,
 /* JS parity for triple-brace close path:
  * if removeComment(argParts[1]).trim().endsWith(':') and base is in subst list,
  * sentinel is 's' instead of 'a'. */
+typedef struct {
+    char **items;
+    size_t *lens;
+    size_t count;
+    size_t cap;
+} PartList;
+
+static bool parts_init(PartList *parts)
+{
+    if (!parts) return false;
+    parts->items = NULL;
+    parts->lens = NULL;
+    parts->count = 0;
+    parts->cap = 0;
+    return true;
+}
+
+static void parts_free(PartList *parts)
+{
+    if (!parts) return;
+    for (size_t i = 0; i < parts->count; i++) {
+        free(parts->items[i]);
+    }
+    free(parts->items);
+    free(parts->lens);
+    parts->items = NULL;
+    parts->lens = NULL;
+    parts->count = 0;
+    parts->cap = 0;
+}
+
+static bool parts_grow(PartList *parts)
+{
+    if (parts->count + 1 > parts->cap) {
+        size_t cap = parts->cap ? parts->cap * 2 : 4;
+        char **items = realloc(parts->items, cap * sizeof(char *));
+        size_t *lens = realloc(parts->lens, cap * sizeof(size_t));
+        if (!items || !lens) return false;
+        parts->items = items;
+        parts->lens = lens;
+        parts->cap = cap;
+    }
+    return true;
+}
+
+static bool parts_add_empty(PartList *parts)
+{
+    if (!parts_grow(parts)) return false;
+    parts->items[parts->count] = malloc(1);
+    if (!parts->items[parts->count]) return false;
+    parts->items[parts->count][0] = '\0';
+    parts->lens[parts->count] = 0;
+    parts->count++;
+    return true;
+}
+
+static bool parts_append_text(PartList *parts, const char *s, size_t len)
+{
+    if (!parts) return false;
+    if (parts->count == 0) {
+        if (!parts_add_empty(parts)) return false;
+    }
+    size_t idx = parts->count - 1;
+    size_t old_len = parts->lens[idx];
+    char *new_buf = realloc(parts->items[idx], old_len + len + 1);
+    if (!new_buf) return false;
+    parts->items[idx] = new_buf;
+    memcpy(new_buf + old_len, s, len);
+    new_buf[old_len + len] = '\0';
+    parts->lens[idx] = old_len + len;
+    return true;
+}
+
+typedef struct {
+    char *open;
+    size_t open_len;
+    size_t index;
+    size_t pos;
+    bool find_equal;
+    PartList parts;
+    bool has_parts;
+} BraceFrame;
+
+static bool brace_frame_init(BraceFrame *frame, const char *open, size_t open_len, size_t index, size_t pos, bool find_equal)
+{
+    if (!frame) return false;
+    frame->open = malloc(open_len + 1);
+    if (!frame->open) return false;
+    memcpy(frame->open, open, open_len);
+    frame->open[open_len] = '\0';
+    frame->open_len = open_len;
+    frame->index = index;
+    frame->pos = pos;
+    frame->find_equal = find_equal;
+    frame->has_parts = (open_len > 0 && open[0] == '{');
+    if (frame->has_parts) {
+        if (!parts_init(&frame->parts)) return false;
+        if (!parts_add_empty(&frame->parts)) return false;
+    } else {
+        parts_init(&frame->parts);
+    }
+    return true;
+}
+
+static void brace_frame_free(BraceFrame *frame)
+{
+    if (!frame) return;
+    free(frame->open);
+    frame->open = NULL;
+    parts_free(&frame->parts);
+}
+
+static bool brace_push_part(BraceFrame *frame, const char *buf, size_t from, size_t to,
+                            const char **link_stack, size_t link_count,
+                            const size_t *link_stack_lens)
+{
+    if (!frame || !frame->has_parts) return true;
+    size_t len = to > from ? to - from : 0;
+    if (len == 0) return true;
+    size_t restored_len = 0;
+    char *restored = str_restore(buf + from, len,
+                                 (const char **)link_stack, link_count,
+                                 link_stack_lens, &restored_len);
+    if (!restored) return false;
+    bool ok = parts_append_text(&frame->parts, restored, restored_len);
+    free(restored);
+    return ok;
+}
+
+static bool brace_frame_join_inner(const BraceFrame *frame, char **out, size_t *out_len)
+{
+    if (!frame || !out || !out_len) return false;
+    if (!frame->has_parts) return false;
+    size_t total = 0;
+    for (size_t i = 0; i < frame->parts.count; i++) {
+        total += frame->parts.lens[i];
+        if (i + 1 < frame->parts.count) total += 1;
+    }
+    char *buf = malloc(total + 1);
+    if (!buf) return false;
+    size_t pos = 0;
+    for (size_t i = 0; i < frame->parts.count; i++) {
+        memcpy(buf + pos, frame->parts.items[i], frame->parts.lens[i]);
+        pos += frame->parts.lens[i];
+        if (i + 1 < frame->parts.count) {
+            buf[pos++] = '|';
+        }
+    }
+    buf[pos] = '\0';
+    *out = buf;
+    *out_len = pos;
+    return true;
+}
+
+static bool brace_frame_append_part(BraceFrame *frame)
+{
+    if (!frame || !frame->has_parts) return false;
+    return parts_add_empty(&frame->parts);
+}
+
+static char braces_arg_symbol(const char *inner, size_t inner_len, const ParserConfig *cfg);
+
+static bool braces_state_machine(ThreadBuf *tb, const ParserConfig *cfg,
+                                 Accum *accum, char **link_stack, size_t link_count,
+                                 const size_t *link_stack_lens)
+{
+    if (!tb || !tb->buf) return false;
+    const char *pattern = "^((?:\\0\\d+[cno]\\x7F)*)={1,6}|\\[\\[|-\\{(?!\\{)|\\{{2,}|\\n(?!(?:[^\\S\\n]|\\0\\d+[cn]\\x7F)*\\n)|[|=]|\\}{2,}|\\}-|\\]\\]";
+    PCRE2_SIZE err_offset;
+    int err_code;
+    pcre2_code *re = pcre2_compile((PCRE2_SPTR)pattern, PCRE2_ZERO_TERMINATED,
+                                   PCRE2_UTF | PCRE2_MULTILINE, &err_code, &err_offset, NULL);
+    if (!re) return false;
+    pcre2_match_data *md = pcre2_match_data_create_from_pattern(re, NULL);
+    if (!md) { pcre2_code_free(re); return false; }
+
+    char *match_subject = braces_make_match_subject(tb->buf, tb->len);
+    const char *subject = match_subject ? match_subject : tb->buf;
+
+    BraceFrame *stack = malloc(64 * sizeof(BraceFrame));
+    if (!stack) {
+        pcre2_match_data_free(md);
+        pcre2_code_free(re);
+        free(match_subject);
+        return false;
+    }
+    size_t stack_cap = 64;
+    size_t stack_len = 0;
+
+    size_t search_at = 0;
+    size_t next_write = 0;
+    size_t out_cap = tb->len * 2 + 64;
+    char *out = malloc(out_cap);
+    assert(out);
+    size_t out_len = 0;
+    bool has_last_index = false;
+    size_t last_index = 0;
+
+#define ENSURE_OUT_CAP(need) do { \
+    while (out_len + (need) >= out_cap) { \
+        out_cap *= 2; \
+        out = realloc(out, out_cap); \
+        assert(out); \
+    } \
+} while (0)
+
+    while (1) {
+        int rc = pcre2_match(re, (PCRE2_SPTR)subject, tb->len, search_at, 0, md, NULL);
+        bool matched = rc > 0;
+        PCRE2_SIZE *ov = matched ? pcre2_get_ovector_pointer(md) : NULL;
+        size_t ms = 0, me = 0;
+        size_t prefix_len = 0;
+        bool has_heading_prefix = false;
+        if (matched) {
+            ms = ov[0];
+            me = ov[1];
+            if (ov[2] != PCRE2_UNSET && ov[3] != PCRE2_UNSET) {
+                prefix_len = (size_t)(ov[3] - ov[2]);
+                has_heading_prefix = true;
+            }
+        }
+        if (!matched && (!has_last_index || stack_len == 0 || stack[stack_len - 1].open[0] != '=')) {
+            break;
+        }
+
+        size_t cur_index;
+        size_t syntax_start;
+        size_t syntax_end;
+        if (matched) {
+            if (has_heading_prefix) {
+                syntax_start = ms + prefix_len;
+                syntax_end = me;
+                cur_index = syntax_start;
+            } else {
+                syntax_start = ms;
+                syntax_end = me;
+                cur_index = ms;
+            }
+        } else {
+            cur_index = tb->len;
+            syntax_start = cur_index;
+            syntax_end = cur_index;
+        }
+
+        size_t syntax_len = syntax_end > syntax_start ? syntax_end - syntax_start : 0;
+        const char *syntax = tb->buf + syntax_start;
+        BraceFrame top;
+        bool has_top = false;
+        if (stack_len > 0) {
+            top = stack[stack_len - 1];
+            has_top = true;
+            stack_len--;
+        }
+
+        if (matched && syntax_len == 2 && syntax[0] == ']' && syntax[1] == ']') {
+            last_index = cur_index + 2;
+            has_last_index = true;
+        }
+        else if (matched && syntax_len == 2 && syntax[0] == '}' && syntax[1] == '-') {
+            last_index = cur_index + 2;
+            has_last_index = true;
+        }
+        else if (matched && syntax_len == 1 && syntax[0] == '\n') {
+            last_index = cur_index + 1;
+            if (has_top && top.open_len == 1 && top.open[0] == '=') {
+                const char *slice = tb->buf + top.index;
+                size_t slice_len = cur_index - top.index;
+                pcre2_code *hd_re = pcre2_compile((PCRE2_SPTR)"^(={1,6})(.+)\\1((?:\\s|\\0\\d+[cn]\\x7F)*)$", PCRE2_ZERO_TERMINATED, PCRE2_UTF, &err_code, &err_offset, NULL);
+                if (hd_re) {
+                    pcre2_match_data *hd_md = pcre2_match_data_create_from_pattern(hd_re, NULL);
+                    if (hd_md) {
+                        int hrc = pcre2_match(hd_re, (PCRE2_SPTR)slice, slice_len, 0, 0, hd_md, NULL);
+                        if (hrc > 0) {
+                            PCRE2_SIZE *hov = pcre2_get_ovector_pointer(hd_md);
+                            size_t title_start = hov[2];
+                            size_t title_end = hov[3];
+                            size_t trail_start = hov[4];
+                            size_t trail_end = hov[5];
+                            size_t title_len = title_end - title_start;
+                            size_t trail_len = trail_end - trail_start;
+                            char *title = str_restore(slice + title_start, title_len, (const char **)link_stack, link_count, link_stack_lens, &title_len);
+                            if (title) {
+                                Token *heading_tok = token_new(TOKEN_HEADING, "heading");
+                                if (heading_tok) {
+                                    Token *title_tok = token_new(TOKEN_PLAIN, "heading-title");
+                                    if (title_tok) {
+                                        token_append_text_n(title_tok, title, title_len);
+                                        token_append_child(heading_tok, title_tok);
+                                        if (trail_len > 0) {
+                                            Token *trail_tok = token_new(TOKEN_SYNTAX, "heading-trail");
+                                            if (trail_tok) {
+                                                token_append_text_n(trail_tok, slice + trail_start, trail_len);
+                                                token_append_child(heading_tok, trail_tok);
+                                            }
+                                        }
+                                        accum_push(accum, heading_tok);
+                                        size_t idx = accum->count - 1;
+                                        char sent[64]; size_t slen;
+                                        work_str_sentinel(idx, 'h', sent, &slen);
+                                        ENSURE_OUT_CAP((top.index > next_write ? top.index - next_write : 0) + slen);
+                                        if (top.index > next_write) {
+                                            memcpy(out + out_len, tb->buf + next_write, top.index - next_write);
+                                            out_len += top.index - next_write;
+                                        }
+                                        memcpy(out + out_len, sent, slen);
+                                        out_len += slen;
+                                        next_write = cur_index + 1;
+                                    } else {
+                                        token_free(heading_tok);
+                                    }
+                                }
+                                free(title);
+                            }
+                        }
+                        pcre2_match_data_free(hd_md);
+                    }
+                    pcre2_code_free(hd_re);
+                }
+            }
+        }
+        else {
+            bool inner_equal = matched && syntax_len == 1 && syntax[0] == '=' && has_top && top.find_equal;
+            if ((matched && syntax_len == 1 && syntax[0] == '|') || inner_equal) {
+                if (has_top && top.has_parts) {
+                    if (!brace_push_part(&top, tb->buf, top.pos, cur_index, (const char **)link_stack, link_count, link_stack_lens)) {
+                        ;
+                    }
+                    if (syntax[0] == '|') {
+                        brace_frame_append_part(&top);
+                    }
+                    top.pos = cur_index + 1;
+                    top.find_equal = (syntax[0] == '|');
+                }
+            }
+            else if (matched && syntax_len >= 2 && syntax[0] == '}' && syntax[1] == '}') {
+                if (has_top && top.has_parts) {
+                    if (!brace_push_part(&top, tb->buf, top.pos, cur_index, (const char **)link_stack, link_count, link_stack_lens)) {
+                        ;
+                    }
+                    size_t close_len = 0;
+                    while (close_len < syntax_len && syntax[close_len] == '}') close_len++;
+                    size_t rest = top.open_len > close_len ? top.open_len - close_len : 0;
+                    char *inner = NULL;
+                    size_t inner_len = 0;
+                    if (!brace_frame_join_inner(&top, &inner, &inner_len)) {
+                        inner = NULL;
+                        inner_len = 0;
+                    }
+                    Token *tok = build_template_token((const char **)top.parts.items, top.parts.lens, top.parts.count, top.open_len == 3, cfg, accum);
+                    if (tok) {
+                        size_t tok_idx = accum->count - 1;
+                        char sent[64]; size_t slen;
+                        char sym = 't';
+                        if (top.open_len == 3) {
+                            if (inner) sym = braces_arg_symbol(inner, inner_len, cfg);
+                        } else if (top.parts.count > 0) {
+                            sym = braces_get_symbol(top.parts.items[0], top.parts.lens[0], cfg, NULL);
+                        }
+                        work_str_sentinel(tok_idx, sym, sent, &slen);
+                        size_t rep_start = top.index + rest;
+                        size_t rep_end = cur_index + close_len;
+                        ENSURE_OUT_CAP((rep_start > next_write ? rep_start - next_write : 0) + slen);
+                        if (rep_start > next_write) {
+                            memcpy(out + out_len, tb->buf + next_write, rep_start - next_write);
+                            out_len += rep_start - next_write;
+                        }
+                        memcpy(out + out_len, sent, slen);
+                        out_len += slen;
+                        next_write = rep_end;
+                        if (rest > 1) {
+                            BraceFrame child;
+                            if (brace_frame_init(&child, top.open, rest, top.index, top.index + rest, false)) {
+                                stack[++stack_len - 1] = child;
+                            }
+                        } else if (rest == 1 && top.index > 0 && tb->buf[top.index - 1] == '-') {
+                            BraceFrame child;
+                            if (brace_frame_init(&child, "-{", 2, top.index - 1, top.index + 1, false)) {
+                                stack[++stack_len - 1] = child;
+                            }
+                        }
+                    }
+                    free(inner);
+                }
+            }
+            if (matched && syntax_len > 0 && syntax[0] == '{') {
+                BraceFrame frame;
+                if (brace_frame_init(&frame, syntax, syntax_len, cur_index, cur_index + syntax_len, false)) {
+                    if (has_top) {
+                        stack[++stack_len - 1] = top;
+                    }
+                    if (stack_len + 1 > stack_cap) {
+                        size_t new_cap = stack_cap * 2;
+                        BraceFrame *new_stack = realloc(stack, new_cap * sizeof(BraceFrame));
+                        assert(new_stack);
+                        stack = new_stack;
+                        stack_cap = new_cap;
+                    }
+                    stack[stack_len++] = frame;
+                } else {
+                    if (has_top) {
+                        stack[++stack_len - 1] = top;
+                    }
+                }
+            } else {
+                if (has_top) {
+                    stack[stack_len++] = top;
+                }
+            }
+        }
+
+        if (!matched) {
+            break;
+        }
+        search_at = syntax_end;
+        if (search_at == ms) search_at = ms + 1;
+    }
+
+    if (next_write < tb->len) {
+        ENSURE_OUT_CAP(tb->len - next_write + 1);
+        memcpy(out + out_len, tb->buf + next_write, tb->len - next_write);
+        out_len += tb->len - next_write;
+    }
+    out[out_len] = '\0';
+    wiki_thread_buf_set(tb, out, out_len);
+
+    free(out);
+    free(stack);
+    free(match_subject);
+    pcre2_match_data_free(md);
+    pcre2_code_free(re);
+    return true;
+}
+
 static char braces_arg_symbol(const char *inner, size_t inner_len, const ParserConfig *cfg)
 {
     if (!inner || inner_len == 0 || !cfg) return 'a';
@@ -932,6 +1365,10 @@ void parse_braces(ThreadBuf *tb, const ParserConfig *cfg, Accum *accum)
 
         pcre2_match_data_free(md);
     }
+
+    /* Second-pass state machine: handle nested templates/links and heading
+     * closures that the simple regex replacement loop cannot resolve. */
+    braces_state_machine(tb, cfg, accum, link_stack, link_count, link_stack_lens);
 
     /* Final restoration of parked [[...]] / -{...}- placeholders. */
     {

@@ -483,4 +483,4 @@ function runTests(samples, opts = {}) {
   process.exit(0);
 }
 
-module.exports = { runTests };
+module.exports = { runTests, compareSample };
