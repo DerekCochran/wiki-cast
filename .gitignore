@@ -30,9 +30,9 @@ build_ubsan/
 build_tsan/
 build_asan/
 dist/
-# Keep the orig-js mirror checked in for parser parity work.
-!orig-js/dist/
-!orig-js/dist/**
+# Keep the new-js mirror checked in for parser parity work.
+!new-js/dist/
+!new-js/dist/**
 *.egg-info/
 
 # --- VS Code ---
