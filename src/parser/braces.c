@@ -893,6 +893,12 @@ static bool braces_state_machine(ThreadBuf *tb, const ParserConfig *cfg,
                     }
                     if (syntax[0] == '|') {
                         brace_frame_append_part(&top);
+                    } else {
+                        /* inner_equal: append '=' so build_template_token can split
+                         * key=value with memchr(part,'=',len). JS parity: each part
+                         * sub-array is joined with '=' before being passed to
+                         * TranscludeToken (parts[i].join('=')). */
+                        parts_append_text(&top.parts, "=", 1);
                     }
                     top.pos = cur_index + 1;
                     top.find_equal = (syntax[0] == '|');

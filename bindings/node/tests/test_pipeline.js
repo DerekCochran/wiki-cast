@@ -6,6 +6,7 @@ const { runTests } = require('./helpers');
 
 // This should loop through each test and fast fail on the first mismatch.
 const tests = [
+`{{chset-cell1 | 61 U+003D: EQUALS SIGN | [[=]] }}`,
   `
   | {{chset-cell1 | 123 U+007B: LEFT CURLY BRACKET | [[Left curly bracket|{]] | style=background:#ffffb2}}`,
 
