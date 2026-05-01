@@ -123,7 +123,7 @@ async function main(argv) {
       continue;
     }
 
-    console.error(`[full_wikitext] START line ${lineNumber} page ${pageId} title '${String(title).replace(/\n/g, ' ')}' rev ${revId} textBytes=${Buffer.byteLength(text, 'utf8')}`);
+    console.info(`[full_wikitext] START line ${lineNumber} page ${pageId} title '${String(title).replace(/\n/g, ' ')}' rev ${revId} textBytes=${Buffer.byteLength(text, 'utf8')}`);
     const ok = compareSample(text, {
       name: 'export',
       sampleIndex: lineNumber,
@@ -131,7 +131,16 @@ async function main(argv) {
     });
 
     if (!ok) {
-      console.log(`FAIL line ${lineNumber} page ${pageId} title '${title}' rev ${revId}, processed ${processed + 1}`);
+      console.error(`FAIL line ${lineNumber} page ${pageId} title '${title}' rev ${revId}, processed ${processed + 1}`);
+      const savePath1 = path.join(scriptDir, 'wikitext', `${title.replace(/\s+/g, '_')}.wikitext`);
+      fs.writeFileSync(savePath1, text, 'utf8');
+      console.info(`Saved failing sample to ${savePath1}`);
+      const savePath2 = path.join(scriptDir, '..', '..', '..', 'tests', 'wikitext', `${title.replace(/\s+/g, '_')}.wikitext`);
+      fs.writeFileSync(savePath2, text, 'utf8');
+      console.info(`Saved failing sample to ${savePath2}`);
+      console.info(`The files have been copied.  Please run the below commands
+cd ${path.dirname(__filename)}
+node test_pipeline.js`);
       process.exit(2);
     }
 
