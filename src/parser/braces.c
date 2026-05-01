@@ -810,10 +810,18 @@ static bool braces_state_machine(ThreadBuf *tb, const ParserConfig *cfg,
         if (matched && syntax_len == 2 && syntax[0] == ']' && syntax[1] == ']') {
             last_index = cur_index + 2;
             has_last_index = true;
+            /* ]] closes a [[ link frame; preserve any non-link frame below it */
+            if (has_top && !(top.open_len >= 1 && top.open[0] == '[')) {
+                stack[stack_len++] = top;
+            }
         }
         else if (matched && syntax_len == 2 && syntax[0] == '}' && syntax[1] == '-') {
             last_index = cur_index + 2;
             has_last_index = true;
+            /* }- closes a -{ converter frame; preserve any non-converter frame below it */
+            if (has_top && !(top.open_len >= 1 && top.open[0] == '-')) {
+                stack[stack_len++] = top;
+            }
         }
         else if (matched && syntax_len == 1 && syntax[0] == '\n') {
             last_index = cur_index + 1;
@@ -871,6 +879,9 @@ static bool braces_state_machine(ThreadBuf *tb, const ParserConfig *cfg,
                     }
                     pcre2_code_free(hd_re);
                 }
+            } else if (has_top) {
+                /* \n only closes = heading frames; preserve other frames */
+                stack[stack_len++] = top;
             }
         }
         else {
@@ -954,6 +965,46 @@ static bool braces_state_machine(ThreadBuf *tb, const ParserConfig *cfg,
                 } else {
                     if (has_top) {
                         stack[++stack_len - 1] = top;
+                    }
+                }
+            } else if (matched && syntax_len == 2 && syntax[0] == '[' && syntax[1] == '[') {
+                /* Push a link frame so | inside [[...]] is not treated as template separator */
+                BraceFrame link_frame;
+                if (brace_frame_init(&link_frame, "[", 1, cur_index, cur_index + 2, false)) {
+                    if (has_top) {
+                        stack[++stack_len - 1] = top;
+                    }
+                    if (stack_len + 1 > stack_cap) {
+                        size_t new_cap = stack_cap * 2;
+                        BraceFrame *new_stack = realloc(stack, new_cap * sizeof(BraceFrame));
+                        assert(new_stack);
+                        stack = new_stack;
+                        stack_cap = new_cap;
+                    }
+                    stack[stack_len++] = link_frame;
+                } else {
+                    if (has_top) {
+                        stack[stack_len++] = top;
+                    }
+                }
+            } else if (matched && syntax_len == 2 && syntax[0] == '-' && syntax[1] == '{') {
+                /* Push a converter frame so | inside -{...}- is not treated as template separator */
+                BraceFrame conv_frame;
+                if (brace_frame_init(&conv_frame, "-", 1, cur_index, cur_index + 2, false)) {
+                    if (has_top) {
+                        stack[++stack_len - 1] = top;
+                    }
+                    if (stack_len + 1 > stack_cap) {
+                        size_t new_cap = stack_cap * 2;
+                        BraceFrame *new_stack = realloc(stack, new_cap * sizeof(BraceFrame));
+                        assert(new_stack);
+                        stack = new_stack;
+                        stack_cap = new_cap;
+                    }
+                    stack[stack_len++] = conv_frame;
+                } else {
+                    if (has_top) {
+                        stack[stack_len++] = top;
                     }
                 }
             } else {
