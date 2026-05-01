@@ -6,6 +6,7 @@ const os = require('os');
 const { spawnSync } = require('child_process');
 
 const { newProto, nativeProto } = require('./native_token_patch.js');
+const { ok } = require('assert');
 const MAX_STAGE = 20;
 let proto;
 // Token constructor (derived from the new JS implementation's prototype)
@@ -428,7 +429,8 @@ function runTests(samples, opts = {}) {
   if (failed > 0) {
     process.exit(2);
   }
-  process.exit(0);
+
+  return true;
 }
 
 module.exports = { runTests, compareSample };
