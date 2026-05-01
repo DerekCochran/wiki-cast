@@ -293,12 +293,6 @@ static Token *build_template_token(const char **parts_restored, const size_t *pa
         while (i < cleaned_len && isspace((unsigned char)cleaned[i])) i++;
         while (j > i && isspace((unsigned char)cleaned[j - 1])) j--;
         size_t trimmed_len = (j > i) ? (j - i) : 0;
-        if (trimmed_len > 0) {
-            fprintf(stderr, "[debug] build_template_token: title_after_removeComment_trim='%.*s' len=%zu\n",
-                    (int)(trimmed_len < 200 ? trimmed_len : 200), cleaned + i, trimmed_len);
-        } else {
-            fprintf(stderr, "[debug] build_template_token: title empty after removeComment+trim -> rejecting token\n");
-        }
         free(cleaned);
         if (j <= i) {
             token_free(t);
@@ -1248,7 +1242,6 @@ void parse_braces(ThreadBuf *tb, const ParserConfig *cfg, Accum *accum)
                 size_t ms = ov[0];
                 size_t me = ov[1];
                 size_t cap = me > ms ? me - ms : 0;
-                fprintf(stderr, "[debug] braces.match at %zu..%zu: '%.*s'\n", ms, me, (int)(cap < 200 ? cap : 200), tb->buf + ms);
             }
             if (rc <= 0) {
                 if (rc < 0 && rc != PCRE2_ERROR_NOMATCH) {

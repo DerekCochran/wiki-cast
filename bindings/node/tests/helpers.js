@@ -180,13 +180,13 @@ function analyzeAstDiff(expected, got, name = 'sample' ) {
       lines.push(`expected.parent.String: ${found.ap.toString()}`);
       lines.push(`expected.parent.Json: ${JSON.stringify(found.ap)}`);
       if( name == 'wikitext') {
-        // Write the found.ap.toString() to test_pipeline.js after runTests([ using a tick to handle new lines.
+        // Write the found.ap.toString() to test_pipeline.js after const tests = [ using a tick to handle new lines.
         const pipelinePath = path.join(__dirname, 'test_pipeline.js');
         const pipelineContent = fs.readFileSync(pipelinePath, 'utf8');
-        const insertPoint = pipelineContent.indexOf('runTests([');
+        const insertPoint = pipelineContent.indexOf('const tests = [');
         if (insertPoint !== -1) {
-          const before = pipelineContent.slice(0, insertPoint + 'runTests(['.length);
-          const after = pipelineContent.slice(insertPoint + 'runTests(['.length);
+          const before = pipelineContent.slice(0, insertPoint + 'const tests = ['.length);
+          const after = pipelineContent.slice(insertPoint + 'const tests = ['.length);
           const newContent = `${before}\n\`${found.ap.toString()}\`,${after}`;
           fs.writeFileSync(pipelinePath, newContent, 'utf8');
           console.log(`Inserted new test case into ${pipelinePath}`);
@@ -194,7 +194,7 @@ function analyzeAstDiff(expected, got, name = 'sample' ) {
 cd ${path.dirname(__filename)}
 node test_pipeline.js`);
         } else {
-          console.warn(`Could not find runTests([ in ${pipelinePath}, skipping automatic insertion of new test case.`);
+          console.warn(`Could not find const tests = [ in ${pipelinePath}, skipping automatic insertion of new test case.`);
         }
       }
     }

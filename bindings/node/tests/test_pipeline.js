@@ -6,7 +6,8 @@ const { runTests } = require('./helpers');
 
 // This should loop through each test and fast fail on the first mismatch.
 const tests = [
-  `| {{chset-cell1 | 123 U+007B: LEFT CURLY BRACKET | [[Left curly bracket|{]] | style=background:#ffffb2}}`,
+  `
+  | {{chset-cell1 | 123 U+007B: LEFT CURLY BRACKET | [[Left curly bracket|{]] | style=background:#ffffb2}}`,
 
   // Simple prose – no special markup
   'This is a paragraph of plain text.',
@@ -358,9 +359,9 @@ const tests = [
 ];
 
 for (const test of tests) {
-  const ok = runTests(test, { name: 'pipeline' });
+  const ok = runTests([test], { name: 'pipeline' });
   if (!ok) {
-    console.log('Test failed for input:\n', test);
     process.exit(1);
   }
 }
+
