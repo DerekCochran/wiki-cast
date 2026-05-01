@@ -164,34 +164,6 @@ static napi_value parse_wrapped(napi_env env, napi_callback_info info) {
     return NULL;
   }
 
-  /* If requested, emit the raw config JSON, args, and wikitext to a log dir. */
-  const char *stage_log_dir = getenv("WIKI_STAGE_LOG_DIR");
-  if (stage_log_dir && stage_log_dir[0] != '\0') {
-    /* Best-effort: create the directory */
-    if (mkdir(stage_log_dir, 0777) != 0 && errno != EEXIST) {
-      /* ignore mkdir failures */
-    }
-
-    char runid[64];
-    unsigned long uniq = (unsigned long)((uintptr_t)wtext & 0xfffffffful);
-    snprintf(runid, sizeof(runid), "%d-%ld-%lu", (int)getpid(), (long)time(NULL), uniq);
-
-    /* Append a compact metadata block to native-stage.log for convenience. */
-    char pathbuf[1024];
-    snprintf(pathbuf, sizeof(pathbuf), "%s/native-stage.log", stage_log_dir);
-    FILE *nf = fopen(pathbuf, "a");
-    if (nf) {
-      fprintf(nf, "--- Native Metadata %s --\n", runid);
-      fprintf(nf, "max_stage=%d\n", max_stage);
-      fprintf(nf, "include=%d\n", include ? 1 : 0);
-      fprintf(nf, "config:\n%s\n", cfg_json);
-      fprintf(nf, "wikitext:\n");
-      fwrite(wtext, 1, wlen, nf);
-      fprintf(nf, "\n\n");
-      fclose(nf);
-    }
-  }
-
   ParserConfig *cfg = config_load_string(cfg_json, cfg_json_len);
   free(cfg_json);
   if (!cfg) {

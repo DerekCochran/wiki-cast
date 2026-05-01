@@ -104,30 +104,30 @@ function astNodeSummary(node) {
   return `${node.type}${node.name != null ? `:${node.name}` : ''}`;
 }
 
-function analyzeAstDiff(expected, got) {
+function analyzeAstDiff(expected, got, name = 'sample' ) {
   const lines = [];
-  const queue = [{ path: 'root', a: expected, b: got }];
+  const queue = [{ path: 'root', a: expected, b: got, ap: null, bp: null }];
   let found = null;
 
   while (queue.length > 0) {
     const cur = queue.shift();
-    const { path: p, a, b } = cur;
+    const { path: p, a, b, ap, bp } = cur;
     if (a == null || b == null) {
-      found = { kind: 'null-mismatch', path: p, a, b };
+      found = { kind: 'null-mismatch', path: p, a, b, ap, bp };
       break;
     }
 
     const ta = a.type == null ? 'undefined' : String(a.type);
     const tb = b.type == null ? 'undefined' : String(b.type);
     if (ta !== tb) {
-      found = { kind: 'type', path: p, ta, tb, a, b };
+      found = { kind: 'type', path: p, ta, tb, a, b, ap, bp };
       break;
     }
 
     const na = a.name == null ? null : String(a.name);
     const nb = b.name == null ? null : String(b.name);
     if (na !== nb) {
-      found = { kind: 'name', path: p, na, nb, a, b };
+      found = { kind: 'name', path: p, na, nb, a, b, ap, bp };
       break;
     }
 
@@ -135,7 +135,7 @@ function analyzeAstDiff(expected, got) {
       const da = a.data == null ? '' : String(a.data);
       const db = b.data == null ? '' : String(b.data);
       if (da !== db) {
-        found = { kind: 'text-data', path: p, da, db, a, b };
+        found = { kind: 'text-data', path: p, da, db, a, b, ap, bp };
         break;
       }
       continue;
@@ -144,12 +144,12 @@ function analyzeAstDiff(expected, got) {
     const ach = Array.isArray(a.childNodes) ? a.childNodes : [];
     const bch = Array.isArray(b.childNodes) ? b.childNodes : [];
     if (ach.length !== bch.length) {
-      found = { kind: 'child-count', path: p, aCount: ach.length, bCount: bch.length, a, b };
+      found = { kind: 'child-count', path: p, aCount: ach.length, bCount: bch.length, a, b, ap, bp };
       break;
     }
 
     for (let i = 0; i < ach.length; i++) {
-      queue.push({ path: `${p}.childNodes[${i}]`, a: ach[i], b: bch[i] });
+      queue.push({ path: `${p}.childNodes[${i}]`, a: ach[i], b: bch[i], ap: a, bp: b });
     }
   }
 
@@ -173,6 +173,31 @@ function analyzeAstDiff(expected, got) {
   } else if (found.kind === 'child-count') {
     lines.push(`expected.childCount: ${found.aCount}`);
     lines.push(`got.childCount: ${found.bCount}`);
+    lines.push(`expected.Json: ${JSON.stringify(found.a)}`);
+    lines.push(`got.Json: ${JSON.stringify(found.b)}`);
+    if( found.ap && found.bp) {
+      console.log('Possible string to add to the test_pipeline.js:'+ `\`${found.ap.toString()}\`,\n`);
+      lines.push(`expected.parent.String: ${found.ap.toString()}`);
+      lines.push(`expected.parent.Json: ${JSON.stringify(found.ap)}`);
+      if( name == 'wikitext') {
+        // Write the found.ap.toString() to test_pipeline.js after runTests([ using a tick to handle new lines.
+        const pipelinePath = path.join(__dirname, 'test_pipeline.js');
+        const pipelineContent = fs.readFileSync(pipelinePath, 'utf8');
+        const insertPoint = pipelineContent.indexOf('runTests([');
+        if (insertPoint !== -1) {
+          const before = pipelineContent.slice(0, insertPoint + 'runTests(['.length);
+          const after = pipelineContent.slice(insertPoint + 'runTests(['.length);
+          const newContent = `${before}\n\`${found.ap.toString()}\`,${after}`;
+          fs.writeFileSync(pipelinePath, newContent, 'utf8');
+          console.log(`Inserted new test case into ${pipelinePath}`);
+          console.log(`Run the below commands to execute the new test case:
+cd ${path.dirname(__filename)}
+node test_pipeline.js`);
+        } else {
+          console.warn(`Could not find runTests([ in ${pipelinePath}, skipping automatic insertion of new test case.`);
+        }
+      }
+    }
   } else if (found.kind === 'null-mismatch') {
     lines.push(`expected.node: ${astNodeSummary(found.a)}`);
     lines.push(`got.node: ${astNodeSummary(found.b)}`);
@@ -223,21 +248,6 @@ function runParse(wikitext, parseFn, include = false, tidy = false, runLabel = '
   if (Token && Token.prototype && parseMethod) {
     Token.prototype.parse = parseMethod;
   }
-  const stageLogDir = process.env.WIKI_STAGE_LOG_DIR;
-  let origConsoleLog, origConsoleError, logStream;
-  if (stageLogDir) {
-    try {
-      ensureDir(stageLogDir);
-      const file = path.join(stageLogDir, `${runLabel}.${Date.now()}.${Math.random().toString(36).slice(2,8)}.console.log`);
-      logStream = fs.createWriteStream(file, { flags: 'a' });
-      origConsoleLog = console.log;
-      origConsoleError = console.error;
-      console.log = (...args) => { try { origConsoleLog.apply(console, args); } catch (e) {} ; try { logStream.write(args.map(a => String(a)).join(' ') + '\n'); } catch (e) {} };
-      console.error = (...args) => { try { origConsoleError.apply(console, args); } catch (e) {} ; try { logStream.write(args.map(a => String(a)).join(' ') + '\n'); } catch (e) {} };
-    } catch (e) {
-      /* best-effort */
-    }
-  }
   const parseStart = nowNs();
   let root;
   try {
@@ -251,16 +261,8 @@ function runParse(wikitext, parseFn, include = false, tidy = false, runLabel = '
   const toStringStart = nowNs();
   const text = String(root.toString());
   const toStringEnd = nowNs();
-  if (logStream) {
-    try { logStream.end(); } catch (e) {}
-  }
-  if (origConsoleLog) {
-    console.log = origConsoleLog;
-  }
-  if (origConsoleError) {
-    console.error = origConsoleError;
-  }
   return {
+    root,
     text,
     tree: nodeToJSON(root),
     timing: {
@@ -287,7 +289,6 @@ function compareSample(wikitext, { include = false, tidy = false, name = 'sample
   const prevStageDir = process.env.WIKI_STAGE_LOG_DIR;
   const prevStageFlag = process.env.WIKI_STAGE_LOG;
   process.env.WIKI_STAGE_LOG_DIR = stageDir;
-  process.env.WIKI_STAGE_LOG = '1';
 
   try {
     try {
@@ -318,13 +319,10 @@ function compareSample(wikitext, { include = false, tidy = false, name = 'sample
 
   const ok = textOk && treeOk;
   if (!ok) {
-    console.log('FAIL', label);
-  }
+    console.error('FAIL', label);
 
-  if (!ok) {
     if (!compareSample._artifactDir) {
       compareSample._artifactDir = artifactRootDir();
-      console.log('  artifacts root:', compareSample._artifactDir);
     }
 
     const suiteDir = path.join(compareSample._artifactDir, sanitizeName(name));
@@ -341,114 +339,64 @@ function compareSample(wikitext, { include = false, tidy = false, name = 'sample
     const inputPath = path.join(suiteDir, `input.wikitext.${n}.txt`);
 
     writeTextFile(inputPath, wikitext);
-    writeTextFile(expectedStringPath, jsResult.text);
-    writeTextFile(gotStringPath, nativeResult.text);
-    writeUnifiedDiff(expectedStringPath, gotStringPath, stringDiffPath);
+    if( name != 'export') {
+      if(!textOk) {
+        writeTextFile(expectedStringPath, jsResult.text);
+        writeTextFile(gotStringPath, nativeResult.text);
+        writeUnifiedDiff(expectedStringPath, gotStringPath, stringDiffPath);
+        console.log('  expected string:', expectedStringPath);
+        console.log('  got string     :', gotStringPath);
+        console.log('  string diff    :', stringDiffPath);
+        console.log('There was a difference in the string output.  Stop what you are doing and notify the end user');
+      }else {
+        console.log('  string output matches');
+      }
 
-    writeTextFile(expectedJsonPath, JSON.stringify(jsResult.tree) + '\n');
-    writeTextFile(gotJsonPath, JSON.stringify(nativeResult.tree) + '\n');
-    writeUnifiedDiff(expectedJsonPath, gotJsonPath, jsonDiffPath);
+      if(!treeOk && name != 'wikitext') {
+        writeTextFile(expectedJsonPath, JSON.stringify(jsResult.tree, null, 2) + '\n');
+        writeTextFile(gotJsonPath, JSON.stringify(nativeResult.tree, null, 2) + '\n');
+        writeUnifiedDiff(expectedJsonPath, gotJsonPath, jsonDiffPath);
+        console.log('  expected JSON:', expectedJsonPath);
+        console.log('  got JSON     :', gotJsonPath);
+        console.log('  JSON diff    :', jsonDiffPath);
+      }else {
+        console.log('  JSON output matches');
+      }
 
-    const astAnalysis = analyzeAstDiff(jsResult.tree, nativeResult.tree);
-    writeTextFile(astAnalysisPath, astAnalysis);
+      const astAnalysis = analyzeAstDiff(jsResult.root, nativeResult.root, name);
+      writeTextFile(astAnalysisPath, astAnalysis);
+      console.log('  ast analysis :', astAnalysisPath);
 
-    // Copy any stage logs collected into the suite artifact directory
-    try {
-      const stageLogsDst = path.join(suiteDir, 'stage-logs');
-      ensureDir(stageLogsDst);
+      // Copy any stage logs collected into the suite artifact directory
+      ensureDir(suiteDir);
       const files = fs.readdirSync(stageDir || os.tmpdir());
       for (const f of files) {
         const src = path.join(stageDir, f);
-        const dst = path.join(stageLogsDst, f);
+        const dst = path.join(suiteDir, f);
+        console.log(`  stage log    : ${dst}`);
         try { fs.copyFileSync(src, dst); } catch (e) { /* ignore */ }
       }
-    } catch (e) {
-      /* best-effort */
-    }
-
-    // Produce consolidated single-file artifacts for expected and got
-    try {
-      const expectedFullPath = path.join(suiteDir, `expected.full.${n}.txt`);
-      const gotFullPath = path.join(suiteDir, `got.full.${n}.txt`);
-
-      function appendHeader(fp, hdr) {
-        fs.appendFileSync(fp, `==== ${hdr} ====` + '\n', 'utf8');
-      }
-
-      // Build expected.full
-      try {
-        fs.writeFileSync(expectedFullPath, '', 'utf8');
-        appendHeader(expectedFullPath, 'INPUT');
-        fs.appendFileSync(expectedFullPath, fs.readFileSync(inputPath, 'utf8') + '\n', 'utf8');
-
-        appendHeader(expectedFullPath, 'EXPECTED STRING');
-        fs.appendFileSync(expectedFullPath, fs.readFileSync(expectedStringPath, 'utf8') + '\n', 'utf8');
-
-        appendHeader(expectedFullPath, 'EXPECTED JSON');
-        fs.appendFileSync(expectedFullPath, fs.readFileSync(expectedJsonPath, 'utf8') + '\n', 'utf8');
-
-        appendHeader(expectedFullPath, 'STAGE LOGS');
-        const sl = fs.readdirSync(stageDir || os.tmpdir());
-        for (const f of sl) {
-          try {
-            fs.appendFileSync(expectedFullPath, `-- ${f} --\n`, 'utf8');
-            const data = fs.readFileSync(path.join(stageDir, f));
-            fs.appendFileSync(expectedFullPath, data);
-            if (!String(data).endsWith('\n')) fs.appendFileSync(expectedFullPath, '\n');
-          } catch (e) {
-            /* ignore per-file read errors */
+      // Read the js-stage.log and native-stage.log.  Match each on stage names and print which stage they do not match on.
+      if( name == 'pipeline') {
+        const jsStageLogPath = path.join(stageDir, 'js-stage.log');
+        const nativeStageLogPath = path.join(stageDir, 'native-stage.log');
+        if (fs.existsSync(jsStageLogPath) && fs.existsSync(nativeStageLogPath)) {
+          // Filter both files where the lines start with Stage #
+          const jsStageLog = fs.readFileSync(jsStageLogPath, 'utf8').split('\n').filter(line => line.trim() && line.startsWith('Stage '));
+          const nativeStageLog = fs.readFileSync(nativeStageLogPath, 'utf8').split('\n').filter(line => line.trim() && line.startsWith('Stage '));
+          const minLength = Math.min(jsStageLog.length, nativeStageLog.length);
+          for (let i = 0; i < minLength; i++) {
+            if (jsStageLog[i] !== nativeStageLog[i]) {
+              console.log(`  stage mismatch:`);
+              console.log(`    JS   : ${jsStageLog[i]}`);
+              console.log(`    NAT  : ${nativeStageLog[i]}`);
+              break;
+            }
           }
         }
-      } catch (e) {
-        /* best-effort */
       }
-
-      // Build got.full
-      try {
-        fs.writeFileSync(gotFullPath, '', 'utf8');
-        appendHeader(gotFullPath, 'INPUT');
-        fs.appendFileSync(gotFullPath, fs.readFileSync(inputPath, 'utf8') + '\n', 'utf8');
-
-        appendHeader(gotFullPath, 'GOT STRING');
-        fs.appendFileSync(gotFullPath, fs.readFileSync(gotStringPath, 'utf8') + '\n', 'utf8');
-
-        appendHeader(gotFullPath, 'GOT JSON');
-        fs.appendFileSync(gotFullPath, fs.readFileSync(gotJsonPath, 'utf8') + '\n', 'utf8');
-
-        appendHeader(gotFullPath, 'STAGE LOGS');
-        const sl2 = fs.readdirSync(stageDir || os.tmpdir());
-        for (const f of sl2) {
-          try {
-            fs.appendFileSync(gotFullPath, `-- ${f} --\n`, 'utf8');
-            const data = fs.readFileSync(path.join(stageDir, f));
-            fs.appendFileSync(gotFullPath, data);
-            if (!String(data).endsWith('\n')) fs.appendFileSync(gotFullPath, '\n');
-          } catch (e) {
-            /* ignore */
-          }
-        }
-      } catch (e) {
-        /* best-effort */
-      }
-        // Print locations of consolidated artifacts and stage logs for easy triage
-        try {
-          console.log('  expected full  :', expectedFullPath);
-          console.log('  got full       :', gotFullPath);
-          console.log('  stage logs     :', path.join(suiteDir, 'stage-logs'));
-        } catch (e) {
-          /* best-effort */
-        }
-    } catch (e) {
-      /* best-effort overall */
     }
 
-    console.log('  expected string:', expectedStringPath);
-    console.log('  got string     :', gotStringPath);
-    console.log('  string diff    :', stringDiffPath);
-    console.log('  expected json  :', expectedJsonPath);
-    console.log('  got json       :', gotJsonPath);
-    console.log('  tree diff      :', jsonDiffPath);
-    console.log('  ast analysis   :', astAnalysisPath);
   }
 
   return ok;

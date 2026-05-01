@@ -292,6 +292,13 @@ static Token *build_template_token(const char **parts_restored, const size_t *pa
         size_t i = 0, j = cleaned_len;
         while (i < cleaned_len && isspace((unsigned char)cleaned[i])) i++;
         while (j > i && isspace((unsigned char)cleaned[j - 1])) j--;
+        size_t trimmed_len = (j > i) ? (j - i) : 0;
+        if (trimmed_len > 0) {
+            fprintf(stderr, "[debug] build_template_token: title_after_removeComment_trim='%.*s' len=%zu\n",
+                    (int)(trimmed_len < 200 ? trimmed_len : 200), cleaned + i, trimmed_len);
+        } else {
+            fprintf(stderr, "[debug] build_template_token: title empty after removeComment+trim -> rejecting token\n");
+        }
         free(cleaned);
         if (j <= i) {
             token_free(t);
@@ -1235,8 +1242,19 @@ void parse_braces(ThreadBuf *tb, const ParserConfig *cfg, Accum *accum)
 
         while (search_at <= tb->len) {
             int rc = pcre2_match(re, (PCRE2_SPTR)subject, tb->len,
-                                 search_at, 0, md, NULL);
+                     search_at, 0, md, NULL);
+            if (rc > 0) {
+                PCRE2_SIZE *ov = pcre2_get_ovector_pointer(md);
+                size_t ms = ov[0];
+                size_t me = ov[1];
+                size_t cap = me > ms ? me - ms : 0;
+                fprintf(stderr, "[debug] braces.match at %zu..%zu: '%.*s'\n", ms, me, (int)(cap < 200 ? cap : 200), tb->buf + ms);
+            }
             if (rc <= 0) {
+                if (rc < 0 && rc != PCRE2_ERROR_NOMATCH) {
+                    PCRE2_UCHAR8 err_buf[256];
+                    pcre2_get_error_message(rc, err_buf, sizeof(err_buf));
+                }
                 size_t rest = tb->len - search_at;
                 ENSURE_CAP(rest + 1);
                 memcpy(out_buf + out_len, tb->buf + search_at, rest);

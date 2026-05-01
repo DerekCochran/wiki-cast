@@ -715,19 +715,22 @@ void token_to_json(const Token *t, FILE *fp)
         json_string(t->name, fp);
     }
 
-    fputs(",\"childNodes\":[", fp);
-    for (size_t i = 0; i < t->child_count; i++) {
-        if (i > 0) fputc(',', fp);
-        const Child *c = &t->children[i];
-        if (c->is_text) {
-            fprintf(fp, "{\"type\":\"text\",\"data\":");
-            json_string(c->text, fp);
-            fputc('}', fp);
-        } else {
-            token_to_json(c->token, fp);
+    if (t->child_count > 0) {
+        fputs(",\"childNodes\":[", fp);
+        for (size_t i = 0; i < t->child_count; i++) {
+            if (i > 0) fputc(',', fp);
+            const Child *c = &t->children[i];
+            if (c->is_text) {
+                fprintf(fp, "{\"type\":\"text\",\"data\":");
+                json_string(c->text, fp);
+                fputc('}', fp);
+            } else {
+                token_to_json(c->token, fp);
+            }
         }
+        fputs("]", fp);
     }
-    fputs("]}", fp);
+    fputc('}', fp);
 }
 
 char token_sentinel_char(TokenType type)

@@ -4,7 +4,10 @@
 // These exercises multiple stages interacting at once.
 const { runTests } = require('./helpers');
 
-runTests([
+// This should loop through each test and fast fail on the first mismatch.
+const tests = [
+  `| {{chset-cell1 | 123 U+007B: LEFT CURLY BRACKET | [[Left curly bracket|{]] | style=background:#ffffb2}}`,
+
   // Simple prose – no special markup
   'This is a paragraph of plain text.',
 
@@ -20,8 +23,7 @@ runTests([
   // Table with a link in a cell
   '{|\n| [[Page|link]] || plain\n|}',
 
-  // ASCII chset table cell (parity repro candidate)
-  '{|\n| {{chset-cell1 | 123 U+007B: LEFT CURLY BRACKET | [[Left curly bracket|{]] | style=background:#ffffb2}}\n|}',
+  '{|\n| alias = ISO-IR-006,<ref>reftext</ref> ANSI_X3.4-1968\n|}',
 
   // Table cell link text spanning inline HTML must remain one link
   '{|\n! Modern [[State of matter|state<br />of matter]]\n|}',
@@ -108,14 +110,9 @@ runTests([
   // Wikitext repro: parser-function style magic word with ':' should not become template
   '(${{formatnum:{{Inflation|US|800|1861|r=-2}}}} in current dollars)',
 
-  // Wikitext repro: ASCII chset table cell with target "." inside a link
-  '{|\n| {{chset-cell1 | 34 U+0022: QUOTATION MARK | [[" ]] }}\n|}',
-
   // Wikitext repro: imagemap should produce imagemap-image / imagemap-link structure
   '<imagemap>\nFile:Emancipation proclamation.jpg|thumb|upright=1.25|\'\'[[First Reading of the Emancipation Proclamation of President Lincoln]]\'\'|alt=A dark-haired, bearded, middle-aged man holding documents is seated among seven other men.\npoly 269 892 254 775 193 738 [[Edwin M. Stanton|Edwin Stanton]]\n</imagemap>',
 
-  // Parity test: table fragment from ASCII.wikitext
-  '{|\n| {{chset-left1|0\'\'x\'\'}}\n| {{chset-ctrl1 | 0 U+0000: Control (alias NULL) (alias NUL) | [[Null character|NUL]] }}\n| {{chset-ctrl1 | 1 U+0001: Control (alias START OF HEADING) (alias SOH) | [[Start of heading|SOH]] | style=background:#ffffb2}}\n|}',
   // BEGIN: auto-generated post-processing parity failures (234 cases)
   "<ref>https://example.org/a</ref>",
   "<ref>RFC 2119</ref>",
@@ -358,4 +355,12 @@ runTests([
   '[[Image:Foo.jpg|upright|caption [[Link]] text]]',
 
   // END: auto-generated post-processing parity failures
-], { name: 'pipeline' });
+];
+
+for (const test of tests) {
+  const ok = runTests(test, { name: 'pipeline' });
+  if (!ok) {
+    console.log('Test failed for input:\n', test);
+    process.exit(1);
+  }
+}

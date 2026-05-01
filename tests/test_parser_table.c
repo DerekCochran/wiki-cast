@@ -17,6 +17,8 @@ static const char *samples[] = {
     "prefix\n{|\n| cell\n|}\nsuffix",
     "{|\n| style=\"color:red\" | red text\n|}",
     "{|\n| {{green}} | x\n|}",
+    "| {{chset-cell1 | 123 U+007B: LEFT CURLY BRACKET | [[Left curly bracket|{]] | style=background:#ffffb2}}",
+    "{|\n| {{chset-cell1 | 123 U+007B: LEFT CURLY BRACKET | [[Left curly bracket|{]] | style=background:#ffffb2}}\n|}",
     "{|\n|}",
     ":{|\n| cell\n|}",
     "{|\n| cell\n|} trailing text",
