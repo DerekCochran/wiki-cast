@@ -1,92 +1,86 @@
 #define PCRE2_CODE_UNIT_WIDTH 8
 #include <pcre2.h>
 
+#include "log.h"
 #include "parser/comment_and_ext.h"
 #include "string_util.h"
-#include "log.h"
-#include <stdlib.h>
-#include <string.h>
 #include <assert.h>
 #include <ctype.h>
 #include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
 
 typedef struct {
-    char **items;
-    size_t *lens;
-    size_t count;
-    size_t cap;
+	char **items;
+	size_t *lens;
+	size_t count;
+	size_t cap;
 } TextStack;
 
-static void text_stack_init(TextStack *st)
-{
-    st->items = NULL;
-    st->lens = NULL;
-    st->count = 0;
-    st->cap = 0;
+static void text_stack_init(TextStack *st) {
+	st->items= NULL;
+	st->lens= NULL;
+	st->count= 0;
+	st->cap= 0;
 }
 
-static void text_stack_push(TextStack *st, const char *s, size_t len)
-{
-    if (st->count >= st->cap) {
-        size_t new_cap = st->cap ? st->cap * 2 : 8;
-        st->items = realloc(st->items, new_cap * sizeof(char *));
-        st->lens = realloc(st->lens, new_cap * sizeof(size_t));
-        assert(st->items && st->lens);
-        st->cap = new_cap;
-    }
-    char *copy = malloc(len + 1);
-    assert(copy);
-    memcpy(copy, s, len);
-    copy[len] = '\0';
-    st->items[st->count] = copy;
-    st->lens[st->count] = len;
-    st->count++;
+static void text_stack_push(TextStack *st, const char *s, size_t len) {
+	if(st->count >= st->cap) {
+		size_t new_cap= st->cap ? st->cap * 2 : 8;
+		st->items= realloc(st->items, new_cap * sizeof(char *));
+		st->lens= realloc(st->lens, new_cap * sizeof(size_t));
+		assert(st->items && st->lens);
+		st->cap= new_cap;
+	}
+	char *copy= malloc(len + 1);
+	assert(copy);
+	memcpy(copy, s, len);
+	copy[len]= '\0';
+	st->items[st->count]= copy;
+	st->lens[st->count]= len;
+	st->count++;
 }
 
-static void text_stack_free(TextStack *st)
-{
-    for (size_t i = 0; i < st->count; i++) free(st->items[i]);
-    free(st->items);
-    free(st->lens);
-    st->items = NULL;
-    st->lens = NULL;
-    st->count = 0;
-    st->cap = 0;
+static void text_stack_free(TextStack *st) {
+	for(size_t i= 0; i < st->count; i++) free(st->items[i]);
+	free(st->items);
+	free(st->lens);
+	st->items= NULL;
+	st->lens= NULL;
+	st->count= 0;
+	st->cap= 0;
 }
 
-static void append_numeric_placeholder(char *dst, size_t *len, size_t idx)
-{
-    dst[(*len)++] = '\0';
-    *len += (size_t)sprintf(dst + *len, "%zu", idx);
-    dst[(*len)++] = '\x7F';
+static void append_numeric_placeholder(char *dst, size_t *len, size_t idx) {
+	dst[(*len)++]= '\0';
+	*len+= (size_t)sprintf(dst + *len, "%zu", idx);
+	dst[(*len)++]= '\x7F';
 }
 
 static const char *find_substr_cs(const char *hay, size_t hlen,
-                                  const char *needle, size_t nlen)
-{
-    if (!hay || !needle || nlen == 0 || nlen > hlen) return NULL;
-    for (size_t i = 0; i + nlen <= hlen; i++) {
-        if (memcmp(hay + i, needle, nlen) == 0) return hay + i;
-    }
-    return NULL;
+																	const char *needle, size_t nlen) {
+	if(!hay || !needle || nlen == 0 || nlen > hlen) return NULL;
+	for(size_t i= 0; i + nlen <= hlen; i++) {
+		if(memcmp(hay + i, needle, nlen) == 0) return hay + i;
+	}
+	return NULL;
 }
 
-static char *token_string_dup(const Token *tok, size_t *out_len)
-{
-    if (!tok) {
-        if (out_len) *out_len = 0;
-        return strdup("");
-    }
-    ThreadBuf *tb = wiki_thread_buf_acquire_scratch();
-    char *s = token_to_string(tok, tb);
-    size_t n = tb->len;
-    char *dup = malloc(n + 1);
-    assert(dup);
-    memcpy(dup, s, n);
-    dup[n] = '\0';
-    wiki_thread_buf_release_scratch(tb);
-    if (out_len) *out_len = n;
-    return dup;
+static char *token_string_dup(const Token *tok, size_t *out_len) {
+	if(!tok) {
+		if(out_len) *out_len= 0;
+		return strdup("");
+	}
+	ThreadBuf *tb= wiki_thread_buf_acquire_scratch();
+	char *s= token_to_string(tok, tb);
+	size_t n= tb->len;
+	char *dup= malloc(n + 1);
+	assert(dup);
+	memcpy(dup, s, n);
+	dup[n]= '\0';
+	wiki_thread_buf_release_scratch(tb);
+	if(out_len) *out_len= n;
+	return dup;
 }
 
 /* JS restore parity used by parseCommentAndExt:
@@ -94,62 +88,62 @@ static char *token_string_dup(const Token *tok, size_t *out_len)
  * restore(s, accum, 2): expand \0Nn\x7F.
  */
 static char *restore_accum_mode(const char *s, size_t len,
-                                const Accum *accum, int mode,
-                                size_t *out_len)
-{
-    size_t cap = len * 2 + 32;
-    char *out = malloc(cap);
-    assert(out);
-    size_t j = 0;
+																const Accum *accum, int mode,
+																size_t *out_len) {
+	size_t cap= len * 2 + 32;
+	char *out= malloc(cap);
+	assert(out);
+	size_t j= 0;
 
-#define ENSURE_RESTORE_CAP(need) do { \
-    while (j + (need) + 1 >= cap) { \
-        cap *= 2; \
-        out = realloc(out, cap); \
-        assert(out); \
-    } \
-} while (0)
+#define ENSURE_RESTORE_CAP(need)   \
+	do {                             \
+		while(j + (need) + 1 >= cap) { \
+			cap*= 2;                     \
+			out= realloc(out, cap);      \
+			assert(out);                 \
+		}                              \
+	} while(0)
 
-    for (size_t i = 0; i < len; ) {
-        if ((unsigned char)s[i] == '\0') {
-            size_t k = i + 1;
-            while (k < len && s[k] >= '0' && s[k] <= '9') k++;
-            if (k > i + 1 && k + 1 < len && (unsigned char)s[k + 1] == '\x7F') {
-                char ch = s[k];
-                bool should_expand = (mode == 1 && ch == 'g') || (mode == 2 && ch == 'n');
-                if (should_expand) {
-                    size_t idx = 0;
-                    for (size_t d = i + 1; d < k; d++) idx = idx * 10 + (size_t)(s[d] - '0');
-                    Token *ref = accum_get(accum, idx);
-                    if (ref) {
-                        size_t rep_len = 0;
-                        char *rep = token_string_dup(ref, &rep_len);
-                        if (mode == 1 && ch == 'g') {
-                            size_t nested_len = 0;
-                            char *nested = restore_accum_mode(rep, rep_len, accum, 2, &nested_len);
-                            free(rep);
-                            rep = nested;
-                            rep_len = nested_len;
-                        }
-                        ENSURE_RESTORE_CAP(rep_len);
-                        memcpy(out + j, rep, rep_len);
-                        j += rep_len;
-                        free(rep);
-                        i = k + 2;
-                        continue;
-                    }
-                }
-            }
-        }
+	for(size_t i= 0; i < len;) {
+		if((unsigned char)s[i] == '\0') {
+			size_t k= i + 1;
+			while(k < len && s[k] >= '0' && s[k] <= '9') k++;
+			if(k > i + 1 && k + 1 < len && (unsigned char)s[k + 1] == '\x7F') {
+				char ch= s[k];
+				bool should_expand= (mode == 1 && ch == 'g') || (mode == 2 && ch == 'n');
+				if(should_expand) {
+					size_t idx= 0;
+					for(size_t d= i + 1; d < k; d++) idx= idx * 10 + (size_t)(s[d] - '0');
+					Token *ref= accum_get(accum, idx);
+					if(ref) {
+						size_t rep_len= 0;
+						char *rep= token_string_dup(ref, &rep_len);
+						if(mode == 1 && ch == 'g') {
+							size_t nested_len= 0;
+							char *nested= restore_accum_mode(rep, rep_len, accum, 2, &nested_len);
+							free(rep);
+							rep= nested;
+							rep_len= nested_len;
+						}
+						ENSURE_RESTORE_CAP(rep_len);
+						memcpy(out + j, rep, rep_len);
+						j+= rep_len;
+						free(rep);
+						i= k + 2;
+						continue;
+					}
+				}
+			}
+		}
 
-        ENSURE_RESTORE_CAP(1);
-        out[j++] = s[i++];
-    }
+		ENSURE_RESTORE_CAP(1);
+		out[j++]= s[i++];
+	}
 
 #undef ENSURE_RESTORE_CAP
-    out[j] = '\0';
-    if (out_len) *out_len = j;
-    return out;
+	out[j]= '\0';
+	if(out_len) *out_len= j;
+	return out;
 }
 
 /* ── Attribute parsing helpers ───────────────────────────────────────────── */
@@ -157,37 +151,34 @@ static char *restore_accum_mode(const char *s, size_t len,
 /**
  * Build an attr-key token.
  */
-static Token *make_attr_key(const char *key, size_t key_len, Accum *accum)
-{
-    Token *t = token_new(TOKEN_ATTR_KEY, "attr-key");
-    if (!t) return NULL;
-    token_append_text_n(t, key, key_len);
-    accum_push(accum, t);
-    return t;
+static Token *make_attr_key(const char *key, size_t key_len, Accum *accum) {
+	Token *t= token_new(TOKEN_ATTR_KEY, "attr-key");
+	if(!t) return NULL;
+	token_append_text_n(t, key, key_len);
+	accum_push(accum, t);
+	return t;
 }
 
 /**
  * Build an attr-value token.
  */
-static Token *make_attr_value(const char *val, size_t val_len, Accum *accum)
-{
-    Token *t = token_new(TOKEN_ATTR_VALUE, "attr-value");
-    if (!t) return NULL;
-    token_append_text_n(t, val, val_len);
-    accum_push(accum, t);
-    return t;
+static Token *make_attr_value(const char *val, size_t val_len, Accum *accum) {
+	Token *t= token_new(TOKEN_ATTR_VALUE, "attr-value");
+	if(!t) return NULL;
+	token_append_text_n(t, val, val_len);
+	accum_push(accum, t);
+	return t;
 }
 
 /**
  * Build an ext-attr-dirty AtomToken.
  */
-static Token *make_attr_dirty(const char *text, size_t text_len, Accum *accum)
-{
-    Token *t = token_new(TOKEN_EXT_ATTR_DIRTY, "ext-attr-dirty");
-    if (!t) return NULL;
-    token_append_text_n(t, text, text_len);
-    accum_push(accum, t);
-    return t;
+static Token *make_attr_dirty(const char *text, size_t text_len, Accum *accum) {
+	Token *t= token_new(TOKEN_EXT_ATTR_DIRTY, "ext-attr-dirty");
+	if(!t) return NULL;
+	token_append_text_n(t, text, text_len);
+	accum_push(accum, t);
+	return t;
 }
 
 /**
@@ -197,45 +188,50 @@ static Token *make_attr_dirty(const char *text, size_t text_len, Accum *accum)
  * tag_name is the parent tag (for setting the .name on the ext-attr).
  */
 static Token *make_ext_attr(const char *tag_name,
-                             const char *key, size_t key_len,
-                             const char *val, size_t val_len, /* val may be NULL */
-                             const char *equal, size_t equal_len,
-                             char quote_open, char quote_close,
-                             Accum *accum)
-{
-    Token *t = token_new(TOKEN_EXT_ATTR, "ext-attr");
-    if (!t) return NULL;
-    /* Lowercase the key for .name */
-    char *lkey = str_trim_lc(key, key_len);
-    t->name = lkey;  /* ownership transferred */
-    (void)tag_name;
+														const char *key, size_t key_len,
+														const char *val, size_t val_len, /* val may be NULL */
+														const char *equal, size_t equal_len,
+														char quote_open, char quote_close,
+														Accum *accum) {
+	Token *t= token_new(TOKEN_EXT_ATTR, "ext-attr");
+	if(!t) return NULL;
+	/* Lowercase the key for .name */
+	char *lkey= str_trim_lc(key, key_len);
+	t->name= lkey; /* ownership transferred */
+	(void)tag_name;
 
-    /* Store equal and quote chars (JS AttributeToken #equal / #quotes) */
-    if (equal && equal_len > 0) {
-        t->data.ext_attr.equal = malloc(equal_len + 1);
-        memcpy(t->data.ext_attr.equal, equal, equal_len);
-        t->data.ext_attr.equal[equal_len] = '\0';
-    }
-    t->data.ext_attr.quote_open  = quote_open;
-    t->data.ext_attr.quote_close = quote_close;
+	/* Store equal and quote chars (JS AttributeToken #equal / #quotes) */
+	if(equal && equal_len > 0) {
+		t->data.ext_attr.equal= malloc(equal_len + 1);
+		memcpy(t->data.ext_attr.equal, equal, equal_len);
+		t->data.ext_attr.equal[equal_len]= '\0';
+	}
+	t->data.ext_attr.quote_open= quote_open;
+	t->data.ext_attr.quote_close= quote_close;
 
-    Token *attr_key = make_attr_key(key, key_len, accum);
-    if (!attr_key) { token_free(t); return NULL; }
-    token_append_child(t, attr_key);
+	Token *attr_key= make_attr_key(key, key_len, accum);
+	if(!attr_key) {
+		token_free(t);
+		return NULL;
+	}
+	token_append_child(t, attr_key);
 
-    Token *attr_val = NULL;
-    if (val) {
-        attr_val = make_attr_value(val, val_len, accum);
-    } else {
-        /* JS parity: boolean attrs still have attr-value token, but with no text child. */
-        attr_val = token_new(TOKEN_ATTR_VALUE, "attr-value");
-        if (attr_val) accum_push(accum, attr_val);
-    }
-    if (!attr_val) { token_free(t); return NULL; }
-    token_append_child(t, attr_val);
+	Token *attr_val= NULL;
+	if(val) {
+		attr_val= make_attr_value(val, val_len, accum);
+	} else {
+		/* JS parity: boolean attrs still have attr-value token, but with no text child. */
+		attr_val= token_new(TOKEN_ATTR_VALUE, "attr-value");
+		if(attr_val) accum_push(accum, attr_val);
+	}
+	if(!attr_val) {
+		token_free(t);
+		return NULL;
+	}
+	token_append_child(t, attr_val);
 
-    accum_push(accum, t);
-    return t;
+	accum_push(accum, t);
+	return t;
 }
 
 /**
@@ -251,193 +247,190 @@ static Token *make_ext_attr(const char *tag_name,
  *   - key='value'  → ext-attr
  */
 static void parse_ext_attrs(Token *attrs_tok, const char *attr_str, size_t attr_len,
-                             const char *tag_name, Accum *accum)
-{
-    if (!attr_str || attr_len == 0) return;
+														const char *tag_name, Accum *accum) {
+	if(!attr_str || attr_len == 0) return;
 
-    size_t i = 0;
-    char dirty_buf[4096]; /* Accumulates "dirty" text */
-    size_t dirty_len = 0;
+	size_t i= 0;
+	char dirty_buf[4096]; /* Accumulates "dirty" text */
+	size_t dirty_len= 0;
 
-#define FLUSH_DIRTY() do { \
-    if (dirty_len > 0) { \
-        Token *dt = make_attr_dirty(dirty_buf, dirty_len, accum); \
-        if (dt) token_append_child(attrs_tok, dt); \
-        dirty_len = 0; \
-    } \
-} while (0)
+#define FLUSH_DIRTY()                                          \
+	do {                                                         \
+		if(dirty_len > 0) {                                        \
+			Token *dt= make_attr_dirty(dirty_buf, dirty_len, accum); \
+			if(dt) token_append_child(attrs_tok, dt);                \
+			dirty_len= 0;                                            \
+		}                                                          \
+	} while(0)
 
-    while (i < attr_len) {
-        /* Skip whitespace by adding to dirty */
-        if (isspace((unsigned char)attr_str[i])) {
-            while (i < attr_len && isspace((unsigned char)attr_str[i])) {
-                dirty_buf[dirty_len++] = attr_str[i++];
-            }
-            continue;
-        }
+	while(i < attr_len) {
+		/* Skip whitespace by adding to dirty */
+		if(isspace((unsigned char)attr_str[i])) {
+			while(i < attr_len && isspace((unsigned char)attr_str[i])) {
+				dirty_buf[dirty_len++]= attr_str[i++];
+			}
+			continue;
+		}
 
-        /* Skip '/' character (self-closing slash before >) */
-        if (attr_str[i] == '/') {
-            dirty_buf[dirty_len++] = attr_str[i++];
-            continue;
-        }
+		/* Skip '/' character (self-closing slash before >) */
+		if(attr_str[i] == '/') {
+			dirty_buf[dirty_len++]= attr_str[i++];
+			continue;
+		}
 
-        /* Try to parse a key: [^\s/=]+ (simplified) */
-        size_t key_start = i;
-        while (i < attr_len && !isspace((unsigned char)attr_str[i]) &&
-               attr_str[i] != '=' && attr_str[i] != '/') {
-            i++;
-        }
-        size_t key_len = i - key_start;
-        if (key_len == 0) {
-            dirty_buf[dirty_len++] = attr_str[i++];
-            continue;
-        }
+		/* Try to parse a key: [^\s/=]+ (simplified) */
+		size_t key_start= i;
+		while(i < attr_len && !isspace((unsigned char)attr_str[i]) &&
+					attr_str[i] != '=' && attr_str[i] != '/') {
+			i++;
+		}
+		size_t key_len= i - key_start;
+		if(key_len == 0) {
+			dirty_buf[dirty_len++]= attr_str[i++];
+			continue;
+		}
 
-        /* Validate key: must match [a-zA-Z_:][a-zA-Z0-9:._-]* (simplified) */
-        const char *key = attr_str + key_start;
-        bool valid_key = isalpha((unsigned char)key[0]) || key[0] == '_' || key[0] == ':';
-        if (valid_key) {
-            for (size_t k = 1; k < key_len; k++) {
-                unsigned char kc = (unsigned char)key[k];
-                if (!isalnum(kc) && kc != ':' && kc != '.' && kc != '_' && kc != '-') {
-                    valid_key = false;
-                    break;
-                }
-            }
-        }
+		/* Validate key: must match [a-zA-Z_:][a-zA-Z0-9:._-]* (simplified) */
+		const char *key= attr_str + key_start;
+		bool valid_key= isalpha((unsigned char)key[0]) || key[0] == '_' || key[0] == ':';
+		if(valid_key) {
+			for(size_t k= 1; k < key_len; k++) {
+				unsigned char kc= (unsigned char)key[k];
+				if(!isalnum(kc) && kc != ':' && kc != '.' && kc != '_' && kc != '-') {
+					valid_key= false;
+					break;
+				}
+			}
+		}
 
-        if (!valid_key) {
-            /* Not a valid key — add to dirty */
-            for (size_t k = 0; k < key_len; k++) dirty_buf[dirty_len++] = key[k];
-            continue;
-        }
+		if(!valid_key) {
+			/* Not a valid key — add to dirty */
+			for(size_t k= 0; k < key_len; k++) dirty_buf[dirty_len++]= key[k];
+			continue;
+		}
 
-        /* Skip optional whitespace before '=' */
-        size_t eq_start = i;
-        while (i < attr_len && isspace((unsigned char)attr_str[i])) i++;
+		/* Skip optional whitespace before '=' */
+		size_t eq_start= i;
+		while(i < attr_len && isspace((unsigned char)attr_str[i])) i++;
 
-        if (i >= attr_len || attr_str[i] != '=') {
-            /* Boolean attribute (no value) */
-            /* Flush dirty */
-            FLUSH_DIRTY();
-            Token *at = make_ext_attr(tag_name, key, key_len, NULL, 0,
-                                      "", 0, '\0', '\0', accum);
-            if (at) token_append_child(attrs_tok, at);
-            i = eq_start; /* reset to before optional whitespace */
-            /* Whitespace before a missing '=' goes back to dirty in JS */
-            continue;
-        }
+		if(i >= attr_len || attr_str[i] != '=') {
+			/* Boolean attribute (no value) */
+			/* Flush dirty */
+			FLUSH_DIRTY();
+			Token *at= make_ext_attr(tag_name, key, key_len, NULL, 0,
+															 "", 0, '\0', '\0', accum);
+			if(at) token_append_child(attrs_tok, at);
+			i= eq_start; /* reset to before optional whitespace */
+			/* Whitespace before a missing '=' goes back to dirty in JS */
+			continue;
+		}
 
-        /* Equal sign found */
-        i++; /* skip '=' */
+		/* Equal sign found */
+		i++; /* skip '=' */
 
-        /* Skip optional whitespace after '=' */
-        while (i < attr_len && isspace((unsigned char)attr_str[i])) i++;
+		/* Skip optional whitespace after '=' */
+		while(i < attr_len && isspace((unsigned char)attr_str[i])) i++;
 
-        /* Capture the full equal string (whitespace + '=' + whitespace) for JS parity */
-        const char *equal_start = attr_str + eq_start;
-        size_t equal_slen = i - eq_start;
+		/* Capture the full equal string (whitespace + '=' + whitespace) for JS parity */
+		const char *equal_start= attr_str + eq_start;
+		size_t equal_slen= i - eq_start;
 
-        /* Parse value */
-        const char *val = NULL;
-        size_t val_len = 0;
-        char quote_open = '\0', quote_close = '\0';
+		/* Parse value */
+		const char *val= NULL;
+		size_t val_len= 0;
+		char quote_open= '\0', quote_close= '\0';
 
-        if (i < attr_len && (attr_str[i] == '"' || attr_str[i] == '\'')) {
-            quote_open = attr_str[i++];
-            size_t val_start = i;
-            while (i < attr_len && attr_str[i] != quote_open) i++;
-            val     = attr_str + val_start;
-            val_len = i - val_start;
-            bool found_close = (i < attr_len);
-            quote_close = found_close ? quote_open : '\0';
-            if (found_close) i++; /* skip closing quote */
-        } else {
-            /* Unquoted value: \S+ */
-            size_t val_start = i;
-            while (i < attr_len && !isspace((unsigned char)attr_str[i])) i++;
-            val     = attr_str + val_start;
-            val_len = i - val_start;
-        }
+		if(i < attr_len && (attr_str[i] == '"' || attr_str[i] == '\'')) {
+			quote_open= attr_str[i++];
+			size_t val_start= i;
+			while(i < attr_len && attr_str[i] != quote_open) i++;
+			val= attr_str + val_start;
+			val_len= i - val_start;
+			bool found_close= (i < attr_len);
+			quote_close= found_close ? quote_open : '\0';
+			if(found_close) i++; /* skip closing quote */
+		} else {
+			/* Unquoted value: \S+ */
+			size_t val_start= i;
+			while(i < attr_len && !isspace((unsigned char)attr_str[i])) i++;
+			val= attr_str + val_start;
+			val_len= i - val_start;
+		}
 
-        FLUSH_DIRTY();
-        Token *at = make_ext_attr(tag_name, key, key_len, val, val_len,
-                                  equal_start, equal_slen, quote_open, quote_close,
-                                  accum);
-        if (at) token_append_child(attrs_tok, at);
-    }
+		FLUSH_DIRTY();
+		Token *at= make_ext_attr(tag_name, key, key_len, val, val_len,
+														 equal_start, equal_slen, quote_open, quote_close,
+														 accum);
+		if(at) token_append_child(attrs_tok, at);
+	}
 
-    FLUSH_DIRTY();
+	FLUSH_DIRTY();
 #undef FLUSH_DIRTY
 }
 
 /* ── ext-attrs token builder ─────────────────────────────────────────────── */
 
 static Token *build_ext_attrs(const char *tag_name,
-                               const char *attr_str, size_t attr_len,
-                               Accum *accum)
-{
-    Token *t = token_new(TOKEN_EXT_ATTRS, "ext-attrs");
-    if (!t) return NULL;
-    t->name = strdup(tag_name);
-    accum_push(accum, t);
+															const char *attr_str, size_t attr_len,
+															Accum *accum) {
+	Token *t= token_new(TOKEN_EXT_ATTRS, "ext-attrs");
+	if(!t) return NULL;
+	t->name= strdup(tag_name);
+	accum_push(accum, t);
 
-    /* Ensure attr starts with whitespace (JS always ensures this by prepending ' '
+	/* Ensure attr starts with whitespace (JS always ensures this by prepending ' '
      * if it doesn't: `!attr || /^\s/u.test(attr) ? attr : ` ${attr}`` */
-    if (attr_str && attr_len > 0 && !isspace((unsigned char)attr_str[0])) {
-        /* Prepend a space */
-        char *padded = malloc(attr_len + 2);
-        padded[0] = ' ';
-        memcpy(padded + 1, attr_str, attr_len);
-        parse_ext_attrs(t, padded, attr_len + 1, tag_name, accum);
-        free(padded);
-    } else {
-        parse_ext_attrs(t, attr_str, attr_len, tag_name, accum);
-    }
+	if(attr_str && attr_len > 0 && !isspace((unsigned char)attr_str[0])) {
+		/* Prepend a space */
+		char *padded= malloc(attr_len + 2);
+		padded[0]= ' ';
+		memcpy(padded + 1, attr_str, attr_len);
+		parse_ext_attrs(t, padded, attr_len + 1, tag_name, accum);
+		free(padded);
+	} else {
+		parse_ext_attrs(t, attr_str, attr_len, tag_name, accum);
+	}
 
-    return t;
+	return t;
 }
 
 /* ── ext-inner token builder ─────────────────────────────────────────────── */
 
-static bool is_multiline_tag(const char *tag_name)
-{
-    static const char * const ML_TAGS[] = {
-        "gallery",
-        "imagemap",
-        "dynamicpagelist",
-        "inputbox",
-        NULL,
-    };
-    for (int i = 0; ML_TAGS[i]; i++) {
-        if (strcmp(tag_name, ML_TAGS[i]) == 0) return true;
-    }
-    return false;
+static bool is_multiline_tag(const char *tag_name) {
+	static const char *const ML_TAGS[]= {
+	"gallery",
+	"imagemap",
+	"dynamicpagelist",
+	"inputbox",
+	NULL,
+	};
+	for(int i= 0; ML_TAGS[i]; i++) {
+		if(strcmp(tag_name, ML_TAGS[i]) == 0) return true;
+	}
+	return false;
 }
 
 static Token *build_ext_inner(const char *tag_name,
-                               const char *inner_str, size_t inner_len,
-                               bool self_closing,
-                               Accum *accum)
-{
-    Token *t = token_new(TOKEN_EXT_INNER, "ext-inner");
-    if (!t) return NULL;
-    t->name = strdup(tag_name);
-    if (is_multiline_tag(tag_name)) {
-        t->sep = '\n';
-    }
-    if (self_closing && strcmp(tag_name, "nowiki") != 0) {
-        accum_push(accum, t);
-        return t;
-    }
-    if (inner_str && inner_len > 0) {
-        token_append_text_n(t, inner_str, inner_len);
-    } else {
-        token_append_text_n(t, "", 0); /* empty inner */
-    }
-    accum_push(accum, t);
-    return t;
+															const char *inner_str, size_t inner_len,
+															bool self_closing,
+															Accum *accum) {
+	Token *t= token_new(TOKEN_EXT_INNER, "ext-inner");
+	if(!t) return NULL;
+	t->name= strdup(tag_name);
+	if(is_multiline_tag(tag_name)) {
+		t->sep= '\n';
+	}
+	if(self_closing && strcmp(tag_name, "nowiki") != 0) {
+		accum_push(accum, t);
+		return t;
+	}
+	if(inner_str && inner_len > 0) {
+		token_append_text_n(t, inner_str, inner_len);
+	} else {
+		token_append_text_n(t, "", 0); /* empty inner */
+	}
+	accum_push(accum, t);
+	return t;
 }
 
 /* ── Main token builders ─────────────────────────────────────────────────── */
@@ -446,69 +439,70 @@ static Token *build_ext_inner(const char *tag_name,
  * Build a CommentToken and push to accum.
  * The substr is the full comment text "<!--...-->" or "<!--..." (unclosed).
  */
-static Token *build_comment_token(const char *substr, size_t sub_len, Accum *accum)
-{
-    /* Mirrors JS:
+static Token *build_comment_token(const char *substr, size_t sub_len, Accum *accum) {
+	/* Mirrors JS:
      * const closed = substr.endsWith('-->');
      * new CommentToken(restore(substr, accum, 1).slice(4, closed ? -3 : undefined), closed, config, accum);
      *
      * The data = inner text between <!-- and -->
      */
-    bool closed = (sub_len >= 3 &&
-                   substr[sub_len - 3] == '-' &&
-                   substr[sub_len - 2] == '-' &&
-                   substr[sub_len - 1] == '>');
+	bool closed= (sub_len >= 3 &&
+								substr[sub_len - 3] == '-' &&
+								substr[sub_len - 2] == '-' &&
+								substr[sub_len - 1] == '>');
 
-    /* Inner text: substr.slice(4, closed ? -3 : undefined) */
-    const char *inner_start = substr + 4; /* skip "<!--" */
-    size_t inner_len;
-    if (closed && sub_len >= 7) {
-        inner_len = sub_len - 7; /* strip "<!--" (4) and "-->" (3) */
-    } else {
-        inner_len = sub_len > 4 ? sub_len - 4 : 0;
-    }
+	/* Inner text: substr.slice(4, closed ? -3 : undefined) */
+	const char *inner_start= substr + 4; /* skip "<!--" */
+	size_t inner_len;
+	if(closed && sub_len >= 7) {
+		inner_len= sub_len - 7; /* strip "<!--" (4) and "-->" (3) */
+	} else {
+		inner_len= sub_len > 4 ? sub_len - 4 : 0;
+	}
 
-    Token *t = token_new(TOKEN_COMMENT, "comment");
-    if (!t) return NULL;
-    t->data.comment.closed = closed;
-    token_append_text_n(t, inner_start, inner_len);
-    accum_push(accum, t);
-    return t;
+	Token *t= token_new(TOKEN_COMMENT, "comment");
+	if(!t) return NULL;
+	t->data.comment.closed= closed;
+	token_append_text_n(t, inner_start, inner_len);
+	accum_push(accum, t);
+	return t;
 }
 
 /**
  * Build an ExtToken and push to accum (and its sub-tokens).
  */
 static Token *build_ext_token(const char *name, size_t name_len,
-                               const char *attr, size_t attr_len,
-                               const char *inner, size_t inner_len,
-                               bool self_closing,
-                               Accum *accum)
-{
-    /* Lower-case the tag name */
-    char *lcname = str_trim_lc(name, name_len);
+															const char *attr, size_t attr_len,
+															const char *inner, size_t inner_len,
+															bool self_closing,
+															Accum *accum) {
+	/* Lower-case the tag name */
+	char *lcname= str_trim_lc(name, name_len);
 
-    Token *t = token_new(TOKEN_EXT, "ext");
-    if (!t) { free(lcname); return NULL; }
-    t->name = strdup(lcname);
+	Token *t= token_new(TOKEN_EXT, "ext");
+	if(!t) {
+		free(lcname);
+		return NULL;
+	}
+	t->name= strdup(lcname);
 
-    /* Build sub-tokens */
-    Token *attrs_tok = build_ext_attrs(lcname, attr, attr_len, accum);
-    Token *inner_tok = build_ext_inner(lcname, inner, inner_len, self_closing, accum);
+	/* Build sub-tokens */
+	Token *attrs_tok= build_ext_attrs(lcname, attr, attr_len, accum);
+	Token *inner_tok= build_ext_inner(lcname, inner, inner_len, self_closing, accum);
 
-    if (!attrs_tok || !inner_tok) {
-        free(lcname);
-        token_free(t);
-        return NULL;
-    }
+	if(!attrs_tok || !inner_tok) {
+		free(lcname);
+		token_free(t);
+		return NULL;
+	}
 
-    token_append_child(t, attrs_tok);
-    token_append_child(t, inner_tok);
-    t->data.ext.self_closing = self_closing;
+	token_append_child(t, attrs_tok);
+	token_append_child(t, inner_tok);
+	t->data.ext.self_closing= self_closing;
 
-    free(lcname);
-    accum_push(accum, t);
-    return t;
+	free(lcname);
+	accum_push(accum, t);
+	return t;
 }
 
 /**
@@ -518,13 +512,12 @@ static Token *build_ext_token(const char *name, size_t name_len,
  *   new NoincludeToken(substr, config, accum, true)
  * → type "noinclude", one text child containing the raw tag text.
  */
-static Token *build_noinclude_token(const char *substr, size_t sub_len, Accum *accum)
-{
-    Token *t = token_new(TOKEN_NOINCLUDE, "noinclude");
-    if (!t) return NULL;
-    token_append_text_n(t, substr, sub_len);
-    accum_push(accum, t);
-    return t;
+static Token *build_noinclude_token(const char *substr, size_t sub_len, Accum *accum) {
+	Token *t= token_new(TOKEN_NOINCLUDE, "noinclude");
+	if(!t) return NULL;
+	token_append_text_n(t, substr, sub_len);
+	accum_push(accum, t);
+	return t;
 }
 
 /**
@@ -539,533 +532,527 @@ static Token *build_noinclude_token(const char *substr, size_t sub_len, Accum *a
  * data.include.closing stores the closing tag name (NULL if unclosed).
  */
 static Token *build_include_token(const char *tag_name, size_t tag_name_len,
-                                   const char *attr,    size_t attr_len,
-                                   const char *inner,   size_t inner_len,
-                                   const char *closing, size_t closing_len,
-                                   Accum *accum)
-{
-    Token *t = token_new(TOKEN_INCLUDE, "include");
-    if (!t) return NULL;
-    char *lcname = str_trim_lc(tag_name, tag_name_len);
-    t->name = lcname;
+																	const char *attr, size_t attr_len,
+																	const char *inner, size_t inner_len,
+																	const char *closing, size_t closing_len,
+																	Accum *accum) {
+	Token *t= token_new(TOKEN_INCLUDE, "include");
+	if(!t) return NULL;
+	char *lcname= str_trim_lc(tag_name, tag_name_len);
+	t->name= lcname;
 
-    /* attr text (may be NULL for self-closing or no attributes) */
-    const char *attr_src = attr ? attr : "";
-    token_append_text_n(t, attr_src, attr_len);
+	/* attr text (may be NULL for self-closing or no attributes) */
+	const char *attr_src= attr ? attr : "";
+	token_append_text_n(t, attr_src, attr_len);
 
-    /* inner text */
-    const char *inner_src = inner ? inner : "";
-    token_append_text_n(t, inner_src, inner_len);
+	/* inner text */
+	const char *inner_src= inner ? inner : "";
+	token_append_text_n(t, inner_src, inner_len);
 
-    /* closing tag name — NULL means unclosed (JS TagPairToken.closed = false) */
-    if (closing && closing_len > 0) {
-        t->data.include.closing = str_trim_lc(closing, closing_len);
-    }
+	/* closing tag name — NULL means unclosed (JS TagPairToken.closed = false) */
+	if(closing && closing_len > 0) {
+		t->data.include.closing= str_trim_lc(closing, closing_len);
+	}
 
-    accum_push(accum, t);
-    return t;
+	accum_push(accum, t);
+	return t;
 }
 
 static Token *build_translate_token(const char *attr, size_t attr_len,
-                                     const char *inner, size_t inner_len,
-                                     Accum *accum)
-{
-    Token *t = token_new(TOKEN_TRANSLATE, "translate");
-    if (!t) return NULL;
-    t->name = strdup("translate");
-    token_append_text_n(t, attr ? attr : "", attr ? attr_len : 0);
-    token_append_text_n(t, inner ? inner : "", inner ? inner_len : 0);
-    accum_push(accum, t);
-    return t;
+																		const char *inner, size_t inner_len,
+																		Accum *accum) {
+	Token *t= token_new(TOKEN_TRANSLATE, "translate");
+	if(!t) return NULL;
+	t->name= strdup("translate");
+	token_append_text_n(t, attr ? attr : "", attr ? attr_len : 0);
+	token_append_text_n(t, inner ? inner : "", inner ? inner_len : 0);
+	accum_push(accum, t);
+	return t;
 }
 
 /* ── Regex compilation ───────────────────────────────────────────────────── */
 
-static pcre2_code *compile_ext_regex(const ParserConfig *cfg, bool include_only)
-{
-    const char *noinclude_re = include_only ? "includeonly" : "(?:no|only)include";
-    const char *include_re   = include_only ? "noinclude"   : "includeonly";
+static pcre2_code *compile_ext_regex(const ParserConfig *cfg, bool include_only) {
+	const char *noinclude_re= include_only ? "includeonly" : "(?:no|only)include";
+	const char *include_re= include_only ? "noinclude" : "includeonly";
 
-    bool has_translate = false;
-    for (size_t i = 0; i < cfg->ext.count; i++) {
-        if (strcmp(cfg->ext.items[i], "translate") == 0) {
-            has_translate = true;
-            break;
-        }
-    }
+	bool has_translate= false;
+	for(size_t i= 0; i < cfg->ext.count; i++) {
+		if(strcmp(cfg->ext.items[i], "translate") == 0) {
+			has_translate= true;
+			break;
+		}
+	}
 
-    /* Build ext alternation mirroring JS newExt logic. */
-    size_t exts_cap = 64;
-    for (size_t i = 0; i < cfg->ext.count; i++) {
-        const char *e = cfg->ext.items[i];
-        if (has_translate && (strcmp(e, "translate") == 0 || strcmp(e, "tvar") == 0)) continue;
-        exts_cap += strlen(e) + 2;
-    }
-    char *exts = malloc(exts_cap);
-    assert(exts);
-    size_t ep = 0;
-    bool first = true;
-    for (size_t i = 0; i < cfg->ext.count; i++) {
-        const char *e = cfg->ext.items[i];
-        if (has_translate && (strcmp(e, "translate") == 0 || strcmp(e, "tvar") == 0)) continue;
-        if (!first) exts[ep++] = '|';
-        size_t elen = strlen(e);
-        memcpy(exts + ep, e, elen);
-        ep += elen;
-        first = false;
-    }
-    exts[ep] = '\0';
+	/* Build ext alternation mirroring JS newExt logic. */
+	size_t exts_cap= 64;
+	for(size_t i= 0; i < cfg->ext.count; i++) {
+		const char *e= cfg->ext.items[i];
+		if(has_translate && (strcmp(e, "translate") == 0 || strcmp(e, "tvar") == 0)) continue;
+		exts_cap+= strlen(e) + 2;
+	}
+	char *exts= malloc(exts_cap);
+	assert(exts);
+	size_t ep= 0;
+	bool first= true;
+	for(size_t i= 0; i < cfg->ext.count; i++) {
+		const char *e= cfg->ext.items[i];
+		if(has_translate && (strcmp(e, "translate") == 0 || strcmp(e, "tvar") == 0)) continue;
+		if(!first) exts[ep++]= '|';
+		size_t elen= strlen(e);
+		memcpy(exts + ep, e, elen);
+		ep+= elen;
+		first= false;
+	}
+	exts[ep]= '\0';
 
-    size_t pat_cap = 256 + exts_cap + strlen(noinclude_re) * 4 + strlen(include_re) * 4;
-    char *pattern = malloc(pat_cap);
-    assert(pattern);
-    size_t pos = 0;
+	size_t pat_cap= 256 + exts_cap + strlen(noinclude_re) * 4 + strlen(include_re) * 4;
+	char *pattern= malloc(pat_cap);
+	assert(pattern);
+	size_t pos= 0;
 
-    pos += (size_t)snprintf(pattern + pos, pat_cap - pos,
-        "<!--[\\s\\S]*?(?:-->|$)"
-        "|<%s(?:\\s[^>]*)?\\/?>|<\\/%s\\s*>"
-        "|<(%s)(\\s[^>]*?)?(?:\\/>|>([\\s\\S]*?)<\\/(\\1\\s*)>)"
-        "|<(%s)(\\s[^>]*?)?(?:\\/>|>([\\s\\S]*?)(?:<\\/(%s\\s*)>|$))",
-        noinclude_re, noinclude_re,
-        exts,
-        include_re, include_re);
+	pos+= (size_t)snprintf(pattern + pos, pat_cap - pos,
+												 "<!--[\\s\\S]*?(?:-->|$)"
+												 "|<%s(?:\\s[^>]*)?\\/?>|<\\/%s\\s*>"
+												 "|<(%s)(\\s[^>]*?)?(?:\\/>|>([\\s\\S]*?)<\\/(\\1\\s*)>)"
+												 "|<(%s)(\\s[^>]*?)?(?:\\/>|>([\\s\\S]*?)(?:<\\/(%s\\s*)>|$))",
+												 noinclude_re, noinclude_re,
+												 exts,
+												 include_re, include_re);
 
-    free(exts);
+	free(exts);
 
-    PCRE2_SIZE err_offset;
-    int err_code;
-    pcre2_code *re = pcre2_compile(
-        (PCRE2_SPTR)pattern, PCRE2_ZERO_TERMINATED,
-        PCRE2_CASELESS | PCRE2_UTF | PCRE2_UCP,
-        &err_code, &err_offset, NULL);
+	PCRE2_SIZE err_offset;
+	int err_code;
+	pcre2_code *re= pcre2_compile(
+	(PCRE2_SPTR)pattern, PCRE2_ZERO_TERMINATED,
+	PCRE2_CASELESS | PCRE2_UTF | PCRE2_UCP,
+	&err_code, &err_offset, NULL);
 
-    if (!re) {
-        PCRE2_UCHAR8 err_buf[256];
-        pcre2_get_error_message(err_code, err_buf, sizeof(err_buf));
-        log_error("ext regex compile error at %zu: %s Pattern (truncated): %.200s",
-                  err_offset, err_buf, pattern);
-    }
-    free(pattern);
-    return re;
+	if(!re) {
+		PCRE2_UCHAR8 err_buf[256];
+		pcre2_get_error_message(err_code, err_buf, sizeof(err_buf));
+		log_error("ext regex compile error at %zu: %s Pattern (truncated): %.200s",
+							err_offset, err_buf, pattern);
+	}
+	free(pattern);
+	return re;
 }
 
-static pcre2_code *compile_nowiki_regex(void)
-{
-    const char *pattern = "<nowiki>[\\s\\S]*?<\\/nowiki>";
-    PCRE2_SIZE err_offset;
-    int err_code;
-    return pcre2_compile((PCRE2_SPTR)pattern, PCRE2_ZERO_TERMINATED,
-                         PCRE2_CASELESS | PCRE2_UTF | PCRE2_UCP,
-                         &err_code, &err_offset, NULL);
+static pcre2_code *compile_nowiki_regex(void) {
+	const char *pattern= "<nowiki>[\\s\\S]*?<\\/nowiki>";
+	PCRE2_SIZE err_offset;
+	int err_code;
+	return pcre2_compile((PCRE2_SPTR)pattern, PCRE2_ZERO_TERMINATED,
+											 PCRE2_CASELESS | PCRE2_UTF | PCRE2_UCP,
+											 &err_code, &err_offset, NULL);
 }
 
-static pcre2_code *compile_translate_regex(void)
-{
-    const char *pattern = "<translate( nowrap)?>([\\s\\S]*?)<\\/translate>";
-    PCRE2_SIZE err_offset;
-    int err_code;
-    return pcre2_compile((PCRE2_SPTR)pattern, PCRE2_ZERO_TERMINATED,
-                         PCRE2_UTF | PCRE2_UCP,
-                         &err_code, &err_offset, NULL);
+static pcre2_code *compile_translate_regex(void) {
+	const char *pattern= "<translate( nowrap)?>([\\s\\S]*?)<\\/translate>";
+	PCRE2_SIZE err_offset;
+	int err_code;
+	return pcre2_compile((PCRE2_SPTR)pattern, PCRE2_ZERO_TERMINATED,
+											 PCRE2_UTF | PCRE2_UCP,
+											 &err_code, &err_offset, NULL);
 }
 
-static void apply_translate_prepass(ThreadBuf *tb, const ParserConfig *cfg, Accum *accum)
-{
-    ParserConfig *mutable_cfg = (ParserConfig *)cfg;
-    if (!mutable_cfg->regex_ext_translate) {
-        mutable_cfg->regex_ext_translate = (ParserConfigRegex *)compile_nowiki_regex();
-        if (!mutable_cfg->regex_ext_translate) return;
-    }
-    if (!mutable_cfg->regex_translate) {
-        mutable_cfg->regex_translate = (ParserConfigRegex *)compile_translate_regex();
-        if (!mutable_cfg->regex_translate) return;
-    }
+static void apply_translate_prepass(ThreadBuf *tb, const ParserConfig *cfg, Accum *accum) {
+	ParserConfig *mutable_cfg= (ParserConfig *)cfg;
+	if(!mutable_cfg->regex_ext_translate) {
+		mutable_cfg->regex_ext_translate= (ParserConfigRegex *)compile_nowiki_regex();
+		if(!mutable_cfg->regex_ext_translate) return;
+	}
+	if(!mutable_cfg->regex_translate) {
+		mutable_cfg->regex_translate= (ParserConfigRegex *)compile_translate_regex();
+		if(!mutable_cfg->regex_translate) return;
+	}
 
-    pcre2_code *re_nowiki = (pcre2_code *)cfg->regex_ext_translate;
-    pcre2_code *re_translate = (pcre2_code *)cfg->regex_translate;
-    pcre2_match_data *md = pcre2_match_data_create_from_pattern(re_nowiki, NULL);
-    if (!md) return;
+	pcre2_code *re_nowiki= (pcre2_code *)cfg->regex_ext_translate;
+	pcre2_code *re_translate= (pcre2_code *)cfg->regex_translate;
+	pcre2_match_data *md= pcre2_match_data_create_from_pattern(re_nowiki, NULL);
+	if(!md) return;
 
-    TextStack st;
-    text_stack_init(&st);
+	TextStack st;
+	text_stack_init(&st);
 
-    size_t out_cap = tb->len * 2 + 64;
-    char *out = malloc(out_cap);
-    assert(out);
-    size_t out_len = 0;
-    size_t search_at = 0;
+	size_t out_cap= tb->len * 2 + 64;
+	char *out= malloc(out_cap);
+	assert(out);
+	size_t out_len= 0;
+	size_t search_at= 0;
 
-#define ENSURE_PRE_CAP(buf, buflen, bufcap, need) do { \
-    while ((buflen) + (need) >= (bufcap)) { \
-        (bufcap) *= 2; \
-        (buf) = realloc((buf), (bufcap)); \
-        assert((buf)); \
-    } \
-} while (0)
+#define ENSURE_PRE_CAP(buf, buflen, bufcap, need) \
+	do {                                            \
+		while((buflen) + (need) >= (bufcap)) {        \
+			(bufcap)*= 2;                               \
+			(buf)= realloc((buf), (bufcap));            \
+			assert((buf));                              \
+		}                                             \
+	} while(0)
 
-    while (search_at <= tb->len) {
-        int rc = pcre2_match(re_nowiki, (PCRE2_SPTR)tb->buf, tb->len, search_at, 0, md, NULL);
-        if (rc <= 0) {
-            size_t rest = tb->len - search_at;
-            ENSURE_PRE_CAP(out, out_len, out_cap, rest + 1);
-            memcpy(out + out_len, tb->buf + search_at, rest);
-            out_len += rest;
-            break;
-        }
-        PCRE2_SIZE *ov = pcre2_get_ovector_pointer(md);
-        size_t ms = ov[0], me = ov[1];
-        size_t before = ms - search_at;
-        ENSURE_PRE_CAP(out, out_len, out_cap, before + 32);
-        memcpy(out + out_len, tb->buf + search_at, before);
-        out_len += before;
+	while(search_at <= tb->len) {
+		int rc= pcre2_match(re_nowiki, (PCRE2_SPTR)tb->buf, tb->len, search_at, 0, md, NULL);
+		if(rc <= 0) {
+			size_t rest= tb->len - search_at;
+			ENSURE_PRE_CAP(out, out_len, out_cap, rest + 1);
+			memcpy(out + out_len, tb->buf + search_at, rest);
+			out_len+= rest;
+			break;
+		}
+		PCRE2_SIZE *ov= pcre2_get_ovector_pointer(md);
+		size_t ms= ov[0], me= ov[1];
+		size_t before= ms - search_at;
+		ENSURE_PRE_CAP(out, out_len, out_cap, before + 32);
+		memcpy(out + out_len, tb->buf + search_at, before);
+		out_len+= before;
 
-        text_stack_push(&st, tb->buf + ms, me - ms);
-        append_numeric_placeholder(out, &out_len, st.count - 1);
+		text_stack_push(&st, tb->buf + ms, me - ms);
+		append_numeric_placeholder(out, &out_len, st.count - 1);
 
-        search_at = me;
-        if (me == ms) search_at++;
-    }
-    out[out_len] = '\0';
-    wiki_thread_buf_set(tb, out, out_len);
-    free(out);
+		search_at= me;
+		if(me == ms) search_at++;
+	}
+	out[out_len]= '\0';
+	wiki_thread_buf_set(tb, out, out_len);
+	free(out);
 
-    pcre2_match_data_free(md);
-    md = pcre2_match_data_create_from_pattern(re_translate, NULL);
-    if (!md) {
-        text_stack_free(&st);
-        return;
-    }
+	pcre2_match_data_free(md);
+	md= pcre2_match_data_create_from_pattern(re_translate, NULL);
+	if(!md) {
+		text_stack_free(&st);
+		return;
+	}
 
-    out_cap = tb->len * 2 + 64;
-    out = malloc(out_cap);
-    assert(out);
-    out_len = 0;
-    search_at = 0;
+	out_cap= tb->len * 2 + 64;
+	out= malloc(out_cap);
+	assert(out);
+	out_len= 0;
+	search_at= 0;
 
-    while (search_at <= tb->len) {
-        int rc = pcre2_match(re_translate, (PCRE2_SPTR)tb->buf, tb->len, search_at, 0, md, NULL);
-        if (rc <= 0) {
-            size_t rest = tb->len - search_at;
-            ENSURE_PRE_CAP(out, out_len, out_cap, rest + 1);
-            memcpy(out + out_len, tb->buf + search_at, rest);
-            out_len += rest;
-            break;
-        }
-        PCRE2_SIZE *ov = pcre2_get_ovector_pointer(md);
-        size_t ms = ov[0], me = ov[1];
-        size_t before = ms - search_at;
-        ENSURE_PRE_CAP(out, out_len, out_cap, before + 32);
-        memcpy(out + out_len, tb->buf + search_at, before);
-        out_len += before;
+	while(search_at <= tb->len) {
+		int rc= pcre2_match(re_translate, (PCRE2_SPTR)tb->buf, tb->len, search_at, 0, md, NULL);
+		if(rc <= 0) {
+			size_t rest= tb->len - search_at;
+			ENSURE_PRE_CAP(out, out_len, out_cap, rest + 1);
+			memcpy(out + out_len, tb->buf + search_at, rest);
+			out_len+= rest;
+			break;
+		}
+		PCRE2_SIZE *ov= pcre2_get_ovector_pointer(md);
+		size_t ms= ov[0], me= ov[1];
+		size_t before= ms - search_at;
+		ENSURE_PRE_CAP(out, out_len, out_cap, before + 32);
+		memcpy(out + out_len, tb->buf + search_at, before);
+		out_len+= before;
 
-        const char *attr = NULL;
-        size_t attr_len = 0;
-        if (rc > 1 && ov[2] != PCRE2_UNSET) {
-            attr = tb->buf + ov[2];
-            attr_len = ov[3] - ov[2];
-        }
-        const char *inner = "";
-        size_t inner_len = 0;
-        if (rc > 2 && ov[4] != PCRE2_UNSET) {
-            inner = tb->buf + ov[4];
-            inner_len = ov[5] - ov[4];
-        }
+		const char *attr= NULL;
+		size_t attr_len= 0;
+		if(rc > 1 && ov[2] != PCRE2_UNSET) {
+			attr= tb->buf + ov[2];
+			attr_len= ov[3] - ov[2];
+		}
+		const char *inner= "";
+		size_t inner_len= 0;
+		if(rc > 2 && ov[4] != PCRE2_UNSET) {
+			inner= tb->buf + ov[4];
+			inner_len= ov[5] - ov[4];
+		}
 
-        size_t restored_len = 0;
-        char *restored_inner = str_restore(inner, inner_len,
-                                           (const char **)st.items,
-                                           st.count,
-                                           st.lens,
-                                           &restored_len);
+		size_t restored_len= 0;
+		char *restored_inner= str_restore(inner, inner_len,
+																			(const char **)st.items,
+																			st.count,
+																			st.lens,
+																			&restored_len);
 
-        size_t tok_idx = accum->count;
-        Token *tok = build_translate_token(attr, attr_len, restored_inner, restored_len, accum);
-        if (tok) {
-            char sent[64];
-            size_t slen;
-            work_str_sentinel(tok_idx, 'g', sent, &slen);
-            ENSURE_PRE_CAP(out, out_len, out_cap, slen + 1);
-            memcpy(out + out_len, sent, slen);
-            out_len += slen;
-        } else {
-            ENSURE_PRE_CAP(out, out_len, out_cap, me - ms + 1);
-            memcpy(out + out_len, tb->buf + ms, me - ms);
-            out_len += me - ms;
-        }
-        free(restored_inner);
+		size_t tok_idx= accum->count;
+		Token *tok= build_translate_token(attr, attr_len, restored_inner, restored_len, accum);
+		if(tok) {
+			char sent[64];
+			size_t slen;
+			work_str_sentinel(tok_idx, 'g', sent, &slen);
+			ENSURE_PRE_CAP(out, out_len, out_cap, slen + 1);
+			memcpy(out + out_len, sent, slen);
+			out_len+= slen;
+		} else {
+			ENSURE_PRE_CAP(out, out_len, out_cap, me - ms + 1);
+			memcpy(out + out_len, tb->buf + ms, me - ms);
+			out_len+= me - ms;
+		}
+		free(restored_inner);
 
-        search_at = me;
-        if (me == ms) search_at++;
-    }
-    out[out_len] = '\0';
+		search_at= me;
+		if(me == ms) search_at++;
+	}
+	out[out_len]= '\0';
 
-    size_t restored_all_len = 0;
-    char *restored_all = str_restore(out, out_len,
-                                     (const char **)st.items,
-                                     st.count,
-                                     st.lens,
-                                     &restored_all_len);
-    wiki_thread_buf_set(tb, restored_all, restored_all_len);
-    free(restored_all);
-    free(out);
+	size_t restored_all_len= 0;
+	char *restored_all= str_restore(out, out_len,
+																	(const char **)st.items,
+																	st.count,
+																	st.lens,
+																	&restored_all_len);
+	wiki_thread_buf_set(tb, restored_all, restored_all_len);
+	free(restored_all);
+	free(out);
 
-    pcre2_match_data_free(md);
-    text_stack_free(&st);
+	pcre2_match_data_free(md);
+	text_stack_free(&st);
 
 #undef ENSURE_PRE_CAP
 }
 
 /* ── onlyinclude handling (includeOnly mode) ─────────────────────────────── */
 
-static bool handle_onlyinclude(ThreadBuf *tb, const ParserConfig *cfg, Accum *accum)
-{
-    (void)cfg;
-    const char *onlyinclude_open  = "<onlyinclude>";
-    const char *onlyinclude_close = "</onlyinclude>";
-    size_t open_len  = strlen(onlyinclude_open);
-    size_t close_len = strlen(onlyinclude_close);
+static bool handle_onlyinclude(ThreadBuf *tb, const ParserConfig *cfg, Accum *accum) {
+	(void)cfg;
+	const char *onlyinclude_open= "<onlyinclude>";
+	const char *onlyinclude_close= "</onlyinclude>";
+	size_t open_len= strlen(onlyinclude_open);
+	size_t close_len= strlen(onlyinclude_close);
 
-    const char *pos_open = find_substr_cs(tb->buf, tb->len, onlyinclude_open, open_len);
-    if (!pos_open) return false;
-    size_t after_open_len = tb->len - (size_t)(pos_open - tb->buf + open_len);
-    const char *pos_close = find_substr_cs(pos_open + open_len, after_open_len, onlyinclude_close, close_len);
-    if (!pos_close) return false;
+	const char *pos_open= find_substr_cs(tb->buf, tb->len, onlyinclude_open, open_len);
+	if(!pos_open) return false;
+	size_t after_open_len= tb->len - (size_t)(pos_open - tb->buf + open_len);
+	const char *pos_close= find_substr_cs(pos_open + open_len, after_open_len, onlyinclude_close, close_len);
+	if(!pos_close) return false;
 
-    char *new_buf = malloc(tb->len * 3 + 256);
-    assert(new_buf);
-    size_t new_len = 0;
+	char *new_buf= malloc(tb->len * 3 + 256);
+	assert(new_buf);
+	size_t new_len= 0;
 
-    const char *remaining = tb->buf;
-    size_t remaining_len  = tb->len;
+	const char *remaining= tb->buf;
+	size_t remaining_len= tb->len;
 
-    char sent_buf[64];
+	char sent_buf[64];
 
-    while (1) {
-        const char *next_open = find_substr_cs(remaining, remaining_len, onlyinclude_open, open_len);
-        if (!next_open) break;
+	while(1) {
+		const char *next_open= find_substr_cs(remaining, remaining_len, onlyinclude_open, open_len);
+		if(!next_open) break;
 
-        size_t rel_open = (size_t)(next_open - remaining);
-        size_t tail_after_open = remaining_len - rel_open - open_len;
-        const char *next_close = find_substr_cs(next_open + open_len, tail_after_open, onlyinclude_close, close_len);
-        if (!next_close) break;
+		size_t rel_open= (size_t)(next_open - remaining);
+		size_t tail_after_open= remaining_len - rel_open - open_len;
+		const char *next_close= find_substr_cs(next_open + open_len, tail_after_open, onlyinclude_close, close_len);
+		if(!next_close) break;
 
-        if (rel_open > 0) {
-            size_t noincl_idx = accum->count;
-            Token *ni = token_new(TOKEN_NOINCLUDE, "noinclude");
-            token_append_text_n(ni, remaining, rel_open);
-            accum_push(accum, ni);
-            size_t sent_len;
-            work_str_sentinel(noincl_idx, 'n', sent_buf, &sent_len);
-            memcpy(new_buf + new_len, sent_buf, sent_len);
-            new_len += sent_len;
-        }
+		if(rel_open > 0) {
+			size_t noincl_idx= accum->count;
+			Token *ni= token_new(TOKEN_NOINCLUDE, "noinclude");
+			token_append_text_n(ni, remaining, rel_open);
+			accum_push(accum, ni);
+			size_t sent_len;
+			work_str_sentinel(noincl_idx, 'n', sent_buf, &sent_len);
+			memcpy(new_buf + new_len, sent_buf, sent_len);
+			new_len+= sent_len;
+		}
 
-        const char *content_start = next_open + open_len;
-        size_t content_len = (size_t)(next_close - content_start);
-        size_t onlyi_idx = accum->count;
-        Token *oi = token_new(TOKEN_ONLYINCLUDE, "onlyinclude");
-        token_append_text_n(oi, content_start, content_len);
-        accum_push(accum, oi);
-        size_t sent_len;
-        work_str_sentinel(onlyi_idx, 'g', sent_buf, &sent_len);
-        memcpy(new_buf + new_len, sent_buf, sent_len);
-        new_len += sent_len;
+		const char *content_start= next_open + open_len;
+		size_t content_len= (size_t)(next_close - content_start);
+		size_t onlyi_idx= accum->count;
+		Token *oi= token_new(TOKEN_ONLYINCLUDE, "onlyinclude");
+		token_append_text_n(oi, content_start, content_len);
+		accum_push(accum, oi);
+		size_t sent_len;
+		work_str_sentinel(onlyi_idx, 'g', sent_buf, &sent_len);
+		memcpy(new_buf + new_len, sent_buf, sent_len);
+		new_len+= sent_len;
 
-        remaining = next_close + close_len;
-        remaining_len = tb->len - (size_t)(remaining - tb->buf);
-    }
+		remaining= next_close + close_len;
+		remaining_len= tb->len - (size_t)(remaining - tb->buf);
+	}
 
-    if (remaining_len > 0) {
-        size_t noincl_idx = accum->count;
-        Token *ni = token_new(TOKEN_NOINCLUDE, "noinclude");
-        token_append_text_n(ni, remaining, remaining_len);
-        accum_push(accum, ni);
-        size_t sent_len;
-        work_str_sentinel(noincl_idx, 'n', sent_buf, &sent_len);
-        memcpy(new_buf + new_len, sent_buf, sent_len);
-        new_len += sent_len;
-    }
+	if(remaining_len > 0) {
+		size_t noincl_idx= accum->count;
+		Token *ni= token_new(TOKEN_NOINCLUDE, "noinclude");
+		token_append_text_n(ni, remaining, remaining_len);
+		accum_push(accum, ni);
+		size_t sent_len;
+		work_str_sentinel(noincl_idx, 'n', sent_buf, &sent_len);
+		memcpy(new_buf + new_len, sent_buf, sent_len);
+		new_len+= sent_len;
+	}
 
-    new_buf[new_len] = '\0';
-    wiki_thread_buf_set(tb, new_buf, new_len);
-    free(new_buf);
-    return true;
+	new_buf[new_len]= '\0';
+	wiki_thread_buf_set(tb, new_buf, new_len);
+	free(new_buf);
+	return true;
 }
 
 /* ── Main parse function ─────────────────────────────────────────────────── */
 
 void parse_comment_and_ext(ThreadBuf *tb, const ParserConfig *cfg,
-                            Accum *accum, bool include_only)
-{
-    bool has_translate = false;
-    for (size_t i = 0; i < cfg->ext.count; i++) {
-        if (strcmp(cfg->ext.items[i], "translate") == 0) {
-            has_translate = true;
-            break;
-        }
-    }
+													 Accum *accum, bool include_only) {
+	bool has_translate= false;
+	for(size_t i= 0; i < cfg->ext.count; i++) {
+		if(strcmp(cfg->ext.items[i], "translate") == 0) {
+			has_translate= true;
+			break;
+		}
+	}
 
-    if (include_only) {
-        const char *oi_open = "<onlyinclude>";
-        if (find_substr_cs(tb->buf, tb->len, oi_open, strlen(oi_open))) {
-            if (handle_onlyinclude(tb, cfg, accum)) {
-                return;
-            }
-        }
-    }
+	if(include_only) {
+		const char *oi_open= "<onlyinclude>";
+		if(find_substr_cs(tb->buf, tb->len, oi_open, strlen(oi_open))) {
+			if(handle_onlyinclude(tb, cfg, accum)) {
+				return;
+			}
+		}
+	}
 
-    if (has_translate) {
-        apply_translate_prepass(tb, cfg, accum);
-    }
+	if(has_translate) {
+		apply_translate_prepass(tb, cfg, accum);
+	}
 
-    int regex_idx = include_only ? 1 : 0;
-    if (!cfg->regex_ext[regex_idx]) {
-        ParserConfig *mutable_cfg = (ParserConfig *)cfg;
-        mutable_cfg->regex_ext[regex_idx] =
-            (ParserConfigRegex *)compile_ext_regex(cfg, include_only);
-        if (!mutable_cfg->regex_ext[regex_idx]) return;
-    }
-    pcre2_code *re = (pcre2_code *)cfg->regex_ext[regex_idx];
+	int regex_idx= include_only ? 1 : 0;
+	if(!cfg->regex_ext[regex_idx]) {
+		ParserConfig *mutable_cfg= (ParserConfig *)cfg;
+		mutable_cfg->regex_ext[regex_idx]=
+		(ParserConfigRegex *)compile_ext_regex(cfg, include_only);
+		if(!mutable_cfg->regex_ext[regex_idx]) return;
+	}
+	pcre2_code *re= (pcre2_code *)cfg->regex_ext[regex_idx];
 
-    pcre2_match_data *md = pcre2_match_data_create_from_pattern(re, NULL);
-    if (!md) return;
+	pcre2_match_data *md= pcre2_match_data_create_from_pattern(re, NULL);
+	if(!md) return;
 
-    size_t out_cap = tb->len * 2 + 64;
-    char  *out_buf = malloc(out_cap);
-    assert(out_buf);
-    size_t out_len   = 0;
-    size_t search_at = 0;
+	size_t out_cap= tb->len * 2 + 64;
+	char *out_buf= malloc(out_cap);
+	assert(out_buf);
+	size_t out_len= 0;
+	size_t search_at= 0;
 
-#define ENSURE_CAP(need) do { \
-    while (out_len + (need) >= out_cap) { \
-        out_cap *= 2; \
-        out_buf = realloc(out_buf, out_cap); \
-        assert(out_buf); \
-    } \
-} while(0)
+#define ENSURE_CAP(need)                  \
+	do {                                    \
+		while(out_len + (need) >= out_cap) {  \
+			out_cap*= 2;                        \
+			out_buf= realloc(out_buf, out_cap); \
+			assert(out_buf);                    \
+		}                                     \
+	} while(0)
 
-    while (search_at <= tb->len) {
-        int rc = pcre2_match(re, (PCRE2_SPTR)tb->buf, tb->len,
-                             search_at, 0, md, NULL);
-        if (rc <= 0) {
-            size_t rest = tb->len - search_at;
-            ENSURE_CAP(rest + 1);
-            memcpy(out_buf + out_len, tb->buf + search_at, rest);
-            out_len += rest;
-            break;
-        }
+	while(search_at <= tb->len) {
+		int rc= pcre2_match(re, (PCRE2_SPTR)tb->buf, tb->len,
+												search_at, 0, md, NULL);
+		if(rc <= 0) {
+			size_t rest= tb->len - search_at;
+			ENSURE_CAP(rest + 1);
+			memcpy(out_buf + out_len, tb->buf + search_at, rest);
+			out_len+= rest;
+			break;
+		}
 
-        PCRE2_SIZE *ov = pcre2_get_ovector_pointer(md);
-        size_t match_start = ov[0];
-        size_t match_end   = ov[1];
+		PCRE2_SIZE *ov= pcre2_get_ovector_pointer(md);
+		size_t match_start= ov[0];
+		size_t match_end= ov[1];
 
-        size_t before = match_start - search_at;
-        ENSURE_CAP(before + 64);
-        memcpy(out_buf + out_len, tb->buf + search_at, before);
-        out_len += before;
+		size_t before= match_start - search_at;
+		ENSURE_CAP(before + 64);
+		memcpy(out_buf + out_len, tb->buf + search_at, before);
+		out_len+= before;
 
-        const char *substr    = tb->buf + match_start;
-        size_t      sub_len   = match_end - match_start;
+		const char *substr= tb->buf + match_start;
+		size_t sub_len= match_end - match_start;
 
-        Token *tok = NULL;
-        char   ch  = 'n';
+		Token *tok= NULL;
+		char ch= 'n';
 
-        size_t ext_name_s = (rc > 1 && ov[2] != PCRE2_UNSET) ? ov[2] : 0;
-        size_t ext_name_e = (rc > 1 && ov[3] != PCRE2_UNSET) ? ov[3] : 0;
+		size_t ext_name_s= (rc > 1 && ov[2] != PCRE2_UNSET) ? ov[2] : 0;
+		size_t ext_name_e= (rc > 1 && ov[3] != PCRE2_UNSET) ? ov[3] : 0;
 
-        size_t inc_name_s = (rc > 5 && ov[10] != PCRE2_UNSET) ? ov[10] : 0;
-        size_t inc_name_e = (rc > 5 && ov[11] != PCRE2_UNSET) ? ov[11] : 0;
+		size_t inc_name_s= (rc > 5 && ov[10] != PCRE2_UNSET) ? ov[10] : 0;
+		size_t inc_name_e= (rc > 5 && ov[11] != PCRE2_UNSET) ? ov[11] : 0;
 
-        if (substr[0] == '<' && sub_len >= 4 &&
-            substr[1] == '!' && substr[2] == '-' && substr[3] == '-') {
-            size_t restored_len = 0;
-            char *restored = restore_accum_mode(substr, sub_len, accum, 1, &restored_len);
-            tok = build_comment_token(restored, restored_len, accum);
-            free(restored);
-            ch  = 'c';
+		if(substr[0] == '<' && sub_len >= 4 &&
+			 substr[1] == '!' && substr[2] == '-' && substr[3] == '-') {
+			size_t restored_len= 0;
+			char *restored= restore_accum_mode(substr, sub_len, accum, 1, &restored_len);
+			tok= build_comment_token(restored, restored_len, accum);
+			free(restored);
+			ch= 'c';
 
-        } else if (ext_name_s < ext_name_e) {
-            const char *name = tb->buf + ext_name_s;
-            size_t name_len  = ext_name_e - ext_name_s;
+		} else if(ext_name_s < ext_name_e) {
+			const char *name= tb->buf + ext_name_s;
+			size_t name_len= ext_name_e - ext_name_s;
 
-            size_t attr_s  = (rc > 2 && ov[4] != PCRE2_UNSET) ? ov[4] : 0;
-            size_t attr_e  = (rc > 2 && ov[5] != PCRE2_UNSET) ? ov[5] : 0;
-            size_t inner_s = (rc > 3 && ov[6] != PCRE2_UNSET) ? ov[6] : 0;
-            size_t inner_e = (rc > 3 && ov[7] != PCRE2_UNSET) ? ov[7] : 0;
-            size_t close_s = (rc > 4 && ov[8] != PCRE2_UNSET) ? ov[8] : 0;
-            size_t close_e = (rc > 4 && ov[9] != PCRE2_UNSET) ? ov[9] : 0;
+			size_t attr_s= (rc > 2 && ov[4] != PCRE2_UNSET) ? ov[4] : 0;
+			size_t attr_e= (rc > 2 && ov[5] != PCRE2_UNSET) ? ov[5] : 0;
+			size_t inner_s= (rc > 3 && ov[6] != PCRE2_UNSET) ? ov[6] : 0;
+			size_t inner_e= (rc > 3 && ov[7] != PCRE2_UNSET) ? ov[7] : 0;
+			size_t close_s= (rc > 4 && ov[8] != PCRE2_UNSET) ? ov[8] : 0;
+			size_t close_e= (rc > 4 && ov[9] != PCRE2_UNSET) ? ov[9] : 0;
 
-            const char *attr  = (attr_s < attr_e) ? tb->buf + attr_s : NULL;
-            size_t      alen  = (attr_s < attr_e) ? attr_e - attr_s  : 0;
-            const char *inner = (inner_s < inner_e) ? tb->buf + inner_s : NULL;
-            size_t      ilen  = (inner_s < inner_e) ? inner_e - inner_s : 0;
-            bool self_closing = !(close_s < close_e);
+			const char *attr= (attr_s < attr_e) ? tb->buf + attr_s : NULL;
+			size_t alen= (attr_s < attr_e) ? attr_e - attr_s : 0;
+			const char *inner= (inner_s < inner_e) ? tb->buf + inner_s : NULL;
+			size_t ilen= (inner_s < inner_e) ? inner_e - inner_s : 0;
+			bool self_closing= !(close_s < close_e);
 
-            tok = build_ext_token(name, name_len, attr, alen, inner, ilen, self_closing, accum);
-            ch  = 'e';
+			tok= build_ext_token(name, name_len, attr, alen, inner, ilen, self_closing, accum);
+			ch= 'e';
 
-        } else if (inc_name_s < inc_name_e) {
-            const char *name = tb->buf + inc_name_s;
-            size_t name_len  = inc_name_e - inc_name_s;
+		} else if(inc_name_s < inc_name_e) {
+			const char *name= tb->buf + inc_name_s;
+			size_t name_len= inc_name_e - inc_name_s;
 
-            size_t attr_s   = (rc > 6 && ov[12] != PCRE2_UNSET) ? ov[12] : 0;
-            size_t attr_e   = (rc > 6 && ov[13] != PCRE2_UNSET) ? ov[13] : 0;
-            size_t inner_s  = (rc > 7 && ov[14] != PCRE2_UNSET) ? ov[14] : 0;
-            size_t inner_e  = (rc > 7 && ov[15] != PCRE2_UNSET) ? ov[15] : 0;
-            size_t close_s  = (rc > 8 && ov[16] != PCRE2_UNSET) ? ov[16] : 0;
-            size_t close_e  = (rc > 8 && ov[17] != PCRE2_UNSET) ? ov[17] : 0;
+			size_t attr_s= (rc > 6 && ov[12] != PCRE2_UNSET) ? ov[12] : 0;
+			size_t attr_e= (rc > 6 && ov[13] != PCRE2_UNSET) ? ov[13] : 0;
+			size_t inner_s= (rc > 7 && ov[14] != PCRE2_UNSET) ? ov[14] : 0;
+			size_t inner_e= (rc > 7 && ov[15] != PCRE2_UNSET) ? ov[15] : 0;
+			size_t close_s= (rc > 8 && ov[16] != PCRE2_UNSET) ? ov[16] : 0;
+			size_t close_e= (rc > 8 && ov[17] != PCRE2_UNSET) ? ov[17] : 0;
 
-            const char *attr    = (attr_s < attr_e) ? tb->buf + attr_s : NULL;
-            size_t      alen    = (attr_s < attr_e) ? attr_e - attr_s  : 0;
-            const char *inner   = (inner_s < inner_e) ? tb->buf + inner_s : NULL;
-            size_t      ilen    = (inner_s < inner_e) ? inner_e - inner_s : 0;
-            const char *closing = (close_s < close_e) ? tb->buf + close_s : NULL;
-            size_t      clen    = (close_s < close_e) ? close_e - close_s : 0;
+			const char *attr= (attr_s < attr_e) ? tb->buf + attr_s : NULL;
+			size_t alen= (attr_s < attr_e) ? attr_e - attr_s : 0;
+			const char *inner= (inner_s < inner_e) ? tb->buf + inner_s : NULL;
+			size_t ilen= (inner_s < inner_e) ? inner_e - inner_s : 0;
+			const char *closing= (close_s < close_e) ? tb->buf + close_s : NULL;
+			size_t clen= (close_s < close_e) ? close_e - close_s : 0;
 
-            size_t rattr_len = 0, rinner_len = 0;
-            char *rattr = NULL;
-            char *rinner = NULL;
-            if (attr && alen > 0) {
-                rattr = restore_accum_mode(attr, alen, accum, 1, &rattr_len);
-            }
-            if (inner && ilen > 0) {
-                rinner = restore_accum_mode(inner, ilen, accum, 1, &rinner_len);
-            }
+			size_t rattr_len= 0, rinner_len= 0;
+			char *rattr= NULL;
+			char *rinner= NULL;
+			if(attr && alen > 0) {
+				rattr= restore_accum_mode(attr, alen, accum, 1, &rattr_len);
+			}
+			if(inner && ilen > 0) {
+				rinner= restore_accum_mode(inner, ilen, accum, 1, &rinner_len);
+			}
 
-            tok = build_include_token(name, name_len,
-                                      rattr ? rattr : attr, rattr ? rattr_len : alen,
-                                      rinner ? rinner : inner, rinner ? rinner_len : ilen,
-                                      closing, clen, accum);
-            free(rattr);
-            free(rinner);
-            ch  = 'n';
+			tok= build_include_token(name, name_len,
+															 rattr ? rattr : attr, rattr ? rattr_len : alen,
+															 rinner ? rinner : inner, rinner ? rinner_len : ilen,
+															 closing, clen, accum);
+			free(rattr);
+			free(rinner);
+			ch= 'n';
 
-        } else {
-            tok = build_noinclude_token(substr, sub_len, accum);
-            ch  = 'n';
-        }
+		} else {
+			tok= build_noinclude_token(substr, sub_len, accum);
+			ch= 'n';
+		}
 
-        if (tok) {
-            size_t tok_idx = accum->count - 1; /* token was last pushed */
-            char sent_buf[64];
-            size_t sent_len;
-            work_str_sentinel(tok_idx, ch, sent_buf, &sent_len);
-            ENSURE_CAP(sent_len);
-            memcpy(out_buf + out_len, sent_buf, sent_len);
-            out_len += sent_len;
-        } else {
-            ENSURE_CAP(sub_len);
-            memcpy(out_buf + out_len, substr, sub_len);
-            out_len += sub_len;
-        }
+		if(tok) {
+			size_t tok_idx= accum->count - 1; /* token was last pushed */
+			char sent_buf[64];
+			size_t sent_len;
+			work_str_sentinel(tok_idx, ch, sent_buf, &sent_len);
+			ENSURE_CAP(sent_len);
+			memcpy(out_buf + out_len, sent_buf, sent_len);
+			out_len+= sent_len;
+		} else {
+			ENSURE_CAP(sub_len);
+			memcpy(out_buf + out_len, substr, sub_len);
+			out_len+= sub_len;
+		}
 
-        search_at = match_end;
-        if (match_end == match_start) search_at++;
-    }
+		search_at= match_end;
+		if(match_end == match_start) search_at++;
+	}
 
-    out_buf[out_len] = '\0';
-    wiki_thread_buf_set(tb, out_buf, out_len);
-    free(out_buf);
+	out_buf[out_len]= '\0';
+	wiki_thread_buf_set(tb, out_buf, out_len);
+	free(out_buf);
 
-    pcre2_match_data_free(md);
+	pcre2_match_data_free(md);
 }

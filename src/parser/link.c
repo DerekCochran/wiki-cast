@@ -9,12 +9,12 @@
  */
 
 #include "parser/link.h"
+#include "accum.h"
 #include "parser/quotes.h"
 #include "token.h"
-#include "accum.h"
+#include <assert.h>
 #include <stdlib.h>
 #include <string.h>
-#include <assert.h>
 
 /**
  * Create a LinkToken, FileToken, or CategoryToken.
@@ -41,35 +41,34 @@
  * Returns the created token (already pushed to accum).
  */
 Token *create_link_token(TokenType type, const char *type_name,
-                         const char *link, size_t link_len,
-                         const char *text, size_t text_len,
-                         const char *delimiter,
-                         const ParserConfig *cfg,
-                         Accum *accum,
-                         bool tidy)
-{
-    (void)text;
-    (void)text_len;
-    (void)delimiter;
-    (void)cfg;
-    (void)tidy;
+												 const char *link, size_t link_len,
+												 const char *text, size_t text_len,
+												 const char *delimiter,
+												 const ParserConfig *cfg,
+												 Accum *accum,
+												 bool tidy) {
+	(void)text;
+	(void)text_len;
+	(void)delimiter;
+	(void)cfg;
+	(void)tidy;
 
-    if (!accum) return NULL;
+	if(!accum) return NULL;
 
-    /* Create the main link token and push to accum. */
-    Token *tok = token_new(type, type_name);
-    if (!tok) return NULL;
-    accum_push(accum, tok);
+	/* Create the main link token and push to accum. */
+	Token *tok= token_new(type, type_name);
+	if(!tok) return NULL;
+	accum_push(accum, tok);
 
-    /* Child 0: link-target atom containing the raw link string. */
-    Token *target = token_new(TOKEN_ATOM, "link-target");
-    if (target) {
-        if (link && link_len > 0) {
-            token_append_text_n(target, link, link_len);
-        }
-        accum_push(accum, target);
-        token_append_child(tok, target);
-    }
+	/* Child 0: link-target atom containing the raw link string. */
+	Token *target= token_new(TOKEN_ATOM, "link-target");
+	if(target) {
+		if(link && link_len > 0) {
+			token_append_text_n(target, link, link_len);
+		}
+		accum_push(accum, target);
+		token_append_child(tok, target);
+	}
 
-    return tok;
+	return tok;
 }

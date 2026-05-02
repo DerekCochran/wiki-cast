@@ -1,439 +1,458 @@
 #define PCRE2_CODE_UNIT_WIDTH 8
 #include <pcre2.h>
 
-#include "parser/html.h"
-#include "token.h"
 #include "accum.h"
-#include "string_util.h"
 #include "log.h"
-#include <stdlib.h>
-#include <string.h>
+#include "parser/html.h"
+#include "string_util.h"
+#include "token.h"
 #include <assert.h>
 #include <ctype.h>
 #include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
 
 /* Regex roughly mirrors the JS: /^(\/?) ([a-z][^\s/>]*)((?:\s|\/(?!>))[^>]*?)?(\/?>)([^<]*)$/iu */
-static const char *HTML_PATTERN = "^(/?)([a-z][^\\s/>]*)((?:\\s|/(?!>))[^>]*?)?(/?>)([^<]*)$";
+static const char *HTML_PATTERN= "^(/?)([a-z][^\\s/>]*)((?:\\s|/(?!>))[^>]*?)?(/?>)([^<]*)$";
 
 /* Helper: whether a tag name (lowercase) is in any of cfg->html lists */
-static bool html_tag_allowed(const ParserConfig *cfg, const char *lcname)
-{
-    if (!cfg || !lcname) return false;
-    for (int grp = 0; grp < 3; grp++) {
-        for (size_t i = 0; i < cfg->html[grp].count; i++) {
-            if (strcasecmp(cfg->html[grp].items[i], lcname) == 0) return true;
-        }
-    }
-    return false;
+static bool html_tag_allowed(const ParserConfig *cfg, const char *lcname) {
+	if(!cfg || !lcname) return false;
+	for(int grp= 0; grp < 3; grp++) {
+		for(size_t i= 0; i < cfg->html[grp].count; i++) {
+			if(strcasecmp(cfg->html[grp].items[i], lcname) == 0) return true;
+		}
+	}
+	return false;
 }
 
-static Token *make_html_attr_key(const char *key, size_t key_len, Accum *accum)
-{
-    Token *t = token_new(TOKEN_ATTR_KEY, "attr-key");
-    if (!t) return NULL;
-    token_append_text_n(t, key, key_len);
-    accum_push(accum, t);
-    return t;
+static Token *make_html_attr_key(const char *key, size_t key_len, Accum *accum) {
+	Token *t= token_new(TOKEN_ATTR_KEY, "attr-key");
+	if(!t) return NULL;
+	token_append_text_n(t, key, key_len);
+	accum_push(accum, t);
+	return t;
 }
 
-static Token *make_html_attr_value(const char *val, size_t val_len, Accum *accum)
-{
-    Token *t = token_new(TOKEN_ATTR_VALUE, "attr-value");
-    if (!t) return NULL;
-    token_append_text_n(t, val, val_len);
-    accum_push(accum, t);
-    return t;
+static Token *make_html_attr_value(const char *val, size_t val_len, Accum *accum) {
+	Token *t= token_new(TOKEN_ATTR_VALUE, "attr-value");
+	if(!t) return NULL;
+	token_append_text_n(t, val, val_len);
+	accum_push(accum, t);
+	return t;
 }
 
-static Token *make_html_attr_dirty(const char *text, size_t text_len, Accum *accum)
-{
-    Token *t = token_new(TOKEN_EXT_ATTR_DIRTY, "html-attr-dirty");
-    if (!t) return NULL;
-    token_append_text_n(t, text, text_len);
-    accum_push(accum, t);
-    return t;
+static Token *make_html_attr_dirty(const char *text, size_t text_len, Accum *accum) {
+	Token *t= token_new(TOKEN_EXT_ATTR_DIRTY, "html-attr-dirty");
+	if(!t) return NULL;
+	token_append_text_n(t, text, text_len);
+	accum_push(accum, t);
+	return t;
 }
 
 static Token *make_html_attr(const char *key, size_t key_len,
-                             const char *val, size_t val_len,
-                             const char *equal, size_t equal_len,
-                             char quote_open, char quote_close,
-                             Accum *accum)
-{
-    Token *t = token_new(TOKEN_EXT_ATTR, "html-attr");
-    if (!t) return NULL;
+														 const char *val, size_t val_len,
+														 const char *equal, size_t equal_len,
+														 char quote_open, char quote_close,
+														 Accum *accum) {
+	Token *t= token_new(TOKEN_EXT_ATTR, "html-attr");
+	if(!t) return NULL;
 
-    t->name = str_trim_lc(key, key_len);
-    if (equal && equal_len > 0) {
-        t->data.ext_attr.equal = malloc(equal_len + 1);
-        assert(t->data.ext_attr.equal);
-        memcpy(t->data.ext_attr.equal, equal, equal_len);
-        t->data.ext_attr.equal[equal_len] = '\0';
-    }
-    t->data.ext_attr.quote_open = quote_open;
-    t->data.ext_attr.quote_close = quote_close;
+	t->name= str_trim_lc(key, key_len);
+	if(equal && equal_len > 0) {
+		t->data.ext_attr.equal= malloc(equal_len + 1);
+		assert(t->data.ext_attr.equal);
+		memcpy(t->data.ext_attr.equal, equal, equal_len);
+		t->data.ext_attr.equal[equal_len]= '\0';
+	}
+	t->data.ext_attr.quote_open= quote_open;
+	t->data.ext_attr.quote_close= quote_close;
 
-    Token *attr_key = make_html_attr_key(key, key_len, accum);
-    if (!attr_key) {
-        token_free(t);
-        return NULL;
-    }
-    token_append_child(t, attr_key);
+	Token *attr_key= make_html_attr_key(key, key_len, accum);
+	if(!attr_key) {
+		token_free(t);
+		return NULL;
+	}
+	token_append_child(t, attr_key);
 
-    if (val) {
-        Token *attr_value = make_html_attr_value(val, val_len, accum);
-        if (!attr_value) {
-            token_free(t);
-            return NULL;
-        }
-        token_append_child(t, attr_value);
-    }
+	if(val) {
+		Token *attr_value= make_html_attr_value(val, val_len, accum);
+		if(!attr_value) {
+			token_free(t);
+			return NULL;
+		}
+		token_append_child(t, attr_value);
+	}
 
-    accum_push(accum, t);
-    return t;
+	accum_push(accum, t);
+	return t;
 }
 
-static void parse_html_attrs(Token *attrs_tok, const char *attr_str, size_t attr_len, Accum *accum)
-{
-    if (!attr_str || attr_len == 0) return;
+static void parse_html_attrs(Token *attrs_tok, const char *attr_str, size_t attr_len, Accum *accum) {
+	if(!attr_str || attr_len == 0) return;
 
-    size_t i = 0;
-    char dirty_buf[4096];
-    size_t dirty_len = 0;
+	size_t i= 0;
+	char dirty_buf[4096];
+	size_t dirty_len= 0;
 
-#define FLUSH_HTML_DIRTY() do { \
-    if (dirty_len > 0) { \
-        Token *dt = make_html_attr_dirty(dirty_buf, dirty_len, accum); \
-        if (dt) token_append_child(attrs_tok, dt); \
-        dirty_len = 0; \
-    } \
-} while (0)
+#define FLUSH_HTML_DIRTY()                                          \
+	do {                                                              \
+		if(dirty_len > 0) {                                             \
+			Token *dt= make_html_attr_dirty(dirty_buf, dirty_len, accum); \
+			if(dt) token_append_child(attrs_tok, dt);                     \
+			dirty_len= 0;                                                 \
+		}                                                               \
+	} while(0)
 
-    while (i < attr_len) {
-        if (isspace((unsigned char)attr_str[i])) {
-            while (i < attr_len && isspace((unsigned char)attr_str[i])) {
-                dirty_buf[dirty_len++] = attr_str[i++];
-            }
-            continue;
-        }
+	while(i < attr_len) {
+		if(isspace((unsigned char)attr_str[i])) {
+			while(i < attr_len && isspace((unsigned char)attr_str[i])) {
+				dirty_buf[dirty_len++]= attr_str[i++];
+			}
+			continue;
+		}
 
-        if (attr_str[i] == '/') {
-            dirty_buf[dirty_len++] = attr_str[i++];
-            continue;
-        }
+		if(attr_str[i] == '/') {
+			dirty_buf[dirty_len++]= attr_str[i++];
+			continue;
+		}
 
-        size_t key_start = i;
-        while (i < attr_len && !isspace((unsigned char)attr_str[i]) &&
-               attr_str[i] != '=' && attr_str[i] != '/') {
-            i++;
-        }
-        size_t key_len = i - key_start;
-        if (key_len == 0) {
-            dirty_buf[dirty_len++] = attr_str[i++];
-            continue;
-        }
+		size_t key_start= i;
+		while(i < attr_len && !isspace((unsigned char)attr_str[i]) &&
+					attr_str[i] != '=' && attr_str[i] != '/') {
+			i++;
+		}
+		size_t key_len= i - key_start;
+		if(key_len == 0) {
+			dirty_buf[dirty_len++]= attr_str[i++];
+			continue;
+		}
 
-        const char *key = attr_str + key_start;
-        bool valid_key = isalpha((unsigned char)key[0]) || key[0] == '_' || key[0] == ':';
-        if (valid_key) {
-            for (size_t k = 1; k < key_len; k++) {
-                unsigned char kc = (unsigned char)key[k];
-                if (!isalnum(kc) && kc != ':' && kc != '.' && kc != '_' && kc != '-') {
-                    valid_key = false;
-                    break;
-                }
-            }
-        }
+		const char *key= attr_str + key_start;
+		bool valid_key= isalpha((unsigned char)key[0]) || key[0] == '_' || key[0] == ':';
+		if(valid_key) {
+			for(size_t k= 1; k < key_len; k++) {
+				unsigned char kc= (unsigned char)key[k];
+				if(!isalnum(kc) && kc != ':' && kc != '.' && kc != '_' && kc != '-') {
+					valid_key= false;
+					break;
+				}
+			}
+		}
 
-        if (!valid_key) {
-            for (size_t k = 0; k < key_len; k++) dirty_buf[dirty_len++] = key[k];
-            continue;
-        }
+		if(!valid_key) {
+			for(size_t k= 0; k < key_len; k++) dirty_buf[dirty_len++]= key[k];
+			continue;
+		}
 
-        size_t eq_start = i;
-        while (i < attr_len && isspace((unsigned char)attr_str[i])) i++;
+		size_t eq_start= i;
+		while(i < attr_len && isspace((unsigned char)attr_str[i])) i++;
 
-        if (i >= attr_len || attr_str[i] != '=') {
-            FLUSH_HTML_DIRTY();
-            Token *at = make_html_attr(key, key_len, NULL, 0, "", 0, '\0', '\0', accum);
-            if (at) token_append_child(attrs_tok, at);
-            i = eq_start;
-            continue;
-        }
+		if(i >= attr_len || attr_str[i] != '=') {
+			FLUSH_HTML_DIRTY();
+			Token *at= make_html_attr(key, key_len, NULL, 0, "", 0, '\0', '\0', accum);
+			if(at) token_append_child(attrs_tok, at);
+			i= eq_start;
+			continue;
+		}
 
-        i++;
-        while (i < attr_len && isspace((unsigned char)attr_str[i])) i++;
+		i++;
+		while(i < attr_len && isspace((unsigned char)attr_str[i])) i++;
 
-        const char *equal_start = attr_str + eq_start;
-        size_t equal_len = i - eq_start;
-        const char *val = NULL;
-        size_t val_len = 0;
-        char quote_open = '\0';
-        char quote_close = '\0';
+		const char *equal_start= attr_str + eq_start;
+		size_t equal_len= i - eq_start;
+		const char *val= NULL;
+		size_t val_len= 0;
+		char quote_open= '\0';
+		char quote_close= '\0';
 
-        if (i < attr_len && (attr_str[i] == '"' || attr_str[i] == '\'')) {
-            quote_open = attr_str[i++];
-            size_t val_start = i;
-            while (i < attr_len && attr_str[i] != quote_open) i++;
-            val = attr_str + val_start;
-            val_len = i - val_start;
-            if (i < attr_len) {
-                quote_close = quote_open;
-                i++;
-            }
-        } else {
-            size_t val_start = i;
-            while (i < attr_len && !isspace((unsigned char)attr_str[i])) i++;
-            val = attr_str + val_start;
-            val_len = i - val_start;
-        }
+		if(i < attr_len && (attr_str[i] == '"' || attr_str[i] == '\'')) {
+			quote_open= attr_str[i++];
+			size_t val_start= i;
+			while(i < attr_len && attr_str[i] != quote_open) i++;
+			val= attr_str + val_start;
+			val_len= i - val_start;
+			if(i < attr_len) {
+				quote_close= quote_open;
+				i++;
+			}
+		} else {
+			size_t val_start= i;
+			while(i < attr_len && !isspace((unsigned char)attr_str[i])) i++;
+			val= attr_str + val_start;
+			val_len= i - val_start;
+		}
 
-        FLUSH_HTML_DIRTY();
-        Token *at = make_html_attr(key, key_len, val, val_len,
-                                   equal_start, equal_len,
-                                   quote_open, quote_close,
-                                   accum);
-        if (at) token_append_child(attrs_tok, at);
-    }
+		FLUSH_HTML_DIRTY();
+		Token *at= make_html_attr(key, key_len, val, val_len,
+															equal_start, equal_len,
+															quote_open, quote_close,
+															accum);
+		if(at) token_append_child(attrs_tok, at);
+	}
 
-    FLUSH_HTML_DIRTY();
+	FLUSH_HTML_DIRTY();
 #undef FLUSH_HTML_DIRTY
 }
 
-static Token *build_html_attrs(const char *tag_name, const char *attr_str, size_t attr_len, Accum *accum)
-{
-    Token *t = token_new(TOKEN_ATTRIBUTES, "html-attrs");
-    if (!t) return NULL;
-    t->name = strdup(tag_name);
-    accum_push(accum, t);
+static Token *build_html_attrs(const char *tag_name, const char *attr_str, size_t attr_len, Accum *accum) {
+	Token *t= token_new(TOKEN_ATTRIBUTES, "html-attrs");
+	if(!t) return NULL;
+	t->name= strdup(tag_name);
+	accum_push(accum, t);
 
-    if (attr_str && attr_len > 0 && !isspace((unsigned char)attr_str[0])) {
-        char *padded = malloc(attr_len + 2);
-        assert(padded);
-        padded[0] = ' ';
-        memcpy(padded + 1, attr_str, attr_len);
-        parse_html_attrs(t, padded, attr_len + 1, accum);
-        free(padded);
-    } else {
-        parse_html_attrs(t, attr_str, attr_len, accum);
-    }
+	if(attr_str && attr_len > 0 && !isspace((unsigned char)attr_str[0])) {
+		char *padded= malloc(attr_len + 2);
+		assert(padded);
+		padded[0]= ' ';
+		memcpy(padded + 1, attr_str, attr_len);
+		parse_html_attrs(t, padded, attr_len + 1, accum);
+		free(padded);
+	} else {
+		parse_html_attrs(t, attr_str, attr_len, accum);
+	}
 
-    return t;
+	return t;
 }
 
-static bool html_attrs_has_attr(const Token *attrs, const char *attr_name)
-{
-    if (!attrs || !attr_name) return false;
-    for (size_t i = 0; i < attrs->child_count; i++) {
-        const Child *c = &attrs->children[i];
-        if (c->is_text || !c->token) continue;
-        const Token *a = c->token;
-        if (a->type == TOKEN_EXT_ATTR && a->name && strcasecmp(a->name, attr_name) == 0) {
-            return true;
-        }
-    }
-    return false;
+static bool html_attrs_has_attr(const Token *attrs, const char *attr_name) {
+	if(!attrs || !attr_name) return false;
+	for(size_t i= 0; i < attrs->child_count; i++) {
+		const Child *c= &attrs->children[i];
+		if(c->is_text || !c->token) continue;
+		const Token *a= c->token;
+		if(a->type == TOKEN_EXT_ATTR && a->name && strcasecmp(a->name, attr_name) == 0) {
+			return true;
+		}
+	}
+	return false;
 }
 
-static void accum_rollback_shallow(Accum *accum, size_t saved_count)
-{
-    if (!accum) return;
-    while (accum->count > saved_count) {
-        Token *t = accum->tokens[--accum->count];
-        if (t) token_free_shallow(t);
-    }
+static void accum_rollback_shallow(Accum *accum, size_t saved_count) {
+	if(!accum) return;
+	while(accum->count > saved_count) {
+		Token *t= accum->tokens[--accum->count];
+		if(t) token_free_shallow(t);
+	}
 }
 
-void parse_html(ThreadBuf *tb, const ParserConfig *cfg, Accum *accum)
-{
-    if (!tb || !tb->buf) return;
+void parse_html(ThreadBuf *tb, const ParserConfig *cfg, Accum *accum) {
+	if(!tb || !tb->buf) return;
 
-    /* Use cached regex in config where possible */
-    if (!cfg->regex_html) {
-        ParserConfig *m = (ParserConfig *)cfg;
-        PCRE2_SIZE err_offset;
-        int err_code;
-        m->regex_html = (ParserConfigRegex *)pcre2_compile((PCRE2_SPTR)HTML_PATTERN, PCRE2_ZERO_TERMINATED,
-                                    PCRE2_CASELESS | PCRE2_UTF,
-                                    &err_code, &err_offset, NULL);
-        if (!m->regex_html) {
-            PCRE2_UCHAR8 err_buf[256];
-            pcre2_get_error_message(err_code, err_buf, sizeof(err_buf));
-            log_error("html regex compile error at %zu: %s Pattern: %.200s",
-                      (size_t)err_offset, err_buf, HTML_PATTERN);
-            return;
-        }
-    }
+	/* Use cached regex in config where possible */
+	if(!cfg->regex_html) {
+		ParserConfig *m= (ParserConfig *)cfg;
+		PCRE2_SIZE err_offset;
+		int err_code;
+		m->regex_html= (ParserConfigRegex *)pcre2_compile((PCRE2_SPTR)HTML_PATTERN, PCRE2_ZERO_TERMINATED,
+																											PCRE2_CASELESS | PCRE2_UTF,
+																											&err_code, &err_offset, NULL);
+		if(!m->regex_html) {
+			PCRE2_UCHAR8 err_buf[256];
+			pcre2_get_error_message(err_code, err_buf, sizeof(err_buf));
+			log_error("html regex compile error at %zu: %s Pattern: %.200s",
+								(size_t)err_offset, err_buf, HTML_PATTERN);
+			return;
+		}
+	}
 
-    pcre2_code *re = (pcre2_code *)cfg->regex_html;
-    pcre2_match_data *md = pcre2_match_data_create_from_pattern(re, NULL);
-    if (!md) return;
+	pcre2_code *re= (pcre2_code *)cfg->regex_html;
+	pcre2_match_data *md= pcre2_match_data_create_from_pattern(re, NULL);
+	if(!md) return;
 
-    size_t out_cap = tb->len * 2 + 64;
-    char *out_buf = malloc(out_cap);
-    assert(out_buf);
-    size_t out_len = 0;
+	size_t out_cap= tb->len * 2 + 64;
+	char *out_buf= malloc(out_cap);
+	assert(out_buf);
+	size_t out_len= 0;
 
-    const char *buf = tb->buf;
-    size_t len = tb->len;
-    size_t pos = 0;
+	const char *buf= tb->buf;
+	size_t len= tb->len;
+	size_t pos= 0;
 
-#define ENSURE_CAP(need) do { \
-    while (out_len + (need) >= out_cap) { out_cap *= 2; out_buf = realloc(out_buf, out_cap); assert(out_buf); } \
-} while(0)
+#define ENSURE_CAP(need)                  \
+	do {                                    \
+		while(out_len + (need) >= out_cap) {  \
+			out_cap*= 2;                        \
+			out_buf= realloc(out_buf, out_cap); \
+			assert(out_buf);                    \
+		}                                     \
+	} while(0)
 
-    while (pos < len) {
-        /* find next '<' */
-        const char *lt = memchr(buf + pos, '<', len - pos);
-        if (!lt) {
-            size_t rest = len - pos;
-            ENSURE_CAP(rest + 1);
-            memcpy(out_buf + out_len, buf + pos, rest);
-            out_len += rest;
-            break;
-        }
+	while(pos < len) {
+		/* find next '<' */
+		const char *lt= memchr(buf + pos, '<', len - pos);
+		if(!lt) {
+			size_t rest= len - pos;
+			ENSURE_CAP(rest + 1);
+			memcpy(out_buf + out_len, buf + pos, rest);
+			out_len+= rest;
+			break;
+		}
 
-        /* copy text before '<' */
-        size_t before = (size_t)(lt - (buf + pos));
-        ENSURE_CAP(before + 1);
-        memcpy(out_buf + out_len, buf + pos, before);
-        out_len += before;
+		/* copy text before '<' */
+		size_t before= (size_t)(lt - (buf + pos));
+		ENSURE_CAP(before + 1);
+		memcpy(out_buf + out_len, buf + pos, before);
+		out_len+= before;
 
-        /* define segment between this '<' and the next '<' (or end) */
-        const char *seg_start = lt + 1;
-        size_t seg_rem = len - (size_t)(seg_start - buf);
-        const char *next_lt = memchr(seg_start, '<', seg_rem);
-        size_t seg_len = next_lt ? (size_t)(next_lt - seg_start) : seg_rem;
+		/* define segment between this '<' and the next '<' (or end) */
+		const char *seg_start= lt + 1;
+		size_t seg_rem= len - (size_t)(seg_start - buf);
+		const char *next_lt= memchr(seg_start, '<', seg_rem);
+		size_t seg_len= next_lt ? (size_t)(next_lt - seg_start) : seg_rem;
 
-        /* Try to match the HTML tag pattern against the segment */
-        int rc = pcre2_match(re, (PCRE2_SPTR)seg_start, seg_len, 0, 0, md, NULL);
-        if (rc <= 0) {
-            /* No match — emit literally: '<' + segment */
-            ENSURE_CAP(1 + seg_len + 1);
-            out_buf[out_len++] = '<';
-            if (seg_len > 0) {
-                memcpy(out_buf + out_len, seg_start, seg_len);
-                out_len += seg_len;
-            }
-        } else {
-            PCRE2_SIZE *ov = pcre2_get_ovector_pointer(md);
-            /* ov mapping: [0]=match start, [1]=match end, [2]=g1start, [3]=g1end, [4]=g2start (name), [5]=g2end, [6]=g3start (params), [7]=g3end, [8]=g4start (brace), [9]=g4end, [10]=g5start (rest), [11]=g5end */
+		/* Try to match the HTML tag pattern against the segment */
+		int rc= pcre2_match(re, (PCRE2_SPTR)seg_start, seg_len, 0, 0, md, NULL);
+		if(rc <= 0) {
+			/* No match — emit literally: '<' + segment */
+			ENSURE_CAP(1 + seg_len + 1);
+			out_buf[out_len++]= '<';
+			if(seg_len > 0) {
+				memcpy(out_buf + out_len, seg_start, seg_len);
+				out_len+= seg_len;
+			}
+		} else {
+			PCRE2_SIZE *ov= pcre2_get_ovector_pointer(md);
+			/* ov mapping: [0]=match start, [1]=match end, [2]=g1start, [3]=g1end, [4]=g2start (name), [5]=g2end, [6]=g3start (params), [7]=g3end, [8]=g4start (brace), [9]=g4end, [10]=g5start (rest), [11]=g5end */
 
-            bool has_name = (ov[4] != PCRE2_UNSET && ov[5] != PCRE2_UNSET && ov[5] > ov[4]);
-            if (!has_name) {
-                /* fallback — emit raw */
-                ENSURE_CAP(1 + seg_len + 1);
-                out_buf[out_len++] = '<';
-                if (seg_len > 0) { memcpy(out_buf + out_len, seg_start, seg_len); out_len += seg_len; }
-            } else {
-                const char *name_ptr = seg_start + ov[4];
-                size_t name_len = (size_t)(ov[5] - ov[4]);
-                char *lcname = str_trim_lc(name_ptr, name_len);
-                if (!lcname) { /* fallback */
-                    ENSURE_CAP(1 + seg_len + 1);
-                    out_buf[out_len++] = '<';
-                    if (seg_len > 0) { memcpy(out_buf + out_len, seg_start, seg_len); out_len += seg_len; }
-                } else {
-                    if (!html_tag_allowed(cfg, lcname)) {
-                        /* unknown tag — emit raw */
-                        ENSURE_CAP(1 + seg_len + 1);
-                        out_buf[out_len++] = '<';
-                        if (seg_len > 0) { memcpy(out_buf + out_len, seg_start, seg_len); out_len += seg_len; }
-                        free(lcname);
-                    } else {
-                        /* Allowed tag — build attrs token then html token and emit sentinel */
-                        size_t saved_accum = accum->count;
+			bool has_name= (ov[4] != PCRE2_UNSET && ov[5] != PCRE2_UNSET && ov[5] > ov[4]);
+			if(!has_name) {
+				/* fallback — emit raw */
+				ENSURE_CAP(1 + seg_len + 1);
+				out_buf[out_len++]= '<';
+				if(seg_len > 0) {
+					memcpy(out_buf + out_len, seg_start, seg_len);
+					out_len+= seg_len;
+				}
+			} else {
+				const char *name_ptr= seg_start + ov[4];
+				size_t name_len= (size_t)(ov[5] - ov[4]);
+				char *lcname= str_trim_lc(name_ptr, name_len);
+				if(!lcname) { /* fallback */
+					ENSURE_CAP(1 + seg_len + 1);
+					out_buf[out_len++]= '<';
+					if(seg_len > 0) {
+						memcpy(out_buf + out_len, seg_start, seg_len);
+						out_len+= seg_len;
+					}
+				} else {
+					if(!html_tag_allowed(cfg, lcname)) {
+						/* unknown tag — emit raw */
+						ENSURE_CAP(1 + seg_len + 1);
+						out_buf[out_len++]= '<';
+						if(seg_len > 0) {
+							memcpy(out_buf + out_len, seg_start, seg_len);
+							out_len+= seg_len;
+						}
+						free(lcname);
+					} else {
+						/* Allowed tag — build attrs token then html token and emit sentinel */
+						size_t saved_accum= accum->count;
 
-                        /* params group (may be unset) */
-                        const char *attr_ptr = NULL; size_t attr_len = 0;
-                        if (ov[6] != PCRE2_UNSET && ov[7] != PCRE2_UNSET && ov[7] > ov[6]) {
-                            attr_ptr = seg_start + ov[6];
-                            attr_len = (size_t)(ov[7] - ov[6]);
-                        }
+						/* params group (may be unset) */
+						const char *attr_ptr= NULL;
+						size_t attr_len= 0;
+						if(ov[6] != PCRE2_UNSET && ov[7] != PCRE2_UNSET && ov[7] > ov[6]) {
+							attr_ptr= seg_start + ov[6];
+							attr_len= (size_t)(ov[7] - ov[6]);
+						}
 
-                        Token *attrs = build_html_attrs(lcname, attr_ptr, attr_len, accum);
+						Token *attrs= build_html_attrs(lcname, attr_ptr, attr_len, accum);
 
-                        /* Special-case: meta/link require itemprop+content/href.
+						/* Special-case: meta/link require itemprop+content/href.
                          * Mirror JS by checking parsed attrs, not raw substring matches. */
-                        bool reject = false;
-                        if (strcmp(lcname, "meta") == 0 || strcmp(lcname, "link") == 0) {
-                            bool has_itemprop = html_attrs_has_attr(attrs, "itemprop");
-                            bool has_required = strcmp(lcname, "meta") == 0
-                                ? html_attrs_has_attr(attrs, "content")
-                                : html_attrs_has_attr(attrs, "href");
-                            reject = !(has_itemprop && has_required);
-                        }
+						bool reject= false;
+						if(strcmp(lcname, "meta") == 0 || strcmp(lcname, "link") == 0) {
+							bool has_itemprop= html_attrs_has_attr(attrs, "itemprop");
+							bool has_required= strcmp(lcname, "meta") == 0
+																 ? html_attrs_has_attr(attrs, "content")
+																 : html_attrs_has_attr(attrs, "href");
+							reject= !(has_itemprop && has_required);
+						}
 
-                        if (reject) {
-                            /* Revert accumulator and free dropped tokens. */
-                            accum_rollback_shallow(accum, saved_accum);
-                            ENSURE_CAP(1 + seg_len + 1);
-                            out_buf[out_len++] = '<';
-                            if (seg_len > 0) { memcpy(out_buf + out_len, seg_start, seg_len); out_len += seg_len; }
-                            free(lcname);
-                        } else {
-                            /* compute rest text (group 5) */
-                            const char *rest_ptr = NULL; size_t rest_len = 0;
-                            if (ov[10] != PCRE2_UNSET && ov[11] != PCRE2_UNSET && ov[11] > ov[10]) {
-                                rest_ptr = seg_start + ov[10];
-                                rest_len = (size_t)(ov[11] - ov[10]);
-                            }
+						if(reject) {
+							/* Revert accumulator and free dropped tokens. */
+							accum_rollback_shallow(accum, saved_accum);
+							ENSURE_CAP(1 + seg_len + 1);
+							out_buf[out_len++]= '<';
+							if(seg_len > 0) {
+								memcpy(out_buf + out_len, seg_start, seg_len);
+								out_len+= seg_len;
+							}
+							free(lcname);
+						} else {
+							/* compute rest text (group 5) */
+							const char *rest_ptr= NULL;
+							size_t rest_len= 0;
+							if(ov[10] != PCRE2_UNSET && ov[11] != PCRE2_UNSET && ov[11] > ov[10]) {
+								rest_ptr= seg_start + ov[10];
+								rest_len= (size_t)(ov[11] - ov[10]);
+							}
 
-                            /* Message: create sentinel that will point to the html token index (next in accum)
+							/* Message: create sentinel that will point to the html token index (next in accum)
                              * We must use the index that will be assigned to the HtmlToken after creation. In the JS
                              * implementation attrs is pushed first, then sentinel using accum.length, then HtmlToken is
                              * constructed (pushed). To match that ordering, we use accum->count as the index for the
                              * upcoming HtmlToken. */
-                            size_t html_idx = accum->count; /* HtmlToken will be at this index */
-                            char sent_buf[64]; size_t sent_len = 0;
-                            work_str_sentinel(html_idx, 'x', sent_buf, &sent_len);
+							size_t html_idx= accum->count; /* HtmlToken will be at this index */
+							char sent_buf[64];
+							size_t sent_len= 0;
+							work_str_sentinel(html_idx, 'x', sent_buf, &sent_len);
 
-                            ENSURE_CAP(sent_len + rest_len + 1);
-                            memcpy(out_buf + out_len, sent_buf, sent_len);
-                            out_len += sent_len;
-                            if (rest_len > 0) {
-                                memcpy(out_buf + out_len, rest_ptr, rest_len);
-                                out_len += rest_len;
-                            }
+							ENSURE_CAP(sent_len + rest_len + 1);
+							memcpy(out_buf + out_len, sent_buf, sent_len);
+							out_len+= sent_len;
+							if(rest_len > 0) {
+								memcpy(out_buf + out_len, rest_ptr, rest_len);
+								out_len+= rest_len;
+							}
 
-                            /* Now create HtmlToken and push it (matching JS order) */
-                            Token *ht = token_new(TOKEN_HTML, "html");
-                            if (ht) {
-                                ht->name = strdup(lcname); /* lowercase for JSON/type lookup */
-                                /* orig_tag: original-case name for toString round-trip (mirrors JS this.tag) */
-                                char *orig_tag = malloc(name_len + 1);
-                                if (orig_tag) { memcpy(orig_tag, name_ptr, name_len); orig_tag[name_len] = '\0'; }
-                                ht->data.html.orig_tag = orig_tag;
-                                /* closing flag: group1 (slash) present? */
-                                if (ov[2] != PCRE2_UNSET && ov[3] != PCRE2_UNSET && ov[3] > ov[2]) ht->data.html.closing = true;
-                                else ht->data.html.closing = false;
-                                /* self-closing flag: brace group contains '/>' at start */
-                                if (ov[8] != PCRE2_UNSET && ov[9] != PCRE2_UNSET && ov[9] > ov[8]) {
-                                    const char *brace_ptr = seg_start + ov[8];
-                                    size_t brace_len = (size_t)(ov[9] - ov[8]);
-                                    if (brace_len >= 2 && brace_ptr[0] == '/' && brace_ptr[1] == '>') ht->data.html.self_closing = true;
-                                    else ht->data.html.self_closing = false;
-                                } else ht->data.html.self_closing = false;
+							/* Now create HtmlToken and push it (matching JS order) */
+							Token *ht= token_new(TOKEN_HTML, "html");
+							if(ht) {
+								ht->name= strdup(lcname); /* lowercase for JSON/type lookup */
+								/* orig_tag: original-case name for toString round-trip (mirrors JS this.tag) */
+								char *orig_tag= malloc(name_len + 1);
+								if(orig_tag) {
+									memcpy(orig_tag, name_ptr, name_len);
+									orig_tag[name_len]= '\0';
+								}
+								ht->data.html.orig_tag= orig_tag;
+								/* closing flag: group1 (slash) present? */
+								if(ov[2] != PCRE2_UNSET && ov[3] != PCRE2_UNSET && ov[3] > ov[2])
+									ht->data.html.closing= true;
+								else
+									ht->data.html.closing= false;
+								/* self-closing flag: brace group contains '/>' at start */
+								if(ov[8] != PCRE2_UNSET && ov[9] != PCRE2_UNSET && ov[9] > ov[8]) {
+									const char *brace_ptr= seg_start + ov[8];
+									size_t brace_len= (size_t)(ov[9] - ov[8]);
+									if(brace_len >= 2 && brace_ptr[0] == '/' && brace_ptr[1] == '>')
+										ht->data.html.self_closing= true;
+									else
+										ht->data.html.self_closing= false;
+								} else
+									ht->data.html.self_closing= false;
 
-                                /* Attach attrs token as child (attrs is already pushed to accum) */
-                                if (attrs) token_append_child(ht, attrs);
-                                accum_push(accum, ht);
-                            }
-                            free(lcname);
-                        }
-                    }
-                }
-            }
-        }
+								/* Attach attrs token as child (attrs is already pushed to accum) */
+								if(attrs) token_append_child(ht, attrs);
+								accum_push(accum, ht);
+							}
+							free(lcname);
+						}
+					}
+				}
+			}
+		}
 
-        /* Advance pos to after this segment (i.e. to the next '<' or end) */
-        pos = (size_t)(seg_start - buf) + seg_len;
-    }
+		/* Advance pos to after this segment (i.e. to the next '<' or end) */
+		pos= (size_t)(seg_start - buf) + seg_len;
+	}
 
-    ENSURE_CAP(1);
-    out_buf[out_len] = '\0';
-    wiki_thread_buf_set(tb, out_buf, out_len);
-    free(out_buf);
+	ENSURE_CAP(1);
+	out_buf[out_len]= '\0';
+	wiki_thread_buf_set(tb, out_buf, out_len);
+	free(out_buf);
 
-    pcre2_match_data_free(md);
+	pcre2_match_data_free(md);
 }

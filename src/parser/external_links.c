@@ -1,15 +1,15 @@
 #define PCRE2_CODE_UNIT_WIDTH 8
 #include <pcre2.h>
 
-#include "parser/external_links.h"
-#include "token.h"
-#include "string_util.h"
 #include "log.h"
-#include <stdlib.h>
-#include <string.h>
+#include "parser/external_links.h"
+#include "string_util.h"
+#include "token.h"
 #include <assert.h>
 #include <ctype.h>
 #include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
 
 /*
  * JS regex (config version, expanded):
@@ -37,39 +37,34 @@
 
 /* commonExtUrlChar: non-bracket, non-control, non-Zs, non-FFFD */
 #define COMMON_EXT \
-    "[^\\[\\]<>\"\\x00-\\x1F\\x7F" ZS_CLASS "\\x{FFFD}]"
+	"[^\\[\\]<>\"\\x00-\\x1F\\x7F" ZS_CLASS "\\x{FFFD}]"
 
-static const char s_ext_char_first[] =
-    "(?:\\[[\\da-f:.]+\\]|" COMMON_EXT ")";
+static const char s_ext_char_first[]=
+"(?:\\[[\\da-f:.]+\\]|" COMMON_EXT ")";
 
-static const char s_ext_char[] =
-    "(?:" COMMON_EXT "|\\x00\\d+[cn!~]\\x7F)*";
+static const char s_ext_char[]=
+"(?:" COMMON_EXT "|\\x00\\d+[cn!~]\\x7F)*";
 
 /*
  * Build and compile the JS-parity external links regex.
  * config.protocol is substituted where PROTO appears.
  * Result is stored in cfg->regex_external_links.
  */
-static pcre2_code *compile_external_links_regex(const ParserConfig *cfg)
-{
-    if (!(cfg && cfg->protocol && cfg->protocol[0])) {
-        return NULL;
-    }
-    const char *proto = cfg->protocol;
+static pcre2_code *compile_external_links_regex(const ParserConfig *cfg) {
+	if(!(cfg && cfg->protocol && cfg->protocol[0])) {
+		return NULL;
+	}
+	const char *proto= cfg->protocol;
 
-    /* Compute required buffer size.
+	/* Compute required buffer size.
      * ZS_CLASS appears 3 extra times in the format string (lookahead + space group x2),
      * each ~60 chars; add generous headroom. */
-    size_t cap = 512
-               + strlen(proto)
-               + strlen(s_ext_char_first)
-               + strlen(s_ext_char)
-               + 3 * sizeof(ZS_CLASS)  /* 3 inline occurrences in format string */
-               + 1;
-    char *pat = malloc(cap);
-    if (!pat) return NULL;
+	size_t cap= 512 + strlen(proto) + strlen(s_ext_char_first) + strlen(s_ext_char) + 3 * sizeof(ZS_CLASS) /* 3 inline occurrences in format string */
+							+ 1;
+	char *pat= malloc(cap);
+	if(!pat) return NULL;
 
-    /*
+	/*
      * \[(GROUP1)(GROUP2)(GROUP3)\]
      *
      * GROUP1 (url):
@@ -87,286 +82,306 @@ static pcre2_code *compile_external_links_regex(const ParserConfig *cfg)
      * GROUP3 (text):
      *   [^\]\x01-\x08\x0A-\x1F\x{FFFD}]*
      */
-    snprintf(pat, cap,
-        /* opening bracket */
-        "\\["
-        /* group 1: url */
-        "("
-          "(?:\\x00\\d+[cn]\\x7F)*"
-          "(?:"
-            "\\x00\\d+f\\x7F"
-            "|"
-            "(?:(?:%s|//)%s|\\x00\\d+m\\x7F)%s"
-            "(?=[\\[\\]<>\"\\t" ZS_CLASS "]|\\x00\\d)"
-          ")"
-        ")"
-        /* group 2: space */
-        "([" ZS_CLASS "]*(?![" ZS_CLASS "]))"
-        /* group 3: text */
-        "([^\\]\\x01-\\x08\\x0A-\\x1F\\x{FFFD}]*)"
-        /* closing bracket */
-        "\\]",
-        proto, s_ext_char_first, s_ext_char);
+	snprintf(pat, cap,
+					 /* opening bracket */
+					 "\\["
+					 /* group 1: url */
+					 "("
+					 "(?:\\x00\\d+[cn]\\x7F)*"
+					 "(?:"
+					 "\\x00\\d+f\\x7F"
+					 "|"
+					 "(?:(?:%s|//)%s|\\x00\\d+m\\x7F)%s"
+					 "(?=[\\[\\]<>\"\\t" ZS_CLASS "]|\\x00\\d)"
+					 ")"
+					 ")"
+					 /* group 2: space */
+					 "([" ZS_CLASS "]*(?![" ZS_CLASS "]))"
+					 /* group 3: text */
+					 "([^\\]\\x01-\\x08\\x0A-\\x1F\\x{FFFD}]*)"
+					 /* closing bracket */
+					 "\\]",
+					 proto, s_ext_char_first, s_ext_char);
 
-    PCRE2_SIZE err_offset;
-    int err_code;
-    pcre2_code *re = pcre2_compile(
-        (PCRE2_SPTR)pat, PCRE2_ZERO_TERMINATED,
-        PCRE2_CASELESS | PCRE2_UTF | PCRE2_UCP,
-        &err_code, &err_offset, NULL);
-    if (!re) {
-        PCRE2_UCHAR8 err_buf[256];
-        pcre2_get_error_message(err_code, err_buf, sizeof(err_buf));
-        log_error("external_links regex compile error at %zu: %s\nPattern: %s",
-                  (size_t)err_offset, (char *)err_buf, pat);
-    }
-    free(pat);
-    return re;
+	PCRE2_SIZE err_offset;
+	int err_code;
+	pcre2_code *re= pcre2_compile(
+	(PCRE2_SPTR)pat, PCRE2_ZERO_TERMINATED,
+	PCRE2_CASELESS | PCRE2_UTF | PCRE2_UCP,
+	&err_code, &err_offset, NULL);
+	if(!re) {
+		PCRE2_UCHAR8 err_buf[256];
+		pcre2_get_error_message(err_code, err_buf, sizeof(err_buf));
+		log_error("external_links regex compile error at %zu: %s\nPattern: %s",
+							(size_t)err_offset, (char *)err_buf, pat);
+	}
+	free(pat);
+	return re;
 }
 
 /* Build a minimal magic-link-url token (URL child of an ext-link or in-file marker).
  * Returns the token (already pushed to accum). */
-static Token *build_magic_link_token(const char *url, size_t url_len, Accum *accum)
-{
-    Token *t = token_new(TOKEN_MAGIC_LINK, "ext-link-url");
-    if (!t) return NULL;
-    token_append_text_n(t, url, url_len);
-    accum_push(accum, t);
-    return t;
+static Token *build_magic_link_token(const char *url, size_t url_len, Accum *accum) {
+	Token *t= token_new(TOKEN_MAGIC_LINK, "ext-link-url");
+	if(!t) return NULL;
+	token_append_text_n(t, url, url_len);
+	accum_push(accum, t);
+	return t;
 }
 
 /* Build an ext-link token: TOKEN_EXT_LINK containing [url_tok, (opt) ext-link-text] */
 static Token *build_ext_link_token(Token *url_tok,
-                                   const char *space, size_t space_len,
-                                   const char *text,  size_t text_len,
-                                   Accum *accum)
-{
-    Token *ext = token_new(TOKEN_EXT_LINK, "ext-link");
-    if (!ext) return NULL;
-    ext->data.ext_link.space = malloc(space_len + 1);
-    if (!ext->data.ext_link.space) {
-        token_free(ext);
-        return NULL;
-    }
-    if (space && space_len > 0) memcpy(ext->data.ext_link.space, space, space_len);
-    ext->data.ext_link.space[space_len] = '\0';
+																	 const char *space, size_t space_len,
+																	 const char *text, size_t text_len,
+																	 Accum *accum) {
+	Token *ext= token_new(TOKEN_EXT_LINK, "ext-link");
+	if(!ext) return NULL;
+	ext->data.ext_link.space= malloc(space_len + 1);
+	if(!ext->data.ext_link.space) {
+		token_free(ext);
+		return NULL;
+	}
+	if(space && space_len > 0) memcpy(ext->data.ext_link.space, space, space_len);
+	ext->data.ext_link.space[space_len]= '\0';
 
-    token_append_child(ext, url_tok);
+	token_append_child(ext, url_tok);
 
-    if (text_len > 0) {
-        Token *inner = token_new(TOKEN_PLAIN, "ext-link-text");
-        if (!inner) { token_free(ext); return NULL; }
-        token_append_text_n(inner, text, text_len);
-        accum_push(accum, inner);
-        token_append_child(ext, inner);
-    }
+	if(text_len > 0) {
+		Token *inner= token_new(TOKEN_PLAIN, "ext-link-text");
+		if(!inner) {
+			token_free(ext);
+			return NULL;
+		}
+		token_append_text_n(inner, text, text_len);
+		accum_push(accum, inner);
+		token_append_child(ext, inner);
+	}
 
-    accum_push(accum, ext);
-    return ext;
+	accum_push(accum, ext);
+	return ext;
 }
 
 void parse_external_links(ThreadBuf *tb, const ParserConfig *cfg,
-                           Accum *accum, bool in_file)
-{
-    if (!tb || !tb->buf) return;
+													Accum *accum, bool in_file) {
+	if(!tb || !tb->buf) return;
 
-    /* Lazy compile (per config, since PROTO is embedded) */
-    if (!cfg->regex_external_links) {
-        ParserConfig *m = (ParserConfig *)cfg;
-        m->regex_external_links =
-            (ParserConfigRegex *)compile_external_links_regex(cfg);
-        if (!m->regex_external_links) return;
-    }
-    pcre2_code *re = (pcre2_code *)cfg->regex_external_links;
+	/* Lazy compile (per config, since PROTO is embedded) */
+	if(!cfg->regex_external_links) {
+		ParserConfig *m= (ParserConfig *)cfg;
+		m->regex_external_links=
+		(ParserConfigRegex *)compile_external_links_regex(cfg);
+		if(!m->regex_external_links) return;
+	}
+	pcre2_code *re= (pcre2_code *)cfg->regex_external_links;
 
-    pcre2_match_data *md = pcre2_match_data_create_from_pattern(re, NULL);
-    if (!md) return;
+	pcre2_match_data *md= pcre2_match_data_create_from_pattern(re, NULL);
+	if(!md) return;
 
-    size_t out_cap = tb->len * 2 + 64;
-    char  *out_buf = malloc(out_cap);
-    assert(out_buf);
-    size_t out_len   = 0;
-    size_t search_at = 0;
+	size_t out_cap= tb->len * 2 + 64;
+	char *out_buf= malloc(out_cap);
+	assert(out_buf);
+	size_t out_len= 0;
+	size_t search_at= 0;
 
-#define ENSURE_CAP(need) do { \
-    while (out_len + (size_t)(need) >= out_cap) { \
-        out_cap *= 2; out_buf = realloc(out_buf, out_cap); assert(out_buf); \
-    } \
-} while(0)
+#define ENSURE_CAP(need)                         \
+	do {                                           \
+		while(out_len + (size_t)(need) >= out_cap) { \
+			out_cap*= 2;                               \
+			out_buf= realloc(out_buf, out_cap);        \
+			assert(out_buf);                           \
+		}                                            \
+	} while(0)
 
-    while (search_at <= tb->len) {
-        int rc = pcre2_match(re, (PCRE2_SPTR)tb->buf, (PCRE2_SIZE)tb->len,
-                             (PCRE2_SIZE)search_at, 0, md, NULL);
-        if (rc <= 0) {
-            /* No more matches — copy the rest unchanged */
-            size_t rest = tb->len - search_at;
-            ENSURE_CAP(rest + 1);
-            memcpy(out_buf + out_len, tb->buf + search_at, rest);
-            out_len += rest;
-            break;
-        }
+	while(search_at <= tb->len) {
+		int rc= pcre2_match(re, (PCRE2_SPTR)tb->buf, (PCRE2_SIZE)tb->len,
+												(PCRE2_SIZE)search_at, 0, md, NULL);
+		if(rc <= 0) {
+			/* No more matches — copy the rest unchanged */
+			size_t rest= tb->len - search_at;
+			ENSURE_CAP(rest + 1);
+			memcpy(out_buf + out_len, tb->buf + search_at, rest);
+			out_len+= rest;
+			break;
+		}
 
-        PCRE2_SIZE *ov = pcre2_get_ovector_pointer(md);
-        size_t mstart = ov[0], mend = ov[1];
+		PCRE2_SIZE *ov= pcre2_get_ovector_pointer(md);
+		size_t mstart= ov[0], mend= ov[1];
 
-        /* Copy text before this match */
-        size_t before = mstart - search_at;
-        ENSURE_CAP(before + 128);
-        memcpy(out_buf + out_len, tb->buf + search_at, before);
-        out_len += before;
+		/* Copy text before this match */
+		size_t before= mstart - search_at;
+		ENSURE_CAP(before + 128);
+		memcpy(out_buf + out_len, tb->buf + search_at, before);
+		out_len+= before;
 
-        /* Extract the 3 groups */
-        const char *url_ptr   = (ov[2] != PCRE2_UNSET) ? tb->buf + ov[2] : NULL;
-        size_t      url_len_v = (ov[2] != PCRE2_UNSET && ov[3] > ov[2]) ? ov[3] - ov[2] : 0;
-        const char *spc_ptr   = (ov[4] != PCRE2_UNSET) ? tb->buf + ov[4] : NULL;
-        size_t      spc_len   = (ov[4] != PCRE2_UNSET && ov[5] > ov[4]) ? ov[5] - ov[4] : 0;
-        const char *txt_ptr   = (ov[6] != PCRE2_UNSET) ? tb->buf + ov[6] : NULL;
-        size_t      txt_len   = (ov[6] != PCRE2_UNSET && ov[7] > ov[6]) ? ov[7] - ov[6] : 0;
+		/* Extract the 3 groups */
+		const char *url_ptr= (ov[2] != PCRE2_UNSET) ? tb->buf + ov[2] : NULL;
+		size_t url_len_v= (ov[2] != PCRE2_UNSET && ov[3] > ov[2]) ? ov[3] - ov[2] : 0;
+		const char *spc_ptr= (ov[4] != PCRE2_UNSET) ? tb->buf + ov[4] : NULL;
+		size_t spc_len= (ov[4] != PCRE2_UNSET && ov[5] > ov[4]) ? ov[5] - ov[4] : 0;
+		const char *txt_ptr= (ov[6] != PCRE2_UNSET) ? tb->buf + ov[6] : NULL;
+		size_t txt_len= (ov[6] != PCRE2_UNSET && ov[7] > ov[6]) ? ov[7] - ov[6] : 0;
 
-        if (!url_ptr || url_len_v == 0) {
-            /* Shouldn't happen; copy original */
-            ENSURE_CAP(mend - mstart);
-            memcpy(out_buf + out_len, tb->buf + mstart, mend - mstart);
-            out_len += mend - mstart;
-            search_at = mend + (mend == mstart ? 1 : 0);
-            continue;
-        }
+		if(!url_ptr || url_len_v == 0) {
+			/* Shouldn't happen; copy original */
+			ENSURE_CAP(mend - mstart);
+			memcpy(out_buf + out_len, tb->buf + mstart, mend - mstart);
+			out_len+= mend - mstart;
+			search_at= mend + (mend == mstart ? 1 : 0);
+			continue;
+		}
 
-        /*
+		/*
          * JS post-match: const mt = /&[lg]t;/u.exec(url);
          * if (mt) { space = ''; text = url.slice(mt.index) + space + text; url = url.slice(0, mt.index); }
          *
          * If url contains &lt; or &gt;, truncate url at that point and
          * prepend the rest onto text (space is cleared).
          */
-        {
-            /* Scan url for "&lt;" or "&gt;" */
-            size_t truncate_at = url_len_v; /* default: no truncation */
-            for (size_t i = 0; i + 3 < url_len_v; i++) {
-                if (url_ptr[i] == '&') {
-                    size_t rem = url_len_v - i;
-                    if (rem >= 4 &&
-                        ((strncasecmp(url_ptr + i, "&lt;", 4) == 0) ||
-                         (strncasecmp(url_ptr + i, "&gt;", 4) == 0))) {
-                        truncate_at = i;
-                        break;
-                    }
-                }
-            }
+		{
+			/* Scan url for "&lt;" or "&gt;" */
+			size_t truncate_at= url_len_v; /* default: no truncation */
+			for(size_t i= 0; i + 3 < url_len_v; i++) {
+				if(url_ptr[i] == '&') {
+					size_t rem= url_len_v - i;
+					if(rem >= 4 &&
+						 ((strncasecmp(url_ptr + i, "&lt;", 4) == 0) ||
+							(strncasecmp(url_ptr + i, "&gt;", 4) == 0))) {
+						truncate_at= i;
+						break;
+					}
+				}
+			}
 
-            if (truncate_at < url_len_v) {
-                /* The rest of the URL becomes part of text — build a combined text buffer */
-                size_t extra     = url_len_v - truncate_at; /* "&lt;..." portion */
-                size_t new_txt_l = extra + txt_len;
-                char  *new_txt   = malloc(new_txt_l + 1);
-                if (new_txt) {
-                    memcpy(new_txt, url_ptr + truncate_at, extra);
-                    if (txt_ptr && txt_len > 0) memcpy(new_txt + extra, txt_ptr, txt_len);
-                    new_txt[new_txt_l] = '\0';
-                    /* Adjust */
-                    url_len_v = truncate_at;
-                    txt_ptr   = new_txt;
-                    txt_len   = new_txt_l;
-                    spc_len   = 0; /* space = '' */
+			if(truncate_at < url_len_v) {
+				/* The rest of the URL becomes part of text — build a combined text buffer */
+				size_t extra= url_len_v - truncate_at; /* "&lt;..." portion */
+				size_t new_txt_l= extra + txt_len;
+				char *new_txt= malloc(new_txt_l + 1);
+				if(new_txt) {
+					memcpy(new_txt, url_ptr + truncate_at, extra);
+					if(txt_ptr && txt_len > 0) memcpy(new_txt + extra, txt_ptr, txt_len);
+					new_txt[new_txt_l]= '\0';
+					/* Adjust */
+					url_len_v= truncate_at;
+					txt_ptr= new_txt;
+					txt_len= new_txt_l;
+					spc_len= 0; /* space = '' */
 
-                    /* Build tokens with adjusted values */
-                    size_t accum_before = accum->count;
-                    Token *url_tok = build_magic_link_token(url_ptr, url_len_v, accum);
-                    if (!url_tok) {
-                        free(new_txt);
-                        ENSURE_CAP(mend - mstart);
-                        memcpy(out_buf + out_len, tb->buf + mstart, mend - mstart);
-                        out_len += mend - mstart;
-                        search_at = mend + (mend == mstart ? 1 : 0);
-                        continue;
-                    }
+					/* Build tokens with adjusted values */
+					size_t accum_before= accum->count;
+					Token *url_tok= build_magic_link_token(url_ptr, url_len_v, accum);
+					if(!url_tok) {
+						free(new_txt);
+						ENSURE_CAP(mend - mstart);
+						memcpy(out_buf + out_len, tb->buf + mstart, mend - mstart);
+						out_len+= mend - mstart;
+						search_at= mend + (mend == mstart ? 1 : 0);
+						continue;
+					}
 
-                    if (in_file) {
-                        size_t sent_idx = accum_before;
-                        char sent_buf[64]; size_t slen;
-                        work_str_sentinel(sent_idx, 'f', sent_buf, &slen);
-                        ENSURE_CAP(1 + slen + txt_len + 1 + 1);
-                        out_buf[out_len++] = '[';
-                        memcpy(out_buf + out_len, sent_buf, slen); out_len += slen;
-                        if (txt_len > 0) { memcpy(out_buf + out_len, txt_ptr, txt_len); out_len += txt_len; }
-                        out_buf[out_len++] = ']';
-                    } else {
-                        Token *ext = build_ext_link_token(url_tok, NULL, 0, txt_ptr, txt_len, accum);
-                        if (!ext) {
-                            free(new_txt);
-                            ENSURE_CAP(mend - mstart);
-                            memcpy(out_buf + out_len, tb->buf + mstart, mend - mstart);
-                            out_len += mend - mstart;
-                            search_at = mend + (mend == mstart ? 1 : 0);
-                            continue;
-                        }
-                        size_t ext_idx = accum->count - 1;
-                        char sent_buf[64]; size_t slen;
-                        work_str_sentinel(ext_idx, 'w', sent_buf, &slen);
-                        ENSURE_CAP(slen);
-                        memcpy(out_buf + out_len, sent_buf, slen); out_len += slen;
-                    }
+					if(in_file) {
+						size_t sent_idx= accum_before;
+						char sent_buf[64];
+						size_t slen;
+						work_str_sentinel(sent_idx, 'f', sent_buf, &slen);
+						ENSURE_CAP(1 + slen + txt_len + 1 + 1);
+						out_buf[out_len++]= '[';
+						memcpy(out_buf + out_len, sent_buf, slen);
+						out_len+= slen;
+						if(txt_len > 0) {
+							memcpy(out_buf + out_len, txt_ptr, txt_len);
+							out_len+= txt_len;
+						}
+						out_buf[out_len++]= ']';
+					} else {
+						Token *ext= build_ext_link_token(url_tok, NULL, 0, txt_ptr, txt_len, accum);
+						if(!ext) {
+							free(new_txt);
+							ENSURE_CAP(mend - mstart);
+							memcpy(out_buf + out_len, tb->buf + mstart, mend - mstart);
+							out_len+= mend - mstart;
+							search_at= mend + (mend == mstart ? 1 : 0);
+							continue;
+						}
+						size_t ext_idx= accum->count - 1;
+						char sent_buf[64];
+						size_t slen;
+						work_str_sentinel(ext_idx, 'w', sent_buf, &slen);
+						ENSURE_CAP(slen);
+						memcpy(out_buf + out_len, sent_buf, slen);
+						out_len+= slen;
+					}
 
-                    free(new_txt);
-                    search_at = mend + (mend == mstart ? 1 : 0);
-                    continue;
-                }
-                /* malloc failed — fall through to normal handling */
-            }
-        }
+					free(new_txt);
+					search_at= mend + (mend == mstart ? 1 : 0);
+					continue;
+				}
+				/* malloc failed — fall through to normal handling */
+			}
+		}
 
-        /* Normal handling (no &lt;/&gt; truncation) */
-        {
-            size_t accum_before = accum->count;
-            Token *url_tok = build_magic_link_token(url_ptr, url_len_v, accum);
-            if (!url_tok) {
-                ENSURE_CAP(mend - mstart);
-                memcpy(out_buf + out_len, tb->buf + mstart, mend - mstart);
-                out_len += mend - mstart;
-                search_at = mend + (mend == mstart ? 1 : 0);
-                continue;
-            }
+		/* Normal handling (no &lt;/&gt; truncation) */
+		{
+			size_t accum_before= accum->count;
+			Token *url_tok= build_magic_link_token(url_ptr, url_len_v, accum);
+			if(!url_tok) {
+				ENSURE_CAP(mend - mstart);
+				memcpy(out_buf + out_len, tb->buf + mstart, mend - mstart);
+				out_len+= mend - mstart;
+				search_at= mend + (mend == mstart ? 1 : 0);
+				continue;
+			}
 
-            if (in_file) {
-                /*
+			if(in_file) {
+				/*
                  * JS: return `[\0${length}f\x7F${space}${text}]`;
                  */
-                size_t sent_idx = accum_before;
-                char sent_buf[64]; size_t slen;
-                work_str_sentinel(sent_idx, 'f', sent_buf, &slen);
-                ENSURE_CAP(1 + slen + spc_len + txt_len + 1 + 1);
-                out_buf[out_len++] = '[';
-                memcpy(out_buf + out_len, sent_buf, slen); out_len += slen;
-                if (spc_ptr && spc_len > 0) { memcpy(out_buf + out_len, spc_ptr, spc_len); out_len += spc_len; }
-                if (txt_ptr && txt_len > 0) { memcpy(out_buf + out_len, txt_ptr, txt_len); out_len += txt_len; }
-                out_buf[out_len++] = ']';
-            } else {
-                /*
+				size_t sent_idx= accum_before;
+				char sent_buf[64];
+				size_t slen;
+				work_str_sentinel(sent_idx, 'f', sent_buf, &slen);
+				ENSURE_CAP(1 + slen + spc_len + txt_len + 1 + 1);
+				out_buf[out_len++]= '[';
+				memcpy(out_buf + out_len, sent_buf, slen);
+				out_len+= slen;
+				if(spc_ptr && spc_len > 0) {
+					memcpy(out_buf + out_len, spc_ptr, spc_len);
+					out_len+= spc_len;
+				}
+				if(txt_ptr && txt_len > 0) {
+					memcpy(out_buf + out_len, txt_ptr, txt_len);
+					out_len+= txt_len;
+				}
+				out_buf[out_len++]= ']';
+			} else {
+				/*
                  * JS: new ExtLinkToken(url, space, text, config, accum);
                  *     return `\0${length}w\x7F`;
                  */
-                Token *ext = build_ext_link_token(url_tok, spc_ptr, spc_len, txt_ptr, txt_len, accum);
-                if (!ext) {
-                    ENSURE_CAP(mend - mstart);
-                    memcpy(out_buf + out_len, tb->buf + mstart, mend - mstart);
-                    out_len += mend - mstart;
-                    search_at = mend + (mend == mstart ? 1 : 0);
-                    continue;
-                }
-                size_t ext_idx = accum->count - 1;
-                char sent_buf[64]; size_t slen;
-                work_str_sentinel(ext_idx, 'w', sent_buf, &slen);
-                ENSURE_CAP(slen);
-                memcpy(out_buf + out_len, sent_buf, slen); out_len += slen;
-            }
-        }
+				Token *ext= build_ext_link_token(url_tok, spc_ptr, spc_len, txt_ptr, txt_len, accum);
+				if(!ext) {
+					ENSURE_CAP(mend - mstart);
+					memcpy(out_buf + out_len, tb->buf + mstart, mend - mstart);
+					out_len+= mend - mstart;
+					search_at= mend + (mend == mstart ? 1 : 0);
+					continue;
+				}
+				size_t ext_idx= accum->count - 1;
+				char sent_buf[64];
+				size_t slen;
+				work_str_sentinel(ext_idx, 'w', sent_buf, &slen);
+				ENSURE_CAP(slen);
+				memcpy(out_buf + out_len, sent_buf, slen);
+				out_len+= slen;
+			}
+		}
 
-        search_at = mend + (mend == mstart ? 1 : 0);
-    }
+		search_at= mend + (mend == mstart ? 1 : 0);
+	}
 
-    out_buf[out_len] = '\0';
-    wiki_thread_buf_set(tb, out_buf, out_len);
-    free(out_buf);
+	out_buf[out_len]= '\0';
+	wiki_thread_buf_set(tb, out_buf, out_len);
+	free(out_buf);
 
-    pcre2_match_data_free(md);
+	pcre2_match_data_free(md);
 }

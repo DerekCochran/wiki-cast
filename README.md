@@ -1,10 +1,10 @@
 # wikiparser-node C Tokenizer
 
-This project contains a drop in replacement for the [wikiparser-node](https://github.com/bhsd-harry/wikiparser-node) Token class. It overrides the parse and toString to use a C based tokenizer.  It will have extra functions to assist with normalizing the data for AI.
+This project contains a drop in replacement for the [wikiparser-node](https://github.com/bhsd-harry/wikiparser-node) Token class. It overrides the parse and toString to use a C based tokenizer. It will have extra functions to assist with normalizing the data for AI.
 
 ## Purpose
 
-Parsing the 7 million wikipedia articles is a slow process.  Using a straight C tokenizer speeds it up.  Initial testing shows the increase can be significan for processing 7 million records.  Below is a sample, but there are opportunities for additional performance enhancements.
+Parsing the 7 million wikipedia articles is a slow process. Using a straight C tokenizer speeds it up. Initial testing shows the increase can be significan for processing 7 million records. Below is a sample, but there are opportunities for additional performance enhancements.
 
 ```text
 article-1 parse: 159ms 054ms, toString: 003ms 000ms
@@ -14,13 +14,13 @@ article-4 parse: 140ms 086ms, toString: 004ms 000ms
 article-5 parse: 046ms 030ms, toString: 001ms 000ms
 ```
 
-Along with parsing, a straight C implementation is portable.  I could be used with Python, the de-facto language for AI.
+Along with parsing, a straight C implementation is portable. I could be used with Python, the de-facto language for AI.
 
 The end goal is to use this parser to normalize WikiPedia for use with AI, to create a knowledge graph and normalized text for training and RAG.
 
 ## Implementation
 
-This is a duplicate of the functionality of [wikiparser-node](https://github.com/bhsd-harry/wikiparser-node).  There are prompts to use in vs Code Copilot to convert to C and keep parity with the JS implementation.  The goal is to not re-invent the wheel, but provide a cross language high performance tokenizer.  
+This is a duplicate of the functionality of [wikiparser-node](https://github.com/bhsd-harry/wikiparser-node). There are prompts to use in vs Code Copilot to convert to C and keep parity with the JS implementation. The goal is to not re-invent the wheel, but provide a cross language high performance tokenizer.
 
 **High-level overview**
 
@@ -119,37 +119,37 @@ exits or when `wiki_thread_buf_finalize_all()` is called at shutdown.
 After a large document is parsed, the thread's main buffer may be very large.
 At the start of each `wiki_parse()` call, if the buffer capacity exceeds the
 shrink threshold AND the incoming input is smaller than the target size, the
-buffer is freed and reallocated at the target size.  The four thresholds are
+buffer is freed and reallocated at the target size. The four thresholds are
 controlled by environment variables (all values in megabytes):
 
-| Variable | Default | Meaning |
-|---|---|---|
-| `TOKENIZER_THREAD_BUFFER_MAIN_SHRINK_SIZE_MB` | `10` | If main buffer is larger than this, consider shrinking |
-| `TOKENIZER_THREAD_BUFFER_MAIN_TARGET_SIZE_MB` | `5` | Shrink main buffer down to this size |
-| `TOKENIZER_THREAD_BUFFER_SCRATCH_SHRINK_SIZE_MB` | `10` | If a scratch buffer is larger than this, shrink it |
-| `TOKENIZER_THREAD_BUFFER_SCRATCH_TARGET_SIZE_MB` | `5` | Shrink scratch buffers down to this size |
+| Variable                                         | Default | Meaning                                                |
+| ------------------------------------------------ | ------- | ------------------------------------------------------ |
+| `TOKENIZER_THREAD_BUFFER_MAIN_SHRINK_SIZE_MB`    | `10`    | If main buffer is larger than this, consider shrinking |
+| `TOKENIZER_THREAD_BUFFER_MAIN_TARGET_SIZE_MB`    | `5`     | Shrink main buffer down to this size                   |
+| `TOKENIZER_THREAD_BUFFER_SCRATCH_SHRINK_SIZE_MB` | `10`    | If a scratch buffer is larger than this, shrink it     |
+| `TOKENIZER_THREAD_BUFFER_SCRATCH_TARGET_SIZE_MB` | `5`     | Shrink scratch buffers down to this size               |
 
 **Shutdown / finalize**
 
 Call `wiki_thread_buf_finalize_all()` (declared in `include/thread_buffer.h`)
-once when the library is no longer needed.  It frees the inner buffers of
-every thread that ever called `wiki_parse()`.  The `ThreadBuffers` struct
+once when the library is no longer needed. It frees the inner buffers of
+every thread that ever called `wiki_parse()`. The `ThreadBuffers` struct
 itself is left alive in TLS and freed by the pthread destructor when each
 thread exits, avoiding any cross-thread `free()` of memory the destructor
 still references.
 
 **Buffer ownership rule**
 
-`thread_buffer` is the **sole owner** of `ThreadBuf` memory.  All allocation,
+`thread_buffer` is the **sole owner** of `ThreadBuf` memory. All allocation,
 reallocation, and deallocation of `ThreadBuf.buf` must go through
-`wiki_thread_buf_reserve()`.  No other code — parser stages, string utilities,
+`wiki_thread_buf_reserve()`. No other code — parser stages, string utilities,
 or helper functions — may call `malloc`, `realloc`, or `free` on a
 `ThreadBuf.buf` pointer directly.
 
 Functions that write into a thread buffer (e.g. `str_tidy_into()`) accept a
-plain `char *` pointer and a capacity value.  They must assert that the
+plain `char *` pointer and a capacity value. They must assert that the
 provided capacity is sufficient and then write into the buffer without
-touching its allocation.  Callers are required to call
+touching its allocation. Callers are required to call
 `wiki_thread_buf_reserve()` before passing the buffer to such functions.
 
 **Development notes**
@@ -161,9 +161,8 @@ touching its allocation.  Callers are required to call
 - Working strings contain embedded NUL bytes due to sentinel markers — code
   uses explicit length-aware buffers rather than C NUL-terminated strings.
 - When adding tokens, follow the accumulator index convention: record the
-  accumulator index *before* pushing the new token so sentinels point at the
+  accumulator index _before_ pushing the new token so sentinels point at the
   correct slot.
-
 
 ## Sanitizers (ASan / UBSan / TSan)
 
@@ -172,7 +171,7 @@ errors, undefined behavior, and data races early. Create a separate build
 directory for each sanitizer (do not try to combine AddressSanitizer and
 ThreadSanitizer in the same binary).
 
-1) Undefined Behavior Sanitizer (UBSan)
+1. Undefined Behavior Sanitizer (UBSan)
 
 ```bash
 cd extern_tokenizer
@@ -187,7 +186,7 @@ make -j
 WIKI_CONFIG=../../wikiparser-node-1.38.1/package/config/default.json ./test_stage0
 ```
 
-2) ThreadSanitizer (TSan) — data race detection
+2. ThreadSanitizer (TSan) — data race detection
 
 ```bash
 cd extern_tokenizer
@@ -203,7 +202,7 @@ TSAN_OPTIONS="report_thread_leaks=1" \
   WIKI_CONFIG=../../wikiparser-node-1.38.1/package/config/default.json ./test_stage0
 ```
 
-3) AddressSanitizer (ASan) — heap/stack buffer overflows, use separately
+3. AddressSanitizer (ASan) — heap/stack buffer overflows, use separately
 
 ```bash
 cd extern_tokenizer
@@ -218,12 +217,12 @@ WIKI_CONFIG=../../wikiparser-node-1.38.1/package/config/default.json ./test_stag
 ```
 
 Notes:
+
 - Use separate build directories per sanitizer to avoid conflicting runtimes.
 - If you want the sanitizer to abort on first error, add `-fno-sanitize-recover=all`
   to the `CMAKE_C_FLAGS` (useful when debugging with gdb).
 - For Node-level parity tests that spawn the native CLI, make sure the test
   harness invokes the binary built in the matching `build_*` directory.
-
 
 ## Notes
 
@@ -231,29 +230,14 @@ Get all files for a directory
 
 ```bash
 cd ~/git/wikiparser-node-c-tokenizer/src
+> ../output.txt
 find . -type f -name "*.c" | while read -r file; do
-    # Remove the leading './' for a cleaner tag name
-    clean_name="${file#./}"
-    
-    echo "<$clean_name>" >> ../output.txt
-    cat "$file" >> ../output.txt
-    echo -e "</$clean_name>\n" >> ../output.txt
-done
-```
-
-cd ~/git/wikiparser-node-c-tokenizer/src
-find . -type f -name "*.c" | while read -r file; do
-    # Remove the leading './' for a cleaner tag name
-    clean_name="${file#./}"
-    
-    echo "<$clean_name>" >> ../output.txt
-  cat "$file" | \
-    awk 'BEGIN{RS="*/"; FS="/*"} {printf "%s", $1}' | \
-    sed 's/\/\/.*//g' | \
-    sed '/^#/! s/[[:space:]]\+/ /g' | \
-    sed '/^#/! s/ \?\([{}();,=+-\/\*&|<>!]\) \? /\1/g' | \
-    sed '/^$/d' >> ../output.txt
+  clean_name="${file#./}"
+  echo "<$clean_name>" >> ../output.txt
+  gcc -E -P -fpreprocessed -dD "$file" | \
+    clang-format -style=file | \
+    sed -E 's/[[:space:]]*([;=,&|\-\+{}])[[:space:]]*/\1/g' | \
+    sed ':a; /[{};&|,]$/ {N; s/\n[[:space:]]*//; ba}' >> ../output.txt
   echo -e "\n</$clean_name>\n" >> ../output.txt
 done
-
-sudo apt install clang-format
+```
