@@ -223,3 +223,37 @@ Notes:
   to the `CMAKE_C_FLAGS` (useful when debugging with gdb).
 - For Node-level parity tests that spawn the native CLI, make sure the test
   harness invokes the binary built in the matching `build_*` directory.
+
+
+## Notes
+
+Get all files for a directory
+
+```bash
+cd ~/git/wikiparser-node-c-tokenizer/src
+find . -type f -name "*.c" | while read -r file; do
+    # Remove the leading './' for a cleaner tag name
+    clean_name="${file#./}"
+    
+    echo "<$clean_name>" >> ../output.txt
+    cat "$file" >> ../output.txt
+    echo -e "</$clean_name>\n" >> ../output.txt
+done
+```
+
+cd ~/git/wikiparser-node-c-tokenizer/src
+find . -type f -name "*.c" | while read -r file; do
+    # Remove the leading './' for a cleaner tag name
+    clean_name="${file#./}"
+    
+    echo "<$clean_name>" >> ../output.txt
+  cat "$file" | \
+    awk 'BEGIN{RS="*/"; FS="/*"} {printf "%s", $1}' | \
+    sed 's/\/\/.*//g' | \
+    sed '/^#/! s/[[:space:]]\+/ /g' | \
+    sed '/^#/! s/ \?\([{}();,=+-\/\*&|<>!]\) \? /\1/g' | \
+    sed '/^$/d' >> ../output.txt
+  echo -e "\n</$clean_name>\n" >> ../output.txt
+done
+
+sudo apt install clang-format

@@ -76,14 +76,20 @@ const parseBraces = (wikitext, config, accum) => {
         parts[parts.length - 1].push((0, string_1.restore)(text.slice(lastIndex, index), linkStack));
     };
     let replaced;
+    let _dbgPass = 0;
     do {
         if (replaced !== undefined) {
             wikitext = replaced;
+        }
+        _dbgPass++;
+        if (process.env.BRACES_DEBUG) {
+            process.stderr.write(`[JS parseBraces] pre-pass iteration ${_dbgPass}, wikitext=${JSON.stringify(wikitext.slice(0,200))}\n`);
         }
         replaced = wikitext.replace(reReplace, (m, p1, p2) => {
             if (p1 !== undefined || typeof p2 === 'string') {
                 try {
                     const { length } = accum, parts = (p1 ?? p2).split('|');
+                    if (process.env.BRACES_DEBUG) process.stderr.write(`[JS parseBraces] template match: ${JSON.stringify(m.slice(0,80))}, parts[0]=${JSON.stringify(parts[0])}\n`);
                     // @ts-expect-error abstract class
                     new transclude_1.TranscludeToken((0, string_1.restore)(parts[0], linkStack), parts.slice(1).map(part => {
                         const i = part.indexOf('=');
@@ -99,11 +105,14 @@ const parseBraces = (wikitext, config, accum) => {
                     }
                 }
             }
+            if (process.env.BRACES_DEBUG) process.stderr.write(`[JS parseBraces] linkStack push: ${JSON.stringify(m.slice(0,80))}\n`);
             linkStack.push((0, string_1.restore)(m, linkStack));
             return `\0${linkStack.length - 1}\x7F`;
         });
+        if (process.env.BRACES_DEBUG) process.stderr.write(`[JS parseBraces] post-pass ${_dbgPass}: replaced=${JSON.stringify(replaced.slice(0,200))}\n`);
     } while (replaced !== wikitext);
     wikitext = replaced;
+    if (process.env.BRACES_DEBUG) process.stderr.write(`[JS parseBraces] entering state machine: ${JSON.stringify(wikitext.slice(0,200))}, linkStack.length=${linkStack.length}\n`);
     const lastBraces = wikitext.lastIndexOf('}}') - wikitext.length;
     let moreBraces = lastBraces + wikitext.length !== -1;
     // eslint-disable-next-line @typescript-eslint/no-unused-expressions
