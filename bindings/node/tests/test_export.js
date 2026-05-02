@@ -140,7 +140,7 @@ async function main(argv) {
       console.info(`Saved failing sample to ${savePath2}`);
       console.info(`The files have been copied.  Please run the below commands
 cd ${path.dirname(__filename)}
-node test_pipeline.js`);
+node test_wikitext.js`);
       process.exit(2);
     }
 
