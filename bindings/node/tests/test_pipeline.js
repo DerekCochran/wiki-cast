@@ -6,116 +6,45 @@ const { runTests } = require('./helpers');
 
 // This should loop through each test and fast fail on the first mismatch.
 const tests = [
+  `{{chset-cell1 | 124 U+007C: VERTICAL LINE | [[Vertical bar|{{pipe}}]] | style=background:#ffb2b2}}`,
   `{{chset-cell1 | 61 U+003D: EQUALS SIGN | [[=]] }}`,
   `
   | {{chset-cell1 | 123 U+007B: LEFT CURLY BRACKET | [[Left curly bracket|{]] | style=background:#ffffb2}}`,
-
-  // Simple prose – no special markup
   'This is a paragraph of plain text.',
-
-  // Redirect with comment
   '#REDIRECT [[Target]] <!-- a comment -->',
-
-  // Template with link inside argument
   '{{Template|[[Page|label]]}}',
-
-  // Section heading with template
   '== {{PAGENAME}} ==\nContent.',
-
-  // Table with a link in a cell
   '{|\n| [[Page|link]] || plain\n|}',
-
   '{|\n| alias = ISO-IR-006,<ref>reftext</ref> ANSI_X3.4-1968\n|}',
-
-  // Table cell link text spanning inline HTML must remain one link
   '{|\n! Modern [[State of matter|state<br />of matter]]\n|}',
-
-  // Nested templates
   '{{Outer|{{Inner|arg}}}}',
-
-  // Bold and italic with internal link
   "'''bold''' and ''[[Page|italic link]]''",
-
-  // External link next to internal link
   '[[Page]] and [http://example.com external].',
-
-  // Magic links alongside internal markup
   "See RFC 2119, [[Specification]] and http://example.com.",
-
-  // List with templates
   '* {{Template}}\n* plain item\n* [[Page]]',
-
-  // HR separating sections
   "== Before ==\n\n----\n\n== After ==",
-
-  // Heading title should parse inline links
   '== Relationship to surface [[bulk density]] ==',
-
-  // Double-underscore with surrounding text
   'Before __NOTOC__ after.',
-
-  // Comment inside a template
   '{{Template|<!-- comment -->value}}',
-
-  // Extension tag that disables parsing inside
   '<nowiki>[[not a link]] {{not a template}}</nowiki>',
-
-  // Reference in running text
   'Claim.<ref>{{Citation|title=Foo|year=2020}}</ref> More text.',
-
-  // Ref inner content with quotes and inline HTML should preserve html tokens
   "A<ref>''x'' efficacy is > <sub>2</sub>; ''y'' is > <sub>2</sub>.</ref>B",
-
-  // Direct comments inside ref inner text should become comment tokens
   'A<ref>alpha<!--c--></ref>B',
-
-  // Comment inside template parameter-value nested in ref should stay tokenized
   'A<ref>{{Citation|access-date= 29 June 2011<!--Added by DASHBot-->}}</ref>B',
-
-  // Multiline quotes in parameter-value must be parsed per-line
   "{{T|v='''a\n''b'''}}",
-
-  // Wikitext repro (An American in Paris): apostrophes inside <score> must stay raw text
   '<score raw=1 sound=1>\\relative c\'\' { x }</score>',
-
-  // List syntax inside ref ext-inner should be parsed through stage 9
   '<ref>\n* a\n* b\n</ref>',
-
-  // ref nested in poem inside template parameter-value: italics inside ref
-  // ext-inner must still be tokenized as quote tokens
   "{{Blockquote|<poem><ref>x ''L'Etoile'' (as in ''H'')</ref></poem>}}",
-
-  // HTML tags inside template parameter-value should be tokenized inline
   '{{Citation|title=Effect of land albedo, CO<sub>2</sub>, orography}}',
-
-  // Refn-style template argument with links and quotes in parameter value
   "{{Refn|In ''Anarchism: From Theory to Practice'' (1970), historian [[Daniel Guérin]] describes [[libertarian socialism]].|group=nb}}",
-
-  // Minimized repro from Anarchy.wikitext: nested templates plus links/quotes in Refn value
   "{{Refn|In ''Anarchism: From Theory to Practice'' (1970),{{Sfn|Guérin|1970|p=12}} anarchist historian [[Daniel Guérin]] described it as a synonym for [[libertarian socialism]], and wrote that anarchism \"is really a synonym for socialism.\"{{Sfn|Arvidsson|2017}} In his many works on anarchism, historian [[Noam Chomsky]] describes anarchism, alongside [[libertarian Marxism]], as the [[libertarian]] wing of [[socialism]].{{Sfn|Otero|1994|p=617}}|group=nb}}",
-
-  // Complex article excerpt
   "'''Title''' (born [[1970]]) is a [[person]].\n\n== Career ==\n* [[Job A]]\n* [[Job B]]\n\n== References ==\n<references/>",
-
-  // Export repro: title normalization should map [[ẚ]] to link name Aʾ (JS behavior)
   '[[ẚ]]',
-
-  // Export repro: list markers inside template parameter values should tokenize
   "{{Wikisource-inline|list=\n** \"[[s:A Dictionary of the English Language/A|A]]\" in ''[[s:A Dictionary of the English Language|A Dictionary of the English Language]]'' by [[Samuel Johnson]]\n}}",
-
-  // Wikitext repro: gallery caption containing multiple wikilinks must preserve inline spacing
   '<gallery>\nFile:Achilles departure Eretria Painter CdM Paris 851.jpg|Achilles and the [[Nereid]] Cymothoe, Attic [[red-figure]] [[kantharos]] from [[Volci]] ([[Cabinet des Médailles]], Bibliothèque nationale, Paris)\n</gallery>',
-
-  // Wikitext repro (trimmed): multi-line gallery should keep each image as gallery-image token
   '<gallery>\nFile:Achilles departure Eretria Painter CdM Paris 851.jpg|Achilles and the [[Nereid]] Cymothoe\nFile:Akhilleus embassy Staatliche Antikensammlungen 8770.jpg|The embassy to Achilles, Attic red-figure [[hydria]]\n</gallery>',
-
-  // Wikitext repro: parser-function style magic word with ':' should not become template
   '(${{formatnum:{{Inflation|US|800|1861|r=-2}}}} in current dollars)',
-
-  // Wikitext repro: imagemap should produce imagemap-image / imagemap-link structure
   '<imagemap>\nFile:Emancipation proclamation.jpg|thumb|upright=1.25|\'\'[[First Reading of the Emancipation Proclamation of President Lincoln]]\'\'|alt=A dark-haired, bearded, middle-aged man holding documents is seated among seven other men.\npoly 269 892 254 775 193 738 [[Edwin M. Stanton|Edwin Stanton]]\n</imagemap>',
-
-  // BEGIN: auto-generated post-processing parity failures (234 cases)
   "<ref>https://example.org/a</ref>",
   "<ref>RFC 2119</ref>",
   "<ref>----</ref>",
@@ -351,12 +280,8 @@ const tests = [
   "{|\n| {{T|x=y}} ; RFC 2119\n|}",
   "{|\n| {{T|x=y}} ; __NOTOC__\n|}",
   "{|\n| {{T|x=y}} ; -{zh-hans:简;zh-hant:繁;}-\n|}",
-
-  // Image: namespace (alias for File:) with nested link in caption
   '[[Image:Foo.jpg|caption [[Link]] text]]',
   '[[Image:Foo.jpg|upright|caption [[Link]] text]]',
-
-  // END: auto-generated post-processing parity failures
 ];
 
 for (const test of tests) {
