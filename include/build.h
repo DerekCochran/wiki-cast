@@ -38,3 +38,4 @@ void build_from_str(Token *parent, const char *str, size_t str_len,
 
 /* Expand sentinels recursively for a token subtree created after build(). */
 void build_token_recursive(Token *t, Accum *accum);
+void propagate_table_subtypes(Token *t);

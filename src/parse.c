@@ -1274,6 +1274,11 @@ Token *wiki_parse(const char *wikitext, const ParserConfig *cfg,
 	/* ── build phase 2: recursively expand remaining sentinels ───────────── */
 	build_token_recursive(root, &accum);
 
+	/* JS parity: AttributesToken.afterBuild() sets table-attrs name to the
+     * cell subtype (td/th/caption), including sibling inheritance for inline
+     * continuation cells (||/!!). Must run AFTER full build. */
+	propagate_table_subtypes(root);
+
 	/* JS parity for nested plain regions that still contain parseable syntax. */
 	postprocess_nested_plain(root, cfg, &accum);
 	postprocess_root_braces_fallback(root, cfg, &accum);

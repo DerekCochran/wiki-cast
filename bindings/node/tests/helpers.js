@@ -116,7 +116,7 @@ function analyzeAstDiff(expected, got, name = 'sample' ) {
   const getTopLevelAncestor = (node) => {
     if (!node) return node;
     let cur = node;
-    let startLevel = 0;
+    let startLevel = 2;
     while (cur.parent && startLevel >= 0) {
       cur = cur.parent;
       startLevel--;

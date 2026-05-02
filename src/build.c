@@ -102,6 +102,12 @@ static void append_key_token_repr(const Token *t, char **buf, size_t *len, size_
 		if(c->is_text) {
 			sb_append(buf, len, cap, c->text, c->text_len);
 		} else {
+			/* JS parity: removeComment() strips sentinels [cn] before normalizeTitle.
+			 * After build(), those sentinels are expanded to real token children, so
+			 * we skip comment/noinclude/double-underscore tokens here to match JS. */
+			TokenType tt= c->token ? c->token->type : TOKEN_TEXT;
+			if(tt == TOKEN_COMMENT || tt == TOKEN_NOINCLUDE ||
+			   tt == TOKEN_INCLUDE || tt == TOKEN_DOUBLE_UNDERSCORE) continue;
 			append_key_token_repr(c->token, buf, len, cap);
 		}
 	}
@@ -365,6 +371,68 @@ void build_token_recursive(Token *t, Accum *accum) {
 	refresh_template_name(t);
 }
 
+/* Get the syntax last-character and independence flag from a TOKEN_TD.
+ * "Independence" means the syntax starts with \n (a new-line cell, not inline). */
+static char td_syntax_last_char(const Token *td, bool *is_independent) {
+	if(is_independent) *is_independent= false;
+	if(!td || td->child_count == 0) return '|';
+	const Child *sc0= &td->children[0]; /* syntax child */
+	const Token *syn= sc0->is_text ? NULL : sc0->token;
+	if(!syn || syn->child_count == 0) return '|';
+	const Child *stc= &syn->children[0]; /* text child of syntax */
+	if(!stc->is_text || !stc->text || stc->text_len == 0) return '|';
+	if(is_independent) *is_independent= (stc->text[0] == '\n');
+	return stc->text[stc->text_len - 1];
+}
+
+static void set_td_attrs_name(Token *td, const char *name) {
+	if(!td || td->child_count < 2) return;
+	Child *ac= &td->children[1];
+	if(ac->is_text || !ac->token || ac->token->type != TOKEN_ATTRIBUTES) return;
+	free(ac->token->name);
+	ac->token->name= strdup(name);
+}
+
+/* JS parity: AttributesToken.afterBuild() calls parentNode.subtype for 'td'
+ * tokens, where subtype is computed by TdToken.#getSyntax() which implements
+ * sibling-inheritance: a non-independent cell (||/!!) inherits the subtype of
+ * its previous sibling.  This function applies that logic to all TD children
+ * of a container (TABLE/TR/ROOT/etc.) and recurses into children. */
+void propagate_table_subtypes(Token *t) {
+	if(!t) return;
+
+	/* Process this token's TD children with sibling inheritance */
+	const char *running= "td";
+	for(size_t k= 0; k < t->child_count; k++) {
+		const Child *c= &t->children[k];
+		if(c->is_text || !c->token || c->token->type != TOKEN_TD) continue;
+		Token *td= c->token;
+
+		bool independent;
+		char last= td_syntax_last_char(td, &independent);
+		const char *own_subtype=
+			(last == '!') ? "th" : (last == '+') ? "caption" : "td";
+
+		if(independent) {
+			/* Independent cell: own syntax determines subtype; reset running */
+			running= own_subtype;
+		} else {
+			/* Non-independent (||/!!): inherit running unless own type forces 'th' */
+			if(own_subtype[0] == 't' && own_subtype[1] == 'h') running= "th";
+			/* else: running stays (inherit) */
+		}
+		set_td_attrs_name(td, running);
+	}
+
+	/* Recurse into all non-text children (including TR, TABLE, etc.) */
+	for(size_t k= 0; k < t->child_count; k++) {
+		const Child *c= &t->children[k];
+		if(!c->is_text && c->token) {
+			propagate_table_subtypes(c->token);
+		}
+	}
+}
+
 void build(Token *root, const ThreadBuf *tb, Accum *accum) {
 	/* Step 1: Expand the root's working string (which has embedded \0 sentinels). */
 	build_from_str(root, tb->buf, tb->len, accum);
@@ -377,4 +445,10 @@ void build(Token *root, const ThreadBuf *tb, Accum *accum) {
 		if(!t || t == root) continue;
 		build_token_recursive(t, accum);
 	}
+
+	/* Step 3: JS AttributesToken.afterBuild() parity — propagate TD subtype
+     * ('th'/'td'/'caption') to each table-attrs token. This must run AFTER
+     * the full accum loop so that syntax tokens are fully expanded and sibling
+     * context is stable. */
+	propagate_table_subtypes(root);
 }

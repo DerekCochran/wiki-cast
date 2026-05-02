@@ -201,8 +201,10 @@ static void parse_table_attrs(Token *attrs_tok, const char *attr_str, size_t att
 
 static const char *cell_attr_name(const char *syntax, size_t syntax_len) {
 	char last= syntax_len > 0 ? syntax[syntax_len - 1] : '|';
-	if(last == '!') return "th";
-	if(last == '+') return "caption";
+	/* JS parity: TdToken constructor hardcodes 'td' as the AttributesToken element
+	 * type regardless of whether the cell uses ! (header) or | syntax. The subtype
+	 * (th/td/caption) is computed dynamically; the attrs token name is always "td". */
+	(void)last;
 	return "td";
 }
 
