@@ -166,7 +166,9 @@ function analyzeAstDiff(expected, got, name = 'sample' ) {
     lines.push(`expected.type: ${found.ta}`);
     lines.push(`got.type: ${found.tb}`);
     if( found.ap && found.bp) {
-      console.log('Possible string to add to the test_pipeline.js:'+ `\`${found.ap.toString()}\`,\n`);
+      if( name != 'pipeline') {
+        console.log('Possible string to add to the test_pipeline.js:'+ `\`${found.ap.toString()}\`,\n`);
+      }
       lines.push(`expected.parent.String: ${found.ap.toString()}`);
       lines.push(`expected.parent.Json: ${JSON.stringify(found.ap)}`);
       if( name == 'wikitext') {
@@ -192,7 +194,9 @@ node test_pipeline.js`);
     lines.push(`expected.name: ${found.na}`);
     lines.push(`got.name: ${found.nb}`);
     if( found.ap && found.bp) {
-      console.log('Possible string to add to the test_pipeline.js:'+ `\`${found.ap.toString()}\`,\n`);
+      if( name != 'pipeline') {
+        console.log('Possible string to add to the test_pipeline.js:'+ `\`${found.ap.toString()}\`,\n`);
+      }
       lines.push(`expected.parent.String: ${found.ap.toString()}`);
       lines.push(`expected.parent.Json: ${JSON.stringify(found.ap)}`);
       if( name == 'wikitext') {
@@ -218,7 +222,9 @@ node test_pipeline.js`);
     lines.push(`expected.text.hex: ${Buffer.from(found.da).toString('hex')}`);
     lines.push(`got.text.hex: ${Buffer.from(found.db).toString('hex')}`);
     if( found.ap && found.bp) {
-      console.log('Possible string to add to the test_pipeline.js:'+ `\`${found.ap.toString()}\`,\n`);
+      if( name != 'pipeline') {
+        console.log('Possible string to add to the test_pipeline.js:'+ `\`${found.ap.toString()}\`,\n`);
+      }
       lines.push(`expected.parent.String: ${found.ap.toString()}`);
       lines.push(`expected.parent.Json: ${JSON.stringify(found.ap)}`);
       if( name == 'wikitext') {
@@ -246,7 +252,9 @@ node test_pipeline.js`);
     lines.push(`expected.Json: ${JSON.stringify(found.a)}`);
     lines.push(`got.Json: ${JSON.stringify(found.b)}`);
     if( found.ap && found.bp) {
-      console.log('Possible string to add to the test_pipeline.js:'+ `\`${found.ap.toString()}\`,\n`);
+      if( name != 'pipeline') {
+        console.log('Possible string to add to the test_pipeline.js:'+ `\`${found.ap.toString()}\`,\n`);
+      }
       lines.push(`expected.parent.String: ${found.ap.toString()}`);
       lines.push(`expected.parent.Json: ${JSON.stringify(found.ap)}`);
       if( name == 'wikitext') {
