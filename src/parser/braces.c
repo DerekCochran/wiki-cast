@@ -240,9 +240,15 @@ static const char *parser_function_canonical(const ParserConfig *cfg, const char
 }
 
 /* Build a JS-shaped transclude/arg token and push to accum. */
+/* part_is_named[k]: if non-NULL, overrides memchr-based named-param detection.
+ * NULL means use memchr for all parts (state-machine call site where parts are
+ * already correctly split).  build_from_inner passes a pre-computed array based
+ * on whether '=' appeared in the raw (pre-restore) part — JS parity for
+ * part.indexOf('=') being called before restore(). */
 static Token *build_template_token(const char **parts_restored, const size_t *parts_lens,
                                     size_t parts_count,
-                                    bool is_arg, const ParserConfig *cfg, Accum *accum)
+                                    bool is_arg, const ParserConfig *cfg, Accum *accum,
+                                    const bool *part_is_named)
 {
     Token *t = token_new(is_arg ? TOKEN_ARG : TOKEN_TRANSCLUDE,
                          is_arg ? "arg" : "template");
@@ -458,7 +464,12 @@ static Token *build_template_token(const char **parts_restored, const size_t *pa
 
         const char *part = parts_restored[k];
         size_t part_len = parts_lens[k];
-        const char *eq = memchr(part, '=', part_len);
+        /* JS parity: use pre-determined named/positional flag when available.
+         * part_is_named[k]==false means the raw part had no '=', so even if
+         * the restored text contains '=' (e.g. from [[=]]), it is positional. */
+        const char *eq = (part_is_named && !part_is_named[k])
+                         ? NULL
+                         : memchr(part, '=', part_len);
 
         Token *param = token_new(TOKEN_PARAMETER, "parameter");
         if (!param) continue;
@@ -519,17 +530,69 @@ static Token *build_from_inner(const char *inner, size_t inner_len,
     size_t *plens = malloc(part_cap * sizeof(size_t));
     assert(parts && plens);
 
+    /* JS parity: indexOf('=') on raw (pre-restore) part. Track per-part. */
+    bool *parts_named = NULL;
+    size_t parts_named_cap = 8;
+    parts_named = malloc(parts_named_cap * sizeof(bool));
+    assert(parts_named);
+
     size_t si = 0;
     do {
         size_t j = si;
         while (j < inner_len && inner[j] != '|') j++;
         size_t plen = j - si;
-        char *tmp = malloc(plen + 1);
-        memcpy(tmp, inner + si, plen);
-        tmp[plen] = '\0';
+        const char *raw = inner + si;
+
+        char *restored;
         size_t restored_len = 0;
-        char *restored = str_restore(tmp, plen, (const char **)link_stack, link_count, link_stack_lens, &restored_len);
-        free(tmp);
+        bool is_named = false;
+
+        if (part_count > 0) {
+            /* JS parity: part.indexOf('=') on the raw (sentinel-containing) part
+             * before restore() so '=' inside [[=]] sentinels is never detected
+             * as a named-parameter separator. */
+            const char *eq_in_raw = memchr(raw, '=', plen);
+            if (eq_in_raw) {
+                is_named = true;
+                /* Named param: restore key and value separately, join with '=' */
+                size_t key_raw_len = (size_t)(eq_in_raw - raw);
+                size_t val_raw_len = plen - key_raw_len - 1;
+                size_t key_len = 0, val_len = 0;
+                char *key = str_restore(raw, key_raw_len,
+                                        (const char **)link_stack, link_count, link_stack_lens, &key_len);
+                char *val = str_restore(eq_in_raw + 1, val_raw_len,
+                                        (const char **)link_stack, link_count, link_stack_lens, &val_len);
+                restored_len = key_len + 1 + val_len;
+                restored = malloc(restored_len + 1);
+                assert(restored);
+                memcpy(restored, key, key_len);
+                restored[key_len] = '=';
+                memcpy(restored + key_len + 1, val, val_len);
+                restored[restored_len] = '\0';
+                free(key);
+                free(val);
+            } else {
+                char *tmp = malloc(plen + 1);
+                memcpy(tmp, raw, plen);
+                tmp[plen] = '\0';
+                restored = str_restore(tmp, plen, (const char **)link_stack, link_count, link_stack_lens, &restored_len);
+                free(tmp);
+            }
+        } else {
+            char *tmp = malloc(plen + 1);
+            memcpy(tmp, raw, plen);
+            tmp[plen] = '\0';
+            restored = str_restore(tmp, plen, (const char **)link_stack, link_count, link_stack_lens, &restored_len);
+            free(tmp);
+        }
+
+        if (part_count >= parts_named_cap) {
+            parts_named_cap *= 2;
+            parts_named = realloc(parts_named, parts_named_cap * sizeof(bool));
+            assert(parts_named);
+        }
+        parts_named[part_count] = is_named;
+
         if (part_count >= part_cap) {
             part_cap *= 2;
             parts = realloc(parts, part_cap * sizeof(char *));
@@ -543,7 +606,8 @@ static Token *build_from_inner(const char *inner, size_t inner_len,
         si = j + 1;
     } while (1);
 
-    Token *tok = build_template_token((const char **)parts, plens, part_count, is_arg, cfg, accum);
+    Token *tok = build_template_token((const char **)parts, plens, part_count, is_arg, cfg, accum, parts_named);
+    free(parts_named);
     for (size_t p = 0; p < part_count; p++) free(parts[p]);
     free(parts);
     free(plens);
@@ -918,7 +982,7 @@ static bool braces_state_machine(ThreadBuf *tb, const ParserConfig *cfg,
                         inner = NULL;
                         inner_len = 0;
                     }
-                    Token *tok = build_template_token((const char **)top.parts.items, top.parts.lens, top.parts.count, top.open_len == 3, cfg, accum);
+                    Token *tok = build_template_token((const char **)top.parts.items, top.parts.lens, top.parts.count, top.open_len == 3, cfg, accum, NULL);
                     if (tok) {
                         size_t tok_idx = accum->count - 1;
                         char sent[64]; size_t slen;
