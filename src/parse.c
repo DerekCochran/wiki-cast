@@ -1292,14 +1292,29 @@ Token *wiki_parse(const char *wikitext, const ParserConfig *cfg,
             }
     }
 
-    /* ── build(): expand sentinel markers into the tree ─────────────────── */
-    build(root, ws, &accum);
+    /* ── build phase 1: expand root-level sentinels into the tree ───────── */
+    build_from_str(root, ws->buf, ws->len, &accum);
+
+    /* JS parity: run inline stages (parse_links etc.) on parameter-value raw
+     * text BEFORE build_token_recursive expands sub-token sentinels.
+     * In JS, parseOnce(stage) is called on every accum token while each
+     * parameter-value still has its single raw text child containing embedded
+     * sentinels (e.g. \0Nt\x7F for a nested template).  parse_links can then
+     * see the full "[[Target|sentinel]]" as an unbroken string and produce the
+     * correct link token.  If we wait until after build_token_recursive the
+     * sentinel has already been replaced by a real token child, splitting the
+     * text that parse_links needs to match. */
+    postprocess_parameter_value_inline(root, cfg, &accum);
+
+    /* ── build phase 2: recursively expand remaining sentinels ───────────── */
+    build_token_recursive(root, &accum);
 
     /* JS parity for nested plain regions that still contain parseable syntax. */
     postprocess_nested_plain(root, cfg, &accum);
     postprocess_root_braces_fallback(root, cfg, &accum);
 
-    /* JS parity: inline parsing can appear inside parameter-value subtrees. */
+    /* JS parity: run inline stages again for any new text children created
+     * during build_token_recursive (e.g. ext-inner content). */
     postprocess_parameter_value_inline(root, cfg, &accum);
 
     /* ── Debug: log the final token tree as JSON ─────────────────────────── */

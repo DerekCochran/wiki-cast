@@ -172,6 +172,59 @@ static Token *make_table_attr(const char *key, size_t key_len,
     return t;
 }
 
+/**
+ * JS parity: key validity check matching
+ * /^(?:[\w:]|\0\d+t\x7F)(?:[\w:.-]|\0\d+t\x7F)*$/u
+ * A template sentinel \0<digits>t\x7F is valid as key start or continuation.
+ * Any other non-[\w:.-] character makes the key invalid.
+ */
+static bool is_valid_attr_key(const char *k, size_t klen)
+{
+    size_t i = 0;
+    if (i >= klen) return false;
+
+    /* first character: [\w:] or \0\d+t\x7F */
+    if ((unsigned char)k[i] == 0x00) {
+        /* template sentinel */
+        i++;
+        if (i >= klen) return false;
+        if (k[i] < '0' || k[i] > '9') return false;
+        while (i < klen && k[i] >= '0' && k[i] <= '9') i++;
+        if (i >= klen || k[i] != 't') return false;
+        i++;
+        if (i >= klen || (unsigned char)k[i] != 0x7F) return false;
+        i++;
+    } else {
+        unsigned char c = (unsigned char)k[i];
+        if (!((c >= 'A' && c <= 'Z') || (c >= 'a' && c <= 'z') ||
+              (c >= '0' && c <= '9') || c == '_' || c == ':'))
+            return false;
+        i++;
+    }
+
+    /* continuation: [\w:.-] or \0\d+t\x7F */
+    while (i < klen) {
+        if ((unsigned char)k[i] == 0x00) {
+            i++;
+            if (i >= klen) return false;
+            if (k[i] < '0' || k[i] > '9') return false;
+            while (i < klen && k[i] >= '0' && k[i] <= '9') i++;
+            if (i >= klen || k[i] != 't') return false;
+            i++;
+            if (i >= klen || (unsigned char)k[i] != 0x7F) return false;
+            i++;
+        } else {
+            unsigned char c = (unsigned char)k[i];
+            if (!((c >= 'A' && c <= 'Z') || (c >= 'a' && c <= 'z') ||
+                  (c >= '0' && c <= '9') || c == '_' || c == ':' ||
+                  c == '.' || c == '-'))
+                return false;
+            i++;
+        }
+    }
+    return true;
+}
+
 static void parse_table_attrs(Token *attrs_tok, const char *attr_str, size_t attr_len, Accum *accum)
 {
     if (!attr_str || attr_len == 0) return;
@@ -194,6 +247,14 @@ static void parse_table_attrs(Token *attrs_tok, const char *attr_str, size_t att
                 || (klen >= 2 && k[0] == '{' && k[1] == '{')
                 || (klen >= 2 && k[0] == '-' && k[1] == '{');
             if (dynamic_key) {
+                /* JS parity: only create table-attr for keys that pass the JS
+                 * validity test /^(?:[\w:]|\0\d+t\x7F)(?:[\w:.-]|\0\d+t\x7F)*$/u.
+                 * Anything else (e.g. "\01t\x7F|}") becomes table-attr-dirty. */
+                if (!is_valid_attr_key(k, klen)) {
+                    Token *d = make_table_attr_dirty(attr_str, attr_len, accum);
+                    if (d) token_append_child(attrs_tok, d);
+                    return;
+                }
                 if (first > 0) {
                     Token *d0 = make_table_attr_dirty(attr_str, first, accum);
                     if (d0) token_append_child(attrs_tok, d0);
@@ -250,7 +311,7 @@ static void parse_table_attrs(Token *attrs_tok, const char *attr_str, size_t att
             bool dynamic_key = memchr(key, '\0', key_len) != NULL
                 || (key_len >= 2 && key[0] == '{' && key[1] == '{')
                 || (key_len >= 2 && key[0] == '-' && key[1] == '{');
-            if (!dynamic_key) {
+            if (!dynamic_key || !is_valid_attr_key(key, key_len)) {
                 for (size_t k = 0; k < key_len; k++) dirty_buf[dirty_len++] = key[k];
                 continue;
             }
@@ -404,7 +465,26 @@ static void push_text_like_js(char **out_buf, size_t *out_len, size_t *out_cap,
     if (top->child_count > 0) {
         Child *last = &top->children[top->child_count - 1];
         if (!last->is_text && last->token) {
-            token_append_text_n(last->token, s, n);
+            /* JS parity: lastChild.setText(lastChild.toString() + str)
+             * This means we must concatenate into the last text child of
+             * last->token, not add a new one. */
+            Token *inner = last->token;
+            if (inner->child_count > 0) {
+                Child *inner_last = &inner->children[inner->child_count - 1];
+                if (inner_last->is_text) {
+                    size_t new_len = inner_last->text_len + n;
+                    char *merged = malloc(new_len + 1);
+                    assert(merged);
+                    memcpy(merged, inner_last->text, inner_last->text_len);
+                    memcpy(merged + inner_last->text_len, s, n);
+                    merged[new_len] = '\0';
+                    free(inner_last->text);
+                    inner_last->text = merged;
+                    inner_last->text_len = new_len;
+                    return;
+                }
+            }
+            token_append_text_n(inner, s, n);
             return;
         }
     }

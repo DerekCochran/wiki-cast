@@ -5,11 +5,16 @@
 const { runTests } = require('./helpers');
 
 // This should loop through each test and fast fail on the first mismatch.
+
 const tests = [
+  `{|{{chset-table-header1|ASCII (1977/1986)}}| {{chset-cell1 | 124 U+007C: VERTICAL LINE | [[Vertical bar|{{pipe}}]] | style=background:#ffb2b2}}|}`,
+  `{|{{chset-table-header1|ASCII (1977/1986)}}
+  | 
+  }`,
+  `{|{{chset-table-header1|ASCII (1977/1986)}}|}`,
   `{{chset-cell1 | 124 U+007C: VERTICAL LINE | [[Vertical bar|{{pipe}}]] | style=background:#ffb2b2}}`,
   `{{chset-cell1 | 61 U+003D: EQUALS SIGN | [[=]] }}`,
-  `
-  | {{chset-cell1 | 123 U+007B: LEFT CURLY BRACKET | [[Left curly bracket|{]] | style=background:#ffffb2}}`,
+  `| {{chset-cell1 | 123 U+007B: LEFT CURLY BRACKET | [[Left curly bracket|{]] | style=background:#ffffb2}}`,
   'This is a paragraph of plain text.',
   '#REDIRECT [[Target]] <!-- a comment -->',
   '{{Template|[[Page|label]]}}',

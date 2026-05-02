@@ -25,6 +25,7 @@
 #include "token.h"
 #include "accum.h"
 #include "string_util.h"
+#include "title.h"
 #include "log.h"
 #include <stdlib.h>
 #include <string.h>
@@ -100,6 +101,65 @@ static void append_key_token_repr(const Token *t, char **buf, size_t *len, size_
         } else {
             append_key_token_repr(c->token, buf, len, cap);
         }
+    }
+}
+
+/* JS parity: TranscludeToken.afterBuild() sets the normalized template name.
+ * In JS this happens after build() completes, so the name is absent from
+ * stage-log snapshots captured during parseBraces (Stage 1). */
+static void refresh_template_name(Token *t)
+{
+    if (!t || t->type != TOKEN_TRANSCLUDE) return;
+    if (!t->type_name || strcmp(t->type_name, "template") != 0) return;
+    if (t->child_count == 0) return;
+
+    /* Child 0 is the template-name atom token */
+    const Child *c = &t->children[0];
+    if (c->is_text || !c->token) return;
+
+    /* Concatenate the text content of the template-name token */
+    size_t cap = 64, len = 0;
+    char *text = malloc(cap);
+    assert(text);
+    text[0] = '\0';
+    append_key_token_repr(c->token, &text, &len, &cap);
+    if (len == 0) { free(text); return; }
+
+    /* JS parity: trimLc() is applied before normalizeTitle, so strip all
+     * leading/trailing whitespace (including \n) from the raw name text. */
+    while (len > 0 && (text[len-1] == ' ' || text[len-1] == '\t' ||
+                       text[len-1] == '\n' || text[len-1] == '\r' ||
+                       text[len-1] == '\f' || text[len-1] == '\v')) len--;
+    size_t skip = 0;
+    while (skip < len && (text[skip] == ' ' || text[skip] == '\t' ||
+                          text[skip] == '\n' || text[skip] == '\r' ||
+                          text[skip] == '\f' || text[skip] == '\v')) skip++;
+    if (skip) { memmove(text, text + skip, len - skip); len -= skip; }
+    text[len] = '\0';
+    if (len == 0) { free(text); return; }
+
+    char *norm = title_normalize(text, len);
+    free(text);
+    if (!norm || !norm[0]) { free(norm); return; }
+    const char *norm_name = norm;
+    if (norm_name[0] == ':') norm_name++;
+    size_t nn = strlen(norm_name);
+
+    char *name;
+    if (strchr(norm_name, ':')) {
+        name = strdup(norm_name);
+    } else {
+        name = malloc(nn + 10);
+        if (name) {
+            memcpy(name, "Template:", 9);
+            memcpy(name + 9, norm_name, nn + 1);
+        }
+    }
+    free(norm);
+
+    if (name) {
+        free(t->name);
+        t->name = name;
     }
 }
 
@@ -288,6 +348,10 @@ void build_token_recursive(Token *t, Accum *accum)
      * so keys that were sentinel-expanded (for example {{green}}) get the
      * correct final attribute name. */
     refresh_attribute_name(t);
+
+    /* JS TranscludeToken.afterBuild parity: template name is set after build,
+     * not during parseBraces, so it is absent from stage-log snapshots. */
+    refresh_template_name(t);
 }
 
 void build(Token *root, const ThreadBuf *tb, Accum *accum)

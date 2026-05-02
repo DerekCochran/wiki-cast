@@ -377,28 +377,8 @@ static Token *build_template_token(const char **parts_restored, const size_t *pa
                 token_append_child(t, tpl_name);
             }
 
-            char *trimmed_name = trim_copy(title_part, p0_len);
-            const char *name_src = trimmed_name ? trimmed_name : title_part;
-            size_t name_len = trimmed_name ? strlen(trimmed_name) : p0_len;
-            char *norm = title_normalize(name_src, name_len);
-            if (norm && norm[0]) {
-                const char *norm_name = norm;
-                if (norm_name[0] == ':') norm_name++;
-
-                size_t nn = strlen(norm_name);
-                if (strchr(norm_name, ':')) {
-                    t->name = strdup(norm_name);
-                } else {
-                    char *full = malloc(nn + 10);
-                    if (full) {
-                        memcpy(full, "Template:", 9);
-                        memcpy(full + 9, norm_name, nn + 1);
-                        t->name = full;
-                    }
-                }
-            }
-            free(trimmed_name);
-            free(norm);
+            /* JS parity: template name is set in afterBuild(), not during parseBraces.
+             * refresh_template_name() in build.c handles this after build(). */
         }
     }
 

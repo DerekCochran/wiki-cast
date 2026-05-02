@@ -1,8 +1,3 @@
-# latest bindings/node parity input
-# timestamp: 2026-04-25T23:22:29.489Z
-# include: false
-# tidy: false
-
 {{Short description|President of the United States from 1861 to 1865}}
 {{Hatnote group|{{Redirect|President Lincoln|the troopship|USS President Lincoln{{!}}USS ''President Lincoln''}}{{Other uses}}}}
 {{Featured article}}
