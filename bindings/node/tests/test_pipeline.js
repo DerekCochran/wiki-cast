@@ -7,6 +7,8 @@ const { runTests } = require('./helpers');
 // This should loop through each test and fast fail on the first mismatch.
 
 const tests = [
+`{{Cite web <!-- Citation bot changes to journal -->|url=https://www.cdc.gov/niosh/docs/2012-108/ |title=NIOSH Pesticide Poisoning Monitoring Program Protects Farmworkers |publisher=[[Centers for Disease Control and Prevention]] |access-date=15 April 2013 |url-status=live |archive-url=https://web.archive.org/web/20130402004253/http://www.cdc.gov/niosh/docs/2012%2D108/ |archive-date=2 April 2013|doi=10.26616/NIOSHPUB2012108 |year=2011 |doi-access=free}}`,
+  `[[File:Andorra - panoramio (2).jpg|thumb|Streets of the city centre of Andorra la Vella in 1986. From 1986 until 1989 Andorra normalised the economic treaties with the [[European Economic Community|EEC]].<ref>{{cite news |date=18 December 1989 |title=La CE concluye un acuerdo de unión aduanera con Andorra |trans-title=The EC concludes a customs union agreement with Andorra |url=https://elpais.com/diario/1989/12/18/economia/629938809_850215.html |newspaper=El País |language=es}}</ref><ref>{{cite news |date=27 September 1986 |title=François Mitterrand alienta las reformas en Andorras |trans-title=François Mitterrand encourages reforms in Andorra |url=https://elpais.com/diario/1986/09/27/internacional/528156020_850215.html |newspaper=El País |language=es}}</ref>|alt=]]`,
   `{|{{chset-table-header1|ASCII (1977/1986)}}| {{chset-cell1 | 124 U+007C: VERTICAL LINE | [[Vertical bar|{{pipe}}]] | style=background:#ffb2b2}}|}`,
   `{|{{chset-table-header1|ASCII (1977/1986)}}
   | 

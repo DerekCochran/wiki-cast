@@ -1260,8 +1260,16 @@ Token *wiki_parse(const char *wikitext, const ParserConfig *cfg,
      * see the full "[[Target|sentinel]]" as an unbroken string and produce the
      * correct link token.  If we wait until after build_token_recursive the
      * sentinel has already been replaced by a real token child, splitting the
-     * text that parse_links needs to match. */
-	postprocess_parameter_value_inline(root, cfg, &accum);
+     * text that parse_links needs to match.
+     * Walk accum directly (JS parity: JS calls parseOnce(n) on every accum
+     * token, not just root-reachable tokens). This ensures we also process
+     * parameter-value tokens embedded inside sentinels of tokens not yet
+     * linked into the root tree (e.g. templates inside table-attr-dirty). */
+	for(size_t _ai= 0; _ai < accum.count; _ai++) {
+		if(accum.tokens[_ai]) {
+			postprocess_parameter_value_inline(accum.tokens[_ai], cfg, &accum);
+		}
+	}
 
 	/* ── build phase 2: recursively expand remaining sentinels ───────────── */
 	build_token_recursive(root, &accum);

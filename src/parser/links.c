@@ -193,6 +193,13 @@ static void append_file_image_params(Token *file_tok,
 							append_fragment_children(param, val);
 							token_free(val);
 						}
+						/* JS parity: ImageParameterToken is always created with the captured
+						 * value string (even empty ""), so it always has at least one text
+						 * child (possibly empty). build() only strips text children that
+						 * contain sentinel markers, so an empty text child persists. */
+						if(param->child_count == 0) {
+							token_append_text_n(param, "", 0);
+						}
 
 						char *syn= build_img_syntax_template(seg_ptr, seg_len,
 																								 lead_ws_len, trail_ws_len,
