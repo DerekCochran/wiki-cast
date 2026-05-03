@@ -752,7 +752,6 @@ static Token *parse_imagemap_image_line_local(const char *line, size_t line_len,
 						}
 						out->children[ins].is_text= false;
 						out->children[ins].token= cap;
-						out->children[ins].text= NULL;
 						out->children[ins].text_len= 0;
 						out->child_count++;
 					} else {
@@ -854,7 +853,14 @@ static Token *build_imagemap_inner_token(const char *inner_str, size_t inner_len
 			if(tok) {
 				token_append_child(t, tok);
 			} else {
-				token_append_text_n(t, line_ptr, line_len);
+				Token *n= token_new(TOKEN_NOINCLUDE, "noinclude");
+				if(n) {
+					token_append_text_n(n, line_ptr, line_len);
+					accum_push(accum, n);
+					token_append_child(t, n);
+				} else {
+					token_append_text_n(t, line_ptr, line_len);
+				}
 			}
 		}
 

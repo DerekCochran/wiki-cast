@@ -244,7 +244,21 @@ static void stage_json_write_token(const Token *t, FILE *fp, const Accum *accum)
 		json_write_escaped_len(t->name, strlen(t->name), fp);
 	}
 
-	if(t->child_count > 0) {
+	bool has_stage_children= false;
+	for(size_t i= 0; i < t->child_count; i++) {
+		const Child *c= &t->children[i];
+		if(c->is_text) {
+			if(c->text_len > 0) {
+				has_stage_children= true;
+				break;
+			}
+		} else {
+			has_stage_children= true;
+			break;
+		}
+	}
+
+	if(has_stage_children) {
 		fputs(",\"childNodes\":[", fp);
 		bool first= true;
 		for(size_t i= 0; i < t->child_count; i++) {
