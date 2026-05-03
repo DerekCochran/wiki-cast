@@ -1107,10 +1107,10 @@ static void postprocess_parameter_value_inline(Token *t, const ParserConfig *cfg
 		}
 	}
 
-	bool is_attr_value= (t->type == TOKEN_ATTR_VALUE);
 	bool is_parameter_value= false;
 	bool is_arg_default= false;
-	
+	bool is_attr_value= (t->type == TOKEN_ATTR_VALUE);
+
 	if(!is_attr_value) {
 		if(t->type != TOKEN_PLAIN || !t->type_name) {
 			return;
@@ -1152,10 +1152,12 @@ static void postprocess_parameter_value_inline(Token *t, const ParserConfig *cfg
 		size_t txt_len= cur.text_len;
 		wiki_thread_buf_set(scratch, txt, txt_len);
 		parse_comment_and_ext(scratch, cfg, accum, false);
-		parse_braces(scratch, cfg, accum);
+		if(!is_attr_value) {
+			parse_braces(scratch, cfg, accum);
+		}
 		parse_html(scratch, cfg, accum);
 		if(is_parameter_value || is_attr_value) {
-			parse_hr_and_double_underscore(scratch, cfg, accum, TOKEN_PLAIN, is_parameter_value ? "parameter-value" : "attr-value");
+			parse_hr_and_double_underscore(scratch, cfg, accum, TOKEN_PLAIN, is_attr_value ? "attr-value" : "parameter-value");
 			bool has_bang_sentinel= mem_has(scratch->buf, scratch->len, "!\x7F");
 			if(!has_bang_sentinel) {
 				parse_links(scratch, cfg, accum, NULL, false);
@@ -1182,7 +1184,8 @@ static void postprocess_parameter_value_inline(Token *t, const ParserConfig *cfg
 
 		free(cur.text);
 
-		Token *tmp= token_new(is_attr_value ? TOKEN_ATTR_VALUE : TOKEN_PLAIN, is_attr_value ? "attr-value" : t->type_name);
+		Token *tmp= token_new(is_attr_value ? TOKEN_ATTR_VALUE : TOKEN_PLAIN,
+			is_attr_value ? "attr-value" : t->type_name);
 		if(!tmp) {
 			if(new_count >= new_cap) {
 				new_cap*= 2;

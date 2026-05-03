@@ -219,6 +219,8 @@ static char *title_compose_resolved(const Title *t, const char *page) {
 	if(base[0] == '/') {
 		size_t page_len= page ? strlen(page) : 0;
 		while(pos > 0 && base[pos - 1] == '/') pos--;
+		/* JS parity: keep a single slash for slash-only targets like "/". */
+		if(pos == 0) pos= 1;
 		char *resolved= malloc(page_len + pos + 1);
 		if(!resolved) {
 			free(base);
