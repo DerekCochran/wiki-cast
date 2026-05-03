@@ -7,6 +7,7 @@ const { runTests } = require('./helpers');
 // This should loop through each test and fast fail on the first mismatch.
 
 const tests = [
+  `[[ζ Arietis]]`,
   `<imagemap>
   File:Actinopterygii.jpg||300px
   rect 0 0 333 232 [[Electrophorus electricus|Electric eel]]
