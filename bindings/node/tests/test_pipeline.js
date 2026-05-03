@@ -7,6 +7,32 @@ const { runTests } = require('./helpers');
 // This should loop through each test and fast fail on the first mismatch.
 
 const tests = [
+  `{| class="wikitable sortable"
+  ! colspan="3" |[[File:Diplomatic_relations_of_Angola.svg|frameless|425x425px]]
+  |-
+  !#
+  !Country
+  !Date
+  |-
+  |174
+  |{{Flag|Bahamas}}
+  |{{dts|26 September 2025}}<ref>{{Cite web |date=26 September 2025 |title=We established diplomatic relations with Angola by signing a memorandum to that effect in New York at the United Nations. |url=https://www.facebook.com/fredmitchellmbm/posts/pfbid02KWQbzWBsS1WiabSQRmZJMMBf9Mv6584W6jaTTufWp341bGqqLNKoFie7wdvqc3JYl |access-date=26 September 2025 |website=Fred Mitchell - Minute By Minute on Facebook}}</ref>
+  |}`,
+  `<gallery mode="packed" caption="Road transport in Angola.">
+  Midd Town Luanda.jpg|Automobiles in [[Luanda]].
+  The Nowhere road.jpg|New highway (2019).
+  </gallery>`,
+  `<references>
+  <ref name="Schopenhauer-2018">{{cite book |author-last=Schopenhauer |author-first=Arthur |date=2018 |title=The World as Will and Representation |orig-date=1844 |volume=2 |place=Cambridge |publisher=Cambridge University Press |doi=10.1017/9780511843112 |isbn=978-0-521-87034-4 |editor-last=Welchman |editor-first=Alistair |editor2-last=Janaway |editor2-first=Christopher |editor3-last=Norman |editor3-first=Judith |author-link1=Arthur Schopenhauer |title-link=The World as Will and Representation}}</ref>
+  </references>`,
+  `
+  | style="text-align:center;"| [[File:Emblem of Qatar-2022.svg|20px|Link=Emblem of Qatar|alt=Emblem]]`,
+  `|<poem style="margin-left:1em;">1911 version<ref>{{cite book |url=https://archive.org/details/americabeautiful00baterich |last=Bates |first=Katharine Lee |date=1911 |title=America the Beautiful and Other Poems |location=New York |publisher=Thomas Y. Crowell Company |pages=3–4 |via=archive.org}}</ref>sea!</poem>|}`,
+  `{{Hatnote group|
+  {{Redirect|Materna||Materna (disambiguation)|and|America the Beautiful (disambiguation)}}
+  {{}}
+  }}
+  `,
   `{| class="wikitable" style="text-align:center"
   ! pentane || 2-methylbutane || 2,2-dimethylpropane
   |}`,

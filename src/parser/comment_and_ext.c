@@ -2,7 +2,10 @@
 #include <pcre2.h>
 
 #include "log.h"
+#include "build.h"
+#include "parser/braces.h"
 #include "parser/comment_and_ext.h"
+#include "parser/links.h"
 #include "string_util.h"
 #include <assert.h>
 #include <ctype.h>
@@ -433,6 +436,216 @@ static Token *build_ext_inner(const char *tag_name,
 	return t;
 }
 
+/* JS parity for ExtToken(name='references') using NestedToken(inner, include, ['ref']):
+ * 1) parseCommentAndExt(inner, includeOnly=false)
+ * 2) parseBraces(inner)
+ * 3) wrap plain text runs between sentinels into NoincludeToken sentinels
+ */
+static Token *build_references_inner_token(const char *inner_str, size_t inner_len,
+																				 const ParserConfig *cfg,
+																				 Accum *accum) {
+	Token *t= token_new(TOKEN_EXT_INNER, "ext-inner");
+	if(!t) return NULL;
+	t->name= strdup("references");
+	accum_push(accum, t);
+
+	if(!inner_str || inner_len == 0) {
+		return t;
+	}
+
+	ThreadBuf tmp;
+	tmp.buf= malloc(inner_len + 1);
+	if(!tmp.buf) return t;
+	memcpy(tmp.buf, inner_str, inner_len);
+	tmp.buf[inner_len]= '\0';
+	tmp.len= inner_len;
+	tmp.cap= inner_len + 1;
+	tmp.shrink_size= (size_t)-1;
+	tmp.target_size= tmp.cap;
+
+	parse_comment_and_ext(&tmp, cfg, accum, false);
+	parse_braces(&tmp, cfg, accum);
+
+	size_t out_cap= tmp.len * 2 + 64;
+	char *out= malloc(out_cap);
+	assert(out);
+	size_t out_len= 0;
+
+#define ENSURE_REF_CAP(need)             \
+	do {                                     \
+		while(out_len + (need) >= out_cap) {    \
+			out_cap*= 2;                            \
+			out= realloc(out, out_cap);             \
+			assert(out);                            \
+		}                                        \
+	} while(0)
+
+	for(size_t i= 0; i < tmp.len;) {
+		if((unsigned char)tmp.buf[i] == '\0') {
+			size_t k= i + 1;
+			while(k < tmp.len && tmp.buf[k] >= '0' && tmp.buf[k] <= '9') k++;
+			if(k > i + 1 && k + 1 < tmp.len && (unsigned char)tmp.buf[k + 1] == '\x7F') {
+				size_t mlen= (k + 2) - i;
+				ENSURE_REF_CAP(mlen + 1);
+				memcpy(out + out_len, tmp.buf + i, mlen);
+				out_len+= mlen;
+				i= k + 2;
+				continue;
+			}
+		}
+
+		size_t j= i;
+		while(j < tmp.len && (unsigned char)tmp.buf[j] != '\0') j++;
+		size_t run_len= j - i;
+		if(run_len > 0) {
+			Token *ni= token_new(TOKEN_NOINCLUDE, "noinclude");
+			if(ni) {
+				token_append_text_n(ni, tmp.buf + i, run_len);
+				accum_push(accum, ni);
+				size_t idx= accum->count - 1;
+				char sent[64];
+				size_t slen;
+				work_str_sentinel(idx, 'n', sent, &slen);
+				ENSURE_REF_CAP(slen + 1);
+				memcpy(out + out_len, sent, slen);
+				out_len+= slen;
+			}
+		}
+		i= j;
+	}
+
+#undef ENSURE_REF_CAP
+
+	build_from_str(t, out, out_len, accum);
+
+	free(out);
+	free(tmp.buf);
+	return t;
+}
+
+static Token *parse_gallery_image_line_local(const char *line, size_t line_len,
+																			const ParserConfig *cfg,
+																			Accum *accum) {
+	if(!line || line_len == 0) return NULL;
+
+	char *wrapped= malloc(line_len + 10);
+	if(!wrapped) return NULL;
+	wrapped[0]= '[';
+	wrapped[1]= '[';
+	memcpy(wrapped + 2, "File:", 5);
+	memcpy(wrapped + 7, line, line_len);
+	wrapped[7 + line_len]= ']';
+	wrapped[8 + line_len]= ']';
+	wrapped[9 + line_len]= '\0';
+
+	ThreadBuf tmp_tb;
+	tmp_tb.buf= wrapped;
+	tmp_tb.len= line_len + 9;
+	tmp_tb.cap= line_len + 10;
+	tmp_tb.shrink_size= (size_t)-1;
+	tmp_tb.target_size= tmp_tb.cap;
+
+	parse_braces(&tmp_tb, cfg, accum);
+	parse_links(&tmp_tb, cfg, accum, NULL, false);
+
+	Token *tmp= token_new(TOKEN_PLAIN, "gallery-line");
+	if(!tmp) {
+		free(tmp_tb.buf);
+		return NULL;
+	}
+	build_from_str(tmp, tmp_tb.buf, tmp_tb.len, accum);
+	build_token_recursive(tmp, accum);
+
+	Token *out= NULL;
+	if(tmp->child_count == 1 && !tmp->children[0].is_text && tmp->children[0].token && tmp->children[0].token->type == TOKEN_FILE) {
+		out= tmp->children[0].token;
+		tmp->children[0].token= NULL;
+		if(out->type_name) free(out->type_name);
+		out->type_name= strdup("gallery-image");
+		if(out->name) {
+			free(out->name);
+			out->name= NULL;
+		}
+		/* JS parity: GalleryImageToken stores raw line file text (without "File:"). */
+		if(out->child_count > 0 && !out->children[0].is_text && out->children[0].token) {
+			Token *target= out->children[0].token;
+			if(target->child_count > 0 && target->children[0].is_text && target->children[0].text && target->children[0].text_len >= 5 && strncasecmp(target->children[0].text, "File:", 5) == 0) {
+				char *old= target->children[0].text;
+				size_t old_len= target->children[0].text_len;
+				size_t new_len= old_len - 5;
+				char *nw= malloc(new_len + 1);
+				if(nw) {
+					memcpy(nw, old + 5, new_len);
+					nw[new_len]= '\0';
+					target->children[0].text= nw;
+					target->children[0].text_len= new_len;
+					free(old);
+				}
+			}
+		}
+		/* JS stage-log parity: link/file names are assigned later in afterBuild(). */
+		for(size_t ci= 0; ci < out->child_count; ci++) {
+			if(out->children[ci].is_text || !out->children[ci].token) continue;
+			Token *child= out->children[ci].token;
+			if((child->type == TOKEN_LINK || child->type == TOKEN_FILE || child->type == TOKEN_CATEGORY) && child->name) {
+				free(child->name);
+				child->name= NULL;
+			}
+			for(size_t cj= 0; cj < child->child_count; cj++) {
+				if(child->children[cj].is_text || !child->children[cj].token) continue;
+				Token *g= child->children[cj].token;
+				if((g->type == TOKEN_LINK || g->type == TOKEN_FILE || g->type == TOKEN_CATEGORY) && g->name) {
+					free(g->name);
+					g->name= NULL;
+				}
+			}
+		}
+	}
+
+	token_free_shallow(tmp);
+	free(tmp_tb.buf);
+	return out;
+}
+
+static Token *build_gallery_inner_token(const char *inner_str, size_t inner_len,
+																			const ParserConfig *cfg,
+																			Accum *accum) {
+	Token *t= token_new(TOKEN_EXT_INNER, "ext-inner");
+	if(!t) return NULL;
+	t->name= strdup("gallery");
+	t->sep= '\n';
+	accum_push(accum, t);
+
+	if(!inner_str || inner_len == 0) return t;
+
+	size_t line_start= 0;
+	for(size_t i= 0; i <= inner_len; i++) {
+		if(i != inner_len && inner_str[i] != '\n') continue;
+		size_t line_len= i - line_start;
+		const char *line_ptr= inner_str + line_start;
+
+		if(line_len == 0) {
+			token_append_text_n(t, "", 0);
+		} else {
+			Token *img= parse_gallery_image_line_local(line_ptr, line_len, cfg, accum);
+			if(img) {
+				token_append_child(t, img);
+			} else {
+				Token *ni= token_new(TOKEN_NOINCLUDE, "noinclude");
+				if(ni) {
+					token_append_text_n(ni, line_ptr, line_len);
+					accum_push(accum, ni);
+					token_append_child(t, ni);
+				}
+			}
+		}
+
+		line_start= i + 1;
+	}
+
+	return t;
+}
+
 /* ── Main token builders ─────────────────────────────────────────────────── */
 
 /**
@@ -475,6 +688,7 @@ static Token *build_ext_token(const char *name, size_t name_len,
 															const char *attr, size_t attr_len,
 															const char *inner, size_t inner_len,
 															bool self_closing,
+																			const ParserConfig *cfg,
 															Accum *accum) {
 	/* Lower-case the tag name */
 	char *lcname= str_trim_lc(name, name_len);
@@ -488,7 +702,14 @@ static Token *build_ext_token(const char *name, size_t name_len,
 
 	/* Build sub-tokens */
 	Token *attrs_tok= build_ext_attrs(lcname, attr, attr_len, accum);
-	Token *inner_tok= build_ext_inner(lcname, inner, inner_len, self_closing, accum);
+	Token *inner_tok= NULL;
+	if(strcmp(lcname, "references") == 0 && !self_closing) {
+		inner_tok= build_references_inner_token(inner, inner_len, cfg, accum);
+	} else if(strcmp(lcname, "gallery") == 0 && !self_closing) {
+		inner_tok= build_gallery_inner_token(inner, inner_len, cfg, accum);
+	} else {
+		inner_tok= build_ext_inner(lcname, inner, inner_len, self_closing, accum);
+	}
 
 	if(!attrs_tok || !inner_tok) {
 		free(lcname);
@@ -988,7 +1209,7 @@ void parse_comment_and_ext(ThreadBuf *tb, const ParserConfig *cfg,
 			size_t ilen= (inner_s < inner_e) ? inner_e - inner_s : 0;
 			bool self_closing= !(close_s < close_e);
 
-			tok= build_ext_token(name, name_len, attr, alen, inner, ilen, self_closing, accum);
+			tok= build_ext_token(name, name_len, attr, alen, inner, ilen, self_closing, cfg, accum);
 			ch= 'e';
 
 		} else if(inc_name_s < inc_name_e) {

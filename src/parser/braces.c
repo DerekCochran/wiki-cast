@@ -838,6 +838,7 @@ static bool braces_state_machine(ThreadBuf *tb, const ParserConfig *cfg,
 		const char *syntax= tb->buf + syntax_start;
 		BraceFrame top;
 		bool has_top= false;
+		bool top_requeued= false;
 		if(stack_len > 0) {
 			top= stack[stack_len - 1];
 			has_top= true;
@@ -850,6 +851,7 @@ static bool braces_state_machine(ThreadBuf *tb, const ParserConfig *cfg,
 			/* ]] closes a [[ link frame; preserve any non-link frame below it */
 			if(has_top && !(top.open_len >= 1 && top.open[0] == '[')) {
 				stack[stack_len++]= top;
+				top_requeued= true;
 			}
 		} else if(matched && syntax_len == 2 && syntax[0] == '}' && syntax[1] == '-') {
 			last_index= cur_index + 2;
@@ -857,6 +859,7 @@ static bool braces_state_machine(ThreadBuf *tb, const ParserConfig *cfg,
 			/* }- closes a -{ converter frame; preserve any non-converter frame below it */
 			if(has_top && !(top.open_len >= 1 && top.open[0] == '-')) {
 				stack[stack_len++]= top;
+				top_requeued= true;
 			}
 		} else if(matched && syntax_len == 1 && syntax[0] == '\n') {
 			last_index= cur_index + 1;
@@ -918,6 +921,7 @@ static bool braces_state_machine(ThreadBuf *tb, const ParserConfig *cfg,
 			} else if(has_top) {
 				/* \n only closes = heading frames; preserve other frames */
 				stack[stack_len++]= top;
+				top_requeued= true;
 			}
 		} else {
 			bool inner_equal= matched && syntax_len == 1 && syntax[0] == '=' && has_top && top.find_equal;
@@ -994,6 +998,7 @@ static bool braces_state_machine(ThreadBuf *tb, const ParserConfig *cfg,
 				if(brace_frame_init(&frame, syntax, syntax_len, cur_index, cur_index + syntax_len, false)) {
 					if(has_top) {
 						stack[++stack_len - 1]= top;
+						top_requeued= true;
 					}
 					if(stack_len + 1 > stack_cap) {
 						size_t new_cap= stack_cap * 2;
@@ -1006,6 +1011,7 @@ static bool braces_state_machine(ThreadBuf *tb, const ParserConfig *cfg,
 				} else {
 					if(has_top) {
 						stack[++stack_len - 1]= top;
+						top_requeued= true;
 					}
 				}
 			} else if(matched && syntax_len == 2 && syntax[0] == '[' && syntax[1] == '[') {
@@ -1014,6 +1020,7 @@ static bool braces_state_machine(ThreadBuf *tb, const ParserConfig *cfg,
 				if(brace_frame_init(&link_frame, "[", 1, cur_index, cur_index + 2, false)) {
 					if(has_top) {
 						stack[++stack_len - 1]= top;
+						top_requeued= true;
 					}
 					if(stack_len + 1 > stack_cap) {
 						size_t new_cap= stack_cap * 2;
@@ -1026,6 +1033,7 @@ static bool braces_state_machine(ThreadBuf *tb, const ParserConfig *cfg,
 				} else {
 					if(has_top) {
 						stack[stack_len++]= top;
+						top_requeued= true;
 					}
 				}
 			} else if(matched && syntax_len == 2 && syntax[0] == '-' && syntax[1] == '{') {
@@ -1034,6 +1042,7 @@ static bool braces_state_machine(ThreadBuf *tb, const ParserConfig *cfg,
 				if(brace_frame_init(&conv_frame, "-", 1, cur_index, cur_index + 2, false)) {
 					if(has_top) {
 						stack[++stack_len - 1]= top;
+						top_requeued= true;
 					}
 					if(stack_len + 1 > stack_cap) {
 						size_t new_cap= stack_cap * 2;
@@ -1046,11 +1055,13 @@ static bool braces_state_machine(ThreadBuf *tb, const ParserConfig *cfg,
 				} else {
 					if(has_top) {
 						stack[stack_len++]= top;
+						top_requeued= true;
 					}
 				}
 			} else {
-				if(has_top) {
+				if(has_top && !top_requeued) {
 					stack[stack_len++]= top;
+					top_requeued= true;
 				}
 			}
 		}
@@ -1432,9 +1443,37 @@ void parse_braces(ThreadBuf *tb, const ParserConfig *cfg, Accum *accum) {
 					memcpy(out_buf + out_len, sent, slen);
 					out_len+= slen;
 				} else {
-					ENSURE_CAP(mend - mstart);
-					memcpy(out_buf + out_len, tb->buf + mstart, mend - mstart);
-					out_len+= mend - mstart;
+					/* JS parity: invalid {{...}} (e.g. {{}}) is parked in linkStack
+					 * and restored at the end, rather than left inline. */
+					size_t llen= mend - mstart;
+					char *tmp= malloc(llen + 1);
+					memcpy(tmp, tb->buf + mstart, llen);
+					tmp[llen]= '\0';
+					size_t restored_llen= 0;
+					char *restored= str_restore(tmp, llen,
+																				(const char **)link_stack, link_count,
+																				link_stack_lens,
+																				&restored_llen);
+					free(tmp);
+
+					if(link_count >= link_cap) {
+						link_cap*= 2;
+						link_stack= realloc(link_stack, link_cap * sizeof(char *));
+						link_stack_lens= realloc(link_stack_lens, link_cap * sizeof(size_t));
+						assert(link_stack && link_stack_lens);
+					}
+					link_stack[link_count]= restored;
+					link_stack_lens[link_count]= restored_llen;
+					size_t link_idx= link_count++;
+
+					char mark[64];
+					int n= snprintf(mark + 1, sizeof(mark) - 2, "%zu", link_idx);
+					mark[0]= '\0';
+					mark[1 + n]= '\x7F';
+					size_t mlen= (size_t)(n + 2);
+					ENSURE_CAP(mlen);
+					memcpy(out_buf + out_len, mark, mlen);
+					out_len+= mlen;
 				}
 
 			} else {

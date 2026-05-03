@@ -11,15 +11,37 @@
  */
 #include "title.h"
 #include "string_util.h"
+#include <stringzilla/stringzilla.h>
 #include <ctype.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 
+/* sz_lookup LUT: maps ' ' (0x20) -> '_' (0x5F); all other bytes map to themselves.
+ * Used wherever spaces need to be bulk-replaced with underscores. */
+static const unsigned char s_spc2under_lut[256] = {
+      0,  1,  2,  3,  4,  5,  6,  7,  8,  9, 10, 11, 12, 13, 14, 15,
+     16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31,
+    '_', 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47,
+     48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63,
+     64, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79,
+     80, 81, 82, 83, 84, 85, 86, 87, 88, 89, 90, 91, 92, 93, 94, 95,
+     96, 97, 98, 99,100,101,102,103,104,105,106,107,108,109,110,111,
+    112,113,114,115,116,117,118,119,120,121,122,123,124,125,126,127,
+    128,129,130,131,132,133,134,135,136,137,138,139,140,141,142,143,
+    144,145,146,147,148,149,150,151,152,153,154,155,156,157,158,159,
+    160,161,162,163,164,165,166,167,168,169,170,171,172,173,174,175,
+    176,177,178,179,180,181,182,183,184,185,186,187,188,189,190,191,
+    192,193,194,195,196,197,198,199,200,201,202,203,204,205,206,207,
+    208,209,210,211,212,213,214,215,216,217,218,219,220,221,222,223,
+    224,225,226,227,228,229,230,231,232,233,234,235,236,237,238,239,
+    240,241,242,243,244,245,246,247,248,249,250,251,252,253,254,255,
+};
+
 static char *strndup0(const char *s, size_t len) {
 	char *out= malloc(len + 1);
 	if(!out) return NULL;
-	if(len > 0) memcpy(out, s, len);
+	if(len > 0) sz_copy(out, s, len);
 	out[len]= '\0';
 	return out;
 }
@@ -48,34 +70,40 @@ static const char *title_namespace_name(const ParserConfig *cfg, int ns) {
 	return "";
 }
 
+/* Optimized: trim whitespace inline and compare with strncasecmp,
+ * avoiding the malloc/free from trim_lc_n. */
 static int title_lookup_namespace(const ParserConfig *cfg, const char *s, size_t len) {
 	if(!cfg || !s) return 0;
-	char *key= trim_lc_n(s, len);
-	if(!key) return 0;
-	int ns= 0;
+	/* Trim without allocation */
+	size_t start= 0, end= len;
+	while(start < end && isspace((unsigned char)s[start])) start++;
+	while(end > start && isspace((unsigned char)s[end - 1])) end--;
+	size_t trimmed_len= end - start;
 	for(size_t i= 0; i < cfg->ns_count; i++) {
 		const char *name= cfg->namespaces[i].name;
-		if(name && strcasecmp(name, key) == 0) {
-			ns= cfg->namespaces[i].num;
-			break;
+		if(!name || strlen(name) != trimmed_len) continue;
+		if(strncasecmp(s + start, name, trimmed_len) == 0) {
+			return cfg->namespaces[i].num;
 		}
 	}
-	free(key);
-	return ns;
+	return 0;
 }
 
+/* Optimized: use sz_find() to skip directly to the 3-byte UTF-8 sequence
+ * instead of testing every byte individually. */
 static void title_replace_1e9a(char *s) {
 	if(!s) return;
 	size_t len= strlen(s);
-	for(size_t i= 0; i + 2 < len; i++) {
-		unsigned char b0= (unsigned char)s[i];
-		unsigned char b1= (unsigned char)s[i + 1];
-		unsigned char b2= (unsigned char)s[i + 2];
-		if(b0 == 0xE1 && b1 == 0xBA && b2 == 0x9A) {
-			s[i]= 'A';
-			s[i + 1]= (char)0xCA;
-			s[i + 2]= (char)0xBE;
-		}
+	static const char seq[3]= {(char)0xE1, (char)0xBA, (char)0x9A};
+	sz_cptr_t found= sz_find(s, len, seq, 3);
+	while(found) {
+		char *p= (char *)found;
+		p[0]= 'A';
+		p[1]= (char)0xCA;
+		p[2]= (char)0xBE;
+		size_t new_off= (size_t)(p + 3 - s);
+		if(new_off >= len) break;
+		found= sz_find(s + new_off, len - new_off, seq, 3);
 	}
 }
 
@@ -173,21 +201,20 @@ static char *title_compose_resolved(const Title *t, const char *page) {
 	if(!base) return NULL;
 	size_t pos= 0;
 	if(pre_len > 0) {
-		memcpy(base + pos, t->interwiki, pre_len);
+		sz_copy(base + pos, t->interwiki, pre_len);
 		pos+= pre_len;
 		base[pos++]= ':';
 	}
 	if(ns_len > 0) {
-		memcpy(base + pos, t->prefix, ns_len);
+		sz_copy(base + pos, t->prefix, ns_len);
 		pos+= ns_len;
 		base[pos++]= ':';
 	}
-	memcpy(base + pos, t->main, main_len);
+	sz_copy(base + pos, t->main, main_len);
 	pos+= main_len;
 	base[pos]= '\0';
-	for(size_t i= 0; i < pos; i++) {
-		if(base[i] == ' ') base[i]= '_';
-	}
+	/* Replace spaces with underscores using a SIMD-friendly lookup table */
+	sz_lookup(base, pos, base, (const char *)s_spc2under_lut);
 
 	if(base[0] == '/') {
 		size_t page_len= page ? strlen(page) : 0;
@@ -197,24 +224,34 @@ static char *title_compose_resolved(const Title *t, const char *page) {
 			free(base);
 			return NULL;
 		}
-		if(page_len > 0) memcpy(resolved, page, page_len);
-		memcpy(resolved + page_len, base, pos);
+		if(page_len > 0) sz_copy(resolved, page, page_len);
+		sz_copy(resolved + page_len, base, pos);
 		resolved[page_len + pos]= '\0';
 		free(base);
 		return resolved;
 	}
 
-	if(strncmp(base, "../", 3) == 0 && page && strchr(page, '/')) {
+	if(pos >= 3 && memcmp(base, "../", 3) == 0 && page && strchr(page, '/')) {
 		size_t level= 0;
 		const char *sub= base;
-		while(strncmp(sub, "../", 3) == 0) {
+		while((size_t)(sub - base) + 3 <= pos && memcmp(sub, "../", 3) == 0) {
 			level++;
 			sub+= 3;
 		}
 		size_t page_len= strlen(page);
+		/* Use sz_find_byte to count '/' without a byte-by-byte loop */
 		size_t dir_count= 1;
-		for(size_t i= 0; i < page_len; i++) {
-			if(page[i] == '/') dir_count++;
+		{
+			char slash_ch= '/';
+			const char *pp= page;
+			size_t prem= page_len;
+			while(prem > 0) {
+				sz_cptr_t nsl= sz_find_byte(pp, prem, &slash_ch);
+				if(!nsl) break;
+				dir_count++;
+				pp= nsl + 1;
+				prem= page_len - (size_t)(pp - page);
+			}
 		}
 		if(dir_count > level) {
 			size_t keep= page_len;
@@ -230,11 +267,11 @@ static char *title_compose_resolved(const Title *t, const char *page) {
 				free(base);
 				return NULL;
 			}
-			memcpy(resolved, page, keep);
+			sz_copy(resolved, page, keep);
 			size_t out= keep;
 			if(sub_len > 0 && out > 0 && resolved[out - 1] != '/') resolved[out++]= '/';
 			if(sub_len > 0) {
-				memcpy(resolved + out, sub, sub_len);
+				sz_copy(resolved + out, sub, sub_len);
 				out+= sub_len;
 			}
 			resolved[out]= '\0';
@@ -257,56 +294,80 @@ static bool is_hex(unsigned char b) {
  * True if s contains any character that makes a title invalid:
  *   ^: | [<>[\]{}|\n] | \0\d+[eh!+-]\x7F | %[0-9a-f]{2} | path ./ or ../
  */
+/* Optimized: sz_find_byteset() to jump to the next interesting byte (SIMD),
+ * then sz_find_byte() for the slash-based path-traversal check. */
 static bool title_has_invalid_chars(const char *s, size_t len) {
 	/* Check for leading colon */
 	if(len > 0 && s[0] == ':') return true;
 
-	for(size_t i= 0; i < len; i++) {
-		unsigned char c= (unsigned char)s[i];
+	/* Byteset of all characters that need special handling */
+	sz_byteset_t inv_set;
+	sz_byteset_init(&inv_set);
+	sz_byteset_add(&inv_set, '<');
+	sz_byteset_add(&inv_set, '>');
+	sz_byteset_add(&inv_set, '[');
+	sz_byteset_add(&inv_set, ']');
+	sz_byteset_add(&inv_set, '{');
+	sz_byteset_add(&inv_set, '}');
+	sz_byteset_add(&inv_set, '|');
+	sz_byteset_add(&inv_set, '\n');
+	sz_byteset_add(&inv_set, '\0');
+	sz_byteset_add(&inv_set, '%');
 
-		/* Invalid bare characters */
+	const char *ptr= s;
+	size_t rem= len;
+	while(rem > 0) {
+		sz_cptr_t found= sz_find_byteset(ptr, rem, &inv_set);
+		if(!found) break;
+		size_t offset= (size_t)(found - s);
+		unsigned char c= (unsigned char)*found;
+
 		if(c == '<' || c == '>' || c == '[' || c == ']' ||
-			 c == '{' || c == '}' || c == '|' || c == '\n') {
+		   c == '{' || c == '}' || c == '|' || c == '\n') {
 			return true;
 		}
-
 		/* Sentinel markers \0\d+[eh!+-]\x7F */
 		if(c == '\0') {
-			size_t k= i + 1;
+			size_t k= offset + 1;
 			while(k < len && s[k] >= '0' && s[k] <= '9') k++;
 			if(k < len) {
 				char tc= s[k];
 				if((tc == 'e' || tc == 'h' || tc == '!' || tc == '+' || tc == '-') &&
-					 k + 1 < len && (unsigned char)s[k + 1] == '\x7F') {
+				   k + 1 < len && (unsigned char)s[k + 1] == '\x7F') {
 					return true;
 				}
 			}
 		}
-
 		/* %XX URL percent encoding */
-		if(c == '%' && i + 2 < len &&
-			 is_hex((unsigned char)s[i + 1]) && is_hex((unsigned char)s[i + 2])) {
+		if(c == '%' && offset + 2 < len &&
+		   is_hex((unsigned char)s[offset + 1]) && is_hex((unsigned char)s[offset + 2])) {
 			return true;
 		}
+		ptr= found + 1;
+		rem= len - (size_t)(ptr - s);
 	}
 
-	/* Check for path components . and .. (e.g. /./  or /../ or starting with ./) */
-	/* Pattern: (?:^|\/)\.{1,2}(?:$|\/) */
+	/* Check for path components . and .. */
 	{
-		/* Check start: "./", "../" */
 		if(len >= 2 && s[0] == '.' &&
-			 (s[1] == '/' || (s[1] == '.' && (len == 2 || s[2] == '/')))) {
+		   (s[1] == '/' || (s[1] == '.' && (len == 2 || s[2] == '/')))) {
 			return true;
 		}
-		/* Check end: "/." or "/.." */
-		for(size_t i= 0; i + 1 < len; i++) {
-			if(s[i] == '/') {
-				if(i + 1 < len && s[i + 1] == '.') {
-					if(i + 2 >= len || s[i + 2] == '/') return true; /* /. */
-					if(i + 2 < len && s[i + 2] == '.' &&
-						 (i + 3 >= len || s[i + 3] == '/')) return true; /* /.. */
-				}
+		/* Use sz_find_byte() to jump to each '/' quickly */
+		char slash_ch= '/';
+		const char *sp= s;
+		size_t srem= len;
+		while(srem > 1) {
+			sz_cptr_t sl= sz_find_byte(sp, srem, &slash_ch);
+			if(!sl) break;
+			size_t i= (size_t)(sl - s);
+			if(i + 1 < len && s[i + 1] == '.') {
+				if(i + 2 >= len || s[i + 2] == '/') return true;
+				if(i + 2 < len && s[i + 2] == '.' &&
+				   (i + 3 >= len || s[i + 3] == '/')) return true;
 			}
+			sp= sl + 1;
+			srem= len - (size_t)(sp - s);
 		}
 	}
 	return false;
@@ -314,59 +375,70 @@ static bool title_has_invalid_chars(const char *s, size_t len) {
 
 /* JS parity for decode:true in Title constructor: try raw URL decode when '%' appears.
  * If decoding fails (malformed escape), JS keeps the original string. */
+/* Optimized: sz_find_byte() to locate '%' fast (SIMD), then bulk-copy clean
+ * segments with sz_copy() between percent-encoded bytes. */
 static char *title_try_percent_decode(const char *s, size_t len, size_t *out_len) {
-	bool has_pct= false;
-	for(size_t i= 0; i < len; i++) {
-		if(s[i] == '%') {
-			has_pct= true;
-			break;
-		}
-	}
+	/* Fast check: any '%' in the string? */
+	char pct_ch= '%';
+	sz_cptr_t first_pct= sz_find_byte(s, len, &pct_ch);
 
-	if(!has_pct) {
+	if(!first_pct) {
 		char *copy= malloc(len + 1);
 		if(!copy) return NULL;
-		memcpy(copy, s, len);
+		sz_copy(copy, s, len);
 		copy[len]= '\0';
 		if(out_len) *out_len= len;
 		return copy;
 	}
 
-	/* Validate all percent escapes first; on failure return original bytes. */
+	/* Validate all percent escapes starting from first_pct. */
 	bool malformed= false;
-	for(size_t i= 0; i < len; i++) {
-		if(s[i] == '%') {
-			if(i + 2 >= len || !is_hex((unsigned char)s[i + 1]) || !is_hex((unsigned char)s[i + 2])) {
-				malformed= true;
-				break;
-			}
-			i+= 2;
+	const char *vp= first_pct;
+	while(vp) {
+		size_t off= (size_t)(vp - s);
+		if(off + 2 >= len || !is_hex((unsigned char)vp[1]) || !is_hex((unsigned char)vp[2])) {
+			malformed= true;
+			break;
 		}
+		const char *next= vp + 3;
+		size_t nrem= len - (size_t)(next - s);
+		vp= nrem > 0 ? sz_find_byte(next, nrem, &pct_ch) : NULL;
 	}
 
 	if(malformed) {
 		char *copy= malloc(len + 1);
 		if(!copy) return NULL;
-		memcpy(copy, s, len);
+		sz_copy(copy, s, len);
 		copy[len]= '\0';
 		if(out_len) *out_len= len;
 		return copy;
 	}
 
+	/* Decode: bulk-copy clean segments; decode percent-encoded bytes. */
 	char *out= malloc(len + 1);
 	if(!out) return NULL;
 	size_t j= 0;
-	for(size_t i= 0; i < len; i++) {
-		if(s[i] == '%') {
-			unsigned char hi= (unsigned char)s[i + 1];
-			unsigned char lo= (unsigned char)s[i + 2];
-			unsigned char hv= (unsigned char)(hi <= '9' ? hi - '0' : (tolower(hi) - 'a' + 10));
-			unsigned char lv= (unsigned char)(lo <= '9' ? lo - '0' : (tolower(lo) - 'a' + 10));
-			out[j++]= (char)((hv << 4) | lv);
-			i+= 2;
-		} else {
-			out[j++]= s[i];
+	const char *p= s;
+	size_t rem= len;
+	while(rem > 0) {
+		sz_cptr_t np= sz_find_byte(p, rem, &pct_ch);
+		if(!np) {
+			sz_copy(out + j, p, rem);
+			j+= rem;
+			break;
 		}
+		size_t seg= (size_t)(np - p);
+		if(seg > 0) {
+			sz_copy(out + j, p, seg);
+			j+= seg;
+		}
+		unsigned char hi= (unsigned char)np[1];
+		unsigned char lo= (unsigned char)np[2];
+		unsigned char hv= (unsigned char)(hi <= '9' ? hi - '0' : (tolower(hi) - 'a' + 10));
+		unsigned char lv= (unsigned char)(lo <= '9' ? lo - '0' : (tolower(lo) - 'a' + 10));
+		out[j++]= (char)((hv << 4) | lv);
+		p= np + 3;
+		rem= len - (size_t)(p - s);
 	}
 	out[j]= '\0';
 	if(out_len) *out_len= j;
@@ -492,12 +564,12 @@ Title *title_parse_half_parsed(const char *raw, size_t raw_len,
 	}
 	t->ns= ns;
 
+	/* Use sz_find_byte to jump directly to '#' */
 	size_t hash= title_len;
-	for(size_t i= 0; i < title_len; i++) {
-		if(title[i] == '#') {
-			hash= i;
-			break;
-		}
+	{
+		char hash_ch= '#';
+		sz_cptr_t hp= sz_find_byte(title, title_len, &hash_ch);
+		if(hp) hash= (size_t)(hp - title);
 	}
 	if(hash < title_len) {
 		const char *fragment= title + hash + 1;
@@ -511,9 +583,8 @@ Title *title_parse_half_parsed(const char *raw, size_t raw_len,
 			if(frag_html) {
 				size_t flen= strlen(frag_html);
 				while(flen > 0 && isspace((unsigned char)frag_html[flen - 1])) flen--;
-				for(size_t i= 0; i < flen; i++) {
-					if(frag_html[i] == ' ') frag_html[i]= '_';
-				}
+				/* Replace spaces in fragment with underscores via lookup table */
+				sz_lookup(frag_html, flen, frag_html, (const char *)s_spc2under_lut);
 				frag_html[flen]= '\0';
 				t->fragment= frag_html;
 			}
@@ -553,9 +624,18 @@ Title *title_parse_half_parsed(const char *raw, size_t raw_len,
 
 	bool page_ok= true;
 	if(level > 0 && page != NULL) {
+		/* Use sz_find_byte to count '/' without iterating byte-by-byte */
 		size_t page_parts= 1;
-		for(const char *p= page; *p; ++p) {
-			if(*p == '/') page_parts++;
+		size_t plen= strlen(page);
+		char slash_ch= '/';
+		const char *pp= page;
+		size_t prem= plen;
+		while(prem > 0) {
+			sz_cptr_t nsl= sz_find_byte(pp, prem, &slash_ch);
+			if(!nsl) break;
+			page_parts++;
+			pp= nsl + 1;
+			prem= plen - (size_t)(pp - page);
 		}
 		page_ok= page_parts > level;
 	}
@@ -583,10 +663,8 @@ char *title_normalize(const char *raw, size_t raw_len) {
 	char *result= malloc(decoded_len + 1);
 	if(!result) return NULL;
 
-	/* Replace spaces with underscores */
-	for(size_t i= 0; i < decoded_len; i++) {
-		result[i]= (decoded[i] == ' ') ? '_' : decoded[i];
-	}
+	/* Replace spaces with underscores via SIMD-friendly lookup table */
+	sz_lookup(result, decoded_len, decoded, (const char *)s_spc2under_lut);
 	result[decoded_len]= '\0';
 	free(decoded);
 
@@ -609,18 +687,9 @@ char *title_normalize(const char *raw, size_t raw_len) {
 	}
 	result[out]= '\0';
 
-	/* JS parity edge case from export corpus: normalize U+1E9A (ẚ) to "Aʾ".
-     * Both forms are 3-byte UTF-8, so this can be done in-place. */
-	for(size_t i= 0; i + 2 < out; i++) {
-		unsigned char b0= (unsigned char)result[i];
-		unsigned char b1= (unsigned char)result[i + 1];
-		unsigned char b2= (unsigned char)result[i + 2];
-		if(b0 == 0xE1 && b1 == 0xBA && b2 == 0x9A) {
-			result[i]= 'A';
-			result[i + 1]= (char)0xCA;
-			result[i + 2]= (char)0xBE;
-		}
-	}
+	/* JS parity edge case: normalize U+1E9A (ẚ) -> "Aʾ".
+	 * Delegates to title_replace_1e9a which uses sz_find() (vectorized). */
+	title_replace_1e9a(result);
 
 	/*
      * JS parity: Title.main uppercases the first character of the main part
@@ -629,12 +698,12 @@ char *title_normalize(const char *raw, size_t raw_len) {
      */
 	out= title_uppercase_first_codepoint(result, out);
 
+	/* Use sz_find_byte to locate the first ':' */
 	size_t cap_at= 0;
-	for(size_t i= 0; i < out; i++) {
-		if(result[i] == ':') {
-			cap_at= i + 1;
-			break;
-		}
+	{
+		char colon_ch= ':';
+		sz_cptr_t cp= sz_find_byte(result, out, &colon_ch);
+		if(cp) cap_at= (size_t)(cp - result) + 1;
 	}
 	if(cap_at < out) {
 		out= cap_at + title_uppercase_first_codepoint(result + cap_at, out - cap_at);

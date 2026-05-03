@@ -704,6 +704,21 @@ static void token_to_string_rec(const Token *t, ThreadBuf *tb) {
 		return;
 	}
 
+	case TOKEN_EXT_INNER: {
+		for(size_t i= 0; i < t->child_count; i++) {
+			if(i > 0 && t->sep != '\0') {
+				thread_buf_append_char(tb, t->sep);
+			}
+			const Child *c= &t->children[i];
+			if(c->is_text) {
+				thread_buf_append(tb, c->text, c->text_len);
+			} else {
+				token_to_string_rec(c->token, tb);
+			}
+		}
+		return;
+	}
+
 	default:
 		for(size_t i= 0; i < t->child_count; i++) {
 			if(i > 0 && t->sep != '\0') {

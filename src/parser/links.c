@@ -26,10 +26,10 @@
 static Token *parse_inner_fragment(const char *s, size_t len, const ParserConfig *cfg, Accum *accum, const char *type_name, bool tidy, bool in_file);
 static void trim_view(const char **ptr, size_t *len);
 
-static int eq_ci_n(const char *a, size_t alen, const char *b) {
+static int eq_n(const char *a, size_t alen, const char *b) {
 	size_t blen= strlen(b);
 	if(alen != blen) return 0;
-	return strncasecmp(a, b, alen) == 0;
+	return memcmp(a, b, alen) == 0;
 }
 
 static Token *make_image_param_token(const char *name, Accum *accum) {
@@ -66,14 +66,14 @@ static bool match_img_syntax(const char *seg, size_t seg_len,
 		if(has_cap) *has_cap= false;
 		if(cap_ptr) *cap_ptr= NULL;
 		if(cap_len) *cap_len= 0;
-		return eq_ci_n(seg, seg_len, syntax) != 0;
+		return eq_n(seg, seg_len, syntax) != 0;
 	}
 
 	size_t pre_len= (size_t)(slot - syntax);
 	size_t suf_len= strlen(slot + 2);
 	if(seg_len < pre_len + suf_len) return false;
-	if(pre_len > 0 && strncasecmp(seg, syntax, pre_len) != 0) return false;
-	if(suf_len > 0 && strncasecmp(seg + seg_len - suf_len, slot + 2, suf_len) != 0) return false;
+	if(pre_len > 0 && memcmp(seg, syntax, pre_len) != 0) return false;
+	if(suf_len > 0 && memcmp(seg + seg_len - suf_len, slot + 2, suf_len) != 0) return false;
 
 	if(has_cap) *has_cap= true;
 	if(cap_ptr) *cap_ptr= seg + pre_len;

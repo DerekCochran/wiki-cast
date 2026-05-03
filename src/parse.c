@@ -163,6 +163,106 @@ static void json_write_escaped_len(const char *s, size_t len, FILE *fp) {
 	fputc('"', fp);
 }
 
+static void stage_json_write_token(const Token *t, FILE *fp, const Accum *accum);
+
+static bool stage_json_parse_sentinel(const char *s, size_t len, size_t *pos, size_t *idx_out) {
+	if(!s || !pos || !idx_out || *pos >= len || (unsigned char)s[*pos] != '\0') return false;
+
+	size_t p= *pos + 1;
+	if(p >= len || !isdigit((unsigned char)s[p])) return false;
+
+	size_t idx= 0;
+	while(p < len && isdigit((unsigned char)s[p])) {
+		idx= idx * 10 + (size_t)(s[p] - '0');
+		p++;
+	}
+	if(p + 1 >= len) return false;
+	/* Any sentinel marker char is accepted; trailing DEL is required. */
+	p++;
+	if((unsigned char)s[p] != 0x7F) return false;
+
+	*idx_out= idx;
+	*pos= p + 1;
+	return true;
+}
+
+static void stage_json_write_text(const char *s, size_t len, FILE *fp) {
+	fputs("{\"type\":\"text\",\"data\":", fp);
+	json_write_escaped_len(s, len, fp);
+	fputc('}', fp);
+}
+
+static void stage_json_write_text_segments(const char *s, size_t len,
+														 FILE *fp,
+														 const Accum *accum,
+														 bool *first) {
+	if(!s || len == 0) return;
+
+	size_t pos= 0;
+	while(pos < len) {
+		if((unsigned char)s[pos] == '\0') {
+			size_t idx= 0;
+			size_t p= pos;
+			if(stage_json_parse_sentinel(s, len, &p, &idx) && accum && idx < accum->count && accum->tokens[idx]) {
+				if(!*first) fputc(',', fp);
+				*first= false;
+				stage_json_write_token(accum->tokens[idx], fp, accum);
+				pos= p;
+				continue;
+			}
+		}
+
+		size_t start= pos;
+		while(pos < len && (unsigned char)s[pos] != '\0') pos++;
+		if(pos > start) {
+			if(!*first) fputc(',', fp);
+			*first= false;
+			stage_json_write_text(s + start, pos - start, fp);
+		}
+
+		if(pos < len && (unsigned char)s[pos] == '\0') {
+			/* Preserve invalid or unresolved NUL bytes as text nodes. */
+			if(!*first) fputc(',', fp);
+			*first= false;
+			stage_json_write_text(s + pos, 1, fp);
+			pos++;
+		}
+	}
+}
+
+static void stage_json_write_token(const Token *t, FILE *fp, const Accum *accum) {
+	if(!t) {
+		fputs("null", fp);
+		return;
+	}
+
+	fputs("{\"type\":", fp);
+	json_write_escaped_len(t->type_name ? t->type_name : "", t->type_name ? strlen(t->type_name) : 0, fp);
+
+	if(t->name) {
+		fputs(",\"name\":", fp);
+		json_write_escaped_len(t->name, strlen(t->name), fp);
+	}
+
+	if(t->child_count > 0) {
+		fputs(",\"childNodes\":[", fp);
+		bool first= true;
+		for(size_t i= 0; i < t->child_count; i++) {
+			const Child *c= &t->children[i];
+			if(c->is_text) {
+				stage_json_write_text_segments(c->text, c->text_len, fp, accum, &first);
+			} else {
+				if(!first) fputc(',', fp);
+				first= false;
+				stage_json_write_token(c->token, fp, accum);
+			}
+		}
+		fputs("]", fp);
+	}
+
+	fputc('}', fp);
+}
+
 /* Append a JSON snapshot representing the current root content (ws)
  * to <stage_log_dir>/native-stage.log. The ws buffer is scanned for
  * sentinel markers (\0<digits><ch>\x7F) and token entries from the
@@ -200,7 +300,7 @@ static void append_native_stage_json(const char *stage_log_dir, int stage, Threa
 			first= false;
 
 			if(idx >= 0 && (size_t)idx < accum->count && accum->tokens[idx]) {
-				token_to_json(accum->tokens[idx], f);
+				stage_json_write_token(accum->tokens[idx], f, accum);
 			} else {
 				fputs("null", f);
 			}
@@ -210,9 +310,7 @@ static void append_native_stage_json(const char *stage_log_dir, int stage, Threa
 			size_t seglen= pos - start;
 			if(!first) fputc(',', f);
 			first= false;
-			fputs("{\"type\":\"text\",\"data\":", f);
-			json_write_escaped_len(ws->buf + start, seglen, f);
-			fputc('}', f);
+			stage_json_write_text(ws->buf + start, seglen, f);
 		}
 	}
 
@@ -683,7 +781,7 @@ static void run_nested_plain_pipeline(ThreadBuf *scratch,
 			parse_external_links(scratch, cfg, accum, false);
 			parse_magic_links(scratch, cfg, accum);
 			if(is_td_inner) {
-				parse_list(scratch, cfg, accum);
+				parse_list_skip_first_line(scratch, cfg, accum);
 			} else if(is_ext_inner) {
 				parse_list_skip_first_line(scratch, cfg, accum);
 			}
@@ -824,6 +922,12 @@ static void postprocess_nested_plain(Token *t, const ParserConfig *cfg, Accum *a
 						tmp->child_cap= 0;
 						token_free_shallow(tmp);
 
+						for(size_t i= 0; i < t->child_count; i++) {
+							if(!t->children[i].is_text && t->children[i].token) {
+								postprocess_nested_plain(t->children[i].token, cfg, accum);
+							}
+						}
+
 						free(ser);
 						wiki_thread_buf_release_scratch(scratch);
 						return;
@@ -920,6 +1024,11 @@ static void postprocess_nested_plain(Token *t, const ParserConfig *cfg, Accum *a
 		t->children= new_children;
 		t->child_count= new_count;
 		t->child_cap= new_cap;
+		for(size_t i= 0; i < t->child_count; i++) {
+			if(!t->children[i].is_text && t->children[i].token) {
+				postprocess_nested_plain(t->children[i].token, cfg, accum);
+			}
+		}
 		wiki_thread_buf_release_scratch(scratch);
 		return;
 	}
@@ -946,6 +1055,11 @@ static void postprocess_nested_plain(Token *t, const ParserConfig *cfg, Accum *a
 	}
 	build_from_str(t, scratch->buf, scratch->len, accum);
 	build_token_recursive(t, accum);
+	for(size_t i= 0; i < t->child_count; i++) {
+		if(!t->children[i].is_text && t->children[i].token) {
+			postprocess_nested_plain(t->children[i].token, cfg, accum);
+		}
+	}
 	free(joined);
 	wiki_thread_buf_release_scratch(scratch);
 }
@@ -1105,6 +1219,50 @@ static void postprocess_parameter_value_inline(Token *t, const ParserConfig *cfg
 	}
 }
 
+static void finalize_gallery_and_link_names(Token *t, const ParserConfig *cfg) {
+	if(!t || !cfg) return;
+
+	for(size_t i= 0; i < t->child_count; i++) {
+		if(!t->children[i].is_text && t->children[i].token) {
+			finalize_gallery_and_link_names(t->children[i].token, cfg);
+		}
+	}
+
+	if(t->type == TOKEN_EXT_INNER && t->name && strcmp(t->name, "gallery") == 0) {
+		bool has_leading_empty= (t->child_count > 0 && t->children[0].is_text && t->children[0].text_len == 0);
+		if(!has_leading_empty) {
+			if(t->child_count >= t->child_cap) {
+				t->child_cap= t->child_cap ? t->child_cap * 2 : 4;
+				t->children= realloc(t->children, t->child_cap * sizeof(Child));
+				assert(t->children);
+			}
+			memmove(t->children + 1, t->children, t->child_count * sizeof(Child));
+			Child *c= &t->children[0];
+			c->is_text= true;
+			c->text_len= 0;
+			c->text= strdup("");
+			c->token= NULL;
+			t->child_count++;
+		}
+	}
+
+	if((t->type == TOKEN_LINK || t->type == TOKEN_FILE || t->type == TOKEN_CATEGORY) && !t->name) {
+		if(t->child_count > 0 && !t->children[0].is_text && t->children[0].token) {
+			Token *target= t->children[0].token;
+			if(target->child_count > 0 && target->children[0].is_text && target->children[0].text) {
+				const char *raw= target->children[0].text;
+				size_t raw_len= target->children[0].text_len;
+				int def_ns= (t->type == TOKEN_FILE) ? 6 : (t->type == TOKEN_CATEGORY ? 14 : 0);
+				Title *tt= title_parse_half_parsed(raw, raw_len, def_ns, cfg, true, "");
+				if(tt && tt->valid && tt->title) {
+					t->name= strdup(tt->title);
+				}
+				title_free(tt);
+			}
+		}
+	}
+}
+
 static void parse_quotes_stage6_per_line(ThreadBuf *ws, const ParserConfig *cfg, Accum *accum) {
 	if(!ws || !ws->buf) return;
 
@@ -1144,6 +1302,79 @@ static void parse_quotes_stage6_per_line(ThreadBuf *ws, const ParserConfig *cfg,
 
 	free(out);
 	wiki_thread_buf_release_scratch(scratch);
+}
+
+static void stage1_parse_braces_on_accum(const ParserConfig *cfg, Accum *accum) {
+	if(!cfg || !accum) return;
+
+	for(size_t ai= 0; ai < accum->count; ai++) {
+		Token *tok= accum->tokens[ai];
+		if(!tok) continue;
+		if(tok->type != TOKEN_EXT_INNER || !ext_inner_allows_nested_parse(tok->name)) continue;
+
+		/* JS parseOnce parity: only plain single-text tokens are reparsed. */
+		if(tok->child_count != 1 || !tok->children[0].is_text) continue;
+
+		const char *txt= tok->children[0].text;
+		size_t txt_len= tok->children[0].text_len;
+		if(!txt || txt_len == 0 || !mem_has(txt, txt_len, "{{")) continue;
+
+		ThreadBuf tmp_tb;
+		tmp_tb.buf= malloc(txt_len + 1);
+		if(!tmp_tb.buf) continue;
+		memcpy(tmp_tb.buf, txt, txt_len);
+		tmp_tb.buf[txt_len]= '\0';
+		tmp_tb.len= txt_len;
+		tmp_tb.cap= txt_len + 1;
+		tmp_tb.shrink_size= (size_t)-1;
+		tmp_tb.target_size= tmp_tb.cap;
+
+		parse_braces(&tmp_tb, cfg, accum);
+		if(!(tmp_tb.len == txt_len && memcmp(tmp_tb.buf, txt, txt_len) == 0)) {
+			build_from_str(tok, tmp_tb.buf, tmp_tb.len, accum);
+		}
+		free(tmp_tb.buf);
+	}
+}
+
+static void stage0_parse_comment_and_ext_on_accum(const ParserConfig *cfg, Accum *accum) {
+	if(!cfg || !accum) return;
+
+	for(size_t ai= 0; ai < accum->count; ai++) {
+		Token *tok= accum->tokens[ai];
+		if(!tok) continue;
+		if(tok->type != TOKEN_EXT_INNER || !ext_inner_allows_nested_parse(tok->name)) continue;
+
+		/* JS parseOnce parity: only plain single-text tokens are reparsed. */
+		if(tok->child_count != 1 || !tok->children[0].is_text) continue;
+
+		const char *txt= tok->children[0].text;
+		size_t txt_len= tok->children[0].text_len;
+		if(!txt || txt_len == 0 || memchr(txt, '<', txt_len) == NULL) continue;
+
+		ThreadBuf tmp_tb;
+		tmp_tb.buf= malloc(txt_len + 1);
+		if(!tmp_tb.buf) continue;
+		memcpy(tmp_tb.buf, txt, txt_len);
+		tmp_tb.buf[txt_len]= '\0';
+		tmp_tb.len= txt_len;
+		tmp_tb.cap= txt_len + 1;
+		tmp_tb.shrink_size= (size_t)-1;
+		tmp_tb.target_size= tmp_tb.cap;
+
+		parse_comment_and_ext(&tmp_tb, cfg, accum, false);
+		if(!(tmp_tb.len == txt_len && memcmp(tmp_tb.buf, txt, txt_len) == 0)) {
+			char *repl= malloc(tmp_tb.len + 1);
+			if(repl) {
+				memcpy(repl, tmp_tb.buf, tmp_tb.len);
+				repl[tmp_tb.len]= '\0';
+				free(tok->children[0].text);
+				tok->children[0].text= repl;
+				tok->children[0].text_len= tmp_tb.len;
+			}
+		}
+		free(tmp_tb.buf);
+	}
 }
 
 Token *wiki_parse(const char *wikitext, const ParserConfig *cfg,
@@ -1207,11 +1438,13 @@ Token *wiki_parse(const char *wikitext, const ParserConfig *cfg,
 			parse_redirect(ws, cfg, &accum);
 			/* parseCommentAndExt always runs at stage 0 */
 			parse_comment_and_ext(ws, cfg, &accum, include);
+			stage0_parse_comment_and_ext_on_accum(cfg, &accum);
 			break;
 
 		/* Stage 1: parseBraces */
 		case 1:
 			parse_braces(ws, cfg, &accum);
+			stage1_parse_braces_on_accum(cfg, &accum);
 			break;
 
 		case 2: /* parseHtml */
@@ -1286,6 +1519,7 @@ Token *wiki_parse(const char *wikitext, const ParserConfig *cfg,
 	/* JS parity: run inline stages again for any new text children created
      * during build_token_recursive (e.g. ext-inner content). */
 	postprocess_parameter_value_inline(root, cfg, &accum);
+	finalize_gallery_and_link_names(root, cfg);
 
 	/* ── Debug: log the final token tree as JSON ─────────────────────────── */
 	// if (log_get_level() <= LOG_DEBUG)

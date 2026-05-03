@@ -116,7 +116,7 @@ function analyzeAstDiff(expected, got, name = 'sample' ) {
   const getTopLevelAncestor = (node) => {
     if (!node) return node;
     let cur = node;
-    let startLevel = 2;
+    let startLevel = 3;
     while (cur.parent && startLevel >= 0) {
       cur = cur.parent;
       startLevel--;
@@ -181,9 +181,9 @@ function analyzeAstDiff(expected, got, name = 'sample' ) {
   if (found.kind === 'type') {
     lines.push(`expected.type: ${found.ta}`);
     lines.push(`got.type: ${found.tb}`);
-    if( found.ap && found.bp) {
+    if( found.a && found.b) {
       if( name != 'pipeline') {
-        console.log('Possible string to add to the test_pipeline.js:'+ `\`${found.ap.toString()}\`,\n`);
+        console.log('Possible string to add to the test_pipeline.js:'+ `\`${found.a.toString()}\`,\n`);
       }
       lines.push(`expected.parent.String: ${found.a.parent.toString()}`);
       lines.push(`expected.parent.Json: ${JSON.stringify(found.a.parent, noCircular)}`);
@@ -265,30 +265,63 @@ node test_pipeline.js`);
   } else if (found.kind === 'child-count') {
     lines.push(`expected.childCount: ${found.aCount}`);
     lines.push(`got.childCount: ${found.bCount}`);
-    lines.push(`expected.Json: ${JSON.stringify(found.a, noCircular)}`);
-    lines.push(`got.Json: ${JSON.stringify(found.b, noCircular)}`);
+    if( found.a.parent && found.b.parent) {
+      lines.push(`expected.Json: ${JSON.stringify(found.a, noCircular)}`);
+      lines.push(`got.Json: ${JSON.stringify(found.b, noCircular)}`);
+    }
     if( found.a && found.b) {
-      if( name != 'pipeline') {
-        console.log('Possible string to add to the test_pipeline.js:'+ `\`${found.a.toString()}\`,\n`);
-      }
-      lines.push(`expected.parent.String: ${found.a.parent.toString()}`);
-      lines.push(`expected.parent.Json: ${JSON.stringify(found.a.parent, noCircular)}`);
-      if( name == 'wikitext') {
-        // Write the found.a.parent.toString() to test_pipeline.js after const tests = [ using a tick to handle new lines.
-        const pipelinePath = path.join(__dirname, 'test_pipeline.js');
-        const pipelineContent = fs.readFileSync(pipelinePath, 'utf8');
-        const insertPoint = pipelineContent.indexOf('const tests = [');
-        if (insertPoint !== -1) {
-          const before = pipelineContent.slice(0, insertPoint + 'const tests = ['.length);
-          const after = pipelineContent.slice(insertPoint + 'const tests = ['.length);
-          const newContent = `${before}\n\`${getTopLevelAncestor(found.a).toString()}\`,${after}`;
-          fs.writeFileSync(pipelinePath, newContent, 'utf8');
-          console.log(`Inserted new test case into ${pipelinePath}`);
-          console.log(`Run the below commands to execute the new test case:
+      if( ! found.a.parent && ! found.b.parent) {
+        lines.push('No parent available for context on this node, root must of failed to parse.');
+        // Search through aJson and find children that do not exist in bJson and print them out as possible candidates for new test cases.
+        for (let i = 0; i < found.a.childNodes.length ; i++) {
+          var bFound = false;
+          for (let j = 0; j < found.b.childNodes.length ; j++) {
+            if( found.a.childNodes[i].name == found.b.childNodes[j].name ) {
+              bFound = true;
+              break
+            }
+          }
+          if( ! bFound) {
+            lines.push(`expected.Json[${i}]: ${found.a.childNodes[i].name}`);
+          } 
+        }
+        // Search through bJson and find children that do not exist in aJson and print them out as possible candidates for new test cases.
+        for (let i = 0; i < found.b.childNodes.length ; i++) {
+          var aFound = false;
+          for (let j = 0; j < found.a.childNodes.length ; j++) {
+            if( found.b.childNodes[i].name == found.a.childNodes[j].name ) {
+              aFound = true;
+              break
+            }
+          }
+          if( ! aFound) {
+            lines.push(`got.Json[${i}]: ${found.b.childNodes[i].name}`);
+          }
+        }
+
+        return lines.join('\n') + '\n';
+      }else {
+        if( name != 'pipeline') {
+          console.log('Possible string to add to the test_pipeline.js:'+ `\`${found.a.toString()}\`,\n`);
+        }
+        lines.push(`expected.parent.String: ${found.a.parent.toString()}`);
+        lines.push(`expected.parent.Json: ${JSON.stringify(found.a.parent, noCircular)}`);
+        if( name == 'wikitext') {
+          const pipelinePath = path.join(__dirname, 'test_pipeline.js');
+          const pipelineContent = fs.readFileSync(pipelinePath, 'utf8');
+          const insertPoint = pipelineContent.indexOf('const tests = [');
+          if (insertPoint !== -1) {
+            const before = pipelineContent.slice(0, insertPoint + 'const tests = ['.length);
+            const after = pipelineContent.slice(insertPoint + 'const tests = ['.length);
+            const newContent = `${before}\n\`${getTopLevelAncestor(found.a).toString()}\`,${after}`;
+            fs.writeFileSync(pipelinePath, newContent, 'utf8');
+            console.log(`Inserted new test case into ${pipelinePath}`);
+            console.log(`Run the below commands to execute the new test case:
 cd ${path.dirname(__filename)}
 node test_pipeline.js`);
-        } else {
-          console.warn(`Could not find const tests = [ in ${pipelinePath}, skipping automatic insertion of new test case.`);
+          } else {
+            console.warn(`Could not find const tests = [ in ${pipelinePath}, skipping automatic insertion of new test case.`);
+          }
         }
       }
     }
