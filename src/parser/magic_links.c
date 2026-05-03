@@ -226,33 +226,65 @@ void parse_magic_links(ThreadBuf *tb, const ParserConfig *cfg, Accum *accum) {
 			size_t p1_len= url_body_e - url_body_s;
 
 			/* --- Entity truncation ---
-             * JS: /&(?:[lg]t|nbsp|#x0*(?:3[ce]|a0)|#0*(?:6[02]|160));/iu
+             * JS regex exactly: /&(?:[lg]t|nbsp|#x0*(?:3[ce]|a0)|#0*(?:6[02]|160));/iu
+             * Only these specific entities truncate the URL:
+             *   &lt;  &gt;  &nbsp;
+             *   &#x3c; &#x3e; &#xa0; (and with leading zeros)
+             *   &#60;  &#62;  &#160; (and with leading zeros)
              */
 			size_t entity_at= url_len; /* no truncation by default */
 			for(size_t k= 0; k < url_len && k + 1 < url_len; k++) {
 				if(url_ptr[k] != '&') continue;
 				size_t rem= url_len - k;
-				/* &lt; &gt; */
+
+				/* &lt; or &gt; — exactly 4 chars */
 				if(rem >= 4 && url_ptr[k + 3] == ';' &&
 					 ((strncasecmp(url_ptr + k + 1, "lt", 2) == 0) ||
 						(strncasecmp(url_ptr + k + 1, "gt", 2) == 0))) {
 					entity_at= k;
 					break;
 				}
-				/* &nbsp; */
+				/* &nbsp; — exactly 6 chars */
 				if(rem >= 6 && strncasecmp(url_ptr + k, "&nbsp;", 6) == 0) {
 					entity_at= k;
 					break;
 				}
-				/* &#x0*[3c|3e|a0]; */
+				/* &#x...;  — JS: #x0*(?:3[ce]|a0) → &#x3c; &#x3e; &#xa0; with optional leading zeros */
 				if(rem >= 5 && url_ptr[k + 1] == '#' && (url_ptr[k + 2] == 'x' || url_ptr[k + 2] == 'X')) {
-					entity_at= k;
-					break;
+					/* skip leading zeros after #x */
+					size_t j= k + 3;
+					while(j < url_len && url_ptr[j] == '0') j++;
+					size_t hex_start= j;
+					/* match: 3c, 3e, a0 (case-insensitive) */
+					bool ok= false;
+					if(j + 2 < url_len && url_ptr[j + 2] == ';') {
+						char h0= url_ptr[j], h1= url_ptr[j + 1];
+						/* lowercase */
+						if(h0 >= 'A' && h0 <= 'Z') h0 += 32;
+						if(h1 >= 'A' && h1 <= 'Z') h1 += 32;
+						ok= (h0 == '3' && (h1 == 'c' || h1 == 'e')) ||
+								(h0 == 'a' && h1 == '0');
+					}
+					if(ok) { entity_at= k; break; }
+					(void)hex_start;
+					continue;
 				}
-				/* &#0*[60|62|160]; */
-				if(rem >= 4 && url_ptr[k + 1] == '#' && (url_ptr[k + 2] >= '0' && url_ptr[k + 2] <= '9')) {
-					entity_at= k;
-					break;
+				/* &#...;  — JS: #0*(?:6[02]|160) → &#60; &#62; &#160; with optional leading zeros */
+				if(rem >= 4 && url_ptr[k + 1] == '#' && url_ptr[k + 2] >= '0' && url_ptr[k + 2] <= '9') {
+					/* skip leading zeros */
+					size_t j= k + 2;
+					while(j < url_len && url_ptr[j] == '0') j++;
+					bool ok= false;
+					/* check for 60, 62, 160 */
+					if(j + 2 < url_len && url_ptr[j + 2] == ';') {
+						/* two-digit: 60 or 62 */
+						ok= (url_ptr[j] == '6' && (url_ptr[j + 1] == '0' || url_ptr[j + 1] == '2'));
+					} else if(j + 3 < url_len && url_ptr[j + 3] == ';') {
+						/* three-digit: 160 */
+						ok= (url_ptr[j] == '1' && url_ptr[j + 1] == '6' && url_ptr[j + 2] == '0');
+					}
+					if(ok) { entity_at= k; break; }
+					continue;
 				}
 			}
 

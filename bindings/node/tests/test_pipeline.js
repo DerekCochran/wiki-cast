@@ -7,6 +7,9 @@ const { runTests } = require('./helpers');
 // This should loop through each test and fast fail on the first mismatch.
 
 const tests = [
+  `<Gallery>
+  File:The Odeon of Herodes Atticus on September 13, 2020.jpg|The [[Odeon of Herodes Atticus]] built in AD 161 by [[Herodes Atticus]]
+  </Gallery>`,
   `archive-url=https://web.archive.org/web/20160325000841/http://danmarkshistorien.dk/leksikon-og-kilder/vis/materiale/aarhus-domkirke/?chash=a83dfe233ede9644167a9b5ea9aa35a4&tx_historyview_pi1&#91;lang&#93;=1`,
   ` [[File:Maaloula square alef.svg|20px|]]`,
   `[[File:Uranocene-3D-balls.png|thumb|upright=0.55|Predicted structure of amerocene [(η<sup>8</sup>-C<sub>8</sub>H<sub>8</sub>)<sub>2</sub><nowiki>Am]</nowiki>]]`,
