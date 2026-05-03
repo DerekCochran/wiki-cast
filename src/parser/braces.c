@@ -444,23 +444,33 @@ static Token *build_template_token(const char **parts_restored, const size_t *pa
 
 		const char *part= parts_restored[k];
 		size_t part_len= parts_lens[k];
-		/* JS parity: use pre-determined named/positional flag when available.
+                
+                /* JS parity: for certain magic words, don't split early parameters on '='.
+                 * For #tag, only parameters at k > params_start_idx (3rd+) allow key=value splitting.
+                 * Earlier params remain positional. */
+                bool force_positional= false;
+                if(transclude_is_magic && t->name) {
+                        if(strcmp(t->name, "tag") == 0 && k == params_start_idx) {
+                                /* #tag: first param after ':' is positional even if it contains '=' */
+                                force_positional= true;
+                        }
+                }
+                
+                /* JS parity: use pre-determined named/positional flag when available.
          * part_is_named[k]==false means the raw part had no '=', so even if
          * the restored text contains '=' (e.g. from [[=]]), it is positional. */
-		const char *eq= (part_is_named && !part_is_named[k])
-										? NULL
-										: memchr(part, '=', part_len);
+                const char *eq= (force_positional || (part_is_named && !part_is_named[k]))
+                                                                               ? NULL
+                                                                               : memchr(part, '=', part_len);
 
-		Token *param= token_new(TOKEN_PARAMETER, "parameter");
-		if(!param) continue;
-		param->sep= '\0';
+                Token *param= token_new(TOKEN_PARAMETER, "parameter");
+                if(!param) continue;
+                param->sep= '\0';
 
-		Token *key_tok= token_new(TOKEN_PLAIN, "parameter-key");
-		Token *val_tok= token_new(TOKEN_PLAIN, "parameter-value");
-		if(!key_tok || !val_tok) {
-			if(key_tok) token_free(key_tok);
-			if(val_tok) token_free(val_tok);
-			token_free(param);
+                Token *key_tok= token_new(TOKEN_PLAIN, "parameter-key");
+                Token *val_tok= token_new(TOKEN_PLAIN, "parameter-value");
+                if(!key_tok || !val_tok) {
+                        if(key_tok) token_free(key_tok);
 			continue;
 		}
 
@@ -923,23 +933,16 @@ static bool braces_state_machine(ThreadBuf *tb, const ParserConfig *cfg,
 				top_requeued= true;
 			}
 		} else {
-			bool inner_equal= matched && syntax_len == 1 && syntax[0] == '=' && has_top && top.find_equal;
-			if((matched && syntax_len == 1 && syntax[0] == '|') || inner_equal) {
+			/* Only treat | as parameter separator; don't split on = in the state machine.
+			 * JS parity: = is preserved in parameter values, and splitting is handled
+			 * by build_from_inner which checks the RAW part (with sentinels) before restore. */
+			if(matched && syntax_len == 1 && syntax[0] == '|') {
 				if(has_top && top.has_parts) {
 					if(!brace_push_part(&top, tb->buf, top.pos, cur_index, (const char **)link_stack, link_count, link_stack_lens)) {
 						;
 					}
-					if(syntax[0] == '|') {
-						brace_frame_append_part(&top);
-					} else {
-						/* inner_equal: append '=' so build_template_token can split
-                         * key=value with memchr(part,'=',len). JS parity: each part
-                         * sub-array is joined with '=' before being passed to
-                         * TranscludeToken (parts[i].join('=')). */
-						parts_append_text(&top.parts, "=", 1);
-					}
+					brace_frame_append_part(&top);
 					top.pos= cur_index + 1;
-					top.find_equal= (syntax[0] == '|');
 				}
 			} else if(matched && syntax_len >= 2 && syntax[0] == '}' && syntax[1] == '}') {
 				if(has_top && top.has_parts) {

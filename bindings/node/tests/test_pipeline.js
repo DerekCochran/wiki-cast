@@ -7,6 +7,55 @@ const { runTests } = require('./helpers');
 // This should loop through each test and fast fail on the first mismatch.
 
 const tests = [
+`caption="Prints from [[Bernard de Montfaucon]]'s ''L'antiquité expliquée et représentée en figures'' (Band 2,2) page 358 ff."`,
+  `{{#tag:timeline|
+  ImageSize  = width:1500 height:auto barincrement:18
+  PlotArea   = top:10 bottom:20 right:130 left:10
+  AlignBars  = late
+  DateFormat = x.y
+  Period     = from:1816.90 till:{{#expr:{{#time:Y}}+{{#time:m}}/6}}
+  TimeAxis   = orientation:horizontal
+  ScaleMajor = unit:year increment:10 start:1820
+  ScaleMinor = unit:year increment:1 start:1817
+
+  Define $now = {{#expr:{{#time:Y}}+{{#time:m}}/12}}
+
+  Colors =
+    id:5year   value:rgb(0.8, 0.8, 0.8)
+
+  BarData =
+    barset:GovernorLine
+    barset:Governors
+    #barset:blankline
+
+  PlotData=
+  width:1 align:right fontsize:S shift:(-3,-4) anchor:from fontsize:8 color:black
+
+  barset:GovernorLine
+  from:1832 till:end text:Governors
+
+  width:6 align:left fontsize:S shift:(5,-4) anchor:till fontsize:10
+
+  barset:Governors
+  from:1819.86 till:1820.52 color:demrep text:"William W. Bibb"
+  from:1820.52 till:1821.86 color:demrep text:"Thomas Bibb"
+  from:1821.86 till:1825.9 color:demrep text:"Israel Pickens"
+  from:1825.9 till:1829.89 color:jackson text:"John Murphy"
+
+  LineData=
+  from:1817.73 till:1819.86 atpos:989 color:noparty width:6 # WWB noparty
+  from:1831.9 till:1833 atpos:883 color:jackson width:6 # JG jackson
+
+  layer:back
+  # This section creates the vertical lines.
+  at:1820.00 width:0.1 color:0year
+  at:1825.00 width:0.1 color:5year
+  at:1830.00 width:0.1 color:0year
+  at:1835.00 width:0.1 color:5year
+  at:1840.00 width:0.1 color:0year
+  at:1845.00 width:0.1 color:5year
+  at:1850.00 width:0.1 color:0year
+  }}`,
   `<Gallery>
   File:The Odeon of Herodes Atticus on September 13, 2020.jpg|The [[Odeon of Herodes Atticus]] built in AD 161 by [[Herodes Atticus]]
   </Gallery>`,

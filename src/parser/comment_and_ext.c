@@ -1000,6 +1000,8 @@ static Token *build_ext_token(const char *name, size_t name_len,
 		return NULL;
 	}
 	t->name= strdup(lcname);
+	/* Store original-cased tag name for toString() parity with JS */
+	t->data.ext.name= strndup(name, name_len);
 
 	/* Build sub-tokens */
 	Token *attrs_tok= build_ext_attrs(lcname, attr, attr_len, accum);

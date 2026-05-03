@@ -228,9 +228,11 @@ static void token_to_string_rec(const Token *t, ThreadBuf *tb) {
 		}
 		return;
 
-	case TOKEN_EXT:
+	case TOKEN_EXT: {
+		/* Use original-cased tag name for serialization (JS parity) */
+		const char *ext_tag= t->data.ext.name ? t->data.ext.name : t->name;
 		thread_buf_append_char(tb, '<');
-		if(t->name) thread_buf_append(tb, t->name, strlen(t->name));
+		if(ext_tag) thread_buf_append(tb, ext_tag, strlen(ext_tag));
 		if(t->child_count > 0) {
 			const Child *c= &t->children[0];
 			if(c->is_text)
@@ -251,9 +253,10 @@ static void token_to_string_rec(const Token *t, ThreadBuf *tb) {
 				token_to_string_rec(c->token, tb);
 		}
 		thread_buf_append(tb, "</", 2);
-		if(t->name) thread_buf_append(tb, t->name, strlen(t->name));
+		if(ext_tag) thread_buf_append(tb, ext_tag, strlen(ext_tag));
 		thread_buf_append_char(tb, '>');
 		return;
+	}
 
 	case TOKEN_EXT_ATTR: {
 		/* JS AttributeToken.toString(): key + equal + quoteOpen + value + quoteClose */
