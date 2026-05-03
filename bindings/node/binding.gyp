@@ -32,7 +32,7 @@
         "../../src/tr.c"
       ],
       "include_dirs": [ "../../include" ],
-      "libraries": [ "-lpcre2-8", "-lcjson" ]
+      "libraries": [ "-lpcre2-8", "-lcjson", "-licuuc", "-licudata" ]
     }
   ]
 }

@@ -3,6 +3,8 @@
  */
 #include "string_util.h"
 #include "config.h"
+#include <unicode/uchar.h>
+#include <unicode/utf8.h>
 #include <assert.h>
 #include <ctype.h>
 #include <stdio.h>
@@ -301,28 +303,19 @@ char *str_restore(const char *s, size_t len,
 
 int utf8_char_len(unsigned char c) {
 	if(c < 0x80) return 1;
-	if(c < 0xE0) return 2;
-	if(c < 0xF0) return 3;
-	return 4;
+	int trails= U8_COUNT_TRAIL_BYTES(c);
+	if(trails < 1 || trails > 3) return 1;
+	return trails + 1;
 }
 
 uint32_t utf8_tolower_codepoint(uint32_t cp) {
-	/* Fast path for ASCII */
-	if(cp < 128) return (uint32_t)tolower((int)cp);
-	/* Full Unicode folding would require ICU; return as-is for non-ASCII. */
-	return cp;
+	if(cp > 0x10FFFF) return cp;
+	return (uint32_t)u_tolower((UChar32)cp);
 }
 
 uint32_t utf8_toupper_codepoint(uint32_t cp) {
-	/* Fast path for ASCII */
-	if(cp < 128) return (uint32_t)toupper((int)cp);
-	/* Basic Latin-1 uppercase mapping for common accented letters. */
-	if(cp >= 0x00E0 && cp <= 0x00F6) return cp - 0x20;
-	if(cp >= 0x00F8 && cp <= 0x00FE) return cp - 0x20;
-	if(cp == 0x00FF) return 0x0178; /* ÿ -> Ÿ */
-	if(cp == 0x00B5) return 0x039C; /* µ -> Μ */
-	if(cp == 0x00DF) return 0x1E9E; /* ß -> ẞ */
-	return cp;
+	if(cp > 0x10FFFF) return cp;
+	return (uint32_t)u_toupper((UChar32)cp);
 }
 
 /* ── str_istr ────────────────────────────────────────────────────────────── */

@@ -8,10 +8,12 @@ set(CMAKE_C_STANDARD_REQUIRED ON)
 find_package(PkgConfig REQUIRED)
 pkg_check_modules(PCRE2   REQUIRED libpcre2-8)
 pkg_check_modules(CJSON   REQUIRED libcjson)
+pkg_check_modules(ICU     REQUIRED icu-uc)
 
 include_directories(
     ${PCRE2_INCLUDE_DIRS}
     ${CJSON_INCLUDE_DIRS}
+    ${ICU_INCLUDE_DIRS}
     ${CMAKE_CURRENT_SOURCE_DIR}/include
 )
 
@@ -47,12 +49,14 @@ add_library(wikitokenizer STATIC
 target_compile_options(wikitokenizer PRIVATE
     ${PCRE2_CFLAGS_OTHER}
     ${CJSON_CFLAGS_OTHER}
+    ${ICU_CFLAGS_OTHER}
     -Wall -Wextra -Wno-unused-parameter
 )
 
 target_link_libraries(wikitokenizer
     ${PCRE2_LIBRARIES}
     ${CJSON_LIBRARIES}
+    ${ICU_LIBRARIES}
 )
 
 # ── Test binaries ─────────────────────────────────────────────────────────────

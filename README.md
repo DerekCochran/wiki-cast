@@ -36,13 +36,23 @@ This is a duplicate of the functionality of [wikiparser-node](https://github.com
 - C toolchain: `gcc`/`clang`, `make`, `cmake`, `pkg-config`
 - PCRE2 (development headers) — recommended `pcre2` >= 10.30
 - cJSON (or libcjson) development headers
+- ICU (ICU4C) development headers and libraries (`icu-uc` / `libicu`)
 
 On Debian/Ubuntu you can install the essentials with:
 
 ```bash
 sudo apt-get update
-sudo apt-get install build-essential cmake pkg-config libpcre2-dev libcjson-dev
+sudo apt-get install build-essential cmake pkg-config libpcre2-dev libcjson-dev libicu-dev
 ```
+
+On macOS (Homebrew), install:
+
+```bash
+brew install cmake pkg-config pcre2 cjson icu4c
+```
+
+The Node native addon build (`node-gyp`) also links ICU (`icuuc`, `icudata`),
+so ICU is required for both CMake and Node addon builds.
 
 **Build**
 
