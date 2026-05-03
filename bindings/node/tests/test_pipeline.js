@@ -7,6 +7,11 @@ const { runTests } = require('./helpers');
 // This should loop through each test and fast fail on the first mismatch.
 
 const tests = [
+  `|- 1 CAR
+  ! 1
+  ! rowspan="4" | Position
+  | style="background:#dfffdf;" | 4
+  | style="background:#dfffdf;" | 4`,
   `== References ==
   {{Reflist}}
   {{refbegin}}
