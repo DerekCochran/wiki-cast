@@ -7,6 +7,12 @@ const { runTests } = require('./helpers');
 // This should loop through each test and fast fail on the first mismatch.
 
 const tests = [
+  `== References ==
+  {{Reflist}}
+  {{refbegin}}
+  * {{Brooklands: On Audi & Auto Union 1980|editor-mask=6}}
+  {{refend}}
+  `,
   `[[ζ Arietis]]`,
   `<imagemap>
   File:Actinopterygii.jpg||300px

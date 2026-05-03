@@ -436,7 +436,7 @@ static Token *parse_gallery_caption_fragment(const char *s, size_t len,
 		return NULL;
 	}
 	build_from_str(inner, scratch->buf, scratch->len, accum);
-	build_token_recursive(inner, accum);
+	build_token_recursive(inner, accum, cfg);
 	wiki_thread_buf_release_scratch(scratch);
 	return inner;
 }
@@ -474,7 +474,7 @@ static Token *parse_single_link_token(const char *s, size_t len,
 	Token *tmp= token_new(TOKEN_PLAIN, "imagemap-link-inner");
 	if(!tmp) return NULL;
 	build_from_str(tmp, tmp_tb.buf, tmp_tb.len, accum);
-	build_token_recursive(tmp, accum);
+	build_token_recursive(tmp, accum, cfg);
 
 	Token *out= NULL;
 	if(tmp->child_count == 1 && !tmp->children[0].is_text && tmp->children[0].token && tmp->children[0].token->type == TOKEN_LINK) {
@@ -526,7 +526,7 @@ static Token *parse_gallery_image_line(const char *line, size_t line_len,
 	Token *tmp= token_new(TOKEN_PLAIN, "gallery-line");
 	if(!tmp) return NULL;
 	build_from_str(tmp, tmp_tb.buf, tmp_tb.len, accum);
-	build_token_recursive(tmp, accum);
+	build_token_recursive(tmp, accum, cfg);
 
 	Token *out= NULL;
 	if(tmp->child_count == 1 && !tmp->children[0].is_text && tmp->children[0].token && tmp->children[0].token->type == TOKEN_FILE) {
@@ -568,7 +568,7 @@ static Token *parse_imagemap_image_line(const char *line, size_t line_len,
 	Token *tmp= token_new(TOKEN_PLAIN, "imagemap-image-line");
 	if(!tmp) return NULL;
 	build_from_str(tmp, tmp_tb.buf, tmp_tb.len, accum);
-	build_token_recursive(tmp, accum);
+	build_token_recursive(tmp, accum, cfg);
 
 	Token *out= NULL;
 	if(tmp->child_count == 1 && !tmp->children[0].is_text && tmp->children[0].token && tmp->children[0].token->type == TOKEN_FILE) {
@@ -920,7 +920,7 @@ static void postprocess_nested_plain(Token *t, const ParserConfig *cfg, Accum *a
 					Token *tmp= token_new(TOKEN_PLAIN, t->type_name);
 					if(tmp) {
 						build_from_str(tmp, scratch->buf, scratch->len, accum);
-						build_token_recursive(tmp, accum);
+						build_token_recursive(tmp, accum, cfg);
 
 						for(size_t i= 0; i < t->child_count; i++) {
 							if(t->children[i].is_text) free(t->children[i].text);
@@ -1015,7 +1015,7 @@ static void postprocess_nested_plain(Token *t, const ParserConfig *cfg, Accum *a
 			}
 
 			build_from_str(tmp, scratch->buf, scratch->len, accum);
-			build_token_recursive(tmp, accum);
+			build_token_recursive(tmp, accum, cfg);
 
 			for(size_t j= 0; j < tmp->child_count; j++) {
 				if(new_count >= new_cap) {
@@ -1068,7 +1068,7 @@ static void postprocess_nested_plain(Token *t, const ParserConfig *cfg, Accum *a
 		return;
 	}
 	build_from_str(t, scratch->buf, scratch->len, accum);
-	build_token_recursive(t, accum);
+	build_token_recursive(t, accum, cfg);
 	for(size_t i= 0; i < t->child_count; i++) {
 		if(!t->children[i].is_text && t->children[i].token) {
 			postprocess_nested_plain(t->children[i].token, cfg, accum);
@@ -1197,7 +1197,7 @@ static void postprocess_parameter_value_inline(Token *t, const ParserConfig *cfg
 		}
 
 		build_from_str(tmp, scratch->buf, scratch->len, accum);
-		build_token_recursive(tmp, accum);
+		build_token_recursive(tmp, accum, cfg);
 
 		for(size_t j= 0; j < tmp->child_count; j++) {
 			if(new_count >= new_cap) {
@@ -1519,7 +1519,7 @@ Token *wiki_parse(const char *wikitext, const ParserConfig *cfg,
 	}
 
 	/* ── build phase 2: recursively expand remaining sentinels ───────────── */
-	build_token_recursive(root, &accum);
+	build_token_recursive(root, &accum, cfg);
 
 	/* JS parity: AttributesToken.afterBuild() sets table-attrs name to the
      * cell subtype (td/th/caption), including sibling inheritance for inline

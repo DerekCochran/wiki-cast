@@ -555,7 +555,7 @@ static Token *parse_gallery_image_line_local(const char *line, size_t line_len,
 		return NULL;
 	}
 	build_from_str(tmp, tmp_tb.buf, tmp_tb.len, accum);
-	build_token_recursive(tmp, accum);
+	build_token_recursive(tmp, accum, cfg);
 
 	Token *out= NULL;
 	if(tmp->child_count == 1 && !tmp->children[0].is_text && tmp->children[0].token && tmp->children[0].token->type == TOKEN_FILE) {
@@ -679,7 +679,7 @@ static Token *parse_imagemap_image_line_local(const char *line, size_t line_len,
 		return NULL;
 	}
 	build_from_str(tmp, tmp_tb.buf, tmp_tb.len, accum);
-	build_token_recursive(tmp, accum);
+	build_token_recursive(tmp, accum, cfg);
 
 	Token *out= NULL;
 	if(tmp->child_count == 1 && !tmp->children[0].is_text && tmp->children[0].token && tmp->children[0].token->type == TOKEN_FILE) {

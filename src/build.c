@@ -116,7 +116,7 @@ static void append_key_token_repr(const Token *t, char **buf, size_t *len, size_
 /* JS parity: TranscludeToken.afterBuild() sets the normalized template name.
  * In JS this happens after build() completes, so the name is absent from
  * stage-log snapshots captured during parseBraces (Stage 1). */
-static void refresh_template_name(Token *t) {
+static void refresh_template_name(Token *t, const ParserConfig *cfg) {
 	if(!t || t->type != TOKEN_TRANSCLUDE) return;
 	if(!t->type_name || strcmp(t->type_name, "template") != 0) return;
 	if(t->child_count == 0) return;
@@ -155,27 +155,14 @@ static void refresh_template_name(Token *t) {
 		return;
 	}
 
-	char *norm= title_normalize(text, len);
+	Title *parsed= title_parse_half_parsed(text, len, 10, cfg, true, "");
 	free(text);
-	if(!norm || !norm[0]) {
-		free(norm);
+	if(!parsed || !parsed->title || !parsed->title[0]) {
+		title_free(parsed);
 		return;
 	}
-	const char *norm_name= norm;
-	if(norm_name[0] == ':') norm_name++;
-	size_t nn= strlen(norm_name);
-
-	char *name;
-	if(strchr(norm_name, ':')) {
-		name= strdup(norm_name);
-	} else {
-		name= malloc(nn + 10);
-		if(name) {
-			memcpy(name, "Template:", 9);
-			memcpy(name + 9, norm_name, nn + 1);
-		}
-	}
-	free(norm);
+	char *name= strdup(parsed->title);
+	title_free(parsed);
 
 	if(name) {
 		free(t->name);
@@ -307,7 +294,8 @@ void build_from_str(Token *parent, const char *str, size_t str_len,
 /* Recursively expand sentinel markers in all text descendants of a token.
  * Mirrors JS Token.build() which calls buildFromStr on each token's firstChild
  * text when it contains a \0 sentinel. */
-void build_token_recursive(Token *t, Accum *accum) {
+void build_token_recursive(Token *t, Accum *accum,
+												 const ParserConfig *cfg) {
 	if(!t) return;
 
 	bool has_marker_text= false;
@@ -357,7 +345,7 @@ void build_token_recursive(Token *t, Accum *accum) {
 			}
 		} else if(c->token) {
 			/* Recurse into child token */
-			build_token_recursive(c->token, accum);
+			build_token_recursive(c->token, accum, cfg);
 		}
 	}
 
@@ -368,7 +356,7 @@ void build_token_recursive(Token *t, Accum *accum) {
 
 	/* JS TranscludeToken.afterBuild parity: template name is set after build,
      * not during parseBraces, so it is absent from stage-log snapshots. */
-	refresh_template_name(t);
+	refresh_template_name(t, cfg);
 }
 
 /* Get the syntax last-character and independence flag from a TOKEN_TD.
@@ -433,7 +421,8 @@ void propagate_table_subtypes(Token *t) {
 	}
 }
 
-void build(Token *root, const ThreadBuf *tb, Accum *accum) {
+void build(Token *root, const ThreadBuf *tb, Accum *accum,
+				 const ParserConfig *cfg) {
 	/* Step 1: Expand the root's working string (which has embedded \0 sentinels). */
 	build_from_str(root, tb->buf, tb->len, accum);
 
@@ -443,7 +432,7 @@ void build(Token *root, const ThreadBuf *tb, Accum *accum) {
 	for(size_t i= 0; i < accum->count; i++) {
 		Token *t= accum->tokens[i];
 		if(!t || t == root) continue;
-		build_token_recursive(t, accum);
+		build_token_recursive(t, accum, cfg);
 	}
 
 	/* Step 3: JS AttributesToken.afterBuild() parity — propagate TD subtype
