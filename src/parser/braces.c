@@ -412,7 +412,6 @@ static Token *build_template_token(const char **parts_restored, const size_t *pa
 		} else {
 			const char *part= magic_first_arg;
 			size_t part_len= magic_first_arg_len;
-			const char *eq= memchr(part, '=', part_len);
 
 			Token *param= token_new(TOKEN_PARAMETER, "parameter");
 			if(param) {
@@ -421,25 +420,15 @@ static Token *build_template_token(const char **parts_restored, const size_t *pa
 				Token *key_tok= token_new(TOKEN_PLAIN, "parameter-key");
 				Token *val_tok= token_new(TOKEN_PLAIN, "parameter-value");
 				if(key_tok && val_tok) {
-					if(eq) {
-						size_t key_len= (size_t)(eq - part);
-						size_t val_len= part_len - key_len - 1;
-						token_append_text_n(key_tok, part, key_len);
-						token_append_text_n(val_tok, eq + 1, val_len);
-						token_append_child(param, key_tok);
-						token_append_child(param, val_tok);
+					/* JS parity: the first parser-function argument after ':' is
+					 * always positional, even if it contains '='. */
+					token_append_child(param, key_tok);
+					token_append_text_n(val_tok, part, part_len);
+					token_append_child(param, val_tok);
 
-						char *pname= trim_copy(part, key_len);
-						if(pname) param->name= pname;
-					} else {
-						token_append_child(param, key_tok);
-						token_append_text_n(val_tok, part, part_len);
-						token_append_child(param, val_tok);
-
-						char *pname= strdup("1");
-						if(pname) param->name= pname;
-						positional= 2;
-					}
+					char *pname= strdup("1");
+					if(pname) param->name= pname;
+					positional= 2;
 					token_append_child(t, param);
 				} else {
 					if(key_tok) token_free(key_tok);

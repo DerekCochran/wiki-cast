@@ -9,6 +9,7 @@ const tests = [
   'test_braces.js',
   'test_html.js',
   'test_table.js',
+  'test_table_sweep.js',
   'test_hr_and_double_underscore.js',
   'test_comment_and_ext.js',
   'test_links.js',

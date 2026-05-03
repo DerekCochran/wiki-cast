@@ -105,21 +105,57 @@ static void free_token_data(Token *t) {
 	}
 }
 
-void token_free(Token *t) {
-	if(!t) return;
-	for(size_t i= 0; i < t->child_count; i++) {
-		Child *c= &t->children[i];
+typedef struct {
+	Token **items;
+	size_t count;
+	size_t cap;
+} TokenSeen;
+
+static bool token_seen_contains(const TokenSeen *seen, const Token *node) {
+	for(size_t i= 0; i < seen->count; i++) {
+		if(seen->items[i] == node) return true;
+	}
+	return false;
+}
+
+static void token_seen_add(TokenSeen *seen, Token *node) {
+	if(seen->count == seen->cap) {
+		size_t nc= seen->cap ? seen->cap * 2 : 64;
+		Token **ns= realloc(seen->items, nc * sizeof(Token *));
+		assert(ns);
+		seen->items= ns;
+		seen->cap= nc;
+	}
+	seen->items[seen->count++]= node;
+}
+
+static void token_free_graph(Token *node, TokenSeen *seen) {
+	if(!node || token_seen_contains(seen, node)) return;
+
+	token_seen_add(seen, node);
+
+	for(size_t i= 0; i < node->child_count; i++) {
+		Child *c= &node->children[i];
 		if(c->is_text) {
 			free(c->text);
 		} else {
-			token_free(c->token);
+			token_free_graph(c->token, seen);
 		}
 	}
-	free(t->children);
-	free_token_data(t);
-	free(t->type_name);
-	free(t->name);
-	free(t);
+
+	free(node->children);
+	free_token_data(node);
+	free(node->type_name);
+	free(node->name);
+	free(node);
+}
+
+void token_free(Token *t) {
+	if(!t) return;
+
+	TokenSeen seen= {0};
+	token_free_graph(t, &seen);
+	free(seen.items);
 }
 
 void token_free_shallow(Token *t) {

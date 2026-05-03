@@ -72,6 +72,50 @@ static Token *make_table_attr(const char *key, size_t key_len,
 	return t;
 }
 
+/* JS parity: /^(?:[\w:]|\0\d+t\x7F)(?:[\w:.-]|\0\d+t\x7F)*$/u */
+static bool is_valid_attr_key(const char *k, size_t klen) {
+	size_t i= 0;
+	if(i >= klen) return false;
+
+	if((unsigned char)k[i] == 0x00) {
+		i++;
+		if(i >= klen) return false;
+		if(k[i] < '0' || k[i] > '9') return false;
+		while(i < klen && k[i] >= '0' && k[i] <= '9') i++;
+		if(i >= klen || k[i] != 't') return false;
+		i++;
+		if(i >= klen || (unsigned char)k[i] != 0x7F) return false;
+		i++;
+	} else {
+		unsigned char c= (unsigned char)k[i];
+		if(!((c >= 'A' && c <= 'Z') || (c >= 'a' && c <= 'z') ||
+				 (c >= '0' && c <= '9') || c == '_' || c == ':'))
+			return false;
+		i++;
+	}
+
+	while(i < klen) {
+		if((unsigned char)k[i] == 0x00) {
+			i++;
+			if(i >= klen) return false;
+			if(k[i] < '0' || k[i] > '9') return false;
+			while(i < klen && k[i] >= '0' && k[i] <= '9') i++;
+			if(i >= klen || k[i] != 't') return false;
+			i++;
+			if(i >= klen || (unsigned char)k[i] != 0x7F) return false;
+			i++;
+		} else {
+			unsigned char c= (unsigned char)k[i];
+			if(!((c >= 'A' && c <= 'Z') || (c >= 'a' && c <= 'z') ||
+					 (c >= '0' && c <= '9') || c == '_' || c == ':' ||
+					 c == '.' || c == '-'))
+				return false;
+			i++;
+		}
+	}
+	return true;
+}
+
 static void parse_table_attrs(Token *attrs_tok, const char *attr_str, size_t attr_len, Accum *accum) {
 	if(!attr_str || attr_len == 0) return;
 
@@ -86,8 +130,16 @@ static void parse_table_attrs(Token *attrs_tok, const char *attr_str, size_t att
 		if(last > first) {
 			const char *k= attr_str + first;
 			size_t klen= last - first;
+			int has_space= 0;
+			for(size_t p= 0; p < klen; p++) {
+				char ch= k[p];
+				if(ch == ' ' || ch == '\t' || ch == '\n' || ch == '\r' || ch == '\f' || ch == '\v') {
+					has_space= 1;
+					break;
+				}
+			}
 			bool dynamic_key= memchr(k, '\0', klen) != NULL || (klen >= 2 && k[0] == '{' && k[1] == '{') || (klen >= 2 && k[0] == '-' && k[1] == '{');
-			if(dynamic_key) {
+			if(dynamic_key && !has_space && is_valid_attr_key(k, klen)) {
 				if(first > 0) {
 					Token *d0= make_table_attr_dirty(attr_str, first, accum);
 					if(d0) token_append_child(attrs_tok, d0);
@@ -134,14 +186,15 @@ static void parse_table_attrs(Token *attrs_tok, const char *attr_str, size_t att
 
 		const char *key= attr_str + key_start;
 		unsigned char kc0= (unsigned char)key[0];
-		int valid_key= ((kc0 >= 'A' && kc0 <= 'Z') || (kc0 >= 'a' && kc0 <= 'z') || kc0 == '_' || kc0 == ':');
+		int valid_key= ((kc0 >= 'A' && kc0 <= 'Z') || (kc0 >= 'a' && kc0 <= 'z') ||
+							 (kc0 >= '0' && kc0 <= '9') || kc0 == '_' || kc0 == ':');
 		for(size_t k= 1; valid_key && k < key_len; k++) {
 			unsigned char kc= (unsigned char)key[k];
 			valid_key= ((kc >= 'A' && kc <= 'Z') || (kc >= 'a' && kc <= 'z') || (kc >= '0' && kc <= '9') || kc == ':' || kc == '.' || kc == '_' || kc == '-');
 		}
 		if(!valid_key) {
 			bool dynamic_key= memchr(key, '\0', key_len) != NULL || (key_len >= 2 && key[0] == '{' && key[1] == '{') || (key_len >= 2 && key[0] == '-' && key[1] == '{');
-			if(!dynamic_key) {
+			if(!dynamic_key || !is_valid_attr_key(key, key_len)) {
 				for(size_t k= 0; k < key_len; k++) dirty_buf[dirty_len++]= key[k];
 				continue;
 			}

@@ -4,6 +4,24 @@ project(wiki_tokenizer C)
 set(CMAKE_C_STANDARD 11)
 set(CMAKE_C_STANDARD_REQUIRED ON)
 
+option(TOKENIZER_USE_NATIVE "Enable native CPU optimization flags (-march=native -mtune=native)" ON)
+
+if(TOKENIZER_USE_NATIVE AND CMAKE_C_COMPILER_ID MATCHES "GNU|Clang")
+    add_compile_options(-march=native -mtune=native)
+endif()
+
+# Keep vendor StringZilla sources untouched: when UBSan is enabled, disable
+# misaligned word loads through a compile definition instead of patching headers.
+set(_TOKENIZER_ALL_C_FLAGS "${CMAKE_C_FLAGS} ${CMAKE_C_FLAGS_DEBUG} ${CMAKE_C_FLAGS_RELEASE} ${CMAKE_C_FLAGS_RELWITHDEBINFO} ${CMAKE_C_FLAGS_MINSIZEREL}")
+if(_TOKENIZER_ALL_C_FLAGS MATCHES "(^|[ ;])-fsanitize=undefined([ ;]|$)")
+    add_compile_definitions(SZ_USE_MISALIGNED_LOADS=0)
+endif()
+
+set(TOKENIZER_NODE_GYP_CFLAGS "")
+if(TOKENIZER_USE_NATIVE AND CMAKE_C_COMPILER_ID MATCHES "GNU|Clang")
+    set(TOKENIZER_NODE_GYP_CFLAGS "-march=native -mtune=native")
+endif()
+
 # ── Dependencies ─────────────────────────────────────────────────────────────
 find_package(PkgConfig REQUIRED)
 pkg_check_modules(PCRE2   REQUIRED libpcre2-8)
@@ -153,7 +171,10 @@ configure_parser_test_env(wikitext_c)
 # Build the Node native addon from bindings/node as part of the CMake build.
 add_custom_target(node_binding ALL
     COMMAND ${CMAKE_COMMAND} -E echo "Building Node native addon"
-    COMMAND ${CMAKE_COMMAND} -E chdir ${CMAKE_CURRENT_SOURCE_DIR}/bindings/node npx node-gyp rebuild
+    COMMAND ${CMAKE_COMMAND} -E env
+            CFLAGS=${TOKENIZER_NODE_GYP_CFLAGS}
+            CXXFLAGS=${TOKENIZER_NODE_GYP_CFLAGS}
+            npx node-gyp rebuild
     WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/bindings/node
     DEPENDS wikitokenizer
 )

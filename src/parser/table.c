@@ -231,8 +231,16 @@ static void parse_table_attrs(Token *attrs_tok, const char *attr_str, size_t att
 		if(last > first) {
 			const char *k= attr_str + first;
 			size_t klen= last - first;
+			int has_space= 0;
+			for(size_t p= 0; p < klen; p++) {
+				char ch= k[p];
+				if(ch == ' ' || ch == '\t' || ch == '\n' || ch == '\r' || ch == '\f' || ch == '\v') {
+					has_space= 1;
+					break;
+				}
+			}
 			bool dynamic_key= memchr(k, '\0', klen) != NULL || (klen >= 2 && k[0] == '{' && k[1] == '{') || (klen >= 2 && k[0] == '-' && k[1] == '{');
-			if(dynamic_key) {
+			if(dynamic_key && !has_space) {
 				/* JS parity: only create table-attr for keys that pass the JS
                  * validity test /^(?:[\w:]|\0\d+t\x7F)(?:[\w:.-]|\0\d+t\x7F)*$/u.
                  * Anything else (e.g. "\01t\x7F|}") becomes table-attr-dirty. */
@@ -287,7 +295,8 @@ static void parse_table_attrs(Token *attrs_tok, const char *attr_str, size_t att
 
 		const char *key= attr_str + key_start;
 		unsigned char kc0= (unsigned char)key[0];
-		int valid_key= ((kc0 >= 'A' && kc0 <= 'Z') || (kc0 >= 'a' && kc0 <= 'z') || kc0 == '_' || kc0 == ':');
+		int valid_key= ((kc0 >= 'A' && kc0 <= 'Z') || (kc0 >= 'a' && kc0 <= 'z') ||
+							 (kc0 >= '0' && kc0 <= '9') || kc0 == '_' || kc0 == ':');
 		for(size_t k= 1; valid_key && k < key_len; k++) {
 			unsigned char kc= (unsigned char)key[k];
 			valid_key= ((kc >= 'A' && kc <= 'Z') || (kc >= 'a' && kc <= 'z') || (kc >= '0' && kc <= '9') || kc == ':' || kc == '.' || kc == '_' || kc == '-');

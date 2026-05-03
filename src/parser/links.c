@@ -157,8 +157,8 @@ static void append_file_image_params(Token *file_tok,
 
 		/* Note: Do NOT trim whitespace from image parameters - JavaScript preserves it */
 
-		bool is_single_empty= (text_len == 0 && seg_start == 0 && seg_len == 0);
-		if(seg_len > 0 || is_single_empty) {
+		/* JS parity: split('|') keeps empty segments (e.g. "20px|" -> ["20px", ""]). */
+		if(seg_len > 0 || seg_start == text_len) {
 			Token *param= NULL;
 			bool matched= false;
 
@@ -224,6 +224,10 @@ static void append_file_image_params(Token *file_tok,
 					if(cap) {
 						append_fragment_children(param, cap);
 						token_free(cap);
+					}
+					/* JS parity: empty caption segment still serializes as one empty text child. */
+					if(param->child_count == 0) {
+						token_append_text_n(param, "", 0);
 					}
 				}
 			}
@@ -612,26 +616,6 @@ void parse_links(ThreadBuf *tb, const ParserConfig *cfg, Accum *accum,
 		}
 		int ns= parsed->ns;
 		bool interwiki= parsed->interwiki && parsed->interwiki[0] != '\0';
-
-		/* ---- Detect broken image/file text from main regex ----
-         * When main regex matches a File namespace link but the regex breaks the text
-         * (leaving unclosed brackets), apply image-collection logic to gather full text.
-         * This happens when text contains '[' but main regex stops early before ']'.
-         */
-		if(!mightBeImg && ns == 6 && !interwiki && text_ptr && text_len > 0 && !force) {
-			/* Check if text has unmatched opening bracket */
-			int bracket_depth= 0;
-			for(size_t ti= 0; ti < text_len; ti++) {
-				if(text_ptr[ti] == '[')
-					bracket_depth++;
-				else if(text_ptr[ti] == ']')
-					bracket_depth--;
-			}
-			/* If brackets are unmatched, apply image-collection logic */
-			if(bracket_depth > 0) {
-				mightBeImg= true; /* Temporarily treat as mightBeImg to apply collection logic */
-			}
-		}
 
 		/* ---- mightBeImg: File namespace handling ----
          * JS: else if (mightBeImg) {

@@ -188,7 +188,7 @@ cd extern_tokenizer
 rm -rf build_ubsan && mkdir -p build_ubsan && cd build_ubsan
 cmake \
   -DCMAKE_BUILD_TYPE=RelWithDebInfo \
-  -DCMAKE_C_FLAGS="-g -O1 -fsanitize=undefined -fno-sanitize-recover=all -fno-omit-frame-pointer" \
+  -DCMAKE_C_FLAGS="-g -O1 -march=native -mtune=native -fsanitize=undefined -fno-sanitize-recover=all -fno-omit-frame-pointer" \
   -DCMAKE_EXE_LINKER_FLAGS="-fsanitize=undefined" ..
 make -j
 
@@ -203,7 +203,7 @@ cd extern_tokenizer
 rm -rf build_tsan && mkdir -p build_tsan && cd build_tsan
 cmake \
   -DCMAKE_BUILD_TYPE=RelWithDebInfo \
-  -DCMAKE_C_FLAGS="-g -O1 -fsanitize=thread -fno-omit-frame-pointer" \
+  -DCMAKE_C_FLAGS="-g -O1 -march=native -mtune=native -fsanitize=thread -fno-omit-frame-pointer" \
   -DCMAKE_EXE_LINKER_FLAGS="-fsanitize=thread" ..
 make -j
 
@@ -219,7 +219,7 @@ cd extern_tokenizer
 rm -rf build_asan && mkdir -p build_asan && cd build_asan
 cmake \
   -DCMAKE_BUILD_TYPE=RelWithDebInfo \
-  -DCMAKE_C_FLAGS="-g -O1 -fsanitize=address -fno-omit-frame-pointer" \
+  -DCMAKE_C_FLAGS="-g -O1 -march=native -mtune=native -fsanitize=address -fno-omit-frame-pointer" \
   -DCMAKE_EXE_LINKER_FLAGS="-fsanitize=address" ..
 make -j
 
