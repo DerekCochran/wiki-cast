@@ -842,7 +842,7 @@ static void postprocess_nested_plain(Token *t, const ParserConfig *cfg, Accum *a
 	}
 
 	if(has_non_text) {
-		if(is_td_inner) {
+		if(is_td_inner || is_ext_inner || is_heading_title) {
 			size_t ser_cap= txt_len + 64;
 			char *ser= malloc(ser_cap);
 			if(ser) {

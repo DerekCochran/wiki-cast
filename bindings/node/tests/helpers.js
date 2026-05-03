@@ -116,7 +116,7 @@ function analyzeAstDiff(expected, got, name = 'sample' ) {
   const getTopLevelAncestor = (node) => {
     if (!node) return node;
     let cur = node;
-    let startLevel = 0;
+    let startLevel = 2;
     while (cur.parent && startLevel >= 0) {
       cur = cur.parent;
       startLevel--;
@@ -164,8 +164,12 @@ function analyzeAstDiff(expected, got, name = 'sample' ) {
     }
 
     for (let i = 0; i < ach.length; i++) {
-      ach[i].parent = a;
-      bch[i].parent = b;
+      if (ach[i] && typeof ach[i] === 'object') {
+        ach[i].parent = a;
+      }
+      if (bch[i] && typeof bch[i] === 'object') {
+        bch[i].parent = b;
+      }
       queue.push({ path: `${p}.childNodes[${i}]`, a: ach[i], b: bch[i]});
     }
   }
@@ -328,6 +332,24 @@ node test_pipeline.js`);
   } else if (found.kind === 'null-mismatch') {
     lines.push(`expected.node: ${astNodeSummary(found.a)}`);
     lines.push(`got.node: ${astNodeSummary(found.b)}`);
+    if( name == 'wikitext' && found.a) {
+      const pipelinePath = path.join(__dirname, 'test_pipeline.js');
+      const pipelineContent = fs.readFileSync(pipelinePath, 'utf8');
+      const insertPoint = pipelineContent.indexOf('const tests = [');
+      if (insertPoint !== -1) {
+        const before = pipelineContent.slice(0, insertPoint + 'const tests = ['.length);
+        const after = pipelineContent.slice(insertPoint + 'const tests = ['.length);
+        const newContent = `${before}\n\`${getTopLevelAncestor(found.a).toString()}\`,${after}`;
+        fs.writeFileSync(pipelinePath, newContent, 'utf8');
+        console.log(`Inserted new test case into ${pipelinePath}`);
+        console.log(`Run the below commands to execute the new test case:
+cd ${path.dirname(__filename)}
+node test_pipeline.js`);
+      } else {
+        console.warn(`Could not find const tests = [ in ${pipelinePath}, skipping automatic insertion of new test case.`);
+      }
+    }
+
   }
 
   lines.push(`expected.node.summary: ${astNodeSummary(found.a)}`);

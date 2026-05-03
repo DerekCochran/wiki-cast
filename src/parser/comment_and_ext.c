@@ -708,6 +708,60 @@ static Token *parse_imagemap_image_line_local(const char *line, size_t line_len,
 				}
 			}
 		}
+
+		/* JS parity: `File:...||300px` in imagemap keeps an explicit empty
+		 * caption image-parameter node so toString preserves the double pipe. */
+		bool has_double_pipe= false;
+		for(size_t pi= 0; pi + 1 < line_len; pi++) {
+			if(line[pi] == '|' && line[pi + 1] == '|') {
+				has_double_pipe= true;
+				break;
+			}
+		}
+		if(has_double_pipe) {
+			bool has_empty_caption= false;
+			for(size_t ci= 0; ci < out->child_count; ci++) {
+				if(out->children[ci].is_text || !out->children[ci].token) continue;
+				Token *child= out->children[ci].token;
+				if(child->type == TOKEN_PLAIN && child->type_name && strcmp(child->type_name, "image-parameter") == 0 && child->name && strcmp(child->name, "caption") == 0 && child->child_count == 1 && child->children[0].is_text && child->children[0].text_len == 0) {
+					has_empty_caption= true;
+					break;
+				}
+			}
+
+			if(!has_empty_caption) {
+				Token *cap= token_new(TOKEN_PLAIN, "image-parameter");
+				if(cap) {
+					cap->name= strdup("caption");
+					token_append_text_n(cap, "", 0);
+					accum_push(accum, cap);
+
+					if(out->child_count >= out->child_cap) {
+						size_t new_cap= out->child_cap ? out->child_cap * 2 : 4;
+						Child *grown= realloc(out->children, new_cap * sizeof(Child));
+						if(grown) {
+							out->children= grown;
+							out->child_cap= new_cap;
+						}
+					}
+
+					if(out->child_count < out->child_cap) {
+						size_t ins= out->child_count > 0 ? 1 : 0;
+						if(ins < out->child_count) {
+							memmove(&out->children[ins + 1], &out->children[ins], (out->child_count - ins) * sizeof(Child));
+						}
+						out->children[ins].is_text= false;
+						out->children[ins].token= cap;
+						out->children[ins].text= NULL;
+						out->children[ins].text_len= 0;
+						out->child_count++;
+					} else {
+						/* Fallback: keep tree valid if insertion cannot grow. */
+						token_free(cap);
+					}
+				}
+			}
+		}
 	}
 
 	token_free_shallow(tmp);
@@ -849,6 +903,25 @@ static Token *build_gallery_inner_token(const char *inner_str, size_t inner_len,
 	return t;
 }
 
+static Token *build_categorytree_inner_token(const char *inner_str, size_t inner_len,
+																												Accum *accum) {
+	Token *t= token_new(TOKEN_EXT_INNER, "ext-inner");
+	if(!t) return NULL;
+	t->name= strdup("categorytree");
+	accum_push(accum, t);
+
+	Token *target= token_new(TOKEN_ATOM, "link-target");
+	if(!target) return t;
+	if(inner_str && inner_len > 0) {
+		token_append_text_n(target, inner_str, inner_len);
+	} else {
+		token_append_text_n(target, "", 0);
+	}
+	accum_push(accum, target);
+	token_append_child(t, target);
+	return t;
+}
+
 /* ── Main token builders ─────────────────────────────────────────────────── */
 
 /**
@@ -912,6 +985,8 @@ static Token *build_ext_token(const char *name, size_t name_len,
 		inner_tok= build_gallery_inner_token(inner, inner_len, cfg, accum);
 	} else if(strcmp(lcname, "imagemap") == 0 && !self_closing) {
 		inner_tok= build_imagemap_inner_token(inner, inner_len, cfg, accum);
+	} else if(strcmp(lcname, "categorytree") == 0) {
+		inner_tok= build_categorytree_inner_token(inner, inner_len, accum);
 	} else {
 		inner_tok= build_ext_inner(lcname, inner, inner_len, self_closing, accum);
 	}
