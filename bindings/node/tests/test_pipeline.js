@@ -7,6 +7,7 @@ const { runTests } = require('./helpers');
 // This should loop through each test and fast fail on the first mismatch.
 
 const tests = [
+  `<ref name="The Pulitzer Prizes {{pipe}} Poetry">{{Cite web |title=The Pulitzer Prizes {{pipe}} Poetry |url=http://www.pulitzer.org/bycat/Poetry |access-date=October 31, 2010 |publisher=Pulitzer.org}}</ref>`,
   `{{#tag:something|{{#expr:1+1}}|{{#time:Y}}}}`,
   `<gallery caption="Prints from [[Bernard de Montfaucon]]'s ''L'antiquité expliquée et représentée en figures'' (Band 2,2) page 358 ff.">
   File:Montfaucon Abraxas Plaque 149.xcf|Plaque 149
