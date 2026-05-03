@@ -11,6 +11,14 @@ const tests = [
   File:Actinopterygii.jpg||300px
   rect 0 0 333 232 [[Electrophorus electricus|Electric eel]]
   </imagemap>`,
+  `<imagemap>
+  File:Foo.jpg|thumb||alt=A
+  poly 1 1 2 2 [[L|t]]
+  </imagemap>`,
+  `<imagemap>
+  File:Foo.jpg|||alt=A
+  poly 1 1 2 2 [[L|t]]
+  </imagemap>`,
   `<ref>Andy Pease, [http://windliterature.org/2014/07/01/america-the-beautiful-by-katharine-lee-bates-and-samuel-augustus-ward-arr-carmen-dragon/ {{"'}}America the Beautiful' by Katharine Lee Bates and Samuel Augustus Ward, arr. Carmen Dragon"] ({{webarchive|url=https://web.archive.org/web/20180222162222/http://windliterature.org/2014/07/01/america-the-beautiful-by-katharine-lee-bates-and-samuel-augustus-ward-arr-carmen-dragon/ |date=February 22, 2018}}), Wind Band Literature, July 1, 2014; accessed 2019-08-17.</ref>`,
   `{| class="wikitable sortable"
   ! colspan="3" |[[File:Diplomatic_relations_of_Angola.svg|frameless|425x425px]]
