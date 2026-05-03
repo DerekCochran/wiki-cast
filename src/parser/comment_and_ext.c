@@ -5,6 +5,7 @@
 #include "build.h"
 #include "parser/braces.h"
 #include "parser/comment_and_ext.h"
+#include "parser/link.h"
 #include "parser/links.h"
 #include "string_util.h"
 #include <assert.h>
@@ -607,6 +608,208 @@ static Token *parse_gallery_image_line_local(const char *line, size_t line_len,
 	return out;
 }
 
+static Token *make_empty_noinclude_local(Accum *accum) {
+	Token *n= token_new(TOKEN_NOINCLUDE, "noinclude");
+	if(!n) return NULL;
+	token_append_text_n(n, "", 0);
+	accum_push(accum, n);
+	return n;
+}
+
+static Token *create_raw_link_token_local(const char *s, size_t len, Accum *accum) {
+	if(!s) return NULL;
+
+	size_t pipe= SIZE_MAX;
+	for(size_t i= 0; i < len; i++) {
+		if(s[i] == '|') {
+			pipe= i;
+			break;
+		}
+	}
+
+	const char *target_ptr= s;
+	size_t target_len= (pipe == SIZE_MAX) ? len : pipe;
+	Token *link= create_link_token(TOKEN_LINK, "link",
+													 target_ptr, target_len,
+													 NULL, 0, NULL,
+													 NULL, accum, false);
+	if(!link) return NULL;
+
+	if(pipe != SIZE_MAX) {
+		Token *text_tok= token_new(TOKEN_PLAIN, "link-text");
+		if(text_tok) {
+			const char *text_ptr= s + pipe + 1;
+			size_t text_len= len - (pipe + 1);
+			token_append_text_n(text_tok, text_ptr, text_len);
+			accum_push(accum, text_tok);
+			token_append_child(link, text_tok);
+		}
+	}
+
+	return link;
+}
+
+static Token *parse_imagemap_image_line_local(const char *line, size_t line_len,
+														 const ParserConfig *cfg,
+														 Accum *accum) {
+	if(!line || line_len == 0) return NULL;
+
+	char *wrapped= malloc(line_len + 5);
+	if(!wrapped) return NULL;
+	wrapped[0]= '[';
+	wrapped[1]= '[';
+	memcpy(wrapped + 2, line, line_len);
+	wrapped[2 + line_len]= ']';
+	wrapped[3 + line_len]= ']';
+	wrapped[4 + line_len]= '\0';
+
+	ThreadBuf tmp_tb;
+	tmp_tb.buf= wrapped;
+	tmp_tb.len= line_len + 4;
+	tmp_tb.cap= line_len + 5;
+	tmp_tb.shrink_size= (size_t)-1;
+	tmp_tb.target_size= tmp_tb.cap;
+
+	parse_braces(&tmp_tb, cfg, accum);
+	parse_links(&tmp_tb, cfg, accum, NULL, false);
+
+	Token *tmp= token_new(TOKEN_PLAIN, "imagemap-image-line");
+	if(!tmp) {
+		free(tmp_tb.buf);
+		return NULL;
+	}
+	build_from_str(tmp, tmp_tb.buf, tmp_tb.len, accum);
+	build_token_recursive(tmp, accum);
+
+	Token *out= NULL;
+	if(tmp->child_count == 1 && !tmp->children[0].is_text && tmp->children[0].token && tmp->children[0].token->type == TOKEN_FILE) {
+		out= tmp->children[0].token;
+		tmp->children[0].token= NULL;
+		if(out->type_name) free(out->type_name);
+		out->type_name= strdup("imagemap-image");
+		if(out->name) {
+			free(out->name);
+			out->name= NULL;
+		}
+		/* JS stage-log parity: link/file names are assigned later in afterBuild(). */
+		for(size_t ci= 0; ci < out->child_count; ci++) {
+			if(out->children[ci].is_text || !out->children[ci].token) continue;
+			Token *child= out->children[ci].token;
+			if((child->type == TOKEN_LINK || child->type == TOKEN_FILE || child->type == TOKEN_CATEGORY) && child->name) {
+				free(child->name);
+				child->name= NULL;
+			}
+			for(size_t cj= 0; cj < child->child_count; cj++) {
+				if(child->children[cj].is_text || !child->children[cj].token) continue;
+				Token *g= child->children[cj].token;
+				if((g->type == TOKEN_LINK || g->type == TOKEN_FILE || g->type == TOKEN_CATEGORY) && g->name) {
+					free(g->name);
+					g->name= NULL;
+				}
+			}
+		}
+	}
+
+	token_free_shallow(tmp);
+	free(tmp_tb.buf);
+	return out;
+}
+
+static Token *parse_imagemap_link_line_local(const char *line, size_t line_len,
+														const ParserConfig *cfg,
+														Accum *accum) {
+	if(!line || line_len == 0) return NULL;
+
+	size_t open= SIZE_MAX;
+	for(size_t i= 0; i + 1 < line_len; i++) {
+		if(line[i] == '[' && line[i + 1] == '[') {
+			open= i;
+			break;
+		}
+	}
+	if(open == SIZE_MAX) return NULL;
+
+	size_t close= SIZE_MAX;
+	for(size_t i= open + 2; i + 1 < line_len; i++) {
+		if(line[i] == ']' && line[i + 1] == ']') {
+			close= i;
+			break;
+		}
+	}
+	if(close == SIZE_MAX || close <= open + 1) return NULL;
+
+	Token *t= token_new(TOKEN_PLAIN, "imagemap-link");
+	if(!t) return NULL;
+	accum_push(accum, t);
+
+	if(open > 0) {
+		token_append_text_n(t, line, open);
+	} else {
+		token_append_text_n(t, "", 0);
+	}
+
+	const char *inner= line + open + 2;
+	size_t inner_len= close - (open + 2);
+	Token *link= create_raw_link_token_local(inner, inner_len, accum);
+	if(link) {
+		token_append_child(t, link);
+	} else {
+		token_append_text_n(t, line + open, (close + 2) - open);
+	}
+
+	if(close + 2 < line_len) {
+		token_append_text_n(t, line + close + 2, line_len - (close + 2));
+	}
+
+	Token *tail= make_empty_noinclude_local(accum);
+	if(tail) token_append_child(t, tail);
+
+	return t;
+}
+
+static Token *build_imagemap_inner_token(const char *inner_str, size_t inner_len,
+													 const ParserConfig *cfg,
+													 Accum *accum) {
+	Token *t= token_new(TOKEN_EXT_INNER, "ext-inner");
+	if(!t) return NULL;
+	t->name= strdup("imagemap");
+	t->sep= '\n';
+	accum_push(accum, t);
+
+	if(!inner_str || inner_len == 0) return t;
+
+	bool image_seen= false;
+	size_t line_start= 0;
+	for(size_t i= 0; i <= inner_len; i++) {
+		if(i != inner_len && inner_str[i] != '\n') continue;
+		size_t line_len= i - line_start;
+		const char *line_ptr= inner_str + line_start;
+
+		if(line_len == 0) {
+			Token *n= make_empty_noinclude_local(accum);
+			if(n) token_append_child(t, n);
+		} else {
+			Token *tok= NULL;
+			if(!image_seen) {
+				tok= parse_imagemap_image_line_local(line_ptr, line_len, cfg, accum);
+				if(tok) image_seen= true;
+			}
+			if(!tok) {
+				tok= parse_imagemap_link_line_local(line_ptr, line_len, cfg, accum);
+			}
+			if(tok) {
+				token_append_child(t, tok);
+			} else {
+				token_append_text_n(t, line_ptr, line_len);
+			}
+		}
+
+		line_start= i + 1;
+	}
+
+	return t;
+}
+
 static Token *build_gallery_inner_token(const char *inner_str, size_t inner_len,
 																			const ParserConfig *cfg,
 																			Accum *accum) {
@@ -707,6 +910,8 @@ static Token *build_ext_token(const char *name, size_t name_len,
 		inner_tok= build_references_inner_token(inner, inner_len, cfg, accum);
 	} else if(strcmp(lcname, "gallery") == 0 && !self_closing) {
 		inner_tok= build_gallery_inner_token(inner, inner_len, cfg, accum);
+	} else if(strcmp(lcname, "imagemap") == 0 && !self_closing) {
+		inner_tok= build_imagemap_inner_token(inner, inner_len, cfg, accum);
 	} else {
 		inner_tok= build_ext_inner(lcname, inner, inner_len, self_closing, accum);
 	}

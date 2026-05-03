@@ -318,6 +318,12 @@ const tests = [
   "{|\n| {{T|x=y}} ; -{zh-hans:简;zh-hant:繁;}-\n|}",
   '[[Image:Foo.jpg|caption [[Link]] text]]',
   '[[Image:Foo.jpg|upright|caption [[Link]] text]]',
+  '<imagemap>\n\nFile:Foo.jpg|thumb|alt=A\npoly 1 1 2 2 [[L|{{T|x}}]]\npoly 3 3 4 4 [[L2]]\n\n</imagemap>',
+  '<pre>{{T|x=[[L|t]]}}</pre>',
+  '<hiero>{{T|x=[[L|t]]}}</hiero>',
+  '<categorytree>Category:Physics</categorytree>',
+  '<categorytree>[[Category:Physics|Physics]]</categorytree>',
+  '<categorytree>{{T|x=[[L|t]]}}</categorytree>',
 ];
 
 for (const test of tests) {

@@ -366,7 +366,7 @@ static bool ext_inner_allows_nested_parse(const char *name) {
 
 	/* JS ExtToken parity: only specific ext tags parse inner wikitext.
      * Unlisted tags (for example score/syntaxhighlight/math) are nowiki-like. */
-	return strcmp(name, "pre") == 0 || strcmp(name, "indicator") == 0 || strcmp(name, "poem") == 0 || strcmp(name, "ref") == 0 || strcmp(name, "option") == 0 || strcmp(name, "combooption") == 0 || strcmp(name, "tab") == 0 || strcmp(name, "tabs") == 0 || strcmp(name, "poll") == 0 || strcmp(name, "seo") == 0 || strcmp(name, "langconvert") == 0 || strcmp(name, "phonos") == 0 || strcmp(name, "dynamicpagelist") == 0 || strcmp(name, "inputbox") == 0 || strcmp(name, "references") == 0 || strcmp(name, "choose") == 0 || strcmp(name, "combobox") == 0 || strcmp(name, "gallery") == 0 || strcmp(name, "imagemap") == 0 || strcmp(name, "hiero") == 0 || strcmp(name, "categorytree") == 0;
+	return strcmp(name, "indicator") == 0 || strcmp(name, "poem") == 0 || strcmp(name, "ref") == 0 || strcmp(name, "option") == 0 || strcmp(name, "combooption") == 0 || strcmp(name, "tab") == 0 || strcmp(name, "tabs") == 0 || strcmp(name, "poll") == 0 || strcmp(name, "seo") == 0 || strcmp(name, "langconvert") == 0 || strcmp(name, "phonos") == 0 || strcmp(name, "dynamicpagelist") == 0 || strcmp(name, "inputbox") == 0 || strcmp(name, "references") == 0 || strcmp(name, "choose") == 0 || strcmp(name, "combobox") == 0 || strcmp(name, "gallery") == 0 || strcmp(name, "imagemap") == 0 || strcmp(name, "categorytree") == 0;
 }
 
 static void postprocess_nested_plain(Token *t, const ParserConfig *cfg, Accum *accum);
