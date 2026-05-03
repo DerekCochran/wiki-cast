@@ -236,18 +236,36 @@ Notes:
 
 ## Notes
 
-Get all files for a directory
+**C code**
 
 ```bash
 cd ~/git/wikiparser-node-c-tokenizer/src
-> ../output.txt
-find . -type f -name "*.c" | while read -r file; do
+rm ../data/c-code.txt
+find . -type f -name "*.c" ! -name "log.c" | while read -r file; do
   clean_name="${file#./}"
-  echo "<$clean_name>" >> ../output.txt
+  echo "<$clean_name>" >> ../data/c-code.txt
   gcc -E -P -fpreprocessed -dD "$file" | \
     clang-format -style=file | \
-    sed -E 's/[[:space:]]*([;=,&|\-\+{}])[[:space:]]*/\1/g' | \
-    sed ':a; /[{};&|,]$/ {N; s/\n[[:space:]]*//; ba}' >> ../output.txt
-  echo -e "\n</$clean_name>\n" >> ../output.txt
+    sed -E 's/[[:space:]]*([;=,&|\-\+{}])[[:space:]]*/\1/g'  | \
+    sed ':a; /[{};&|,]$/ {N; s/\n[[:space:]]*//; ba}' >> ../data/c-code.txt
+  echo -e "</$clean_name>\n" >> ../data/c-code.txt
 done
 ```
+
+**JS code**
+
+```bash
+cd ~/git/wikiparser-node-c-tokenizer/new-js
+rm ../data/js-code.txt
+find . -type f -name "*.js" ! -name "*.min.js"  | while read -r file; do
+  clean_name="${file#./}"
+  echo "<$clean_name>" >> ../data/js-code.txt
+  input_file="${file}"
+  output_file="${file%.js}.min.js"
+  cat "$input_file" | minify --js >> ../data/js-code.txt
+  echo -e "</$clean_name>\n" >> ../data/js-code.txt
+done
+```
+
+
+repomix

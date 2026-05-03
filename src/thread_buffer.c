@@ -105,14 +105,6 @@ static void registry_remove(ThreadBuffers *tb) {
 
 /* ── Compiler TLS cache + pthread TLS key ───────────────────────────────── */
 
-#if defined(_MSC_VER)
-#define THREAD_LOCAL __declspec(thread)
-#elif defined(__GNUC__) || defined(__clang__)
-#define THREAD_LOCAL __thread
-#else
-#define THREAD_LOCAL _Thread_local
-#endif
-
 static THREAD_LOCAL ThreadBuffers *g_tls_buffers= NULL;
 static pthread_key_t g_tls_key;
 static pthread_once_t g_key_once= PTHREAD_ONCE_INIT;

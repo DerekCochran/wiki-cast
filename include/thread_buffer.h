@@ -40,6 +40,14 @@
 #include <stddef.h>
 #include <stdbool.h>
 
+#if defined(_MSC_VER)
+#define THREAD_LOCAL __declspec(thread)
+#elif defined(__GNUC__) || defined(__clang__)
+#define THREAD_LOCAL __thread
+#else
+#define THREAD_LOCAL _Thread_local
+#endif
+
 /* ── A single resizable buffer slot ─────────────────────────────────────── */
 /*
  * Each ThreadBuf carries its own resize policy so that wiki_thread_buf_reserve()
