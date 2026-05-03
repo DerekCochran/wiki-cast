@@ -353,10 +353,19 @@ static Token *build_template_token(const char **parts_restored, const size_t *pa
 			free(t->type_name);
 			t->type_name= strdup("magic-word");
 			const char *canonical= parser_function_canonical(cfg, title_part, magic_title_len);
+			char *magic_raw_name= trim_copy(title_part, magic_title_len);
+			if(magic_raw_name && magic_raw_name[0] == '#' && !canonical) {
+				/* JS parity: unknown hash parser-functions (for example
+				 * {{#vardefine:...}} on configs that do not define it) are
+				 * treated as invalid template names and left as plain text. */
+				free(magic_raw_name);
+				token_free(t);
+				return NULL;
+			}
 			if(canonical) {
 				t->name= strdup(canonical);
 			} else {
-				char *nm= trim_copy(title_part, magic_title_len);
+				char *nm= magic_raw_name;
 				if(nm) {
 					for(char *p= nm; *p; p++) {
 						*p= (char)tolower((unsigned char)*p);
@@ -364,6 +373,7 @@ static Token *build_template_token(const char **parts_restored, const size_t *pa
 					t->name= nm;
 				}
 			}
+			if(canonical && magic_raw_name) free(magic_raw_name);
 			if(t->name && strcmp(t->name, "invoke") == 0) invoke_magic= true;
 
 			Token *mw_name= token_new(TOKEN_SYNTAX, "magic-word-name");
