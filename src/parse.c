@@ -1113,19 +1113,62 @@ static void postprocess_root_braces_fallback(Token *root, const ParserConfig *cf
 	wiki_thread_buf_release_scratch(scratch);
 }
 
-static void postprocess_parameter_value_inline(Token *t, const ParserConfig *cfg, Accum *accum,
-																	const char *page) {
+typedef enum {
+	ATTR_VALUE_PARSE_NONE= 0,
+	ATTR_VALUE_PARSE_CONVERTER_ONLY,
+	ATTR_VALUE_PARSE_RICH_INLINE,
+} AttrValueParseMode;
+
+static AttrValueParseMode classify_attr_value_parse_mode(const Token *parent,
+																								 const Token *grandparent) {
+	if(!parent || !grandparent || parent->type != TOKEN_EXT_ATTR) return ATTR_VALUE_PARSE_NONE;
+	if(!parent->name || !grandparent->name || !grandparent->type_name) return ATTR_VALUE_PARSE_NONE;
+
+	if(strcmp(grandparent->type_name, "ext-attrs") != 0 &&
+		 strcmp(grandparent->type_name, "html-attrs") != 0 &&
+		 strcmp(grandparent->type_name, "table-attrs") != 0) {
+		return ATTR_VALUE_PARSE_NONE;
+	}
+
+	const char *key= parent->name;
+	const char *tag= grandparent->name;
+
+	if(strcmp(key, "title") == 0 || (strcmp(tag, "img") == 0 && strcmp(key, "alt") == 0)) {
+		return ATTR_VALUE_PARSE_CONVERTER_ONLY;
+	}
+
+	if((strcmp(tag, "gallery") == 0 && strcmp(key, "caption") == 0) ||
+		 (strcmp(tag, "ref") == 0 && strcmp(key, "details") == 0) ||
+		 ((strcmp(tag, "mapframe") == 0 || strcmp(tag, "maplink") == 0) && strcmp(key, "text") == 0) ||
+		 (strcmp(tag, "choose") == 0 && (strcmp(key, "before") == 0 || strcmp(key, "after") == 0))) {
+		return ATTR_VALUE_PARSE_RICH_INLINE;
+	}
+
+	return ATTR_VALUE_PARSE_NONE;
+}
+
+static void postprocess_parameter_value_inline_impl(Token *t, const ParserConfig *cfg, Accum *accum,
+																				const char *page, const Token *parent,
+																				const Token *grandparent) {
 	if(!t) return;
 
 	for(size_t i= 0; i < t->child_count; i++) {
 		if(!t->children[i].is_text && t->children[i].token) {
-			postprocess_parameter_value_inline(t->children[i].token, cfg, accum, page);
+			postprocess_parameter_value_inline_impl(t->children[i].token, cfg, accum, page, t, parent);
 		}
 	}
 
 	bool is_parameter_value= false;
 	bool is_arg_default= false;
 	bool is_attr_value= (t->type == TOKEN_ATTR_VALUE);
+	AttrValueParseMode attr_mode= ATTR_VALUE_PARSE_NONE;
+
+	if(is_attr_value) {
+		attr_mode= classify_attr_value_parse_mode(parent, grandparent);
+		if(attr_mode == ATTR_VALUE_PARSE_NONE) {
+			return;
+		}
+	}
 
 	if(!is_attr_value) {
 		if(t->type != TOKEN_PLAIN || !t->type_name) {
@@ -1167,12 +1210,25 @@ static void postprocess_parameter_value_inline(Token *t, const ParserConfig *cfg
 		const char *txt= cur.text;
 		size_t txt_len= cur.text_len;
 		wiki_thread_buf_set(scratch, txt, txt_len);
-		parse_comment_and_ext(scratch, cfg, accum, false);
-		if(!is_attr_value) {
+
+		if(is_attr_value) {
+			if(attr_mode == ATTR_VALUE_PARSE_RICH_INLINE) {
+				parse_braces(scratch, cfg, accum);
+				bool has_bang_sentinel= mem_has(scratch->buf, scratch->len, "!\x7F");
+				if(!has_bang_sentinel) {
+					parse_links(scratch, cfg, accum, page, false);
+					parse_quotes_stage6_per_line(scratch, cfg, accum);
+					parse_external_links(scratch, cfg, accum, false);
+					parse_magic_links(scratch, cfg, accum);
+				}
+				parse_converter(scratch, cfg, accum);
+			} else if(attr_mode == ATTR_VALUE_PARSE_CONVERTER_ONLY) {
+				parse_converter(scratch, cfg, accum);
+			}
+		} else {
+			parse_comment_and_ext(scratch, cfg, accum, false);
 			parse_braces(scratch, cfg, accum);
-		}
-		parse_html(scratch, cfg, accum);
-		if(is_parameter_value || is_attr_value) {
+			parse_html(scratch, cfg, accum);
 			parse_hr_and_double_underscore(scratch, cfg, accum, TOKEN_PLAIN, is_attr_value ? "attr-value" : "parameter-value");
 			bool has_bang_sentinel= mem_has(scratch->buf, scratch->len, "!\x7F");
 			if(!has_bang_sentinel) {
@@ -1184,6 +1240,7 @@ static void postprocess_parameter_value_inline(Token *t, const ParserConfig *cfg
 				parse_converter(scratch, cfg, accum);
 			}
 		}
+
 
 		bool unchanged= (scratch->len == txt_len && memcmp(scratch->buf, txt, txt_len) == 0);
 		bool has_marker= memchr(scratch->buf, '\0', scratch->len) != NULL;
@@ -1255,6 +1312,11 @@ static void postprocess_parameter_value_inline(Token *t, const ParserConfig *cfg
 			postprocess_nested_plain(t->children[i].token, cfg, accum, page);
 		}
 	}
+}
+
+static void postprocess_parameter_value_inline(Token *t, const ParserConfig *cfg, Accum *accum,
+																			const char *page) {
+	postprocess_parameter_value_inline_impl(t, cfg, accum, page, NULL, NULL);
 }
 
 static void finalize_gallery_and_link_names(Token *t, const ParserConfig *cfg,
