@@ -7,6 +7,7 @@ const { runTests } = require('./helpers');
 // This should loop through each test and fast fail on the first mismatch.
 
 const tests = [
+  `[[Mushroom poisoning|deadly mushrooms]]`,
   `; A'''B''' : C`,
   `; A''B'' : C`,
   `; A'''''B''''' : C`,
