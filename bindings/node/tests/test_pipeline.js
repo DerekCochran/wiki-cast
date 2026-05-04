@@ -7,7 +7,18 @@ const { runTests } = require('./helpers');
 // This should loop through each test and fast fail on the first mismatch.
 
 const tests = [
-
+  `; A'''B''' : C`,
+  `; A''B'' : C`,
+  `; A'''''B''''' : C`,
+  `; outer '''bold : text''' end`,
+  `＿＿目次＿＿`,
+  `text ＿＿目次＿＿ more text`,
+  `  ＿＿目次＿＿  `,
+  `== Heading ==\xC2\xA0`,
+  `== Heading ==\xE3\x80\x80`,
+  `== Normal Heading ==`,
+  `=== Nested ===  `,
+  `== Heading\xC2\xA0text ==`,
   `[[/Sub]]`,
   `[[/Sub|display text]]`,
   `[[../Sibling]]`,

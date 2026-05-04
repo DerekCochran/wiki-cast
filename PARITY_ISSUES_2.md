@@ -416,3 +416,203 @@ if (!is_poem) {
 }
 ```
 
+---
+
+## Issue G — Medium: QuoteToken Bold/Italic Flags Use Static Type Instead of Running Open/Close State
+
+### Status: **CONFIRMED — real gap**
+
+### Evidence
+
+**JS** (`dist/parser/quotes.js`):
+```js
+let bold = false, italic = false;
+for (let i = 1; i < length; i += 2) {
+    const n = arr[i].length, isBold = n !== 2, isItalic = n !== 3,
+    token = new quote_1.QuoteToken(arr[i], { bold: isBold && Boolean(bold), italic: isItalic && Boolean(italic) }, config, accum);
+    if (isBold) {
+        bold = !bold && token;   // ← opens or closes: false for first, truthy for second
+    }
+    if (isItalic) {
+        italic = !italic && token;
+    }
+    arr[i] = `\0${accum.length - 1}q\x7F`;
+}
+```
+
+So `token.bold` for a `'''` run is **`false`** on the opening token (first `'''`) and **`true`** on the closing token (second `'''`).
+
+**C** (`src/parser/quotes.c` `build_quote_token`):
+```c
+t->data.quote.bold   = txt_len != 2;   // true for ALL ''' and ''''' tokens
+t->data.quote.italic = txt_len != 3;   // true for ALL '' and ''''' tokens
+```
+
+C always sets `bold = true` for any `'''` token regardless of whether it opens or closes a bold span.
+
+### Impact
+
+The `bold`/`italic` flags are consumed by stage-9 (`parse_list`) to track open HTML-like nesting depth when deciding whether a `:` should create a `dd` token.  In JS `list.js`:
+
+```js
+const { bold, italic } = accum[idx];
+if (bold) {
+    update(lb);   // update(closing) — increments or decrements lt
+    lb = !lb;
+}
+```
+
+In JS, the **first** `'''` has `bold = false` → `if (bold)` is skipped → **`lt` is not incremented**.  
+In C, the first `'''` has `bold = true` → `if (!lb) lt++` → **`lt` becomes 1** prematurely.
+
+For a definition-list line containing bold text and a `:` separator, this causes a divergence: the `:` between the first and second `'''` is processed at `lt = 0` in JS (eligible for `dd`) but at `lt = 1` in C (suppressed).
+
+**Demonstrated behavioural difference** for input `;A'''B''' : C`:
+
+| Step | JS `lt` | JS result | C `lt` | C result |
+|---|---|---|---|---|
+| First `'''` (bold=false) | 0 | no change | 1 | lt++ |
+| `:` colon | 0 → dd created | dd token | 1 → skipped | no dd |
+| Second `'''` (bold=true) | 1 | update(lb=false) → lt++ | 0 | lt-- |
+
+### Recommended Fix
+
+Update `build_quote_token` to accept and store the running state:
+
+```c
+// In parse_quotes(), track running state like JS:
+bool bold_state = false, italic_state = false;
+...
+// When building token for quote run of length n:
+bool isBold = (n != 2), isItalic = (n != 3);
+t->data.quote.bold   = isBold   && bold_state;
+t->data.quote.italic = isItalic && italic_state;
+if (isBold)   bold_state   = !bold_state;
+if (isItalic) italic_state = !italic_state;
+```
+
+The closing `tidy` token at the end must get `bold = bold_state` (which is now
+the truthy open token), not `(len != 2)`.
+
+---
+
+## Issue H — Medium: Fullwidth Double-Underscore Pattern Strips Wrong Number of Bytes
+
+### Status: **CONFIRMED — real gap**
+
+### Evidence
+
+**JS** (`dist/parser/hrAndDoubleUnderscore.js`):
+```js
+config.regexHrAndDoubleUnderscore ??= new RegExp(
+    `...|＿{2}(${all.filter(s => !isUnderscore(s)).map(s => s.slice(2, -2)).join('|')})＿{2}`,
+    'gimu'
+);
+```
+For a fullwidth-underscore dunder like `"＿＿目次＿＿"` (6 chars: `＿`, `＿`, `目`, `次`, `＿`, `＿`),
+JS calls `s.slice(2, -2)` → removes **2 chars** from each end → inner = `"目次"`.
+The pattern becomes `＿{2}(目次)＿{2}` and correctly matches `＿＿目次＿＿`.
+
+**C** (`src/parser/hr_and_double_underscore.c` `build_hr_and_dunder_pattern`):
+```c
+static const char fw[] = "\xEF\xBC\xBF"; /* U+FF3F — 3 UTF-8 bytes per char */
+…
+pattern_append_n(&pattern, &cap, &len,
+    it + (sizeof(fw) - 1U),                    // skip only 3 bytes (ONE ＿)
+    it_len - 2U * (sizeof(fw) - 1U));           // remove only 6 bytes total
+```
+
+For `"＿＿目次＿＿"` = 18 UTF-8 bytes:
+- C skips `it + 3` → starts at the **second** `＿`
+- Length `18 - 6 = 12` bytes → captures `＿目次＿` (NOT just `目次`)
+
+The pattern becomes `＿{2}(＿目次＿)＿{2}` which would require **3** fullwidth underscores on each side to match — the string `＿＿目次＿＿` would NOT match.
+
+### Impact
+
+Double-underscore magic words stored in the fullwidth form (`＿＿目次＿＿`, the Chinese
+alias for `__TOC__`) will not be recognised in C.  The regex simply never fires
+for them.
+
+### Recommended Fix
+
+Skip **two** fullwidth underscores from the start and remove **four** from the total:
+
+```c
+/* JS: s.slice(2, -2) removes 2 full-width underscores (3 bytes each) from each end */
+pattern_append_n(&pattern, &cap, &len,
+    it + 2U * (sizeof(fw) - 1U),               // it + 6: skip TWO ＿
+    it_len - 4U * (sizeof(fw) - 1U));           // len - 12: remove FOUR ＿ total
+```
+
+Also check `is_fullwidth_wrapped_dunder` — it currently only verifies that the
+string starts and ends with **one** `＿` (3 bytes).  It should verify at least
+**two** on each side for a proper double-underscore item:
+
+```c
+static int is_fullwidth_wrapped_dunder(const char *s) {
+    static const char fw[] = "\xEF\xBC\xBF";
+    size_t fwl = sizeof(fw) - 1U;         /* 3 bytes per char */
+    size_t len = s ? strlen(s) : 0;
+    if (len < 4 * fwl + 1) return 0;     /* need ＿＿X＿＿ minimum */
+    return memcmp(s, fw, fwl) == 0
+        && memcmp(s + fwl, fw, fwl) == 0             /* second leading ＿ */
+        && memcmp(s + len - fwl, fw, fwl) == 0
+        && memcmp(s + len - 2 * fwl, fw, fwl) == 0;  /* second trailing ＿ */
+}
+```
+
+---
+
+## Issue I — Low: Heading Trailing-Whitespace Regex Too Narrow
+
+### Status: **CONFIRMED — real gap**
+
+### Evidence
+
+**JS** (`dist/parser/hrAndDoubleUnderscore.js`):
+```js
+data = data.replace(
+    /^((?:\0\d+[cn]\x7F)*)(={1,6})(.+)\2((?:\s|\0\d+[cn]\x7F)*)$/gmu,
+    ...
+);
+```
+The trailing-whitespace group uses `\s` which in JavaScript matches
+`[ \f\n\r\t\v\u00a0\u1680\u2000–\u200a\u2028\u2029\u202f\u205f\u3000\ufeff]`.
+
+**C** (`src/parser/hr_and_double_underscore.c`):
+```c
+const char *hpat =
+    "^((?:\\x00\\d+[cn]\\x7F)*)(={1,6})(.+)\\2"
+    "((?:[ \\t\\f\\v]|\\x00\\d+[cn]\\x7F)*)$";
+```
+Only `[ \t\f\v]` — missing `\r`, `\n`, and all Unicode whitespace (NBSP, thin space,
+ideographic space, etc.) from the trail group.
+
+After the pre-pass `tidy` stage, lone `\r` are removed so that case is moot.
+`\n` ends the line in multiline mode so it cannot appear in a single-line trail.
+The **practical impact** is for `\u00a0` (NO-BREAK SPACE, U+00A0) or other Unicode
+whitespace that can appear as trailing content inside headings.
+
+For `== Heading ==\u00a0` (line ending with NBSP after the closing `==`):
+- JS: trail group matches `\u00a0`; heading recognized with trail `= "\u00a0"`
+- C: trail group fails to match `\u00a0`; the `(.+)\2` backtrack fails to find a
+  valid `==` prefix; heading **not recognized** — the line stays as plain text
+
+### Recommended Fix
+
+Replace `[ \\t\\f\\v]` with `\\s` and add `PCRE2_UCP` to the compile flags:
+
+```c
+const char *hpat =
+    "^((?:\\x00\\d+[cn]\\x7F)*)(={1,6})(.+)\\2"
+    "((?:\\s|\\x00\\d+[cn]\\x7F)*)$";
+
+pcre2_code *hre = pcre2_compile(...,
+    PCRE2_UTF | PCRE2_MULTILINE | PCRE2_UCP,
+    ...);
+```
+
+`PCRE2_UCP` makes `\s` match the full set of Unicode "space separator" characters,
+matching JavaScript's `\s` behaviour.
+
