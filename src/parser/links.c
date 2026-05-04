@@ -885,7 +885,13 @@ static Token *parse_inner_fragment(const char *s, size_t len, const ParserConfig
 	}
 	parse_quotes(inner_tb, cfg, accum, tidy);
 	if(in_file) {
+		/* JS parity: parseLinks calls parseExternalLinks(text, ..., true) on the file
+		 * image text before creating FileToken (first pass, inFile=true).
+		 * Then stage 7 runs parseExternalLinks(captionText, ..., false) on each
+		 * ImageParameterToken(caption) (second pass, inFile=false), wrapping the
+		 * \0<N>f\x7F sentinels from the first pass into proper ExtLinkTokens. */
 		parse_external_links(inner_tb, cfg, accum, true);
+		parse_external_links(inner_tb, cfg, accum, false);
 		parse_magic_links(inner_tb, cfg, accum);
 	}
 

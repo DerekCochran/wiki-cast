@@ -161,6 +161,27 @@ static Token *build_ext_link_token(Token *url_tok,
 	return ext;
 }
 
+/* JS parity: ExtLinkToken constructor checks
+ *   /^\0\d+f\x7F$/.test(url)
+ * and, if true, reuses accum[N] (the existing MagicLinkToken) rather than creating
+ * a new wrapper token.  This happens in the second-pass parseExternalLinks call on
+ * image-parameter caption tokens that were already pre-processed with inFile=true.
+ */
+static bool try_parse_f_sentinel(const char *ptr, size_t len, size_t *out_idx) {
+	if(len < 4) return false;
+	if((unsigned char)ptr[0] != 0x00) return false;
+	if(ptr[len - 2] != 'f') return false;
+	if((unsigned char)ptr[len - 1] != 0x7F) return false;
+	size_t idx= 0;
+	for(size_t i= 1; i + 2 < len; i++) {
+		char c= ptr[i];
+		if(c < '0' || c > '9') return false;
+		idx= idx * 10 + (size_t)(c - '0');
+	}
+	*out_idx= idx;
+	return true;
+}
+
 void parse_external_links(ThreadBuf *tb, const ParserConfig *cfg,
 													Accum *accum, bool in_file) {
 	if(!tb || !tb->buf) return;
@@ -323,13 +344,23 @@ void parse_external_links(ThreadBuf *tb, const ParserConfig *cfg,
 		/* Normal handling (no &lt;/&gt; truncation) */
 		{
 			size_t accum_before= accum->count;
-			Token *url_tok= build_magic_link_token(url_ptr, url_len_v, accum);
-			if(!url_tok) {
-				ENSURE_CAP(mend - mstart);
-				memcpy(out_buf + out_len, tb->buf + mstart, mend - mstart);
-				out_len+= mend - mstart;
-				search_at= mend + (mend == mstart ? 1 : 0);
-				continue;
+			Token *url_tok= NULL;
+			size_t f_sentinel_idx;
+			/* JS parity: when !in_file and URL is a pure \0<N>f\x7F sentinel,
+			 * reuse the existing MagicLinkToken from accum[N] (mirrors ExtLinkToken
+			 * constructor) rather than wrapping it in an extra ext-link-url node. */
+			if(!in_file && try_parse_f_sentinel(url_ptr, url_len_v, &f_sentinel_idx)
+							&& f_sentinel_idx < accum->count) {
+				url_tok= accum->tokens[f_sentinel_idx];
+			} else {
+				url_tok= build_magic_link_token(url_ptr, url_len_v, accum);
+				if(!url_tok) {
+					ENSURE_CAP(mend - mstart);
+					memcpy(out_buf + out_len, tb->buf + mstart, mend - mstart);
+					out_len+= mend - mstart;
+					search_at= mend + (mend == mstart ? 1 : 0);
+					continue;
+				}
 			}
 
 			if(in_file) {
