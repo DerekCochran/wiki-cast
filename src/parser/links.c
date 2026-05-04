@@ -118,10 +118,155 @@ static void append_fragment_children(Token *dst, Token *frag) {
 	}
 }
 
+/* ---- JS parity: validate(key, val, config, extOrType, halfParsed=true) ---- *
+ *                                                                              *
+ * Returns true if the parameter value is valid for the given key and file      *
+ * extension, false if the parameter should fall through to "caption".          *
+ * Mirrors imageParameter.js validate() exactly.                                */
+
+/* Extract lowercase extension from a title like "File:Photo.jpg" → "jpg" */
+static void img_get_extension(const char *title, char *ext_buf, size_t bufsize) {
+	ext_buf[0]= '\0';
+	if(!title || bufsize < 2) return;
+	const char *dot= strrchr(title, '.');
+	if(!dot) return;
+	dot++;
+	size_t i= 0;
+	while(dot[i] && i + 1 < bufsize) {
+		ext_buf[i]= (char)tolower((unsigned char)dot[i]);
+		i++;
+	}
+	ext_buf[i]= '\0';
+}
+
+/* Strip \0<digits>[tc]\x7F sentinels and trim ASCII whitespace.
+ * out_buf must be at least val_len+1 bytes. Returns pointer to trimmed string
+ * within out_buf. */
+static const char *img_strip_and_trim(const char *val, size_t val_len,
+																			char *out_buf, bool strip_quotes) {
+	size_t j= 0;
+	for(size_t i= 0; i < val_len;) {
+		if((unsigned char)val[i] == 0x00 && i + 1 < val_len) {
+			size_t k= i + 1;
+			while(k < val_len && val[k] >= '0' && val[k] <= '9') k++;
+			if(k < val_len) {
+				char ch= val[k];
+				bool is_sent= (ch == 't' || ch == 'c' || (strip_quotes && ch == 'q'));
+				if(is_sent && k + 1 < val_len && (unsigned char)val[k + 1] == 0x7F) {
+					i= k + 2;
+					continue;
+				}
+			}
+		}
+		out_buf[j++]= val[i++];
+	}
+	out_buf[j]= '\0';
+	/* trim leading */
+	char *p= out_buf;
+	while(*p == ' ' || *p == '\t' || *p == '\n' || *p == '\r') p++;
+	/* trim trailing */
+	char *end= p + strlen(p);
+	while(end > p && (end[-1] == ' ' || end[-1] == '\t' || end[-1] == '\n' || end[-1] == '\r')) end--;
+	*end= '\0';
+	return p;
+}
+
+/* JS: /^(?:\d+x?|\d*x\d+)(?:\s*px)?$/u */
+static bool img_validate_width(const char *v) {
+	if(!v || !*v) return false;
+	const char *p= v;
+	/* \d+x? | \d*x\d+ */
+	bool has_digits1= false;
+	while(*p >= '0' && *p <= '9') { has_digits1= true; p++; }
+	if(*p == 'x') {
+		p++;
+		if(*p >= '0' && *p <= '9') {
+			while(*p >= '0' && *p <= '9') p++;
+		} else if(!has_digits1) {
+			return false; /* \d*x\d+ requires digits after x when no digits before */
+		}
+	} else if(!has_digits1) {
+		return false;
+	}
+	/* (?:\s*px)? */
+	while(*p == ' ' || *p == '\t') p++;
+	if(*p == 'p' && *(p + 1) == 'x') p+= 2;
+	return *p == '\0';
+}
+
+/* JS parity: validate() from imageParameter.js */
+static bool img_param_validate(const char *name, const char *val_ptr, size_t val_len,
+																const char *extension, const char *tok_type) {
+	if(!name) return false;
+
+	char *tmp= malloc(val_len + 1);
+	if(!tmp) return true; /* conservative: allow on malloc failure */
+
+	/* JS: val = removeComment(val).trim()  (comment sentinels stripped, trimmed) */
+	/* JS: value = val.replace(/\0\d+t\x7F/gu, '').trim()  (template sentinels stripped) */
+	/* For link=, also strip quote sentinels /\0\d+[tq]\x7F/gu */
+	bool is_link= (strcmp(name, "link") == 0);
+	const char *value= img_strip_and_trim(val_ptr, val_len, tmp, is_link);
+
+	bool result;
+	if(strcmp(name, "lang") == 0) {
+		/* Only valid for SVG/SVGZ; value must match /^[a-z\d-]+$/u */
+		result= (strcmp(extension, "svg") == 0 || strcmp(extension, "svgz") == 0);
+		if(result) {
+			for(const char *c= value; *c; c++) {
+				if(!((*c >= 'a' && *c <= 'z') || (*c >= '0' && *c <= '9') || *c == '-')) {
+					result= false;
+					break;
+				}
+			}
+		}
+	} else if(strcmp(name, "page") == 0) {
+		/* Only valid for DJVU/DJV/PDF; value must be a positive number */
+		result= (strcmp(extension, "djvu") == 0 ||
+						 strcmp(extension, "djv") == 0 ||
+						 strcmp(extension, "pdf") == 0);
+		if(result && *value) {
+			char *endp;
+			double n= strtod(value, &endp);
+			result= (*endp == '\0' && n > 0.0);
+		} else {
+			result= false;
+		}
+	} else if(strcmp(name, "width") == 0) {
+		/* JS: !value && Boolean(val) || /^(?:\d+x?|\d*x\d+)(?:\s*px)?$/ */
+		/* The "!value && Boolean(val)" handles sentinel-only width values:
+		 * if all content was stripped as sentinels, treat as valid. */
+		if(!*value) {
+			/* only valid if original val was non-empty (sentinel-only value) */
+			result= (val_len > 0);
+		} else {
+			result= img_validate_width(value);
+		}
+	} else if(strcmp(name, "alt") == 0 || strcmp(name, "class") == 0 ||
+						strcmp(name, "manualthumb") == 0) {
+		result= true;
+	} else if(is_link) {
+		/* link= is valid for any value (empty = remove link, non-empty = URL or title).
+		 * Complex URL/title validation is for linting only, not parse-tree shape. */
+		result= true;
+	} else {
+		/* default: Boolean(value) && !isNaN(value) */
+		if(*value) {
+			char *endp;
+			strtod(value, &endp);
+			result= (*endp == '\0'); /* all chars consumed → valid number */
+		} else {
+			result= false;
+		}
+	}
+	free(tmp);
+	return result;
+}
+
 static void append_file_image_params(Token *file_tok,
 																		 const char *text_ptr, size_t text_len,
 																		 const ParserConfig *cfg, Accum *accum,
-																		 bool tidy) {
+																		 bool tidy, const char *file_extension) {
 	if(!file_tok || !text_ptr) return;
 
 	size_t seg_start= 0;
@@ -172,6 +317,14 @@ static void append_file_image_params(Token *file_tok,
 					if(!syntax || !name) continue;
 
 					if(!match_img_syntax(match_ptr, match_len, syntax, &cap_ptr, &cap_len, &has_cap)) continue;
+
+					/* JS parity: when has_cap (mt.length===4), call validate().
+					 * If validate() returns false, skip this syntax and fall through to caption. */
+					if(has_cap && !img_param_validate(name, cap_ptr, cap_len,
+																						file_extension ? file_extension : "",
+																						file_tok->type_name ? file_tok->type_name : "")) {
+						continue;
+					}
 
 					param= make_image_param_token(name, accum);
 					if(!param) {
@@ -786,7 +939,9 @@ void parse_links(ThreadBuf *tb, const ParserConfig *cfg, Accum *accum,
 
 				/* For image files, parse the parameters via append_file_image_params */
 				if(tok_text_ptr) {
-					append_file_image_params(tok, tok_text_ptr, tok_text_len, cfg, accum, tidy);
+					char img_ext[32];
+					img_get_extension(parsed->title ? parsed->title : link_ptr, img_ext, sizeof(img_ext));
+					append_file_image_params(tok, tok_text_ptr, tok_text_len, cfg, accum, tidy, img_ext);
 				}
 
 				/* Set the normalized title as the token name */
@@ -841,7 +996,9 @@ void parse_links(ThreadBuf *tb, const ParserConfig *cfg, Accum *accum,
 			size_t tl= text_ptr ? text_len : 0;
 			bool in_file= (ttype == TOKEN_FILE && !interwiki && !force);
 			if(in_file) {
-				append_file_image_params(tok, tp, tl, cfg, accum, tidy);
+				char img_ext[32];
+				img_get_extension(parsed->title ? parsed->title : link_ptr, img_ext, sizeof(img_ext));
+				append_file_image_params(tok, tp, tl, cfg, accum, tidy, img_ext);
 			} else {
 				Token *lt= parse_inner_fragment(tp, tl, cfg, accum, "link-text", tidy, in_file);
 				if(lt) {
