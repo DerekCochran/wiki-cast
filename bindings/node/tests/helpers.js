@@ -116,7 +116,7 @@ function analyzeAstDiff(expected, got, name = 'sample' ) {
   const getTopLevelAncestor = (node) => {
     if (!node) return node;
     let cur = node;
-    let startLevel = 0;
+    let startLevel = 3;
     while (cur.parent && startLevel >= 0) {
       cur = cur.parent;
       startLevel--;
@@ -186,7 +186,7 @@ function analyzeAstDiff(expected, got, name = 'sample' ) {
     lines.push(`expected.type: ${found.ta}`);
     lines.push(`got.type: ${found.tb}`);
     if( found.a && found.b) {
-      if( name != 'pipeline') {
+      if( ! name.startsWith('pipeline')) {
         console.log('Possible string to add to the test_pipeline.js:'+ `\`${found.a.toString()}\`,\n`);
       }
       lines.push(`expected.parent.String: ${found.a.parent.toString()}`);
@@ -214,7 +214,7 @@ node test_pipeline.js`);
     lines.push(`expected.name: ${found.na}`);
     lines.push(`got.name: ${found.nb}`);
     if( found.a && found.b) {
-      if( name != 'pipeline') {
+      if( ! name.startsWith('pipeline')) {
         console.log('Possible string to add to the test_pipeline.js:'+ `\`${found.a.toString()}\`,\n`);
       }
       lines.push(`expected.parent.String: ${found.a.parent.toString()}`);
@@ -242,7 +242,7 @@ node test_pipeline.js`);
     lines.push(`expected.text.hex: ${Buffer.from(found.da).toString('hex')}`);
     lines.push(`got.text.hex: ${Buffer.from(found.db).toString('hex')}`);
     if( found.a && found.b) {
-      if( name != 'pipeline') {
+      if( ! name.startsWith('pipeline')) {
         console.log('Possible string to add to the test_pipeline.js:'+ `\`${found.a.toString()}\`,\n`);
       }
       lines.push(`expected.parent.String: ${found.a.parent.toString()}`);
@@ -305,7 +305,7 @@ node test_pipeline.js`);
 
         return lines.join('\n') + '\n';
       }else {
-        if( name != 'pipeline') {
+        if( ! name.startsWith('pipeline')) {
           console.log('Possible string to add to the test_pipeline.js:'+ `\`${found.a.toString()}\`,\n`);
         }
         lines.push(`expected.parent.String: ${found.a.parent.toString()}`);
@@ -528,7 +528,7 @@ function compareSample(wikitext, { include = false, tidy = false, name = 'sample
         try { fs.copyFileSync(src, dst); } catch (e) { /* ignore */ }
       }
       // Read the js-stage.log and native-stage.log.  Match each on stage names and print which stage they do not match on.
-      if( name == 'pipeline') {
+      if( name.startsWith('pipeline')) {
         const jsStageLogPath = path.join(stageDir, 'js-stage.log');
         const nativeStageLogPath = path.join(stageDir, 'native-stage.log');
         if (fs.existsSync(jsStageLogPath) && fs.existsSync(nativeStageLogPath)) {

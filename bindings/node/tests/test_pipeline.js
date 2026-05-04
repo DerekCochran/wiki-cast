@@ -9,7 +9,7 @@ const { newProto, nativeProto } = require('./native_token_patch');
 // This should loop through each test and fast fail on the first mismatch.
 
 const tests = [
-`https://pt.scribd.com/document/742344591/smartproxy-cities`,
+  `<ref name="https://pt.scribd.com/document/742344591/smartproxy-cities"/>`,
   `[[Mushroom poisoning|deadly mushrooms]]`,
   `; A'''B''' : C`,
   `; A''B'' : C`,
