@@ -170,9 +170,9 @@ static char *title_main_from_text(const char *s, size_t len) {
 	char *out= strndup0(s, len);
 	if(!out) return NULL;
 	size_t in= 0, out_i= 0;
-	while(out[in] && (out[in] == '_' || isspace((unsigned char)out[in]))) in++;
+	while(in < len && (out[in] == '_' || isspace((unsigned char)out[in]))) in++;
 	bool last_space= false;
-	for(; out[in]; in++) {
+	for(; in < len; in++) {
 		char c= out[in];
 		if(c == '_') c= ' ';
 		if(isspace((unsigned char)c)) {
@@ -486,14 +486,14 @@ Title *title_parse_half_parsed(const char *raw, size_t raw_len,
 		return NULL;
 	}
 
-	char *html_decoded= str_decode_html_basic(pct_decoded, decoded_len);
+	size_t html_len= 0;
+	char *html_decoded= str_decode_html_basic(pct_decoded, decoded_len, &html_len);
 	free(pct_decoded);
 	if(!html_decoded) {
 		title_free(t);
 		return NULL;
 	}
 
-	size_t html_len= strlen(html_decoded);
 	char *norm= malloc(html_len + 1);
 	if(!norm) {
 		free(html_decoded);
@@ -580,7 +580,7 @@ Title *title_parse_half_parsed(const char *raw, size_t raw_len,
 		size_t frag_dec_len= 0;
 		char *frag_pct= title_try_percent_decode(fragment, fragment_len, &frag_dec_len);
 		if(frag_pct) {
-			char *frag_html= str_decode_html_basic(frag_pct, frag_dec_len);
+			char *frag_html= str_decode_html_basic(frag_pct, frag_dec_len, NULL);
 			free(frag_pct);
 			if(frag_html) {
 				size_t flen= strlen(frag_html);
@@ -620,8 +620,9 @@ Title *title_parse_half_parsed(const char *raw, size_t raw_len,
 		}
 	}
 
-	char *decoded_again= str_decode_html_basic(title, title_len);
-	bool html_idempotent= decoded_again && strlen(decoded_again) == title_len && memcmp(decoded_again, title, title_len) == 0;
+	size_t decoded_again_len= 0;
+	char *decoded_again= str_decode_html_basic(title, title_len, &decoded_again_len);
+	bool html_idempotent= decoded_again && decoded_again_len == title_len && memcmp(decoded_again, title, title_len) == 0;
 	free(decoded_again);
 
 	bool page_ok= true;
@@ -642,7 +643,7 @@ Title *title_parse_half_parsed(const char *raw, size_t raw_len,
 		page_ok= page_parts > level;
 	}
 
-	t->valid= (t->main[0] != '\0' || t->interwiki[0] != '\0' || (self_link && t->ns == 0 && t->fragment != NULL)) && html_idempotent && page_ok && !title_has_invalid_chars(sub, strlen(sub));
+	t->valid= (title_len > 0 || t->interwiki[0] != '\0' || (self_link && t->ns == 0 && t->fragment != NULL)) && html_idempotent && page_ok && !title_has_invalid_chars(sub, title_len);
 
 	t->title= title_compose_resolved(t, page);
 	if(!t->title) {
@@ -658,7 +659,7 @@ Title *title_parse_half_parsed(const char *raw, size_t raw_len,
 char *title_normalize(const char *raw, size_t raw_len) {
 	if(!raw || raw_len == 0) return strdup("");
 
-	char *decoded= str_decode_html_basic(raw, raw_len);
+	char *decoded= str_decode_html_basic(raw, raw_len, NULL);
 	if(!decoded) return NULL;
 	size_t decoded_len= strlen(decoded);
 

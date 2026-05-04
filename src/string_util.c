@@ -151,7 +151,7 @@ static char *encode_codepoint(uint32_t cp, char *out, int *bytes_written) {
 	return out;
 }
 
-char *str_decode_html_basic(const char *s, size_t len) {
+char *str_decode_html_basic(const char *s, size_t len, size_t *out_len) {
 	/* Allocate generous buffer: worst case same length + some slack */
 	size_t cap= len + 4;
 	char *result= malloc(cap);
@@ -240,6 +240,7 @@ char *str_decode_html_basic(const char *s, size_t len) {
 		result[j++]= s[i++];
 	}
 	result[j]= '\0';
+	if(out_len) *out_len= j;
 	return result;
 }
 

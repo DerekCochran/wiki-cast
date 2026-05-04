@@ -48,7 +48,7 @@ char *str_trim_lc(const char *s, size_t len);
  * and &#NNN; / &#xHHH; sequences.
  * Returns a newly-allocated string; caller must free.
  */
-char *str_decode_html_basic(const char *s, size_t len);
+char *str_decode_html_basic(const char *s, size_t len, size_t *out_len);
 
 /* ── restore: expand \0N\x7F back-references in a string ─────────────────── */
 /**

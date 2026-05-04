@@ -1268,18 +1268,32 @@ static void finalize_gallery_and_link_names(Token *t, const ParserConfig *cfg) {
 		}
 	}
 
-	if((t->type == TOKEN_LINK || t->type == TOKEN_FILE || t->type == TOKEN_CATEGORY) && !t->name) {
+	if((t->type == TOKEN_LINK || t->type == TOKEN_FILE || t->type == TOKEN_CATEGORY) && (!t->name || t->name[0] == '\0')) {
 		if(t->child_count > 0 && !t->children[0].is_text && t->children[0].token) {
 			Token *target= t->children[0].token;
-			if(target->child_count > 0 && target->children[0].is_text && target->children[0].text) {
-				const char *raw= target->children[0].text;
-				size_t raw_len= target->children[0].text_len;
+			if(target->child_count > 0) {
+				ThreadBuf *name_buf= wiki_thread_buf_acquire_scratch();
+				const char *raw= NULL;
+				size_t raw_len= 0;
+				if(name_buf) {
+					token_to_string(target, name_buf);
+					raw= name_buf->buf;
+					raw_len= name_buf->len;
+				}
 				int def_ns= (t->type == TOKEN_FILE) ? 6 : (t->type == TOKEN_CATEGORY ? 14 : 0);
-				Title *tt= title_parse_half_parsed(raw, raw_len, def_ns, cfg, true, "");
+				Title *tt= raw ? title_parse_half_parsed(raw, raw_len, def_ns, cfg, true, "") : NULL;
 				if(tt && tt->valid && tt->title) {
+					free(t->name);
 					t->name= strdup(tt->title);
+				} else if(raw && raw_len > 0) {
+					char *norm= title_normalize(raw, raw_len);
+					if(norm) {
+						free(t->name);
+						t->name= norm;
+					}
 				}
 				title_free(tt);
+				if(name_buf) wiki_thread_buf_release_scratch(name_buf);
 			}
 		}
 	}
