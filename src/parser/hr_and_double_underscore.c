@@ -68,9 +68,13 @@ static char *lower_copy(const char *s, size_t len) {
 
 static int is_fullwidth_wrapped_dunder(const char *s) {
 	static const char fw[]= "\xEF\xBC\xBF"; /* U+FF3F FULLWIDTH LOW LINE */
+	size_t fwl= sizeof(fw) - 1U;
 	size_t len= s ? strlen(s) : 0;
-	if(len < sizeof(fw) - 1U + sizeof(fw) - 1U + 1U) return 0;
-	return memcmp(s, fw, sizeof(fw) - 1U) == 0 && memcmp(s + len - (sizeof(fw) - 1U), fw, sizeof(fw) - 1U) == 0;
+	if(len < 4U * fwl + 1U) return 0;
+	return memcmp(s, fw, fwl) == 0 &&
+			 memcmp(s + fwl, fw, fwl) == 0 &&
+			 memcmp(s + len - fwl, fw, fwl) == 0 &&
+			 memcmp(s + len - 2U * fwl, fw, fwl) == 0;
 }
 
 static void pattern_append(char **buf, size_t *cap, size_t *len, const char *s) {
@@ -132,8 +136,9 @@ static char *build_hr_and_dunder_pattern(const ParserConfig *cfg) {
 			if(!it || !is_fullwidth_wrapped_dunder(it)) continue;
 			it_len= strlen(it);
 			if(!first) pattern_append(&pattern, &cap, &len, "|");
-			pattern_append_n(&pattern, &cap, &len, it + (sizeof(fw) - 1U),
-											 it_len - 2U * (sizeof(fw) - 1U));
+			pattern_append_n(&pattern, &cap, &len,
+								 it + 2U * (sizeof(fw) - 1U),
+								 it_len - 4U * (sizeof(fw) - 1U));
 			first= 0;
 		}
 	}
@@ -273,6 +278,8 @@ void parse_hr_and_double_underscore(ThreadBuf *tb, const ParserConfig *cfg, Accu
 				/* Build DoubleUnderscore token */
 				Token *t= token_new(TOKEN_DOUBLE_UNDERSCORE, "double-underscore");
 				if(t) {
+					t->data.dunder.case_sensitive= case_sensitive != 0;
+					t->data.dunder.fullwidth= (g4e > g4s);
 					char *lc= lower_copy(key_ptr, key_len);
 					const char *alias= NULL;
 					if(case_sensitive) {
@@ -340,11 +347,11 @@ void parse_hr_and_double_underscore(ThreadBuf *tb, const ParserConfig *cfg, Accu
 
 	/* Heading finalization: turn lines like "== Title ==" into heading tokens */
 	{
-		const char *hpat= "^((?:\\x00\\d+[cn]\\x7F)*)(={1,6})(.+)\\2((?:[ \\t\\f\\v]|\\x00\\d+[cn]\\x7F)*)$";
+		const char *hpat= "^((?:\\x00\\d+[cn]\\x7F)*)(={1,6})(.+)\\2((?:\\s|\\x00\\d+[cn]\\x7F)*)$";
 		PCRE2_SIZE herr_offset;
 		int herr_code;
 		pcre2_code *hre= pcre2_compile((PCRE2_SPTR)hpat, PCRE2_ZERO_TERMINATED,
-																	 PCRE2_UTF | PCRE2_MULTILINE,
+															 PCRE2_UTF | PCRE2_MULTILINE | PCRE2_UCP,
 																	 &herr_code, &herr_offset, NULL);
 		if(!hre) {
 			PCRE2_UCHAR8 err_buf[256];

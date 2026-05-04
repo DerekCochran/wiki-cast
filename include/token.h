@@ -86,6 +86,7 @@ typedef union {
     } td;
     struct {
         bool case_sensitive;           /* DoubleUnderscoreToken */
+        bool fullwidth;                /* preserve ＿＿...＿＿ vs __...__ */
     } dunder;
     struct {
         bool bold;                     /* QuoteToken */

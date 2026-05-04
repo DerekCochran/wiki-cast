@@ -22,5 +22,9 @@
  * @return           Root Token * (caller must call token_free).
  *                   NULL on allocation failure.
  */
+Token *wiki_parse_with_page(const char *wikitext, const ParserConfig *cfg,
+                            bool include, int max_stage,
+                            const char *page);
+
 Token *wiki_parse(const char *wikitext, const ParserConfig *cfg,
                   bool include, int max_stage);

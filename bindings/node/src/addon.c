@@ -155,10 +155,34 @@ static napi_value parse_wrapped(napi_env env, napi_callback_info info) {
     }
   }
 
+  /* Read pageName from Token instance when provided by JS Parser.parse(). */
+  char *page = NULL;
+  napi_value js_page_val;
+  if (napi_get_named_property(env, this_arg, "pageName", &js_page_val) == napi_ok) {
+    napi_valuetype pvt;
+    if (napi_typeof(env, js_page_val, &pvt) == napi_ok && pvt == napi_string) {
+      size_t page_len = 0;
+      if (napi_get_value_string_utf8(env, js_page_val, NULL, 0, &page_len) != napi_ok) {
+        free(wtext);
+        napi_throw_error(env, NULL, "Failed to measure pageName length");
+        return NULL;
+      }
+      page = malloc(page_len + 1);
+      assert(page);
+      if (napi_get_value_string_utf8(env, js_page_val, page, page_len + 1, &page_len) != napi_ok) {
+        free(page);
+        free(wtext);
+        napi_throw_error(env, NULL, "Failed to read pageName");
+        return NULL;
+      }
+    }
+  }
+
   /* Load parser config from the calling JS Token instance. */
   char *cfg_json = NULL;
   size_t cfg_json_len = 0;
   if (!get_token_config_json(env, this_arg, &cfg_json, &cfg_json_len)) {
+    free(page);
     free(wtext);
     napi_throw_error(env, NULL, "Failed to read parser config from Token instance");
     return NULL;
@@ -167,13 +191,15 @@ static napi_value parse_wrapped(napi_env env, napi_callback_info info) {
   ParserConfig *cfg = config_load_string(cfg_json, cfg_json_len);
   free(cfg_json);
   if (!cfg) {
+    free(page);
     free(wtext);
     napi_throw_error(env, NULL, "Failed to load parser config from Token instance");
     return NULL;
   }
 
   /* Call the C parser */
-  Token *root = wiki_parse(wtext, cfg, include, max_stage);
+  Token *root = wiki_parse_with_page(wtext, cfg, include, max_stage, page);
+  free(page);
   if (!root) {
     config_free(cfg);
     free(wtext);

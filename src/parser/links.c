@@ -23,7 +23,9 @@
 #include <strings.h>
 
 /* Forward declaration for helper defined later in this file. */
-static Token *parse_inner_fragment(const char *s, size_t len, const ParserConfig *cfg, Accum *accum, const char *type_name, bool tidy, bool in_file);
+static Token *parse_inner_fragment(const char *s, size_t len, const ParserConfig *cfg, Accum *accum,
+																	const char *type_name, bool tidy,
+																	bool in_file, const char *page);
 static void trim_view(const char **ptr, size_t *len);
 static pcre2_code *compile_links_proto(const ParserConfig *cfg);
 
@@ -323,7 +325,8 @@ static bool img_param_validate(const char *name, const char *val_ptr, size_t val
 static void append_file_image_params(Token *file_tok,
 																		 const char *text_ptr, size_t text_len,
 																		 const ParserConfig *cfg, Accum *accum,
-																		 bool tidy, const char *file_extension) {
+															 bool tidy, const char *file_extension,
+															 const char *page) {
 	if(!file_tok || !text_ptr) return;
 
 	size_t seg_start= 0;
@@ -399,7 +402,7 @@ static void append_file_image_params(Token *file_tok,
 						}
 						/* Note: Do NOT trim the value - JavaScript parser preserves whitespace */
 
-						Token *val= parse_inner_fragment(vp, vl, cfg, accum, "text", tidy, true);
+						Token *val= parse_inner_fragment(vp, vl, cfg, accum, "text", tidy, true, page);
 						if(val) {
 							append_fragment_children(param, val);
 							token_free(val);
@@ -431,7 +434,7 @@ static void append_file_image_params(Token *file_tok,
 			if(!matched) {
 				param= make_image_param_token("caption", accum);
 				if(param) {
-					Token *cap= parse_inner_fragment(seg_ptr, seg_len, cfg, accum, "text", tidy, true);
+					Token *cap= parse_inner_fragment(seg_ptr, seg_len, cfg, accum, "text", tidy, true, page);
 					if(cap) {
 						append_fragment_children(param, cap);
 						token_free(cap);
@@ -999,7 +1002,7 @@ void parse_links(ThreadBuf *tb, const ParserConfig *cfg, Accum *accum,
 				if(tok_text_ptr) {
 					char img_ext[32];
 					img_get_extension(parsed->title ? parsed->title : link_ptr, img_ext, sizeof(img_ext));
-					append_file_image_params(tok, tok_text_ptr, tok_text_len, cfg, accum, tidy, img_ext);
+					append_file_image_params(tok, tok_text_ptr, tok_text_len, cfg, accum, tidy, img_ext, page);
 				}
 
 				/* Set the normalized title as the token name */
@@ -1056,9 +1059,9 @@ void parse_links(ThreadBuf *tb, const ParserConfig *cfg, Accum *accum,
 			if(in_file) {
 				char img_ext[32];
 				img_get_extension(parsed->title ? parsed->title : link_ptr, img_ext, sizeof(img_ext));
-				append_file_image_params(tok, tp, tl, cfg, accum, tidy, img_ext);
+				append_file_image_params(tok, tp, tl, cfg, accum, tidy, img_ext, page);
 			} else {
-				Token *lt= parse_inner_fragment(tp, tl, cfg, accum, "link-text", tidy, in_file);
+				Token *lt= parse_inner_fragment(tp, tl, cfg, accum, "link-text", tidy, in_file, page);
 				if(lt) {
 					if(tl == 0 && lt->child_count == 0) {
 						token_append_text_n(lt, "", 0);
@@ -1084,7 +1087,9 @@ void parse_links(ThreadBuf *tb, const ParserConfig *cfg, Accum *accum,
 }
 
 /* Static helper: parse a fragment into a TOKEN_PLAIN with given type_name. */
-static Token *parse_inner_fragment(const char *s, size_t len, const ParserConfig *cfg, Accum *accum, const char *type_name, bool tidy, bool in_file) {
+static Token *parse_inner_fragment(const char *s, size_t len, const ParserConfig *cfg, Accum *accum,
+																	const char *type_name, bool tidy,
+																	bool in_file, const char *page) {
 	if(!s) return NULL;
 	ThreadBuf *inner_tb= wiki_thread_buf_acquire_scratch();
 	wiki_thread_buf_set(inner_tb, s, len);
@@ -1096,7 +1101,7 @@ static Token *parse_inner_fragment(const char *s, size_t len, const ParserConfig
 	if(in_file) {
 		/* JS parity: file/gallery parameter text supports internal links. */
 		parse_html(inner_tb, cfg, accum);
-		parse_links(inner_tb, cfg, accum, NULL, tidy);
+		parse_links(inner_tb, cfg, accum, page, tidy);
 	}
 	parse_quotes(inner_tb, cfg, accum, tidy);
 	if(in_file) {

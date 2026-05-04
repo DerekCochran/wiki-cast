@@ -690,7 +690,11 @@ static void token_to_string_rec(const Token *t, ThreadBuf *tb) {
 
 	case TOKEN_DOUBLE_UNDERSCORE: {
 		/* __KEYWORD__: wrap the child text in double underscores. */
-		thread_buf_append(tb, "__", 2);
+		if(t->data.dunder.fullwidth) {
+			thread_buf_append(tb, "\xEF\xBC\xBF\xEF\xBC\xBF", 6);
+		} else {
+			thread_buf_append(tb, "__", 2);
+		}
 		for(size_t i= 0; i < t->child_count; i++) {
 			const Child *c= &t->children[i];
 			if(c->is_text)
@@ -698,7 +702,11 @@ static void token_to_string_rec(const Token *t, ThreadBuf *tb) {
 			else
 				token_to_string_rec(c->token, tb);
 		}
-		thread_buf_append(tb, "__", 2);
+		if(t->data.dunder.fullwidth) {
+			thread_buf_append(tb, "\xEF\xBC\xBF\xEF\xBC\xBF", 6);
+		} else {
+			thread_buf_append(tb, "__", 2);
+		}
 		return;
 	}
 

@@ -383,7 +383,8 @@ static bool ext_inner_allows_nested_parse(const char *name) {
 	return strcmp(name, "indicator") == 0 || strcmp(name, "poem") == 0 || strcmp(name, "ref") == 0 || strcmp(name, "option") == 0 || strcmp(name, "combooption") == 0 || strcmp(name, "tab") == 0 || strcmp(name, "tabs") == 0 || strcmp(name, "poll") == 0 || strcmp(name, "seo") == 0 || strcmp(name, "langconvert") == 0 || strcmp(name, "phonos") == 0 || strcmp(name, "dynamicpagelist") == 0 || strcmp(name, "inputbox") == 0 || strcmp(name, "references") == 0 || strcmp(name, "choose") == 0 || strcmp(name, "combobox") == 0 || strcmp(name, "gallery") == 0 || strcmp(name, "imagemap") == 0 || strcmp(name, "categorytree") == 0;
 }
 
-static void postprocess_nested_plain(Token *t, const ParserConfig *cfg, Accum *accum);
+static void postprocess_nested_plain(Token *t, const ParserConfig *cfg, Accum *accum,
+																 const char *page);
 
 static void trim_view_local(const char **ptr, size_t *len) {
 	const char *s= *ptr;
@@ -416,7 +417,8 @@ static int namespace_from_title(const char *title_ptr, size_t title_len, const P
 static void parse_quotes_stage6_per_line(ThreadBuf *ws, const ParserConfig *cfg, Accum *accum);
 
 static Token *parse_gallery_caption_fragment(const char *s, size_t len,
-																						 const ParserConfig *cfg, Accum *accum) {
+																	 const ParserConfig *cfg, Accum *accum,
+																	 const char *page) {
 	if(!s) return NULL;
 
 	ThreadBuf *scratch= wiki_thread_buf_acquire_scratch();
@@ -425,7 +427,7 @@ static Token *parse_gallery_caption_fragment(const char *s, size_t len,
 	parse_comment_and_ext(scratch, cfg, accum, false);
 	parse_braces(scratch, cfg, accum);
 	parse_html(scratch, cfg, accum);
-	parse_links(scratch, cfg, accum, NULL, false);
+	parse_links(scratch, cfg, accum, page, false);
 	parse_quotes_stage6_per_line(scratch, cfg, accum);
 	parse_external_links(scratch, cfg, accum, true);
 	parse_magic_links(scratch, cfg, accum);
@@ -450,7 +452,8 @@ static Token *make_empty_noinclude(Accum *accum) {
 }
 
 static Token *parse_single_link_token(const char *s, size_t len,
-																			const ParserConfig *cfg, Accum *accum) {
+																	const ParserConfig *cfg, Accum *accum,
+																	const char *page) {
 	if(!s) return NULL;
 
 	char *wrapped= malloc(len + 5);
@@ -469,7 +472,7 @@ static Token *parse_single_link_token(const char *s, size_t len,
 	tmp_tb.shrink_size= (size_t)-1;
 	tmp_tb.target_size= tmp_tb.cap;
 
-	parse_links(&tmp_tb, cfg, accum, NULL, false);
+	parse_links(&tmp_tb, cfg, accum, page, false);
 
 	Token *tmp= token_new(TOKEN_PLAIN, "imagemap-link-inner");
 	if(!tmp) return NULL;
@@ -500,7 +503,8 @@ static void append_fragment_children(Token *dst, Token *frag) {
 }
 
 static Token *parse_gallery_image_line(const char *line, size_t line_len,
-																			 const ParserConfig *cfg, Accum *accum) {
+																			 const ParserConfig *cfg, Accum *accum,
+																			 const char *page) {
 	if(!line || line_len == 0) return NULL;
 
 	char *wrapped= malloc(line_len + 5);
@@ -521,7 +525,7 @@ static Token *parse_gallery_image_line(const char *line, size_t line_len,
 
 	/* JS parity: braces are parsed before links, which protects pipes inside templates. */
 	parse_braces(&tmp_tb, cfg, accum);
-	parse_links(&tmp_tb, cfg, accum, NULL, false);
+	parse_links(&tmp_tb, cfg, accum, page, false);
 
 	Token *tmp= token_new(TOKEN_PLAIN, "gallery-line");
 	if(!tmp) return NULL;
@@ -542,7 +546,8 @@ static Token *parse_gallery_image_line(const char *line, size_t line_len,
 }
 
 static Token *parse_imagemap_image_line(const char *line, size_t line_len,
-																				const ParserConfig *cfg, Accum *accum) {
+																				const ParserConfig *cfg, Accum *accum,
+																				const char *page) {
 	if(!line || line_len == 0) return NULL;
 
 	char *wrapped= malloc(line_len + 5);
@@ -563,7 +568,7 @@ static Token *parse_imagemap_image_line(const char *line, size_t line_len,
 
 	/* JS parity: braces are parsed before links, which protects pipes inside templates. */
 	parse_braces(&tmp_tb, cfg, accum);
-	parse_links(&tmp_tb, cfg, accum, NULL, false);
+	parse_links(&tmp_tb, cfg, accum, page, false);
 
 	Token *tmp= token_new(TOKEN_PLAIN, "imagemap-image-line");
 	if(!tmp) return NULL;
@@ -584,7 +589,8 @@ static Token *parse_imagemap_image_line(const char *line, size_t line_len,
 }
 
 static Token *parse_imagemap_link_line(const char *line, size_t line_len,
-																			 const ParserConfig *cfg, Accum *accum) {
+																			 const ParserConfig *cfg, Accum *accum,
+																			 const char *page) {
 	if(!line || line_len == 0) return NULL;
 
 	size_t open= SIZE_MAX;
@@ -617,7 +623,7 @@ static Token *parse_imagemap_link_line(const char *line, size_t line_len,
 
 	const char *inner= line + open + 2;
 	size_t inner_len= close - (open + 2);
-	Token *link= parse_single_link_token(inner, inner_len, cfg, accum);
+	Token *link= parse_single_link_token(inner, inner_len, cfg, accum, page);
 	if(link) {
 		token_append_child(t, link);
 	} else {
@@ -634,7 +640,8 @@ static Token *parse_imagemap_link_line(const char *line, size_t line_len,
 	return t;
 }
 
-static void postprocess_gallery_ext_inner(Token *t, const ParserConfig *cfg, Accum *accum) {
+static void postprocess_gallery_ext_inner(Token *t, const ParserConfig *cfg, Accum *accum,
+																		const char *page) {
 	if(!t || !t->type_name || strcmp(t->type_name, "ext-inner") != 0 || !t->name || strcmp(t->name, "gallery") != 0) return;
 
 	bool has_non_text= false;
@@ -669,7 +676,7 @@ static void postprocess_gallery_ext_inner(Token *t, const ParserConfig *cfg, Acc
 		size_t line_len= i - line_start;
 		const char *line_ptr= src + line_start;
 
-		Token *img= parse_gallery_image_line(line_ptr, line_len, cfg, accum);
+		Token *img= parse_gallery_image_line(line_ptr, line_len, cfg, accum, page);
 		if(img) {
 			token_append_child(t, img);
 		} else {
@@ -681,14 +688,15 @@ static void postprocess_gallery_ext_inner(Token *t, const ParserConfig *cfg, Acc
 
 	for(size_t i= 0; i < t->child_count; i++) {
 		if(!t->children[i].is_text && t->children[i].token) {
-			postprocess_nested_plain(t->children[i].token, cfg, accum);
+			postprocess_nested_plain(t->children[i].token, cfg, accum, page);
 		}
 	}
 
 	free(src);
 }
 
-static void postprocess_imagemap_ext_inner(Token *t, const ParserConfig *cfg, Accum *accum) {
+static void postprocess_imagemap_ext_inner(Token *t, const ParserConfig *cfg, Accum *accum,
+																		 const char *page) {
 	if(!t || !t->type_name || strcmp(t->type_name, "ext-inner") != 0 || !t->name || strcmp(t->name, "imagemap") != 0) return;
 
 	bool has_non_text= false;
@@ -730,11 +738,11 @@ static void postprocess_imagemap_ext_inner(Token *t, const ParserConfig *cfg, Ac
 		} else {
 			Token *tok= NULL;
 			if(!image_seen) {
-				tok= parse_imagemap_image_line(line_ptr, line_len, cfg, accum);
+				tok= parse_imagemap_image_line(line_ptr, line_len, cfg, accum, page);
 				if(tok) image_seen= true;
 			}
 			if(!tok) {
-				tok= parse_imagemap_link_line(line_ptr, line_len, cfg, accum);
+				tok= parse_imagemap_link_line(line_ptr, line_len, cfg, accum, page);
 			}
 			if(tok) {
 				token_append_child(t, tok);
@@ -748,7 +756,7 @@ static void postprocess_imagemap_ext_inner(Token *t, const ParserConfig *cfg, Ac
 
 	for(size_t i= 0; i < t->child_count; i++) {
 		if(!t->children[i].is_text && t->children[i].token) {
-			postprocess_nested_plain(t->children[i].token, cfg, accum);
+			postprocess_nested_plain(t->children[i].token, cfg, accum, page);
 		}
 	}
 
@@ -761,7 +769,8 @@ static void run_nested_plain_pipeline(ThreadBuf *scratch,
 																			bool is_heading_title,
 																			Token *t,
 																			const ParserConfig *cfg,
-																			Accum *accum) {
+																					Accum *accum,
+																					const char *page) {
 	if(is_ext_inner) {
 		parse_comment_and_ext(scratch, cfg, accum, false);
 	}
@@ -791,7 +800,7 @@ static void run_nested_plain_pipeline(ThreadBuf *scratch,
 				cfg_local.in_ext= true;
 				links_cfg= &cfg_local;
 			}
-			parse_links(scratch, links_cfg, accum, NULL, false);
+			parse_links(scratch, links_cfg, accum, page, false);
 			parse_quotes_stage6_per_line(scratch, cfg, accum);
 			parse_external_links(scratch, cfg, accum, false);
 			parse_magic_links(scratch, cfg, accum);
@@ -810,19 +819,20 @@ static void run_nested_plain_pipeline(ThreadBuf *scratch,
 		}
 	} else if(is_heading_title) {
 		parse_html(scratch, cfg, accum);
-		parse_links(scratch, cfg, accum, NULL, false);
+		parse_links(scratch, cfg, accum, page, false);
 		parse_quotes_stage6_per_line(scratch, cfg, accum);
 		parse_external_links(scratch, cfg, accum, false);
 		parse_magic_links(scratch, cfg, accum);
 	}
 }
 
-static void postprocess_nested_plain(Token *t, const ParserConfig *cfg, Accum *accum) {
+static void postprocess_nested_plain(Token *t, const ParserConfig *cfg, Accum *accum,
+																 const char *page) {
 	if(!t) return;
 
 	for(size_t i= 0; i < t->child_count; i++) {
 		if(!t->children[i].is_text && t->children[i].token) {
-			postprocess_nested_plain(t->children[i].token, cfg, accum);
+			postprocess_nested_plain(t->children[i].token, cfg, accum, page);
 		}
 	}
 
@@ -831,12 +841,12 @@ static void postprocess_nested_plain(Token *t, const ParserConfig *cfg, Accum *a
 	if(t->type == TOKEN_EXT_INNER && !ext_inner_allows_nested_parse(t->name)) return;
 
 	if(t->type_name && strcmp(t->type_name, "ext-inner") == 0 && t->name && strcmp(t->name, "gallery") == 0) {
-		postprocess_gallery_ext_inner(t, cfg, accum);
+		postprocess_gallery_ext_inner(t, cfg, accum, page);
 		return;
 	}
 
 	if(t->type_name && strcmp(t->type_name, "ext-inner") == 0 && t->name && strcmp(t->name, "imagemap") == 0) {
-		postprocess_imagemap_ext_inner(t, cfg, accum);
+		postprocess_imagemap_ext_inner(t, cfg, accum, page);
 		return;
 	}
 
@@ -920,7 +930,7 @@ static void postprocess_nested_plain(Token *t, const ParserConfig *cfg, Accum *a
 
 				if(serializable) {
 					wiki_thread_buf_set(scratch, ser, ser_len);
-					run_nested_plain_pipeline(scratch, is_td_inner, is_ext_inner, is_heading_title, t, cfg, accum);
+					run_nested_plain_pipeline(scratch, is_td_inner, is_ext_inner, is_heading_title, t, cfg, accum, page);
 
 					Token *tmp= token_new(TOKEN_PLAIN, t->type_name);
 					if(tmp) {
@@ -943,7 +953,7 @@ static void postprocess_nested_plain(Token *t, const ParserConfig *cfg, Accum *a
 
 						for(size_t i= 0; i < t->child_count; i++) {
 							if(!t->children[i].is_text && t->children[i].token) {
-								postprocess_nested_plain(t->children[i].token, cfg, accum);
+								postprocess_nested_plain(t->children[i].token, cfg, accum, page);
 							}
 						}
 
@@ -983,7 +993,7 @@ static void postprocess_nested_plain(Token *t, const ParserConfig *cfg, Accum *a
 			const char *txt= cur.text;
 			size_t cur_len= cur.text_len;
 			wiki_thread_buf_set(scratch, txt, cur_len);
-			run_nested_plain_pipeline(scratch, is_td_inner, is_ext_inner, is_heading_title, t, cfg, accum);
+			run_nested_plain_pipeline(scratch, is_td_inner, is_ext_inner, is_heading_title, t, cfg, accum, page);
 
 			bool unchanged= (scratch->len == cur_len && memcmp(scratch->buf, txt, cur_len) == 0);
 			bool has_marker= memchr(scratch->buf, '\0', scratch->len) != NULL;
@@ -1045,7 +1055,7 @@ static void postprocess_nested_plain(Token *t, const ParserConfig *cfg, Accum *a
 		t->child_cap= new_cap;
 		for(size_t i= 0; i < t->child_count; i++) {
 			if(!t->children[i].is_text && t->children[i].token) {
-				postprocess_nested_plain(t->children[i].token, cfg, accum);
+				postprocess_nested_plain(t->children[i].token, cfg, accum, page);
 			}
 		}
 		wiki_thread_buf_release_scratch(scratch);
@@ -1065,7 +1075,7 @@ static void postprocess_nested_plain(Token *t, const ParserConfig *cfg, Accum *a
 	joined[txt_len]= '\0';
 	const char *txt= joined;
 	wiki_thread_buf_set(scratch, txt, txt_len);
-	run_nested_plain_pipeline(scratch, is_td_inner, is_ext_inner, is_heading_title, t, cfg, accum);
+	run_nested_plain_pipeline(scratch, is_td_inner, is_ext_inner, is_heading_title, t, cfg, accum, page);
 
 	if(scratch->len == txt_len && memcmp(scratch->buf, txt, txt_len) == 0) {
 		free(joined);
@@ -1076,7 +1086,7 @@ static void postprocess_nested_plain(Token *t, const ParserConfig *cfg, Accum *a
 	build_token_recursive(t, accum, cfg);
 	for(size_t i= 0; i < t->child_count; i++) {
 		if(!t->children[i].is_text && t->children[i].token) {
-			postprocess_nested_plain(t->children[i].token, cfg, accum);
+			postprocess_nested_plain(t->children[i].token, cfg, accum, page);
 		}
 	}
 	free(joined);
@@ -1103,12 +1113,13 @@ static void postprocess_root_braces_fallback(Token *root, const ParserConfig *cf
 	wiki_thread_buf_release_scratch(scratch);
 }
 
-static void postprocess_parameter_value_inline(Token *t, const ParserConfig *cfg, Accum *accum) {
+static void postprocess_parameter_value_inline(Token *t, const ParserConfig *cfg, Accum *accum,
+																	const char *page) {
 	if(!t) return;
 
 	for(size_t i= 0; i < t->child_count; i++) {
 		if(!t->children[i].is_text && t->children[i].token) {
-			postprocess_parameter_value_inline(t->children[i].token, cfg, accum);
+			postprocess_parameter_value_inline(t->children[i].token, cfg, accum, page);
 		}
 	}
 
@@ -1165,7 +1176,7 @@ static void postprocess_parameter_value_inline(Token *t, const ParserConfig *cfg
 			parse_hr_and_double_underscore(scratch, cfg, accum, TOKEN_PLAIN, is_attr_value ? "attr-value" : "parameter-value");
 			bool has_bang_sentinel= mem_has(scratch->buf, scratch->len, "!\x7F");
 			if(!has_bang_sentinel) {
-				parse_links(scratch, cfg, accum, NULL, false);
+				parse_links(scratch, cfg, accum, page, false);
 				parse_quotes_stage6_per_line(scratch, cfg, accum);
 				parse_external_links(scratch, cfg, accum, false);
 				parse_magic_links(scratch, cfg, accum);
@@ -1241,17 +1252,18 @@ static void postprocess_parameter_value_inline(Token *t, const ParserConfig *cfg
      * Token.parseOnce would do for tokens added to the accum. */
 	for(size_t i= 0; i < t->child_count; i++) {
 		if(!t->children[i].is_text && t->children[i].token) {
-			postprocess_nested_plain(t->children[i].token, cfg, accum);
+			postprocess_nested_plain(t->children[i].token, cfg, accum, page);
 		}
 	}
 }
 
-static void finalize_gallery_and_link_names(Token *t, const ParserConfig *cfg) {
+static void finalize_gallery_and_link_names(Token *t, const ParserConfig *cfg,
+																			const char *page) {
 	if(!t || !cfg) return;
 
 	for(size_t i= 0; i < t->child_count; i++) {
 		if(!t->children[i].is_text && t->children[i].token) {
-			finalize_gallery_and_link_names(t->children[i].token, cfg);
+			finalize_gallery_and_link_names(t->children[i].token, cfg, page);
 		}
 	}
 
@@ -1286,7 +1298,7 @@ static void finalize_gallery_and_link_names(Token *t, const ParserConfig *cfg) {
 					raw_len= name_buf->len;
 				}
 				int def_ns= (t->type == TOKEN_FILE) ? 6 : (t->type == TOKEN_CATEGORY ? 14 : 0);
-				Title *tt= raw ? title_parse_half_parsed(raw, raw_len, def_ns, cfg, true, "") : NULL;
+				Title *tt= raw ? title_parse_half_parsed(raw, raw_len, def_ns, cfg, true, page) : NULL;
 				if(tt && tt->valid && tt->title) {
 					free(t->name);
 					t->name= strdup(tt->title);
@@ -1418,8 +1430,9 @@ static void stage0_parse_comment_and_ext_on_accum(const ParserConfig *cfg, Accum
 	}
 }
 
-Token *wiki_parse(const char *wikitext, const ParserConfig *cfg,
-									bool include, int max_stage) {
+Token *wiki_parse_with_page(const char *wikitext, const ParserConfig *cfg,
+												 bool include, int max_stage,
+												 const char *page) {
 	if(!wikitext || !cfg) return NULL;
 
 	/* ── Grab a thread-local snapshot of the input ─────────────────────────
@@ -1498,7 +1511,7 @@ Token *wiki_parse(const char *wikitext, const ParserConfig *cfg,
 			parse_hr_and_double_underscore(ws, cfg, &accum, TOKEN_ROOT, "root");
 			break;
 		case 5: /* parseLinks */
-			parse_links(ws, cfg, &accum, NULL, false);
+			parse_links(ws, cfg, &accum, page, false);
 			break;
 		case 6: /* parseQuotes */
 			parse_quotes_stage6_per_line(ws, cfg, &accum);
@@ -1541,7 +1554,7 @@ Token *wiki_parse(const char *wikitext, const ParserConfig *cfg,
      * linked into the root tree (e.g. templates inside table-attr-dirty). */
 	for(size_t _ai= 0; _ai < accum.count; _ai++) {
 		if(accum.tokens[_ai]) {
-			postprocess_parameter_value_inline(accum.tokens[_ai], cfg, &accum);
+			postprocess_parameter_value_inline(accum.tokens[_ai], cfg, &accum, page);
 		}
 	}
 
@@ -1554,13 +1567,13 @@ Token *wiki_parse(const char *wikitext, const ParserConfig *cfg,
 	propagate_table_subtypes(root);
 
 	/* JS parity for nested plain regions that still contain parseable syntax. */
-	postprocess_nested_plain(root, cfg, &accum);
+	postprocess_nested_plain(root, cfg, &accum, page);
 	postprocess_root_braces_fallback(root, cfg, &accum);
 
 	/* JS parity: run inline stages again for any new text children created
      * during build_token_recursive (e.g. ext-inner content). */
-	postprocess_parameter_value_inline(root, cfg, &accum);
-	finalize_gallery_and_link_names(root, cfg);
+	postprocess_parameter_value_inline(root, cfg, &accum, page);
+	finalize_gallery_and_link_names(root, cfg, page);
 
 	/* ── Debug: log the final token tree as JSON ─────────────────────────── */
 	// if (log_get_level() <= LOG_DEBUG)
@@ -1577,4 +1590,9 @@ Token *wiki_parse(const char *wikitext, const ParserConfig *cfg,
 	accum_free(&accum);
 
 	return root;
+}
+
+Token *wiki_parse(const char *wikitext, const ParserConfig *cfg,
+									bool include, int max_stage) {
+	return wiki_parse_with_page(wikitext, cfg, include, max_stage, NULL);
 }

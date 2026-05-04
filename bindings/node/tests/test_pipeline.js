@@ -2,11 +2,14 @@
 'use strict';
 // Parity test: full 11-stage parse pipeline on combined samples.
 // These exercises multiple stages interacting at once.
+const path = require('path');
 const { runTests } = require('./helpers');
+const { newProto, nativeProto } = require('./native_token_patch');
 
 // This should loop through each test and fast fail on the first mismatch.
 
 const tests = [
+`https://pt.scribd.com/document/742344591/smartproxy-cities`,
   `[[Mushroom poisoning|deadly mushrooms]]`,
   `; A'''B''' : C`,
   `; A''B'' : C`,
@@ -480,10 +483,20 @@ const tests = [
   '<categorytree>{{T|x=[[L|t]]}}</categorytree>',
 ];
 
-for (const test of tests) {
-  const ok = runTests([test], { name: 'pipeline' });
-  if (!ok) {
-    process.exit(1);
+const ROOT = path.resolve(__dirname, '..', '..', '..');
+const CONFIGS = ['enwiki', 'jawiki', 'llwiki'];
+
+for (const configName of CONFIGS) {
+  const configPath = path.join(ROOT, 'config', `${configName}.json`);
+  process.env.WIKI_CONFIG = configPath;
+  newProto.config = configPath;
+  nativeProto.config = configPath;
+
+  for (const test of tests) {
+    const ok = runTests([test], { name: `pipeline-${configName}` });
+    if (!ok) {
+      process.exit(1);
+    }
   }
 }
 

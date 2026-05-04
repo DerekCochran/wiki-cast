@@ -262,7 +262,6 @@ static char *title_compose_resolved(const Title *t, const char *page) {
 				keep--;
 				if(page[keep] == '/') drops--;
 			}
-			while(keep > 0 && page[keep - 1] != '/') keep--;
 			size_t sub_len= strlen(sub);
 			char *resolved= malloc(keep + (sub_len ? 1 : 0) + sub_len + 1);
 			if(!resolved) {
