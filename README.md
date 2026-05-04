@@ -234,21 +234,55 @@ Notes:
 - For Node-level parity tests that spawn the native CLI, make sure the test
   harness invokes the binary built in the matching `build_*` directory.
 
-## Notes
+## Create stage files for AI
 
 **C code**
 
 ```bash
 cd ~/git/wikiparser-node-c-tokenizer/src
-rm ../data/c-code.txt
-find . -type f -name "*.c" ! -name "log.c" | while read -r file; do
-  clean_name="${file#./}"
-  echo "<$clean_name>" >> ../data/c-code.txt
-  gcc -E -P -fpreprocessed -dD "$file" | \
-    clang-format -style=file | \
-    sed -E 's/[[:space:]]*([;=,&|\-\+{}])[[:space:]]*/\1/g'  | \
-    sed ':a; /[{};&|,]$/ {N; s/\n[[:space:]]*//; ba}' >> ../data/c-code.txt
-  echo -e "</$clean_name>\n" >> ../data/c-code.txt
+
+# Helper: append one C/H file into an output file
+append_c_file() {
+  local file="$1" out="$2"
+  if [ ! -f "$file" ]; then
+    echo "WARNING: missing C file: $file" >&2
+    return
+  fi
+  local clean_name="${file#./}"
+  echo "<$clean_name>" >> "$out"
+  if [[ "$file" == *.h ]]; then
+    clang-format -style=file "$file" | \
+      sed -E 's/[[:space:]]*([;=,&|\-\+{}])[[:space:]]*/\1/g' | \
+      sed ':a; /[{};&|,]$/ {N; s/\n[[:space:]]*//; ba}' >> "$out"
+  else
+    gcc -E -P -fpreprocessed -dD "$file" | \
+      clang-format -style=file | \
+      sed -E 's/[[:space:]]*([;=,&|\-\+{}])[[:space:]]*/\1/g' | \
+      sed ':a; /[{};&|,]$/ {N; s/\n[[:space:]]*//; ba}' >> "$out"
+  fi
+  echo -e "</$clean_name>\n" >> "$out"
+}
+
+declare -A C_STAGE_FILES
+C_STAGE_FILES[0]="parse.c token.c accum.c ../include/thread_buffer.h string_util.c config.c build.c parser/redirect.c parser/comment_and_ext.c parser/braces.c parser/links.c parser/html.c parser/external_links.c parser/magic_links.c title.c"
+C_STAGE_FILES[1]="parse.c token.c accum.c ../include/thread_buffer.h string_util.c config.c build.c parser/braces.c"
+C_STAGE_FILES[2]="parse.c token.c accum.c ../include/thread_buffer.h string_util.c config.c build.c parser/html.c"
+C_STAGE_FILES[3]="parse.c token.c accum.c ../include/thread_buffer.h string_util.c config.c build.c parser/table.c td.c tr.c table_token.c"
+C_STAGE_FILES[4]="parse.c token.c accum.c ../include/thread_buffer.h string_util.c config.c build.c parser/hr_and_double_underscore.c"
+C_STAGE_FILES[5]="parse.c token.c accum.c ../include/thread_buffer.h string_util.c config.c build.c parser/links.c parser/link.c title.c parser/braces.c parser/comment_and_ext.c parser/html.c parser/quotes.c parser/external_links.c parser/magic_links.c"
+C_STAGE_FILES[6]="parse.c token.c accum.c ../include/thread_buffer.h string_util.c config.c build.c parser/quotes.c"
+C_STAGE_FILES[7]="parse.c token.c accum.c ../include/thread_buffer.h string_util.c config.c build.c parser/external_links.c"
+C_STAGE_FILES[8]="parse.c token.c accum.c ../include/thread_buffer.h string_util.c config.c build.c parser/magic_links.c"
+C_STAGE_FILES[9]="parse.c token.c accum.c ../include/thread_buffer.h string_util.c config.c build.c parser/list.c"
+C_STAGE_FILES[10]="parse.c token.c accum.c ../include/thread_buffer.h string_util.c config.c build.c parser/converter.c"
+
+for stage in "${!C_STAGE_FILES[@]}"; do
+  out="../data/c-stage_${stage}.txt"
+  rm -f "$out"
+  for file in ${C_STAGE_FILES[$stage]}; do
+    append_c_file "$file" "$out"
+  done
+  echo "Written: $out"
 done
 ```
 
@@ -256,16 +290,40 @@ done
 
 ```bash
 cd ~/git/wikiparser-node-c-tokenizer/new-js
-rm ../data/js-code.txt
-find . -type f -name "*.js" ! -name "*.min.js"  | while read -r file; do
-  clean_name="${file#./}"
-  echo "<$clean_name>" >> ../data/js-code.txt
-  input_file="${file}"
-  output_file="${file%.js}.min.js"
-  cat "$input_file" | minify --js >> ../data/js-code.txt
-  echo -e "</$clean_name>\n" >> ../data/js-code.txt
+
+# Helper: append one JS file into an output file
+append_js_file() {
+  local file="$1" out="$2"
+  if [ ! -f "$file" ]; then
+    echo "WARNING: missing JS file: $file" >&2
+    return
+  fi
+  local clean_name="${file#./}"
+  echo "<$clean_name>" >> "$out"
+  cat "$file" | minify --js >> "$out"
+  echo -e "</$clean_name>\n" >> "$out"
+}
+
+declare -A JS_STAGE_FILES
+JS_STAGE_FILES[0]="dist/parser/redirect.js dist/base.js dist/index.js dist/src/index.js dist/util/constants.js dist/util/string.js dist/src/redirect.js dist/src/link/redirectTarget.js dist/src/link/base.js dist/src/link/index.js dist/src/tagPair/index.js dist/src/nowiki/noinclude.js dist/src/nowiki/base.js dist/src/nowiki/index.js dist/mixin/padded.js dist/mixin/fixed.js dist/lib/rect.js dist/util/lint.js"
+JS_STAGE_FILES[1]="dist/parser/braces.js dist/base.js dist/index.js dist/src/index.js dist/util/constants.js dist/util/string.js dist/src/transclude.js dist/src/heading.js dist/src/arg.js dist/src/tagPair/translate.js dist/src/tagPair/include.js dist/src/tagPair/ext.js dist/src/tagPair/index.js dist/src/nowiki/noinclude.js dist/src/nowiki/comment.js dist/src/nowiki/index.js dist/src/tag/index.js dist/src/tag/tvar.js dist/src/tag/html.js dist/mixin/clone.js dist/mixin/noEscape.js dist/mixin/gapped.js dist/mixin/fixed.js dist/lib/rect.js dist/util/lint.js dist/src/converter.js dist/src/converterFlags.js dist/src/converterRule.js"
+JS_STAGE_FILES[2]="dist/parser/html.js dist/base.js dist/index.js dist/src/index.js dist/util/constants.js dist/util/string.js dist/src/attributes.js dist/src/tag/html.js dist/src/tag/index.js dist/mixin/cached.js dist/mixin/attributesParent.js dist/lib/rect.js dist/util/lint.js"
+JS_STAGE_FILES[3]="dist/parser/table.js dist/base.js dist/index.js dist/src/index.js dist/util/constants.js dist/util/string.js dist/src/table/index.js dist/src/table/tr.js dist/src/table/td.js dist/src/table/base.js dist/src/table/trBase.js dist/mixin/cached.js dist/mixin/attributesParent.js dist/util/lint.js dist/lib/rect.js"
+JS_STAGE_FILES[4]="dist/parser/hrAndDoubleUnderscore.js dist/base.js dist/index.js dist/src/index.js dist/util/constants.js dist/util/string.js dist/src/nowiki/hr.js dist/src/nowiki/doubleUnderscore.js dist/src/nowiki/base.js dist/src/nowiki/index.js dist/src/nowiki/comment.js dist/mixin/sol.js dist/mixin/syntax.js dist/mixin/hidden.js dist/mixin/padded.js dist/util/lint.js"
+JS_STAGE_FILES[5]="dist/parser/links.js dist/base.js dist/index.js dist/src/index.js dist/util/constants.js dist/util/string.js dist/src/link/index.js dist/src/link/base.js dist/src/link/file.js dist/src/link/category.js dist/src/link/galleryImage.js dist/src/link/redirectTarget.js dist/src/link/categorytree.js dist/src/tagPair/index.js dist/src/tag/index.js dist/src/magicLink.js dist/mixin/padded.js dist/mixin/cached.js dist/mixin/singleLine.js dist/util/lint.js dist/lib/rect.js"
+JS_STAGE_FILES[6]="dist/parser/quotes.js dist/base.js dist/index.js dist/src/index.js dist/util/constants.js dist/util/string.js dist/src/nowiki/quote.js dist/src/nowiki/base.js dist/src/nowiki/index.js dist/mixin/syntax.js dist/mixin/cached.js dist/util/lint.js"
+JS_STAGE_FILES[7]="dist/parser/externalLinks.js dist/base.js dist/index.js dist/src/index.js dist/util/constants.js dist/util/string.js dist/src/magicLink.js dist/src/link/index.js dist/src/link/base.js dist/mixin/padded.js"
+JS_STAGE_FILES[8]="dist/parser/magicLinks.js dist/base.js dist/index.js dist/src/index.js dist/util/constants.js dist/util/string.js dist/src/magicLink.js dist/src/link/index.js dist/src/link/base.js dist/mixin/syntax.js dist/mixin/clone.js"
+JS_STAGE_FILES[9]="dist/parser/list.js dist/base.js dist/index.js dist/src/index.js dist/util/constants.js dist/util/string.js dist/src/nowiki/list.js dist/src/nowiki/listBase.js dist/src/nowiki/dd.js dist/src/nowiki/base.js dist/src/nowiki/index.js dist/mixin/sol.js dist/mixin/syntax.js dist/util/lint.js"
+JS_STAGE_FILES[10]="dist/parser/converter.js dist/base.js dist/index.js dist/src/index.js dist/util/constants.js dist/util/string.js dist/src/converter.js dist/src/converterFlags.js dist/src/converterRule.js dist/mixin/padded.js dist/mixin/noEscape.js dist/mixin/cached.js dist/util/lint.js"
+
+for stage in "${!JS_STAGE_FILES[@]}"; do
+  out="../data/js-stage_${stage}.txt"
+  rm -f "$out"
+  seen=()
+  for file in ${JS_STAGE_FILES[$stage]}; do
+    append_js_file "$file" "$out"
+  done
+  echo "Written: $out"
 done
 ```
-
-
-repomix
