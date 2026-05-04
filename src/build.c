@@ -196,10 +196,11 @@ static void refresh_attribute_name(Token *t) {
 
 void build_from_str(Token *parent, const char *str, size_t str_len,
 										Accum *accum) {
-	char *src= malloc(str_len + 1);
-	assert(src);
-	memcpy(src, str, str_len);
-	src[str_len]= '\0';
+	/* Operate directly on the provided buffer `str` (binary-safe, may contain NULs).
+	 * This avoids an extra malloc+memcpy for large buffers while preserving
+	 * identical behavior: all reads use explicit lengths rather than relying
+	 * on NUL-termination. */
+	const char *s= str;
 
 	/* Free existing children first */
 	for(size_t i= 0; i < parent->child_count; i++) {
@@ -220,14 +221,14 @@ void build_from_str(Token *parent, const char *str, size_t str_len,
 	bool in_marker= false;
 
 	for(size_t i= 0; i <= str_len;) {
-		unsigned char c= (i < str_len) ? (unsigned char)src[i] : 0;
+		unsigned char c= (i < str_len) ? (unsigned char)s[i] : 0;
 
 		if(!in_marker) {
 			if(c == '\0' || i == str_len) {
 				/* Emit text segment [seg_start, i) */
 				size_t text_len= i - seg_start;
 				if(text_len > 0) {
-					token_append_text_n(parent, src + seg_start, text_len);
+					token_append_text_n(parent, s + seg_start, text_len);
 				}
 				if(c == '\0') {
 					seg_start= i + 1;
@@ -239,9 +240,9 @@ void build_from_str(Token *parent, const char *str, size_t str_len,
 			}
 		} else {
 			/* Inside marker — find the \x7F */
-			if(c == '\x7F' || i == str_len) {
+				if(c == '\x7F' || i == str_len) {
 				/* Segment is "N<type_ch>" where N is decimal */
-				const char *marker_content= src + seg_start;
+					const char *marker_content= s + seg_start;
 				size_t marker_len= i - seg_start;
 
 				if(marker_len >= 2) {
@@ -264,19 +265,20 @@ void build_from_str(Token *parent, const char *str, size_t str_len,
 						} else {
 							log_error("build_from_str: accum[%zu] is NULL", idx);
 						}
-					} else {
-						/* Not a valid sentinel — emit as text */
-						/* Reconstruct the raw bytes: \0 + segment + \x7F */
-						size_t raw_len= marker_len + 2;
-						char *raw= malloc(raw_len + 1);
-						assert(raw);
-						raw[0]= '\0';
-						memcpy(raw + 1, marker_content, marker_len);
-						raw[raw_len - 1]= '\x7F';
-						raw[raw_len]= '\0';
-						token_append_text_n(parent, raw, raw_len);
-						free(raw);
-					}
+						} else {
+							/* Not a valid sentinel — emit as text. Reconstruct the
+							 * raw bytes: \0 + segment + \x7F using the original
+							 * input buffer. */
+							size_t raw_len= marker_len + 2;
+							char *raw= malloc(raw_len + 1);
+							assert(raw);
+							raw[0]= '\0';
+							memcpy(raw + 1, marker_content, marker_len);
+							raw[raw_len - 1]= '\x7F';
+							raw[raw_len]= '\0';
+							token_append_text_n(parent, raw, raw_len);
+							free(raw);
+						}
 				}
 
 				seg_start= i + 1;
@@ -288,7 +290,7 @@ void build_from_str(Token *parent, const char *str, size_t str_len,
 		}
 	}
 
-	free(src);
+	/* no src to free (we operated on the caller-owned buffer `str`) */
 }
 
 /* Recursively expand sentinel markers in all text descendants of a token.
