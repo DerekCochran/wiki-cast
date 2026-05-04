@@ -25,6 +25,7 @@
 /* Forward declaration for helper defined later in this file. */
 static Token *parse_inner_fragment(const char *s, size_t len, const ParserConfig *cfg, Accum *accum, const char *type_name, bool tidy, bool in_file);
 static void trim_view(const char **ptr, size_t *len);
+static pcre2_code *compile_links_proto(const ParserConfig *cfg);
 
 static int eq_n(const char *a, size_t alen, const char *b) {
 	size_t blen= strlen(b);
@@ -194,9 +195,27 @@ static bool img_validate_width(const char *v) {
 	return *p == '\0';
 }
 
+static bool img_starts_with_magic_url_sentinel(const char *v) {
+	if(!v || (unsigned char)v[0] != 0x00) return false;
+	size_t i= 1;
+	while(v[i] >= '0' && v[i] <= '9') i++;
+	return i > 1 && v[i] == 'm' && (unsigned char)v[i + 1] == 0x7F;
+}
+
+static bool img_url_chars_ok(const char *v) {
+	if(!v || !*v) return false;
+	for(const unsigned char *p= (const unsigned char *)v; *p; p++) {
+		unsigned char c= *p;
+		if(c <= 0x20 || c == 0x7F) return false;
+		if(c == '[' || c == ']' || c == '<' || c == '>' || c == '"') return false;
+	}
+	return true;
+}
+
 /* JS parity: validate() from imageParameter.js */
 static bool img_param_validate(const char *name, const char *val_ptr, size_t val_len,
-																const char *extension, const char *tok_type) {
+																			const ParserConfig *cfg,
+																			const char *extension, const char *tok_type) {
 	if(!name) return false;
 
 	char *tmp= malloc(val_len + 1);
@@ -246,9 +265,47 @@ static bool img_param_validate(const char *name, const char *val_ptr, size_t val
 						strcmp(name, "manualthumb") == 0) {
 		result= true;
 	} else if(is_link) {
-		/* link= is valid for any value (empty = remove link, non-empty = URL or title).
-		 * Complex URL/title validation is for linting only, not parse-tree shape. */
-		result= true;
+		/* JS parity: link= must be URL-like or normalize to a valid title.
+		 * Only gallery-image type tolerates invalid values. */
+		bool is_gallery_image= (tok_type && strcmp(tok_type, "gallery-image") == 0);
+		if(*value == '\0') {
+			/* JS validate() returns empty string here, and constructor accepts !== false. */
+			result= true;
+		} else {
+			bool proto_like= false;
+			if(value[0] == '/' && value[1] == '/') {
+				proto_like= true;
+			} else if(img_starts_with_magic_url_sentinel(value)) {
+				proto_like= true;
+			} else if(cfg) {
+				pcre2_code *re_proto= compile_links_proto(cfg);
+				if(re_proto) {
+					pcre2_match_data *md= pcre2_match_data_create_from_pattern(re_proto, NULL);
+					if(md) {
+						int rc= pcre2_match(re_proto, (PCRE2_SPTR)value,
+																 (PCRE2_SIZE)strlen(value), 0, 0, md, NULL);
+						proto_like= (rc >= 0);
+						pcre2_match_data_free(md);
+					}
+					pcre2_code_free(re_proto);
+				}
+			}
+
+			if(proto_like) {
+				result= img_url_chars_ok(value) || is_gallery_image;
+			} else {
+				const char *vptr= value;
+				size_t vlen= strlen(value);
+				if(vlen >= 4 && vptr[0] == '[' && vptr[1] == '[' &&
+					 vptr[vlen - 2] == ']' && vptr[vlen - 1] == ']') {
+					vptr+= 2;
+					vlen-= 4;
+				}
+				Title *title= title_parse_half_parsed(vptr, vlen, 0, cfg, true, "");
+				result= (title && title->valid) || is_gallery_image;
+				title_free(title);
+			}
+		}
 	} else {
 		/* default: Boolean(value) && !isNaN(value) */
 		if(*value) {
@@ -321,8 +378,9 @@ static void append_file_image_params(Token *file_tok,
 					/* JS parity: when has_cap (mt.length===4), call validate().
 					 * If validate() returns false, skip this syntax and fall through to caption. */
 					if(has_cap && !img_param_validate(name, cap_ptr, cap_len,
-																						file_extension ? file_extension : "",
-																						file_tok->type_name ? file_tok->type_name : "")) {
+																			cfg,
+																			file_extension ? file_extension : "",
+																			file_tok->type_name ? file_tok->type_name : "")) {
 						continue;
 					}
 

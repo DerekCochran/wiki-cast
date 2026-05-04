@@ -65,6 +65,7 @@ const char *syn, size_t syn_len,
 const char *link, size_t link_len,
 const char *disp, size_t disp_len,
 const char *post, size_t post_len,
+const ParserConfig *cfg,
 Accum *accum) {
 	Token *syn_tok= token_new(TOKEN_REDIRECT_SYNTAX, "redirect-syntax");
 	if(!syn_tok) return NULL;
@@ -88,7 +89,7 @@ Accum *accum) {
 	while(link_main_len > 0 && isspace((unsigned char)link[link_main_len - 1])) {
 		link_main_len--;
 	}
-	Title *parsed= title_parse_half_parsed(link, link_main_len, 0, NULL, true, "");
+	Title *parsed= title_parse_half_parsed(link, link_main_len, 0, cfg, true, "");
 	if(parsed && parsed->title) {
 		target_tok->name= strdup(parsed->title);
 	}
@@ -189,6 +190,7 @@ bool parse_redirect(ThreadBuf *tb, const ParserConfig *cfg, Accum *accum) {
 	link_ptr, link_len,
 	disp_ptr, disp_len,
 	post_ptr, post_len,
+	cfg,
 	accum);
 
 	pcre2_match_data_free(md);

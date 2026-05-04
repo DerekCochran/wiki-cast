@@ -769,6 +769,7 @@ static void run_nested_plain_pipeline(ThreadBuf *scratch,
 	parse_braces(scratch, cfg, accum);
 
 	if(is_td_inner || is_ext_inner) {
+		bool is_poem_ext_inner= is_ext_inner && t && t->name && strcmp(t->name, "poem") == 0;
 		bool ext_inner_has_bang= is_ext_inner && mem_has(scratch->buf, scratch->len, "!\x7F");
 		bool ext_inner_has_sentinel= is_ext_inner && memchr(scratch->buf, '\0', scratch->len) != NULL;
 
@@ -797,7 +798,11 @@ static void run_nested_plain_pipeline(ThreadBuf *scratch,
 			if(is_td_inner) {
 				parse_list_skip_first_line(scratch, cfg, accum);
 			} else if(is_ext_inner) {
-				parse_list_skip_first_line(scratch, cfg, accum);
+				if(is_poem_ext_inner) {
+					parse_list(scratch, cfg, accum);
+				} else {
+					parse_list_skip_first_line(scratch, cfg, accum);
+				}
 			}
 			parse_converter(scratch, cfg, accum);
 		} else {

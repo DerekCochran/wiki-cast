@@ -504,12 +504,19 @@ Title *title_parse_half_parsed(const char *raw, size_t raw_len,
 	size_t nlen= 0;
 	bool last_space= false;
 	for(size_t i= 0; i < html_len; i++) {
-		char c= html_decoded[i];
-		if(c == '_' || c == ' ') {
+		unsigned char c= (unsigned char)html_decoded[i];
+		bool is_space= (c == '_' || c == ' ');
+		/* JS decodeHtml() parity: U+00A0 is normalized to ASCII space. */
+		if(!is_space && c == 0xC2 && i + 1 < html_len &&
+		   (unsigned char)html_decoded[i + 1] == 0xA0) {
+			is_space= true;
+			i++;
+		}
+		if(is_space) {
 			if(!last_space) norm[nlen++]= ' ';
 			last_space= true;
 		} else {
-			norm[nlen++]= c;
+			norm[nlen++]= (char)c;
 			last_space= false;
 		}
 	}
