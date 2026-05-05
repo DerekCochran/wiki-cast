@@ -16,6 +16,7 @@
  */
 #include "config.h"
 #include "log.h"
+#include "thread_buffer.h"
 #include <assert.h>
 #include <cjson/cJSON.h>
 #include <stdio.h>
@@ -344,17 +345,37 @@ ParserConfig *config_load_file(const char *path) {
 		log_error("config_load_file: cannot open %s", path);
 		return NULL;
 	}
-	fseek(f, 0, SEEK_END);
+
+	if(fseek(f, 0, SEEK_END) != 0) {
+		fclose(f);
+		log_error("config_load_file: fseek failed for %s", path);
+		return NULL;
+	}
 	long sz= ftell(f);
+	if(sz < 0) {
+		fclose(f);
+		log_error("config_load_file: ftell failed for %s", path);
+		return NULL;
+	}
 	rewind(f);
-	char *buf= malloc((size_t)sz + 1);
-	assert(buf);
-	fread(buf, 1, (size_t)sz, f);
-	buf[sz]= '\0';
+
+	/* Use a scratch ThreadBuf instead of heap malloc for the temporary file buffer. */
+	ThreadBuf *tb = wiki_thread_buf_acquire_scratch();
+	wiki_thread_buf_reserve(tb, (size_t)sz);
+	size_t got = fread(tb->buf, 1, (size_t)sz, f);
+	if(got == 0 && sz > 0 && ferror(f)) {
+		/* Read error */
+		fclose(f);
+		wiki_thread_buf_release_scratch(tb);
+		log_error("config_load_file: fread failed for %s", path);
+		return NULL;
+	}
+	tb->buf[got] = '\0';
+	tb->len = got;
 	fclose(f);
 
-	ParserConfig *cfg= config_load_string(buf, (size_t)sz);
-	free(buf);
+	ParserConfig *cfg = config_load_string(tb->buf, got);
+	wiki_thread_buf_release_scratch(tb);
 	return cfg;
 }
 

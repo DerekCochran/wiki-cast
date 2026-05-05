@@ -28,88 +28,81 @@
 #include <stringzilla/stringzilla.h>
 #include "title.h"
 #include "token.h"
+#include "thread_buffer.h"
 #include <assert.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 
-static void sb_reserve(char **buf, size_t *cap, size_t need) {
-	while(*cap < need) {
-		*cap*= 2;
-		*buf= realloc(*buf, *cap);
-		assert(*buf);
-	}
-}
+/* Old malloc/realloc-based helpers removed: we use ThreadBuf-based
+ * append helpers (`append_key_token_repr_tb`) to avoid heap churn.
+ */
 
-static void sb_append(char **buf, size_t *len, size_t *cap, const char *s, size_t n) {
-	sb_reserve(buf, cap, *len + n + 1);
- 	sz_copy(*buf + *len, s, n);
-	*len+= n;
-	(*buf)[*len]= '\0';
-}
-
-static void append_key_token_repr(const Token *t, char **buf, size_t *len, size_t *cap) {
-	if(!t) return;
+/* ThreadBuf-based append helpers (use the central API in thread_buffer.c) */
+static void append_key_token_repr_tb(const Token *t, ThreadBuf *tb) {
+	if(!t || !tb) return;
 
 	if(t->type == TOKEN_TRANSCLUDE) {
-		sb_append(buf, len, cap, "{{", 2);
-		bool is_magic_word= (t->type_name && strcmp(t->type_name, "magic-word") == 0);
-		for(size_t i= 0; i < t->child_count; i++) {
+		wiki_thread_buf_putc(tb, '{');
+		wiki_thread_buf_putc(tb, '{');
+		bool is_magic_word = (t->type_name && strcmp(t->type_name, "magic-word") == 0);
+		for(size_t i = 0; i < t->child_count; i++) {
 			if(i > 0) {
 				if(is_magic_word && i == 1)
-					sb_append(buf, len, cap, ":", 1);
+					wiki_thread_buf_putc(tb, ':');
 				else
-					sb_append(buf, len, cap, "|", 1);
+					wiki_thread_buf_putc(tb, '|');
 			}
-			const Child *c= &t->children[i];
+			const Child *c = &t->children[i];
 			if(c->is_text) {
-				sb_append(buf, len, cap, c->text, c->text_len);
+				sz_string_view_t v = { c->text, c->text_len };
+				wiki_thread_buf_append(tb, v);
 			} else {
-				append_key_token_repr(c->token, buf, len, cap);
+				append_key_token_repr_tb(c->token, tb);
 			}
 		}
-		sb_append(buf, len, cap, "}}", 2);
+		wiki_thread_buf_putc(tb, '}');
+		wiki_thread_buf_putc(tb, '}');
 		return;
 	}
 
 	if(t->type == TOKEN_PARAMETER && t->child_count >= 2) {
-		const Child *k= &t->children[0];
-		const Child *v= &t->children[1];
-		bool anon= false;
-		if(k->is_text) {
-			anon= k->text_len == 0;
-		} else if(k->token) {
-			anon= k->token->child_count == 0;
-		}
+		const Child *k = &t->children[0];
+		const Child *v = &t->children[1];
+		bool anon = false;
+		if(k->is_text) anon = k->text_len == 0;
+		else if(k->token) anon = k->token->child_count == 0;
 		if(!anon) {
-			if(k->is_text)
-				sb_append(buf, len, cap, k->text, k->text_len);
-			else
-				append_key_token_repr(k->token, buf, len, cap);
-			sb_append(buf, len, cap, "=", 1);
+			if(k->is_text) {
+				sz_string_view_t vk = { k->text, k->text_len };
+				wiki_thread_buf_append(tb, vk);
+			} else {
+				append_key_token_repr_tb(k->token, tb);
+			}
+			wiki_thread_buf_putc(tb, '=');
 		}
-		if(v->is_text)
-			sb_append(buf, len, cap, v->text, v->text_len);
-		else
-			append_key_token_repr(v->token, buf, len, cap);
+		if(v->is_text) {
+			sz_string_view_t vv = { v->text, v->text_len };
+			wiki_thread_buf_append(tb, vv);
+		} else {
+			append_key_token_repr_tb(v->token, tb);
+		}
 		return;
 	}
 
-	for(size_t i= 0; i < t->child_count; i++) {
+	for(size_t i = 0; i < t->child_count; i++) {
 		if(i > 0 && t->sep != '\0') {
-			sb_append(buf, len, cap, &t->sep, 1);
+			wiki_thread_buf_putc(tb, t->sep);
 		}
-		const Child *c= &t->children[i];
+		const Child *c = &t->children[i];
 		if(c->is_text) {
-			sb_append(buf, len, cap, c->text, c->text_len);
+			sz_string_view_t v = { c->text, c->text_len };
+			wiki_thread_buf_append(tb, v);
 		} else {
-			/* JS parity: removeComment() strips sentinels [cn] before normalizeTitle.
-			 * After build(), those sentinels are expanded to real token children, so
-			 * we skip comment/noinclude/double-underscore tokens here to match JS. */
-			TokenType tt= c->token ? c->token->type : TOKEN_TEXT;
+			TokenType tt = c->token ? c->token->type : TOKEN_TEXT;
 			if(tt == TOKEN_COMMENT || tt == TOKEN_NOINCLUDE ||
 			   tt == TOKEN_INCLUDE || tt == TOKEN_DOUBLE_UNDERSCORE) continue;
-			append_key_token_repr(c->token, buf, len, cap);
+			append_key_token_repr_tb(c->token, tb);
 		}
 	}
 }
@@ -126,19 +119,18 @@ static void refresh_template_name(Token *t, const ParserConfig *cfg) {
 	const Child *c= &t->children[0];
 	if(c->is_text || !c->token) return;
 
-	/* Concatenate the text content of the template-name token */
-	size_t cap= 64, len= 0;
-	char *text= malloc(cap);
-	assert(text);
-	text[0]= '\0';
-	append_key_token_repr(c->token, &text, &len, &cap);
+	/* Concatenate the text content of the template-name token into a scratch buffer */
+	ThreadBuf *scratch = wiki_thread_buf_acquire_scratch();
+	append_key_token_repr_tb(c->token, scratch);
+	size_t len = scratch->len;
 	if(len == 0) {
-		free(text);
+		wiki_thread_buf_release_scratch(scratch);
 		return;
 	}
 
 	/* JS parity: trimLc() is applied before normalizeTitle, so strip all
      * leading/trailing whitespace (including \n) from the raw name text. */
+	char *text = scratch->buf;
 	while(len > 0 && (text[len - 1] == ' ' || text[len - 1] == '\t' ||
 										text[len - 1] == '\n' || text[len - 1] == '\r' ||
 										text[len - 1] == '\f' || text[len - 1] == '\v')) len--;
@@ -152,12 +144,13 @@ static void refresh_template_name(Token *t, const ParserConfig *cfg) {
 	}
 	text[len]= '\0';
 	if(len == 0) {
-		free(text);
+		wiki_thread_buf_release_scratch(scratch);
 		return;
 	}
 
 	Title *parsed= title_parse_half_parsed(text, len, 10, cfg, true, "");
-	free(text);
+	/* release scratch now that parsed has copied any needed data */
+	wiki_thread_buf_release_scratch(scratch);
 	if(!parsed || !parsed->title || !parsed->title[0]) {
 		title_free(parsed);
 		return;
@@ -180,13 +173,10 @@ static void refresh_attribute_name(Token *t) {
 	if(key->is_text) {
 		new_name= str_trim_lc(key->text, key->text_len);
 	} else if(key->token) {
-		size_t cap= 64, len= 0;
-		char *tmp= malloc(cap);
-		assert(tmp);
-		tmp[0]= '\0';
-		append_key_token_repr(key->token, &tmp, &len, &cap);
-		new_name= str_trim_lc(tmp, len);
-		free(tmp);
+		ThreadBuf *scratch = wiki_thread_buf_acquire_scratch();
+		append_key_token_repr_tb(key->token, scratch);
+		new_name = str_trim_lc(scratch->buf, scratch->len);
+		wiki_thread_buf_release_scratch(scratch);
 	}
 
 	if(new_name) {
@@ -267,18 +257,20 @@ void build_from_str(Token *parent, const char *str, size_t str_len,
 							log_error("build_from_str: accum[%zu] is NULL", idx);
 						}
 						} else {
-							/* Not a valid sentinel — emit as text. Reconstruct the
-							 * raw bytes: \0 + segment + \x7F using the original
-							 * input buffer. */
-							size_t raw_len= marker_len + 2;
-							char *raw= malloc(raw_len + 1);
-							assert(raw);
-							raw[0]= '\0';
-							memcpy(raw + 1, marker_content, marker_len);
-							raw[raw_len - 1]= '\x7F';
-							raw[raw_len]= '\0';
-							token_append_text_n(parent, raw, raw_len);
-							free(raw);
+							/* Not a valid sentinel — emit as text into a leased scratch
+							 * buffer using the ThreadBuf API (avoid heap allocs). The
+							 * desired sequence is: '\0' + marker_content + '\x7F'. */
+							ThreadBuf *scratch = wiki_thread_buf_acquire_scratch();
+							/* prepend NUL byte */
+							wiki_thread_buf_putc(scratch, '\0');
+							if(marker_len > 0) {
+								sz_string_view_t v = { marker_content, marker_len };
+								wiki_thread_buf_append(scratch, v);
+							}
+							/* trailing DEL */
+							wiki_thread_buf_putc(scratch, '\x7F');
+							token_append_text_n(parent, scratch->buf, scratch->len);
+							wiki_thread_buf_release_scratch(scratch);
 						}
 				}
 
@@ -321,17 +313,16 @@ void build_token_recursive(Token *t, Accum *accum,
 	}
 
 	if(has_marker_text && all_text_children) {
-		char *joined= malloc(total_text_len + 1);
-		assert(joined);
-		size_t pos= 0;
+		ThreadBuf *scratch = wiki_thread_buf_acquire_scratch();
+		/* Pre-reserve the combined length to avoid repeated growth */
+		wiki_thread_buf_reserve(scratch, total_text_len);
 		for(size_t j= 0; j < t->child_count; j++) {
 			Child *c= &t->children[j];
-			sz_copy(joined + pos, c->text, c->text_len);
-			pos+= c->text_len;
+			sz_string_view_t v = { c->text, c->text_len };
+			wiki_thread_buf_append(scratch, v);
 		}
-		joined[total_text_len]= '\0';
-		build_from_str(t, joined, total_text_len, accum);
-		free(joined);
+		build_from_str(t, scratch->buf, scratch->len, accum);
+		wiki_thread_buf_release_scratch(scratch);
 	}
 
 	/* For each child of t: */
@@ -386,8 +377,17 @@ static void set_td_attrs_name(Token *td, const char *name) {
 	if(!td || td->child_count < 2) return;
 	Child *ac= &td->children[1];
 	if(ac->is_text || !ac->token || ac->token->type != TOKEN_ATTRIBUTES) return;
+	char *dup = NULL;
+	if(name) {
+		size_t nlen = strlen(name);
+		dup = malloc(nlen + 1);
+		if(dup) {
+			memcpy(dup, name, nlen);
+			dup[nlen] = '\0';
+		}
+	}
 	free(ac->token->name);
-	ac->token->name= strdup(name);
+	ac->token->name = dup;
 }
 
 /* JS parity: AttributesToken.afterBuild() calls parentNode.subtype for 'td'

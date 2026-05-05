@@ -437,6 +437,26 @@ void wiki_thread_buf_set(ThreadBuf *tb, const char *s, size_t len) {
 	tb->len= len;
 }
 
+void wiki_thread_buf_append(ThreadBuf *tb, sz_string_view_t view) {
+	if(!tb) return;
+	if(view.length == 0) return;
+
+	/* Ensure capacity for existing content + view.length bytes */
+	wiki_thread_buf_reserve(tb, tb->len + view.length);
+
+	if(view.start) memcpy(tb->buf + tb->len, view.start, view.length);
+	tb->len += view.length;
+	tb->buf[tb->len] = '\0';
+}
+
+void wiki_thread_buf_putc(ThreadBuf *tb, char ch) {
+	if(!tb) return;
+	/* Reserve space for one additional byte */
+	wiki_thread_buf_reserve(tb, tb->len + 1);
+	tb->buf[tb->len++] = ch;
+	tb->buf[tb->len] = '\0';
+}
+
 void wiki_thread_buf_finalize_all(void) {
 	/*
      * Ensure thresholds are initialised so that any subsequent
@@ -474,3 +494,4 @@ void wiki_thread_buf_finalize_all(void) {
 	g_registry_head= NULL;
 	pthread_mutex_unlock(&g_registry_mutex);
 }
+

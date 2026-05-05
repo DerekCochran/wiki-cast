@@ -42,6 +42,7 @@
 #include <stddef.h>
 #include <stdbool.h>
 #include <stdalign.h>
+#include <stringzilla/types.h>
 
 #if defined(_MSC_VER)
 #define THREAD_LOCAL __declspec(thread)
@@ -151,6 +152,20 @@ void wiki_thread_buf_reserve(ThreadBuf *tb, size_t need);
  * a ThreadBuf; it does so by calling wiki_thread_buf_reserve internally.
  */
 void wiki_thread_buf_set(ThreadBuf *tb, const char *s, size_t len);
+
+/**
+ * Append a non-null-terminated string view into `tb->buf`.
+ * Grows the buffer as needed and NUL-terminates the result.
+ * This avoids creating temporary NUL-terminated copies when the caller
+ * already has a (ptr,len) view such as `sz_string_view_t`.
+ */
+void wiki_thread_buf_append(ThreadBuf *tb, sz_string_view_t view);
+
+/**
+ * Append a single character into `tb->buf`.
+ * Ensures capacity via `wiki_thread_buf_reserve` and NUL-terminates.
+ */
+void wiki_thread_buf_putc(ThreadBuf *tb, char ch);
 
 /**
  * Free the inner buffers of every thread that has called wiki_thread_buf_get().
