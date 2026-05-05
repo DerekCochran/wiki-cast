@@ -415,8 +415,7 @@ static Token *parse_gallery_caption_fragment(const char *s, size_t len,
 																	 const char *page) {
 	if(!s) return NULL;
 
-	ThreadBuf *scratch= wiki_thread_buf_acquire_scratch();
-	wiki_thread_buf_set(scratch, s, len);
+	ThreadBuf *scratch = wiki_thread_buf_acquire_scratch_from_data(s, len);
 
 	parse_comment_and_ext(scratch, cfg, accum, false);
 	parse_braces(scratch, cfg, accum);
@@ -450,27 +449,26 @@ static Token *parse_single_link_token(const char *s, size_t len,
 																	const char *page) {
 	if(!s) return NULL;
 
-	char *wrapped= malloc(len + 5);
-	if(!wrapped) return NULL;
-	wrapped[0]= '[';
-	wrapped[1]= '[';
-	sz_copy(wrapped + 2, s, len);
-	wrapped[2 + len]= ']';
-	wrapped[3 + len]= ']';
-	wrapped[4 + len]= '\0';
+	ThreadBuf *scratch = wiki_thread_buf_acquire_scratch();
+	if(!scratch) return NULL;
+	/* Reserve space and build wrapped string into scratch */
+	wiki_thread_buf_reserve(scratch, len + 4);
+	scratch->buf[0]= '[';
+	scratch->buf[1]= '[';
+	sz_copy(scratch->buf + 2, s, len);
+	scratch->buf[2 + len]= ']';
+	scratch->buf[3 + len]= ']';
+	scratch->buf[4 + len]= '\0';
+	scratch->len= len + 4;
 
-	ThreadBuf tmp_tb;
-	tmp_tb.buf= wrapped;
-	tmp_tb.len= len + 4;
-	tmp_tb.cap= len + 5;
-	tmp_tb.shrink_size= (size_t)-1;
-	tmp_tb.target_size= tmp_tb.cap;
-
-	parse_links(&tmp_tb, cfg, accum, page, false);
+	parse_links(scratch, cfg, accum, page, false);
 
 	Token *tmp= token_new(TOKEN_PLAIN, "imagemap-link-inner");
-	if(!tmp) return NULL;
-	build_from_str(tmp, tmp_tb.buf, tmp_tb.len, accum);
+	if(!tmp) {
+		wiki_thread_buf_release_scratch(scratch);
+		return NULL;
+	}
+	build_from_str(tmp, scratch->buf, scratch->len, accum);
 	build_token_recursive(tmp, accum, cfg);
 
 	Token *out= NULL;
@@ -480,7 +478,7 @@ static Token *parse_single_link_token(const char *s, size_t len,
 	}
 
 	token_free_shallow(tmp);
-	free(tmp_tb.buf);
+	wiki_thread_buf_release_scratch(scratch);
 	return out;
 }
 
@@ -501,25 +499,20 @@ static Token *parse_gallery_image_line(const char *line, size_t line_len,
 																			 const char *page) {
 	if(!line || line_len == 0) return NULL;
 
-	char *wrapped= malloc(line_len + 5);
-	if(!wrapped) return NULL;
-	wrapped[0]= '[';
-	wrapped[1]= '[';
-	sz_copy(wrapped + 2, line, line_len);
-	wrapped[2 + line_len]= ']';
-	wrapped[3 + line_len]= ']';
-	wrapped[4 + line_len]= '\0';
-
-	ThreadBuf tmp_tb;
-	tmp_tb.buf= wrapped;
-	tmp_tb.len= line_len + 4;
-	tmp_tb.cap= line_len + 5;
-	tmp_tb.shrink_size= (size_t)-1;
-	tmp_tb.target_size= tmp_tb.cap;
+	ThreadBuf *scratch = wiki_thread_buf_acquire_scratch();
+	if(!scratch) return NULL;
+	wiki_thread_buf_reserve(scratch, line_len + 4);
+	scratch->buf[0]= '[';
+	scratch->buf[1]= '[';
+	sz_copy(scratch->buf + 2, line, line_len);
+	scratch->buf[2 + line_len]= ']';
+	scratch->buf[3 + line_len]= ']';
+	scratch->buf[4 + line_len]= '\0';
+	scratch->len= line_len + 4;
 
 	/* JS parity: braces are parsed before links, which protects pipes inside templates. */
-	parse_braces(&tmp_tb, cfg, accum);
-	parse_links(&tmp_tb, cfg, accum, page, false);
+	parse_braces(scratch, cfg, accum);
+	parse_links(scratch, cfg, accum, page, false);
 
 	Token *tmp= token_new(TOKEN_PLAIN, "gallery-line");
 	if(!tmp) return NULL;
@@ -535,7 +528,7 @@ static Token *parse_gallery_image_line(const char *line, size_t line_len,
 	}
 
 	token_free_shallow(tmp);
-	free(tmp_tb.buf);
+	wiki_thread_buf_release_scratch(scratch);
 	return out;
 }
 
@@ -544,25 +537,20 @@ static Token *parse_imagemap_image_line(const char *line, size_t line_len,
 																				const char *page) {
 	if(!line || line_len == 0) return NULL;
 
-	char *wrapped= malloc(line_len + 5);
-	if(!wrapped) return NULL;
-	wrapped[0]= '[';
-	wrapped[1]= '[';
-	memcpy(wrapped + 2, line, line_len);
-	wrapped[2 + line_len]= ']';
-	wrapped[3 + line_len]= ']';
-	wrapped[4 + line_len]= '\0';
-
-	ThreadBuf tmp_tb;
-	tmp_tb.buf= wrapped;
-	tmp_tb.len= line_len + 4;
-	tmp_tb.cap= line_len + 5;
-	tmp_tb.shrink_size= (size_t)-1;
-	tmp_tb.target_size= tmp_tb.cap;
+	ThreadBuf *scratch = wiki_thread_buf_acquire_scratch();
+	if(!scratch) return NULL;
+	wiki_thread_buf_reserve(scratch, line_len + 4);
+	scratch->buf[0]= '[';
+	scratch->buf[1]= '[';
+	memcpy(scratch->buf + 2, line, line_len);
+	scratch->buf[2 + line_len]= ']';
+	scratch->buf[3 + line_len]= ']';
+	scratch->buf[4 + line_len]= '\0';
+	scratch->len= line_len + 4;
 
 	/* JS parity: braces are parsed before links, which protects pipes inside templates. */
-	parse_braces(&tmp_tb, cfg, accum);
-	parse_links(&tmp_tb, cfg, accum, page, false);
+	parse_braces(scratch, cfg, accum);
+	parse_links(scratch, cfg, accum, page, false);
 
 	Token *tmp= token_new(TOKEN_PLAIN, "imagemap-image-line");
 	if(!tmp) return NULL;
@@ -578,7 +566,7 @@ static Token *parse_imagemap_image_line(const char *line, size_t line_len,
 	}
 
 	token_free_shallow(tmp);
-	free(tmp_tb.buf);
+	wiki_thread_buf_release_scratch(scratch);
 	return out;
 }
 
@@ -920,37 +908,75 @@ static void postprocess_nested_plain(Token *t, const ParserConfig *cfg, Accum *a
 				}
 
 				if(serializable) {
-					wiki_thread_buf_set(scratch, ser, ser_len);
-					run_nested_plain_pipeline(scratch, is_td_inner, is_ext_inner, is_heading_title, t, cfg, accum, page);
+					ThreadBuf *tmp_tb = wiki_thread_buf_acquire_scratch_from_data(ser, ser_len);
+					if(!tmp_tb) {
+						/* Fallback to existing scratch if tmp acquisition fails */
+						wiki_thread_buf_set(scratch, ser, ser_len);
+						run_nested_plain_pipeline(scratch, is_td_inner, is_ext_inner, is_heading_title, t, cfg, accum, page);
 
-					Token *tmp= token_new(TOKEN_PLAIN, t->type_name);
-					if(tmp) {
-						build_from_str(tmp, scratch->buf, scratch->len, accum);
-						build_token_recursive(tmp, accum, cfg);
+						Token *tmp= token_new(TOKEN_PLAIN, t->type_name);
+						if(tmp) {
+							build_from_str(tmp, scratch->buf, scratch->len, accum);
+							build_token_recursive(tmp, accum, cfg);
 
-						for(size_t i= 0; i < t->child_count; i++) {
-							if(t->children[i].is_text) free(t->children[i].text);
-						}
-						free(t->children);
-
-						t->children= tmp->children;
-						t->child_count= tmp->child_count;
-						t->child_cap= tmp->child_cap;
-
-						tmp->children= NULL;
-						tmp->child_count= 0;
-						tmp->child_cap= 0;
-						token_free_shallow(tmp);
-
-						for(size_t i= 0; i < t->child_count; i++) {
-							if(!t->children[i].is_text && t->children[i].token) {
-								postprocess_nested_plain(t->children[i].token, cfg, accum, page);
+							for(size_t i= 0; i < t->child_count; i++) {
+								if(t->children[i].is_text) free(t->children[i].text);
 							}
-						}
+							free(t->children);
 
-						free(ser);
-						wiki_thread_buf_release_scratch(scratch);
-						return;
+							t->children= tmp->children;
+							t->child_count= tmp->child_count;
+							t->child_cap= tmp->child_cap;
+
+							tmp->children= NULL;
+							tmp->child_count= 0;
+							tmp->child_cap= 0;
+							token_free_shallow(tmp);
+
+							for(size_t i= 0; i < t->child_count; i++) {
+								if(!t->children[i].is_text && t->children[i].token) {
+									postprocess_nested_plain(t->children[i].token, cfg, accum, page);
+								}
+							}
+
+							free(ser);
+							wiki_thread_buf_release_scratch(scratch);
+							return;
+						}
+					} else {
+						run_nested_plain_pipeline(tmp_tb, is_td_inner, is_ext_inner, is_heading_title, t, cfg, accum, page);
+
+						Token *tmp= token_new(TOKEN_PLAIN, t->type_name);
+						if(tmp) {
+							build_from_str(tmp, tmp_tb->buf, tmp_tb->len, accum);
+							build_token_recursive(tmp, accum, cfg);
+
+							for(size_t i= 0; i < t->child_count; i++) {
+								if(t->children[i].is_text) free(t->children[i].text);
+							}
+							free(t->children);
+
+							t->children= tmp->children;
+							t->child_count= tmp->child_count;
+							t->child_cap= tmp->child_cap;
+
+							tmp->children= NULL;
+							tmp->child_count= 0;
+							tmp->child_cap= 0;
+							token_free_shallow(tmp);
+
+							for(size_t i= 0; i < t->child_count; i++) {
+								if(!t->children[i].is_text && t->children[i].token) {
+									postprocess_nested_plain(t->children[i].token, cfg, accum, page);
+								}
+							}
+
+							free(ser);
+							wiki_thread_buf_release_scratch(tmp_tb);
+							wiki_thread_buf_release_scratch(scratch);
+							return;
+						}
+						wiki_thread_buf_release_scratch(tmp_tb);
 					}
 				}
 
@@ -983,12 +1009,20 @@ static void postprocess_nested_plain(Token *t, const ParserConfig *cfg, Accum *a
 
 			const char *txt= cur.text;
 			size_t cur_len= cur.text_len;
-			wiki_thread_buf_set(scratch, txt, cur_len);
-			run_nested_plain_pipeline(scratch, is_td_inner, is_ext_inner, is_heading_title, t, cfg, accum, page);
+			ThreadBuf *tmp_tb = wiki_thread_buf_acquire_scratch_from_data(txt, cur_len);
+			if(!tmp_tb) {
+				/* fallback to using the existing scratch if acquisition fails */
+				wiki_thread_buf_set(scratch, txt, cur_len);
+				run_nested_plain_pipeline(scratch, is_td_inner, is_ext_inner, is_heading_title, t, cfg, accum, page);
+			} else {
+				run_nested_plain_pipeline(tmp_tb, is_td_inner, is_ext_inner, is_heading_title, t, cfg, accum, page);
+			}
 
-			bool unchanged = (scratch->len == cur_len && sz_equal(scratch->buf, txt, cur_len));
+			const char *used_buf = tmp_tb ? tmp_tb->buf : scratch->buf;
+			size_t used_len = tmp_tb ? tmp_tb->len : scratch->len;
+			bool unchanged = (used_len == cur_len && sz_equal(used_buf, txt, cur_len));
 			const char _zn1 = '\0';
-			bool has_marker = sz_find_byte(scratch->buf, scratch->len, &_zn1) != NULL;
+			bool has_marker = sz_find_byte(used_buf, used_len, &_zn1) != NULL;
 			if(unchanged && !has_marker) {
 				if(new_count >= new_cap) {
 					new_cap*= 2;
@@ -1012,16 +1046,16 @@ static void postprocess_nested_plain(Token *t, const ParserConfig *cfg, Accum *a
 				}
 				Child fallback;
 				fallback.is_text= true;
-				fallback.text_len= scratch->len;
-				fallback.text= malloc(scratch->len + 1);
+				fallback.text_len= used_len;
+				fallback.text= malloc(used_len + 1);
 				assert(fallback.text);
-				sz_copy(fallback.text, scratch->buf, scratch->len);
-				fallback.text[scratch->len]= '\0';
+				sz_copy(fallback.text, used_buf, used_len);
+				fallback.text[used_len]= '\0';
 				new_children[new_count++]= fallback;
 				continue;
 			}
 
-			build_from_str(tmp, scratch->buf, scratch->len, accum);
+			build_from_str(tmp, used_buf, used_len, accum);
 			build_token_recursive(tmp, accum, cfg);
 
 			for(size_t j= 0; j < tmp->child_count; j++) {
@@ -1093,8 +1127,7 @@ static void postprocess_root_braces_fallback(Token *root, const ParserConfig *cf
 	size_t txt_len= root->children[0].text_len;
 	if(!txt || txt_len == 0 || sz_find(txt, txt_len, "{{", 2) == NULL) return;
 
-	ThreadBuf *scratch= wiki_thread_buf_acquire_scratch();
-	wiki_thread_buf_set(scratch, txt, txt_len);
+	ThreadBuf *scratch = wiki_thread_buf_acquire_scratch_from_data(txt, txt_len);
 	parse_braces(scratch, cfg, accum);
 
 	if(scratch->len == txt_len && sz_equal(scratch->buf, txt, txt_len)) {
@@ -1427,21 +1460,18 @@ static void stage1_parse_braces_on_accum(const ParserConfig *cfg, Accum *accum) 
 		size_t txt_len= tok->children[0].text_len;
 		if(!txt || txt_len == 0 || sz_find(txt, txt_len, "{{", 2) == NULL) continue;
 
-		ThreadBuf tmp_tb;
-		tmp_tb.buf= malloc(txt_len + 1);
-		if(!tmp_tb.buf) continue;
-		sz_copy(tmp_tb.buf, txt, txt_len);
-		tmp_tb.buf[txt_len]= '\0';
-		tmp_tb.len= txt_len;
-		tmp_tb.cap= txt_len + 1;
-		tmp_tb.shrink_size= (size_t)-1;
-		tmp_tb.target_size= tmp_tb.cap;
+		ThreadBuf *scratch = wiki_thread_buf_acquire_scratch();
+		if(!scratch) continue;
+		wiki_thread_buf_reserve(scratch, txt_len);
+		sz_copy(scratch->buf, txt, txt_len);
+		scratch->buf[txt_len]= '\0';
+		scratch->len= txt_len;
 
-		parse_braces(&tmp_tb, cfg, accum);
-		if(!(tmp_tb.len == txt_len && sz_equal(tmp_tb.buf, txt, txt_len))) {
-			build_from_str(tok, tmp_tb.buf, tmp_tb.len, accum);
+		parse_braces(scratch, cfg, accum);
+		if(!(scratch->len == txt_len && sz_equal(scratch->buf, txt, txt_len))) {
+			build_from_str(tok, scratch->buf, scratch->len, accum);
 		}
-		free(tmp_tb.buf);
+		wiki_thread_buf_release_scratch(scratch);
 	}
 }
 
@@ -1462,28 +1492,25 @@ static void stage0_parse_comment_and_ext_on_accum(const ParserConfig *cfg, Accum
 		const char _lt = '<';
 		if(sz_find_byte(txt, txt_len, &_lt) == NULL) continue;
 
-		ThreadBuf tmp_tb;
-		tmp_tb.buf= malloc(txt_len + 1);
-		if(!tmp_tb.buf) continue;
-		sz_copy(tmp_tb.buf, txt, txt_len);
-		tmp_tb.buf[txt_len]= '\0';
-		tmp_tb.len= txt_len;
-		tmp_tb.cap= txt_len + 1;
-		tmp_tb.shrink_size= (size_t)-1;
-		tmp_tb.target_size= tmp_tb.cap;
+		ThreadBuf *scratch = wiki_thread_buf_acquire_scratch();
+		if(!scratch) continue;
+		wiki_thread_buf_reserve(scratch, txt_len);
+		sz_copy(scratch->buf, txt, txt_len);
+		scratch->buf[txt_len]= '\0';
+		scratch->len= txt_len;
 
-		parse_comment_and_ext(&tmp_tb, cfg, accum, false);
-		if(!(tmp_tb.len == txt_len && sz_equal(tmp_tb.buf, txt, txt_len))) {
-			char *repl= malloc(tmp_tb.len + 1);
+		parse_comment_and_ext(scratch, cfg, accum, false);
+		if(!(scratch->len == txt_len && sz_equal(scratch->buf, txt, txt_len))) {
+			char *repl= malloc(scratch->len + 1);
 			if(repl) {
-				sz_copy(repl, tmp_tb.buf, tmp_tb.len);
-				repl[tmp_tb.len]= '\0';
+				sz_copy(repl, scratch->buf, scratch->len);
+				repl[scratch->len]= '\0';
 				free(tok->children[0].text);
 				tok->children[0].text= repl;
-				tok->children[0].text_len= tmp_tb.len;
+				tok->children[0].text_len= scratch->len;
 			}
 		}
-		free(tmp_tb.buf);
+		wiki_thread_buf_release_scratch(scratch);
 	}
 }
 

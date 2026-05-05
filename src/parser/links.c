@@ -1112,8 +1112,7 @@ static Token *parse_inner_fragment(const char *s, size_t len, const ParserConfig
 																	const char *type_name, bool tidy,
 																	bool in_file, const char *page) {
 	if(!s) return NULL;
-	ThreadBuf *inner_tb= wiki_thread_buf_acquire_scratch();
-	wiki_thread_buf_set(inner_tb, s, len);
+	ThreadBuf *inner_tb = wiki_thread_buf_acquire_scratch_from_data(s, len);
 
 	if(in_file) {
 		parse_comment_and_ext(inner_tb, cfg, accum, false);

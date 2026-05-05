@@ -4,6 +4,9 @@ project(wiki_tokenizer C)
 set(CMAKE_C_STANDARD 11)
 set(CMAKE_C_STANDARD_REQUIRED ON)
 
+# Ensure the C11 dialect is explicitly used by the compiler.
+add_compile_options(-std=gnu11)
+
 option(TOKENIZER_USE_NATIVE "Enable native CPU optimization flags (-march=native -mtune=native)" ON)
 
 # Apply native CPU tuning and high optimization unconditionally to maximize

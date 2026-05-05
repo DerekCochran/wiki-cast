@@ -12,11 +12,13 @@
 #include <stdlib.h>
 #include <string.h>
 
-/* ── Default thresholds (in megabytes) ───────────────────────────────────── */
+/* Use 48 for inline to keep the total ThreadBuf struct exactly 1 cache line (64 bytes) */
+#define SSO_MAX 47
 
-#define DEFAULT_MAIN_SHRINK_MB 10
-#define DEFAULT_MAIN_TARGET_MB 5
-#define DEFAULT_SCRATCH_SHRINK_MB 10
+/* ── Default thresholds (in megabytes) ───────────────────────────────────── */
+#define DEFAULT_MAIN_SHRINK_MB 5
+#define DEFAULT_MAIN_TARGET_MB 1
+#define DEFAULT_SCRATCH_SHRINK_MB 5
 #define DEFAULT_SCRATCH_TARGET_MB 1
 
 /* Byte equivalents, filled in by init_thresholds(). */
@@ -140,20 +142,27 @@ static void create_tls_key(void) {
 }
 
 static void init_thread_buf(ThreadBuf *tb, size_t shrink_size, size_t target_size) {
-	tb->shrink_size= shrink_size;
-	tb->target_size= target_size;
-	tb->buf= malloc(target_size);
-	assert(tb->buf);
-	tb->cap= target_size;
-	tb->len= 0;
+    tb->shrink_size = shrink_size;
+    tb->target_size = target_size;
+    tb->len = 0;
+
+    /* Start with SSO: point buf at inline storage, no heap allocation needed. */
+    tb->buf = tb->inline_data;
+    tb->cap = sizeof(tb->inline_data);
+    tb->is_on_heap = false;
+    tb->inline_data[0] = '\0';
 }
 
 static void free_thread_buf(ThreadBuf *tb) {
 	if(!tb) return;
-	free(tb->buf);
-	tb->buf= NULL;
-	tb->cap= 0;
-	tb->len= 0;
+	if(tb->is_on_heap && tb->buf) {
+		free(tb->buf);
+	}
+	/* Reset to SSO state so the struct is safe to reuse or ignore. */
+	tb->buf = tb->inline_data;
+	tb->cap = sizeof(tb->inline_data);
+	tb->is_on_heap = false;
+	tb->len = 0;
 }
 
 static void free_scratch_pool(ThreadBuffers *tb) {
@@ -252,30 +261,69 @@ void wiki_thread_buf_assert_no_leased_scratch(const char *context,
  * Callers must never realloc a ThreadBuf buffer directly; always use this.
  */
 void wiki_thread_buf_reserve(ThreadBuf *tb, size_t need) {
-	if(tb->cap > tb->shrink_size && need < tb->target_size) {
-		/* Shrink to target; sufficient for need because need < target_size. */
-		size_t old_cap= tb->cap;
-		free(tb->buf);
-		tb->buf= malloc(tb->target_size);
-		assert(tb->buf);
-		tb->cap= tb->target_size;
-		log_trace("thread_buffer shrink: old_cap=%zu target_size=%zu shrink_size=%zu need=%zu new_cap=%zu",
-							old_cap, tb->target_size, tb->shrink_size, need, tb->cap);
-		return;
-	}
+    size_t actual_need = need + 1; /* +1 for null terminator */
 
-	if(tb->cap < need + 1) {
-		size_t old_cap= tb->cap;
-		size_t new_cap= tb->cap ? tb->cap : tb->target_size;
-		while(new_cap < need + 1) {
-			new_cap+= 1024 * 1024;
-		}
-		tb->buf= realloc(tb->buf, new_cap);
-		assert(tb->buf);
-		tb->cap= new_cap;
-		log_trace("thread_buffer grow: old_cap=%zu target_size=%zu shrink_size=%zu need=%zu new_cap=%zu",
-							old_cap, tb->target_size, tb->shrink_size, need, tb->cap);
-	}
+    /* 1. Shrink: on heap, cap is wastefully large, and new need is small. */
+    if (tb->is_on_heap && tb->cap > tb->shrink_size && need < tb->target_size) {
+        free(tb->buf);
+        if (actual_need <= sizeof(tb->inline_data)) {
+            tb->buf = tb->inline_data;
+            tb->cap = sizeof(tb->inline_data);
+            tb->is_on_heap = false;
+        } else {
+            size_t alloc_sz = (tb->target_size + 63) & ~63;
+            tb->buf = aligned_alloc(64, alloc_sz);
+            assert(tb->buf);
+            tb->cap = alloc_sz;
+            tb->is_on_heap = true;
+        }
+        log_trace("thread_buffer shrink: new_cap=%zu", tb->cap);
+        return;
+    }
+
+    /* 2. Grow: current buffer cannot hold `need` bytes. */
+    if (tb->cap < actual_need) {
+        /* Can the new content fit in the inline SSO buffer? */
+        if (actual_need <= sizeof(tb->inline_data)) {
+            if (tb->is_on_heap) {
+                free(tb->buf);
+                tb->is_on_heap = false;
+            }
+            tb->buf = tb->inline_data;
+            tb->cap = sizeof(tb->inline_data);
+            return;
+        }
+
+        size_t new_cap;
+        if (need > tb->shrink_size) {
+            /* Large request: allocate exactly what is needed. */
+            new_cap = actual_need;
+        } else {
+            /* Medium request: double to amortise reallocations. */
+            new_cap = tb->cap > 0 ? tb->cap * 2 : tb->target_size;
+            if (new_cap < actual_need) new_cap = actual_need;
+        }
+
+        /* 64-byte alignment for SIMD. */
+        new_cap = (new_cap + 63) & ~63;
+
+        void *new_ptr = aligned_alloc(64, new_cap);
+        assert(new_ptr);
+
+        if (tb->len > 0) {
+            memcpy(new_ptr, tb->buf, tb->len);
+        }
+
+        if (tb->is_on_heap) {
+            free(tb->buf);
+        }
+
+        tb->buf = (char *)new_ptr;
+        tb->cap = new_cap;
+        tb->is_on_heap = true;
+
+        log_trace("thread_buffer grow: need=%zu, new_cap=%zu", need, new_cap);
+    }
 }
 
 ThreadBuffers *wiki_thread_buf_get(void) {
@@ -311,6 +359,24 @@ ThreadBuffers *wiki_thread_buf_get(void) {
 	}
 
 	return tb;
+}
+
+ThreadBuf *wiki_thread_buf_acquire_scratch_from_data(const char *s, size_t len) {
+    /* 1. Get the next available scratch buffer from the pool */
+    ThreadBuf *scratch = wiki_thread_buf_acquire_scratch();
+
+    /* 2. Ensure it has enough capacity for the data + null terminator */
+    wiki_thread_buf_reserve(scratch, len);
+
+    /* 3. Copy the data if provided */
+    if (len > 0 && s != NULL) {
+        memcpy(scratch->buf, s, len);
+    }
+    
+    scratch->buf[len] = '\0';
+    scratch->len = len;
+
+    return scratch;
 }
 
 ThreadBuf *wiki_thread_buf_acquire_scratch(void) {

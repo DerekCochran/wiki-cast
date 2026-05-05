@@ -59,6 +59,10 @@ static const char *str_map_get_exact(const StrMap *m, const char *key) {
 	return NULL;
 }
 
+/* Forward declaration: lower_copy is defined later but used above. */
+static char *lower_copy(const char *s, size_t len);
+
+
 /* JS parity: parser/braces.js getSymbol() for {{...}} replacements. */
 static char braces_get_symbol(const char *name, size_t len,
 															const ParserConfig *cfg,

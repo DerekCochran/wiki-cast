@@ -19,9 +19,11 @@
  * ThreadBuf.  It applies a unified grow-or-shrink policy:
  *
  *   Shrink: tb->cap > tb->shrink_size AND need < tb->target_size
- *           → reallocate at exactly tb->target_size.
+ *           → reallocate at exactly tb->target_size (64-byte aligned).
  *   Grow:   tb->cap < need + 1
- *           → double until large enough.
+ *           → if need > shrink_size: allocate exactly (need + 1)
+ *           → if need <= shrink_size: double until large enough.
+ *           → All heap allocations are 64-byte aligned for SIMD.
  *   No-op:  otherwise.
  *
  * Each ThreadBuf stores its own shrink_size and target_size, set once at
@@ -33,12 +35,13 @@
  *   TOKENIZER_THREAD_BUFFER_MAIN_SHRINK_SIZE_MB    (default 10)
  *   TOKENIZER_THREAD_BUFFER_MAIN_TARGET_SIZE_MB    (default  5)
  *   TOKENIZER_THREAD_BUFFER_SCRATCH_SHRINK_SIZE_MB (default 10)
- *   TOKENIZER_THREAD_BUFFER_SCRATCH_TARGET_SIZE_MB (default  5)
+ *   TOKENIZER_THREAD_BUFFER_SCRATCH_TARGET_SIZE_MB (default  1)
  */
 #pragma once
 
 #include <stddef.h>
 #include <stdbool.h>
+#include <stdalign.h>
 
 #if defined(_MSC_VER)
 #define THREAD_LOCAL __declspec(thread)
@@ -59,14 +62,21 @@
  *
  * Both fields are set once at thread-buffer initialisation from the global
  * threshold values (env vars or defaults) and never change afterward.
+ *
+ * This struct is 64-byte aligned and supports Small String Optimization (SSO).
+ * tb->buf points to tb->inline_data for small strings and to heap for large ones.
  */
 typedef struct {
-    char  *buf;         /* heap-allocated; may be NULL before first use */
+    char  *buf;         /* Active pointer: points to inline_data or heap */
     size_t len;         /* bytes of content currently stored (excl. '\0') */
     size_t cap;         /* allocated bytes */
     size_t shrink_size; /* shrink when cap > this AND need < target_size  */
     size_t target_size; /* minimum allocation and post-shrink target size */
-} ThreadBuf;
+
+    /* SSO / Alignment metadata */
+    bool   is_on_heap;  /* True if buf points to heap; false if inline_data */
+    char   inline_data[31]; /* Internal storage to avoid heap for small tokens */
+} __attribute__((aligned(64))) ThreadBuf;
 
 /* ── The pair of buffers owned by one thread ─────────────────────────────── */
 
@@ -100,10 +110,20 @@ ThreadBuffers *wiki_thread_buf_get(void);
 void wiki_thread_buf_assert_no_leased_scratch(const char *context,
                                               const ThreadBuf *ignore_tb);
 
-/** Acquire a scratch buffer from the calling thread's scratch pool. */
+
+/** 
+ * Acquire, resize and copy a scratch buffer. 
+ * This is the preferred way to lease a buffer for a known string.
+ */
+ThreadBuf *wiki_thread_buf_acquire_scratch_from_data(const char *s, size_t len);
+
+/** 
+ * Acquire a scratch buffer. 
+ * Use this when you need a workspace but don't have the data yet.
+ */
 ThreadBuf *wiki_thread_buf_acquire_scratch(void);
 
-/** Release a previously acquired scratch buffer back to the scratch pool. */
+/** Release a previously acquired scratch buffer. */
 void wiki_thread_buf_release_scratch(ThreadBuf *tb);
 
 /**
@@ -112,12 +132,14 @@ void wiki_thread_buf_release_scratch(ThreadBuf *tb);
  * Given a requested byte count `need`, this function applies the buffer's
  * own shrink/grow policy (stored in tb->shrink_size and tb->target_size):
  *
+ *   SSO:    If (need + 1) fits in inline_data, no heap allocation is made.
  *   Shrink: if tb->cap > tb->shrink_size AND need < tb->target_size
  *           → free and reallocate at exactly tb->target_size.
  *   Grow:   if tb->cap < need + 1
- *           → reallocate using a doubling strategy.
- *   No-op:  capacity is already sufficient and shrink does not apply.
+ *           → if need > shrink_size: allocate exactly need + 1 (aligned).
+ *           → otherwise: use a doubling strategy (aligned).
  *
+ * All heap allocations are guaranteed 64-byte aligned for SIMD operations.
  * Callers never realloc a ThreadBuf directly; they always go through here.
  */
 void wiki_thread_buf_reserve(ThreadBuf *tb, size_t need);
