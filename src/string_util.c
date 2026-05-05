@@ -123,10 +123,6 @@ char *str_remove_comment(const char *s, size_t len, size_t *out_len) {
 
 		/* Look for sentinel: \0 <digits> [cn] \x7F */
 		const char *k = found + 1;
-		/* fast-scan digits */
-		sz_byteset_t digits;
-		sz_byteset_init(&digits);
-		for(char c = '0'; c <= '9'; ++c) sz_byteset_add(&digits, c);
 		const char *not_digit = sz_find_byte_not_from(k, (size_t)(end - k), "0123456789", 10);
 		if(not_digit == NULL) k = end; else k = not_digit;
 		if(k < end && (k > found + 1) && (*k == 'c' || *k == 'n') &&
@@ -426,13 +422,28 @@ char *str_extract_interwiki(const char *s, size_t len, const ParserConfig *cfg, 
 	temp[tlen]= '\0';
 
 	/* Trim leading whitespace */
-	size_t start= 0;
-	while(start < tlen && isspace((unsigned char)temp[start])) start++;
+	const char *ws_chars = " \t\n\v\f\r";
+	const char *temp_end = temp + tlen;
+	const char *p = sz_find_byte_not_from(temp, tlen, ws_chars, 6);
+	if(!p) {
+		free(temp);
+		free(pos_map);
+		if(consumed) *consumed= 0;
+		return NULL;
+	}
+	size_t start = (size_t)(p - temp);
 
 	/* Optional leading colon (force prefix removal) */
 	if(start < tlen && temp[start] == ':') {
-		start++;
-		while(start < tlen && isspace((unsigned char)temp[start])) start++;
+		p = temp + start + 1;
+		const char *q = sz_find_byte_not_from(p, (size_t)(temp_end - p), ws_chars, 6);
+		if(!q) {
+			free(temp);
+			free(pos_map);
+			if(consumed) *consumed= 0;
+			return NULL;
+		}
+		start = (size_t)(q - temp);
 	}
 
 	for(size_t k= 0; k < cfg->interwiki.count; k++) {

@@ -35,7 +35,7 @@ static char *braces_make_match_subject(const char *buf, size_t len) {
 
 	char *subject= malloc(len);
 	if(!subject) return NULL;
-	memcpy(subject, buf, len);
+	sz_copy(subject, buf, len);
 
 	/* Replace embedded NUL bytes with SOH in the copied buffer. Use
 	 * sz_find_byte to locate NULs efficiently. */
@@ -74,12 +74,12 @@ static char braces_get_symbol(const char *name, size_t len,
 
 	/* trim ASCII whitespace */
 	size_t i= 0, j= cleaned_len;
-	while(i < cleaned_len && isspace((unsigned char)cleaned[i])) i++;
-	while(j > i && isspace((unsigned char)cleaned[j - 1])) j--;
-	if(j <= i) {
-		free(cleaned);
-		return 't';
-	}
+	while(i < cleaned_len && isspace((unsigned char)cleaned[i])) i++; 
+	while(j > i && isspace((unsigned char)cleaned[j - 1])) j--; 
+	if(j <= i) { 
+		free(cleaned); 
+		return 't'; 
+	} 
 
 	size_t n= j - i;
 	char *trimmed= malloc(n + 1);
@@ -87,25 +87,22 @@ static char braces_get_symbol(const char *name, size_t len,
 		free(cleaned);
 		return 't';
 	}
-	memcpy(trimmed, cleaned + i, n);
+	sz_copy(trimmed, cleaned + i, n);
 	trimmed[n]= '\0';
 
-	char *lc= malloc(n + 1);
+	char *lc= lower_copy(trimmed, n);
 	if(!lc) {
 		free(cleaned);
 		free(trimmed);
 		return 't';
 	}
-	for(size_t k= 0; k < n; k++) {
-		lc[k]= (char)tolower((unsigned char)cleaned[i + k]);
-	}
-	lc[n]= '\0';
 	free(cleaned);
 
 	const char *canonical= NULL;
 	const char *base_orig= trimmed;
 	size_t base_orig_len= n;
-	const char *colon_orig= memchr(trimmed, ':', n);
+	char colon_ch = ':';
+	const char *colon_orig= sz_find_byte(trimmed, n, &colon_ch);
 	if(colon_orig && colon_orig > trimmed) {
 		base_orig_len= (size_t)(colon_orig - trimmed);
 	}
@@ -114,7 +111,7 @@ static char braces_get_symbol(const char *name, size_t len,
 	if(base_orig_len != n) {
 		base_orig_buf= malloc(base_orig_len + 1);
 		if(base_orig_buf) {
-			memcpy(base_orig_buf, trimmed, base_orig_len);
+			sz_copy(base_orig_buf, trimmed, base_orig_len);
 			base_orig_buf[base_orig_len]= '\0';
 			base_orig= base_orig_buf;
 		}
@@ -122,7 +119,7 @@ static char braces_get_symbol(const char *name, size_t len,
 
 	const char *base_lc= lc;
 	size_t base_lc_len= n;
-	const char *colon= strchr(lc, ':');
+	const char *colon= sz_find_byte(lc, n, &colon_ch);
 	if(colon && colon > lc) {
 		base_lc_len= (size_t)(colon - lc);
 	}
@@ -131,7 +128,7 @@ static char braces_get_symbol(const char *name, size_t len,
 	if(base_lc_len != n) {
 		base_buf= malloc(base_lc_len + 1);
 		if(base_buf) {
-			memcpy(base_buf, lc, base_lc_len);
+			sz_copy(base_buf, lc, base_lc_len);
 			base_buf[base_lc_len]= '\0';
 			base_lc= base_buf;
 		}
@@ -214,7 +211,7 @@ static char *trim_copy(const char *s, size_t len) {
 	size_t n= j - i;
 	char *out= malloc(n + 1);
 	if(!out) return NULL;
-	memcpy(out, s + i, n);
+	sz_copy(out, s + i, n);
 	out[n]= '\0';
 	return out;
 }
@@ -334,7 +331,8 @@ static Token *build_template_token(const char **parts_restored, const size_t *pa
 	size_t title_part_len= (parts_count > 0) ? parts_lens[0] : 0;
 
 	if(title_part && cfg) {
-		const char *colon= memchr(title_part, ':', title_part_len);
+		char colon_ch = ':';
+		const char *colon= sz_find_byte(title_part, title_part_len, &colon_ch);
 		if(colon) {
 			size_t prefix_len= (size_t)(colon - title_part);
 			char *prefix= trim_copy(title_part, prefix_len);
@@ -342,7 +340,7 @@ static Token *build_template_token(const char **parts_restored, const size_t *pa
 				size_t mod_len= prefix_len + 1;
 				t->data.transclude.modifier= malloc(mod_len + 1);
 				if(t->data.transclude.modifier) {
-					memcpy(t->data.transclude.modifier, title_part, mod_len);
+					sz_copy(t->data.transclude.modifier, title_part, mod_len);
 					t->data.transclude.modifier[mod_len]= '\0';
 				}
 				title_part= colon + 1;
@@ -366,12 +364,13 @@ static Token *build_template_token(const char **parts_restored, const size_t *pa
 		if(magic) {
 			transclude_is_magic= true;
 			magic_title_len= p0_len;
-			const char *colon= memchr(title_part, ':', p0_len);
-			if(colon) {
-				magic_title_len= (size_t)(colon - title_part);
-				magic_first_arg= colon + 1;
-				magic_first_arg_len= p0_len - magic_title_len - 1;
-			}
+				char colon_ch = ':';
+				const char *colon= sz_find_byte(title_part, p0_len, &colon_ch);
+				if(colon) {
+					magic_title_len= (size_t)(colon - title_part);
+					magic_first_arg= colon + 1;
+					magic_first_arg_len= p0_len - magic_title_len - 1;
+				}
 
 			free(t->type_name);
 			t->type_name= strdup("magic-word");
@@ -482,9 +481,10 @@ static Token *build_template_token(const char **parts_restored, const size_t *pa
                 /* JS parity: use pre-determined named/positional flag when available.
          * part_is_named[k]==false means the raw part had no '=', so even if
          * the restored text contains '=' (e.g. from [[=]]), it is positional. */
-                const char *eq= (force_positional || (part_is_named && !part_is_named[k]))
-                                                                               ? NULL
-                                                                               : memchr(part, '=', part_len);
+				char eq_ch = '=';
+				const char *eq= (force_positional || (part_is_named && !part_is_named[k]))
+																			   ? NULL
+																			   : sz_find_byte(part, part_len, &eq_ch);
 
                 Token *param= token_new(TOKEN_PARAMETER, "parameter");
                 if(!param) continue;
@@ -517,7 +517,7 @@ static Token *build_template_token(const char **parts_restored, const size_t *pa
 			if(n > 0) {
 				char *pname= malloc((size_t)n + 1);
 				if(pname) {
-					memcpy(pname, idx_buf, (size_t)n + 1);
+					sz_copy(pname, idx_buf, (size_t)n + 1);
 					param->name= pname;
 				}
 			}
@@ -563,7 +563,8 @@ static Token *build_from_inner(const char *inner, size_t inner_len,
 			/* JS parity: part.indexOf('=') on the raw (sentinel-containing) part
              * before restore() so '=' inside [[=]] sentinels is never detected
              * as a named-parameter separator. */
-			const char *eq_in_raw= memchr(raw, '=', plen);
+			char eq_ch = '=';
+			const char *eq_in_raw= sz_find_byte(raw, plen, &eq_ch);
 			if(eq_in_raw) {
 				is_named= true;
 				/* Named param: restore key and value separately, join with '=' */
@@ -577,25 +578,17 @@ static Token *build_from_inner(const char *inner, size_t inner_len,
 				restored_len= key_len + 1 + val_len;
 				restored= malloc(restored_len + 1);
 				assert(restored);
-				memcpy(restored, key, key_len);
+				sz_copy(restored, key, key_len);
 				restored[key_len]= '=';
-				memcpy(restored + key_len + 1, val, val_len);
+				sz_copy(restored + key_len + 1, val, val_len);
 				restored[restored_len]= '\0';
 				free(key);
 				free(val);
 			} else {
-				char *tmp= malloc(plen + 1);
-				memcpy(tmp, raw, plen);
-				tmp[plen]= '\0';
-				restored= str_restore(tmp, plen, (const char **)link_stack, link_count, link_stack_lens, &restored_len);
-				free(tmp);
+				restored= str_restore(raw, plen, (const char **)link_stack, link_count, link_stack_lens, &restored_len);
 			}
 		} else {
-			char *tmp= malloc(plen + 1);
-			memcpy(tmp, raw, plen);
-			tmp[plen]= '\0';
-			restored= str_restore(tmp, plen, (const char **)link_stack, link_count, link_stack_lens, &restored_len);
-			free(tmp);
+			restored= str_restore(raw, plen, (const char **)link_stack, link_count, link_stack_lens, &restored_len);
 		}
 
 		if(part_count >= parts_named_cap) {
@@ -691,7 +684,7 @@ static bool parts_append_text(PartList *parts, const char *s, size_t len) {
 	char *new_buf= realloc(parts->items[idx], old_len + len + 1);
 	if(!new_buf) return false;
 	parts->items[idx]= new_buf;
-	memcpy(new_buf + old_len, s, len);
+	sz_copy(new_buf + old_len, s, len);
 	new_buf[old_len + len]= '\0';
 	parts->lens[idx]= old_len + len;
 	return true;
@@ -711,7 +704,7 @@ static bool brace_frame_init(BraceFrame *frame, const char *open, size_t open_le
 	if(!frame) return false;
 	frame->open= malloc(open_len + 1);
 	if(!frame->open) return false;
-	memcpy(frame->open, open, open_len);
+	sz_copy(frame->open, open, open_len);
 	frame->open[open_len]= '\0';
 	frame->open_len= open_len;
 	frame->index= index;
@@ -762,7 +755,7 @@ static bool brace_frame_join_inner(const BraceFrame *frame, char **out, size_t *
 	if(!buf) return false;
 	size_t pos= 0;
 	for(size_t i= 0; i < frame->parts.count; i++) {
-		memcpy(buf + pos, frame->parts.items[i], frame->parts.lens[i]);
+		sz_copy(buf + pos, frame->parts.items[i], frame->parts.lens[i]);
 		pos+= frame->parts.lens[i];
 		if(i + 1 < frame->parts.count) {
 			buf[pos++]= '|';

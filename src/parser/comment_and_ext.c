@@ -58,7 +58,21 @@ static void text_stack_free(TextStack *st) {
 
 static void append_numeric_placeholder(char *dst, size_t *len, size_t idx) {
 	dst[(*len)++]= '\0';
-	*len+= (size_t)sprintf(dst + *len, "%zu", idx);
+	if(idx == 0) {
+		dst[(*len)++] = '0';
+	} else {
+		char buf[32];
+		size_t n = 0;
+		size_t value = idx;
+		while(value > 0) {
+			buf[n++] = (char)('0' + (value % 10));
+			value /= 10;
+		}
+		for(size_t i = 0; i < n; i++) {
+			dst[*len + i] = buf[n - 1 - i];
+		}
+		*len += n;
+	}
 	dst[(*len)++]= '\x7F';
 }
 
