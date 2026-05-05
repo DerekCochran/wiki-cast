@@ -5,6 +5,7 @@
 #include "parser/td.h"
 #include "parser/tr.h"
 #include "string_util.h"
+#include "stringzilla/stringzilla.h"
 #include "table_token.h"
 #include "token.h"
 #include <assert.h>
@@ -317,7 +318,7 @@ static void parse_table_attrs(Token *attrs_tok, const char *attr_str, size_t att
 			Token *at= make_table_attr(key, key_len, NULL, 0, NULL, 0, '\0', '\0', accum);
 			if(at) token_append_child(attrs_tok, at);
 			if(ws_start < i) {
-				memcpy(dirty_buf, attr_str + ws_start, i - ws_start);
+				sz_copy(dirty_buf, attr_str + ws_start, i - ws_start);
 				dirty_len= i - ws_start;
 			}
 			continue;
@@ -594,25 +595,25 @@ void parse_table(ThreadBuf *tb, const ParserConfig *cfg, Accum *accum) {
 			size_t plen= 0;
 			pre[plen++]= '\n';
 			if(spaces_len > 0) {
-				memcpy(pre + plen, out_line, spaces_len);
+				sz_copy(pre + plen, out_line, spaces_len);
 				plen+= spaces_len;
 			}
 			if(has_dd) {
 				char m[64];
 				size_t ml= 0;
 				work_str_sentinel(dd_idx, 'd', m, &ml);
-				memcpy(pre + plen, m, ml);
+				sz_copy(pre + plen, m, ml);
 				plen+= ml;
 			}
 			if(more_len > 0) {
-				memcpy(pre + plen, more, more_len);
+				sz_copy(pre + plen, more, more_len);
 				plen+= more_len;
 			}
 			if(table) {
 				char m[64];
 				size_t ml= 0;
 				work_str_sentinel(table_idx, 'b', m, &ml);
-				memcpy(pre + plen, m, ml);
+				sz_copy(pre + plen, m, ml);
 				plen+= ml;
 			}
 
@@ -638,7 +639,7 @@ void parse_table(ThreadBuf *tb, const ParserConfig *cfg, Accum *accum) {
 			size_t n= out_line_len + 1;
 			char *tmp= malloc(n);
 			tmp[0]= '\n';
-			memcpy(tmp + 1, out_line, out_line_len);
+			sz_copy(tmp + 1, out_line, out_line_len);
 			push_text_like_js(&out_buf, &out_len, &out_cap, tmp, n, top, cfg, accum);
 			free(tmp);
 			stack_push(&st, top);
@@ -666,8 +667,8 @@ void parse_table(ThreadBuf *tb, const ParserConfig *cfg, Accum *accum) {
 				size_t syn_len= 1 + spaces_len + clos_len;
 				char *syn= malloc(syn_len);
 				syn[0]= '\n';
-				if(spaces_len > 0) memcpy(syn + 1, out_line, spaces_len);
-				memcpy(syn + 1 + spaces_len, line + closing_s, clos_len);
+				if(spaces_len > 0) sz_copy(syn + 1, out_line, spaces_len);
+				sz_copy(syn + 1 + spaces_len, line + closing_s, clos_len);
 
 				Token *clos= token_new(TOKEN_SYNTAX, "table-syntax");
 				if(clos) {
@@ -686,8 +687,8 @@ void parse_table(ThreadBuf *tb, const ParserConfig *cfg, Accum *accum) {
 			size_t syn_len= 1 + spaces_len + row_len;
 			char *syn= malloc(syn_len);
 			syn[0]= '\n';
-			if(spaces_len > 0) memcpy(syn + 1, out_line, spaces_len);
-			memcpy(syn + 1 + spaces_len, line + row_s, row_len);
+			if(spaces_len > 0) sz_copy(syn + 1, out_line, spaces_len);
+			sz_copy(syn + 1 + spaces_len, line + row_s, row_len);
 
 			Token *tr= create_tr_token(syn, syn_len, attr, attr_len, accum);
 			free(syn);
@@ -705,8 +706,8 @@ void parse_table(ThreadBuf *tb, const ParserConfig *cfg, Accum *accum) {
 			size_t last_syn_len= 1 + spaces_len + cell_len;
 			char *last_syn= malloc(last_syn_len);
 			last_syn[0]= '\n';
-			if(spaces_len > 0) memcpy(last_syn + 1, out_line, spaces_len);
-			memcpy(last_syn + 1 + spaces_len, cell, cell_len);
+			if(spaces_len > 0) sz_copy(last_syn + 1, out_line, spaces_len);
+			sz_copy(last_syn + 1 + spaces_len, cell, cell_len);
 
 			size_t scan= 0;
 			while(1) {
@@ -769,7 +770,7 @@ void parse_table(ThreadBuf *tb, const ParserConfig *cfg, Accum *accum) {
 				free(last_syn);
 				last_syn_len= sep_len;
 				last_syn= malloc(last_syn_len);
-				memcpy(last_syn, attr + sep_pos, sep_len);
+				sz_copy(last_syn, attr + sep_pos, sep_len);
 
 				last_index= sep_pos + sep_len;
 				scan= last_index;

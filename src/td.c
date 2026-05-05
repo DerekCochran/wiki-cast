@@ -1,5 +1,6 @@
 #include "parser/td.h"
 #include "string_util.h"
+#include "stringzilla/stringzilla.h"
 #include "token.h"
 #include <assert.h>
 #include <stdlib.h>
@@ -41,7 +42,7 @@ static Token *make_table_attr(const char *key, size_t key_len,
 	if(equal && equal_len > 0) {
 		t->data.ext_attr.equal= malloc(equal_len + 1);
 		assert(t->data.ext_attr.equal);
-		memcpy(t->data.ext_attr.equal, equal, equal_len);
+		sz_copy(t->data.ext_attr.equal, equal, equal_len);
 		t->data.ext_attr.equal[equal_len]= '\0';
 	}
 	t->data.ext_attr.quote_open= quote_open;
@@ -208,7 +209,7 @@ static void parse_table_attrs(Token *attrs_tok, const char *attr_str, size_t att
 			Token *at= make_table_attr(key, key_len, NULL, 0, NULL, 0, '\0', '\0', accum);
 			if(at) token_append_child(attrs_tok, at);
 			if(ws_start < i) {
-				memcpy(dirty_buf, attr_str + ws_start, i - ws_start);
+				sz_copy(dirty_buf, attr_str + ws_start, i - ws_start);
 				dirty_len= i - ws_start;
 			}
 			continue;
@@ -320,7 +321,7 @@ Token *create_td_token(const char *syntax,
 	if(inner_syntax && inner_syntax_len > 0) {
 		td->data.td.inner_syntax= malloc(inner_syntax_len + 1);
 		assert(td->data.td.inner_syntax);
-		memcpy(td->data.td.inner_syntax, inner_syntax, inner_syntax_len);
+		sz_copy(td->data.td.inner_syntax, inner_syntax, inner_syntax_len);
 		td->data.td.inner_syntax[inner_syntax_len]= '\0';
 	} else {
 		td->data.td.inner_syntax= strdup("");

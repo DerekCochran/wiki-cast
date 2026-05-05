@@ -301,7 +301,7 @@ static void append_native_stage_json(const char *stage_log_dir, int stage, Threa
 			if(numLen == 0) continue;
 			char numbuf[32];
 			if(numLen >= sizeof(numbuf)) continue;
-			memcpy(numbuf, ws->buf + numStart, numLen);
+			sz_copy(numbuf, ws->buf + numStart, numLen);
 			numbuf[numLen]= '\0';
 			long idx= strtol(numbuf, NULL, 10);
 			/* skip the sentinel char and the trailing 0x7F if present */
@@ -342,7 +342,7 @@ static void parse_list_skip_first_line(ThreadBuf *scratch, const ParserConfig *c
 	size_t rest_len= scratch->len - prefix_len;
 	char *prefix= malloc(prefix_len + 1);
 	if(!prefix) return;
-	memcpy(prefix, scratch->buf, prefix_len);
+	sz_copy(prefix, scratch->buf, prefix_len);
 	prefix[prefix_len]= '\0';
 
 	const char *rest= scratch->buf + prefix_len;
@@ -355,8 +355,8 @@ static void parse_list_skip_first_line(ThreadBuf *scratch, const ParserConfig *c
 		free(prefix);
 		return;
 	}
-	memcpy(out, prefix, prefix_len);
-	memcpy(out + prefix_len, scratch->buf, scratch->len);
+	sz_copy(out, prefix, prefix_len);
+	sz_copy(out + prefix_len, scratch->buf, scratch->len);
 	out[out_len]= '\0';
 
 	wiki_thread_buf_set(scratch, out, out_len);
@@ -454,7 +454,7 @@ static Token *parse_single_link_token(const char *s, size_t len,
 	if(!wrapped) return NULL;
 	wrapped[0]= '[';
 	wrapped[1]= '[';
-	memcpy(wrapped + 2, s, len);
+	sz_copy(wrapped + 2, s, len);
 	wrapped[2 + len]= ']';
 	wrapped[3 + len]= ']';
 	wrapped[4 + len]= '\0';
@@ -505,7 +505,7 @@ static Token *parse_gallery_image_line(const char *line, size_t line_len,
 	if(!wrapped) return NULL;
 	wrapped[0]= '[';
 	wrapped[1]= '[';
-	memcpy(wrapped + 2, line, line_len);
+	sz_copy(wrapped + 2, line, line_len);
 	wrapped[2 + line_len]= ']';
 	wrapped[3 + line_len]= ']';
 	wrapped[4 + line_len]= '\0';
@@ -1430,7 +1430,7 @@ static void stage1_parse_braces_on_accum(const ParserConfig *cfg, Accum *accum) 
 		ThreadBuf tmp_tb;
 		tmp_tb.buf= malloc(txt_len + 1);
 		if(!tmp_tb.buf) continue;
-		memcpy(tmp_tb.buf, txt, txt_len);
+		sz_copy(tmp_tb.buf, txt, txt_len);
 		tmp_tb.buf[txt_len]= '\0';
 		tmp_tb.len= txt_len;
 		tmp_tb.cap= txt_len + 1;
@@ -1465,7 +1465,7 @@ static void stage0_parse_comment_and_ext_on_accum(const ParserConfig *cfg, Accum
 		ThreadBuf tmp_tb;
 		tmp_tb.buf= malloc(txt_len + 1);
 		if(!tmp_tb.buf) continue;
-		memcpy(tmp_tb.buf, txt, txt_len);
+		sz_copy(tmp_tb.buf, txt, txt_len);
 		tmp_tb.buf[txt_len]= '\0';
 		tmp_tb.len= txt_len;
 		tmp_tb.cap= txt_len + 1;

@@ -220,24 +220,24 @@ SZ_PUBLIC sz_cptr_t sz_rfind_byteset_neon(sz_cptr_t haystack, sz_size_t length, 
  *  @param[out] matched_length Number of bytes in the matched newline delimiter.
  *  @return Pointer to the first matching newline character from @p text.
  */
-SZ_DYNAMIC sz_cptr_t sz_find_delimiter_utf8(sz_cptr_t text, sz_size_t length, sz_size_t *matched_length);
+SZ_EXTERNAL sz_cptr_t sz_find_delimiter_utf8(sz_cptr_t text, sz_size_t length, sz_size_t *matched_length);
 
 /** @copydoc sz_find_delimiters_utf8 */
-SZ_PUBLIC sz_cptr_t sz_find_delimiters_utf8_serial(sz_cptr_t text, sz_size_t length, sz_size_t *matched_length);
+SZ_EXTERNAL sz_cptr_t sz_find_delimiters_utf8_serial(sz_cptr_t text, sz_size_t length, sz_size_t *matched_length);
 
 #if SZ_USE_HASWELL
 /** @copydoc sz_find_delimiters_utf8 */
-SZ_PUBLIC sz_cptr_t sz_find_delimiters_utf8_haswell(sz_cptr_t text, sz_size_t length, sz_size_t *matched_length);
+SZ_EXTERNAL sz_cptr_t sz_find_delimiters_utf8_haswell(sz_cptr_t text, sz_size_t length, sz_size_t *matched_length);
 #endif
 
 #if SZ_USE_ICE
 /** @copydoc sz_find_delimiters_utf8 */
-SZ_PUBLIC sz_cptr_t sz_find_delimiters_utf8_ice(sz_cptr_t text, sz_size_t length, sz_size_t *matched_length);
+SZ_EXTERNAL sz_cptr_t sz_find_delimiters_utf8_ice(sz_cptr_t text, sz_size_t length, sz_size_t *matched_length);
 #endif
 
 #if SZ_USE_NEON
 /** @copydoc sz_find_delimiters_utf8 */
-SZ_PUBLIC sz_cptr_t sz_find_delimiters_utf8_neon(sz_cptr_t text, sz_size_t length, sz_size_t *matched_length);
+SZ_EXTERNAL sz_cptr_t sz_find_delimiters_utf8_neon(sz_cptr_t text, sz_size_t length, sz_size_t *matched_length);
 #endif
 
 #pragma endregion // Core API

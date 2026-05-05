@@ -57,7 +57,7 @@ static void set_image_param_syntax_n(Token *param, const char *syntax, size_t sy
 	if(!param || !syntax) return;
 	param->data.image_param.raw_syntax= malloc(syntax_len + 1);
 	assert(param->data.image_param.raw_syntax);
-	memcpy(param->data.image_param.raw_syntax, syntax, syntax_len);
+	sz_copy(param->data.image_param.raw_syntax, syntax, syntax_len);
 	param->data.image_param.raw_syntax[syntax_len]= '\0';
 }
 
@@ -100,7 +100,8 @@ static char *build_img_syntax_template(const char *seg_ptr, size_t seg_len,
 	char *out= malloc(out_len + 1);
 	if(!out) return NULL;
 	if(lead_ws_len > 0) memcpy(out, seg_ptr, lead_ws_len);
-	memcpy(out + lead_ws_len, syntax, syntax_len);
+	if(lead_ws_len > 0) sz_copy(out, seg_ptr, lead_ws_len);
+	sz_copy(out + lead_ws_len, syntax, syntax_len);
 	if(tmpl_trail_ws_len > 0) {
 		memcpy(out + lead_ws_len + syntax_len,
 					 seg_ptr + seg_len - tmpl_trail_ws_len,
@@ -156,18 +157,18 @@ static const char *img_strip_and_trim(const char *val, size_t val_len,
 		if(!p) {
 			size_t rem = val_len - i;
 			if(rem > 0) {
-				memcpy(out_buf + j, val + i, rem);
+				sz_copy(out_buf + j, val + i, rem);
 				j += rem;
 			}
 			break;
 		}
 		size_t off = (size_t)(p - val);
-		if(off > i) {
-			size_t chunk = off - i;
-			memcpy(out_buf + j, val + i, chunk);
-			j += chunk;
-			i = off;
-		}
+			if(off > i) {
+				size_t chunk = off - i;
+				sz_copy(out_buf + j, val + i, chunk);
+				j += chunk;
+				i = off;
+			}
 		/* p points to a NUL at i */
 		size_t k = i + 1;
 		while(k < val_len && val[k] >= '0' && val[k] <= '9') k++;
@@ -611,7 +612,7 @@ static size_t make_sentinel(size_t idx, char type, char *buf) {
 	buf[n++]= '\0';
 	char tmp[24];
 	int tl= snprintf(tmp, sizeof(tmp), "%zu", idx);
-	memcpy(buf + n, tmp, tl);
+	sz_copy(buf + n, tmp, tl);
 	n+= tl;
 	buf[n++]= type;
 	buf[n++]= '\x7F';
@@ -693,7 +694,7 @@ void parse_links(ThreadBuf *tb, const ParserConfig *cfg, Accum *accum,
 
 	/* s = bits.shift() */
 	ENSURE_OUT(bits[0].len + 1);
-	memcpy(out + out_len, bits[0].ptr, bits[0].len);
+	sz_copy(out + out_len, bits[0].ptr, bits[0].len);
 	out_len+= bits[0].len;
 
 	/* Main loop: for (let i = 0; i < bits.length; i++) — bi indexes bits[1..bb_count] */
@@ -776,7 +777,7 @@ void parse_links(ThreadBuf *tb, const ParserConfig *cfg, Accum *accum,
 			ENSURE_OUT(2 + xlen + 1);
 			out[out_len++]= '[';
 			out[out_len++]= '[';
-			memcpy(out + out_len, x, xlen);
+					sz_copy(out + out_len, x, xlen);
 			out_len+= xlen;
 			continue;
 		}
@@ -801,7 +802,7 @@ void parse_links(ThreadBuf *tb, const ParserConfig *cfg, Accum *accum,
 			ENSURE_OUT(2 + xlen + 1);
 			out[out_len++]= '[';
 			out[out_len++]= '[';
-			memcpy(out + out_len, x, xlen);
+					sz_copy(out + out_len, x, xlen);
 			out_len+= xlen;
 			continue;
 		}
@@ -813,7 +814,7 @@ void parse_links(ThreadBuf *tb, const ParserConfig *cfg, Accum *accum,
 			ENSURE_OUT(2 + xlen + 1);
 			out[out_len++]= '[';
 			out[out_len++]= '[';
-			memcpy(out + out_len, x, xlen);
+					sz_copy(out + out_len, x, xlen);
 			out_len+= xlen;
 			continue;
 		}
@@ -829,7 +830,7 @@ void parse_links(ThreadBuf *tb, const ParserConfig *cfg, Accum *accum,
 			ENSURE_OUT(2 + xlen + 1);
 			out[out_len++]= '[';
 			out[out_len++]= '[';
-			memcpy(out + out_len, x, xlen);
+					sz_copy(out + out_len, x, xlen);
 			out_len+= xlen;
 			continue;
 		}
@@ -841,7 +842,7 @@ void parse_links(ThreadBuf *tb, const ParserConfig *cfg, Accum *accum,
 			ENSURE_OUT(2 + xlen + 1);
 			out[out_len++]= '[';
 			out[out_len++]= '[';
-			memcpy(out + out_len, x, xlen);
+					sz_copy(out + out_len, x, xlen);
 			out_len+= xlen;
 			continue;
 		}
@@ -869,7 +870,7 @@ void parse_links(ThreadBuf *tb, const ParserConfig *cfg, Accum *accum,
 				ENSURE_OUT(2 + xlen + 1);
 				out[out_len++]= '[';
 				out[out_len++]= '[';
-				memcpy(out + out_len, x, xlen);
+							sz_copy(out + out_len, x, xlen);
 				out_len+= xlen;
 				continue;
 			}
@@ -879,7 +880,7 @@ void parse_links(ThreadBuf *tb, const ParserConfig *cfg, Accum *accum,
 			assert(img_buf);
 			size_t img_len= 0;
 			if(text_ptr && text_len > 0) {
-				memcpy(img_buf, text_ptr, text_len);
+							sz_copy(img_buf, text_ptr, text_len);
 				img_len= text_len;
 			}
 
@@ -891,7 +892,7 @@ void parse_links(ThreadBuf *tb, const ParserConfig *cfg, Accum *accum,
 			img_buf= realloc(img_buf, img_cap); \
 			assert(img_buf);                    \
 		}                                     \
-		memcpy(img_buf + img_len, (p), _n);   \
+			sz_copy(img_buf + img_len, (p), _n);   \
 		img_len+= _n;                         \
 	} while(0)
 
@@ -974,15 +975,15 @@ void parse_links(ThreadBuf *tb, const ParserConfig *cfg, Accum *accum,
 				out[out_len++]= '[';
 				out[out_len++]= '[';
 				if(link_ptr && link_len > 0) {
-					memcpy(out + out_len, link_ptr, link_len);
+									sz_copy(out + out_len, link_ptr, link_len);
 					out_len+= link_len;
 				}
 				if(delim_ptr && delim_len > 0) {
-					memcpy(out + out_len, delim_ptr, delim_len);
+									sz_copy(out + out_len, delim_ptr, delim_len);
 					out_len+= delim_len;
 				}
 				if(img_buf && img_len > 0) {
-					memcpy(out + out_len, img_buf, img_len);
+									sz_copy(out + out_len, img_buf, img_len);
 					out_len+= img_len;
 				}
 				free(img_buf);
@@ -1000,10 +1001,10 @@ void parse_links(ThreadBuf *tb, const ParserConfig *cfg, Accum *accum,
 				char sent[64];
 				size_t sent_len= make_sentinel(tok_idx, 'l', sent);
 				ENSURE_OUT(sent_len + img_after_l + 1);
-				memcpy(out + out_len, sent, sent_len);
+						   sz_copy(out + out_len, sent, sent_len);
 				out_len+= sent_len;
 				if(img_after && img_after_l > 0) {
-					memcpy(out + out_len, img_after, img_after_l);
+								   sz_copy(out + out_len, img_after, img_after_l);
 					out_len+= img_after_l;
 				}
 
@@ -1053,10 +1054,10 @@ void parse_links(ThreadBuf *tb, const ParserConfig *cfg, Accum *accum,
 		char sent[64];
 		size_t sent_len= make_sentinel(tok_idx, 'l', sent);
 		ENSURE_OUT(sent_len + after_len + 1);
-		memcpy(out + out_len, sent, sent_len);
+		  sz_copy(out + out_len, sent, sent_len);
 		out_len+= sent_len;
 		if(after_ptr && after_len > 0) {
-			memcpy(out + out_len, after_ptr, after_len);
+				   sz_copy(out + out_len, after_ptr, after_len);
 			out_len+= after_len;
 		}
 

@@ -39,7 +39,7 @@ static void text_stack_push(TextStack *st, const char *s, size_t len) {
 	}
 	char *copy= malloc(len + 1);
 	assert(copy);
-	memcpy(copy, s, len);
+	sz_copy(copy, s, len);
 	copy[len]= '\0';
 	st->items[st->count]= copy;
 	st->lens[st->count]= len;
@@ -205,7 +205,7 @@ static Token *make_ext_attr(const char *tag_name,
 	/* Store equal and quote chars (JS AttributeToken #equal / #quotes) */
 	if(equal && equal_len > 0) {
 		t->data.ext_attr.equal= malloc(equal_len + 1);
-		memcpy(t->data.ext_attr.equal, equal, equal_len);
+	sz_copy(t->data.ext_attr.equal, equal, equal_len);
 		t->data.ext_attr.equal[equal_len]= '\0';
 	}
 	t->data.ext_attr.quote_open= quote_open;

@@ -333,7 +333,7 @@ SZ_PUBLIC sz_cptr_t sz_utf8_case_insensitive_find_ice( //
     sz_utf8_case_insensitive_needle_metadata_t *needle_metadata, sz_size_t *matched_length);
 
 /** @copydoc sz_utf8_case_insensitive_order */
-SZ_PUBLIC sz_ordering_t sz_utf8_case_insensitive_order_ice( //
+SZ_EXTERNAL sz_ordering_t sz_utf8_case_insensitive_order_ice( //
     sz_cptr_t a, sz_size_t a_length, sz_cptr_t b, sz_size_t b_length);
 
 /** @copydoc sz_utf8_case_invariant */

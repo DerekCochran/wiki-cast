@@ -127,8 +127,8 @@ SZ_PUBLIC sz_cptr_t sz_utf8_word_find_boundary_serial(sz_cptr_t text, sz_size_t 
 SZ_PUBLIC sz_cptr_t sz_utf8_word_rfind_boundary_serial(sz_cptr_t text, sz_size_t length, sz_size_t *boundary_width);
 
 /*  Ice Lake (AVX-512) implementations - placeholders for future */
-SZ_PUBLIC sz_cptr_t sz_utf8_word_find_boundary_ice(sz_cptr_t text, sz_size_t length, sz_size_t *boundary_width);
-SZ_PUBLIC sz_cptr_t sz_utf8_word_rfind_boundary_ice(sz_cptr_t text, sz_size_t length, sz_size_t *boundary_width);
+SZ_EXTERNAL sz_cptr_t sz_utf8_word_find_boundary_ice(sz_cptr_t text, sz_size_t length, sz_size_t *boundary_width);
+SZ_EXTERNAL sz_cptr_t sz_utf8_word_rfind_boundary_ice(sz_cptr_t text, sz_size_t length, sz_size_t *boundary_width);
 
 #pragma endregion
 

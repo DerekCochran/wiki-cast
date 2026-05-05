@@ -8,6 +8,7 @@
 #include <unicode/utf8.h>
 #include <assert.h>
 #include <ctype.h>
+#include <stddef.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -22,6 +23,7 @@ static void ensure_tolower_lut(void) {
 		s_tolower_lut_init = 1;
 	}
 }
+
 
 /* ── Sentinel marker formatting ──────────────────────────────────────────── */
 
@@ -68,7 +70,7 @@ void str_tidy_into(const char *s, size_t len,
 		if(!found) {
 			size_t rem = (size_t)(end - p);
 			assert(j + rem + 1 <= cap);
-			if(rem) memcpy(buf + j, p, rem);
+			if(rem) sz_copy(buf + j, p, rem);
 			j += rem;
 			break;
 		}
@@ -76,7 +78,7 @@ void str_tidy_into(const char *s, size_t len,
 		size_t seg = (size_t)(found - p);
 		if(seg) {
 			assert(j + seg + 1 <= cap);
-			memcpy(buf + j, p, seg);
+			sz_copy(buf + j, p, seg);
 			j += seg;
 		}
 
@@ -110,18 +112,23 @@ char *str_remove_comment(const char *s, size_t len, size_t *out_len) {
 		const char *found = sz_find_byte(p, (size_t)(end - p), &needle);
 		if(!found) {
 			size_t rem = (size_t)(end - p);
-			if(rem) memcpy(result + j, p, rem);
+			if(rem) sz_copy(result + j, p, rem);
 			j += rem;
 			break;
 		}
 		/* copy [p, found) */
 		size_t seg = (size_t)(found - p);
-		if(seg) memcpy(result + j, p, seg);
+		if(seg) sz_copy(result + j, p, seg);
 		j += seg;
 
 		/* Look for sentinel: \0 <digits> [cn] \x7F */
 		const char *k = found + 1;
-		while(k < end && *k >= '0' && *k <= '9') k++;
+		/* fast-scan digits */
+		sz_byteset_t digits;
+		sz_byteset_init(&digits);
+		for(char c = '0'; c <= '9'; ++c) sz_byteset_add(&digits, c);
+		const char *not_digit = sz_find_byte_not_from(k, (size_t)(end - k), "0123456789", 10);
+		if(not_digit == NULL) k = end; else k = not_digit;
 		if(k < end && (k > found + 1) && (*k == 'c' || *k == 'n') &&
 		   (k + 1 < end && (unsigned char)*(k + 1) == '\x7F')) {
 			/* Skip the entire marker */
@@ -261,7 +268,7 @@ char *str_decode_html_basic(const char *s, size_t len, size_t *out_len) {
 					result= realloc(result, cap);
 					assert(result);
 				}
-				memcpy(result + j, tmp, (size_t)nb);
+				sz_copy(result + j, tmp, (size_t)nb);
 				j+= (size_t)nb;
 				i= k + 1;
 				continue;
@@ -317,7 +324,7 @@ char *str_restore(const char *s, size_t len,
 			if(j + rem + 1 > cap) {
 				while(j + rem + 1 > cap) { cap*= 2; result= realloc(result, cap); assert(result); }
 			}
-			if(rem) memcpy(result + j, p, rem);
+			if(rem) sz_copy(result + j, p, rem);
 			j += rem;
 			break;
 		}
@@ -328,7 +335,7 @@ char *str_restore(const char *s, size_t len,
 			if(j + seg + 1 > cap) {
 				while(j + seg + 1 > cap) { cap*= 2; result= realloc(result, cap); assert(result); }
 			}
-			memcpy(result + j, p, seg);
+			sz_copy(result + j, p, seg);
 			j += seg;
 		}
 
@@ -344,7 +351,7 @@ char *str_restore(const char *s, size_t len,
 				if(j + replen + 1 > cap) {
 					while(j + replen + 1 > cap) { cap*= 2; result= realloc(result, cap); assert(result); }
 				}
-				memcpy(result + j, rep, replen);
+				sz_copy(result + j, rep, replen);
 				j += replen;
 				p = k + 1;
 				continue;
@@ -410,6 +417,7 @@ char *str_extract_interwiki(const char *s, size_t len, const ParserConfig *cfg, 
 	size_t *pos_map= malloc((len + 1) * sizeof(size_t));
 	assert(pos_map);
 	size_t tlen= 0;
+	/* build temp and pos_map using sz_copy-like behavior for efficiency */
 	for(size_t i= 0; i < len; i++) {
 		temp[tlen]= (s[i] == '_') ? ' ' : s[i];
 		pos_map[tlen]= i;
