@@ -3,6 +3,7 @@
  */
 #include "string_util.h"
 #include "config.h"
+#include <stringzilla/stringzilla.h>
 #include <unicode/uchar.h>
 #include <unicode/utf8.h>
 #include <assert.h>
@@ -26,19 +27,11 @@ void work_str_sentinel(size_t index, char ch, char *marker_buf, size_t *marker_l
 /* ── tidy ─────────────────────────────────────────────────────────────────── */
 
 char *str_tidy(const char *s, size_t len, size_t *out_len) {
+	/* Delegate to str_tidy_into to avoid duplicating logic. Allocate a
+	 * caller-sized buffer (len + 1) as the conservative maximum. */
 	char *result= malloc(len + 1);
 	assert(result);
-	size_t j= 0;
-	for(size_t i= 0; i < len; i++) {
-		unsigned char c= (unsigned char)s[i];
-		/* JS parity for /[\0\x7F]|\r$/gmu:
-         * remove NUL/DEL and any CR at end-of-line (before \n) or end-of-input. */
-		if(c == '\0' || c == '\x7F') continue;
-		if(c == '\r' && (i + 1 == len || s[i + 1] == '\n')) continue;
-		result[j++]= (char)c;
-	}
-	result[j]= '\0';
-	if(out_len) *out_len= j;
+	str_tidy_into(s, len, result, len + 1, out_len);
 	return result;
 }
 
@@ -49,12 +42,41 @@ void str_tidy_into(const char *s, size_t len,
      * wiki_thread_buf_reserve().  Buffer ownership and resizing belong
      * exclusively to the thread_buffer layer. */
 	assert(buf && cap >= len + 1);
-	size_t j= 0;
-	for(size_t i= 0; i < len; i++) {
-		unsigned char c= (unsigned char)s[i];
-		if(c == '\0' || c == '\x7F') continue;
-		if(c == '\r' && (i + 1 == len || s[i + 1] == '\n')) continue;
-		buf[j++]= (char)c;
+	const char *p = s;
+	const char *end = s + len;
+	size_t j = 0;
+
+	sz_byteset_t set;
+	sz_byteset_init(&set);
+	sz_byteset_add(&set, '\0');
+	sz_byteset_add(&set, '\x7F');
+	sz_byteset_add(&set, '\r');
+
+	while(p < end) {
+		const char *found = sz_find_byteset(p, (size_t)(end - p), &set);
+		if(!found) {
+			size_t rem = (size_t)(end - p);
+			assert(j + rem + 1 <= cap);
+			if(rem) memcpy(buf + j, p, rem);
+			j += rem;
+			break;
+		}
+		/* copy [p, found) */
+		size_t seg = (size_t)(found - p);
+		if(seg) {
+			assert(j + seg + 1 <= cap);
+			memcpy(buf + j, p, seg);
+			j += seg;
+		}
+
+		/* Decide whether to skip or keep the found byte.  CR is only
+		 * removed when it is immediately before a LF or at end-of-input. */
+		unsigned char fc = (unsigned char)*found;
+		/* Keep only a CR that is not immediately followed by LF and not at end */
+		if (fc == '\r' && !(found + 1 == end || *(found + 1) == '\n')) {
+			buf[j++] = '\r';
+		}
+		p = found + 1;
 	}
 	buf[j]= '\0';
 	if(out_len) *out_len= j;
@@ -68,20 +90,37 @@ void str_tidy_into(const char *s, size_t len,
 char *str_remove_comment(const char *s, size_t len, size_t *out_len) {
 	char *result= malloc(len + 1);
 	assert(result);
-	size_t j= 0, i= 0;
-	while(i < len) {
-		if((unsigned char)s[i] == '\0') {
-			/* look for: \0 <digits> [cn] \x7F */
-			size_t k= i + 1;
-			while(k < len && s[k] >= '0' && s[k] <= '9') k++;
-			if(k < len && (s[k] == 'c' || s[k] == 'n') &&
-				 k + 1 < len && (unsigned char)s[k + 1] == '\x7F') {
-				/* skip the entire marker */
-				i= k + 2;
-				continue;
-			}
+	size_t j= 0;
+	const char *p = s;
+	const char *end = s + len;
+	char needle = '\0';
+
+	while(p < end) {
+		const char *found = sz_find_byte(p, (size_t)(end - p), &needle);
+		if(!found) {
+			size_t rem = (size_t)(end - p);
+			if(rem) memcpy(result + j, p, rem);
+			j += rem;
+			break;
 		}
-		result[j++]= s[i++];
+		/* copy [p, found) */
+		size_t seg = (size_t)(found - p);
+		if(seg) memcpy(result + j, p, seg);
+		j += seg;
+
+		/* Look for sentinel: \0 <digits> [cn] \x7F */
+		const char *k = found + 1;
+		while(k < end && *k >= '0' && *k <= '9') k++;
+		if(k < end && (k > found + 1) && (*k == 'c' || *k == 'n') &&
+		   (k + 1 < end && (unsigned char)*(k + 1) == '\x7F')) {
+			/* Skip the entire marker */
+			p = k + 2;
+			continue;
+		}
+
+		/* Not a comment sentinel — emit the literal byte and continue. */
+		result[j++]= *found;
+		p = found + 1;
 	}
 	result[j]= '\0';
 	if(out_len) *out_len= j;
@@ -257,43 +296,55 @@ char *str_restore(const char *s, size_t len,
 	char *result= malloc(cap);
 	assert(result);
 	size_t j= 0;
+	const char *p = s;
+	const char *end = s + len;
+	char needle = '\0';
 
-	for(size_t i= 0; i < len;) {
-		if((unsigned char)s[i] == '\0') {
-			/* Try to parse \0<digits>\x7F */
-			size_t k= i + 1;
-			while(k < len && s[k] >= '0' && s[k] <= '9') k++;
-			if(k < len && k > i + 1 && (unsigned char)s[k] == '\x7F') {
-				/* Parse the index */
-				size_t idx= 0;
-				for(size_t d= i + 1; d < k; d++) {
-					idx= idx * 10 + (size_t)(s[d] - '0');
+	while(p < end) {
+		const char *found = sz_find_byte(p, (size_t)(end - p), &needle);
+		if(!found) {
+			size_t rem = (size_t)(end - p);
+			if(j + rem + 1 > cap) {
+				while(j + rem + 1 > cap) { cap*= 2; result= realloc(result, cap); assert(result); }
+			}
+			if(rem) memcpy(result + j, p, rem);
+			j += rem;
+			break;
+		}
+
+		/* copy [p, found) */
+		size_t seg = (size_t)(found - p);
+		if(seg) {
+			if(j + seg + 1 > cap) {
+				while(j + seg + 1 > cap) { cap*= 2; result= realloc(result, cap); assert(result); }
+			}
+			memcpy(result + j, p, seg);
+			j += seg;
+		}
+
+		/* Try to parse \0<digits>\x7F */
+		const char *k = found + 1;
+		while(k < end && *k >= '0' && *k <= '9') k++;
+		if(k < end && k > found + 1 && (unsigned char)*k == '\x7F') {
+			size_t idx = 0;
+			for(const char *d = found + 1; d < k; ++d) idx = idx * 10 + (size_t)(*d - '0');
+			if(idx < stack_count && stack[idx]) {
+				const char *rep = stack[idx];
+				size_t replen = (stack_lengths && stack_lengths[idx]) ? stack_lengths[idx] : strlen(rep);
+				if(j + replen + 1 > cap) {
+					while(j + replen + 1 > cap) { cap*= 2; result= realloc(result, cap); assert(result); }
 				}
-				if(idx < stack_count && stack[idx]) {
-					const char *rep= stack[idx];
-					/* Use stored length when available (binary-safe for entries
-                     * that contain embedded NUL bytes from token sentinels). */
-					size_t replen= (stack_lengths && stack_lengths[idx])
-												 ? stack_lengths[idx]
-												 : strlen(rep);
-					while(j + replen + 1 > cap) {
-						cap*= 2;
-						result= realloc(result, cap);
-						assert(result);
-					}
-					memcpy(result + j, rep, replen);
-					j+= replen;
-					i= k + 1;
-					continue;
-				}
+				memcpy(result + j, rep, replen);
+				j += replen;
+				p = k + 1;
+				continue;
 			}
 		}
-		if(j + 2 > cap) {
-			cap*= 2;
-			result= realloc(result, cap);
-			assert(result);
-		}
-		result[j++]= s[i++];
+
+		/* Fallback: emit the literal \0 byte and advance. */
+		if(j + 2 > cap) { cap*= 2; result= realloc(result, cap); assert(result); }
+		result[j++]= *found;
+		p = found + 1;
 	}
 	result[j]= '\0';
 	if(out_len) *out_len= j;
