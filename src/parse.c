@@ -515,8 +515,11 @@ static Token *parse_gallery_image_line(const char *line, size_t line_len,
 	parse_links(scratch, cfg, accum, page, false);
 
 	Token *tmp= token_new(TOKEN_PLAIN, "gallery-line");
-	if(!tmp) return NULL;
-	build_from_str(tmp, tmp_tb.buf, tmp_tb.len, accum);
+	if(!tmp) {
+		wiki_thread_buf_release_scratch(scratch);
+		return NULL;
+	}
+	build_from_str(tmp, scratch->buf, scratch->len, accum);
 	build_token_recursive(tmp, accum, cfg);
 
 	Token *out= NULL;
@@ -553,8 +556,11 @@ static Token *parse_imagemap_image_line(const char *line, size_t line_len,
 	parse_links(scratch, cfg, accum, page, false);
 
 	Token *tmp= token_new(TOKEN_PLAIN, "imagemap-image-line");
-	if(!tmp) return NULL;
-	build_from_str(tmp, tmp_tb.buf, tmp_tb.len, accum);
+	if(!tmp) {
+		wiki_thread_buf_release_scratch(scratch);
+		return NULL;
+	}
+	build_from_str(tmp, scratch->buf, scratch->len, accum);
 	build_token_recursive(tmp, accum, cfg);
 
 	Token *out= NULL;
