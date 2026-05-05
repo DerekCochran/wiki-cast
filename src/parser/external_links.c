@@ -4,6 +4,7 @@
 #include "log.h"
 #include "parser/external_links.h"
 #include "string_util.h"
+#include <stringzilla/stringzilla.h>
 #include "token.h"
 #include <assert.h>
 #include <ctype.h>
@@ -259,18 +260,22 @@ void parse_external_links(ThreadBuf *tb, const ParserConfig *cfg,
          * prepend the rest onto text (space is cleared).
          */
 		{
-			/* Scan url for "&lt;" or "&gt;" */
+			/* Scan url for "&lt;" or "&gt;" — search for '&' quickly. */
 			size_t truncate_at= url_len_v; /* default: no truncation */
-			for(size_t i= 0; i + 3 < url_len_v; i++) {
-				if(url_ptr[i] == '&') {
-					size_t rem= url_len_v - i;
-					if(rem >= 4 &&
-						 ((strncasecmp(url_ptr + i, "&lt;", 4) == 0) ||
-							(strncasecmp(url_ptr + i, "&gt;", 4) == 0))) {
-						truncate_at= i;
-						break;
-					}
+			size_t search_pos = 0;
+			while(search_pos + 3 < url_len_v) {
+				const char needle = '&';
+				const char *amp = sz_find_byte(url_ptr + search_pos, url_len_v - search_pos, &needle);
+				if(!amp) break;
+				size_t i = (size_t)(amp - url_ptr);
+				size_t rem = url_len_v - i;
+				if(rem >= 4 &&
+				   ((strncasecmp(url_ptr + i, "&lt;", 4) == 0) ||
+					(strncasecmp(url_ptr + i, "&gt;", 4) == 0))) {
+					truncate_at = i;
+					break;
 				}
+				search_pos = i + 1;
 			}
 
 			if(truncate_at < url_len_v) {

@@ -6,6 +6,7 @@
 #include "string_util.h"
 #include "title.h"
 #include "token.h"
+#include <stringzilla/stringzilla.h>
 #include <assert.h>
 #include <ctype.h>
 #include <stdio.h>
@@ -25,13 +26,25 @@ static bool str_list_contains_ci(const StrList *sl, const char *needle) {
  * spuriously reject lines that only contain internal sentinels. */
 static char *braces_make_match_subject(const char *buf, size_t len) {
 	if(!buf || len == 0) return NULL;
+
+	/* Quick check: if the input contains no NUL sentinels, avoid the copy
+	 * and let the caller use the original buffer. This is the common case. */
+	char needle = '\0';
+	const char *found = sz_find_byte(buf, len, &needle);
+	if(!found) return NULL;
+
 	char *subject= malloc(len);
 	if(!subject) return NULL;
 	memcpy(subject, buf, len);
-	for(size_t i= 0; i < len; i++) {
-		if((unsigned char)subject[i] == '\0') {
-			subject[i]= '\x01';
-		}
+
+	/* Replace embedded NUL bytes with SOH in the copied buffer. Use
+	 * sz_find_byte to locate NULs efficiently. */
+	const char *p = found;
+	while(p && p < buf + len) {
+		size_t idx = (size_t)(p - buf);
+		subject[idx] = '\x01';
+		if(idx + 1 >= len) break;
+		p = sz_find_byte(p + 1, len - idx - 1, &needle);
 	}
 	return subject;
 }
@@ -207,12 +220,22 @@ static char *trim_copy(const char *s, size_t len) {
 }
 
 static char *lower_copy(const char *s, size_t len) {
-	char *out= malloc(len + 1);
-	if(!out) return NULL;
-	for(size_t i= 0; i < len; i++) {
-		out[i]= (char)tolower((unsigned char)s[i]);
+	if(!s) return NULL;
+
+	/* Use a precomputed lookup table + Stringzilla's sz_lookup for faster
+	 * bulk lowercase transformation. This preserves the byte-wise tolower()
+	 * semantics used previously (C locale/unsigned-char based). */
+	static unsigned char lut[256];
+	static int lut_inited = 0;
+	if(!lut_inited) {
+		for(int i = 0; i < 256; ++i) lut[i] = (unsigned char)tolower((unsigned char)i);
+		lut_inited = 1;
 	}
-	out[len]= '\0';
+
+	char *out = malloc(len + 1);
+	if(!out) return NULL;
+	sz_lookup(out, len, s, (const char *)lut);
+	out[len] = '\0';
 	return out;
 }
 

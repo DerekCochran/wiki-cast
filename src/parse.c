@@ -44,6 +44,7 @@
 #include "parser/magic_links.h"
 
 #include "parser/external_links.h"
+#include <stringzilla/stringzilla.h>
 #include <assert.h>
 #include <ctype.h>
 #include <errno.h>
@@ -133,10 +134,7 @@ static void free_accum_orphans(const Token *root, Accum *accum) {
 static bool mem_has(const char *s, size_t len, const char *needle) {
 	size_t nlen= needle ? strlen(needle) : 0;
 	if(!s || nlen == 0 || len < nlen) return false;
-	for(size_t i= 0; i + nlen <= len; i++) {
-		if(memcmp(s + i, needle, nlen) == 0) return true;
-	}
-	return false;
+	return sz_find(s, len, needle, nlen) != NULL;
 }
 
 /* Write a JSON-escaped string of given length to fp (surrounded by quotes). */
@@ -335,16 +333,12 @@ static void append_native_stage_json(const char *stage_log_dir, int stage, Threa
 static void parse_list_skip_first_line(ThreadBuf *scratch, const ParserConfig *cfg, Accum *accum) {
 	if(!scratch || !scratch->buf || scratch->len == 0) return;
 
-	size_t nl= SIZE_MAX;
-	for(size_t i= 0; i < scratch->len; i++) {
-		if(scratch->buf[i] == '\n') {
-			nl= i;
-			break;
-		}
-	}
-	if(nl == SIZE_MAX || nl + 1 >= scratch->len) return;
+	const char nl= '\n';
+	const char *nl_pos= sz_find_byte(scratch->buf, scratch->len, &nl);
+	if(!nl_pos || nl_pos + 1 >= scratch->buf + scratch->len) return;
+	size_t newline_index= (size_t)(nl_pos - scratch->buf);
 
-	size_t prefix_len= nl + 1;
+	size_t prefix_len= newline_index + 1;
 	size_t rest_len= scratch->len - prefix_len;
 	char *prefix= malloc(prefix_len + 1);
 	if(!prefix) return;
@@ -593,23 +587,16 @@ static Token *parse_imagemap_link_line(const char *line, size_t line_len,
 																			 const char *page) {
 	if(!line || line_len == 0) return NULL;
 
-	size_t open= SIZE_MAX;
-	for(size_t i= 0; i + 1 < line_len; i++) {
-		if(line[i] == '[' && line[i + 1] == '[') {
-			open= i;
-			break;
-		}
-	}
-	if(open == SIZE_MAX) return NULL;
+	const char open_pat[] = "[[";
+	const char *open_ptr= sz_find(line, line_len, open_pat, 2);
+	if(!open_ptr) return NULL;
+	size_t open= (size_t)(open_ptr - line);
 
-	size_t close= SIZE_MAX;
-	for(size_t i= open + 2; i + 1 < line_len; i++) {
-		if(line[i] == ']' && line[i + 1] == ']') {
-			close= i;
-			break;
-		}
-	}
-	if(close == SIZE_MAX || close <= open + 1) return NULL;
+	const char close_pat[] = "]]";
+	const char *close_ptr= sz_find(line + open + 2, line_len - (open + 2), close_pat, 2);
+	if(!close_ptr) return NULL;
+	size_t close= (size_t)(close_ptr - line);
+	if(close <= open + 1) return NULL;
 
 	Token *t= token_new(TOKEN_PLAIN, "imagemap-link");
 	if(!t) return NULL;
@@ -659,7 +646,7 @@ static void postprocess_gallery_ext_inner(Token *t, const ParserConfig *cfg, Acc
 	if(!src) return;
 	size_t pos= 0;
 	for(size_t i= 0; i < t->child_count; i++) {
-		memcpy(src + pos, t->children[i].text, t->children[i].text_len);
+		sz_copy(src + pos, t->children[i].text, t->children[i].text_len);
 		pos+= t->children[i].text_len;
 	}
 	src[src_len]= '\0';
@@ -670,10 +657,10 @@ static void postprocess_gallery_ext_inner(Token *t, const ParserConfig *cfg, Acc
 	t->child_count= 0;
 
 	size_t line_start= 0;
-	for(size_t i= 0; i <= src_len; i++) {
-		if(i != src_len && src[i] != '\n') continue;
-
-		size_t line_len= i - line_start;
+	while(line_start < src_len) {
+		const char nl= '\n';
+		const char *eol= sz_find_byte(src + line_start, src_len - line_start, &nl);
+		size_t line_len = eol ? (size_t)(eol - (src + line_start)) : src_len - line_start;
 		const char *line_ptr= src + line_start;
 
 		Token *img= parse_gallery_image_line(line_ptr, line_len, cfg, accum, page);
@@ -683,7 +670,7 @@ static void postprocess_gallery_ext_inner(Token *t, const ParserConfig *cfg, Acc
 			token_append_text_n(t, line_ptr, line_len);
 		}
 
-		line_start= i + 1;
+		line_start= eol ? (size_t)(eol - src) + 1 : src_len;
 	}
 
 	for(size_t i= 0; i < t->child_count; i++) {
@@ -714,7 +701,7 @@ static void postprocess_imagemap_ext_inner(Token *t, const ParserConfig *cfg, Ac
 	if(!src) return;
 	size_t pos= 0;
 	for(size_t i= 0; i < t->child_count; i++) {
-		memcpy(src + pos, t->children[i].text, t->children[i].text_len);
+		sz_copy(src + pos, t->children[i].text, t->children[i].text_len);
 		pos+= t->children[i].text_len;
 	}
 	src[src_len]= '\0';
@@ -726,10 +713,10 @@ static void postprocess_imagemap_ext_inner(Token *t, const ParserConfig *cfg, Ac
 
 	bool image_seen= false;
 	size_t line_start= 0;
-	for(size_t i= 0; i <= src_len; i++) {
-		if(i != src_len && src[i] != '\n') continue;
-
-		size_t line_len= i - line_start;
+	while(line_start < src_len) {
+		const char nl= '\n';
+		const char *eol= sz_find_byte(src + line_start, src_len - line_start, &nl);
+		size_t line_len = eol ? (size_t)(eol - (src + line_start)) : src_len - line_start;
 		const char *line_ptr= src + line_start;
 
 		if(line_len == 0) {
@@ -751,7 +738,7 @@ static void postprocess_imagemap_ext_inner(Token *t, const ParserConfig *cfg, Ac
 			}
 		}
 
-		line_start= i + 1;
+		line_start= eol ? (size_t)(eol - src) + 1 : src_len;
 	}
 
 	for(size_t i= 0; i < t->child_count; i++) {
@@ -779,8 +766,12 @@ static void run_nested_plain_pipeline(ThreadBuf *scratch,
 
 	if(is_td_inner || is_ext_inner) {
 		bool is_poem_ext_inner= is_ext_inner && t && t->name && strcmp(t->name, "poem") == 0;
-		bool ext_inner_has_bang= is_ext_inner && mem_has(scratch->buf, scratch->len, "!\x7F");
-		bool ext_inner_has_sentinel= is_ext_inner && memchr(scratch->buf, '\0', scratch->len) != NULL;
+		bool ext_inner_has_bang= is_ext_inner && sz_find(scratch->buf, scratch->len, "!\x7F", 2) != NULL;
+		bool ext_inner_has_sentinel = false;
+		if (is_ext_inner) {
+			const char _zn_run = '\0';
+			ext_inner_has_sentinel = sz_find_byte(scratch->buf, scratch->len, &_zn_run) != NULL;
+		}
 
 		if(!ext_inner_has_bang) {
 			/* JS parity: td-inner parsing starts from stage 4, so HTML (stage 2)
@@ -891,7 +882,7 @@ static void postprocess_nested_plain(Token *t, const ParserConfig *cfg, Accum *a
 							ser= grown;
 						}
 						if(!serializable) break;
-						memcpy(ser + ser_len, cur.text, cur.text_len);
+						sz_copy(ser + ser_len, cur.text, cur.text_len);
 						ser_len+= cur.text_len;
 						continue;
 					}
@@ -924,7 +915,7 @@ static void postprocess_nested_plain(Token *t, const ParserConfig *cfg, Accum *a
 						ser= grown;
 					}
 					if(!serializable) break;
-					memcpy(ser + ser_len, marker, mlen);
+					sz_copy(ser + ser_len, marker, mlen);
 					ser_len+= mlen;
 				}
 
@@ -995,8 +986,9 @@ static void postprocess_nested_plain(Token *t, const ParserConfig *cfg, Accum *a
 			wiki_thread_buf_set(scratch, txt, cur_len);
 			run_nested_plain_pipeline(scratch, is_td_inner, is_ext_inner, is_heading_title, t, cfg, accum, page);
 
-			bool unchanged= (scratch->len == cur_len && memcmp(scratch->buf, txt, cur_len) == 0);
-			bool has_marker= memchr(scratch->buf, '\0', scratch->len) != NULL;
+			bool unchanged = (scratch->len == cur_len && sz_equal(scratch->buf, txt, cur_len));
+			const char _zn1 = '\0';
+			bool has_marker = sz_find_byte(scratch->buf, scratch->len, &_zn1) != NULL;
 			if(unchanged && !has_marker) {
 				if(new_count >= new_cap) {
 					new_cap*= 2;
@@ -1023,7 +1015,7 @@ static void postprocess_nested_plain(Token *t, const ParserConfig *cfg, Accum *a
 				fallback.text_len= scratch->len;
 				fallback.text= malloc(scratch->len + 1);
 				assert(fallback.text);
-				memcpy(fallback.text, scratch->buf, scratch->len);
+				sz_copy(fallback.text, scratch->buf, scratch->len);
 				fallback.text[scratch->len]= '\0';
 				new_children[new_count++]= fallback;
 				continue;
@@ -1069,7 +1061,7 @@ static void postprocess_nested_plain(Token *t, const ParserConfig *cfg, Accum *a
 	}
 	size_t pos= 0;
 	for(size_t i= 0; i < t->child_count; i++) {
-		memcpy(joined + pos, t->children[i].text, t->children[i].text_len);
+		sz_copy(joined + pos, t->children[i].text, t->children[i].text_len);
 		pos+= t->children[i].text_len;
 	}
 	joined[txt_len]= '\0';
@@ -1077,7 +1069,7 @@ static void postprocess_nested_plain(Token *t, const ParserConfig *cfg, Accum *a
 	wiki_thread_buf_set(scratch, txt, txt_len);
 	run_nested_plain_pipeline(scratch, is_td_inner, is_ext_inner, is_heading_title, t, cfg, accum, page);
 
-	if(scratch->len == txt_len && memcmp(scratch->buf, txt, txt_len) == 0) {
+	if(scratch->len == txt_len && sz_equal(scratch->buf, txt, txt_len)) {
 		free(joined);
 		wiki_thread_buf_release_scratch(scratch);
 		return;
@@ -1099,13 +1091,13 @@ static void postprocess_root_braces_fallback(Token *root, const ParserConfig *cf
 
 	const char *txt= root->children[0].text;
 	size_t txt_len= root->children[0].text_len;
-	if(!txt || txt_len == 0 || !mem_has(txt, txt_len, "{{")) return;
+	if(!txt || txt_len == 0 || sz_find(txt, txt_len, "{{", 2) == NULL) return;
 
 	ThreadBuf *scratch= wiki_thread_buf_acquire_scratch();
 	wiki_thread_buf_set(scratch, txt, txt_len);
 	parse_braces(scratch, cfg, accum);
 
-	if(scratch->len == txt_len && memcmp(scratch->buf, txt, txt_len) == 0) {
+	if(scratch->len == txt_len && sz_equal(scratch->buf, txt, txt_len)) {
 		wiki_thread_buf_release_scratch(scratch);
 		return;
 	}
@@ -1242,8 +1234,9 @@ static void postprocess_parameter_value_inline_impl(Token *t, const ParserConfig
 		}
 
 
-		bool unchanged= (scratch->len == txt_len && memcmp(scratch->buf, txt, txt_len) == 0);
-		bool has_marker= memchr(scratch->buf, '\0', scratch->len) != NULL;
+		bool unchanged = (scratch->len == txt_len && sz_equal(scratch->buf, txt, txt_len));
+		const char _zn2 = '\0';
+		bool has_marker = sz_find_byte(scratch->buf, scratch->len, &_zn2) != NULL;
 		if(unchanged && !has_marker) {
 			if(new_count >= new_cap) {
 				new_cap*= 2;
@@ -1271,7 +1264,7 @@ static void postprocess_parameter_value_inline_impl(Token *t, const ParserConfig
 			fallback.text_len= scratch->len;
 			fallback.text= malloc(scratch->len + 1);
 			assert(fallback.text);
-			memcpy(fallback.text, scratch->buf, scratch->len);
+			sz_copy(fallback.text, scratch->buf, scratch->len);
 			fallback.text[scratch->len]= '\0';
 			new_children[new_count++]= fallback;
 			continue;
@@ -1389,10 +1382,10 @@ static void parse_quotes_stage6_per_line(ThreadBuf *ws, const ParserConfig *cfg,
 	size_t out_len= 0;
 
 	size_t line_start= 0;
-	for(size_t i= 0; i <= ws->len; i++) {
-		if(i != ws->len && ws->buf[i] != '\n') continue;
-
-		size_t line_len= i - line_start;
+	while(line_start < ws->len) {
+		const char nl= '\n';
+		const char *eol= sz_find_byte(ws->buf + line_start, ws->len - line_start, &nl);
+		size_t line_len = eol ? (size_t)(eol - (ws->buf + line_start)) : ws->len - line_start;
 		wiki_thread_buf_set(scratch, ws->buf + line_start, line_len);
 		parse_quotes(scratch, cfg, accum, false);
 
@@ -1402,14 +1395,14 @@ static void parse_quotes_stage6_per_line(ThreadBuf *ws, const ParserConfig *cfg,
 			assert(out);
 		}
 		if(scratch->len > 0) {
-			memcpy(out + out_len, scratch->buf, scratch->len);
+			sz_copy(out + out_len, scratch->buf, scratch->len);
 			out_len+= scratch->len;
 		}
-		if(i != ws->len) {
+		if(eol) {
 			out[out_len++]= '\n';
 		}
 
-		line_start= i + 1;
+		line_start= eol ? (size_t)(eol - ws->buf) + 1 : ws->len;
 	}
 
 	out[out_len]= '\0';
@@ -1432,7 +1425,7 @@ static void stage1_parse_braces_on_accum(const ParserConfig *cfg, Accum *accum) 
 
 		const char *txt= tok->children[0].text;
 		size_t txt_len= tok->children[0].text_len;
-		if(!txt || txt_len == 0 || !mem_has(txt, txt_len, "{{")) continue;
+		if(!txt || txt_len == 0 || sz_find(txt, txt_len, "{{", 2) == NULL) continue;
 
 		ThreadBuf tmp_tb;
 		tmp_tb.buf= malloc(txt_len + 1);
@@ -1445,7 +1438,7 @@ static void stage1_parse_braces_on_accum(const ParserConfig *cfg, Accum *accum) 
 		tmp_tb.target_size= tmp_tb.cap;
 
 		parse_braces(&tmp_tb, cfg, accum);
-		if(!(tmp_tb.len == txt_len && memcmp(tmp_tb.buf, txt, txt_len) == 0)) {
+		if(!(tmp_tb.len == txt_len && sz_equal(tmp_tb.buf, txt, txt_len))) {
 			build_from_str(tok, tmp_tb.buf, tmp_tb.len, accum);
 		}
 		free(tmp_tb.buf);
@@ -1465,7 +1458,9 @@ static void stage0_parse_comment_and_ext_on_accum(const ParserConfig *cfg, Accum
 
 		const char *txt= tok->children[0].text;
 		size_t txt_len= tok->children[0].text_len;
-		if(!txt || txt_len == 0 || memchr(txt, '<', txt_len) == NULL) continue;
+		if(!txt || txt_len == 0) continue;
+		const char _lt = '<';
+		if(sz_find_byte(txt, txt_len, &_lt) == NULL) continue;
 
 		ThreadBuf tmp_tb;
 		tmp_tb.buf= malloc(txt_len + 1);
@@ -1478,10 +1473,10 @@ static void stage0_parse_comment_and_ext_on_accum(const ParserConfig *cfg, Accum
 		tmp_tb.target_size= tmp_tb.cap;
 
 		parse_comment_and_ext(&tmp_tb, cfg, accum, false);
-		if(!(tmp_tb.len == txt_len && memcmp(tmp_tb.buf, txt, txt_len) == 0)) {
+		if(!(tmp_tb.len == txt_len && sz_equal(tmp_tb.buf, txt, txt_len))) {
 			char *repl= malloc(tmp_tb.len + 1);
 			if(repl) {
-				memcpy(repl, tmp_tb.buf, tmp_tb.len);
+				sz_copy(repl, tmp_tb.buf, tmp_tb.len);
 				repl[tmp_tb.len]= '\0';
 				free(tok->children[0].text);
 				tok->children[0].text= repl;
@@ -1496,6 +1491,24 @@ Token *wiki_parse_with_page(const char *wikitext, const ParserConfig *cfg,
 												 bool include, int max_stage,
 												 const char *page) {
 	if(!wikitext || !cfg) return NULL;
+
+	/* Log StringZilla capabilities and dispatch info once when the parser is first used. */
+	static int sz_caps_logged = 0;
+	if(!sz_caps_logged) {
+		sz_caps_logged = 1;
+		sz_capability_t caps = sz_capabilities();
+		const char *caps_str = sz_capabilities_to_string(caps);
+		int dynamic = sz_dynamic_dispatch();
+
+		if(caps_str && *caps_str) {
+			/* Pick the final capability name as the best-guessed backend. */
+			const char *last = strrchr(caps_str, ',');
+			const char *backend = last && *(last + 1) ? last + 1 : caps_str;
+			log_info("StringZilla dynamic_dispatch=%d; capabilities: %s; chosen backend: %s", dynamic, caps_str, backend);
+		} else {
+			log_info("StringZilla dynamic_dispatch=%d; capabilities: (none)", dynamic);
+		}
+	}
 
 	/* ── Grab a thread-local snapshot of the input ─────────────────────────
      * The caller's string may be modified by another thread while we are

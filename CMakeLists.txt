@@ -6,9 +6,13 @@ set(CMAKE_C_STANDARD_REQUIRED ON)
 
 option(TOKENIZER_USE_NATIVE "Enable native CPU optimization flags (-march=native -mtune=native)" ON)
 
-if(TOKENIZER_USE_NATIVE AND CMAKE_C_COMPILER_ID MATCHES "GNU|Clang")
-    add_compile_options(-march=native -mtune=native)
-endif()
+# Apply native CPU tuning and high optimization unconditionally to maximize
+# performance on the build host. This intentionally removes the previous
+# compiler/option guard so the flags are always added; keep the option for
+# backwards compatibility and user visibility.
+add_compile_options(-march=native -mtune=native)
+# Prefer high optimization on Release/RelWithDebInfo builds.
+add_compile_options($<$<CONFIG:Release>:-O3> $<$<CONFIG:RelWithDebInfo>:-O3>)
 
 # Keep vendor StringZilla sources untouched: when UBSan is enabled, disable
 # misaligned word loads through a compile definition instead of patching headers.
@@ -17,10 +21,7 @@ if(_TOKENIZER_ALL_C_FLAGS MATCHES "(^|[ ;])-fsanitize=undefined([ ;]|$)")
     add_compile_definitions(SZ_USE_MISALIGNED_LOADS=0)
 endif()
 
-set(TOKENIZER_NODE_GYP_CFLAGS "")
-if(TOKENIZER_USE_NATIVE AND CMAKE_C_COMPILER_ID MATCHES "GNU|Clang")
-    set(TOKENIZER_NODE_GYP_CFLAGS "-march=native -mtune=native")
-endif()
+set(TOKENIZER_NODE_GYP_CFLAGS "-march=native -mtune=native -O3 -flto")
 
 # ── Dependencies ─────────────────────────────────────────────────────────────
 find_package(PkgConfig REQUIRED)
@@ -70,6 +71,12 @@ target_compile_options(wikitokenizer PRIVATE
     ${ICU_CFLAGS_OTHER}
     -Wall -Wextra -Wno-unused-parameter
 )
+
+# Enable CMake-managed link-time optimization (LTO) / interprocedural optimization
+# for the static library to maximize cross-module optimizations.
+# This is intentionally always enabled to allow the build system to perform
+# cross-module optimizations when supported by the toolchain.
+set_target_properties(wikitokenizer PROPERTIES INTERPROCEDURAL_OPTIMIZATION TRUE)
 
 target_link_libraries(wikitokenizer
     ${PCRE2_LIBRARIES}

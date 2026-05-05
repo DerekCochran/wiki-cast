@@ -12,6 +12,17 @@
 #include <stdlib.h>
 #include <string.h>
 
+/* lowercasing LUT for bulk operations */
+static unsigned char s_tolower_lut[256];
+static int s_tolower_lut_init = 0;
+
+static void ensure_tolower_lut(void) {
+	if (!s_tolower_lut_init) {
+		for (int i = 0; i < 256; ++i) s_tolower_lut[i] = (unsigned char)tolower((unsigned char)i);
+		s_tolower_lut_init = 1;
+	}
+}
+
 /* ── Sentinel marker formatting ──────────────────────────────────────────── */
 
 void work_str_sentinel(size_t index, char ch, char *marker_buf, size_t *marker_len) {
@@ -140,9 +151,8 @@ char *str_trim_lc(const char *s, size_t len) {
 	size_t out_len= end - start;
 	char *result= malloc(out_len + 1);
 	assert(result);
-	for(size_t i= 0; i < out_len; i++) {
-		result[i]= (char)tolower((unsigned char)s[start + i]);
-	}
+	ensure_tolower_lut();
+	if(out_len > 0) sz_lookup(result, out_len, s + start, (const char *)s_tolower_lut);
 	result[out_len]= '\0';
 	return result;
 }
@@ -261,8 +271,8 @@ char *str_decode_html_basic(const char *s, size_t len, size_t *out_len) {
 			/* We do a case-insensitive search in our small table */
 			char lower_ref[16]= {0};
 			size_t copy_len= rlen < 15 ? rlen : 15;
-			for(size_t d= 0; d < copy_len; d++)
-				lower_ref[d]= (char)tolower((unsigned char)ref[d]);
+			ensure_tolower_lut();
+			if(copy_len > 0) sz_lookup(lower_ref, copy_len, ref, (const char *)s_tolower_lut);
 
 			bool found= false;
 			for(int n= 0; n < HTML_NAMES_COUNT; n++) {
@@ -376,18 +386,11 @@ const char *str_istr(const char *haystack, size_t hlen,
 										 const char *needle, size_t nlen) {
 	if(nlen == 0) return haystack;
 	if(nlen > hlen) return NULL;
-	for(size_t i= 0; i <= hlen - nlen; i++) {
-		bool match= true;
-		for(size_t j= 0; j < nlen; j++) {
-			if(tolower((unsigned char)haystack[i + j]) !=
-				 tolower((unsigned char)needle[j])) {
-				match= false;
-				break;
-			}
-		}
-		if(match) return haystack + i;
-	}
-	return NULL;
+	ensure_tolower_lut();
+	sz_size_t matched_len = 0;
+	sz_cptr_t res = sz_utf8_case_insensitive_find(haystack, hlen, needle, nlen, NULL, &matched_len);
+	if(res == SZ_NULL_CHAR) return NULL;
+	return (const char *)res;
 }
 
 char *str_extract_interwiki(const char *s, size_t len, const ParserConfig *cfg, size_t *consumed) {

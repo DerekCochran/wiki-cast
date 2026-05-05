@@ -8,6 +8,7 @@
 #include "parser/link.h"
 #include "parser/links.h"
 #include "string_util.h"
+#include <stringzilla/stringzilla.h>
 #include <assert.h>
 #include <ctype.h>
 #include <stdio.h>
@@ -64,10 +65,7 @@ static void append_numeric_placeholder(char *dst, size_t *len, size_t idx) {
 static const char *find_substr_cs(const char *hay, size_t hlen,
 																	const char *needle, size_t nlen) {
 	if(!hay || !needle || nlen == 0 || nlen > hlen) return NULL;
-	for(size_t i= 0; i + nlen <= hlen; i++) {
-		if(memcmp(hay + i, needle, nlen) == 0) return hay + i;
-	}
-	return NULL;
+	return sz_find(hay, hlen, needle, nlen);
 }
 
 static char *token_string_dup(const Token *tok, size_t *out_len) {
@@ -619,12 +617,12 @@ static Token *make_empty_noinclude_local(Accum *accum) {
 static Token *create_raw_link_token_local(const char *s, size_t len, Accum *accum) {
 	if(!s) return NULL;
 
+	/* Find first '|' using StringZilla for faster scanning */
 	size_t pipe= SIZE_MAX;
-	for(size_t i= 0; i < len; i++) {
-		if(s[i] == '|') {
-			pipe= i;
-			break;
-		}
+	{
+		const char needle = '|';
+		const char *p = sz_find_byte(s, len, &needle);
+		if(p) pipe = (size_t)(p - s);
 	}
 
 	const char *target_ptr= s;
@@ -712,11 +710,10 @@ static Token *parse_imagemap_image_line_local(const char *line, size_t line_len,
 		/* JS parity: preserve every empty image parameter slot (||) as an
 		 * explicit empty caption parameter at the corresponding position. */
 		size_t first_pipe= SIZE_MAX;
-		for(size_t pi= 0; pi < line_len; pi++) {
-			if(line[pi] == '|') {
-				first_pipe= pi;
-				break;
-			}
+		{
+			const char needle = '|';
+			const char *p = sz_find_byte(line, line_len, &needle);
+			if(p) first_pipe = (size_t)(p - line);
 		}
 		if(first_pipe != SIZE_MAX) {
 			size_t *empty_pos= NULL;
@@ -791,24 +788,15 @@ static Token *parse_imagemap_link_line_local(const char *line, size_t line_len,
 														const ParserConfig *cfg,
 														Accum *accum) {
 	if(!line || line_len == 0) return NULL;
+	/* Find opening '[[' and closing ']]' using sz_find */
+	const char *p_open = sz_find(line, line_len, "[[", 2);
+	if(!p_open) return NULL;
+	size_t open = (size_t)(p_open - line);
 
-	size_t open= SIZE_MAX;
-	for(size_t i= 0; i + 1 < line_len; i++) {
-		if(line[i] == '[' && line[i + 1] == '[') {
-			open= i;
-			break;
-		}
-	}
-	if(open == SIZE_MAX) return NULL;
-
-	size_t close= SIZE_MAX;
-	for(size_t i= open + 2; i + 1 < line_len; i++) {
-		if(line[i] == ']' && line[i + 1] == ']') {
-			close= i;
-			break;
-		}
-	}
-	if(close == SIZE_MAX || close <= open + 1) return NULL;
+	const char *p_close = sz_find(line + open + 2, line_len - (open + 2), "]]", 2);
+	if(!p_close) return NULL;
+	size_t close = (size_t)(p_close - line);
+	if(close <= open + 1) return NULL;
 
 	Token *t= token_new(TOKEN_PLAIN, "imagemap-link");
 	if(!t) return NULL;
@@ -852,8 +840,9 @@ static Token *build_imagemap_inner_token(const char *inner_str, size_t inner_len
 
 	bool image_seen= false;
 	size_t line_start= 0;
-	for(size_t i= 0; i <= inner_len; i++) {
-		if(i != inner_len && inner_str[i] != '\n') continue;
+	while(line_start <= inner_len) {
+		const char *nl = sz_find_byte(inner_str + line_start, inner_len - line_start, "\n");
+		size_t i = nl ? (size_t)(nl - inner_str) : inner_len;
 		size_t line_len= i - line_start;
 		const char *line_ptr= inner_str + line_start;
 
@@ -883,6 +872,7 @@ static Token *build_imagemap_inner_token(const char *inner_str, size_t inner_len
 			}
 		}
 
+		if(!nl) break;
 		line_start= i + 1;
 	}
 
@@ -901,8 +891,9 @@ static Token *build_gallery_inner_token(const char *inner_str, size_t inner_len,
 	if(!inner_str || inner_len == 0) return t;
 
 	size_t line_start= 0;
-	for(size_t i= 0; i <= inner_len; i++) {
-		if(i != inner_len && inner_str[i] != '\n') continue;
+	while(line_start <= inner_len) {
+		const char *nl = sz_find_byte(inner_str + line_start, inner_len - line_start, "\n");
+		size_t i = nl ? (size_t)(nl - inner_str) : inner_len;
 		size_t line_len= i - line_start;
 		const char *line_ptr= inner_str + line_start;
 
@@ -922,6 +913,7 @@ static Token *build_gallery_inner_token(const char *inner_str, size_t inner_len,
 			}
 		}
 
+		if(!nl) break;
 		line_start= i + 1;
 	}
 

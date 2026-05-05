@@ -4,6 +4,7 @@
 #include "token.h"
 #include "log.h"
 #include "thread_buffer.h"
+#include <stringzilla/stringzilla.h>
 #include <assert.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -36,7 +37,7 @@ void token_append_text_n(Token *t, const char *text, size_t len) {
 	}
 	char *copy= malloc(len + 1);
 	assert(copy);
-	memcpy(copy, text, len);
+	sz_copy(copy, text, len);
 	copy[len]= '\0';
 
 	Child *c= &t->children[t->child_count++];
@@ -180,7 +181,7 @@ void token_free_shallow(Token *t) {
 static void thread_buf_append(ThreadBuf *tb, const char *data, size_t len) {
 	if(len == 0) return;
 	wiki_thread_buf_reserve(tb, tb->len + len);
-	memcpy(tb->buf + tb->len, data, len);
+	sz_copy(tb->buf + tb->len, data, len);
 	tb->len+= len;
 }
 

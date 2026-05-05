@@ -5,6 +5,7 @@
 #include "log.h"
 #include "parser/html.h"
 #include "string_util.h"
+#include <stringzilla/stringzilla.h>
 #include "token.h"
 #include <assert.h>
 #include <ctype.h>
@@ -280,7 +281,8 @@ void parse_html(ThreadBuf *tb, const ParserConfig *cfg, Accum *accum) {
 
 	while(pos < len) {
 		/* find next '<' */
-		const char *lt= memchr(buf + pos, '<', len - pos);
+		const char needle_lt = '<';
+		const char *lt= sz_find_byte(buf + pos, len - pos, &needle_lt);
 		if(!lt) {
 			size_t rest= len - pos;
 			ENSURE_CAP(rest + 1);
@@ -298,7 +300,8 @@ void parse_html(ThreadBuf *tb, const ParserConfig *cfg, Accum *accum) {
 		/* define segment between this '<' and the next '<' (or end) */
 		const char *seg_start= lt + 1;
 		size_t seg_rem= len - (size_t)(seg_start - buf);
-		const char *next_lt= memchr(seg_start, '<', seg_rem);
+		const char needle_lt2 = '<';
+		const char *next_lt= sz_find_byte(seg_start, seg_rem, &needle_lt2);
 		size_t seg_len= next_lt ? (size_t)(next_lt - seg_start) : seg_rem;
 
 		/* Try to match the HTML tag pattern against the segment */

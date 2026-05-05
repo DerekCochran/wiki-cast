@@ -150,8 +150,8 @@ static size_t title_uppercase_first_codepoint(char *s, size_t len) {
 		const char buf[2]= {'S', 'S'};
 		size_t wrote= 2;
 		size_t new_len= len - (size_t)char_len + wrote;
-		memmove(s + wrote, s + char_len, len - (size_t)char_len + 1);
-		memcpy(s, buf, wrote);
+		sz_move(s + wrote, s + char_len, len - (size_t)char_len + 1);
+		sz_copy(s, buf, wrote);
 		return new_len;
 	}
 
@@ -161,8 +161,8 @@ static size_t title_uppercase_first_codepoint(char *s, size_t len) {
 	char buf[4];
 	size_t wrote= utf8_encode_codepoint(up, buf);
 	size_t new_len= len - (size_t)char_len + wrote;
-	memmove(s + wrote, s + char_len, len - (size_t)char_len + 1);
-	memcpy(s, buf, wrote);
+	sz_move(s + wrote, s + char_len, len - (size_t)char_len + 1);
+	sz_copy(s, buf, wrote);
 	return new_len;
 }
 
@@ -233,10 +233,10 @@ static char *title_compose_resolved(const Title *t, const char *page) {
 		return resolved;
 	}
 
-	if(pos >= 3 && memcmp(base, "../", 3) == 0 && page && strchr(page, '/')) {
+	if(pos >= 3 && sz_equal(base, "../", 3) && page && strchr(page, '/')) {
 		size_t level= 0;
 		const char *sub= base;
-		while((size_t)(sub - base) + 3 <= pos && memcmp(sub, "../", 3) == 0) {
+		while((size_t)(sub - base) + 3 <= pos && sz_equal(sub, "../", 3)) {
 			level++;
 			sub+= 3;
 		}
@@ -628,7 +628,7 @@ Title *title_parse_half_parsed(const char *raw, size_t raw_len,
 
 	size_t decoded_again_len= 0;
 	char *decoded_again= str_decode_html_basic(title, title_len, &decoded_again_len);
-	bool html_idempotent= decoded_again && decoded_again_len == title_len && memcmp(decoded_again, title, title_len) == 0;
+	bool html_idempotent= decoded_again && decoded_again_len == title_len && sz_equal(decoded_again, title, title_len);
 	free(decoded_again);
 
 	bool page_ok= true;

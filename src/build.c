@@ -25,6 +25,7 @@
 #include "accum.h"
 #include "log.h"
 #include "string_util.h"
+#include <stringzilla/stringzilla.h>
 #include "title.h"
 #include "token.h"
 #include <assert.h>
@@ -42,7 +43,7 @@ static void sb_reserve(char **buf, size_t *cap, size_t need) {
 
 static void sb_append(char **buf, size_t *len, size_t *cap, const char *s, size_t n) {
 	sb_reserve(buf, cap, *len + n + 1);
-	memcpy(*buf + *len, s, n);
+ 	sz_copy(*buf + *len, s, n);
 	*len+= n;
 	(*buf)[*len]= '\0';
 }
@@ -311,8 +312,11 @@ void build_token_recursive(Token *t, Accum *accum,
 			continue;
 		}
 		total_text_len+= c->text_len;
-		if(c->text && memchr(c->text, '\x7F', c->text_len)) {
-			has_marker_text= true;
+		if(c->text) {
+			char needle = '\x7F';
+			if(sz_find_byte(c->text, c->text_len, &needle)) {
+				has_marker_text = true;
+			}
 		}
 	}
 
@@ -322,7 +326,7 @@ void build_token_recursive(Token *t, Accum *accum,
 		size_t pos= 0;
 		for(size_t j= 0; j < t->child_count; j++) {
 			Child *c= &t->children[j];
-			memcpy(joined + pos, c->text, c->text_len);
+			sz_copy(joined + pos, c->text, c->text_len);
 			pos+= c->text_len;
 		}
 		joined[total_text_len]= '\0';
@@ -333,17 +337,20 @@ void build_token_recursive(Token *t, Accum *accum,
 	/* For each child of t: */
 	for(size_t j= 0; j < t->child_count; j++) {
 		Child *c= &t->children[j];
-		if(c->is_text) {
+			if(c->is_text) {
 			const char *text= c->text;
 			size_t text_len= c->text_len;
-			if(text && memchr(text, '\x7F', text_len)) {
-				/* This token (t) has a text child with sentinels.
-                 * Rebuild t from this text, which replaces all children.
-                 * Note: build_from_str frees all children (including this
-                 * text child) and replaces them. After this call, child
-                 * positions shift, so we exit the loop. */
-				build_from_str(t, text, text_len, accum);
-				break;
+			if(text) {
+				char needle = '\x7F';
+				if(sz_find_byte(text, text_len, &needle)) {
+					/* This token (t) has a text child with sentinels.
+					 * Rebuild t from this text, which replaces all children.
+					 * Note: build_from_str frees all children (including this
+					 * text child) and replaces them. After this call, child
+					 * positions shift, so we exit the loop. */
+					build_from_str(t, text, text_len, accum);
+					break;
+				}
 			}
 		} else if(c->token) {
 			/* Recurse into child token */

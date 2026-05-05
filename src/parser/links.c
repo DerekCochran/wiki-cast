@@ -13,6 +13,7 @@
 #include "parser/magic_links.h"
 #include "parser/quotes.h"
 #include "string_util.h"
+#include <stringzilla/stringzilla.h>
 #include "title.h"
 #include "token.h"
 #include <assert.h>
@@ -148,20 +149,38 @@ static void img_get_extension(const char *title, char *ext_buf, size_t bufsize) 
 static const char *img_strip_and_trim(const char *val, size_t val_len,
 																			char *out_buf, bool strip_quotes) {
 	size_t j= 0;
-	for(size_t i= 0; i < val_len;) {
-		if((unsigned char)val[i] == 0x00 && i + 1 < val_len) {
-			size_t k= i + 1;
-			while(k < val_len && val[k] >= '0' && val[k] <= '9') k++;
-			if(k < val_len) {
-				char ch= val[k];
-				bool is_sent= (ch == 't' || ch == 'c' || (strip_quotes && ch == 'q'));
-				if(is_sent && k + 1 < val_len && (unsigned char)val[k + 1] == 0x7F) {
-					i= k + 2;
-					continue;
-				}
+	size_t i= 0;
+	while(i < val_len) {
+		/* Find next NUL quickly */
+		const char *p = sz_find_byte(val + i, val_len - i, "\0");
+		if(!p) {
+			size_t rem = val_len - i;
+			if(rem > 0) {
+				memcpy(out_buf + j, val + i, rem);
+				j += rem;
+			}
+			break;
+		}
+		size_t off = (size_t)(p - val);
+		if(off > i) {
+			size_t chunk = off - i;
+			memcpy(out_buf + j, val + i, chunk);
+			j += chunk;
+			i = off;
+		}
+		/* p points to a NUL at i */
+		size_t k = i + 1;
+		while(k < val_len && val[k] >= '0' && val[k] <= '9') k++;
+		if(k < val_len) {
+			char ch= val[k];
+			bool is_sent= (ch == 't' || ch == 'c' || (strip_quotes && ch == 'q'));
+			if(is_sent && k + 1 < val_len && (unsigned char)val[k + 1] == 0x7F) {
+				i = k + 2;
+				continue;
 			}
 		}
-		out_buf[j++]= val[i++];
+		/* Not a recognized sentinel — copy this byte and advance */
+		out_buf[j++] = val[i++];
 	}
 	out_buf[j]= '\0';
 	/* trim leading */
@@ -638,16 +657,19 @@ void parse_links(ThreadBuf *tb, const ParserConfig *cfg, Accum *accum,
      */
 	size_t *bb_pos= NULL;
 	size_t bb_count= 0, bb_cap= 0;
-	for(size_t i= 0; i + 1 < len; i++) {
-		if((unsigned char)buf[i] == '[' && (unsigned char)buf[i + 1] == '[') {
-			if(bb_count >= bb_cap) {
-				bb_cap= bb_cap ? bb_cap * 2 : 16;
-				bb_pos= realloc(bb_pos, bb_cap * sizeof(size_t));
-				assert(bb_pos);
-			}
-			bb_pos[bb_count++]= i;
-			i++; /* skip second '[' */
+	/* Find occurrences of "[[" using sz_find for faster scanning */
+	size_t search_at = 0;
+	while(search_at + 1 < len) {
+		const char *p = sz_find(buf + search_at, len - search_at, "[[", 2);
+		if(!p) break;
+		size_t pos = (size_t)(p - buf);
+		if(bb_count >= bb_cap) {
+			bb_cap= bb_cap ? bb_cap * 2 : 16;
+			bb_pos= realloc(bb_pos, bb_cap * sizeof(size_t));
+			assert(bb_pos);
 		}
+		bb_pos[bb_count++]= pos;
+		search_at = pos + 2;
 	}
 
 	size_t bits_count= bb_count + 1;
@@ -717,14 +739,9 @@ void parse_links(ThreadBuf *tb, const ParserConfig *cfg, Accum *accum,
 
 				/* JS: if (after.startsWith(']') && text?.includes('[')) { text += ']'; after = after.slice(1); } */
 				if(after_len > 0 && after_ptr[0] == ']' && text_ptr) {
-					bool has_bracket= false;
-					for(size_t ti= 0; ti < text_len; ti++) {
-						if(text_ptr[ti] == '[') {
-							has_bracket= true;
-							break;
-						}
-					}
-					if(has_bracket) {
+					const char needle = '[';
+					const char *pb = sz_find_byte(text_ptr, text_len, &needle);
+					if(pb) {
 						text_len+= 1;
 						after_ptr+= 1;
 						after_len-= 1;
@@ -887,17 +904,20 @@ void parse_links(ThreadBuf *tb, const ParserConfig *cfg, Accum *accum,
 				const char *next_x= bits[j].ptr;
 				size_t next_xlen= bits[j].len;
 
-				/* Count ]] in next_x; find positions of first two */
+				/* Count occurrences of "]]" using sz_find; capture first two positions. */
 				size_t dd_pos0= SIZE_MAX, dd_pos1= SIZE_MAX;
 				size_t dd_cnt= 0;
-				for(size_t k= 0; k + 1 < next_xlen; k++) {
-					if(next_x[k] == ']' && next_x[k + 1] == ']') {
-						if(dd_cnt == 0)
-							dd_pos0= k;
-						else if(dd_cnt == 1)
-							dd_pos1= k;
-						dd_cnt++;
-						k++;
+				const char *p1 = sz_find(next_x, next_xlen, "]]", 2);
+				if(!p1) {
+					dd_cnt = 0;
+				} else {
+					dd_pos0 = (size_t)(p1 - next_x);
+					const char *p2 = sz_find(p1 + 2, next_xlen - (dd_pos0 + 2), "]]", 2);
+					if(!p2) {
+						dd_cnt = 1;
+					} else {
+						dd_pos1 = (size_t)(p2 - next_x);
+						dd_cnt = 2; /* treat >=2 as the "else" branch in original code */
 					}
 				}
 
