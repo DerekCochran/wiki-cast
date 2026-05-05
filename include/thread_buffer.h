@@ -81,7 +81,7 @@ typedef struct {
 /* ── The pair of buffers owned by one thread ─────────────────────────────── */
 
 typedef struct {
-    ThreadBuf *scratch_pool;
+    ThreadBuf **scratch_pool;
     bool      *scratch_in_use;
     size_t     scratch_count;
     size_t     scratch_cap;

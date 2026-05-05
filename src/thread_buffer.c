@@ -168,7 +168,10 @@ static void free_thread_buf(ThreadBuf *tb) {
 static void free_scratch_pool(ThreadBuffers *tb) {
 	if(!tb) return;
 	for(size_t i= 0; i < tb->scratch_count; i++) {
-		free_thread_buf(&tb->scratch_pool[i]);
+		if(tb->scratch_pool[i]) {
+			free_thread_buf(tb->scratch_pool[i]);
+			free(tb->scratch_pool[i]);
+		}
 	}
 	free(tb->scratch_pool);
 	free(tb->scratch_in_use);
@@ -207,7 +210,7 @@ void wiki_thread_buf_assert_no_leased_scratch(const char *context,
 	details[0]= '\0';
 
 	for(size_t i= 0; i < tb->scratch_count; i++) {
-		ThreadBuf *scratch= &tb->scratch_pool[i];
+		ThreadBuf *scratch= tb->scratch_pool[i];
 		if(!tb->scratch_in_use[i] || scratch == ignore_tb) {
 			continue;
 		}
@@ -385,29 +388,31 @@ ThreadBuf *wiki_thread_buf_acquire_scratch(void) {
 	for(size_t i= 0; i < tb->scratch_count; i++) {
 		if(!tb->scratch_in_use[i]) {
 			tb->scratch_in_use[i]= true;
-			tb->scratch_pool[i].len= 0;
-			return &tb->scratch_pool[i];
+			tb->scratch_pool[i]->len= 0;
+			return tb->scratch_pool[i];
 		}
 	}
 
 	if(tb->scratch_count == tb->scratch_cap) {
 		size_t new_cap= tb->scratch_cap ? tb->scratch_cap * 2 : INITIAL_SCRATCH_POOL_CAP;
-		ThreadBuf *new_pool= realloc(tb->scratch_pool, new_cap * sizeof(ThreadBuf));
+		ThreadBuf **new_pool= realloc(tb->scratch_pool, new_cap * sizeof(ThreadBuf *));
 		bool *new_in_use= realloc(tb->scratch_in_use, new_cap * sizeof(bool));
 		assert(new_pool && new_in_use);
 		tb->scratch_pool= new_pool;
 		tb->scratch_in_use= new_in_use;
 		for(size_t i= tb->scratch_cap; i < new_cap; i++) {
-			memset(&tb->scratch_pool[i], 0, sizeof(ThreadBuf));
+			tb->scratch_pool[i]= NULL;
 			tb->scratch_in_use[i]= false;
 		}
 		tb->scratch_cap= new_cap;
 	}
 
 	size_t idx= tb->scratch_count++;
-	init_thread_buf(&tb->scratch_pool[idx], g_scratch_shrink_bytes, g_scratch_target_bytes);
+	tb->scratch_pool[idx]= malloc(sizeof(ThreadBuf));
+	assert(tb->scratch_pool[idx]);
+	init_thread_buf(tb->scratch_pool[idx], g_scratch_shrink_bytes, g_scratch_target_bytes);
 	tb->scratch_in_use[idx]= true;
-	return &tb->scratch_pool[idx];
+	return tb->scratch_pool[idx];
 }
 
 void wiki_thread_buf_release_scratch(ThreadBuf *scratch) {
@@ -415,9 +420,9 @@ void wiki_thread_buf_release_scratch(ThreadBuf *scratch) {
 
 	ThreadBuffers *tb= wiki_thread_buf_get();
 	for(size_t i= 0; i < tb->scratch_count; i++) {
-		if(&tb->scratch_pool[i] == scratch) {
+		if(tb->scratch_pool[i] == scratch) {
 			tb->scratch_in_use[i]= false;
-			tb->scratch_pool[i].len= 0;
+			tb->scratch_pool[i]->len= 0;
 			return;
 		}
 	}
