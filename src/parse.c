@@ -101,7 +101,7 @@ static void free_accum_orphans(const Token *root, Accum *accum) {
 	Token **live= malloc(cap * sizeof(Token *));
 	if(!live) return;
 
-	collect_tree_tokens(root, &live, &count, &cap);
+	collect_tree_tokens(root, &live, &count, &cap); // Collect live tokens from the tree
 	qsort(live, count, sizeof(Token *), cmp_token_ptr);
 
 	for(size_t i= 0; i < accum->count; i++) {
@@ -597,7 +597,8 @@ static Token *parse_imagemap_link_line(const char *line, size_t line_len,
 	accum_push(accum, t);
 
 	if(open > 0) {
-		token_append_text_n(t, line, open);
+			const char *view = wiki_thread_buf_append_to_tokens(line, open);
+			token_append_text_n(t, view, open);
 	} else {
 		token_append_text_n(t, "", 0);
 	}
@@ -608,11 +609,13 @@ static Token *parse_imagemap_link_line(const char *line, size_t line_len,
 	if(link) {
 		token_append_child(t, link);
 	} else {
-		token_append_text_n(t, line + open, (close + 2) - open);
+			const char *view = wiki_thread_buf_append_to_tokens(line + open, (close + 2) - open);
+			token_append_text_n(t, view, (close + 2) - open);
 	}
 
 	if(close + 2 < line_len) {
-		token_append_text_n(t, line + close + 2, line_len - (close + 2));
+		const char *view = wiki_thread_buf_append_to_tokens(line + close + 2, line_len - (close + 2));
+		token_append_text_n(t, view, line_len - (close + 2));
 	}
 
 	Token *tail= make_empty_noinclude(accum);
@@ -646,7 +649,9 @@ static void postprocess_gallery_ext_inner(Token *t, const ParserConfig *cfg, Acc
 	src[src_len]= '\0';
 
 	for(size_t i= 0; i < t->child_count; i++) {
-		if(t->children[i].is_text) free(t->children[i].text);
+		if(t->children[i].is_text) {
+			if(t->children[i].text_owned && t->children[i].text) free((void*)t->children[i].text);
+		}
 	}
 	t->child_count= 0;
 
@@ -661,7 +666,8 @@ static void postprocess_gallery_ext_inner(Token *t, const ParserConfig *cfg, Acc
 		if(img) {
 			token_append_child(t, img);
 		} else {
-			token_append_text_n(t, line_ptr, line_len);
+			const char *view = wiki_thread_buf_append_to_tokens(line_ptr, line_len);
+			token_append_text_n(t, view, line_len);
 		}
 
 		line_start= eol ? (size_t)(eol - src) + 1 : src_len;
@@ -701,7 +707,9 @@ static void postprocess_imagemap_ext_inner(Token *t, const ParserConfig *cfg, Ac
 	src[src_len]= '\0';
 
 	for(size_t i= 0; i < t->child_count; i++) {
-		if(t->children[i].is_text) free(t->children[i].text);
+		if(t->children[i].is_text) {
+			if(t->children[i].text_owned && t->children[i].text) free((void*)t->children[i].text);
+		}
 	}
 	t->child_count= 0;
 
@@ -728,7 +736,8 @@ static void postprocess_imagemap_ext_inner(Token *t, const ParserConfig *cfg, Ac
 			if(tok) {
 				token_append_child(t, tok);
 			} else {
-				token_append_text_n(t, line_ptr, line_len);
+				const char *view = wiki_thread_buf_append_to_tokens(line_ptr, line_len);
+				token_append_text_n(t, view, line_len);
 			}
 		}
 
@@ -1040,7 +1049,7 @@ static void postprocess_nested_plain(Token *t, const ParserConfig *cfg, Accum *a
 				continue;
 			}
 
-			free(cur.text);
+			if(cur.text_owned && cur.text) free((void*)cur.text);
 
 			Token *tmp= token_new(TOKEN_PLAIN, t->type_name);
 			if(!tmp) {
@@ -1057,6 +1066,7 @@ static void postprocess_nested_plain(Token *t, const ParserConfig *cfg, Accum *a
 				assert(fallback.text);
 				sz_copy(fallback.text, used_buf, used_len);
 				fallback.text[used_len]= '\0';
+				fallback.text_owned = true;
 				new_children[new_count++]= fallback;
 				continue;
 			}
@@ -1276,18 +1286,18 @@ static void postprocess_parameter_value_inline_impl(Token *t, const ParserConfig
 		bool unchanged = (scratch->len == txt_len && sz_equal(scratch->buf, txt, txt_len));
 		const char _zn2 = '\0';
 		bool has_marker = sz_find_byte(scratch->buf, scratch->len, &_zn2) != NULL;
-		if(unchanged && !has_marker) {
-			if(new_count >= new_cap) {
-				new_cap*= 2;
-				Child *grown= realloc(new_children, new_cap * sizeof(Child));
-				assert(grown);
-				new_children= grown;
+			if(unchanged && !has_marker) {
+				if(new_count >= new_cap) {
+					new_cap*= 2;
+					Child *grown= realloc(new_children, new_cap * sizeof(Child));
+					assert(grown);
+					new_children= grown;
+				}
+				new_children[new_count++]= cur;
+				continue;
 			}
-			new_children[new_count++]= cur;
-			continue;
-		}
 
-		free(cur.text);
+			if(cur.text_owned && cur.text) free((void*)cur.text);
 
 		Token *tmp= token_new(is_attr_value ? TOKEN_ATTR_VALUE : TOKEN_PLAIN,
 			is_attr_value ? "attr-value" : t->type_name);
@@ -1511,9 +1521,10 @@ static void stage0_parse_comment_and_ext_on_accum(const ParserConfig *cfg, Accum
 			if(repl) {
 				sz_copy(repl, scratch->buf, scratch->len);
 				repl[scratch->len]= '\0';
-				free(tok->children[0].text);
+				if(tok->children[0].text_owned && tok->children[0].text) free((void*)tok->children[0].text);
 				tok->children[0].text= repl;
 				tok->children[0].text_len= scratch->len;
+				tok->children[0].text_owned = true;
 			}
 		}
 		wiki_thread_buf_release_scratch(scratch);
@@ -1544,9 +1555,9 @@ Token *wiki_parse_with_page(const char *wikitext, const ParserConfig *cfg,
 	}
 
 	/* ── Grab a thread-local snapshot of the input ─────────────────────────
-     * The caller's string may be modified by another thread while we are
-     * executing.  We copy it into the thread's pre-allocated main buffer
-     * (avoiding a per-call malloc) */
+	 * The caller's string may be modified by another thread while we are
+	 * executing.  We copy it into the thread's pre-allocated stage buffer
+	 * (avoiding a per-call malloc) */
 	size_t input_len= strlen(wikitext);
 	ThreadBuffers *tbufs= wiki_thread_buf_get();
 
@@ -1554,14 +1565,14 @@ Token *wiki_parse_with_page(const char *wikitext, const ParserConfig *cfg,
      * wiki_thread_buf_reserve() is the sole resize authority for ThreadBufs;
      * it guarantees the buffer can hold input_len+1 bytes before we hand
      * the pointer to str_tidy_into(), which never allocates. */
-	wiki_thread_buf_reserve(&tbufs->main, input_len);
+	wiki_thread_buf_reserve(&tbufs->stage, input_len);
 
 	size_t tidy_len= 0;
-	str_tidy_into(wikitext, input_len, tbufs->main.buf, tbufs->main.cap, &tidy_len);
-	tbufs->main.len= tidy_len;
+	str_tidy_into(wikitext, input_len, tbufs->stage.buf, tbufs->stage.cap, &tidy_len);
+	tbufs->stage.len= tidy_len;
 
 	/* ── Working string (mutated by each stage) ─────────────────────────── */
-	ThreadBuf *ws= &tbufs->main;
+	ThreadBuf *ws= &tbufs->stage;
 
 	/* Optional stage logging directory (set via env WIKI_STAGE_LOG_DIR). */
 	const char *stage_log_dir= getenv("WIKI_STAGE_LOG_DIR");

@@ -63,9 +63,10 @@ typedef struct {
     bool   is_text;       /* true → text node; false → token node */
     size_t text_len;      /* byte length of text (valid when is_text; may contain NUL sentinels) */
     union {
-        char  *text;      /* owned UTF-8 string for text children */
+        const char  *text;      /* non-owning view into a ThreadBuf (or owned if text_owned) */
         struct Token *token; /* owned token pointer for token children */
     };
+    bool   text_owned;    /* true if u.text was heap-allocated and must be freed */
 } Child;
 
 /* ── Per-type payload (union to save memory) ─────────────────────────────── */

@@ -4,6 +4,7 @@
 #include "log.h"
 #include "parser/hr_and_double_underscore.h"
 #include "string_util.h"
+#include "thread_buffer.h"
 #include "token.h"
 #include <assert.h>
 #include <ctype.h>
@@ -251,7 +252,10 @@ void parse_hr_and_double_underscore(ThreadBuf *tb, const ParserConfig *cfg, Accu
 			if(t) {
 				/* Store the dash sequence for round-trip toString */
 				size_t dashlen= g2e - g2s;
-				token_append_text_n(t, tb->buf + g2s, dashlen);
+				if(dashlen > 0) {
+					const char *dash_view = wiki_thread_buf_append_to_tokens(tb->buf + g2s, dashlen);
+					if(dash_view) token_append_text_n(t, dash_view, dashlen);
+				}
 				accum_push(accum, t);
 			}
 			size_t tok_idx= accum->count ? accum->count - 1 : 0;
@@ -300,7 +304,10 @@ void parse_hr_and_double_underscore(ThreadBuf *tb, const ParserConfig *cfg, Accu
 						t->name= lc;
 					}
 					/* inner text: original matched word */
-					token_append_text_n(t, key_ptr, key_len);
+					if(key_len > 0) {
+						const char *key_view = wiki_thread_buf_append_to_tokens(key_ptr, key_len);
+						if(key_view) token_append_text_n(t, key_view, key_len);
+					}
 					accum_push(accum, t);
 					size_t tok_idx= accum->count ? accum->count - 1 : 0;
 					char sent[64];
@@ -434,7 +441,8 @@ void parse_hr_and_double_underscore(ThreadBuf *tb, const ParserConfig *cfg, Accu
 				Token *title_tok= token_new(TOKEN_PLAIN, "heading-title");
 				if(title_tok) {
 					if(h_inner_len) {
-						token_append_text_n(title_tok, h_inner, h_inner_len);
+						const char *title_view = wiki_thread_buf_append_to_tokens(h_inner, h_inner_len);
+						if(title_view) token_append_text_n(title_tok, title_view, h_inner_len);
 					}
 					token_append_child(t, title_tok);
 				}
@@ -442,8 +450,13 @@ void parse_hr_and_double_underscore(ThreadBuf *tb, const ParserConfig *cfg, Accu
 				Token *trail_tok= token_new(TOKEN_SYNTAX, "heading-trail");
 				if(trail_tok) {
 					/* Always append a text child (even if empty), mirroring JS which
-                     * always creates an AstText("") inside heading-trail. */
-					token_append_text_n(trail_tok, h_trail, h_trail_len);
+					 * always creates an AstText("") inside heading-trail. */
+					if(h_trail_len > 0) {
+						const char *trail_view = wiki_thread_buf_append_to_tokens(h_trail, h_trail_len);
+						if(trail_view) token_append_text_n(trail_tok, trail_view, h_trail_len);
+					} else {
+						token_append_text_n(trail_tok, NULL, 0);
+					}
 					token_append_child(t, trail_tok);
 				}
 				accum_push(accum, t);

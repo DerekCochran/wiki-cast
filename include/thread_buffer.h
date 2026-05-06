@@ -1,11 +1,12 @@
 /*
  * thread_buffer.h — Per-thread reusable buffers for wiki_parse().
  *
- * Each OS thread gets one dedicated main buffer plus a pool of scratch
+ * Each OS thread gets one dedicated stage buffer plus a pool of scratch
  * buffers that callers lease temporarily:
  *
- *   main    — used to hold the str_tidy() copy of the raw wikitext input,
- *             avoiding a per-call heap allocation for that temporary copy.
+ *   stage   — used to hold the str_tidy() copy of the raw wikitext input
+ *             for the current parse stage; this avoids a per-call heap
+ *             allocation for that temporary copy.
  *   scratch — acquired on demand by parser/helper code so nested functions
  *             do not step on each other's temporary workspace.
  *
@@ -86,7 +87,8 @@ typedef struct {
     bool      *scratch_in_use;
     size_t     scratch_count;
     size_t     scratch_cap;
-    ThreadBuf  main;
+    ThreadBuf  stage;
+    ThreadBuf  tokens; /* append-only arena for token text views */
     bool       finalized; /* set by finalize_all; cleared on re-init */
 } ThreadBuffers;
 
@@ -166,6 +168,22 @@ void wiki_thread_buf_append(ThreadBuf *tb, sz_string_view_t view);
  * Ensures capacity via `wiki_thread_buf_reserve` and NUL-terminates.
  */
 void wiki_thread_buf_putc(ThreadBuf *tb, char ch);
+
+/**
+ * Append the given bytes into the per-thread tokens arena and return a
+ * pointer into the arena where the appended data begins. The returned
+ * pointer remains valid until the parse call completes and token trees
+ * referencing the arena are freed.
+ *
+ * Returns NULL when len == 0.
+ */
+const char *wiki_thread_buf_append_to_tokens(const char *s, size_t len);
+
+/**
+ * Append a view into the per-thread tokens arena and return a pointer into
+ * the arena where the appended data begins. Returns NULL for empty views.
+ */
+const char *wiki_thread_buf_append_view_to_tokens(sz_string_view_t view);
 
 /**
  * Free the inner buffers of every thread that has called wiki_thread_buf_get().

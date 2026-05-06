@@ -139,7 +139,9 @@ static Token *build_magic_link(const char *s, size_t len,
 															 const char *type_name, Accum *accum) {
 	Token *t= token_new(TOKEN_MAGIC_LINK, type_name);
 	if(!t) return NULL;
-	token_append_text_n(t, s, len);
+	/* Append text into the persistent tokens arena and use a stable view */
+	const char *view = wiki_thread_buf_append_to_tokens(s, len);
+	token_append_text_n(t, view, len);
 	accum_push(accum, t);
 	return t;
 }

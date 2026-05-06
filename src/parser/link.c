@@ -64,7 +64,9 @@ Token *create_link_token(TokenType type, const char *type_name,
 	Token *target= token_new(TOKEN_ATOM, "link-target");
 	if(target) {
 		if(link && link_len > 0) {
-			token_append_text_n(target, link, link_len);
+			/* Persist the link text into the tokens arena to avoid dangling views */
+			const char *link_view = wiki_thread_buf_append_to_tokens(link, link_len);
+			token_append_text_n(target, link_view, link_len);
 		}
 		accum_push(accum, target);
 		token_append_child(tok, target);

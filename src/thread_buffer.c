@@ -89,6 +89,25 @@ static void registry_add(ThreadBuffers *tb) {
 	pthread_mutex_unlock(&g_registry_mutex);
 }
 
+const char *wiki_thread_buf_append_to_tokens(const char *s, size_t len) {
+	if(!s || len == 0) return NULL;
+	ThreadBuffers *tbs = wiki_thread_buf_get();
+	ThreadBuf *tb = &tbs->tokens;
+	size_t off = tb->len;
+	sz_string_view_t v = { .start = s, .length = len };
+	wiki_thread_buf_append(tb, v);
+	return tb->buf + off;
+}
+
+const char *wiki_thread_buf_append_view_to_tokens(sz_string_view_t view) {
+	if(view.length == 0 || !view.start) return NULL;
+	ThreadBuffers *tbs = wiki_thread_buf_get();
+	ThreadBuf *tb = &tbs->tokens;
+	size_t off = tb->len;
+	wiki_thread_buf_append(tb, view);
+	return tb->buf + off;
+}
+
 /* Remove the registry entry for tb (called from the TLS destructor). */
 static void registry_remove(ThreadBuffers *tb) {
 	pthread_mutex_lock(&g_registry_mutex);
@@ -128,7 +147,8 @@ static void thread_buffers_destructor(void *ptr) {
 
 	/* Only free inner buffers if finalize_all() has not already done so. */
 	if(!tb->finalized) {
-		free_thread_buf(&tb->main);
+		free_thread_buf(&tb->stage);
+		free_thread_buf(&tb->tokens);
 		free_scratch_pool(tb);
 	}
 
@@ -189,7 +209,8 @@ static void free_scratch_pool(ThreadBuffers *tb) {
  * finalize_all() when a thread re-enters the parse path.
  */
 static void alloc_inner_buffers(ThreadBuffers *tb) {
-	init_thread_buf(&tb->main, g_main_shrink_bytes, g_main_target_bytes);
+	init_thread_buf(&tb->stage, g_main_shrink_bytes, g_main_target_bytes);
+	init_thread_buf(&tb->tokens, g_main_shrink_bytes, g_main_target_bytes);
 	tb->scratch_pool= NULL;
 	tb->scratch_in_use= NULL;
 	tb->scratch_count= 0;
@@ -479,7 +500,8 @@ void wiki_thread_buf_finalize_all(void) {
          */
 		tb->finalized= true;
 
-		free_thread_buf(&tb->main);
+		free_thread_buf(&tb->stage);
+		free_thread_buf(&tb->tokens);
 		free_scratch_pool(tb);
 
 		/*

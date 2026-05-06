@@ -284,7 +284,9 @@ static Token *build_template_token(const char **parts_restored, const size_t *pa
 				token_free(t);
 				return NULL;
 			}
-			token_append_text_n(name_tok, parts_restored[0], parts_lens[0]);
+			/* Persist the name into the tokens arena to avoid dangling views */
+			const char *name_view = wiki_thread_buf_append_to_tokens(parts_restored[0], parts_lens[0]);
+			token_append_text_n(name_tok, name_view, parts_lens[0]);
 			token_append_child(t, name_tok);
 
 			char *nm= trim_copy(parts_restored[0], parts_lens[0]);
@@ -294,7 +296,9 @@ static Token *build_template_token(const char **parts_restored, const size_t *pa
 		if(parts_count > 1 && parts_restored[1]) {
 			Token *def_tok= token_new(TOKEN_PLAIN, "arg-default");
 			if(def_tok) {
-				token_append_text_n(def_tok, parts_restored[1], parts_lens[1]);
+				/* Persist default text into tokens arena */
+				const char *def_view = wiki_thread_buf_append_to_tokens(parts_restored[1], parts_lens[1]);
+				token_append_text_n(def_tok, def_view, parts_lens[1]);
 				token_append_child(t, def_tok);
 			}
 		}
@@ -303,7 +307,9 @@ static Token *build_template_token(const char **parts_restored, const size_t *pa
 			if(!parts_restored[k]) continue;
 			Token *hidden= token_new(TOKEN_HIDDEN, "hidden");
 			if(!hidden) continue;
-			token_append_text_n(hidden, parts_restored[k], parts_lens[k]);
+			/* Persist hidden part into tokens arena */
+			const char *hid_view = wiki_thread_buf_append_to_tokens(parts_restored[k], parts_lens[k]);
+			token_append_text_n(hidden, hid_view, parts_lens[k]);
 			token_append_child(t, hidden);
 		}
 		accum_push(accum, t);
@@ -404,13 +410,17 @@ static Token *build_template_token(const char **parts_restored, const size_t *pa
 
 			Token *mw_name= token_new(TOKEN_SYNTAX, "magic-word-name");
 			if(mw_name) {
-				token_append_text_n(mw_name, title_part, magic_title_len);
+				/* Persist magic-word name into tokens arena */
+				const char *mw_view = wiki_thread_buf_append_to_tokens(title_part, magic_title_len);
+				token_append_text_n(mw_name, mw_view, magic_title_len);
 				token_append_child(t, mw_name);
 			}
 		} else {
 			Token *tpl_name= token_new(TOKEN_ATOM, "template-name");
 			if(tpl_name) {
-				token_append_text_n(tpl_name, title_part, p0_len);
+				/* Persist template name into tokens arena */
+				const char *tpl_view = wiki_thread_buf_append_to_tokens(title_part, p0_len);
+				token_append_text_n(tpl_name, tpl_view, p0_len);
 				token_append_child(t, tpl_name);
 			}
 
@@ -424,13 +434,17 @@ static Token *build_template_token(const char **parts_restored, const size_t *pa
 		if(invoke_magic) {
 			Token *mod_tok= token_new(TOKEN_ATOM, "invoke-module");
 			if(mod_tok) {
-				token_append_text_n(mod_tok, magic_first_arg, magic_first_arg_len);
+					/* Persist module name into tokens arena */
+					const char *mod_view = wiki_thread_buf_append_to_tokens(magic_first_arg, magic_first_arg_len);
+					token_append_text_n(mod_tok, mod_view, magic_first_arg_len);
 				token_append_child(t, mod_tok);
 			}
 			if(parts_count > 1 && parts_restored[1]) {
 				Token *fn_tok= token_new(TOKEN_ATOM, "invoke-function");
 				if(fn_tok) {
-					token_append_text_n(fn_tok, parts_restored[1], parts_lens[1]);
+						/* Persist invoke-function into tokens arena */
+						const char *fn_view = wiki_thread_buf_append_to_tokens(parts_restored[1], parts_lens[1]);
+						token_append_text_n(fn_tok, fn_view, parts_lens[1]);
 					token_append_child(t, fn_tok);
 				}
 				params_start_idx= 2;
@@ -449,7 +463,9 @@ static Token *build_template_token(const char **parts_restored, const size_t *pa
 					/* JS parity: the first parser-function argument after ':' is
 					 * always positional, even if it contains '='. */
 					token_append_child(param, key_tok);
-					token_append_text_n(val_tok, part, part_len);
+						/* Persist positional magic argument into tokens arena */
+						const char *val_view = wiki_thread_buf_append_to_tokens(part, part_len);
+						token_append_text_n(val_tok, val_view, part_len);
 					token_append_child(param, val_tok);
 
 					char *pname= strdup("1");
@@ -501,20 +517,25 @@ static Token *build_template_token(const char **parts_restored, const size_t *pa
 			continue;
 		}
 
-		if(eq) {
-			size_t key_len= (size_t)(eq - part);
-			size_t val_len= part_len - key_len - 1;
-			token_append_text_n(key_tok, part, key_len);
-			token_append_text_n(val_tok, eq + 1, val_len);
-			token_append_child(param, key_tok);
-			token_append_child(param, val_tok);
+				if(eq) {
+					size_t key_len= (size_t)(eq - part);
+					size_t val_len= part_len - key_len - 1;
+					/* Persist key and value into tokens arena */
+					const char *key_view = wiki_thread_buf_append_to_tokens(part, key_len);
+					const char *val_view = wiki_thread_buf_append_to_tokens(eq + 1, val_len);
+					token_append_text_n(key_tok, key_view, key_len);
+					token_append_text_n(val_tok, val_view, val_len);
+					token_append_child(param, key_tok);
+					token_append_child(param, val_tok);
 
 			char *pname= trim_copy(part, key_len);
 			if(pname) param->name= pname;
-		} else {
-			token_append_child(param, key_tok);
-			token_append_text_n(val_tok, part, part_len);
-			token_append_child(param, val_tok);
+				} else {
+					/* Persist positional parameter value into tokens arena */
+					const char *val_view = wiki_thread_buf_append_to_tokens(part, part_len);
+					token_append_child(param, key_tok);
+					token_append_text_n(val_tok, val_view, part_len);
+					token_append_child(param, val_tok);
 
 			char idx_buf[32];
 			int n= snprintf(idx_buf, sizeof(idx_buf), "%zu", positional++);
@@ -914,12 +935,16 @@ static bool braces_state_machine(ThreadBuf *tb, const ParserConfig *cfg,
 								if(heading_tok) {
 									Token *title_tok= token_new(TOKEN_PLAIN, "heading-title");
 									if(title_tok) {
-										token_append_text_n(title_tok, title, title_len);
+										/* Persist heading title into tokens arena */
+										const char *title_view = wiki_thread_buf_append_to_tokens(title, title_len);
+										token_append_text_n(title_tok, title_view, title_len);
 										token_append_child(heading_tok, title_tok);
 										if(trail_len > 0) {
 											Token *trail_tok= token_new(TOKEN_SYNTAX, "heading-trail");
 											if(trail_tok) {
-												token_append_text_n(trail_tok, slice + trail_start, trail_len);
+												/* Persist heading trail into tokens arena */
+												const char *trail_view = wiki_thread_buf_append_to_tokens(slice + trail_start, trail_len);
+												token_append_text_n(trail_tok, trail_view, trail_len);
 												token_append_child(heading_tok, trail_tok);
 											}
 										}

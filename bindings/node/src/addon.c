@@ -119,21 +119,22 @@ static napi_value parse_wrapped(napi_env env, napi_callback_info info) {
     return NULL;
   }
 
-  /* Convert JS string to UTF-8 C string */
+  /* Convert JS string to UTF-8 directly into a leased scratch buffer */
   size_t wlen = 0;
   status = napi_get_value_string_utf8(env, js_wikitext_val, NULL, 0, &wlen);
   if (status != napi_ok) {
     napi_throw_error(env, NULL, "Failed to measure wikitext length");
     return NULL;
   }
-  char *wtext = malloc(wlen + 1);
-  assert(wtext);
-  status = napi_get_value_string_utf8(env, js_wikitext_val, wtext, wlen + 1, &wlen);
+  ThreadBuf *in_scratch = wiki_thread_buf_acquire_scratch();
+  wiki_thread_buf_reserve(in_scratch, wlen);
+  status = napi_get_value_string_utf8(env, js_wikitext_val, in_scratch->buf, wlen + 1, &wlen);
   if (status != napi_ok) {
-    free(wtext);
+    wiki_thread_buf_release_scratch(in_scratch);
     napi_throw_error(env, NULL, "Failed to copy wikitext string");
     return NULL;
   }
+  in_scratch->len = wlen;
 
   /* Parse args: argv[0] => max_stage (number), argv[1] => include (boolean) */
   int max_stage = 11; /* default used by tests */
@@ -198,11 +199,11 @@ static napi_value parse_wrapped(napi_env env, napi_callback_info info) {
   }
 
   /* Call the C parser */
-  Token *root = wiki_parse_with_page(wtext, cfg, include, max_stage, page);
+  Token *root = wiki_parse_with_page(in_scratch->buf, cfg, include, max_stage, page);
   free(page);
   if (!root) {
     config_free(cfg);
-    free(wtext);
+    wiki_thread_buf_release_scratch(in_scratch);
     napi_throw_error(env, NULL, "C parser returned NULL");
     return NULL;
   }
@@ -290,7 +291,7 @@ static napi_value parse_wrapped(napi_env env, napi_callback_info info) {
   /* Cleanup C-side (we already copied necessary JS strings) */
   token_free(root);
   config_free(cfg);
-  free(wtext);
+  wiki_thread_buf_release_scratch(in_scratch);
   free(json_buf);
 
   return root_obj;

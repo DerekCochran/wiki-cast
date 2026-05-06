@@ -5,6 +5,7 @@
 #include "parser/converter.h"
 #include "string_util.h"
 #include "token.h"
+#include "thread_buffer.h"
 #include <assert.h>
 #include <ctype.h>
 #include <stdio.h>
@@ -54,15 +55,20 @@ static bool variant_in_config(const ParserConfig *cfg, const char *s, size_t len
 }
 
 static bool token_append_text_decoded_nul(Token *t, const char *s, size_t len) {
-	char *tmp= malloc(len + 1);
-	if(!tmp) return false;
-	for(size_t i= 0; i < len; i++) {
-		tmp[i]= (s[i] == CONVERTER_ESC_NUL) ? '\0' : s[i];
+	if(len == 0) {
+		token_append_text_n(t, NULL, 0);
+		return true;
 	}
-	tmp[len]= '\0';
-	token_append_text_n(t, tmp, len);
-	free(tmp);
-	return true;
+	ThreadBuf *scratch = wiki_thread_buf_acquire_scratch();
+	wiki_thread_buf_set(scratch, s, len);
+	/* decode placeholder into NUL bytes in scratch (safe: tokens must not reference scratch) */
+	for(size_t i= 0; i < len; i++) {
+		if(scratch->buf[i] == CONVERTER_ESC_NUL) scratch->buf[i]= '\0';
+	}
+	const char *view = wiki_thread_buf_append_to_tokens(scratch->buf, len);
+	wiki_thread_buf_release_scratch(scratch);
+	if(view) token_append_text_n(t, view, len);
+	return view != NULL;
 }
 
 static Token *build_converter_rule_token(const char *rule, bool has_colon, const ParserConfig *cfg) {
@@ -162,7 +168,13 @@ static Token *build_converter_token(char **flags, char **rules, const ParserConf
 			token_free(t);
 			return NULL;
 		}
-		token_append_text_n(f, flags[i], strlen(flags[i]));
+		size_t flen = strlen(flags[i]);
+		if(flen > 0) {
+			const char *fview = wiki_thread_buf_append_to_tokens(flags[i], flen);
+			if(fview) token_append_text_n(f, fview, flen);
+		} else {
+			token_append_text_n(f, NULL, 0);
+		}
 		token_append_child(flags_tok, f);
 	}
 	token_append_child(t, flags_tok);

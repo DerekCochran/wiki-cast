@@ -125,7 +125,9 @@ static pcre2_code *compile_external_links_regex(const ParserConfig *cfg) {
 static Token *build_magic_link_token(const char *url, size_t url_len, Accum *accum) {
 	Token *t= token_new(TOKEN_MAGIC_LINK, "ext-link-url");
 	if(!t) return NULL;
-	token_append_text_n(t, url, url_len);
+	/* Append URL into the persistent tokens arena and use a stable view */
+	const char *url_view = wiki_thread_buf_append_to_tokens(url, url_len);
+	token_append_text_n(t, url_view, url_len);
 	accum_push(accum, t);
 	return t;
 }
@@ -137,6 +139,7 @@ static Token *build_ext_link_token(Token *url_tok,
 																	 Accum *accum) {
 	Token *ext= token_new(TOKEN_EXT_LINK, "ext-link");
 	if(!ext) return NULL;
+	/* store separator as owned string for now (refactor later to use tokens arena) */
 	ext->data.ext_link.space= malloc(space_len + 1);
 	if(!ext->data.ext_link.space) {
 		token_free(ext);
@@ -153,7 +156,9 @@ static Token *build_ext_link_token(Token *url_tok,
 			token_free(ext);
 			return NULL;
 		}
-		token_append_text_n(inner, text, text_len);
+		/* Ensure the ext-link-text points into the persistent tokens arena */
+		const char *text_view = wiki_thread_buf_append_to_tokens(text, text_len);
+		token_append_text_n(inner, text_view, text_len);
 		accum_push(accum, inner);
 		token_append_child(ext, inner);
 	}

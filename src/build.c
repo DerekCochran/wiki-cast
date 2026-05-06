@@ -193,10 +193,13 @@ void build_from_str(Token *parent, const char *str, size_t str_len,
 	 * on NUL-termination. */
 	const char *s= str;
 
-	/* Free existing children first */
+	/* Free existing children first. Only free owned text buffers; views into
+	 * the per-thread tokens arena must not be freed here. */
 	for(size_t i= 0; i < parent->child_count; i++) {
 		Child *c= &parent->children[i];
-		if(c->is_text) free(c->text);
+		if(c->is_text) {
+			if(c->text_owned && c->text) free((void*)c->text);
+		}
 		/* Token pointers are owned by the accum — do NOT free them here */
 	}
 	parent->child_count= 0;
@@ -219,7 +222,8 @@ void build_from_str(Token *parent, const char *str, size_t str_len,
 				/* Emit text segment [seg_start, i) */
 				size_t text_len= i - seg_start;
 				if(text_len > 0) {
-					token_append_text_n(parent, s + seg_start, text_len);
+					const char *p = wiki_thread_buf_append_to_tokens(s + seg_start, text_len);
+					token_append_text_n(parent, p, text_len);
 				}
 				if(c == '\0') {
 					seg_start= i + 1;
@@ -269,7 +273,8 @@ void build_from_str(Token *parent, const char *str, size_t str_len,
 							}
 							/* trailing DEL */
 							wiki_thread_buf_putc(scratch, '\x7F');
-							token_append_text_n(parent, scratch->buf, scratch->len);
+							const char *p = wiki_thread_buf_append_to_tokens(scratch->buf, scratch->len);
+							token_append_text_n(parent, p, scratch->len);
 							wiki_thread_buf_release_scratch(scratch);
 						}
 				}

@@ -5,6 +5,7 @@
 #include "parser/list.h"
 #include "string_util.h"
 #include "token.h"
+#include "thread_buffer.h"
 #include <assert.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -27,7 +28,12 @@ static size_t get_common_prefix_len(const char *prefix, size_t plen, const char 
 static Token *make_list_token(const char *part, size_t part_len, Accum *accum) {
 	Token *t= token_new(TOKEN_LIST, "list");
 	if(!t) return NULL;
-	token_append_text_n(t, part, part_len);
+	if(part_len > 0) {
+		const char *part_view = wiki_thread_buf_append_to_tokens(part, part_len);
+		if(part_view) token_append_text_n(t, part_view, part_len);
+	} else {
+		token_append_text_n(t, NULL, 0);
+	}
 	accum_push(accum, t);
 	return t;
 	accum_push(accum, t);
@@ -38,7 +44,12 @@ static Token *make_list_token(const char *part, size_t part_len, Accum *accum) {
 static Token *make_dd_token(const char *syntax, size_t syntax_len, Accum *accum) {
 	Token *t= token_new(TOKEN_DD, "dd");
 	if(!t) return NULL;
-	token_append_text_n(t, syntax, syntax_len);
+	if(syntax_len > 0) {
+		const char *syn_view = wiki_thread_buf_append_to_tokens(syntax, syntax_len);
+		if(syn_view) token_append_text_n(t, syn_view, syntax_len);
+	} else {
+		token_append_text_n(t, NULL, 0);
+	}
 	accum_push(accum, t);
 	return t;
 }

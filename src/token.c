@@ -29,21 +29,18 @@ Token *token_new(TokenType type, const char *type_name) {
 }
 
 void token_append_text_n(Token *t, const char *text, size_t len) {
-	assert(t && text);
+	assert(t);
+	if(len > 0) assert(text);
 	if(t->child_count >= t->child_cap) {
 		t->child_cap*= 2;
 		t->children= realloc(t->children, t->child_cap * sizeof(Child));
 		assert(t->children);
 	}
-	char *copy= malloc(len + 1);
-	assert(copy);
-	sz_copy(copy, text, len);
-	copy[len]= '\0';
-
 	Child *c= &t->children[t->child_count++];
 	c->is_text= true;
 	c->text_len= len;
-	c->text= copy;
+	c->text= text;
+	c->text_owned = false;
 }
 
 void token_append_child(Token *t, Token *child) {
@@ -138,7 +135,7 @@ static void token_free_graph(Token *node, TokenSeen *seen) {
 	for(size_t i= 0; i < node->child_count; i++) {
 		Child *c= &node->children[i];
 		if(c->is_text) {
-			free(c->text);
+			if(c->text_owned && c->text) free((void*)c->text);
 		} else {
 			token_free_graph(c->token, seen);
 		}
@@ -165,7 +162,7 @@ void token_free_shallow(Token *t) {
 	for(size_t i= 0; i < t->child_count; i++) {
 		Child *c= &t->children[i];
 		if(c->is_text) {
-			free(c->text);
+			if(c->text_owned && c->text) free((void*)c->text);
 		} else {
 			/* Clear pointer but do not free c->token here. Caller will free */
 			c->token= NULL;
@@ -822,6 +819,40 @@ static void json_string(const char *s, FILE *fp) {
 	fputc('"', fp);
 }
 
+/* Write a JSON-escaped string of given length to fp (surrounded by quotes). */
+static void json_write_escaped_len(const char *s, size_t len, FILE *fp) {
+	fputc('"', fp);
+	if(!s || len == 0) {
+		fputc('"', fp);
+		return;
+	}
+	const char *p = s;
+	const char *end = s + len;
+	const char *chunk = p;
+	while(p < end) {
+		unsigned char ch = (unsigned char)*p;
+		if(ch == '"' || ch == '\\' || ch < 0x20) {
+			if(chunk < p) fwrite(chunk, 1, p - chunk, fp);
+			switch(ch) {
+			case '"': fputs("\\\"", fp); break;
+			case '\\': fputs("\\\\", fp); break;
+			case '\b': fputs("\\b", fp); break;
+			case '\f': fputs("\\f", fp); break;
+			case '\n': fputs("\\n", fp); break;
+			case '\r': fputs("\\r", fp); break;
+			case '\t': fputs("\\t", fp); break;
+			default: fprintf(fp, "\\u%04x", ch); break;
+			}
+			p++;
+			chunk = p;
+		} else {
+			p++;
+		}
+	}
+	if(chunk < end) fwrite(chunk, 1, end - chunk, fp);
+	fputc('"', fp);
+}
+
 void token_to_json(const Token *t, FILE *fp) {
 	if(!t) {
 		fputs("null", fp);
@@ -832,7 +863,7 @@ void token_to_json(const Token *t, FILE *fp) {
 		/* Text node: {"type":"text","data":"..."} */
 		fprintf(fp, "{\"type\":\"text\",\"data\":");
 		assert(t->child_count == 1 && t->children[0].is_text);
-		json_string(t->children[0].text, fp);
+		json_write_escaped_len(t->children[0].text, t->children[0].text_len, fp);
 		fputc('}', fp);
 		return;
 	}
@@ -852,7 +883,7 @@ void token_to_json(const Token *t, FILE *fp) {
 			const Child *c= &t->children[i];
 			if(c->is_text) {
 				fprintf(fp, "{\"type\":\"text\",\"data\":");
-				json_string(c->text, fp);
+				json_write_escaped_len(c->text, c->text_len, fp);
 				fputc('}', fp);
 			} else {
 				token_to_json(c->token, fp);

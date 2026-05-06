@@ -5,6 +5,7 @@
 #include "parser/redirect.h"
 #include "string_util.h"
 #include "title.h"
+#include "thread_buffer.h"
 #include <assert.h>
 #include <ctype.h>
 #include <stdio.h>
@@ -69,12 +70,22 @@ const ParserConfig *cfg,
 Accum *accum) {
 	Token *syn_tok= token_new(TOKEN_REDIRECT_SYNTAX, "redirect-syntax");
 	if(!syn_tok) return NULL;
-	token_append_text_n(syn_tok, syn, syn_len);
+	if(syn_len > 0) {
+		const char *syn_view = wiki_thread_buf_append_to_tokens(syn, syn_len);
+		if(syn_view) token_append_text_n(syn_tok, syn_view, syn_len);
+	} else {
+		token_append_text_n(syn_tok, NULL, 0);
+	}
 	accum_push(accum, syn_tok);
 
 	Token *link_atom= token_new(TOKEN_ATOM, "link-target");
 	if(!link_atom) return NULL;
-	token_append_text_n(link_atom, link, link_len);
+	if(link_len > 0) {
+		const char *link_view = wiki_thread_buf_append_to_tokens(link, link_len);
+		if(link_view) token_append_text_n(link_atom, link_view, link_len);
+	} else {
+		token_append_text_n(link_atom, NULL, 0);
+	}
 	accum_push(accum, link_atom);
 
 	Token *target_tok= token_new(TOKEN_REDIRECT_TARGET, "redirect-target");
@@ -104,7 +115,8 @@ Accum *accum) {
 		Token *noinclude= token_new(TOKEN_NOINCLUDE, "noinclude");
 		if(!noinclude) return NULL;
 		if(disp_len > 0) {
-			token_append_text_n(noinclude, disp, disp_len);
+			const char *disp_view = wiki_thread_buf_append_to_tokens(disp, disp_len);
+			if(disp_view) token_append_text_n(noinclude, disp_view, disp_len);
 		}
 		accum_push(accum, noinclude);
 		token_append_child(target_tok, noinclude);
