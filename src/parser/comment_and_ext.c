@@ -8,6 +8,7 @@
 #include "parser/link.h"
 #include "parser/links.h"
 #include "string_util.h"
+#include "thread_buffer.h"
 #include <stringzilla/stringzilla.h>
 #include <assert.h>
 #include <ctype.h>
@@ -79,84 +80,118 @@ static const char *find_substr_cs(const char *hay, size_t hlen,
 	return sz_find(hay, hlen, needle, nlen);
 }
 
-static char *token_string_dup(const Token *tok, size_t *out_len) {
-	if(!tok) {
-		if(out_len) *out_len= 0;
-		return strdup("");
+/* Restore a sentinel-marked string using an external stack into a ThreadBuf.
+ * Mirrors `str_restore` but writes into `tb` (scratch) instead of allocating.
+ * Returns number of bytes appended to `tb` (new tb->len).
+ */
+static size_t str_restore_to_tb(const char *s, size_t len,
+								const char **stack, size_t stack_count,
+								const size_t *stack_lengths,
+								ThreadBuf *tb) {
+	if(!s || len == 0) return 0;
+	const char *p = s;
+	const char *end = s + len;
+	char needle = '\0';
+
+	while(p < end) {
+		const char *found = sz_find_byte(p, (size_t)(end - p), &needle);
+		if(!found) {
+			size_t rem = (size_t)(end - p);
+			if(rem) {
+				wiki_thread_buf_reserve(tb, tb->len + rem);
+				memcpy(tb->buf + tb->len, p, rem);
+				tb->len += rem;
+			}
+			break;
+		}
+
+		size_t seg = (size_t)(found - p);
+		if(seg) {
+			wiki_thread_buf_reserve(tb, tb->len + seg);
+			memcpy(tb->buf + tb->len, p, seg);
+			tb->len += seg;
+		}
+
+		const char *k = found + 1;
+		while(k < end && *k >= '0' && *k <= '9') k++;
+		if(k < end && k > found + 1 && (unsigned char)*k == '\x7F') {
+			size_t idx = 0;
+			for(const char *d = found + 1; d < k; ++d) idx = idx * 10 + (size_t)(*d - '0');
+			if(idx < stack_count && stack[idx]) {
+				const char *rep = stack[idx];
+				size_t replen = (stack_lengths && stack_lengths[idx]) ? stack_lengths[idx] : strlen(rep);
+				if(replen) {
+					wiki_thread_buf_reserve(tb, tb->len + replen);
+					memcpy(tb->buf + tb->len, rep, replen);
+					tb->len += replen;
+				}
+				p = k + 1;
+				continue;
+			}
+		}
+
+		/* Fallback: emit literal NUL byte */
+		wiki_thread_buf_reserve(tb, tb->len + 1);
+		tb->buf[tb->len++] = *found;
+		p = found + 1;
 	}
-	ThreadBuf *tb= wiki_thread_buf_acquire_scratch();
-	char *s= token_to_string(tok, tb);
-	size_t n= tb->len;
-	char *dup= malloc(n + 1);
-	assert(dup);
-	memcpy(dup, s, n);
-	dup[n]= '\0';
-	wiki_thread_buf_release_scratch(tb);
-	if(out_len) *out_len= n;
-	return dup;
+	tb->buf[tb->len] = '\0';
+	return tb->len;
 }
 
-/* JS restore parity used by parseCommentAndExt:
- * restore(s, accum, 1): expand \0Ng\x7F recursively through mode 2.
- * restore(s, accum, 2): expand \0Nn\x7F.
+/* Restore accumulator-mode sentinels into a provided ThreadBuf (scratch).
+ * Expands \0<index><ch>\x7F markers where `ch` determines behavior
+ * (mode==1 -> expand 'g'; mode==2 -> expand 'n').
+ * Returns number of bytes appended to `tb`.
  */
-static char *restore_accum_mode(const char *s, size_t len,
-																const Accum *accum, int mode,
-																size_t *out_len) {
-	size_t cap= len * 2 + 32;
-	char *out= malloc(cap);
-	assert(out);
-	size_t j= 0;
+static size_t restore_accum_mode_to_tb(const char *s, size_t len,
+									   const Accum *accum, int mode,
+									   ThreadBuf *tb) {
+	if(!s || len == 0) return 0;
+	size_t before = tb->len;
 
-#define ENSURE_RESTORE_CAP(need)   \
-	do {                             \
-		while(j + (need) + 1 >= cap) { \
-			cap*= 2;                     \
-			out= realloc(out, cap);      \
-			assert(out);                 \
-		}                              \
-	} while(0)
-
-	for(size_t i= 0; i < len;) {
+	for(size_t i = 0; i < len;) {
 		if((unsigned char)s[i] == '\0') {
-			size_t k= i + 1;
+			size_t k = i + 1;
 			while(k < len && s[k] >= '0' && s[k] <= '9') k++;
 			if(k > i + 1 && k + 1 < len && (unsigned char)s[k + 1] == '\x7F') {
-				char ch= s[k];
-				bool should_expand= (mode == 1 && ch == 'g') || (mode == 2 && ch == 'n');
+				char ch = s[k];
+				bool should_expand = (mode == 1 && ch == 'g') || (mode == 2 && ch == 'n');
 				if(should_expand) {
-					size_t idx= 0;
-					for(size_t d= i + 1; d < k; d++) idx= idx * 10 + (size_t)(s[d] - '0');
-					Token *ref= accum_get(accum, idx);
+					size_t idx = 0;
+					for(size_t d = i + 1; d < k; d++) idx = idx * 10 + (size_t)(s[d] - '0');
+					Token *ref = accum_get(accum, idx);
 					if(ref) {
-						size_t rep_len= 0;
-						char *rep= token_string_dup(ref, &rep_len);
+						ThreadBuf *tmp = wiki_thread_buf_acquire_scratch();
+						if(!tmp) { log_fatal("thread_buffer: failed to acquire scratch in restore_accum_mode_to_tb"); abort(); }
+						char *rep_s = token_to_string(ref, tmp);
+						size_t rep_len = tmp->len;
+
 						if(mode == 1 && ch == 'g') {
-							size_t nested_len= 0;
-							char *nested= restore_accum_mode(rep, rep_len, accum, 2, &nested_len);
-							free(rep);
-							rep= nested;
-							rep_len= nested_len;
+							/* Nested expansion into tb */
+							restore_accum_mode_to_tb(rep_s, rep_len, accum, 2, tb);
+						} else {
+							if(rep_len) {
+								wiki_thread_buf_reserve(tb, tb->len + rep_len);
+								memcpy(tb->buf + tb->len, rep_s, rep_len);
+								tb->len += rep_len;
+							}
 						}
-						ENSURE_RESTORE_CAP(rep_len);
-						memcpy(out + j, rep, rep_len);
-						j+= rep_len;
-						free(rep);
-						i= k + 2;
+
+						wiki_thread_buf_release_scratch(tmp);
+						i = k + 2;
 						continue;
 					}
 				}
 			}
 		}
 
-		ENSURE_RESTORE_CAP(1);
-		out[j++]= s[i++];
+		wiki_thread_buf_reserve(tb, tb->len + 1);
+		tb->buf[tb->len++] = s[i++];
 	}
 
-#undef ENSURE_RESTORE_CAP
-	out[j]= '\0';
-	if(out_len) *out_len= j;
-	return out;
+	tb->buf[tb->len] = '\0';
+	return tb->len - before;
 }
 
 /* ── Attribute parsing helpers ───────────────────────────────────────────── */
@@ -1341,42 +1376,40 @@ static void apply_translate_prepass(ThreadBuf *tb, const ParserConfig *cfg, Accu
 			inner_len= ov[5] - ov[4];
 		}
 
-		size_t restored_len= 0;
-		char *restored_inner= str_restore(inner, inner_len,
-																			(const char **)st.items,
-																			st.count,
-																			st.lens,
-																			&restored_len);
+		/* Use scratch-based restore to avoid heap allocs */
+		ThreadBuf *tmp_restore = wiki_thread_buf_acquire_scratch();
+		if(!tmp_restore) { log_fatal("thread_buffer: failed to acquire scratch in apply_translate_prepass (restore)\n"); abort(); }
+		tmp_restore->len = 0;
+		str_restore_to_tb(inner, inner_len, (const char **)st.items, st.count, st.lens, tmp_restore);
 
 		size_t tok_idx= accum->count;
-		Token *tok= build_translate_token(attr, attr_len, restored_inner, restored_len, accum);
-			if(tok) {
-				char sent[64];
-				size_t slen;
-				work_str_sentinel(tok_idx, 'g', sent, &slen);
-				ENSURE_PRE_CAP(out_tb, slen + 1);
-				memcpy(out_tb->buf + out_tb->len, sent, slen);
-				out_tb->len += slen;
-			} else {
-				ENSURE_PRE_CAP(out_tb, me - ms + 1);
-				memcpy(out_tb->buf + out_tb->len, tb->buf + ms, me - ms);
-				out_tb->len += me - ms;
-			}
-		free(restored_inner);
+		Token *tok= build_translate_token(attr, attr_len, tmp_restore->buf, tmp_restore->len, accum);
+		if(tok) {
+			char sent[64];
+			size_t slen;
+			work_str_sentinel(tok_idx, 'g', sent, &slen);
+			ENSURE_PRE_CAP(out_tb, slen + 1);
+			memcpy(out_tb->buf + out_tb->len, sent, slen);
+			out_tb->len += slen;
+		} else {
+			ENSURE_PRE_CAP(out_tb, me - ms + 1);
+			memcpy(out_tb->buf + out_tb->len, tb->buf + ms, me - ms);
+			out_tb->len += me - ms;
+		}
+		wiki_thread_buf_release_scratch(tmp_restore);
 
 		search_at= me;
 		if(me == ms) search_at++;
 	}
 	out_tb->buf[out_tb->len]= '\0';
 
-	size_t restored_all_len= 0;
-	char *restored_all= str_restore(out_tb->buf, out_tb->len,
-																	(const char **)st.items,
-																	st.count,
-																	st.lens,
-																	&restored_all_len);
-	wiki_thread_buf_set(tb, restored_all, restored_all_len);
-	free(restored_all);
+	/* Use scratch-based restore into tb directly */
+	ThreadBuf *tmp_all = wiki_thread_buf_acquire_scratch();
+	if(!tmp_all) { log_fatal("thread_buffer: failed to acquire scratch in apply_translate_prepass (final restore)\n"); abort(); }
+	tmp_all->len = 0;
+	str_restore_to_tb(out_tb->buf, out_tb->len, (const char **)st.items, st.count, st.lens, tmp_all);
+	wiki_thread_buf_set(tb, tmp_all->buf, tmp_all->len);
+	wiki_thread_buf_release_scratch(tmp_all);
 	wiki_thread_buf_release_scratch(out_tb);
 
 	pcre2_match_data_free(md);
@@ -1550,13 +1583,15 @@ void parse_comment_and_ext(ThreadBuf *tb, const ParserConfig *cfg,
 		size_t inc_name_s= (rc > 5 && ov[10] != PCRE2_UNSET) ? ov[10] : 0;
 		size_t inc_name_e= (rc > 5 && ov[11] != PCRE2_UNSET) ? ov[11] : 0;
 
-		if(substr[0] == '<' && sub_len >= 4 &&
-			 substr[1] == '!' && substr[2] == '-' && substr[3] == '-') {
-			size_t restored_len= 0;
-			char *restored= restore_accum_mode(substr, sub_len, accum, 1, &restored_len);
-			tok= build_comment_token(restored, restored_len, accum);
-			free(restored);
-			ch= 'c';
+		   if(substr[0] == '<' && sub_len >= 4 &&
+			   substr[1] == '!' && substr[2] == '-' && substr[3] == '-') {
+			  ThreadBuf *tmp_c = wiki_thread_buf_acquire_scratch();
+			  if(!tmp_c) { log_fatal("thread_buffer: failed to acquire scratch in parse_comment_and_ext (comment restore)"); abort(); }
+			  tmp_c->len = 0;
+			  restore_accum_mode_to_tb(substr, sub_len, accum, 1, tmp_c);
+			  tok= build_comment_token(tmp_c->buf, tmp_c->len, accum);
+			  wiki_thread_buf_release_scratch(tmp_c);
+			  ch= 'c';
 
 		} else if(ext_name_s < ext_name_e) {
 			const char *name= tb->buf + ext_name_s;
@@ -1597,21 +1632,33 @@ void parse_comment_and_ext(ThreadBuf *tb, const ParserConfig *cfg,
 			size_t clen= (close_s < close_e) ? close_e - close_s : 0;
 
 			size_t rattr_len= 0, rinner_len= 0;
-			char *rattr= NULL;
-			char *rinner= NULL;
+			ThreadBuf *tmp_attr = NULL;
+			ThreadBuf *tmp_inner = NULL;
+			const char *rattr = NULL;
+			const char *rinner = NULL;
 			if(attr && alen > 0) {
-				rattr= restore_accum_mode(attr, alen, accum, 1, &rattr_len);
+				tmp_attr = wiki_thread_buf_acquire_scratch();
+				if(!tmp_attr) { log_fatal("thread_buffer: failed to acquire scratch in parse_comment_and_ext (include attr)"); abort(); }
+				tmp_attr->len = 0;
+				restore_accum_mode_to_tb(attr, alen, accum, 1, tmp_attr);
+				rattr = tmp_attr->buf;
+				rattr_len = tmp_attr->len;
 			}
 			if(inner && ilen > 0) {
-				rinner= restore_accum_mode(inner, ilen, accum, 1, &rinner_len);
+				tmp_inner = wiki_thread_buf_acquire_scratch();
+				if(!tmp_inner) { log_fatal("thread_buffer: failed to acquire scratch in parse_comment_and_ext (include inner)"); abort(); }
+				tmp_inner->len = 0;
+				restore_accum_mode_to_tb(inner, ilen, accum, 1, tmp_inner);
+				rinner = tmp_inner->buf;
+				rinner_len = tmp_inner->len;
 			}
 
 			tok= build_include_token(name, name_len,
 															 rattr ? rattr : attr, rattr ? rattr_len : alen,
 															 rinner ? rinner : inner, rinner ? rinner_len : ilen,
 															 closing, clen, accum);
-			free(rattr);
-			free(rinner);
+			if(tmp_attr) wiki_thread_buf_release_scratch(tmp_attr);
+			if(tmp_inner) wiki_thread_buf_release_scratch(tmp_inner);
 			ch= 'n';
 
 		} else {

@@ -1032,24 +1032,9 @@ static void postprocess_nested_plain(Token *t, const ParserConfig *cfg, Accum *a
 
 			Token *tmp= token_new(TOKEN_PLAIN, t->type_name);
 			if(!tmp) {
-				if(new_count >= new_cap) {
-					new_cap*= 2;
-					Child *grown= realloc(new_children, new_cap * sizeof(Child));
-					assert(grown);
-					new_children= grown;
-				}
-				Child fallback;
-				fallback.is_text= true;
-				fallback.text_len= used_len;
-				char *fallback_buf = malloc(used_len + 1);
-				assert(fallback_buf);
-				sz_copy(fallback_buf, used_buf, used_len);
-				fallback_buf[used_len]= '\0';
-				fallback.text = (const char*)fallback_buf;
-				fallback.text_owned = true;
-				new_children[new_count++]= fallback;
 				if(tmp_tb) wiki_thread_buf_release_scratch(tmp_tb);
-				continue;
+				log_fatal("postprocess_nested_plain: token_new() returned NULL");
+				abort();
 			}
 
 			build_from_str(tmp, used_buf, used_len, accum);
@@ -1318,23 +1303,9 @@ static void postprocess_parameter_value_inline_impl(Token *t, const ParserConfig
 		Token *tmp= token_new(is_attr_value ? TOKEN_ATTR_VALUE : TOKEN_PLAIN,
 			is_attr_value ? "attr-value" : t->type_name);
 		if(!tmp) {
-			if(new_count >= new_cap) {
-				new_cap*= 2;
-				Child *grown= realloc(new_children, new_cap * sizeof(Child));
-				assert(grown);
-				new_children= grown;
-			}
-			Child fallback;
-			fallback.is_text= true;
-			fallback.text_len= scratch->len;
-			char *fallback_buf = malloc(scratch->len + 1);
-			assert(fallback_buf);
-			sz_copy(fallback_buf, scratch->buf, scratch->len);
-			fallback_buf[scratch->len]= '\0';
-			fallback.text = (const char*)fallback_buf;
-			fallback.text_owned = true;
-			new_children[new_count++]= fallback;
-			continue;
+			wiki_thread_buf_release_scratch(scratch);
+			log_fatal("postprocess_parameter_value_inline_impl: token_new() returned NULL");
+			abort();
 		}
 
 		build_from_str(tmp, scratch->buf, scratch->len, accum);
