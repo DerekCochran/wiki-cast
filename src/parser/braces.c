@@ -284,6 +284,7 @@ static Token *build_template_token(const char **parts_restored, const size_t *pa
 				token_free(t);
 				return NULL;
 			}
+
 			/* Persist the name into the tokens arena to avoid dangling views */
 			const char *name_view = wiki_thread_buf_append_to_tokens(parts_restored[0], parts_lens[0]);
 			token_append_text_n(name_tok, name_view, parts_lens[0]);
@@ -737,8 +738,15 @@ static bool brace_frame_init(BraceFrame *frame, const char *open, size_t open_le
 	frame->find_equal= find_equal;
 	frame->has_parts= (open_len > 0 && open[0] == '{');
 	if(frame->has_parts) {
-		if(!parts_init(&frame->parts)) return false;
-		if(!parts_add_empty(&frame->parts)) return false;
+		/* initialise parts and ensure we clean up on failure */
+		parts_init(&frame->parts);
+		if(!parts_add_empty(&frame->parts)) {
+			/* parts_add_empty failed: free open and any partial parts allocations */
+			free(frame->open);
+			frame->open = NULL;
+			parts_free(&frame->parts);
+			return false;
+		}
 	} else {
 		parts_init(&frame->parts);
 	}
@@ -1116,6 +1124,12 @@ static bool braces_state_machine(ThreadBuf *tb, const ParserConfig *cfg,
 		if(!matched) {
 			break;
 		}
+
+			/* If we popped a frame into `top` but didn't requeue it, free it
+			 * now to avoid leaking its heap allocations (open, parts). */
+			if(has_top && !top_requeued) {
+				brace_frame_free(&top);
+			}
 		search_at= syntax_end;
 		if(search_at == ms) search_at= ms + 1;
 	}
@@ -1129,6 +1143,11 @@ static bool braces_state_machine(ThreadBuf *tb, const ParserConfig *cfg,
 	wiki_thread_buf_set(tb, out, out_len);
 
 	free(out);
+	/* Free any remaining frames stored in the stack to avoid leaking their
+	 * inner allocations (open, parts). */
+	for(size_t si = 0; si < stack_len; si++) {
+		brace_frame_free(&stack[si]);
+	}
 	free(stack);
 	free(match_subject);
 	pcre2_match_data_free(md);

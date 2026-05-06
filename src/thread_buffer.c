@@ -305,8 +305,19 @@ void wiki_thread_buf_assert_no_leased_scratch(const char *context,
 void wiki_thread_buf_reserve(ThreadBuf *tb, size_t need) {
     size_t actual_need = need + 1; /* +1 for null terminator */
 
-    /* 1. Shrink: on heap, cap is wastefully large, and new need is small. */
-    if (tb->is_on_heap && tb->cap > tb->shrink_size && need < tb->target_size) {
+	/* 1. Shrink: on heap, cap is wastefully large, and new request is small.
+	 * NOTE: The `tokens` arena holds non-owning views returned to tokens
+	 * during parsing. Those views must remain valid for the lifetime of
+	 * the parse, so never perform the shrink/free logic on the tokens
+	 * ThreadBuf while parsing. Detect the tokens buffer and skip shrink.
+	 */
+	ThreadBuffers *__tbs_for_reserve = NULL;
+	bool __is_tokens_arena = false;
+	/* Attempt to get the thread-local buffers; if available, detect tokens */
+	__tbs_for_reserve = wiki_thread_buf_get();
+	if(__tbs_for_reserve) __is_tokens_arena = (tb == &__tbs_for_reserve->tokens);
+
+	if (!__is_tokens_arena && tb->is_on_heap && tb->cap > tb->shrink_size && need < tb->target_size) {
         free(tb->buf);
         if (actual_need <= sizeof(tb->inline_data)) {
             tb->buf = tb->inline_data;
