@@ -1046,6 +1046,7 @@ static void postprocess_nested_plain(Token *t, const ParserConfig *cfg, Accum *a
 					new_children= grown;
 				}
 				new_children[new_count++]= cur;
+				if(tmp_tb) wiki_thread_buf_release_scratch(tmp_tb);
 				continue;
 			}
 
@@ -1069,6 +1070,7 @@ static void postprocess_nested_plain(Token *t, const ParserConfig *cfg, Accum *a
 				fallback.text = (const char*)fallback_buf;
 				fallback.text_owned = true;
 				new_children[new_count++]= fallback;
+				if(tmp_tb) wiki_thread_buf_release_scratch(tmp_tb);
 				continue;
 			}
 
@@ -1090,6 +1092,7 @@ static void postprocess_nested_plain(Token *t, const ParserConfig *cfg, Accum *a
 			tmp->child_count= 0;
 			tmp->child_cap= 0;
 			token_free_shallow(tmp);
+				if(tmp_tb) wiki_thread_buf_release_scratch(tmp_tb);
 		}
 
 		free(old_children);

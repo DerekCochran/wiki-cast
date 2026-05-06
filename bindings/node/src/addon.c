@@ -136,6 +136,20 @@ static napi_value parse_wrapped(napi_env env, napi_callback_info info) {
   }
   in_scratch->len = wlen;
 
+  /* Copy wikitext to a heap buffer, then release the scratch before calling
+   * wiki_parse_with_page.  Internal functions like finalize_gallery_and_link_names
+   * call token_to_string (which asserts no other scratch is leased), so
+   * in_scratch must not remain leased for the duration of the parse. */
+  char *wikitext_heap = malloc(wlen + 1);
+  if (!wikitext_heap) {
+    wiki_thread_buf_release_scratch(in_scratch);
+    napi_throw_error(env, NULL, "Out of memory for wikitext copy");
+    return NULL;
+  }
+  memcpy(wikitext_heap, in_scratch->buf, wlen + 1); /* includes NUL */
+  wiki_thread_buf_release_scratch(in_scratch);
+  in_scratch = NULL;
+
   /* Parse args: argv[0] => max_stage (number), argv[1] => include (boolean) */
   int max_stage = 11; /* default used by tests */
   bool include = false;
@@ -164,7 +178,7 @@ static napi_value parse_wrapped(napi_env env, napi_callback_info info) {
     if (napi_typeof(env, js_page_val, &pvt) == napi_ok && pvt == napi_string) {
       size_t page_len = 0;
       if (napi_get_value_string_utf8(env, js_page_val, NULL, 0, &page_len) != napi_ok) {
-        wiki_thread_buf_release_scratch(in_scratch);
+        free(wikitext_heap);
         napi_throw_error(env, NULL, "Failed to measure pageName length");
         return NULL;
       }
@@ -172,7 +186,7 @@ static napi_value parse_wrapped(napi_env env, napi_callback_info info) {
       assert(page);
       if (napi_get_value_string_utf8(env, js_page_val, page, page_len + 1, &page_len) != napi_ok) {
         free(page);
-        wiki_thread_buf_release_scratch(in_scratch);
+        free(wikitext_heap);
         napi_throw_error(env, NULL, "Failed to read pageName");
         return NULL;
       }
@@ -184,7 +198,7 @@ static napi_value parse_wrapped(napi_env env, napi_callback_info info) {
   size_t cfg_json_len = 0;
   if (!get_token_config_json(env, this_arg, &cfg_json, &cfg_json_len)) {
     free(page);
-    wiki_thread_buf_release_scratch(in_scratch);
+    free(wikitext_heap);
     napi_throw_error(env, NULL, "Failed to read parser config from Token instance");
     return NULL;
   }
@@ -193,20 +207,25 @@ static napi_value parse_wrapped(napi_env env, napi_callback_info info) {
   free(cfg_json);
   if (!cfg) {
     free(page);
-    wiki_thread_buf_release_scratch(in_scratch);
+    free(wikitext_heap);
     napi_throw_error(env, NULL, "Failed to load parser config from Token instance");
     return NULL;
   }
 
   /* Call the C parser */
-  Token *root = wiki_parse_with_page(in_scratch->buf, cfg, include, max_stage, page);
+  Token *root = wiki_parse_with_page(wikitext_heap, cfg, include, max_stage, page);
+  free(wikitext_heap);
+  wikitext_heap = NULL;
   free(page);
   if (!root) {
     config_free(cfg);
-    wiki_thread_buf_release_scratch(in_scratch);
     napi_throw_error(env, NULL, "C parser returned NULL");
     return NULL;
   }
+
+  /* Re-acquire scratch for token_to_string. All parse-internal scratches have
+   * been released, so this is the only leased scratch during serialization. */
+  in_scratch = wiki_thread_buf_acquire_scratch();
 
   /* Serialize token tree to JSON in-memory */
   char *json_buf = NULL;
@@ -222,12 +241,7 @@ static napi_value parse_wrapped(napi_env env, napi_callback_info info) {
   token_to_json(root, jf);
   fclose(jf);
 
-  /* Build the reconstructed string from token tree
-   * Reuse the previously-leased `in_scratch` buffer to avoid acquiring a
-   * second scratch buffer. `in_scratch` is no longer needed after parsing
-   * so it's safe to repurpose it for serialization. This prevents the
-   * `token_to_string(entry)` assertion which requires no other leased
-   * scratch buffers to exist. */
+  /* Build the reconstructed string from token tree. */
   char *text_buf = token_to_string(root, in_scratch);
 
   /* Parse JSON into a JS object: JSON.parse(json_buf) */

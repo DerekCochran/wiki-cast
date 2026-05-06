@@ -245,10 +245,24 @@ void wiki_thread_buf_assert_no_leased_scratch(const char *context,
 		leased_len+= scratch->len;
 
 		if(used < sizeof(details)) {
+			/* Print first 32 bytes of content for diagnostics */
+			char content_hex[128];
+			size_t ch_used = 0;
+			size_t show = scratch->len < 32 ? scratch->len : 32;
+			for(size_t ci = 0; ci < show && ch_used + 4 < sizeof(content_hex); ci++) {
+				unsigned char cc = (unsigned char)scratch->buf[ci];
+				if(cc >= 32 && cc < 127 && cc != '\\') {
+					content_hex[ch_used++] = (char)cc;
+				} else {
+					int wc = snprintf(content_hex + ch_used, sizeof(content_hex) - ch_used, "\\x%02X", cc);
+					if(wc > 0) ch_used += (size_t)wc;
+				}
+			}
+			content_hex[ch_used] = '\0';
 			int wrote= snprintf(details + used, sizeof(details) - used,
-													"%s#%zu(cap=%zu,len=%zu)",
+													"%s#%zu(cap=%zu,len=%zu,content=[%s])",
 													used == 0 ? "" : ", ",
-													i, scratch->cap, scratch->len);
+													i, scratch->cap, scratch->len, content_hex);
 			if(wrote > 0) {
 				size_t wrote_sz= (size_t)wrote;
 				used+= wrote_sz < (sizeof(details) - used)
