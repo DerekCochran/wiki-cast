@@ -37,17 +37,14 @@ static void text_stack_push(TextStack *st, const char *s, size_t len) {
 		assert(st->items && st->lens);
 		st->cap= new_cap;
 	}
-	char *copy= malloc(len + 1);
-	assert(copy);
-	sz_copy(copy, s, len);
-	copy[len]= '\0';
-	st->items[st->count]= copy;
+	const char *view = wiki_thread_buf_append_to_tokens(s, len);
+	st->items[st->count]= (char *)view;
 	st->lens[st->count]= len;
 	st->count++;
 }
 
 static void text_stack_free(TextStack *st) {
-	for(size_t i= 0; i < st->count; i++) free(st->items[i]);
+	/* Items are views into the tokens arena (append-only); do not free them. */
 	free(st->items);
 	free(st->lens);
 	st->items= NULL;
@@ -412,12 +409,16 @@ static Token *build_ext_attrs(const char *tag_name,
 	/* Ensure attr starts with whitespace (JS always ensures this by prepending ' '
      * if it doesn't: `!attr || /^\s/u.test(attr) ? attr : ` ${attr}`` */
 	if(attr_str && attr_len > 0 && !isspace((unsigned char)attr_str[0])) {
-		/* Prepend a space */
-		char *padded= malloc(attr_len + 2);
-		padded[0]= ' ';
-		memcpy(padded + 1, attr_str, attr_len);
-		parse_ext_attrs(t, padded, attr_len + 1, tag_name, accum);
-		free(padded);
+		/* Prepend a space using a scratch buffer to avoid a transient heap alloc. */
+		ThreadBuf *scratch = wiki_thread_buf_acquire_scratch();
+		if(!scratch) { log_fatal("thread_buffer: failed to acquire scratch in build_ext_attrs"); abort(); }
+		wiki_thread_buf_reserve(scratch, attr_len + 1);
+		scratch->buf[0]= ' ';
+		memcpy(scratch->buf + 1, attr_str, attr_len);
+		scratch->len = attr_len + 1;
+		scratch->buf[scratch->len] = '\0';
+		parse_ext_attrs(t, scratch->buf, scratch->len, tag_name, accum);
+		wiki_thread_buf_release_scratch(scratch);
 	} else {
 		parse_ext_attrs(t, attr_str, attr_len, tag_name, accum);
 	}
@@ -482,63 +483,48 @@ static Token *build_references_inner_token(const char *inner_str, size_t inner_l
 		return t;
 	}
 
-	ThreadBuf tmp;
-	tmp.buf= malloc(inner_len + 1);
-	if(!tmp.buf) return t;
-	memcpy(tmp.buf, inner_str, inner_len);
-	tmp.buf[inner_len]= '\0';
-	tmp.len= inner_len;
-	tmp.cap= inner_len + 1;
-	tmp.shrink_size= (size_t)-1;
-	tmp.target_size= tmp.cap;
+	ThreadBuf *tmp = wiki_thread_buf_acquire_scratch_from_data(inner_str, inner_len);
+	if(!tmp) { log_fatal("thread_buffer: failed to acquire scratch in build_references_inner_token"); abort(); }
 
-	parse_comment_and_ext(&tmp, cfg, accum, false);
-	parse_braces(&tmp, cfg, accum);
+	parse_comment_and_ext(tmp, cfg, accum, false);
+	parse_braces(tmp, cfg, accum);
 
-	size_t out_cap= tmp.len * 2 + 64;
-	char *out= malloc(out_cap);
-	assert(out);
-	size_t out_len= 0;
+	ThreadBuf *out_tb = wiki_thread_buf_acquire_scratch();
+	if(!out_tb) { log_fatal("thread_buffer: failed to acquire scratch in build_references_inner_token (out)"); abort(); }
+	wiki_thread_buf_reserve(out_tb, tmp->len * 2 + 64);
 
-#define ENSURE_REF_CAP(need)             \
-	do {                                     \
-		while(out_len + (need) >= out_cap) {    \
-			out_cap*= 2;                            \
-			out= realloc(out, out_cap);             \
-			assert(out);                            \
-		}                                        \
-	} while(0)
+#define ENSURE_REF_CAP(tb, need) do { wiki_thread_buf_reserve((tb), (tb)->len + (need)); } while(0)
 
-	for(size_t i= 0; i < tmp.len;) {
-		if((unsigned char)tmp.buf[i] == '\0') {
+	for(size_t i= 0; i < tmp->len;) {
+		if((unsigned char)tmp->buf[i] == '\0') {
 			size_t k= i + 1;
-			while(k < tmp.len && tmp.buf[k] >= '0' && tmp.buf[k] <= '9') k++;
-			if(k > i + 1 && k + 1 < tmp.len && (unsigned char)tmp.buf[k + 1] == '\x7F') {
+			while(k < tmp->len && tmp->buf[k] >= '0' && tmp->buf[k] <= '9') k++;
+			if(k > i + 1 && k + 1 < tmp->len && (unsigned char)tmp->buf[k + 1] == '\x7F') {
 				size_t mlen= (k + 2) - i;
-				ENSURE_REF_CAP(mlen + 1);
-				memcpy(out + out_len, tmp.buf + i, mlen);
-				out_len+= mlen;
+				ENSURE_REF_CAP(out_tb, mlen + 1);
+				memcpy(out_tb->buf + out_tb->len, tmp->buf + i, mlen);
+				out_tb->len += mlen;
 				i= k + 2;
 				continue;
 			}
 		}
 
 		size_t j= i;
-		while(j < tmp.len && (unsigned char)tmp.buf[j] != '\0') j++;
+		while(j < tmp->len && (unsigned char)tmp->buf[j] != '\0') j++;
 		size_t run_len= j - i;
 		if(run_len > 0) {
 			Token *ni= token_new(TOKEN_NOINCLUDE, "noinclude");
 			if(ni) {
-				const char *ni_view = wiki_thread_buf_append_to_tokens(tmp.buf + i, run_len);
+				const char *ni_view = wiki_thread_buf_append_to_tokens(tmp->buf + i, run_len);
 				token_append_text_n(ni, ni_view, run_len);
 				accum_push(accum, ni);
 				size_t idx= accum->count - 1;
 				char sent[64];
 				size_t slen;
 				work_str_sentinel(idx, 'n', sent, &slen);
-				ENSURE_REF_CAP(slen + 1);
-				memcpy(out + out_len, sent, slen);
-				out_len+= slen;
+				ENSURE_REF_CAP(out_tb, slen + 1);
+				memcpy(out_tb->buf + out_tb->len, sent, slen);
+				out_tb->len += slen;
 			}
 		}
 		i= j;
@@ -546,10 +532,10 @@ static Token *build_references_inner_token(const char *inner_str, size_t inner_l
 
 #undef ENSURE_REF_CAP
 
-	build_from_str(t, out, out_len, accum);
+	build_from_str(t, out_tb->buf, out_tb->len, accum);
 
-	free(out);
-	free(tmp.buf);
+	wiki_thread_buf_release_scratch(out_tb);
+	wiki_thread_buf_release_scratch(tmp);
 	return t;
 }
 
@@ -558,32 +544,27 @@ static Token *parse_gallery_image_line_local(const char *line, size_t line_len,
 																			Accum *accum) {
 	if(!line || line_len == 0) return NULL;
 
-	char *wrapped= malloc(line_len + 10);
-	if(!wrapped) return NULL;
-	wrapped[0]= '[';
-	wrapped[1]= '[';
-	memcpy(wrapped + 2, "File:", 5);
-	memcpy(wrapped + 7, line, line_len);
-	wrapped[7 + line_len]= ']';
-	wrapped[8 + line_len]= ']';
-	wrapped[9 + line_len]= '\0';
+	ThreadBuf *tmp_tb = wiki_thread_buf_acquire_scratch();
+	if(!tmp_tb) { log_fatal("thread_buffer: failed to acquire scratch in parse_gallery_image_line_local"); abort(); }
+	wiki_thread_buf_reserve(tmp_tb, line_len + 9);
+	tmp_tb->buf[0]= '[';
+	tmp_tb->buf[1]= '[';
+	memcpy(tmp_tb->buf + 2, "File:", 5);
+	memcpy(tmp_tb->buf + 7, line, line_len);
+	tmp_tb->buf[7 + line_len]= ']';
+	tmp_tb->buf[8 + line_len]= ']';
+	tmp_tb->buf[9 + line_len]= '\0';
+	tmp_tb->len= line_len + 9;
 
-	ThreadBuf tmp_tb;
-	tmp_tb.buf= wrapped;
-	tmp_tb.len= line_len + 9;
-	tmp_tb.cap= line_len + 10;
-	tmp_tb.shrink_size= (size_t)-1;
-	tmp_tb.target_size= tmp_tb.cap;
-
-	parse_braces(&tmp_tb, cfg, accum);
-	parse_links(&tmp_tb, cfg, accum, NULL, false);
+	parse_braces(tmp_tb, cfg, accum);
+	parse_links(tmp_tb, cfg, accum, NULL, false);
 
 	Token *tmp= token_new(TOKEN_PLAIN, "gallery-line");
 	if(!tmp) {
-		free(tmp_tb.buf);
+		wiki_thread_buf_release_scratch(tmp_tb);
 		return NULL;
 	}
-	build_from_str(tmp, tmp_tb.buf, tmp_tb.len, accum);
+	build_from_str(tmp, tmp_tb->buf, tmp_tb->len, accum);
 	build_token_recursive(tmp, accum, cfg);
 
 	Token *out= NULL;
@@ -637,7 +618,7 @@ static Token *parse_gallery_image_line_local(const char *line, size_t line_len,
 	}
 
 	token_free_shallow(tmp);
-	free(tmp_tb.buf);
+	wiki_thread_buf_release_scratch(tmp_tb);
 	return out;
 }
 
@@ -692,31 +673,26 @@ static Token *parse_imagemap_image_line_local(const char *line, size_t line_len,
 														 Accum *accum) {
 	if(!line || line_len == 0) return NULL;
 
-	char *wrapped= malloc(line_len + 5);
-	if(!wrapped) return NULL;
-	wrapped[0]= '[';
-	wrapped[1]= '[';
-	memcpy(wrapped + 2, line, line_len);
-	wrapped[2 + line_len]= ']';
-	wrapped[3 + line_len]= ']';
-	wrapped[4 + line_len]= '\0';
+	ThreadBuf *tmp_tb = wiki_thread_buf_acquire_scratch();
+	if(!tmp_tb) { log_fatal("thread_buffer: failed to acquire scratch in parse_imagemap_image_line_local"); abort(); }
+	wiki_thread_buf_reserve(tmp_tb, line_len + 5);
+	tmp_tb->buf[0]= '[';
+	tmp_tb->buf[1]= '[';
+	memcpy(tmp_tb->buf + 2, line, line_len);
+	tmp_tb->buf[2 + line_len]= ']';
+	tmp_tb->buf[3 + line_len]= ']';
+	tmp_tb->buf[4 + line_len]= '\0';
+	tmp_tb->len= line_len + 4;
 
-	ThreadBuf tmp_tb;
-	tmp_tb.buf= wrapped;
-	tmp_tb.len= line_len + 4;
-	tmp_tb.cap= line_len + 5;
-	tmp_tb.shrink_size= (size_t)-1;
-	tmp_tb.target_size= tmp_tb.cap;
-
-	parse_braces(&tmp_tb, cfg, accum);
-	parse_links(&tmp_tb, cfg, accum, NULL, false);
+	parse_braces(tmp_tb, cfg, accum);
+	parse_links(tmp_tb, cfg, accum, NULL, false);
 
 	Token *tmp= token_new(TOKEN_PLAIN, "imagemap-image-line");
 	if(!tmp) {
-		free(tmp_tb.buf);
+		wiki_thread_buf_release_scratch(tmp_tb);
 		return NULL;
 	}
-	build_from_str(tmp, tmp_tb.buf, tmp_tb.len, accum);
+	build_from_str(tmp, tmp_tb->buf, tmp_tb->len, accum);
 	build_token_recursive(tmp, accum, cfg);
 
 	Token *out= NULL;
@@ -820,7 +796,7 @@ static Token *parse_imagemap_image_line_local(const char *line, size_t line_len,
 	}
 
 	token_free_shallow(tmp);
-	free(tmp_tb.buf);
+	wiki_thread_buf_release_scratch(tmp_tb);
 	return out;
 }
 
@@ -1291,46 +1267,38 @@ static void apply_translate_prepass(ThreadBuf *tb, const ParserConfig *cfg, Accu
 	TextStack st;
 	text_stack_init(&st);
 
-	size_t out_cap= tb->len * 2 + 64;
-	char *out= malloc(out_cap);
-	assert(out);
-	size_t out_len= 0;
+	ThreadBuf *out_tb = wiki_thread_buf_acquire_scratch();
+	if(!out_tb) { log_fatal("thread_buffer: failed to acquire scratch in apply_translate_prepass (pass1)"); abort(); }
+	wiki_thread_buf_reserve(out_tb, tb->len * 2 + 64);
 	size_t search_at= 0;
 
-#define ENSURE_PRE_CAP(buf, buflen, bufcap, need) \
-	do {                                            \
-		while((buflen) + (need) >= (bufcap)) {        \
-			(bufcap)*= 2;                               \
-			(buf)= realloc((buf), (bufcap));            \
-			assert((buf));                              \
-		}                                             \
-	} while(0)
+#define ENSURE_PRE_CAP(tb, need) do { wiki_thread_buf_reserve((tb), (tb)->len + (need)); } while(0)
 
 	while(search_at <= tb->len) {
 		int rc= pcre2_match(re_nowiki, (PCRE2_SPTR)tb->buf, tb->len, search_at, 0, md, NULL);
 		if(rc <= 0) {
 			size_t rest= tb->len - search_at;
-			ENSURE_PRE_CAP(out, out_len, out_cap, rest + 1);
-			memcpy(out + out_len, tb->buf + search_at, rest);
-			out_len+= rest;
+			ENSURE_PRE_CAP(out_tb, rest + 1);
+			memcpy(out_tb->buf + out_tb->len, tb->buf + search_at, rest);
+			out_tb->len += rest;
 			break;
 		}
 		PCRE2_SIZE *ov= pcre2_get_ovector_pointer(md);
 		size_t ms= ov[0], me= ov[1];
 		size_t before= ms - search_at;
-		ENSURE_PRE_CAP(out, out_len, out_cap, before + 32);
-		memcpy(out + out_len, tb->buf + search_at, before);
-		out_len+= before;
+		ENSURE_PRE_CAP(out_tb, before + 32);
+		memcpy(out_tb->buf + out_tb->len, tb->buf + search_at, before);
+		out_tb->len += before;
 
 		text_stack_push(&st, tb->buf + ms, me - ms);
-		append_numeric_placeholder(out, &out_len, st.count - 1);
+		append_numeric_placeholder(out_tb->buf, &out_tb->len, st.count - 1);
 
 		search_at= me;
 		if(me == ms) search_at++;
 	}
-	out[out_len]= '\0';
-	wiki_thread_buf_set(tb, out, out_len);
-	free(out);
+	out_tb->buf[out_tb->len]= '\0';
+	wiki_thread_buf_set(tb, out_tb->buf, out_tb->len);
+	wiki_thread_buf_release_scratch(out_tb);
 
 	pcre2_match_data_free(md);
 	md= pcre2_match_data_create_from_pattern(re_translate, NULL);
@@ -1339,27 +1307,26 @@ static void apply_translate_prepass(ThreadBuf *tb, const ParserConfig *cfg, Accu
 		return;
 	}
 
-	out_cap= tb->len * 2 + 64;
-	out= malloc(out_cap);
-	assert(out);
-	out_len= 0;
+	out_tb = wiki_thread_buf_acquire_scratch();
+	if(!out_tb) { log_fatal("thread_buffer: failed to acquire scratch in apply_translate_prepass (pass2)"); abort(); }
+	wiki_thread_buf_reserve(out_tb, tb->len * 2 + 64);
 	search_at= 0;
 
 	while(search_at <= tb->len) {
 		int rc= pcre2_match(re_translate, (PCRE2_SPTR)tb->buf, tb->len, search_at, 0, md, NULL);
 		if(rc <= 0) {
 			size_t rest= tb->len - search_at;
-			ENSURE_PRE_CAP(out, out_len, out_cap, rest + 1);
-			memcpy(out + out_len, tb->buf + search_at, rest);
-			out_len+= rest;
+			ENSURE_PRE_CAP(out_tb, rest + 1);
+			memcpy(out_tb->buf + out_tb->len, tb->buf + search_at, rest);
+			out_tb->len += rest;
 			break;
 		}
 		PCRE2_SIZE *ov= pcre2_get_ovector_pointer(md);
 		size_t ms= ov[0], me= ov[1];
 		size_t before= ms - search_at;
-		ENSURE_PRE_CAP(out, out_len, out_cap, before + 32);
-		memcpy(out + out_len, tb->buf + search_at, before);
-		out_len+= before;
+		ENSURE_PRE_CAP(out_tb, before + 32);
+		memcpy(out_tb->buf + out_tb->len, tb->buf + search_at, before);
+		out_tb->len += before;
 
 		const char *attr= NULL;
 		size_t attr_len= 0;
@@ -1383,34 +1350,34 @@ static void apply_translate_prepass(ThreadBuf *tb, const ParserConfig *cfg, Accu
 
 		size_t tok_idx= accum->count;
 		Token *tok= build_translate_token(attr, attr_len, restored_inner, restored_len, accum);
-		if(tok) {
-			char sent[64];
-			size_t slen;
-			work_str_sentinel(tok_idx, 'g', sent, &slen);
-			ENSURE_PRE_CAP(out, out_len, out_cap, slen + 1);
-			memcpy(out + out_len, sent, slen);
-			out_len+= slen;
-		} else {
-			ENSURE_PRE_CAP(out, out_len, out_cap, me - ms + 1);
-			memcpy(out + out_len, tb->buf + ms, me - ms);
-			out_len+= me - ms;
-		}
+			if(tok) {
+				char sent[64];
+				size_t slen;
+				work_str_sentinel(tok_idx, 'g', sent, &slen);
+				ENSURE_PRE_CAP(out_tb, slen + 1);
+				memcpy(out_tb->buf + out_tb->len, sent, slen);
+				out_tb->len += slen;
+			} else {
+				ENSURE_PRE_CAP(out_tb, me - ms + 1);
+				memcpy(out_tb->buf + out_tb->len, tb->buf + ms, me - ms);
+				out_tb->len += me - ms;
+			}
 		free(restored_inner);
 
 		search_at= me;
 		if(me == ms) search_at++;
 	}
-	out[out_len]= '\0';
+	out_tb->buf[out_tb->len]= '\0';
 
 	size_t restored_all_len= 0;
-	char *restored_all= str_restore(out, out_len,
+	char *restored_all= str_restore(out_tb->buf, out_tb->len,
 																	(const char **)st.items,
 																	st.count,
 																	st.lens,
 																	&restored_all_len);
 	wiki_thread_buf_set(tb, restored_all, restored_all_len);
 	free(restored_all);
-	free(out);
+	wiki_thread_buf_release_scratch(out_tb);
 
 	pcre2_match_data_free(md);
 	text_stack_free(&st);
@@ -1433,8 +1400,9 @@ static bool handle_onlyinclude(ThreadBuf *tb, const ParserConfig *cfg, Accum *ac
 	const char *pos_close= find_substr_cs(pos_open + open_len, after_open_len, onlyinclude_close, close_len);
 	if(!pos_close) return false;
 
-	char *new_buf= malloc(tb->len * 3 + 256);
-	assert(new_buf);
+	ThreadBuf *new_tb = wiki_thread_buf_acquire_scratch();
+	if(!new_tb) { log_fatal("thread_buffer: failed to acquire scratch in handle_onlyinclude"); abort(); }
+	wiki_thread_buf_reserve(new_tb, tb->len * 3 + 256);
 	size_t new_len= 0;
 
 	const char *remaining= tb->buf;
@@ -1463,7 +1431,7 @@ static bool handle_onlyinclude(ThreadBuf *tb, const ParserConfig *cfg, Accum *ac
 			accum_push(accum, ni);
 			size_t sent_len;
 			work_str_sentinel(noincl_idx, 'n', sent_buf, &sent_len);
-			memcpy(new_buf + new_len, sent_buf, sent_len);
+			memcpy(new_tb->buf + new_len, sent_buf, sent_len);
 			new_len+= sent_len;
 		}
 
@@ -1478,10 +1446,10 @@ static bool handle_onlyinclude(ThreadBuf *tb, const ParserConfig *cfg, Accum *ac
 			token_append_text_n(oi, "", 0);
 		}
 		accum_push(accum, oi);
-		size_t sent_len;
-		work_str_sentinel(onlyi_idx, 'g', sent_buf, &sent_len);
-		memcpy(new_buf + new_len, sent_buf, sent_len);
-		new_len+= sent_len;
+			size_t sent_len;
+			work_str_sentinel(onlyi_idx, 'g', sent_buf, &sent_len);
+			memcpy(new_tb->buf + new_len, sent_buf, sent_len);
+			new_len+= sent_len;
 
 		remaining= next_close + close_len;
 		remaining_len= tb->len - (size_t)(remaining - tb->buf);
@@ -1495,13 +1463,13 @@ static bool handle_onlyinclude(ThreadBuf *tb, const ParserConfig *cfg, Accum *ac
 			accum_push(accum, ni);
 			size_t sent_len;
 			work_str_sentinel(noincl_idx, 'n', sent_buf, &sent_len);
-			memcpy(new_buf + new_len, sent_buf, sent_len);
+			memcpy(new_tb->buf + new_len, sent_buf, sent_len);
 			new_len+= sent_len;
 		}
 
-	new_buf[new_len]= '\0';
-	wiki_thread_buf_set(tb, new_buf, new_len);
-	free(new_buf);
+	new_tb->buf[new_len]= '\0';
+	wiki_thread_buf_set(tb, new_tb->buf, new_len);
+	wiki_thread_buf_release_scratch(new_tb);
 	return true;
 }
 
@@ -1542,20 +1510,13 @@ void parse_comment_and_ext(ThreadBuf *tb, const ParserConfig *cfg,
 	pcre2_match_data *md= pcre2_match_data_create_from_pattern(re, NULL);
 	if(!md) return;
 
-	size_t out_cap= tb->len * 2 + 64;
-	char *out_buf= malloc(out_cap);
-	assert(out_buf);
-	size_t out_len= 0;
-	size_t search_at= 0;
+	ThreadBuf *out_tb = wiki_thread_buf_acquire_scratch();
+	if(!out_tb) { log_fatal("thread_buffer: failed to acquire scratch in parse_comment_and_ext"); abort(); }
+	wiki_thread_buf_reserve(out_tb, tb->len * 2 + 64);
 
-#define ENSURE_CAP(need)                  \
-	do {                                    \
-		while(out_len + (need) >= out_cap) {  \
-			out_cap*= 2;                        \
-			out_buf= realloc(out_buf, out_cap); \
-			assert(out_buf);                    \
-		}                                     \
-	} while(0)
+#define ENSURE_CAP(need) do { wiki_thread_buf_reserve(out_tb, out_tb->len + (need)); } while(0)
+	out_tb->len = 0;
+	size_t search_at = 0;
 
 	while(search_at <= tb->len) {
 		int rc= pcre2_match(re, (PCRE2_SPTR)tb->buf, tb->len,
@@ -1563,8 +1524,8 @@ void parse_comment_and_ext(ThreadBuf *tb, const ParserConfig *cfg,
 		if(rc <= 0) {
 			size_t rest= tb->len - search_at;
 			ENSURE_CAP(rest + 1);
-			memcpy(out_buf + out_len, tb->buf + search_at, rest);
-			out_len+= rest;
+			memcpy(out_tb->buf + out_tb->len, tb->buf + search_at, rest);
+			out_tb->len += rest;
 			break;
 		}
 
@@ -1574,8 +1535,8 @@ void parse_comment_and_ext(ThreadBuf *tb, const ParserConfig *cfg,
 
 		size_t before= match_start - search_at;
 		ENSURE_CAP(before + 64);
-		memcpy(out_buf + out_len, tb->buf + search_at, before);
-		out_len+= before;
+		memcpy(out_tb->buf + out_tb->len, tb->buf + search_at, before);
+		out_tb->len += before;
 
 		const char *substr= tb->buf + match_start;
 		size_t sub_len= match_end - match_start;
@@ -1658,27 +1619,28 @@ void parse_comment_and_ext(ThreadBuf *tb, const ParserConfig *cfg,
 			ch= 'n';
 		}
 
-		if(tok) {
-			size_t tok_idx= accum->count - 1; /* token was last pushed */
-			char sent_buf[64];
-			size_t sent_len;
-			work_str_sentinel(tok_idx, ch, sent_buf, &sent_len);
-			ENSURE_CAP(sent_len);
-			memcpy(out_buf + out_len, sent_buf, sent_len);
-			out_len+= sent_len;
-		} else {
-			ENSURE_CAP(sub_len);
-			memcpy(out_buf + out_len, substr, sub_len);
-			out_len+= sub_len;
-		}
+			if(tok) {
+				size_t tok_idx= accum->count - 1; /* token was last pushed */
+				char sent_buf[64];
+				size_t sent_len;
+				work_str_sentinel(tok_idx, ch, sent_buf, &sent_len);
+				ENSURE_CAP(sent_len);
+				memcpy(out_tb->buf + out_tb->len, sent_buf, sent_len);
+				out_tb->len += sent_len;
+			} else {
+				ENSURE_CAP(sub_len);
+				memcpy(out_tb->buf + out_tb->len, substr, sub_len);
+				out_tb->len += sub_len;
+			}
 
 		search_at= match_end;
 		if(match_end == match_start) search_at++;
 	}
 
-	out_buf[out_len]= '\0';
-	wiki_thread_buf_set(tb, out_buf, out_len);
-	free(out_buf);
+	out_tb->buf[out_tb->len]= '\0';
+	wiki_thread_buf_set(tb, out_tb->buf, out_tb->len);
+	wiki_thread_buf_release_scratch(out_tb);
 
 	pcre2_match_data_free(md);
+	#undef ENSURE_CAP
 }

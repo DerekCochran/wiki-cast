@@ -977,7 +977,6 @@ static void postprocess_nested_plain(Token *t, const ParserConfig *cfg, Accum *a
 				/* acquisition failure is fatal — do not fall back to heap */
 				log_fatal("postprocess_nested_plain: failed to acquire scratch for serializing");
 				abort();
-				}
 			}
 
 		Child *old_children= t->children;
