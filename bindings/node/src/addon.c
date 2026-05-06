@@ -222,9 +222,13 @@ static napi_value parse_wrapped(napi_env env, napi_callback_info info) {
   token_to_json(root, jf);
   fclose(jf);
 
-  /* Build the reconstructed string from token tree */
-  ThreadBuf *scratch = wiki_thread_buf_acquire_scratch();
-  char *text_buf = token_to_string(root, scratch);
+  /* Build the reconstructed string from token tree
+   * Reuse the previously-leased `in_scratch` buffer to avoid acquiring a
+   * second scratch buffer. `in_scratch` is no longer needed after parsing
+   * so it's safe to repurpose it for serialization. This prevents the
+   * `token_to_string(entry)` assertion which requires no other leased
+   * scratch buffers to exist. */
+  char *text_buf = token_to_string(root, in_scratch);
 
   /* Parse JSON into a JS object: JSON.parse(json_buf) */
   napi_value global, json_obj, parse_fn, js_json_str, root_obj;
@@ -268,7 +272,6 @@ static napi_value parse_wrapped(napi_env env, napi_callback_info info) {
   assert(closure);
   closure->text = strdup(text_buf);
   assert(closure->text);
-  wiki_thread_buf_release_scratch(scratch);
 
   napi_value tostr_fn;
   status = napi_create_function(env, "toString", NAPI_AUTO_LENGTH, tostr_callback, closure, &tostr_fn);
