@@ -935,7 +935,7 @@ static void postprocess_nested_plain(Token *t, const ParserConfig *cfg, Accum *a
 							build_token_recursive(tmp, accum, cfg);
 
 							for(size_t i= 0; i < t->child_count; i++) {
-								if(t->children[i].is_text) free(t->children[i].text);
+								if(t->children[i].is_text && t->children[i].text_owned && t->children[i].text) free((void*)t->children[i].text);
 							}
 							free(t->children);
 
@@ -967,7 +967,7 @@ static void postprocess_nested_plain(Token *t, const ParserConfig *cfg, Accum *a
 							build_token_recursive(tmp, accum, cfg);
 
 							for(size_t i= 0; i < t->child_count; i++) {
-								if(t->children[i].is_text) free(t->children[i].text);
+								if(t->children[i].is_text && t->children[i].text_owned && t->children[i].text) free((void*)t->children[i].text);
 							}
 							free(t->children);
 
@@ -1062,10 +1062,11 @@ static void postprocess_nested_plain(Token *t, const ParserConfig *cfg, Accum *a
 				Child fallback;
 				fallback.is_text= true;
 				fallback.text_len= used_len;
-				fallback.text= malloc(used_len + 1);
-				assert(fallback.text);
-				sz_copy(fallback.text, used_buf, used_len);
-				fallback.text[used_len]= '\0';
+				char *fallback_buf = malloc(used_len + 1);
+				assert(fallback_buf);
+				sz_copy(fallback_buf, used_buf, used_len);
+				fallback_buf[used_len]= '\0';
+				fallback.text = (const char*)fallback_buf;
 				fallback.text_owned = true;
 				new_children[new_count++]= fallback;
 				continue;
@@ -1311,10 +1312,12 @@ static void postprocess_parameter_value_inline_impl(Token *t, const ParserConfig
 			Child fallback;
 			fallback.is_text= true;
 			fallback.text_len= scratch->len;
-			fallback.text= malloc(scratch->len + 1);
-			assert(fallback.text);
-			sz_copy(fallback.text, scratch->buf, scratch->len);
-			fallback.text[scratch->len]= '\0';
+			char *fallback_buf = malloc(scratch->len + 1);
+			assert(fallback_buf);
+			sz_copy(fallback_buf, scratch->buf, scratch->len);
+			fallback_buf[scratch->len]= '\0';
+			fallback.text = (const char*)fallback_buf;
+			fallback.text_owned = true;
 			new_children[new_count++]= fallback;
 			continue;
 		}

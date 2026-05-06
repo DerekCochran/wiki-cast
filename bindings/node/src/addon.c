@@ -164,7 +164,7 @@ static napi_value parse_wrapped(napi_env env, napi_callback_info info) {
     if (napi_typeof(env, js_page_val, &pvt) == napi_ok && pvt == napi_string) {
       size_t page_len = 0;
       if (napi_get_value_string_utf8(env, js_page_val, NULL, 0, &page_len) != napi_ok) {
-        free(wtext);
+        wiki_thread_buf_release_scratch(in_scratch);
         napi_throw_error(env, NULL, "Failed to measure pageName length");
         return NULL;
       }
@@ -172,7 +172,7 @@ static napi_value parse_wrapped(napi_env env, napi_callback_info info) {
       assert(page);
       if (napi_get_value_string_utf8(env, js_page_val, page, page_len + 1, &page_len) != napi_ok) {
         free(page);
-        free(wtext);
+        wiki_thread_buf_release_scratch(in_scratch);
         napi_throw_error(env, NULL, "Failed to read pageName");
         return NULL;
       }
@@ -184,7 +184,7 @@ static napi_value parse_wrapped(napi_env env, napi_callback_info info) {
   size_t cfg_json_len = 0;
   if (!get_token_config_json(env, this_arg, &cfg_json, &cfg_json_len)) {
     free(page);
-    free(wtext);
+    wiki_thread_buf_release_scratch(in_scratch);
     napi_throw_error(env, NULL, "Failed to read parser config from Token instance");
     return NULL;
   }
@@ -193,7 +193,7 @@ static napi_value parse_wrapped(napi_env env, napi_callback_info info) {
   free(cfg_json);
   if (!cfg) {
     free(page);
-    free(wtext);
+    wiki_thread_buf_release_scratch(in_scratch);
     napi_throw_error(env, NULL, "Failed to load parser config from Token instance");
     return NULL;
   }
@@ -215,7 +215,7 @@ static napi_value parse_wrapped(napi_env env, napi_callback_info info) {
   if (!jf) {
     token_free(root);
     config_free(cfg);
-    free(wtext);
+    wiki_thread_buf_release_scratch(in_scratch);
     napi_throw_error(env, NULL, "open_memstream failed");
     return NULL;
   }
@@ -238,7 +238,7 @@ static napi_value parse_wrapped(napi_env env, napi_callback_info info) {
   if (status != napi_ok) {
     token_free(root);
     config_free(cfg);
-    free(wtext);
+    wiki_thread_buf_release_scratch(in_scratch);
     free(json_buf);
     if (status == napi_pending_exception) {
       /* JSON.parse threw — re-throw the pending exception as-is */
@@ -254,7 +254,7 @@ static napi_value parse_wrapped(napi_env env, napi_callback_info info) {
   if (root_vt != napi_object) {
     token_free(root);
     config_free(cfg);
-    free(wtext);
+    wiki_thread_buf_release_scratch(in_scratch);
     free(json_buf);
     napi_throw_error(env, NULL, "JSON.parse did not return an object");
     return NULL;
@@ -276,7 +276,7 @@ static napi_value parse_wrapped(napi_env env, napi_callback_info info) {
     tostr_finalize(NULL, closure, NULL);
     token_free(root);
     config_free(cfg);
-    free(wtext);
+    wiki_thread_buf_release_scratch(in_scratch);
     free(json_buf);
     napi_throw_error(env, NULL, "Failed to create toString function");
     return NULL;

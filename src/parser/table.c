@@ -479,7 +479,7 @@ static void push_text_like_js(char **out_buf, size_t *out_len, size_t *out_cap,
 					size_t new_len= inner_last->text_len + n;
 					ThreadBuf *scratch = wiki_thread_buf_acquire_scratch();
 					wiki_thread_buf_set(scratch, inner_last->text, inner_last->text_len);
-					wiki_thread_buf_append(scratch, (sz_string_view_t){ .s = s, .len = n });
+										wiki_thread_buf_append(scratch, (sz_string_view_t){ .start = s, .length = n });
 					const char *merged_view = wiki_thread_buf_append_to_tokens(scratch->buf, scratch->len);
 					if(inner_last->text_owned && inner_last->text) free((void*)inner_last->text);
 					inner_last->text = merged_view;
