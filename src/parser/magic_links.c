@@ -161,18 +161,30 @@ void parse_magic_links(ThreadBuf *tb, const ParserConfig *cfg, Accum *accum) {
 	if(!md) return;
 
 	size_t out_cap= tb->len * 2 + 64;
-	char *out_buf= malloc(out_cap);
-	assert(out_buf);
+	ThreadBuf *tmp_out = wiki_thread_buf_acquire_scratch();
+	char *out_buf = NULL;
+	if(tmp_out) {
+		wiki_thread_buf_reserve(tmp_out, out_cap);
+		out_buf = tmp_out->buf;
+	} else {
+		out_buf= malloc(out_cap);
+		assert(out_buf);
+	}
 	size_t out_len= 0;
 	size_t search_at= 0;
 
-#define ENSURE_CAP(need)                         \
-	do {                                           \
-		while(out_len + (size_t)(need) >= out_cap) { \
-			out_cap*= 2;                               \
-			out_buf= realloc(out_buf, out_cap);        \
-			assert(out_buf);                           \
-		}                                            \
+#define ENSURE_CAP(need)                                         \
+	do {                                                           \
+		while(out_len + (size_t)(need) >= out_cap) {               \
+			out_cap*= 2;                                           \
+			if(tmp_out) {                                           \
+				wiki_thread_buf_reserve(tmp_out, out_cap);         \
+				out_buf = tmp_out->buf;                            \
+			} else {                                               \
+				out_buf= realloc(out_buf, out_cap);                \
+				assert(out_buf);                                   \
+			}                                                      \
+		}                                                          \
 	} while(0)
 
 	while(search_at <= tb->len) {
@@ -461,7 +473,11 @@ void parse_magic_links(ThreadBuf *tb, const ParserConfig *cfg, Accum *accum) {
 
 	out_buf[out_len]= '\0';
 	wiki_thread_buf_set(tb, out_buf, out_len);
-	free(out_buf);
+	if(tmp_out) {
+		wiki_thread_buf_release_scratch(tmp_out);
+	} else {
+		free(out_buf);
+	}
 
 	pcre2_match_data_free(md);
 }

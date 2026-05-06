@@ -299,24 +299,37 @@ void parse_quotes(ThreadBuf *tb, const ParserConfig *cfg, Accum *accum, bool tid
 		}
 	}
 
-	/* Join parts into output buffer */
+	/* Join parts into output buffer (use scratch if available to avoid heap) */
 	size_t out_len= 0;
 	for(size_t k= 0; k < parts_len; k++) out_len+= parts[k].len;
-	char *out_buf= malloc(out_len + 1);
-	size_t out_pos= 0;
-	for(size_t k= 0; k < parts_len; k++) {
-		if(parts[k].len > 0) {
-			memcpy(out_buf + out_pos, parts[k].s, parts[k].len);
-			out_pos+= parts[k].len;
+	ThreadBuf *tmp_out = wiki_thread_buf_acquire_scratch();
+	if(tmp_out) {
+		wiki_thread_buf_reserve(tmp_out, out_len + 1);
+		size_t out_pos= 0;
+		for(size_t k= 0; k < parts_len; k++) {
+			if(parts[k].len > 0) {
+				memcpy(tmp_out->buf + out_pos, parts[k].s, parts[k].len);
+				out_pos+= parts[k].len;
+			}
 		}
+		tmp_out->buf[out_pos]= '\0';
+		tmp_out->len = out_pos;
+		wiki_thread_buf_set(tb, tmp_out->buf, out_pos);
+		wiki_thread_buf_release_scratch(tmp_out);
+	} else {
+		char *out_buf= malloc(out_len + 1);
+		size_t out_pos= 0;
+		for(size_t k= 0; k < parts_len; k++) {
+			if(parts[k].len > 0) {
+				memcpy(out_buf + out_pos, parts[k].s, parts[k].len);
+				out_pos+= parts[k].len;
+			}
+		}
+		out_buf[out_pos]= '\0';
+		/* Adopt into working string */
+		wiki_thread_buf_set(tb, out_buf, out_pos);
+		free(out_buf);
 	}
-	out_buf[out_pos]= '\0';
-
-	/* Adopt into working string */
-	wiki_thread_buf_set(tb, out_buf, out_pos);
-
-	/* Cleanup */
-	free(out_buf);
 	for(size_t k= 0; k < parts_len; k++) free(parts[k].s);
 	free(parts);
 }

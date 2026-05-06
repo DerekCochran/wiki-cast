@@ -87,6 +87,13 @@ target_link_libraries(wikitokenizer
     ${ICU_LIBRARIES}
 )
 
+# Disable link-time optimization when building with ThreadSanitizer.
+# LTO and TSan can interact poorly and cause unexpected memory-mapping
+# behaviour at runtime; turn off IPR when -fsanitize=thread is present.
+if(_TOKENIZER_ALL_C_FLAGS MATCHES "(^|[ ;])-fsanitize=thread([ ;]|$)")
+    set_target_properties(wikitokenizer PROPERTIES INTERPROCEDURAL_OPTIMIZATION FALSE)
+endif()
+
 # ── Test binaries ─────────────────────────────────────────────────────────────
 enable_testing()
 

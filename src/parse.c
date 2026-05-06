@@ -340,28 +340,53 @@ static void parse_list_skip_first_line(ThreadBuf *scratch, const ParserConfig *c
 
 	size_t prefix_len= newline_index + 1;
 	size_t rest_len= scratch->len - prefix_len;
-	char *prefix= malloc(prefix_len + 1);
-	if(!prefix) return;
-	sz_copy(prefix, scratch->buf, prefix_len);
-	prefix[prefix_len]= '\0';
+ 	/* Try to use a temporary scratch buffer for prefix+processed-rest assembly. */
+ 	const char *orig_buf = scratch->buf;
+ 	const char *rest = orig_buf + prefix_len;
 
-	const char *rest= scratch->buf + prefix_len;
-	wiki_thread_buf_set(scratch, rest, rest_len);
-	parse_list(scratch, cfg, accum);
+ 	ThreadBuf *tmp = wiki_thread_buf_acquire_scratch();
+ 	if(tmp) {
+ 		/* Copy prefix into tmp, then parse the rest into `scratch` and append. */
+ 		wiki_thread_buf_reserve(tmp, prefix_len + rest_len + 1);
+ 		sz_copy(tmp->buf, orig_buf, prefix_len);
+ 		tmp->len = prefix_len;
 
-	size_t out_len= prefix_len + scratch->len;
-	char *out= malloc(out_len + 1);
-	if(!out) {
-		free(prefix);
-		return;
-	}
-	sz_copy(out, prefix, prefix_len);
-	sz_copy(out + prefix_len, scratch->buf, scratch->len);
-	out[out_len]= '\0';
+ 		wiki_thread_buf_set(scratch, rest, rest_len);
+ 		parse_list(scratch, cfg, accum);
 
-	wiki_thread_buf_set(scratch, out, out_len);
-	free(out);
-	free(prefix);
+ 		/* Ensure tmp can hold prefix + processed-rest and append. */
+ 		wiki_thread_buf_reserve(tmp, prefix_len + scratch->len + 1);
+ 		sz_copy(tmp->buf + prefix_len, scratch->buf, scratch->len);
+ 		tmp->len = prefix_len + scratch->len;
+ 		tmp->buf[tmp->len] = '\0';
+
+ 		wiki_thread_buf_set(scratch, tmp->buf, tmp->len);
+ 		wiki_thread_buf_release_scratch(tmp);
+ 		return;
+ 	}
+
+ 	/* Fallback: original heap-based behavior */
+ 	char *prefix = malloc(prefix_len + 1);
+ 	if(!prefix) return;
+ 	sz_copy(prefix, orig_buf, prefix_len);
+ 	prefix[prefix_len] = '\0';
+
+ 	wiki_thread_buf_set(scratch, rest, rest_len);
+ 	parse_list(scratch, cfg, accum);
+
+ 	size_t out_len= prefix_len + scratch->len;
+ 	char *out= malloc(out_len + 1);
+ 	if(!out) {
+ 		free(prefix);
+ 		return;
+ 	}
+ 	sz_copy(out, prefix, prefix_len);
+ 	sz_copy(out + prefix_len, scratch->buf, scratch->len);
+ 	out[out_len]= '\0';
+
+ 	wiki_thread_buf_set(scratch, out, out_len);
+ 	free(out);
+ 	free(prefix);
 }
 
 static bool should_postprocess_plain(const Token *t) {
@@ -639,6 +664,54 @@ static void postprocess_gallery_ext_inner(Token *t, const ParserConfig *cfg, Acc
 	}
 	if(has_non_text || src_len == 0) return;
 
+	/* Try to assemble the concatenated child-text into a temporary scratch buffer. */
+	ThreadBuf *tmp = wiki_thread_buf_acquire_scratch();
+	if(tmp) {
+		wiki_thread_buf_reserve(tmp, src_len + 1);
+		size_t pos = 0;
+		for(size_t i= 0; i < t->child_count; i++) {
+			sz_copy(tmp->buf + pos, t->children[i].text, t->children[i].text_len);
+			pos += t->children[i].text_len;
+		}
+		tmp->len = pos;
+		tmp->buf[tmp->len] = '\0';
+
+		for(size_t i= 0; i < t->child_count; i++) {
+			if(t->children[i].is_text) {
+				if(t->children[i].text_owned && t->children[i].text) free((void*)t->children[i].text);
+			}
+		}
+		t->child_count= 0;
+
+		size_t line_start= 0;
+		while(line_start < tmp->len) {
+			const char nl= '\n';
+			const char *eol= sz_find_byte(tmp->buf + line_start, tmp->len - line_start, &nl);
+			size_t line_len = eol ? (size_t)(eol - (tmp->buf + line_start)) : tmp->len - line_start;
+			const char *line_ptr= tmp->buf + line_start;
+
+			Token *img= parse_gallery_image_line(line_ptr, line_len, cfg, accum, page);
+			if(img) {
+				token_append_child(t, img);
+			} else {
+				const char *view = wiki_thread_buf_append_to_tokens(line_ptr, line_len);
+				token_append_text_n(t, view, line_len);
+			}
+
+			line_start= eol ? (size_t)(eol - tmp->buf) + 1 : tmp->len;
+		}
+
+		for(size_t i= 0; i < t->child_count; i++) {
+			if(!t->children[i].is_text && t->children[i].token) {
+				postprocess_nested_plain(t->children[i].token, cfg, accum, page);
+			}
+		}
+
+		wiki_thread_buf_release_scratch(tmp);
+		return;
+	}
+
+	/* Fallback to heap-based assembly */
 	char *src= malloc(src_len + 1);
 	if(!src) return;
 	size_t pos= 0;
@@ -697,6 +770,67 @@ static void postprocess_imagemap_ext_inner(Token *t, const ParserConfig *cfg, Ac
 	}
 	if(has_non_text || src_len == 0) return;
 
+	/* Try to assemble child text into a scratch buffer to avoid heap allocs. */
+	ThreadBuf *tmp = wiki_thread_buf_acquire_scratch();
+	if(tmp) {
+		wiki_thread_buf_reserve(tmp, src_len + 1);
+		size_t pos = 0;
+		for(size_t i= 0; i < t->child_count; i++) {
+			sz_copy(tmp->buf + pos, t->children[i].text, t->children[i].text_len);
+			pos += t->children[i].text_len;
+		}
+		tmp->len = pos;
+		tmp->buf[tmp->len] = '\0';
+
+		for(size_t i= 0; i < t->child_count; i++) {
+			if(t->children[i].is_text) {
+				if(t->children[i].text_owned && t->children[i].text) free((void*)t->children[i].text);
+			}
+		}
+		t->child_count= 0;
+
+		bool image_seen= false;
+		size_t line_start= 0;
+		while(line_start < tmp->len) {
+			const char nl= '\n';
+			const char *eol= sz_find_byte(tmp->buf + line_start, tmp->len - line_start, &nl);
+			size_t line_len = eol ? (size_t)(eol - (tmp->buf + line_start)) : tmp->len - line_start;
+			const char *line_ptr= tmp->buf + line_start;
+
+			if(line_len == 0) {
+				Token *n= make_empty_noinclude(accum);
+				if(n) token_append_child(t, n);
+			} else {
+				Token *tok= NULL;
+				if(!image_seen) {
+					tok= parse_imagemap_image_line(line_ptr, line_len, cfg, accum, page);
+					if(tok) image_seen= true;
+				}
+				if(!tok) {
+					tok= parse_imagemap_link_line(line_ptr, line_len, cfg, accum, page);
+				}
+				if(tok) {
+					token_append_child(t, tok);
+				} else {
+					const char *view = wiki_thread_buf_append_to_tokens(line_ptr, line_len);
+					token_append_text_n(t, view, line_len);
+				}
+			}
+
+			line_start= eol ? (size_t)(eol - tmp->buf) + 1 : tmp->len;
+		}
+
+		for(size_t i= 0; i < t->child_count; i++) {
+			if(!t->children[i].is_text && t->children[i].token) {
+				postprocess_nested_plain(t->children[i].token, cfg, accum, page);
+			}
+		}
+
+		wiki_thread_buf_release_scratch(tmp);
+		return;
+	}
+
+	/* Fallback: heap-based assembly */
 	char *src= malloc(src_len + 1);
 	if(!src) return;
 	size_t pos= 0;
@@ -864,20 +998,139 @@ static void postprocess_nested_plain(Token *t, const ParserConfig *cfg, Accum *a
 		return;
 	}
 
-	if(has_non_text) {
-		if(is_td_inner || is_ext_inner || is_heading_title) {
-			size_t ser_cap= txt_len + 64;
-			char *ser= malloc(ser_cap);
-			if(ser) {
-				size_t ser_len= 0;
-				bool serializable= true;
+		if(has_non_text) {
+			if(is_td_inner || is_ext_inner || is_heading_title) {
+				size_t ser_cap= txt_len + 64;
+				ThreadBuf *tmp_ser = wiki_thread_buf_acquire_scratch();
+				if(tmp_ser) {
+					wiki_thread_buf_reserve(tmp_ser, ser_cap);
+					size_t ser_len= 0;
+					bool serializable= true;
 
-				for(size_t i= 0; i < t->child_count; i++) {
-					Child cur= t->children[i];
-					if(cur.is_text) {
-						while(ser_len + cur.text_len + 1 >= ser_cap) {
-							ser_cap*= 2;
-							char *grown= realloc(ser, ser_cap);
+					for(size_t i= 0; i < t->child_count; i++) {
+						Child cur= t->children[i];
+						if(cur.is_text) {
+							if(ser_len + cur.text_len + 1 >= tmp_ser->cap) {
+								wiki_thread_buf_reserve(tmp_ser, (ser_len + cur.text_len + 1) * 2);
+							}
+							sz_copy(tmp_ser->buf + ser_len, cur.text, cur.text_len);
+							ser_len+= cur.text_len;
+							tmp_ser->len = ser_len;
+							continue;
+						}
+
+						Token *ctok= cur.token;
+						size_t tok_idx= SIZE_MAX;
+						for(size_t ai= 0; ai < accum->count; ai++) {
+							if(accum->tokens[ai] == ctok) {
+								tok_idx= ai;
+								break;
+							}
+						}
+						char sym= token_sentinel_char(ctok ? ctok->type : TOKEN_TEXT);
+						if(tok_idx == SIZE_MAX || sym == '\0') {
+							serializable= false;
+							break;
+						}
+
+						char marker[64];
+						size_t mlen= 0;
+						work_str_sentinel(tok_idx, sym, marker, &mlen);
+
+						if(ser_len + mlen + 1 >= tmp_ser->cap) {
+							wiki_thread_buf_reserve(tmp_ser, (ser_len + mlen + 1) * 2);
+						}
+						sz_copy(tmp_ser->buf + ser_len, marker, mlen);
+						ser_len+= mlen;
+						tmp_ser->len = ser_len;
+					}
+
+					if(serializable) {
+						/* Use the tmp_ser scratch directly for nested parsing and building. */
+						run_nested_plain_pipeline(tmp_ser, is_td_inner, is_ext_inner, is_heading_title, t, cfg, accum, page);
+
+						Token *tmp= token_new(TOKEN_PLAIN, t->type_name);
+						if(tmp) {
+							build_from_str(tmp, tmp_ser->buf, tmp_ser->len, accum);
+							build_token_recursive(tmp, accum, cfg);
+
+							for(size_t i= 0; i < t->child_count; i++) {
+								if(t->children[i].is_text && t->children[i].text_owned && t->children[i].text) free((void*)t->children[i].text);
+							}
+							free(t->children);
+
+							t->children= tmp->children;
+							t->child_count= tmp->child_count;
+							t->child_cap= tmp->child_cap;
+
+							tmp->children= NULL;
+							tmp->child_count= 0;
+							tmp->child_cap= 0;
+							token_free_shallow(tmp);
+
+							for(size_t i= 0; i < t->child_count; i++) {
+								if(!t->children[i].is_text && t->children[i].token) {
+									postprocess_nested_plain(t->children[i].token, cfg, accum, page);
+								}
+							}
+
+							wiki_thread_buf_release_scratch(tmp_ser);
+							wiki_thread_buf_release_scratch(scratch);
+							return;
+						}
+						/* If build failed, fall through to heap fallback by releasing tmp_ser. */
+						wiki_thread_buf_release_scratch(tmp_ser);
+					} else {
+						/* tmp_ser couldn't be populated cleanly; fall back to heap-based serializing. */
+						wiki_thread_buf_release_scratch(tmp_ser);
+					}
+				}
+				/* Heap fallback: mirror original behavior using malloc'd ser. */
+				size_t ser_cap_h= txt_len + 64;
+				char *ser= malloc(ser_cap_h);
+				if(ser) {
+					size_t ser_len= 0;
+					bool serializable= true;
+
+					for(size_t i= 0; i < t->child_count; i++) {
+						Child cur= t->children[i];
+						if(cur.is_text) {
+							while(ser_len + cur.text_len + 1 >= ser_cap_h) {
+								ser_cap_h*= 2;
+								char *grown= realloc(ser, ser_cap_h);
+								if(!grown) {
+									serializable= false;
+									break;
+								}
+								ser= grown;
+							}
+							if(!serializable) break;
+							sz_copy(ser + ser_len, cur.text, cur.text_len);
+							ser_len+= cur.text_len;
+							continue;
+						}
+
+						Token *ctok= cur.token;
+						size_t tok_idx= SIZE_MAX;
+						for(size_t ai= 0; ai < accum->count; ai++) {
+							if(accum->tokens[ai] == ctok) {
+								tok_idx= ai;
+								break;
+							}
+						}
+						char sym= token_sentinel_char(ctok ? ctok->type : TOKEN_TEXT);
+						if(tok_idx == SIZE_MAX || sym == '\0') {
+							serializable= false;
+							break;
+						}
+
+						char marker[64];
+						size_t mlen= 0;
+						work_str_sentinel(tok_idx, sym, marker, &mlen);
+
+						while(ser_len + mlen + 1 >= ser_cap_h) {
+							ser_cap_h*= 2;
+							char *grown= realloc(ser, ser_cap_h);
 							if(!grown) {
 								serializable= false;
 								break;
@@ -885,119 +1138,86 @@ static void postprocess_nested_plain(Token *t, const ParserConfig *cfg, Accum *a
 							ser= grown;
 						}
 						if(!serializable) break;
-						sz_copy(ser + ser_len, cur.text, cur.text_len);
-						ser_len+= cur.text_len;
-						continue;
+						sz_copy(ser + ser_len, marker, mlen);
+						ser_len+= mlen;
 					}
 
-					Token *ctok= cur.token;
-					size_t tok_idx= SIZE_MAX;
-					for(size_t ai= 0; ai < accum->count; ai++) {
-						if(accum->tokens[ai] == ctok) {
-							tok_idx= ai;
-							break;
-						}
-					}
-					char sym= token_sentinel_char(ctok ? ctok->type : TOKEN_TEXT);
-					if(tok_idx == SIZE_MAX || sym == '\0') {
-						serializable= false;
-						break;
-					}
+					if(serializable) {
+						ThreadBuf *tmp_tb = wiki_thread_buf_acquire_scratch_from_data(ser, ser_len);
+						if(!tmp_tb) {
+							/* Fallback to existing scratch if tmp acquisition fails */
+							wiki_thread_buf_set(scratch, ser, ser_len);
+							run_nested_plain_pipeline(scratch, is_td_inner, is_ext_inner, is_heading_title, t, cfg, accum, page);
 
-					char marker[64];
-					size_t mlen= 0;
-					work_str_sentinel(tok_idx, sym, marker, &mlen);
+							Token *tmp= token_new(TOKEN_PLAIN, t->type_name);
+							if(tmp) {
+								build_from_str(tmp, scratch->buf, scratch->len, accum);
+								build_token_recursive(tmp, accum, cfg);
 
-					while(ser_len + mlen + 1 >= ser_cap) {
-						ser_cap*= 2;
-						char *grown= realloc(ser, ser_cap);
-						if(!grown) {
-							serializable= false;
-							break;
-						}
-						ser= grown;
-					}
-					if(!serializable) break;
-					sz_copy(ser + ser_len, marker, mlen);
-					ser_len+= mlen;
-				}
-
-				if(serializable) {
-					ThreadBuf *tmp_tb = wiki_thread_buf_acquire_scratch_from_data(ser, ser_len);
-					if(!tmp_tb) {
-						/* Fallback to existing scratch if tmp acquisition fails */
-						wiki_thread_buf_set(scratch, ser, ser_len);
-						run_nested_plain_pipeline(scratch, is_td_inner, is_ext_inner, is_heading_title, t, cfg, accum, page);
-
-						Token *tmp= token_new(TOKEN_PLAIN, t->type_name);
-						if(tmp) {
-							build_from_str(tmp, scratch->buf, scratch->len, accum);
-							build_token_recursive(tmp, accum, cfg);
-
-							for(size_t i= 0; i < t->child_count; i++) {
-								if(t->children[i].is_text && t->children[i].text_owned && t->children[i].text) free((void*)t->children[i].text);
-							}
-							free(t->children);
-
-							t->children= tmp->children;
-							t->child_count= tmp->child_count;
-							t->child_cap= tmp->child_cap;
-
-							tmp->children= NULL;
-							tmp->child_count= 0;
-							tmp->child_cap= 0;
-							token_free_shallow(tmp);
-
-							for(size_t i= 0; i < t->child_count; i++) {
-								if(!t->children[i].is_text && t->children[i].token) {
-									postprocess_nested_plain(t->children[i].token, cfg, accum, page);
+								for(size_t i= 0; i < t->child_count; i++) {
+									if(t->children[i].is_text && t->children[i].text_owned && t->children[i].text) free((void*)t->children[i].text);
 								}
-							}
+								free(t->children);
 
-							free(ser);
-							wiki_thread_buf_release_scratch(scratch);
-							return;
-						}
-					} else {
-						run_nested_plain_pipeline(tmp_tb, is_td_inner, is_ext_inner, is_heading_title, t, cfg, accum, page);
+								t->children= tmp->children;
+								t->child_count= tmp->child_count;
+								t->child_cap= tmp->child_cap;
 
-						Token *tmp= token_new(TOKEN_PLAIN, t->type_name);
-						if(tmp) {
-							build_from_str(tmp, tmp_tb->buf, tmp_tb->len, accum);
-							build_token_recursive(tmp, accum, cfg);
+								tmp->children= NULL;
+								tmp->child_count= 0;
+								tmp->child_cap= 0;
+								token_free_shallow(tmp);
 
-							for(size_t i= 0; i < t->child_count; i++) {
-								if(t->children[i].is_text && t->children[i].text_owned && t->children[i].text) free((void*)t->children[i].text);
-							}
-							free(t->children);
-
-							t->children= tmp->children;
-							t->child_count= tmp->child_count;
-							t->child_cap= tmp->child_cap;
-
-							tmp->children= NULL;
-							tmp->child_count= 0;
-							tmp->child_cap= 0;
-							token_free_shallow(tmp);
-
-							for(size_t i= 0; i < t->child_count; i++) {
-								if(!t->children[i].is_text && t->children[i].token) {
-									postprocess_nested_plain(t->children[i].token, cfg, accum, page);
+								for(size_t i= 0; i < t->child_count; i++) {
+									if(!t->children[i].is_text && t->children[i].token) {
+										postprocess_nested_plain(t->children[i].token, cfg, accum, page);
+									}
 								}
-							}
 
-							free(ser);
-							wiki_thread_buf_release_scratch(tmp_tb);
-							wiki_thread_buf_release_scratch(scratch);
-							return;
+								free(ser);
+								wiki_thread_buf_release_scratch(scratch);
+								return;
+							}
+						else {
+							run_nested_plain_pipeline(tmp_tb, is_td_inner, is_ext_inner, is_heading_title, t, cfg, accum, page);
+
+							Token *tmp= token_new(TOKEN_PLAIN, t->type_name);
+							if(tmp) {
+								build_from_str(tmp, tmp_tb->buf, tmp_tb->len, accum);
+								build_token_recursive(tmp, accum, cfg);
+
+								for(size_t i= 0; i < t->child_count; i++) {
+									if(t->children[i].is_text && t->children[i].text_owned && t->children[i].text) free((void*)t->children[i].text);
+								}
+								free(t->children);
+
+								t->children= tmp->children;
+								t->child_count= tmp->child_count;
+								t->child_cap= tmp->child_cap;
+
+								tmp->children= NULL;
+								tmp->child_count= 0;
+								tmp->child_cap= 0;
+								token_free_shallow(tmp);
+
+								for(size_t i= 0; i < t->child_count; i++) {
+									if(!t->children[i].is_text && t->children[i].token) {
+										postprocess_nested_plain(t->children[i].token, cfg, accum, page);
+									}
+								}
+
+								free(ser);
+								wiki_thread_buf_release_scratch(tmp_tb);
+								wiki_thread_buf_release_scratch(scratch);
+								return;
+							}
 						}
 						wiki_thread_buf_release_scratch(tmp_tb);
+						}
 					}
+					free(ser);
 				}
-
-				free(ser);
 			}
-		}
 
 		Child *old_children= t->children;
 		size_t old_count= t->child_count;
@@ -1108,34 +1328,68 @@ static void postprocess_nested_plain(Token *t, const ParserConfig *cfg, Accum *a
 		return;
 	}
 
-	char *joined= malloc(txt_len + 1);
-	if(!joined) {
-		wiki_thread_buf_release_scratch(scratch);
-		return;
-	}
+	/* Assemble joined child text into the existing scratch buffer. */
+	wiki_thread_buf_reserve(scratch, txt_len + 1);
 	size_t pos= 0;
 	for(size_t i= 0; i < t->child_count; i++) {
-		sz_copy(joined + pos, t->children[i].text, t->children[i].text_len);
+		sz_copy(scratch->buf + pos, t->children[i].text, t->children[i].text_len);
 		pos+= t->children[i].text_len;
 	}
-	joined[txt_len]= '\0';
-	const char *txt= joined;
-	wiki_thread_buf_set(scratch, txt, txt_len);
-	run_nested_plain_pipeline(scratch, is_td_inner, is_ext_inner, is_heading_title, t, cfg, accum, page);
+	scratch->len = pos;
+	scratch->buf[pos]= '\0';
 
-	if(scratch->len == txt_len && sz_equal(scratch->buf, txt, txt_len)) {
+	/* Try to run the nested pipeline on a fresh scratch copy so we can
+	 * compare the processed result to the original joined text. */
+	ThreadBuf *tmp_tb = wiki_thread_buf_acquire_scratch_from_data(scratch->buf, txt_len);
+	if(!tmp_tb) {
+		/* Fallback to heap-based join (matches original behavior). */
+		char *joined= malloc(txt_len + 1);
+		if(!joined) {
+			wiki_thread_buf_release_scratch(scratch);
+			return;
+		}
+		size_t p2= 0;
+		for(size_t i= 0; i < t->child_count; i++) {
+			sz_copy(joined + p2, t->children[i].text, t->children[i].text_len);
+			p2+= t->children[i].text_len;
+		}
+		joined[txt_len]= '\0';
+
+		wiki_thread_buf_set(scratch, joined, txt_len);
+		run_nested_plain_pipeline(scratch, is_td_inner, is_ext_inner, is_heading_title, t, cfg, accum, page);
+
+		if(scratch->len == txt_len && sz_equal(scratch->buf, joined, txt_len)) {
+			free(joined);
+			wiki_thread_buf_release_scratch(scratch);
+			return;
+		}
+		build_from_str(t, scratch->buf, scratch->len, accum);
+		build_token_recursive(t, accum, cfg);
+		for(size_t i= 0; i < t->child_count; i++) {
+			if(!t->children[i].is_text && t->children[i].token) {
+				postprocess_nested_plain(t->children[i].token, cfg, accum, page);
+			}
+		}
 		free(joined);
 		wiki_thread_buf_release_scratch(scratch);
 		return;
 	}
-	build_from_str(t, scratch->buf, scratch->len, accum);
+
+	run_nested_plain_pipeline(tmp_tb, is_td_inner, is_ext_inner, is_heading_title, t, cfg, accum, page);
+
+	if(tmp_tb->len == txt_len && sz_equal(tmp_tb->buf, scratch->buf, txt_len)) {
+		wiki_thread_buf_release_scratch(tmp_tb);
+		wiki_thread_buf_release_scratch(scratch);
+		return;
+	}
+	build_from_str(t, tmp_tb->buf, tmp_tb->len, accum);
 	build_token_recursive(t, accum, cfg);
 	for(size_t i= 0; i < t->child_count; i++) {
 		if(!t->children[i].is_text && t->children[i].token) {
 			postprocess_nested_plain(t->children[i].token, cfg, accum, page);
 		}
 	}
-	free(joined);
+	wiki_thread_buf_release_scratch(tmp_tb);
 	wiki_thread_buf_release_scratch(scratch);
 }
 
