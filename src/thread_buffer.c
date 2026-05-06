@@ -94,6 +94,10 @@ const char *wiki_thread_buf_append_to_tokens(const char *s, size_t len) {
 	ThreadBuffers *tbs = wiki_thread_buf_get();
 	ThreadBuf *tb = &tbs->tokens;
 	size_t off = tb->len;
+	if(tb->len + len + 1 > tb->cap) {
+		log_debug("tokens arena GROW: cap=%zu len=%zu append=%zu — pointer invalidation imminent; append='%.*s'",
+		          tb->cap, tb->len, len, (int)(len > 80 ? 80 : len), s);
+	}
 	sz_string_view_t v = { .start = s, .length = len };
 	wiki_thread_buf_append(tb, v);
 	return tb->buf + off;

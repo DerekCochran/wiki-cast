@@ -1570,6 +1570,15 @@ Token *wiki_parse_with_page(const char *wikitext, const ParserConfig *cfg,
      * the pointer to str_tidy_into(), which never allocates. */
 	wiki_thread_buf_reserve(&tbufs->stage, input_len);
 
+	/* Pre-reserve the tokens arena to the full input length and reset it.
+     * All token text views are substrings of the input, so the arena can
+     * never need more than input_len bytes in total.  Only grow, never
+     * shrink: a previously-larger capacity is fine to keep, since we reset
+     * len to 0 and the arena is reused across parse calls on this thread. */
+	if(tbufs->tokens.cap < input_len + 1)
+		wiki_thread_buf_reserve(&tbufs->tokens, input_len);
+	tbufs->tokens.len= 0;
+
 	size_t tidy_len= 0;
 	str_tidy_into(wikitext, input_len, tbufs->stage.buf, tbufs->stage.cap, &tidy_len);
 	tbufs->stage.len= tidy_len;
