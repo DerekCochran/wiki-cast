@@ -5,6 +5,7 @@
 #include "parser/quotes.h"
 #include "string_util.h"
 #include "token.h"
+#include "util/pcre_cache.h"
 #include <assert.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -54,24 +55,7 @@ void parse_quotes(ThreadBuf *tb, const ParserConfig *cfg, Accum *accum, bool tid
 	if(!tb || !tb->buf) return;
 
 	const char *pattern= "('{2,})"; /* capture runs of 2+ apostrophes */
-
-	if(!cfg->regex_quotes) {
-		ParserConfig *m= (ParserConfig *)cfg;
-		PCRE2_SIZE err_offset;
-		int err_code;
-		m->regex_quotes= (ParserConfigRegex *)pcre2_compile((PCRE2_SPTR)pattern, PCRE2_ZERO_TERMINATED,
-																												PCRE2_UTF,
-																												&err_code, &err_offset, NULL);
-		if(!m->regex_quotes) {
-			PCRE2_UCHAR8 err_buf[256];
-			pcre2_get_error_message(err_code, err_buf, sizeof(err_buf));
-			log_error("quotes regex compile error at %zu: %s",
-								err_offset, err_buf);
-			return;
-		}
-	}
-
-	pcre2_code *re= (pcre2_code *)cfg->regex_quotes;
+	pcre2_code *re = pcre_cache_get(pattern, PCRE2_UTF);
 	pcre2_match_data *md= pcre2_match_data_create_from_pattern(re, NULL);
 	if(!md) return;
 

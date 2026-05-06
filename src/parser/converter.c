@@ -6,6 +6,7 @@
 #include "string_util.h"
 #include "token.h"
 #include "thread_buffer.h"
+#include "util/pcre_cache.h"
 #include <assert.h>
 #include <ctype.h>
 #include <stdio.h>
@@ -309,19 +310,7 @@ static pcre2_code *compile_converter_split_regex(const ParserConfig *cfg) {
 	len+= suffix_len;
 	pat[len]= '\0';
 
-	PCRE2_SIZE err_offset;
-	int err_code;
-	pcre2_code *re= pcre2_compile(
-	(PCRE2_SPTR)pat, PCRE2_ZERO_TERMINATED,
-	PCRE2_CASELESS | PCRE2_UTF,
-	&err_code, &err_offset, NULL);
-	if(!re) {
-		PCRE2_UCHAR8 err_buf[256];
-		pcre2_get_error_message(err_code, err_buf, sizeof(err_buf));
-		log_error("converter split regex compile error at %zu: %s Pattern: %.200s",
-							(size_t)err_offset, (char *)err_buf, pat);
-	}
-
+	pcre2_code *re = pcre_cache_get(pat, PCRE2_CASELESS | PCRE2_UTF);
 	free(pat);
 	return re;
 }
@@ -330,12 +319,8 @@ void parse_converter(ThreadBuf *tb, const ParserConfig *cfg, Accum *accum) {
 	if(!tb || !tb->buf) return;
 	if(!cfg || cfg->variants.count == 0) return; /* no variants configured */
 
-	if(!cfg->regex_converter) {
-		ParserConfig *m= (ParserConfig *)cfg;
-		m->regex_converter= (ParserConfigRegex *)compile_converter_split_regex(cfg);
-		if(!m->regex_converter) return;
-	}
-	pcre2_code *re_split= (pcre2_code *)cfg->regex_converter;
+	pcre2_code *re_split = compile_converter_split_regex(cfg);
+	if(!re_split) return;
 
 	size_t *stack= NULL;
 	size_t stack_cap= 0;

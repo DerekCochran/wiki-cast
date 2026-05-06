@@ -6,6 +6,7 @@
 #include "string_util.h"
 #include <stringzilla/stringzilla.h>
 #include "token.h"
+#include "util/pcre_cache.h"
 #include <assert.h>
 #include <ctype.h>
 #include <stdio.h>
@@ -104,18 +105,7 @@ static pcre2_code *compile_external_links_regex(const ParserConfig *cfg) {
 					 "\\]",
 					 proto, s_ext_char_first, s_ext_char);
 
-	PCRE2_SIZE err_offset;
-	int err_code;
-	pcre2_code *re= pcre2_compile(
-	(PCRE2_SPTR)pat, PCRE2_ZERO_TERMINATED,
-	PCRE2_CASELESS | PCRE2_UTF | PCRE2_UCP,
-	&err_code, &err_offset, NULL);
-	if(!re) {
-		PCRE2_UCHAR8 err_buf[256];
-		pcre2_get_error_message(err_code, err_buf, sizeof(err_buf));
-		log_error("external_links regex compile error at %zu: %s\nPattern: %s",
-							(size_t)err_offset, (char *)err_buf, pat);
-	}
+	pcre2_code *re = pcre_cache_get(pat, PCRE2_CASELESS | PCRE2_UTF | PCRE2_UCP);
 	free(pat);
 	return re;
 }
@@ -192,14 +182,9 @@ void parse_external_links(ThreadBuf *tb, const ParserConfig *cfg,
 													Accum *accum, bool in_file) {
 	if(!tb || !tb->buf) return;
 
-	/* Lazy compile (per config, since PROTO is embedded) */
-	if(!cfg->regex_external_links) {
-		ParserConfig *m= (ParserConfig *)cfg;
-		m->regex_external_links=
-		(ParserConfigRegex *)compile_external_links_regex(cfg);
-		if(!m->regex_external_links) return;
-	}
-	pcre2_code *re= (pcre2_code *)cfg->regex_external_links;
+	/* Compile this call's protocol-aware regex (cached by pattern by pcre_cache). */
+	pcre2_code *re = compile_external_links_regex(cfg);
+	if(!re) return;
 
 	pcre2_match_data *md= pcre2_match_data_create_from_pattern(re, NULL);
 	if(!md) return;

@@ -1,6 +1,3 @@
-#define PCRE2_CODE_UNIT_WIDTH 8
-#include <pcre2.h>
-
 /*
  * config.c — Parser configuration: load from JSON using cJSON.
  *
@@ -415,40 +412,6 @@ void config_free(ParserConfig *cfg) {
 	str_list_free(&cfg->interwiki);
 	str_map_free(&cfg->img);
 	str_list_free(&cfg->excludes);
-
-	/* Free all lazily-compiled PCRE2 patterns. */
-	if(cfg->regex_redirect)
-		pcre2_code_free((pcre2_code *)cfg->regex_redirect);
-	for(int i= 0; i < 2; i++)
-		if(cfg->regex_ext[i])
-			pcre2_code_free((pcre2_code *)cfg->regex_ext[i]);
-	if(cfg->regex_ext_translate)
-		pcre2_code_free((pcre2_code *)cfg->regex_ext_translate);
-	if(cfg->regex_translate)
-		pcre2_code_free((pcre2_code *)cfg->regex_translate);
-	if(cfg->regex_magic_links)
-		pcre2_code_free((pcre2_code *)cfg->regex_magic_links);
-	if(cfg->regex_hr_and_dunder)
-		pcre2_code_free((pcre2_code *)cfg->regex_hr_and_dunder);
-	if(cfg->regex_links)
-		pcre2_code_free((pcre2_code *)cfg->regex_links);
-	/* Free newly added cached regexes */
-	if(cfg->regex_html)
-		pcre2_code_free((pcre2_code *)cfg->regex_html);
-	if(cfg->regex_braces)
-		pcre2_code_free((pcre2_code *)cfg->regex_braces);
-	if(cfg->regex_quotes)
-		pcre2_code_free((pcre2_code *)cfg->regex_quotes);
-	if(cfg->regex_list_prefix)
-		pcre2_code_free((pcre2_code *)cfg->regex_list_prefix);
-	if(cfg->regex_list_full)
-		pcre2_code_free((pcre2_code *)cfg->regex_list_full);
-	if(cfg->regex_list_brace)
-		pcre2_code_free((pcre2_code *)cfg->regex_list_brace);
-	if(cfg->regex_external_links)
-		pcre2_code_free((pcre2_code *)cfg->regex_external_links);
-	if(cfg->regex_converter)
-		pcre2_code_free((pcre2_code *)cfg->regex_converter);
 
 	free(cfg);
 }

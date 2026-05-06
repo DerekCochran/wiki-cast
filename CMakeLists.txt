@@ -66,6 +66,7 @@ add_library(wikitokenizer STATIC
     src/tools/log.c
     src/tr.c
     src/td.c
+    src/util/pcre_cache.c
     )
 
 target_compile_options(wikitokenizer PRIVATE

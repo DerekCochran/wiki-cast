@@ -6,6 +6,7 @@
 #include "string_util.h"
 #include "token.h"
 #include "thread_buffer.h"
+#include "util/pcre_cache.h"
 #include <assert.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -111,57 +112,9 @@ void parse_list(ThreadBuf *tb, const ParserConfig *cfg, Accum *accum) {
 	const char *full_pat= ":+|\\-\\{|\\x00\\d+[xq]\\x7F";
 	const char *brace_pat= "\\-\\{|\\}-";
 
-	if(!cfg->regex_list_prefix) {
-		ParserConfig *m= (ParserConfig *)cfg;
-		PCRE2_SIZE err_offset;
-		int err_code;
-		m->regex_list_prefix= (ParserConfigRegex *)pcre2_compile((PCRE2_SPTR)prefix_pat, PCRE2_ZERO_TERMINATED,
-																														 PCRE2_UTF,
-																														 &err_code, &err_offset, NULL);
-		if(!m->regex_list_prefix) {
-			PCRE2_UCHAR8 err_buf[256];
-			pcre2_get_error_message(err_code, err_buf, sizeof(err_buf));
-			log_error("list: prefix regex compile error at %zu: %s",
-								err_offset, err_buf);
-			return;
-		}
-	}
-
-	if(!cfg->regex_list_full) {
-		ParserConfig *m= (ParserConfig *)cfg;
-		PCRE2_SIZE err_offset;
-		int err_code;
-		m->regex_list_full= (ParserConfigRegex *)pcre2_compile((PCRE2_SPTR)full_pat, PCRE2_ZERO_TERMINATED,
-																													 PCRE2_UTF,
-																													 &err_code, &err_offset, NULL);
-		if(!m->regex_list_full) {
-			PCRE2_UCHAR8 err_buf[256];
-			pcre2_get_error_message(err_code, err_buf, sizeof(err_buf));
-			log_error("list: full regex compile error at %zu: %s",
-								err_offset, err_buf);
-			return;
-		}
-	}
-
-	if(!cfg->regex_list_brace) {
-		ParserConfig *m= (ParserConfig *)cfg;
-		PCRE2_SIZE err_offset;
-		int err_code;
-		m->regex_list_brace= (ParserConfigRegex *)pcre2_compile((PCRE2_SPTR)brace_pat, PCRE2_ZERO_TERMINATED,
-																														PCRE2_UTF,
-																														&err_code, &err_offset, NULL);
-		if(!m->regex_list_brace) {
-			PCRE2_UCHAR8 err_buf[256];
-			pcre2_get_error_message(err_code, err_buf, sizeof(err_buf));
-			log_error("list: brace regex compile error at %zu: %s",
-								err_offset, err_buf);
-			return;
-		}
-	}
-
-	pcre2_code *re_prefix= (pcre2_code *)cfg->regex_list_prefix;
-	pcre2_code *re_full= (pcre2_code *)cfg->regex_list_full;
-	pcre2_code *re_brace= (pcre2_code *)cfg->regex_list_brace;
+	pcre2_code *re_prefix = pcre_cache_get(prefix_pat, PCRE2_UTF);
+	pcre2_code *re_full = pcre_cache_get(full_pat, PCRE2_UTF);
+	pcre2_code *re_brace = pcre_cache_get(brace_pat, PCRE2_UTF);
 
 	pcre2_match_data *md_pref= pcre2_match_data_create_from_pattern(re_prefix, NULL);
 	pcre2_match_data *md_full= pcre2_match_data_create_from_pattern(re_full, NULL);

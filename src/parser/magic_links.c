@@ -5,6 +5,7 @@
 #include "parser/magic_links.h"
 #include "string_util.h"
 #include "token.h"
+#include "util/pcre_cache.h"
 #include <assert.h>
 #include <ctype.h>
 #include <stdio.h>
@@ -87,49 +88,37 @@ static pcre2_code *compile_magic_regex(const ParserConfig *cfg) {
 
 	PCRE2_SIZE err_offset;
 	int err_code;
-	pcre2_code *re= pcre2_compile(
-	(PCRE2_SPTR)pattern, PCRE2_ZERO_TERMINATED,
-	PCRE2_CASELESS | PCRE2_UTF | PCRE2_UCP,
-	&err_code, &err_offset, NULL);
 
-	if(!re) {
-		/*
-         * JS catch-branch (fallback, no Unicode properties):
-         *   (^|\W)(?:(?:PROTO)(extUrlCharFirst extUrlChar)|magicLinkPattern_ascii)
-         *
-         * magicLinkPattern_ascii uses \s and \t instead of \p{Zs}.
-         */
-		const char *magic_ascii=
+	/* Test compile using Unicode properties — if supported, use cached Unicode pattern. */
+	pcre2_code *test_re = pcre2_compile((PCRE2_SPTR)pattern, PCRE2_ZERO_TERMINATED,
+										PCRE2_CASELESS | PCRE2_UTF | PCRE2_UCP,
+										&err_code, &err_offset, NULL);
+	if(test_re) {
+		pcre2_code_free(test_re);
+		pcre2_code *re = pcre_cache_get(pattern, PCRE2_CASELESS | PCRE2_UTF | PCRE2_UCP);
+		free(pattern);
+		return re;
+	}
+
+	/* Fallback: ASCII-only pattern (no Unicode properties) */
+	const char *magic_ascii=
 		"(?:RFC|PMID)[\\s\\t]+\\d+\\b"
 		"|ISBN[\\s\\t]+(?:97[89][\\s\\t-]?)?(?:\\d[\\s\\t-]?){9}[\\dx]\\b";
 
-		const char *ext_first_ascii= "(?:\\[[\\da-f:.]+\\]|[^\\[\\]<>\"\\s])";
-		const char *ext_char_ascii= "(?:[^\\[\\]<>\"\\x00\\s]|\\x00\\d+[cn!~]\\x7F)*";
+	const char *ext_first_ascii= "(?:\\[[\\da-f:.]+\\]|[^\\[\\]<>\"\\s])";
+	const char *ext_char_ascii= "(?:[^\\[\\]<>\"\\x00\\s]|\\x00\\d+[cn!~]\\x7F)*";
 
-		size_t fb_cap= 64 + strlen(proto) + strlen(ext_first_ascii) + strlen(ext_char_ascii) + strlen(magic_ascii) + 1;
-		if(fb_cap > pat_cap) {
-			pattern= realloc(pattern, fb_cap);
-			assert(pattern);
-			pat_cap= fb_cap;
-		}
-		snprintf(pattern, pat_cap,
-						 "(^|\\W)(?:(?:%s)(%s%s)|%s)",
-						 proto, ext_first_ascii, ext_char_ascii, magic_ascii);
-
-		re= pcre2_compile(
-		(PCRE2_SPTR)pattern, PCRE2_ZERO_TERMINATED,
-		PCRE2_CASELESS,
-		&err_code, &err_offset, NULL);
-		if(!re) {
-			PCRE2_UCHAR8 err_buf[256];
-			pcre2_get_error_message(err_code, err_buf, sizeof(err_buf));
-			log_error("magicLinks regex compile error at %zu: %s Pattern: %.200s",
-								(size_t)err_offset, (char *)err_buf, pattern);
-			free(pattern);
-			return NULL;
-		}
+	size_t fb_cap= 64 + strlen(proto) + strlen(ext_first_ascii) + strlen(ext_char_ascii) + strlen(magic_ascii) + 1;
+	if(fb_cap > pat_cap) {
+		pattern= realloc(pattern, fb_cap);
+		assert(pattern);
+		pat_cap= fb_cap;
 	}
+	snprintf(pattern, pat_cap,
+			 "(^|\\W)(?:(?:%s)(%s%s)|%s)",
+			 proto, ext_first_ascii, ext_char_ascii, magic_ascii);
 
+	pcre2_code *re = pcre_cache_get(pattern, PCRE2_CASELESS);
 	free(pattern);
 	return re;
 }
@@ -149,15 +138,10 @@ static Token *build_magic_link(const char *s, size_t len,
 void parse_magic_links(ThreadBuf *tb, const ParserConfig *cfg, Accum *accum) {
 	if(!tb || !tb->buf) return;
 
-	if(!cfg->regex_magic_links) {
-		ParserConfig *mutable_cfg= (ParserConfig *)cfg;
-		mutable_cfg->regex_magic_links=
-		(ParserConfigRegex *)compile_magic_regex(cfg);
-		if(!mutable_cfg->regex_magic_links) return;
-	}
-
-	pcre2_code *re= (pcre2_code *)cfg->regex_magic_links;
-	pcre2_match_data *md= pcre2_match_data_create_from_pattern(re, NULL);
+	/* Obtain cached compiled regex for this call (owned by pcre_cache). */
+	pcre2_code *re = compile_magic_regex(cfg);
+	if(!re) return;
+	pcre2_match_data *md = pcre2_match_data_create_from_pattern(re, NULL);
 	if(!md) return;
 
 	size_t out_cap= tb->len * 2 + 64;

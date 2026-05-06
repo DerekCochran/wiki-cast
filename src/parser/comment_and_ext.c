@@ -9,6 +9,7 @@
 #include "parser/links.h"
 #include "string_util.h"
 #include "thread_buffer.h"
+#include "util/pcre_cache.h"
 #include <stringzilla/stringzilla.h>
 #include <assert.h>
 #include <ctype.h>
@@ -1248,54 +1249,25 @@ static pcre2_code *compile_ext_regex(const ParserConfig *cfg, bool include_only)
 
 	free(exts);
 
-	PCRE2_SIZE err_offset;
-	int err_code;
-	pcre2_code *re= pcre2_compile(
-	(PCRE2_SPTR)pattern, PCRE2_ZERO_TERMINATED,
-	PCRE2_CASELESS | PCRE2_UTF | PCRE2_UCP,
-	&err_code, &err_offset, NULL);
-
-	if(!re) {
-		PCRE2_UCHAR8 err_buf[256];
-		pcre2_get_error_message(err_code, err_buf, sizeof(err_buf));
-		log_error("ext regex compile error at %zu: %s Pattern (truncated): %.200s",
-							err_offset, err_buf, pattern);
-	}
+	pcre2_code *re = pcre_cache_get(pattern, PCRE2_CASELESS | PCRE2_UTF | PCRE2_UCP);
 	free(pattern);
 	return re;
 }
 
 static pcre2_code *compile_nowiki_regex(void) {
 	const char *pattern= "<nowiki>[\\s\\S]*?<\\/nowiki>";
-	PCRE2_SIZE err_offset;
-	int err_code;
-	return pcre2_compile((PCRE2_SPTR)pattern, PCRE2_ZERO_TERMINATED,
-											 PCRE2_CASELESS | PCRE2_UTF | PCRE2_UCP,
-											 &err_code, &err_offset, NULL);
+	return pcre_cache_get(pattern, PCRE2_CASELESS | PCRE2_UTF | PCRE2_UCP);
 }
 
 static pcre2_code *compile_translate_regex(void) {
 	const char *pattern= "<translate( nowrap)?>([\\s\\S]*?)<\\/translate>";
-	PCRE2_SIZE err_offset;
-	int err_code;
-	return pcre2_compile((PCRE2_SPTR)pattern, PCRE2_ZERO_TERMINATED,
-											 PCRE2_UTF | PCRE2_UCP,
-											 &err_code, &err_offset, NULL);
+	return pcre_cache_get(pattern, PCRE2_UTF | PCRE2_UCP);
 }
 
 static void apply_translate_prepass(ThreadBuf *tb, const ParserConfig *cfg, Accum *accum) {
-	ParserConfig *mutable_cfg= (ParserConfig *)cfg;
-	if(!mutable_cfg->regex_ext_translate) {
-		mutable_cfg->regex_ext_translate= (ParserConfigRegex *)compile_nowiki_regex();
-		if(!mutable_cfg->regex_ext_translate) return;
-	}
-	if(!mutable_cfg->regex_translate) {
-		mutable_cfg->regex_translate= (ParserConfigRegex *)compile_translate_regex();
-		if(!mutable_cfg->regex_translate) return;
-	}
-
-	pcre2_code *re_nowiki= (pcre2_code *)cfg->regex_ext_translate;
-	pcre2_code *re_translate= (pcre2_code *)cfg->regex_translate;
+	pcre2_code *re_nowiki = compile_nowiki_regex();
+	if(!re_nowiki) return;
+	pcre2_code *re_translate = compile_translate_regex();
 	pcre2_match_data *md= pcre2_match_data_create_from_pattern(re_nowiki, NULL);
 	if(!md) return;
 
@@ -1531,14 +1503,8 @@ void parse_comment_and_ext(ThreadBuf *tb, const ParserConfig *cfg,
 		apply_translate_prepass(tb, cfg, accum);
 	}
 
-	int regex_idx= include_only ? 1 : 0;
-	if(!cfg->regex_ext[regex_idx]) {
-		ParserConfig *mutable_cfg= (ParserConfig *)cfg;
-		mutable_cfg->regex_ext[regex_idx]=
-		(ParserConfigRegex *)compile_ext_regex(cfg, include_only);
-		if(!mutable_cfg->regex_ext[regex_idx]) return;
-	}
-	pcre2_code *re= (pcre2_code *)cfg->regex_ext[regex_idx];
+	pcre2_code *re = compile_ext_regex(cfg, include_only);
+	if(!re) return;
 
 	pcre2_match_data *md= pcre2_match_data_create_from_pattern(re, NULL);
 	if(!md) return;

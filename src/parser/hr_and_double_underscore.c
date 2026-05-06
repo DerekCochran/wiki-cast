@@ -11,6 +11,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include "util/pcre_cache.h"
 
 /*
  * Stage 4: horizontal rules (lines with 4+ dashes) and double-underscore
@@ -101,6 +102,9 @@ static void pattern_append_n(char **buf, size_t *cap, size_t *len, const char *s
 	(*buf)[*len]= '\0';
 }
 
+
+
+
 static char *build_hr_and_dunder_pattern(const ParserConfig *cfg) {
 	static const char fw[]= "\xEF\xBC\xBF"; /* U+FF3F FULLWIDTH LOW LINE */
 	size_t cap= 256;
@@ -153,17 +157,7 @@ static char *build_hr_and_dunder_pattern(const ParserConfig *cfg) {
 
 static pcre2_code *compile_regex(const ParserConfig *cfg) {
 	char *pattern= build_hr_and_dunder_pattern(cfg);
-	PCRE2_SIZE err_offset;
-	int err_code;
-	pcre2_code *re= pcre2_compile((PCRE2_SPTR)pattern, PCRE2_ZERO_TERMINATED,
-																PCRE2_UTF | PCRE2_MULTILINE | PCRE2_CASELESS,
-																&err_code, &err_offset, NULL);
-	if(!re) {
-		PCRE2_UCHAR8 err_buf[256];
-		pcre2_get_error_message(err_code, err_buf, sizeof(err_buf));
-		log_error("hr/dunder regex compile error at %zu: %s Pattern: %s",
-							err_offset, err_buf, pattern);
-	}
+	pcre2_code *re = pcre_cache_get(pattern, PCRE2_UTF | PCRE2_MULTILINE | PCRE2_CASELESS);
 	free(pattern);
 	return re;
 }
@@ -184,14 +178,10 @@ void parse_hr_and_double_underscore(ThreadBuf *tb, const ParserConfig *cfg, Accu
 		free(pref);
 	}
 
-	if(!cfg->regex_hr_and_dunder) {
-		ParserConfig *mutable= (ParserConfig *)cfg;
-		mutable->regex_hr_and_dunder= (ParserConfigRegex *)compile_regex(cfg);
-		if(!mutable->regex_hr_and_dunder) return;
-	}
-
-	pcre2_code *re= (pcre2_code *)cfg->regex_hr_and_dunder;
-	pcre2_match_data *md= pcre2_match_data_create_from_pattern(re, NULL);
+	/* Use process-wide cached regex for this call */
+	pcre2_code *re = compile_regex(cfg);
+	if(!re) return;
+	pcre2_match_data *md = pcre2_match_data_create_from_pattern(re, NULL);
 	if(!md) return;
 
 	size_t out_cap= tb->len * 2 + 64;
@@ -354,23 +344,13 @@ void parse_hr_and_double_underscore(ThreadBuf *tb, const ParserConfig *cfg, Accu
 
 	/* Heading finalization: turn lines like "== Title ==" into heading tokens */
 	{
+		/* Use cached heading regex compiled once per process. */
 		const char *hpat= "^((?:\\x00\\d+[cn]\\x7F)*)(={1,6})(.+)\\2((?:\\s|\\x00\\d+[cn]\\x7F)*)$";
-		PCRE2_SIZE herr_offset;
-		int herr_code;
-		pcre2_code *hre= pcre2_compile((PCRE2_SPTR)hpat, PCRE2_ZERO_TERMINATED,
-															 PCRE2_UTF | PCRE2_MULTILINE | PCRE2_UCP,
-																	 &herr_code, &herr_offset, NULL);
-		if(!hre) {
-			PCRE2_UCHAR8 err_buf[256];
-			pcre2_get_error_message(herr_code, err_buf, sizeof(err_buf));
-			log_error("heading regex compile error at %zu: %s",
-								herr_offset, err_buf);
-			return;
-		}
-
-		pcre2_match_data *hmd= pcre2_match_data_create_from_pattern(hre, NULL);
+			pcre2_code *hre = pcre_cache_get(hpat,
+						PCRE2_UTF | PCRE2_MULTILINE | PCRE2_UCP);
+		pcre2_match_data *hmd = pcre2_match_data_create_from_pattern(hre, NULL);
 		if(!hmd) {
-			pcre2_code_free(hre);
+			log_error("hr_and_double_underscore: failed to create match data");
 			return;
 		}
 
@@ -500,7 +480,7 @@ void parse_hr_and_double_underscore(ThreadBuf *tb, const ParserConfig *cfg, Accu
 		free(out2);
 
 		pcre2_match_data_free(hmd);
-		pcre2_code_free(hre);
+		/* Compiled pattern owned by pcre_cache; do NOT free `hre` */
 	}
 
 	if(prefixed && tb->len > 0) {

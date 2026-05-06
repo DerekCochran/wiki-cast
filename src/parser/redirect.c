@@ -6,6 +6,7 @@
 #include "string_util.h"
 #include "title.h"
 #include "thread_buffer.h"
+#include "util/pcre_cache.h"
 #include <assert.h>
 #include <ctype.h>
 #include <stdio.h>
@@ -41,19 +42,7 @@ static pcre2_code *compile_redirect_regex(const ParserConfig *cfg) {
 	pos+= (size_t)snprintf(pattern + pos, pattern_cap - pos,
 												 ")\\s*(?::\\s*)?)\\[\\[([^\\n|\\]]+)(\\|.*?)?\\]\\](\\s*)");
 
-	PCRE2_SIZE err_offset;
-	int err_code;
-	pcre2_code *re= pcre2_compile(
-	(PCRE2_SPTR)pattern, PCRE2_ZERO_TERMINATED,
-	PCRE2_CASELESS | PCRE2_UTF,
-	&err_code, &err_offset, NULL);
-
-	if(!re) {
-		PCRE2_UCHAR8 err_buf[256];
-		pcre2_get_error_message(err_code, err_buf, sizeof(err_buf));
-		log_error("redirect regex compile error at %zu: %s Pattern: %s",
-							err_offset, err_buf, pattern);
-	}
+	pcre2_code *re = pcre_cache_get(pattern, PCRE2_CASELESS | PCRE2_UTF);
 	free(pattern);
 	return re;
 }
@@ -147,13 +136,7 @@ Accum *accum) {
 }
 
 bool parse_redirect(ThreadBuf *tb, const ParserConfig *cfg, Accum *accum) {
-	if(!cfg->regex_redirect) {
-		ParserConfig *mutable_cfg= (ParserConfig *)cfg;
-		mutable_cfg->regex_redirect= (ParserConfigRegex *)compile_redirect_regex(cfg);
-		if(!mutable_cfg->regex_redirect) return false;
-	}
-
-	pcre2_code *re= (pcre2_code *)cfg->regex_redirect;
+	pcre2_code *re= compile_redirect_regex(cfg);
 	pcre2_match_data *md= pcre2_match_data_create_from_pattern(re, NULL);
 	if(!md) return false;
 

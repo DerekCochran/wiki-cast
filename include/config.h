@@ -86,25 +86,10 @@ typedef struct {
     /* JS parseLinks toggles regex shape with config.inExt. */
     bool in_ext;
 
-    /* ── Lazily-compiled PCRE2 patterns ─── */
-    ParserConfigRegex *regex_redirect;       /* used in parse_redirect */
-    ParserConfigRegex *regex_ext[2];         /* [0]=!includeOnly, [1]=includeOnly */
-    ParserConfigRegex *regex_ext_translate;  /* nowiki inside translate pass */
-    ParserConfigRegex *regex_translate;      /* <translate> tags */
-    ParserConfigRegex *regex_magic_links;    /* stage 8: free URLs / magic links */
-    /* Stage 4: HR and double-underscore cached regex */
-    ParserConfigRegex *regex_hr_and_dunder;
-    /* compiled regex used by parseLinks to detect protocol prefixes (lazy) */
-    ParserConfigRegex *regex_links;
-    /* Additional cached regexes for heavy/recurring patterns */
-    ParserConfigRegex *regex_html;           /* parse_html */
-    ParserConfigRegex *regex_braces;         /* parse_braces */
-    ParserConfigRegex *regex_quotes;         /* parse_quotes */
-    ParserConfigRegex *regex_list_prefix;    /* parse_list prefix */
-    ParserConfigRegex *regex_list_full;      /* parse_list full */
-    ParserConfigRegex *regex_list_brace;     /* parse_list brace */
-    ParserConfigRegex *regex_external_links; /* parse_external_links */
-    ParserConfigRegex *regex_converter;      /* parse_converter split regex */
+    /* Note: compiled PCRE2 patterns are now owned by the process-wide
+     * `pcre_cache` utility. Parsers should call pcre_cache_get(pattern, flags)
+     * to obtain a shared compiled `pcre2_code *` rather than storing them
+     * in the ParserConfig. */
 
 } ParserConfig;
 

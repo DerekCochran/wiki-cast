@@ -9,6 +9,7 @@
 #include "table_token.h"
 #include "token.h"
 #include "thread_buffer.h"
+#include "util/pcre_cache.h"
 #include <assert.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -22,11 +23,7 @@ static pcre2_code *s_re_table_sep_td= NULL;
 static pcre2_code *s_re_td_inner_sep= NULL;
 
 static pcre2_code *compile_table_regex(const char *pattern) {
-	PCRE2_SIZE err_offset;
-	int err_code;
-	pcre2_code *re= pcre2_compile((PCRE2_SPTR)pattern, PCRE2_ZERO_TERMINATED,
-																PCRE2_UTF | PCRE2_UCP,
-																&err_code, &err_offset, NULL);
+	pcre2_code *re = pcre_cache_get(pattern, PCRE2_UTF | PCRE2_UCP);
 	assert(re);
 	return re;
 }

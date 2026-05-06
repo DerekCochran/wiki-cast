@@ -8,6 +8,7 @@
 #include <stringzilla/stringzilla.h>
 #include "token.h"
 #include "thread_buffer.h"
+#include "util/pcre_cache.h"
 #include <assert.h>
 #include <ctype.h>
 #include <stdio.h>
@@ -252,24 +253,8 @@ static void accum_rollback_shallow(Accum *accum, size_t saved_count) {
 void parse_html(ThreadBuf *tb, const ParserConfig *cfg, Accum *accum) {
 	if(!tb || !tb->buf) return;
 
-	/* Use cached regex in config where possible */
-	if(!cfg->regex_html) {
-		ParserConfig *m= (ParserConfig *)cfg;
-		PCRE2_SIZE err_offset;
-		int err_code;
-		m->regex_html= (ParserConfigRegex *)pcre2_compile((PCRE2_SPTR)HTML_PATTERN, PCRE2_ZERO_TERMINATED,
-																											PCRE2_CASELESS | PCRE2_UTF,
-																											&err_code, &err_offset, NULL);
-		if(!m->regex_html) {
-			PCRE2_UCHAR8 err_buf[256];
-			pcre2_get_error_message(err_code, err_buf, sizeof(err_buf));
-			log_error("html regex compile error at %zu: %s Pattern: %.200s",
-								(size_t)err_offset, err_buf, HTML_PATTERN);
-			return;
-		}
-	}
-
-	pcre2_code *re= (pcre2_code *)cfg->regex_html;
+	/* Use process-wide cached HTML pattern */
+	pcre2_code *re= pcre_cache_get(HTML_PATTERN, PCRE2_CASELESS | PCRE2_UTF);
 	pcre2_match_data *md= pcre2_match_data_create_from_pattern(re, NULL);
 	if(!md) return;
 

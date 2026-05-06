@@ -1,6 +1,5 @@
 #define PCRE2_CODE_UNIT_WIDTH 8
-#include <pcre2.h>
-
+#include "util/pcre_cache.h"
 #include "log.h"
 #include "parser/braces.h"
 #include "string_util.h"
@@ -812,14 +811,10 @@ static bool braces_state_machine(ThreadBuf *tb, const ParserConfig *cfg,
 																 const size_t *link_stack_lens) {
 	if(!tb || !tb->buf) return false;
 	const char *pattern= "^((?:\\0\\d+[cno]\\x7F)*)={1,6}|\\[\\[|-\\{(?!\\{)|\\{{2,}|\\n(?!(?:[^\\S\\n]|\\0\\d+[cn]\\x7F)*\\n)|[|=]|\\}{2,}|\\}-|\\]\\]";
-	PCRE2_SIZE err_offset;
-	int err_code;
-	pcre2_code *re= pcre2_compile((PCRE2_SPTR)pattern, PCRE2_ZERO_TERMINATED,
-																PCRE2_UTF | PCRE2_MULTILINE, &err_code, &err_offset, NULL);
-	if(!re) return false;
-	pcre2_match_data *md= pcre2_match_data_create_from_pattern(re, NULL);
+	pcre2_code *re = pcre_cache_get(pattern, PCRE2_UTF | PCRE2_MULTILINE);
+	pcre2_match_data *md = pcre2_match_data_create_from_pattern(re, NULL);
 	if(!md) {
-		pcre2_code_free(re);
+		log_error("braces: pcre2_match_data_create_from_pattern failed");
 		return false;
 	}
 
@@ -829,7 +824,6 @@ static bool braces_state_machine(ThreadBuf *tb, const ParserConfig *cfg,
 	BraceFrame *stack= malloc(64 * sizeof(BraceFrame));
 	if(!stack) {
 		pcre2_match_data_free(md);
-		pcre2_code_free(re);
 		free(match_subject);
 		return false;
 	}
@@ -924,61 +918,58 @@ static bool braces_state_machine(ThreadBuf *tb, const ParserConfig *cfg,
 			if(has_top && top.open_len == 1 && top.open[0] == '=') {
 				const char *slice= tb->buf + top.index;
 				size_t slice_len= cur_index - top.index;
-				pcre2_code *hd_re= pcre2_compile((PCRE2_SPTR) "^(={1,6})(.+)\\1((?:\\s|\\0\\d+[cn]\\x7F)*)$", PCRE2_ZERO_TERMINATED, PCRE2_UTF, &err_code, &err_offset, NULL);
-				if(hd_re) {
-					pcre2_match_data *hd_md= pcre2_match_data_create_from_pattern(hd_re, NULL);
-					if(hd_md) {
-						int hrc= pcre2_match(hd_re, (PCRE2_SPTR)slice, slice_len, 0, 0, hd_md, NULL);
-						if(hrc > 0) {
-							PCRE2_SIZE *hov= pcre2_get_ovector_pointer(hd_md);
-							size_t title_start= hov[2];
-							size_t title_end= hov[3];
-							size_t trail_start= hov[4];
-							size_t trail_end= hov[5];
-							size_t title_len= title_end - title_start;
-							size_t trail_len= trail_end - trail_start;
-							char *title= str_restore(slice + title_start, title_len, (const char **)link_stack, link_count, link_stack_lens, &title_len);
-							if(title) {
-								Token *heading_tok= token_new(TOKEN_HEADING, "heading");
-								if(heading_tok) {
-									Token *title_tok= token_new(TOKEN_PLAIN, "heading-title");
-									if(title_tok) {
-										/* Persist heading title into tokens arena */
-										const char *title_view = wiki_thread_buf_append_to_tokens(title, title_len);
-										token_append_text_n(title_tok, title_view, title_len);
-										token_append_child(heading_tok, title_tok);
-										if(trail_len > 0) {
-											Token *trail_tok= token_new(TOKEN_SYNTAX, "heading-trail");
-											if(trail_tok) {
-												/* Persist heading trail into tokens arena */
-												const char *trail_view = wiki_thread_buf_append_to_tokens(slice + trail_start, trail_len);
-												token_append_text_n(trail_tok, trail_view, trail_len);
-												token_append_child(heading_tok, trail_tok);
-											}
+				pcre2_code *hd_re = pcre_cache_get("^(={1,6})(.+)\\1((?:\\s|\\0\\d+[cn]\\x7F)*)$", PCRE2_UTF);
+				pcre2_match_data *hd_md = pcre2_match_data_create_from_pattern(hd_re, NULL);
+				if(hd_md) {
+					int hrc = pcre2_match(hd_re, (PCRE2_SPTR)slice, slice_len, 0, 0, hd_md, NULL);
+					if(hrc > 0) {
+						PCRE2_SIZE *hov = pcre2_get_ovector_pointer(hd_md);
+						size_t title_start = hov[2];
+						size_t title_end = hov[3];
+						size_t trail_start = hov[4];
+						size_t trail_end = hov[5];
+						size_t title_len = title_end - title_start;
+						size_t trail_len = trail_end - trail_start;
+						char *title = str_restore(slice + title_start, title_len, (const char **)link_stack, link_count, link_stack_lens, &title_len);
+						if(title) {
+							Token *heading_tok = token_new(TOKEN_HEADING, "heading");
+							if(heading_tok) {
+								Token *title_tok = token_new(TOKEN_PLAIN, "heading-title");
+								if(title_tok) {
+									/* Persist heading title into tokens arena */
+									const char *title_view = wiki_thread_buf_append_to_tokens(title, title_len);
+									token_append_text_n(title_tok, title_view, title_len);
+									token_append_child(heading_tok, title_tok);
+									if(trail_len > 0) {
+										Token *trail_tok = token_new(TOKEN_SYNTAX, "heading-trail");
+										if(trail_tok) {
+											/* Persist heading trail into tokens arena */
+											const char *trail_view = wiki_thread_buf_append_to_tokens(slice + trail_start, trail_len);
+											token_append_text_n(trail_tok, trail_view, trail_len);
+											token_append_child(heading_tok, trail_tok);
 										}
-										accum_push(accum, heading_tok);
-										size_t idx= accum->count - 1;
-										char sent[64];
-										size_t slen;
-										work_str_sentinel(idx, 'h', sent, &slen);
-										ENSURE_OUT_CAP((top.index > next_write ? top.index - next_write : 0) + slen);
-										if(top.index > next_write) {
-											memcpy(out + out_len, tb->buf + next_write, top.index - next_write);
-											out_len+= top.index - next_write;
-										}
-										memcpy(out + out_len, sent, slen);
-										out_len+= slen;
-										next_write= cur_index + 1;
-									} else {
-										token_free(heading_tok);
 									}
+									accum_push(accum, heading_tok);
+									size_t idx = accum->count - 1;
+									char sent[64];
+									size_t slen;
+									work_str_sentinel(idx, 'h', sent, &slen);
+									ENSURE_OUT_CAP((top.index > next_write ? top.index - next_write : 0) + slen);
+									if(top.index > next_write) {
+										memcpy(out + out_len, tb->buf + next_write, top.index - next_write);
+										out_len+= top.index - next_write;
+									}
+									memcpy(out + out_len, sent, slen);
+									out_len+= slen;
+									next_write= cur_index + 1;
+								} else {
+									token_free(heading_tok);
 								}
-								free(title);
 							}
+							free(title);
 						}
-						pcre2_match_data_free(hd_md);
 					}
-					pcre2_code_free(hd_re);
+					pcre2_match_data_free(hd_md);
 				}
 			} else if(has_top) {
 				/* \n only closes = heading frames; preserve other frames */
@@ -1151,7 +1142,6 @@ static bool braces_state_machine(ThreadBuf *tb, const ParserConfig *cfg,
 	free(stack);
 	free(match_subject);
 	pcre2_match_data_free(md);
-	pcre2_code_free(re);
 	return true;
 }
 
@@ -1223,15 +1213,7 @@ static void parse_simple_args(ThreadBuf *tb, const ParserConfig *cfg, Accum *acc
 	const char *pattern_fallback=
 	"\\{\\{\\{((?:[^\\n{}\\[]|\\[(?!\\[)|\\n(?![\\x00]))*)\\}\\}\\}(?!\\})";
 
-	PCRE2_SIZE err_offset;
-	int err_code;
-	pcre2_code *re= pcre2_compile((PCRE2_SPTR)pattern_with_lb, PCRE2_ZERO_TERMINATED,
-																PCRE2_UTF, &err_code, &err_offset, NULL);
-	if(!re) {
-		re= pcre2_compile((PCRE2_SPTR)pattern_fallback, PCRE2_ZERO_TERMINATED,
-											PCRE2_UTF, &err_code, &err_offset, NULL);
-	}
-	if(!re) return;
+	pcre2_code *re = pcre_cache_get(pattern_with_lb, PCRE2_UTF);
 
 	char *prev= NULL;
 	size_t prev_len= 0;
@@ -1327,7 +1309,6 @@ static void parse_simple_args(ThreadBuf *tb, const ParserConfig *cfg, Accum *acc
 	}
 
 	free(prev);
-	pcre2_code_free(re);
 }
 
 /* Main parse function */
@@ -1359,29 +1340,7 @@ void parse_braces(ThreadBuf *tb, const ParserConfig *cfg, Accum *accum) {
 	"|\\[\\[(?:[^\\n\\[\\]\\{]|\\n(?![\\x00]))*\\]\\]"
 	"|-\\{(?:[^\\n{}\\[]|\\[(?!\\[)|\\n(?![\\x00]))*\\}-";
 
-	if(!cfg->regex_braces) {
-		ParserConfig *m= (ParserConfig *)cfg;
-		PCRE2_SIZE err_offset;
-		int err_code;
-		m->regex_braces= (ParserConfigRegex *)pcre2_compile(
-		(PCRE2_SPTR)pattern_with_lb, PCRE2_ZERO_TERMINATED,
-		PCRE2_UTF,
-		&err_code, &err_offset, NULL);
-		if(!m->regex_braces) {
-			m->regex_braces= (ParserConfigRegex *)pcre2_compile(
-			(PCRE2_SPTR)pattern_fallback, PCRE2_ZERO_TERMINATED,
-			PCRE2_UTF,
-			&err_code, &err_offset, NULL);
-		}
-		if(!m->regex_braces) {
-			PCRE2_UCHAR8 err_buf[256];
-			pcre2_get_error_message(err_code, err_buf, sizeof(err_buf));
-			log_error("braces regex compile error at %zu: %s",
-								err_offset, err_buf);
-			return;
-		}
-	}
-	pcre2_code *re= (pcre2_code *)cfg->regex_braces;
+	pcre2_code *re = pcre_cache_get(pattern_with_lb, PCRE2_UTF);
 
 	/* linkStack: temporarily holds [[...]] and -{...}- text so brace matching
      * can proceed without those patterns interfering.  Stores the FULL matched

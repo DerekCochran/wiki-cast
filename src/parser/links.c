@@ -13,6 +13,7 @@
 #include "parser/magic_links.h"
 #include "parser/quotes.h"
 #include "string_util.h"
+#include "util/pcre_cache.h"
 #include <stringzilla/stringzilla.h>
 #include "title.h"
 #include "token.h"
@@ -309,7 +310,6 @@ static bool img_param_validate(const char *name, const char *val_ptr, size_t val
 						proto_like= (rc >= 0);
 						pcre2_match_data_free(md);
 					}
-					pcre2_code_free(re_proto);
 				}
 			}
 
@@ -482,68 +482,35 @@ static void append_file_image_params(Token *file_tok,
  * JS (inExt=false): /^((?:(?!\0\d+!\x7F)[^\n[\]{}|])*)(?:(\||\0\d+!\x7F)([\s\S]*?[^\]])?)?\]\]([\s\S]*)$/u
  * JS: /\0\d+[exhbru]\x7F/u
  */
-static pcre2_code *s_re_main= NULL;			/* inExt=false link regex */
+static pcre2_code *s_re_main= NULL;		/* inExt=false link regex */
 static pcre2_code *s_re_main_ext= NULL; /* inExt=true link regex */
-static pcre2_code *s_re_img= NULL;			/* regexImg */
-static pcre2_code *s_re_sentinel= NULL; /* \0\d+[exhbru]\x7F */
+static pcre2_code *s_re_img= NULL;		/* regexImg */
+static pcre2_code *s_re_sentinel= NULL; /* \x00\d+[exhbru]\x7F */
 
 static void ensure_link_regexes(void) {
 	if(s_re_main && s_re_main_ext && s_re_img && s_re_sentinel) return;
 
-	PCRE2_SIZE err_off;
-	int err_code;
-
 	if(!s_re_main) {
-		/* JS: /^((?:(?!\0\d+!\x7F)[^\n[\]{}|])*)(?:(\||\0\d+!\x7F)([\s\S]*?[^\]])?)?\]\]([\s\S]*)$/u */
 		const char *pat=
 		"^((?:(?!\\x00\\d+!\\x7F)[^\\n[\\]{}|])*)(?:(\\||\\x00\\d+!\\x7F)([\\s\\S]*?[^\\]])?)?\\]\\]([\\s\\S]*)$";
-		s_re_main= pcre2_compile((PCRE2_SPTR)pat, PCRE2_ZERO_TERMINATED,
-														 PCRE2_UTF, &err_code, &err_off, NULL);
-		if(!s_re_main) {
-			PCRE2_UCHAR8 ebuf[256];
-			pcre2_get_error_message(err_code, ebuf, sizeof(ebuf));
-			log_error("links re_main compile error at %zu: %s", (size_t)err_off, ebuf);
-		}
+		s_re_main= pcre_cache_get(pat, PCRE2_UTF);
 	}
 
 	if(!s_re_main_ext) {
-		/* JS inExt=true:
-         * /^((?:(?!\0\d+!\x7F)[^\n[\]{}|])+)(?:(\||\0\d+!\x7F)([\s\S]*?[^\]]))?\]\]([\s\S]*)$/u
-         */
 		const char *pat=
 		"^((?:(?!\\x00\\d+!\\x7F)[^\\n[\\]{}|])+)(?:(\\||\\x00\\d+!\\x7F)([\\s\\S]*?[^\\]]))?\\]\\]([\\s\\S]*)$";
-		s_re_main_ext= pcre2_compile((PCRE2_SPTR)pat, PCRE2_ZERO_TERMINATED,
-																 PCRE2_UTF, &err_code, &err_off, NULL);
-		if(!s_re_main_ext) {
-			PCRE2_UCHAR8 ebuf[256];
-			pcre2_get_error_message(err_code, ebuf, sizeof(ebuf));
-			log_error("links re_main_ext compile error at %zu: %s", (size_t)err_off, ebuf);
-		}
+		s_re_main_ext= pcre_cache_get(pat, PCRE2_UTF);
 	}
 
 	if(!s_re_img) {
-		/* JS: /^((?:(?!\0\d+!\x7F)[^\n[\]{}|])+)(\||\0\d+!\x7F)([\s\S]*)$/u */
 		const char *pat=
 		"^((?:(?!\\x00\\d+!\\x7F)[^\\n[\\]{}|])+)(\\||\\x00\\d+!\\x7F)([\\s\\S]*)$";
-		s_re_img= pcre2_compile((PCRE2_SPTR)pat, PCRE2_ZERO_TERMINATED,
-														PCRE2_UTF, &err_code, &err_off, NULL);
-		if(!s_re_img) {
-			PCRE2_UCHAR8 ebuf[256];
-			pcre2_get_error_message(err_code, ebuf, sizeof(ebuf));
-			log_error("links re_img compile error at %zu: %s", (size_t)err_off, ebuf);
-		}
+		s_re_img= pcre_cache_get(pat, PCRE2_UTF);
 	}
 
 	if(!s_re_sentinel) {
-		/* JS: /\0\d+[exhbru]\x7F/u */
 		const char *pat= "\\x00\\d+[exhbru]\\x7F";
-		s_re_sentinel= pcre2_compile((PCRE2_SPTR)pat, PCRE2_ZERO_TERMINATED,
-																 PCRE2_UTF, &err_code, &err_off, NULL);
-		if(!s_re_sentinel) {
-			PCRE2_UCHAR8 ebuf[256];
-			pcre2_get_error_message(err_code, ebuf, sizeof(ebuf));
-			log_error("links re_sentinel compile error at %zu: %s", (size_t)err_off, ebuf);
-		}
+		s_re_sentinel= pcre_cache_get(pat, PCRE2_UTF);
 	}
 }
 
@@ -556,18 +523,7 @@ static pcre2_code *compile_links_proto(const ParserConfig *cfg) {
 	char *pat= malloc(cap);
 	assert(pat);
 	snprintf(pat, cap, "^\\s*(?:%s|//)", cfg->protocol);
-
-	PCRE2_SIZE err_offset;
-	int err_code;
-	pcre2_code *re= pcre2_compile((PCRE2_SPTR)pat, PCRE2_ZERO_TERMINATED,
-																PCRE2_CASELESS | PCRE2_UTF,
-																&err_code, &err_offset, NULL);
-	if(!re) {
-		PCRE2_UCHAR8 err_buf[256];
-		pcre2_get_error_message(err_code, err_buf, sizeof(err_buf));
-		log_error("links proto regex compile error at %zu: %s Pattern: %.200s",
-							err_offset, err_buf, pat);
-	}
+	pcre2_code *re= pcre_cache_get(pat, PCRE2_CASELESS | PCRE2_UTF);
 	free(pat);
 	return re;
 }
@@ -635,16 +591,8 @@ void parse_links(ThreadBuf *tb, const ParserConfig *cfg, Accum *accum,
 
 	ensure_link_regexes();
 
-	/* Use cached proto regex when available. For temporary config copies
-     * (for example ext-inner parsing), compile function-local regex and
-     * free it before returning to avoid leaking compiled patterns. */
-	pcre2_code *re_proto_local= NULL;
-	if(!cfg->regex_links) {
-		re_proto_local= compile_links_proto(cfg);
-	}
-	pcre2_code *re_proto= cfg->regex_links
-												? (pcre2_code *)cfg->regex_links
-												: re_proto_local;
+	/* Use a runtime-compiled proto regex for this call (if configured). */
+	pcre2_code *re_proto= compile_links_proto(cfg);
 	pcre2_code *re_main= cfg->in_ext ? s_re_main_ext : s_re_main;
 	pcre2_code *re_img_re= s_re_img;
 	pcre2_code *re_sentinel= s_re_sentinel;
@@ -1104,7 +1052,6 @@ void parse_links(ThreadBuf *tb, const ParserConfig *cfg, Accum *accum,
 	wiki_thread_buf_set(tb, out, out_len);
 	free(out);
 	free(bits);
-	if(re_proto_local) pcre2_code_free(re_proto_local);
 }
 
 /* Static helper: parse a fragment into a TOKEN_PLAIN with given type_name. */
