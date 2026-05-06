@@ -7,6 +7,7 @@
 #include "string_util.h"
 #include <stringzilla/stringzilla.h>
 #include "token.h"
+#include "thread_buffer.h"
 #include <assert.h>
 #include <ctype.h>
 #include <stdio.h>
@@ -209,12 +210,17 @@ static Token *build_html_attrs(const char *tag_name, const char *attr_str, size_
 	accum_push(accum, t);
 
 	if(attr_str && attr_len > 0 && !isspace((unsigned char)attr_str[0])) {
-		char *padded= malloc(attr_len + 2);
-		assert(padded);
-		padded[0]= ' ';
-		memcpy(padded + 1, attr_str, attr_len);
-		parse_html_attrs(t, padded, attr_len + 1, accum);
-		free(padded);
+		ThreadBuf *tmp = wiki_thread_buf_acquire_scratch();
+		if(!tmp) {
+			log_fatal("build_html_attrs: failed to acquire scratch");
+			abort();
+		}
+		wiki_thread_buf_reserve(tmp, attr_len + 2);
+		tmp->buf[0]= ' ';
+		memcpy(tmp->buf + 1, attr_str, attr_len);
+		tmp->len = attr_len + 1;
+		parse_html_attrs(t, tmp->buf, tmp->len, accum);
+		wiki_thread_buf_release_scratch(tmp);
 	} else {
 		parse_html_attrs(t, attr_str, attr_len, accum);
 	}
@@ -267,23 +273,19 @@ void parse_html(ThreadBuf *tb, const ParserConfig *cfg, Accum *accum) {
 	pcre2_match_data *md= pcre2_match_data_create_from_pattern(re, NULL);
 	if(!md) return;
 
-	size_t out_cap= tb->len * 2 + 64;
-	char *out_buf= malloc(out_cap);
-	assert(out_buf);
-	size_t out_len= 0;
+	ThreadBuf *out_tb = wiki_thread_buf_acquire_scratch();
+	if(!out_tb) {
+		log_fatal("parse_html: failed to acquire scratch");
+		abort();
+	}
+	wiki_thread_buf_reserve(out_tb, tb->len * 2 + 64);
+	out_tb->len = 0;
 
 	const char *buf= tb->buf;
 	size_t len= tb->len;
 	size_t pos= 0;
 
-#define ENSURE_CAP(need)                  \
-	do {                                    \
-		while(out_len + (need) >= out_cap) {  \
-			out_cap*= 2;                        \
-			out_buf= realloc(out_buf, out_cap); \
-			assert(out_buf);                    \
-		}                                     \
-	} while(0)
+#define ENSURE_OUT_CAP(need) wiki_thread_buf_reserve(out_tb, out_tb->len + (need))
 
 	while(pos < len) {
 		/* find next '<' */
@@ -291,17 +293,17 @@ void parse_html(ThreadBuf *tb, const ParserConfig *cfg, Accum *accum) {
 		const char *lt= sz_find_byte(buf + pos, len - pos, &needle_lt);
 		if(!lt) {
 			size_t rest= len - pos;
-			ENSURE_CAP(rest + 1);
-			memcpy(out_buf + out_len, buf + pos, rest);
-			out_len+= rest;
+			ENSURE_OUT_CAP(rest + 1);
+			memcpy(out_tb->buf + out_tb->len, buf + pos, rest);
+			out_tb->len+= rest;
 			break;
 		}
 
 		/* copy text before '<' */
 		size_t before= (size_t)(lt - (buf + pos));
-		ENSURE_CAP(before + 1);
-		memcpy(out_buf + out_len, buf + pos, before);
-		out_len+= before;
+		ENSURE_OUT_CAP(before + 1);
+		memcpy(out_tb->buf + out_tb->len, buf + pos, before);
+		out_tb->len+= before;
 
 		/* define segment between this '<' and the next '<' (or end) */
 		const char *seg_start= lt + 1;
@@ -312,49 +314,49 @@ void parse_html(ThreadBuf *tb, const ParserConfig *cfg, Accum *accum) {
 
 		/* Try to match the HTML tag pattern against the segment */
 		int rc= pcre2_match(re, (PCRE2_SPTR)seg_start, seg_len, 0, 0, md, NULL);
-		if(rc <= 0) {
-			/* No match — emit literally: '<' + segment */
-			ENSURE_CAP(1 + seg_len + 1);
-			out_buf[out_len++]= '<';
-			if(seg_len > 0) {
-				memcpy(out_buf + out_len, seg_start, seg_len);
-				out_len+= seg_len;
-			}
-		} else {
+			if(rc <= 0) {
+				/* No match — emit literally: '<' + segment */
+				ENSURE_OUT_CAP(1 + seg_len + 1);
+				out_tb->buf[out_tb->len++]= '<';
+				if(seg_len > 0) {
+					memcpy(out_tb->buf + out_tb->len, seg_start, seg_len);
+					out_tb->len+= seg_len;
+				}
+			} else {
 			PCRE2_SIZE *ov= pcre2_get_ovector_pointer(md);
 			/* ov mapping: [0]=match start, [1]=match end, [2]=g1start, [3]=g1end, [4]=g2start (name), [5]=g2end, [6]=g3start (params), [7]=g3end, [8]=g4start (brace), [9]=g4end, [10]=g5start (rest), [11]=g5end */
 
 			bool has_name= (ov[4] != PCRE2_UNSET && ov[5] != PCRE2_UNSET && ov[5] > ov[4]);
 			if(!has_name) {
 				/* fallback — emit raw */
-				ENSURE_CAP(1 + seg_len + 1);
-				out_buf[out_len++]= '<';
+				ENSURE_OUT_CAP(1 + seg_len + 1);
+				out_tb->buf[out_tb->len++]= '<';
 				if(seg_len > 0) {
-					memcpy(out_buf + out_len, seg_start, seg_len);
-					out_len+= seg_len;
+					memcpy(out_tb->buf + out_tb->len, seg_start, seg_len);
+					out_tb->len+= seg_len;
 				}
 			} else {
 				const char *name_ptr= seg_start + ov[4];
 				size_t name_len= (size_t)(ov[5] - ov[4]);
 				char *lcname= str_trim_lc(name_ptr, name_len);
 				if(!lcname) { /* fallback */
-					ENSURE_CAP(1 + seg_len + 1);
-					out_buf[out_len++]= '<';
+					ENSURE_OUT_CAP(1 + seg_len + 1);
+					out_tb->buf[out_tb->len++]= '<';
 					if(seg_len > 0) {
-						memcpy(out_buf + out_len, seg_start, seg_len);
-						out_len+= seg_len;
+						memcpy(out_tb->buf + out_tb->len, seg_start, seg_len);
+						out_tb->len+= seg_len;
 					}
 				} else {
-					if(!html_tag_allowed(cfg, lcname)) {
-						/* unknown tag — emit raw */
-						ENSURE_CAP(1 + seg_len + 1);
-						out_buf[out_len++]= '<';
-						if(seg_len > 0) {
-							memcpy(out_buf + out_len, seg_start, seg_len);
-							out_len+= seg_len;
-						}
-						free(lcname);
-					} else {
+						if(!html_tag_allowed(cfg, lcname)) {
+							/* unknown tag — emit raw */
+							ENSURE_OUT_CAP(1 + seg_len + 1);
+							out_tb->buf[out_tb->len++]= '<';
+							if(seg_len > 0) {
+								memcpy(out_tb->buf + out_tb->len, seg_start, seg_len);
+								out_tb->len+= seg_len;
+							}
+							free(lcname);
+						} else {
 						/* Allowed tag — build attrs token then html token and emit sentinel */
 						size_t saved_accum= accum->count;
 
@@ -379,14 +381,14 @@ void parse_html(ThreadBuf *tb, const ParserConfig *cfg, Accum *accum) {
 							reject= !(has_itemprop && has_required);
 						}
 
-						if(reject) {
+							if(reject) {
 							/* Revert accumulator and free dropped tokens. */
 							accum_rollback_shallow(accum, saved_accum);
-							ENSURE_CAP(1 + seg_len + 1);
-							out_buf[out_len++]= '<';
+							ENSURE_OUT_CAP(1 + seg_len + 1);
+							out_tb->buf[out_tb->len++]= '<';
 							if(seg_len > 0) {
-								memcpy(out_buf + out_len, seg_start, seg_len);
-								out_len+= seg_len;
+								memcpy(out_tb->buf + out_tb->len, seg_start, seg_len);
+								out_tb->len+= seg_len;
 							}
 							free(lcname);
 						} else {
@@ -408,12 +410,12 @@ void parse_html(ThreadBuf *tb, const ParserConfig *cfg, Accum *accum) {
 							size_t sent_len= 0;
 							work_str_sentinel(html_idx, 'x', sent_buf, &sent_len);
 
-							ENSURE_CAP(sent_len + rest_len + 1);
-							memcpy(out_buf + out_len, sent_buf, sent_len);
-							out_len+= sent_len;
+							ENSURE_OUT_CAP(sent_len + rest_len + 1);
+							memcpy(out_tb->buf + out_tb->len, sent_buf, sent_len);
+							out_tb->len+= sent_len;
 							if(rest_len > 0) {
-								memcpy(out_buf + out_len, rest_ptr, rest_len);
-								out_len+= rest_len;
+								memcpy(out_tb->buf + out_tb->len, rest_ptr, rest_len);
+								out_tb->len+= rest_len;
 							}
 
 							/* Now create HtmlToken and push it (matching JS order) */
@@ -458,10 +460,10 @@ void parse_html(ThreadBuf *tb, const ParserConfig *cfg, Accum *accum) {
 		pos= (size_t)(seg_start - buf) + seg_len;
 	}
 
-	ENSURE_CAP(1);
-	out_buf[out_len]= '\0';
-	wiki_thread_buf_set(tb, out_buf, out_len);
-	free(out_buf);
+	ENSURE_OUT_CAP(1);
+	out_tb->buf[out_tb->len]= '\0';
+	wiki_thread_buf_set(tb, out_tb->buf, out_tb->len);
+	wiki_thread_buf_release_scratch(out_tb);
 
 	pcre2_match_data_free(md);
 }
