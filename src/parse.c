@@ -345,48 +345,28 @@ static void parse_list_skip_first_line(ThreadBuf *scratch, const ParserConfig *c
  	const char *rest = orig_buf + prefix_len;
 
  	ThreadBuf *tmp = wiki_thread_buf_acquire_scratch();
- 	if(tmp) {
- 		/* Copy prefix into tmp, then parse the rest into `scratch` and append. */
- 		wiki_thread_buf_reserve(tmp, prefix_len + rest_len + 1);
- 		sz_copy(tmp->buf, orig_buf, prefix_len);
- 		tmp->len = prefix_len;
-
- 		wiki_thread_buf_set(scratch, rest, rest_len);
- 		parse_list(scratch, cfg, accum);
-
- 		/* Ensure tmp can hold prefix + processed-rest and append. */
- 		wiki_thread_buf_reserve(tmp, prefix_len + scratch->len + 1);
- 		sz_copy(tmp->buf + prefix_len, scratch->buf, scratch->len);
- 		tmp->len = prefix_len + scratch->len;
- 		tmp->buf[tmp->len] = '\0';
-
- 		wiki_thread_buf_set(scratch, tmp->buf, tmp->len);
- 		wiki_thread_buf_release_scratch(tmp);
- 		return;
+ 	if(!tmp) {
+ 		log_fatal("parse_list_skip_first_line: failed to acquire scratch");
+ 		abort();
  	}
 
- 	/* Fallback: original heap-based behavior */
- 	char *prefix = malloc(prefix_len + 1);
- 	if(!prefix) return;
- 	sz_copy(prefix, orig_buf, prefix_len);
- 	prefix[prefix_len] = '\0';
+	/* Copy prefix into tmp, then parse the rest into `scratch` and append. */
+	wiki_thread_buf_reserve(tmp, prefix_len + rest_len + 1);
+	sz_copy(tmp->buf, orig_buf, prefix_len);
+	tmp->len = prefix_len;
 
- 	wiki_thread_buf_set(scratch, rest, rest_len);
- 	parse_list(scratch, cfg, accum);
+	wiki_thread_buf_set(scratch, rest, rest_len);
+	parse_list(scratch, cfg, accum);
 
- 	size_t out_len= prefix_len + scratch->len;
- 	char *out= malloc(out_len + 1);
- 	if(!out) {
- 		free(prefix);
- 		return;
- 	}
- 	sz_copy(out, prefix, prefix_len);
- 	sz_copy(out + prefix_len, scratch->buf, scratch->len);
- 	out[out_len]= '\0';
+	/* Ensure tmp can hold prefix + processed-rest and append. */
+	wiki_thread_buf_reserve(tmp, prefix_len + scratch->len + 1);
+	sz_copy(tmp->buf + prefix_len, scratch->buf, scratch->len);
+	tmp->len = prefix_len + scratch->len;
+	tmp->buf[tmp->len] = '\0';
 
- 	wiki_thread_buf_set(scratch, out, out_len);
- 	free(out);
- 	free(prefix);
+	wiki_thread_buf_set(scratch, tmp->buf, tmp->len);
+	wiki_thread_buf_release_scratch(tmp);
+	return;
 }
 
 static bool should_postprocess_plain(const Token *t) {
@@ -711,48 +691,9 @@ static void postprocess_gallery_ext_inner(Token *t, const ParserConfig *cfg, Acc
 		return;
 	}
 
-	/* Fallback to heap-based assembly */
-	char *src= malloc(src_len + 1);
-	if(!src) return;
-	size_t pos= 0;
-	for(size_t i= 0; i < t->child_count; i++) {
-		sz_copy(src + pos, t->children[i].text, t->children[i].text_len);
-		pos+= t->children[i].text_len;
-	}
-	src[src_len]= '\0';
-
-	for(size_t i= 0; i < t->child_count; i++) {
-		if(t->children[i].is_text) {
-			if(t->children[i].text_owned && t->children[i].text) free((void*)t->children[i].text);
-		}
-	}
-	t->child_count= 0;
-
-	size_t line_start= 0;
-	while(line_start < src_len) {
-		const char nl= '\n';
-		const char *eol= sz_find_byte(src + line_start, src_len - line_start, &nl);
-		size_t line_len = eol ? (size_t)(eol - (src + line_start)) : src_len - line_start;
-		const char *line_ptr= src + line_start;
-
-		Token *img= parse_gallery_image_line(line_ptr, line_len, cfg, accum, page);
-		if(img) {
-			token_append_child(t, img);
-		} else {
-			const char *view = wiki_thread_buf_append_to_tokens(line_ptr, line_len);
-			token_append_text_n(t, view, line_len);
-		}
-
-		line_start= eol ? (size_t)(eol - src) + 1 : src_len;
-	}
-
-	for(size_t i= 0; i < t->child_count; i++) {
-		if(!t->children[i].is_text && t->children[i].token) {
-			postprocess_nested_plain(t->children[i].token, cfg, accum, page);
-		}
-	}
-
-	free(src);
+	/* acquisition failure is fatal — do not fall back to heap */
+	log_fatal("postprocess_gallery_ext_inner: failed to acquire scratch");
+	abort();
 }
 
 static void postprocess_imagemap_ext_inner(Token *t, const ParserConfig *cfg, Accum *accum,
@@ -830,61 +771,9 @@ static void postprocess_imagemap_ext_inner(Token *t, const ParserConfig *cfg, Ac
 		return;
 	}
 
-	/* Fallback: heap-based assembly */
-	char *src= malloc(src_len + 1);
-	if(!src) return;
-	size_t pos= 0;
-	for(size_t i= 0; i < t->child_count; i++) {
-		sz_copy(src + pos, t->children[i].text, t->children[i].text_len);
-		pos+= t->children[i].text_len;
-	}
-	src[src_len]= '\0';
-
-	for(size_t i= 0; i < t->child_count; i++) {
-		if(t->children[i].is_text) {
-			if(t->children[i].text_owned && t->children[i].text) free((void*)t->children[i].text);
-		}
-	}
-	t->child_count= 0;
-
-	bool image_seen= false;
-	size_t line_start= 0;
-	while(line_start < src_len) {
-		const char nl= '\n';
-		const char *eol= sz_find_byte(src + line_start, src_len - line_start, &nl);
-		size_t line_len = eol ? (size_t)(eol - (src + line_start)) : src_len - line_start;
-		const char *line_ptr= src + line_start;
-
-		if(line_len == 0) {
-			Token *n= make_empty_noinclude(accum);
-			if(n) token_append_child(t, n);
-		} else {
-			Token *tok= NULL;
-			if(!image_seen) {
-				tok= parse_imagemap_image_line(line_ptr, line_len, cfg, accum, page);
-				if(tok) image_seen= true;
-			}
-			if(!tok) {
-				tok= parse_imagemap_link_line(line_ptr, line_len, cfg, accum, page);
-			}
-			if(tok) {
-				token_append_child(t, tok);
-			} else {
-				const char *view = wiki_thread_buf_append_to_tokens(line_ptr, line_len);
-				token_append_text_n(t, view, line_len);
-			}
-		}
-
-		line_start= eol ? (size_t)(eol - src) + 1 : src_len;
-	}
-
-	for(size_t i= 0; i < t->child_count; i++) {
-		if(!t->children[i].is_text && t->children[i].token) {
-			postprocess_nested_plain(t->children[i].token, cfg, accum, page);
-		}
-	}
-
-	free(src);
+	/* acquisition failure is fatal — do not fall back to heap */
+	log_fatal("postprocess_imagemap_ext_inner: failed to acquire scratch");
+	abort();
 }
 
 static void run_nested_plain_pipeline(ThreadBuf *scratch,
@@ -1085,137 +974,9 @@ static void postprocess_nested_plain(Token *t, const ParserConfig *cfg, Accum *a
 						wiki_thread_buf_release_scratch(tmp_ser);
 					}
 				}
-				/* Heap fallback: mirror original behavior using malloc'd ser. */
-				size_t ser_cap_h= txt_len + 64;
-				char *ser= malloc(ser_cap_h);
-				if(ser) {
-					size_t ser_len= 0;
-					bool serializable= true;
-
-					for(size_t i= 0; i < t->child_count; i++) {
-						Child cur= t->children[i];
-						if(cur.is_text) {
-							while(ser_len + cur.text_len + 1 >= ser_cap_h) {
-								ser_cap_h*= 2;
-								char *grown= realloc(ser, ser_cap_h);
-								if(!grown) {
-									serializable= false;
-									break;
-								}
-								ser= grown;
-							}
-							if(!serializable) break;
-							sz_copy(ser + ser_len, cur.text, cur.text_len);
-							ser_len+= cur.text_len;
-							continue;
-						}
-
-						Token *ctok= cur.token;
-						size_t tok_idx= SIZE_MAX;
-						for(size_t ai= 0; ai < accum->count; ai++) {
-							if(accum->tokens[ai] == ctok) {
-								tok_idx= ai;
-								break;
-							}
-						}
-						char sym= token_sentinel_char(ctok ? ctok->type : TOKEN_TEXT);
-						if(tok_idx == SIZE_MAX || sym == '\0') {
-							serializable= false;
-							break;
-						}
-
-						char marker[64];
-						size_t mlen= 0;
-						work_str_sentinel(tok_idx, sym, marker, &mlen);
-
-						while(ser_len + mlen + 1 >= ser_cap_h) {
-							ser_cap_h*= 2;
-							char *grown= realloc(ser, ser_cap_h);
-							if(!grown) {
-								serializable= false;
-								break;
-							}
-							ser= grown;
-						}
-						if(!serializable) break;
-						sz_copy(ser + ser_len, marker, mlen);
-						ser_len+= mlen;
-					}
-
-					if(serializable) {
-						ThreadBuf *tmp_tb = wiki_thread_buf_acquire_scratch_from_data(ser, ser_len);
-						if(!tmp_tb) {
-							/* Fallback to existing scratch if tmp acquisition fails */
-							wiki_thread_buf_set(scratch, ser, ser_len);
-							run_nested_plain_pipeline(scratch, is_td_inner, is_ext_inner, is_heading_title, t, cfg, accum, page);
-
-							Token *tmp= token_new(TOKEN_PLAIN, t->type_name);
-							if(tmp) {
-								build_from_str(tmp, scratch->buf, scratch->len, accum);
-								build_token_recursive(tmp, accum, cfg);
-
-								for(size_t i= 0; i < t->child_count; i++) {
-									if(t->children[i].is_text && t->children[i].text_owned && t->children[i].text) free((void*)t->children[i].text);
-								}
-								free(t->children);
-
-								t->children= tmp->children;
-								t->child_count= tmp->child_count;
-								t->child_cap= tmp->child_cap;
-
-								tmp->children= NULL;
-								tmp->child_count= 0;
-								tmp->child_cap= 0;
-								token_free_shallow(tmp);
-
-								for(size_t i= 0; i < t->child_count; i++) {
-									if(!t->children[i].is_text && t->children[i].token) {
-										postprocess_nested_plain(t->children[i].token, cfg, accum, page);
-									}
-								}
-
-								free(ser);
-								wiki_thread_buf_release_scratch(scratch);
-								return;
-							}
-						else {
-							run_nested_plain_pipeline(tmp_tb, is_td_inner, is_ext_inner, is_heading_title, t, cfg, accum, page);
-
-							Token *tmp= token_new(TOKEN_PLAIN, t->type_name);
-							if(tmp) {
-								build_from_str(tmp, tmp_tb->buf, tmp_tb->len, accum);
-								build_token_recursive(tmp, accum, cfg);
-
-								for(size_t i= 0; i < t->child_count; i++) {
-									if(t->children[i].is_text && t->children[i].text_owned && t->children[i].text) free((void*)t->children[i].text);
-								}
-								free(t->children);
-
-								t->children= tmp->children;
-								t->child_count= tmp->child_count;
-								t->child_cap= tmp->child_cap;
-
-								tmp->children= NULL;
-								tmp->child_count= 0;
-								tmp->child_cap= 0;
-								token_free_shallow(tmp);
-
-								for(size_t i= 0; i < t->child_count; i++) {
-									if(!t->children[i].is_text && t->children[i].token) {
-										postprocess_nested_plain(t->children[i].token, cfg, accum, page);
-									}
-								}
-
-								free(ser);
-								wiki_thread_buf_release_scratch(tmp_tb);
-								wiki_thread_buf_release_scratch(scratch);
-								return;
-							}
-						}
-						wiki_thread_buf_release_scratch(tmp_tb);
-						}
-					}
-					free(ser);
+				/* acquisition failure is fatal — do not fall back to heap */
+				log_fatal("postprocess_nested_plain: failed to acquire scratch for serializing");
+				abort();
 				}
 			}
 
@@ -1246,15 +1007,13 @@ static void postprocess_nested_plain(Token *t, const ParserConfig *cfg, Accum *a
 			size_t cur_len= cur.text_len;
 			ThreadBuf *tmp_tb = wiki_thread_buf_acquire_scratch_from_data(txt, cur_len);
 			if(!tmp_tb) {
-				/* fallback to using the existing scratch if acquisition fails */
-				wiki_thread_buf_set(scratch, txt, cur_len);
-				run_nested_plain_pipeline(scratch, is_td_inner, is_ext_inner, is_heading_title, t, cfg, accum, page);
-			} else {
-				run_nested_plain_pipeline(tmp_tb, is_td_inner, is_ext_inner, is_heading_title, t, cfg, accum, page);
+				log_fatal("postprocess_nested_plain: failed to acquire scratch for fragment");
+				abort();
 			}
+			run_nested_plain_pipeline(tmp_tb, is_td_inner, is_ext_inner, is_heading_title, t, cfg, accum, page);
 
-			const char *used_buf = tmp_tb ? tmp_tb->buf : scratch->buf;
-			size_t used_len = tmp_tb ? tmp_tb->len : scratch->len;
+			const char *used_buf = tmp_tb->buf;
+			size_t used_len = tmp_tb->len;
 			bool unchanged = (used_len == cur_len && sz_equal(used_buf, txt, cur_len));
 			const char _zn1 = '\0';
 			bool has_marker = sz_find_byte(used_buf, used_len, &_zn1) != NULL;
