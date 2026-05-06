@@ -29,6 +29,7 @@ build/
 build_ubsan/
 build_tsan/
 build_asan/
+build_profile/
 dist/
 # Keep the new-js mirror checked in for parser parity work.
 !new-js/dist/

@@ -327,3 +327,29 @@ for stage in "${!JS_STAGE_FILES[@]}"; do
   echo "Written: $out"
 done
 ```
+
+**Profiling wikitext_c**
+
+- **Tooling:** `perf` (recommended), `valgrind` (callgrind), `gprof` (fallback).
+- **Script:** `scripts/profile_wikitext.sh` — builds with profiling flags and runs the chosen profiler.
+
+- **Quick start:** clone FlameGraph (optional) and run the helper:
+
+```bash
+# clone FlameGraph for flamegraph generation (optional)
+git clone https://github.com/brendangregg/FlameGraph FlameGraph
+
+# run perf (default — may require sudo)
+sudo ./scripts/profile_wikitext.sh --perf --config node_modules/wikiparser-node/config/enwiki.json --testsdir tests/wikitext
+
+# run Valgrind Callgrind (very slow, detailed)
+./scripts/profile_wikitext.sh --callgrind --config node_modules/wikiparser-node/config/enwiki.json --testsdir tests/wikitext
+
+# run gprof
+./scripts/profile_wikitext.sh --gprof --config node_modules/wikiparser-node/config/enwiki.json --testsdir tests/wikitext
+```
+
+- **Interpretation:** Start with the flamegraph to find heavy call stacks. For hotspots, run Callgrind on a smaller reproducer to inspect callers/callees in detail (open `callgrind.out` with `kcachegrind`). Use `perf report` and `perf script` for quick sampling summaries.
+
+Notes: the helper script creates/uses `build_profile/` — you can delete it after profiling. Ensure `perf`, `valgrind`, and `gprof` are installed as needed.
+
