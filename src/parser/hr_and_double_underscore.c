@@ -156,10 +156,15 @@ static char *build_hr_and_dunder_pattern(const ParserConfig *cfg) {
 }
 
 static pcre2_code *compile_regex(const ParserConfig *cfg) {
-	char *pattern= build_hr_and_dunder_pattern(cfg);
-	pcre2_code *re = pcre_cache_get(pattern, PCRE2_UTF | PCRE2_MULTILINE | PCRE2_CASELESS);
-	free(pattern);
-	return re;
+	/* Lazily build and cache the HR / double-underscore pattern string
+	 * in the ParserConfig to avoid per-parse realloc/snprintf work. */
+	const char *pattern = cfg->pattern_hr_and_dunder;
+	if(!pattern || !pattern[0]) {
+		char *pat = build_hr_and_dunder_pattern(cfg);
+		((ParserConfig *)cfg)->pattern_hr_and_dunder = pat;
+		pattern = pat;
+	}
+	return pcre_cache_get(pattern, PCRE2_UTF | PCRE2_MULTILINE | PCRE2_CASELESS);
 }
 
 void parse_hr_and_double_underscore(ThreadBuf *tb, const ParserConfig *cfg, Accum *accum,

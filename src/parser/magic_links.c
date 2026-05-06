@@ -67,60 +67,45 @@ static const char s_magic_pat[]=
  * First tries the Unicode-aware pattern (PCRE2_UTF|PCRE2_UCP) using cfg->protocol.
  * Falls back to simpler pattern (no \p{}) if compilation fails. */
 static pcre2_code *compile_magic_regex(const ParserConfig *cfg) {
-	if(!(cfg && cfg->protocol && cfg->protocol[0])) {
-		return NULL;
+	if(!(cfg && cfg->protocol && cfg->protocol[0])) return NULL;
+
+	static int s_has_unicode = -1;
+	if(s_has_unicode < 0) {
+		int val = 0;
+		s_has_unicode = (pcre2_config(PCRE2_CONFIG_UNICODE, &val) == 0 && val != 0) ? 1 : 0;
 	}
-	const char *proto= cfg->protocol;
 
-	/* Size: fixed template + dynamic proto + static fragments */
-	size_t pat_cap= 128 + strlen(proto) + strlen(s_ext_char_first) + strlen(s_ext_char) + strlen(s_magic_pat) + 3 * sizeof(ZS_CLASS) /* ZS_CLASS appears multiple times above */
-									+ 1;
-	char *pattern= malloc(pat_cap);
-	assert(pattern);
-
-	/*
-     * JS try-branch:
-     *   (^|[^\p{L}\p{N}_])(?:(?:PROTO)(extUrlCharFirst extUrlChar)|magicLinkPattern)
-     */
-	snprintf(pattern, pat_cap,
+	/* Lazily build and cache the magic-links pattern string in ParserConfig. */
+	if(!cfg->pattern_magic_links || !cfg->pattern_magic_links[0]) {
+		const char *proto = cfg->protocol;
+		if(s_has_unicode) {
+			size_t pat_cap = 128 + strlen(proto) + strlen(s_ext_char_first) + strlen(s_ext_char) + strlen(s_magic_pat) + 3 * sizeof(ZS_CLASS) + 1;
+			char *pattern = malloc(pat_cap);
+			assert(pattern);
+			snprintf(pattern, pat_cap,
 					 "(^|[^\\p{L}\\p{N}_])(?:(?:%s)(%s%s)|%s)",
 					 proto, s_ext_char_first, s_ext_char, s_magic_pat);
-
-	PCRE2_SIZE err_offset;
-	int err_code;
-
-	/* Test compile using Unicode properties — if supported, use cached Unicode pattern. */
-	pcre2_code *test_re = pcre2_compile((PCRE2_SPTR)pattern, PCRE2_ZERO_TERMINATED,
-										PCRE2_CASELESS | PCRE2_UTF | PCRE2_UCP,
-										&err_code, &err_offset, NULL);
-	if(test_re) {
-		pcre2_code_free(test_re);
-		pcre2_code *re = pcre_cache_get(pattern, PCRE2_CASELESS | PCRE2_UTF | PCRE2_UCP);
-		free(pattern);
-		return re;
+			((ParserConfig *)cfg)->pattern_magic_links = pattern;
+		} else {
+			const char *magic_ascii=
+				"(?:RFC|PMID)[\\s\\t]+\\d+\\b"
+				"|ISBN[\\s\\t]+(?:97[89][\\s\\t-]?)?(?:\\d[\\s\\t-]?){9}[\\dx]\\b";
+			const char *ext_first_ascii= "(?:\\[[\\da-f:.]+\\]|[^\\[\\]<>\"\\s])";
+			const char *ext_char_ascii= "(?:[^\\[\\]<>\"\\x00\\s]|\\x00\\d+[cn!~]\\x7F)*";
+			size_t pat_cap = 64 + strlen(proto) + strlen(ext_first_ascii) + strlen(ext_char_ascii) + strlen(magic_ascii) + 1;
+			char *pattern = malloc(pat_cap);
+			assert(pattern);
+			snprintf(pattern, pat_cap,
+					 "(^|\\W)(?:(?:%s)(%s%s)|%s)",
+					 proto, ext_first_ascii, ext_char_ascii, magic_ascii);
+			((ParserConfig *)cfg)->pattern_magic_links = pattern;
+		}
 	}
 
-	/* Fallback: ASCII-only pattern (no Unicode properties) */
-	const char *magic_ascii=
-		"(?:RFC|PMID)[\\s\\t]+\\d+\\b"
-		"|ISBN[\\s\\t]+(?:97[89][\\s\\t-]?)?(?:\\d[\\s\\t-]?){9}[\\dx]\\b";
-
-	const char *ext_first_ascii= "(?:\\[[\\da-f:.]+\\]|[^\\[\\]<>\"\\s])";
-	const char *ext_char_ascii= "(?:[^\\[\\]<>\"\\x00\\s]|\\x00\\d+[cn!~]\\x7F)*";
-
-	size_t fb_cap= 64 + strlen(proto) + strlen(ext_first_ascii) + strlen(ext_char_ascii) + strlen(magic_ascii) + 1;
-	if(fb_cap > pat_cap) {
-		pattern= realloc(pattern, fb_cap);
-		assert(pattern);
-		pat_cap= fb_cap;
+	if(s_has_unicode) {
+		return pcre_cache_get(cfg->pattern_magic_links, PCRE2_CASELESS | PCRE2_UTF | PCRE2_UCP);
 	}
-	snprintf(pattern, pat_cap,
-			 "(^|\\W)(?:(?:%s)(%s%s)|%s)",
-			 proto, ext_first_ascii, ext_char_ascii, magic_ascii);
-
-	pcre2_code *re = pcre_cache_get(pattern, PCRE2_CASELESS);
-	free(pattern);
-	return re;
+	return pcre_cache_get(cfg->pattern_magic_links, PCRE2_CASELESS);
 }
 
 /* Build a MagicLinkToken and push to accum. */

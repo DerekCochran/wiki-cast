@@ -142,6 +142,7 @@ typedef struct Token {
     TokenData  data;        /* per-type payload */
 
     /* parsing state */
+    unsigned   seen_epoch; /* scratch mark for graph freeing (updated by token_free) */
     int        stage;       /* last parseOnce stage executed */
     bool       include;     /* includeOnly mode */
     bool       built;       /* build() has been called */

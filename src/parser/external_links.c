@@ -56,58 +56,34 @@ static pcre2_code *compile_external_links_regex(const ParserConfig *cfg) {
 	if(!(cfg && cfg->protocol && cfg->protocol[0])) {
 		return NULL;
 	}
-	const char *proto= cfg->protocol;
 
-	/* Compute required buffer size.
-     * ZS_CLASS appears 3 extra times in the format string (lookahead + space group x2),
-     * each ~60 chars; add generous headroom. */
-	size_t cap= 512 + strlen(proto) + strlen(s_ext_char_first) + strlen(s_ext_char) + 3 * sizeof(ZS_CLASS) /* 3 inline occurrences in format string */
-							+ 1;
-	char *pat= malloc(cap);
-	if(!pat) return NULL;
+	/* Lazily build and cache the external-links pattern string in cfg. */
+	if(!cfg->pattern_external_links || !cfg->pattern_external_links[0]) {
+		const char *proto= cfg->protocol;
+		size_t cap= 512 + strlen(proto) + strlen(s_ext_char_first) + strlen(s_ext_char) + 3 * sizeof(ZS_CLASS) + 1;
+		char *pat= malloc(cap);
+		if(!pat) return NULL;
 
-	/*
-     * \[(GROUP1)(GROUP2)(GROUP3)\]
-     *
-     * GROUP1 (url):
-     *   (?:\x00\d+[cn]\x7F)*
-     *   (?:
-     *     \x00\d+f\x7F
-     *     |
-     *     (?:(?:PROTO|//)EXT_FIRST|\x00\d+m\x7F)EXT_CHAR
-     *     (?=[\[\]<>"\t ZS]|\x00\d)
-     *   )
-     *
-     * GROUP2 (space):
-     *   [ZS]*(?![ZS])
-     *
-     * GROUP3 (text):
-     *   [^\]\x01-\x08\x0A-\x1F\x{FFFD}]*
-     */
-	snprintf(pat, cap,
-					 /* opening bracket */
-					 "\\["
-					 /* group 1: url */
-					 "("
-					 "(?:\\x00\\d+[cn]\\x7F)*"
-					 "(?:"
-					 "\\x00\\d+f\\x7F"
-					 "|"
-					 "(?:(?:%s|//)%s|\\x00\\d+m\\x7F)%s"
-					 "(?=[\\[\\]<>\"\\t" ZS_CLASS "]|\\x00\\d)"
-					 ")"
-					 ")"
-					 /* group 2: space */
-					 "([" ZS_CLASS "]*(?![" ZS_CLASS "]))"
-					 /* group 3: text */
-					 "([^\\]\\x01-\\x08\\x0A-\\x1F\\x{FFFD}]*)"
-					 /* closing bracket */
-					 "\\]",
-					 proto, s_ext_char_first, s_ext_char);
+		snprintf(pat, cap,
+				 "\\["
+				 "("
+				 "(?:\\x00\\d+[cn]\\x7F)*"
+				 "(?:"
+				 "\\x00\\d+f\\x7F"
+				 "|"
+				 "(?:(?:%s|//)%s|\\x00\\d+m\\x7F)%s"
+				 "(?=[\\[\\]<>\"\\t" ZS_CLASS "]|\\x00\\d)"
+				 ")"
+				 ")"
+				 "([" ZS_CLASS "]*(?![" ZS_CLASS "]))"
+				 "([^\\]\\x01-\\x08\\x0A-\\x1F\\x{FFFD}]*)"
+				 "\\]",
+				 proto, s_ext_char_first, s_ext_char);
 
-	pcre2_code *re = pcre_cache_get(pat, PCRE2_CASELESS | PCRE2_UTF | PCRE2_UCP);
-	free(pat);
-	return re;
+		((ParserConfig *)cfg)->pattern_external_links = pat;
+	}
+
+	return pcre_cache_get(cfg->pattern_external_links, PCRE2_CASELESS | PCRE2_UTF | PCRE2_UCP);
 }
 
 /* Build a minimal magic-link-url token (URL child of an ext-link or in-file marker).

@@ -29,7 +29,8 @@
         "../../src/td.c",
         "../../src/title.c",
         "../../src/token.c",
-        "../../src/tr.c"
+        "../../src/tr.c",
+        "../../src/util/pcre_cache.c"
       ],
       "include_dirs": [ "../../include" ],
       "libraries": [ "-lpcre2-8", "-lcjson", "-licuuc", "-licudata" ]

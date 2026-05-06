@@ -380,10 +380,15 @@ void wiki_thread_buf_reserve(ThreadBuf *tb, size_t need) {
 }
 
 ThreadBuffers *wiki_thread_buf_get(void) {
+	/* Fast path: TLS cache already populated and not finalized — skip pthread_once. */
+	ThreadBuffers *tb= g_tls_buffers;
+	if(__builtin_expect(tb != NULL && !tb->finalized, 1)) {
+		return tb;
+	}
+
 	pthread_once(&g_key_once, create_tls_key);
 	pthread_once(&g_thresholds_once, init_thresholds);
 
-	ThreadBuffers *tb= g_tls_buffers;
 	if(!tb) {
 		tb= (ThreadBuffers *)pthread_getspecific(g_tls_key);
 	}

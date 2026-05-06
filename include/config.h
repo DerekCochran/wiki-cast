@@ -90,6 +90,16 @@ typedef struct {
      * `pcre_cache` utility. Parsers should call pcre_cache_get(pattern, flags)
      * to obtain a shared compiled `pcre2_code *` rather than storing them
      * in the ParserConfig. */
+    /* Prebuilt dynamic regex pattern strings (cached here to avoid
+     * per-parse snprintf/realloc work). Built lazily by parsers and
+     * freed in `config_free`. */
+    char *pattern_redirect;
+    char *pattern_ext;                /* general ext-tags pattern */
+    char *pattern_ext_includeonly;    /* include-only variant */
+    char *pattern_hr_and_dunder;
+    char *pattern_magic_links;
+    char *pattern_external_links;
+    char *pattern_converter;
 
 } ParserConfig;
 

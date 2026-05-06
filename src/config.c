@@ -413,6 +413,15 @@ void config_free(ParserConfig *cfg) {
 	str_map_free(&cfg->img);
 	str_list_free(&cfg->excludes);
 
+	/* Free lazily-built pattern strings cached in the config */
+	if(cfg->pattern_redirect) free(cfg->pattern_redirect);
+	if(cfg->pattern_ext) free(cfg->pattern_ext);
+	if(cfg->pattern_ext_includeonly) free(cfg->pattern_ext_includeonly);
+	if(cfg->pattern_hr_and_dunder) free(cfg->pattern_hr_and_dunder);
+	if(cfg->pattern_magic_links) free(cfg->pattern_magic_links);
+	if(cfg->pattern_external_links) free(cfg->pattern_external_links);
+	if(cfg->pattern_converter) free(cfg->pattern_converter);
+
 	free(cfg);
 }
 

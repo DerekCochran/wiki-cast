@@ -1210,8 +1210,6 @@ static char braces_arg_symbol(const char *inner, size_t inner_len, const ParserC
 static void parse_simple_args(ThreadBuf *tb, const ParserConfig *cfg, Accum *accum) {
 	const char *pattern_with_lb=
 	"(?<!\\{)\\{\\{\\{((?:[^\\n{}\\[]|\\[(?!\\[)|\\n(?![\\x00]))*)\\}\\}\\}(?!\\})";
-	const char *pattern_fallback=
-	"\\{\\{\\{((?:[^\\n{}\\[]|\\[(?!\\[)|\\n(?![\\x00]))*)\\}\\}\\}(?!\\})";
 
 	pcre2_code *re = pcre_cache_get(pattern_with_lb, PCRE2_UTF);
 
@@ -1333,10 +1331,6 @@ void parse_braces(ThreadBuf *tb, const ParserConfig *cfg, Accum *accum) {
 	const char *pattern_with_lb=
 	"(?<!\\{)\\{\\{((?:[^\\n{}\\[]|\\[(?!\\[)|\\n(?![\\x00]))*)\\}\\}"
 	"|\\{\\{((?:[^\\n{}\\[]|\\[(?!\\[)|\\n(?![\\x00]))*)\\}\\}(?!\\})"
-	"|\\[\\[(?:[^\\n\\[\\]\\{]|\\n(?![\\x00]))*\\]\\]"
-	"|-\\{(?:[^\\n{}\\[]|\\[(?!\\[)|\\n(?![\\x00]))*\\}-";
-	const char *pattern_fallback=
-	"\\{\\{((?:[^\\n{}\\[]|\\[(?!\\[)|\\n(?![\\x00]))*)\\}\\}(?!\\})"
 	"|\\[\\[(?:[^\\n\\[\\]\\{]|\\n(?![\\x00]))*\\]\\]"
 	"|-\\{(?:[^\\n{}\\[]|\\[(?!\\[)|\\n(?![\\x00]))*\\}-";
 

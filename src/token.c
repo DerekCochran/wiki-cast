@@ -103,41 +103,18 @@ static void free_token_data(Token *t) {
 	}
 }
 
-typedef struct {
-	Token **items;
-	size_t count;
-	size_t cap;
-} TokenSeen;
+static void token_free_graph(Token *node, unsigned epoch) {
+	if(!node) return;
+	if(node->seen_epoch == epoch) return;
 
-static bool token_seen_contains(const TokenSeen *seen, const Token *node) {
-	for(size_t i= 0; i < seen->count; i++) {
-		if(seen->items[i] == node) return true;
-	}
-	return false;
-}
-
-static void token_seen_add(TokenSeen *seen, Token *node) {
-	if(seen->count == seen->cap) {
-		size_t nc= seen->cap ? seen->cap * 2 : 64;
-		Token **ns= realloc(seen->items, nc * sizeof(Token *));
-		assert(ns);
-		seen->items= ns;
-		seen->cap= nc;
-	}
-	seen->items[seen->count++]= node;
-}
-
-static void token_free_graph(Token *node, TokenSeen *seen) {
-	if(!node || token_seen_contains(seen, node)) return;
-
-	token_seen_add(seen, node);
+	node->seen_epoch = epoch;
 
 	for(size_t i= 0; i < node->child_count; i++) {
 		Child *c= &node->children[i];
 		if(c->is_text) {
 			if(c->text_owned && c->text) free((void*)c->text);
 		} else {
-			token_free_graph(c->token, seen);
+			token_free_graph(c->token, epoch);
 		}
 	}
 
@@ -150,10 +127,10 @@ static void token_free_graph(Token *node, TokenSeen *seen) {
 
 void token_free(Token *t) {
 	if(!t) return;
-
-	TokenSeen seen= {0};
-	token_free_graph(t, &seen);
-	free(seen.items);
+	static unsigned token_free_epoch = 1;
+	unsigned epoch = token_free_epoch++;
+	if(token_free_epoch == 0) token_free_epoch = 1;
+	token_free_graph(t, epoch);
 }
 
 void token_free_shallow(Token *t) {

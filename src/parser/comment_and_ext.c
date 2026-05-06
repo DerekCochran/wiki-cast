@@ -1198,7 +1198,6 @@ static Token *build_translate_token(const char *attr, size_t attr_len,
 }
 
 /* ── Regex compilation ───────────────────────────────────────────────────── */
-
 static pcre2_code *compile_ext_regex(const ParserConfig *cfg, bool include_only) {
 	const char *noinclude_re= include_only ? "includeonly" : "(?:no|only)include";
 	const char *include_re= include_only ? "noinclude" : "includeonly";
@@ -1211,47 +1210,52 @@ static pcre2_code *compile_ext_regex(const ParserConfig *cfg, bool include_only)
 		}
 	}
 
-	/* Build ext alternation mirroring JS newExt logic. */
-	size_t exts_cap= 64;
-	for(size_t i= 0; i < cfg->ext.count; i++) {
-		const char *e= cfg->ext.items[i];
-		if(has_translate && (strcmp(e, "translate") == 0 || strcmp(e, "tvar") == 0)) continue;
-		exts_cap+= strlen(e) + 2;
+	/* Lazily build and cache the ext-pattern (include-only vs general) */
+	char **target_pat = include_only ? &((ParserConfig *)cfg)->pattern_ext_includeonly
+									 : &((ParserConfig *)cfg)->pattern_ext;
+	if(!*target_pat || !(*target_pat)[0]) {
+		/* Build ext alternation mirroring JS newExt logic. */
+		size_t exts_cap= 64;
+		for(size_t i= 0; i < cfg->ext.count; i++) {
+			const char *e= cfg->ext.items[i];
+			if(has_translate && (strcmp(e, "translate") == 0 || strcmp(e, "tvar") == 0)) continue;
+			exts_cap+= strlen(e) + 2;
+		}
+		char *exts= malloc(exts_cap);
+		assert(exts);
+		size_t ep= 0;
+		bool first= true;
+		for(size_t i= 0; i < cfg->ext.count; i++) {
+			const char *e= cfg->ext.items[i];
+			if(has_translate && (strcmp(e, "translate") == 0 || strcmp(e, "tvar") == 0)) continue;
+			if(!first) exts[ep++]= '|';
+			size_t elen= strlen(e);
+			memcpy(exts + ep, e, elen);
+			ep+= elen;
+			first= false;
+		}
+		exts[ep]= '\0';
+
+		size_t pat_cap= 256 + exts_cap + strlen(noinclude_re) * 4 + strlen(include_re) * 4;
+		char *pattern= malloc(pat_cap);
+		assert(pattern);
+		size_t pos= 0;
+
+		pos+= (size_t)snprintf(pattern + pos, pat_cap - pos,
+							   "<!--[\\s\\S]*?(?:-->|$)"
+							   "|<%s(?:\\s[^>]*)?\\/?>|<\\/%s\\s*>"
+							   "|<(%s)(\\s[^>]*?)?(?:\\/>|>([\\s\\S]*?)<\\/(\\1\\s*)>)"
+							   "|<(%s)(\\s[^>]*?)?(?:\\/>|>([\\s\\S]*?)(?:<\\/(%s\\s*)>|$))",
+							   noinclude_re, noinclude_re,
+							   exts,
+							   include_re, include_re);
+
+		free(exts);
+
+		*target_pat = pattern;
 	}
-	char *exts= malloc(exts_cap);
-	assert(exts);
-	size_t ep= 0;
-	bool first= true;
-	for(size_t i= 0; i < cfg->ext.count; i++) {
-		const char *e= cfg->ext.items[i];
-		if(has_translate && (strcmp(e, "translate") == 0 || strcmp(e, "tvar") == 0)) continue;
-		if(!first) exts[ep++]= '|';
-		size_t elen= strlen(e);
-		memcpy(exts + ep, e, elen);
-		ep+= elen;
-		first= false;
-	}
-	exts[ep]= '\0';
 
-	size_t pat_cap= 256 + exts_cap + strlen(noinclude_re) * 4 + strlen(include_re) * 4;
-	char *pattern= malloc(pat_cap);
-	assert(pattern);
-	size_t pos= 0;
-
-	pos+= (size_t)snprintf(pattern + pos, pat_cap - pos,
-												 "<!--[\\s\\S]*?(?:-->|$)"
-												 "|<%s(?:\\s[^>]*)?\\/?>|<\\/%s\\s*>"
-												 "|<(%s)(\\s[^>]*?)?(?:\\/>|>([\\s\\S]*?)<\\/(\\1\\s*)>)"
-												 "|<(%s)(\\s[^>]*?)?(?:\\/>|>([\\s\\S]*?)(?:<\\/(%s\\s*)>|$))",
-												 noinclude_re, noinclude_re,
-												 exts,
-												 include_re, include_re);
-
-	free(exts);
-
-	pcre2_code *re = pcre_cache_get(pattern, PCRE2_CASELESS | PCRE2_UTF | PCRE2_UCP);
-	free(pattern);
-	return re;
+	return pcre_cache_get(*target_pat, PCRE2_CASELESS | PCRE2_UTF | PCRE2_UCP);
 }
 
 static pcre2_code *compile_nowiki_regex(void) {

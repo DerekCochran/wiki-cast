@@ -46,20 +46,6 @@ static char *strndup0(const char *s, size_t len) {
 	return out;
 }
 
-static char *trim_lc_n(const char *s, size_t len) {
-	size_t start= 0;
-	size_t end= len;
-	while(start < end && isspace((unsigned char)s[start])) start++;
-	while(end > start && isspace((unsigned char)s[end - 1])) end--;
-	char *out= malloc(end - start + 1);
-	if(!out) return NULL;
-	for(size_t i= start; i < end; i++) {
-		out[i - start]= (char)tolower((unsigned char)s[i]);
-	}
-	out[end - start]= '\0';
-	return out;
-}
-
 static const char *title_namespace_name(const ParserConfig *cfg, int ns) {
 	if(!cfg) return "";
 	for(size_t i= 0; i < cfg->ns_count; i++) {

@@ -270,49 +270,52 @@ static void append_regex_escaped(char **buf, size_t *cap, size_t *len, const cha
 static pcre2_code *compile_converter_split_regex(const ParserConfig *cfg) {
 	if(!cfg || cfg->variants.count == 0) return NULL;
 
-	size_t cap= 256;
-	char *pat= malloc(cap);
-	assert(pat);
-	size_t len= 0;
-
-	const char *prefix= ";(?=(?:[^;]*?=>)?\\s*(?:";
-	size_t prefix_len= strlen(prefix);
-	if(len + prefix_len + 1 > cap) {
-		cap= (len + prefix_len + 64) * 2;
-		pat= realloc(pat, cap);
+	/* Lazily build and cache converter split pattern in cfg. */
+	if(!cfg->pattern_converter || !cfg->pattern_converter[0]) {
+		size_t cap= 256;
+		char *pat= malloc(cap);
 		assert(pat);
-	}
-	memcpy(pat + len, prefix, prefix_len);
-	len+= prefix_len;
-	pat[len]= '\0';
+		size_t len= 0;
 
-	for(size_t i= 0; i < cfg->variants.count; i++) {
-		if(i > 0) {
-			if(len + 2 > cap) {
-				cap= (cap + 64) * 2;
-				pat= realloc(pat, cap);
-				assert(pat);
-			}
-			pat[len++]= '|';
-			pat[len]= '\0';
+		const char *prefix= ";(?=(?:[^;]*?=>)?\\s*(?:";
+		size_t prefix_len= strlen(prefix);
+		if(len + prefix_len + 1 > cap) {
+			cap= (len + prefix_len + 64) * 2;
+			pat= realloc(pat, cap);
+			assert(pat);
 		}
-		append_regex_escaped(&pat, &cap, &len, cfg->variants.items[i]);
+		memcpy(pat + len, prefix, prefix_len);
+		len+= prefix_len;
+		pat[len]= '\0';
+
+		for(size_t i= 0; i < cfg->variants.count; i++) {
+			if(i > 0) {
+				if(len + 2 > cap) {
+					cap= (cap + 64) * 2;
+					pat= realloc(pat, cap);
+					assert(pat);
+				}
+				pat[len++]= '|';
+				pat[len]= '\0';
+			}
+			append_regex_escaped(&pat, &cap, &len, cfg->variants.items[i]);
+		}
+
+		const char *suffix= ")\\s*:|(?:\\s|\\x00\\d+[cn]\\x7F)*$)";
+		size_t suffix_len= strlen(suffix);
+		if(len + suffix_len + 1 > cap) {
+			cap= (len + suffix_len + 64) * 2;
+			pat= realloc(pat, cap);
+			assert(pat);
+		}
+		memcpy(pat + len, suffix, suffix_len);
+		len+= suffix_len;
+		pat[len]= '\0';
+
+		((ParserConfig *)cfg)->pattern_converter = pat;
 	}
 
-	const char *suffix= ")\\s*:|(?:\\s|\\x00\\d+[cn]\\x7F)*$)";
-	size_t suffix_len= strlen(suffix);
-	if(len + suffix_len + 1 > cap) {
-		cap= (len + suffix_len + 64) * 2;
-		pat= realloc(pat, cap);
-		assert(pat);
-	}
-	memcpy(pat + len, suffix, suffix_len);
-	len+= suffix_len;
-	pat[len]= '\0';
-
-	pcre2_code *re = pcre_cache_get(pat, PCRE2_CASELESS | PCRE2_UTF);
-	free(pat);
-	return re;
+	return pcre_cache_get(cfg->pattern_converter, PCRE2_CASELESS | PCRE2_UTF);
 }
 
 void parse_converter(ThreadBuf *tb, const ParserConfig *cfg, Accum *accum) {
