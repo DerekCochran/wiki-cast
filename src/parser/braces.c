@@ -1207,6 +1207,8 @@ static char braces_arg_symbol(const char *inner, size_t inner_len, const ParserC
 
 /* Pre-pass for simple innermost {{{...}}} arguments.
  * Mirrors the JS reReplace behavior for non-nested triple-brace arguments. */
+// TODO:  Can this be changed to a Single-Pass Deterministic Finite Automaton (DFA) style lexer?
+// Or a State Machine Lexer
 static void parse_simple_args(ThreadBuf *tb, const ParserConfig *cfg, Accum *accum) {
 	const char *pattern_with_lb=
 	"(?<!\\{)\\{\\{\\{((?:[^\\n{}\\[]|\\[(?!\\[)|\\n(?![\\x00]))*)\\}\\}\\}(?!\\})";
@@ -1320,11 +1322,6 @@ void parse_braces(ThreadBuf *tb, const ParserConfig *cfg, Accum *accum) {
      * JS parity for reReplace in parser/braces.js:
      *   /(?<!\{)\{\{((?:[^\n{}[]|\[(?!\[)|\n(?![=\0]))*)\}\}
      *   |\{\{((?:[^\n{}[]|\[(?!\[)|\n(?![=\0]))*)\}\}(?!\})
-     *   |\[\[(?:[^\n[\]{]|\n(?![=\0]))*\]\]
-     *   |-\{(?:[^\n{}[]|\[(?!\[)|\n(?![=\0]))*\}-/gu
-     *
-     * Fallback (no lookbehind):
-     *   /\{\{((?:[^\n{}[]|\[(?!\[)|\n(?![=\0]))*)\}\}(?!\})
      *   |\[\[(?:[^\n[\]{]|\n(?![=\0]))*\]\]
      *   |-\{(?:[^\n{}[]|\[(?!\[)|\n(?![=\0]))*\}-/gu
      */
