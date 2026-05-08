@@ -45,10 +45,10 @@ add_library(wikitokenizer STATIC
     src/accum.c
     src/config.c
     src/string_util.c
-    src/thread_buffer.c
     src/build.c
     src/title.c
     src/parse.c
+    # Ensure this file exists at this path or update to the correct path
     src/parser/redirect.c
     src/parser/comment_and_ext.c
     src/parser/braces.c
@@ -64,6 +64,7 @@ add_library(wikitokenizer STATIC
     src/parser/list.c
     src/table_token.c
     src/tools/log.c
+    src/tools/thread_buffer.c
     src/tr.c
     src/td.c
     src/util/pcre_cache.c
