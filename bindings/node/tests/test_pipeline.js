@@ -9,6 +9,7 @@ const { newProto, nativeProto } = require('./native_token_patch');
 // This should loop through each test and fast fail on the first mismatch.
 
 const tests = [
+  `{{Short description|Minor planets found within the inner Solar System}}`,
   `<ref name="https://pt.scribd.com/document/742344591/smartproxy-cities"/>`,
   `[[Mushroom poisoning|deadly mushrooms]]`,
   `; A'''B''' : C`,
