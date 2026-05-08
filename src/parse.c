@@ -385,61 +385,7 @@ static bool ext_inner_allows_nested_parse(const char *name) {
 static void postprocess_nested_plain(Token *t, const ParserConfig *cfg, Accum *accum,
 																 const char *page);
 
-static void trim_view_local(const char **ptr, size_t *len) {
-	const char *s= *ptr;
-	size_t l= *len;
-	size_t a= 0;
-	while(a < l && isspace((unsigned char)s[a])) a++;
-	size_t b= l;
-	while(b > a && isspace((unsigned char)s[b - 1])) b--;
-	*ptr= s + a;
-	*len= b - a;
-}
-
-static int namespace_from_title(const char *title_ptr, size_t title_len, const ParserConfig *cfg) {
-	if(!title_ptr || !cfg) return 0;
-	for(size_t i= 0; i < title_len; i++) {
-		if(title_ptr[i] != ':') continue;
-		size_t pre_len= i;
-		for(size_t k= 0; k < cfg->ns_count; k++) {
-			const char *nm= cfg->namespaces[k].name;
-			if(!nm || strlen(nm) != pre_len) continue;
-			if(strncasecmp(nm, title_ptr, pre_len) == 0) {
-				return cfg->namespaces[k].num;
-			}
-		}
-		return 0;
-	}
-	return 0;
-}
-
 static void parse_quotes_stage6_per_line(ThreadBuf *ws, const ParserConfig *cfg, Accum *accum);
-
-static Token *parse_gallery_caption_fragment(const char *s, size_t len,
-																	 const ParserConfig *cfg, Accum *accum,
-																	 const char *page) {
-	if(!s) return NULL;
-
-	ThreadBuf *scratch = wiki_thread_buf_acquire_scratch_from_data(s, len);
-
-	parse_comment_and_ext(scratch, cfg, accum, false);
-	parse_braces(scratch, cfg, accum);
-	parse_html(scratch, cfg, accum);
-	parse_links(scratch, cfg, accum, page, false);
-	parse_quotes_stage6_per_line(scratch, cfg, accum);
-	parse_external_links(scratch, cfg, accum, true);
-	parse_magic_links(scratch, cfg, accum);
-
-	Token *inner= token_new(TOKEN_PLAIN, "text");
-	if(!inner) {
-		wiki_thread_buf_release_scratch(scratch);
-		return NULL;
-	}
-	build_from_str(inner, scratch->buf, scratch->len, accum);
-	build_token_recursive(inner, accum, cfg);
-	wiki_thread_buf_release_scratch(scratch);
-	return inner;
-}
 
 static Token *make_empty_noinclude(Accum *accum) {
 	Token *n= token_new(TOKEN_NOINCLUDE, "noinclude");
@@ -485,18 +431,6 @@ static Token *parse_single_link_token(const char *s, size_t len,
 	token_free_shallow(tmp);
 	wiki_thread_buf_release_scratch(scratch);
 	return out;
-}
-
-static void append_fragment_children(Token *dst, Token *frag) {
-	if(!dst || !frag) return;
-	for(size_t ci= 0; ci < frag->child_count; ci++) {
-		if(frag->children[ci].is_text) {
-			token_append_text_n(dst, frag->children[ci].text, frag->children[ci].text_len);
-		} else {
-			token_append_child(dst, frag->children[ci].token);
-			frag->children[ci].token= NULL;
-		}
-	}
 }
 
 static Token *parse_gallery_image_line(const char *line, size_t line_len,

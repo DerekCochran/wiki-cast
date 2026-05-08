@@ -1,14 +1,17 @@
 "use strict";
 const path = require('path');
 const wikiparser = require("wikiparser-node");
-const nativeProto = require(path.join(__dirname, '..', 'build', 'Release', 'wikiparser-node-c-tokenizer.node'));
+const nativeProto = require(path.join(__dirname, '..', 'build', 'Debug', 'wikiparser-node-c-tokenizer.node'));
 
 wikiparser.config = "enwiki";
+const testString = "{{Infobox person\n| name = John Doe\n| birth_date = {{Birth date|1950|1|1}}\n}}";
 const config = wikiparser.getConfig();
-const jsImpl = wikiparser.parse("{{Infobox person\n| name = John Doe\n| birth_date = {{Birth date|1950|1|1}}\n}}", {
+const jsImpl = wikiparser.parse(testString, {
     config: config
 });
-const nativeImpl = nativeProto.parse("{{Infobox person\n| name = John Doe\n| birth_date = {{Birth date|1950|1|1}}\n}}", {
+
+const testBuffer = Buffer.from(testString, 'utf-8');
+const nativeImpl = nativeProto.parse(testBuffer, {
     config: config
 });
 

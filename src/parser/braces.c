@@ -329,7 +329,6 @@ static Token *build_template_token(const char **parts_restored, const size_t *pa
 		size_t i= 0, j= cleaned_len;
 		while(i < cleaned_len && isspace((unsigned char)cleaned[i])) i++;
 		while(j > i && isspace((unsigned char)cleaned[j - 1])) j--;
-		size_t trimmed_len= (j > i) ? (j - i) : 0;
 		free(cleaned);
 		if(j <= i) {
 			token_free(t);
@@ -837,7 +836,7 @@ static bool braces_state_machine(ThreadBuf *tb, const ParserConfig *cfg,
 	assert(out);
 	size_t out_len= 0;
 	bool has_last_index= false;
-	size_t last_index= 0;
+	//size_t last_index= 0;
 
 #define ENSURE_OUT_CAP(need)             \
 	do {                                   \
@@ -898,7 +897,7 @@ static bool braces_state_machine(ThreadBuf *tb, const ParserConfig *cfg,
 		}
 
 		if(matched && syntax_len == 2 && syntax[0] == ']' && syntax[1] == ']') {
-			last_index= cur_index + 2;
+			//last_index= cur_index + 2;
 			has_last_index= true;
 			/* ]] closes a [[ link frame; preserve any non-link frame below it */
 			if(has_top && !(top.open_len >= 1 && top.open[0] == '[')) {
@@ -906,7 +905,7 @@ static bool braces_state_machine(ThreadBuf *tb, const ParserConfig *cfg,
 				top_requeued= true;
 			}
 		} else if(matched && syntax_len == 2 && syntax[0] == '}' && syntax[1] == '-') {
-			last_index= cur_index + 2;
+			//last_index= cur_index + 2;
 			has_last_index= true;
 			/* }- closes a -{ converter frame; preserve any non-converter frame below it */
 			if(has_top && !(top.open_len >= 1 && top.open[0] == '-')) {
@@ -914,7 +913,7 @@ static bool braces_state_machine(ThreadBuf *tb, const ParserConfig *cfg,
 				top_requeued= true;
 			}
 		} else if(matched && syntax_len == 1 && syntax[0] == '\n') {
-			last_index= cur_index + 1;
+			//last_index= cur_index + 1;
 			if(has_top && top.open_len == 1 && top.open[0] == '=') {
 				const char *slice= tb->buf + top.index;
 				size_t slice_len= cur_index - top.index;
@@ -1384,12 +1383,6 @@ void parse_braces(ThreadBuf *tb, const ParserConfig *cfg, Accum *accum) {
 		while(search_at <= tb->len) {
 			int rc= pcre2_match(re, (PCRE2_SPTR)subject, tb->len,
 													search_at, 0, md, NULL);
-			if(rc > 0) {
-				PCRE2_SIZE *ov= pcre2_get_ovector_pointer(md);
-				size_t ms= ov[0];
-				size_t me= ov[1];
-				size_t cap= me > ms ? me - ms : 0;
-			}
 			if(rc <= 0) {
 				if(rc < 0 && rc != PCRE2_ERROR_NOMATCH) {
 					PCRE2_UCHAR8 err_buf[256];

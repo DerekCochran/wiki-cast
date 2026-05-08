@@ -61,43 +61,6 @@ static int contains_literal_seq(const char *s, size_t len, const char *needle) {
 	return 0;
 }
 
-static size_t sentinel_len_if(const char *s, size_t len, size_t pos, char marker) {
-	if(!s || pos >= len || s[pos] != '\0') return 0;
-	size_t k= pos + 1;
-	size_t digits= 0;
-	while(k < len && s[k] >= '0' && s[k] <= '9') {
-		k++;
-		digits++;
-	}
-	if(digits == 0) return 0;
-	if(k + 1 >= len) return 0;
-	if(s[k] != marker) return 0;
-	if((unsigned char)s[k + 1] != 0x7F) return 0;
-	return (k + 2) - pos;
-}
-
-static size_t pipe_unit_len(const char *s, size_t len, size_t pos) {
-	if(!s || pos >= len) return 0;
-	if(s[pos] == '|') return 1;
-	return sentinel_len_if(s, len, pos, '!');
-}
-
-static size_t cell_sep_len(const char *s, size_t len, size_t pos, char cell_char) {
-	if(!s || pos >= len) return 0;
-
-	if(cell_char == '!' && pos + 1 < len && s[pos] == '!' && s[pos + 1] == '!') {
-		return 2;
-	}
-
-	size_t u1= pipe_unit_len(s, len, pos);
-	if(u1 > 0) {
-		size_t u2= pipe_unit_len(s, len, pos + u1);
-		if(u2 > 0) return u1 + u2;
-	}
-
-	return sentinel_len_if(s, len, pos, '+');
-}
-
 static Token *make_attr_key(const char *key, size_t key_len, Accum *accum) {
 	Token *t= token_new(TOKEN_ATTR_KEY, "attr-key");
 	if(!t) return NULL;
@@ -473,7 +436,6 @@ static void push_text_like_js(char **out_buf, size_t *out_len, size_t *out_cap,
 			if(inner->child_count > 0) {
 				Child *inner_last= &inner->children[inner->child_count - 1];
 				if(inner_last->is_text) {
-					size_t new_len= inner_last->text_len + n;
 					ThreadBuf *scratch = wiki_thread_buf_acquire_scratch();
 					wiki_thread_buf_set(scratch, inner_last->text, inner_last->text_len);
 										wiki_thread_buf_append(scratch, (sz_string_view_t){ .start = s, .length = n });
