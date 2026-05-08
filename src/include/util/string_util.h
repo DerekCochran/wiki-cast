@@ -9,7 +9,7 @@
 #include <stdbool.h>
 #include <stdint.h>
 #include "config.h"
-#include "thread_buffer.h"
+#include "util/thread_buffer.h"
 
 /* ── Sentinel marker formatting ───────────────────────────────────────────── */
 

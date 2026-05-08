@@ -24,15 +24,15 @@
         "../../src/parser/table.c",
         "../../src/string_util.c",
         "../../src/table_token.c",
-        "../../src/thread_buffer.c",
-        "../../src/tools/log.c",
         "../../src/td.c",
         "../../src/title.c",
         "../../src/token.c",
         "../../src/tr.c",
+        "../../src/util/thread_buffer.c",
+        "../../src/util/log.c",
         "../../src/util/pcre_cache.c"
       ],
-      "include_dirs": [ "../../include" ],
+      "include_dirs": [ "../../include", "../../src/include" ],
       "libraries": [ "-lpcre2-8", "-lcjson", "-licuuc", "-licudata" ]
     }
   ]

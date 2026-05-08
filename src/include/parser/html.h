@@ -10,7 +10,7 @@
 #include "token.h"
 #include "accum.h"
 #include "config.h"
-#include "../string_util.h"
+#include "util/string_util.h"
 
 /**
  * Parse HTML tags and replace allowed tags with sentinel markers.

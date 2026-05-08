@@ -12,7 +12,7 @@
 #include "parser/links.h"
 #include "parser/magic_links.h"
 #include "parser/quotes.h"
-#include "string_util.h"
+#include "util/string_util.h"
 #include "util/pcre_cache.h"
 #include "stringzilla/stringzilla.h"
 #include "title.h"

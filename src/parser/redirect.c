@@ -3,9 +3,9 @@
 
 #include "util/log.h"
 #include "parser/redirect.h"
-#include "string_util.h"
+#include "util/string_util.h"
 #include "title.h"
-#include "thread_buffer.h"
+#include "util/thread_buffer.h"
 #include "util/pcre_cache.h"
 #include <assert.h>
 #include <ctype.h>

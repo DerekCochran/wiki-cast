@@ -3,7 +3,7 @@
  *
  * See thread_buffer.h for the full design description.
  */
-#include "thread_buffer.h"
+#include "util/thread_buffer.h"
 #include "util/log.h"
 
 #include <assert.h>

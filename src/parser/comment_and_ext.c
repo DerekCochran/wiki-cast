@@ -7,8 +7,8 @@
 #include "parser/comment_and_ext.h"
 #include "parser/link.h"
 #include "parser/links.h"
-#include "string_util.h"
-#include "thread_buffer.h"
+#include "util/string_util.h"
+#include "util/thread_buffer.h"
 #include "util/pcre_cache.h"
 #include <stringzilla/stringzilla.h>
 #include <assert.h>

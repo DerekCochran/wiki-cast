@@ -4,10 +4,10 @@
 #include "accum.h"
 #include "util/log.h"
 #include "parser/html.h"
-#include "string_util.h"
+#include "util/string_util.h"
 #include <stringzilla/stringzilla.h>
 #include "token.h"
-#include "thread_buffer.h"
+#include "util/thread_buffer.h"
 #include "util/pcre_cache.h"
 #include <assert.h>
 #include <ctype.h>

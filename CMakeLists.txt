@@ -64,10 +64,10 @@ add_library(wikitokenizer STATIC
     src/parser/converter.c
     src/parser/list.c
     src/table_token.c
-    src/tools/log.c
-    src/tools/thread_buffer.c
     src/tr.c
     src/td.c
+    src/util/log.c
+    src/util/thread_buffer.c
     src/util/pcre_cache.c
     )
 

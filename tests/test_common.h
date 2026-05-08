@@ -12,7 +12,7 @@
 #include <time.h>
 #include "parse.h"
 #include "token.h"
-#include "thread_buffer.h"
+#include "util/thread_buffer.h"
 
 /* Print a unified diff between expected and got using the system diff command. */
 static bool ensure_dir(const char *path)

@@ -3,7 +3,7 @@
 
 #include "util/log.h"
 #include "parser/external_links.h"
-#include "string_util.h"
+#include "util/string_util.h"
 #include <stringzilla/stringzilla.h>
 #include "token.h"
 #include "util/pcre_cache.h"

@@ -7,7 +7,7 @@
 #include "token.h"
 #include "accum.h"
 #include "config.h"
-#include "../string_util.h"
+#include "util/string_util.h"
 #include <stdbool.h>
 
 /**

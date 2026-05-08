@@ -8,7 +8,7 @@
 #include "token.h"
 #include "accum.h"
 #include "config.h"
-#include "../string_util.h"
+#include "util/string_util.h"
 
 /**
  * Parse list markers in the working string `ws` and push created tokens

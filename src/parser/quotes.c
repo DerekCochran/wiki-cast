@@ -3,7 +3,7 @@
 
 #include "util/log.h"
 #include "parser/quotes.h"
-#include "string_util.h"
+#include "util/string_util.h"
 #include "token.h"
 #include "util/pcre_cache.h"
 #include <assert.h>
