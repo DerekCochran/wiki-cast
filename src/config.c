@@ -12,8 +12,8 @@
  *   excludes       : string[]           // absent in raw JSON; added by getConfig()
  */
 #include "config.h"
-#include "log.h"
-#include "thread_buffer.h"
+#include "util/log.h"
+#include "util/thread_buffer.h"
 #include <assert.h>
 #include <cjson/cJSON.h>
 #include <stdio.h>

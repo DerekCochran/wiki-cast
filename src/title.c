@@ -10,8 +10,8 @@
  *     && !/^:|\0\d+[eh!+-]\x7F|[<>[\]{}|\n]|%[\da-f]{2}|(?:^|\/)\.{1,2}(?:$|\/)/iu.test(sub);
  */
 #include "title.h"
-#include "string_util.h"
-#include <stringzilla/stringzilla.h>
+#include "util/string_util.h"
+#include "stringzilla/stringzilla.h"
 #include <ctype.h>
 #include <stdio.h>
 #include <stdlib.h>

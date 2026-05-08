@@ -5,9 +5,9 @@
  */
 #pragma once
 
-#include "../token.h"
-#include "../accum.h"
-#include "../config.h"
+#include "token.h"
+#include "accum.h"
+#include "config.h"
 
 /**
  * Create a LinkToken, FileToken, or CategoryToken with just the link-target child.

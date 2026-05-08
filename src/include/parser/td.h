@@ -1,7 +1,7 @@
 /* td.h — TdToken constructor helper */
 #pragma once
-#include "../token.h"
-#include "../accum.h"
+#include "token.h"
+#include "accum.h"
 
 /** Create a TdToken with given syntax, attr and inner text, push into accum, and return it.
  * syntax_len / attr_len / inner_len are byte lengths (binary-safe; may contain embedded NUL from sentinels). */

@@ -23,12 +23,12 @@
  */
 #include "build.h"
 #include "accum.h"
-#include "log.h"
-#include "string_util.h"
-#include <stringzilla/stringzilla.h>
+#include "util/log.h"
+#include "util/string_util.h"
+#include "stringzilla/stringzilla.h"
 #include "title.h"
 #include "token.h"
-#include "thread_buffer.h"
+#include "util/thread_buffer.h"
 #include <assert.h>
 #include <stdio.h>
 #include <stdlib.h>

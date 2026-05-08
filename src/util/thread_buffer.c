@@ -4,7 +4,7 @@
  * See thread_buffer.h for the full design description.
  */
 #include "thread_buffer.h"
-#include "log.h"
+#include "util/log.h"
 
 #include <assert.h>
 #include <pthread.h>

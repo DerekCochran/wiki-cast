@@ -3,7 +3,7 @@
 
 #include "accum.h"
 #include "build.h"
-#include "log.h"
+#include "util/log.h"
 #include "parser/braces.h"
 #include "parser/comment_and_ext.h"
 #include "parser/external_links.h"
@@ -14,7 +14,7 @@
 #include "parser/quotes.h"
 #include "string_util.h"
 #include "util/pcre_cache.h"
-#include <stringzilla/stringzilla.h>
+#include "stringzilla/stringzilla.h"
 #include "title.h"
 #include "token.h"
 #include <assert.h>

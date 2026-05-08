@@ -8,10 +8,10 @@
  * with sentinel markers.
  */
 #pragma once
-#include "../token.h"
-#include "../accum.h"
-#include "../config.h"
-#include "../string_util.h"
+#include "token.h"
+#include "accum.h"
+#include "config.h"
+#include "util/string_util.h"
 
 /**
  * Parse templates, args, links and -{...}- fragments.

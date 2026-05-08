@@ -25,7 +25,7 @@
 #include "accum.h"
 #include "build.h"
 #include "config.h"
-#include "log.h"
+#include "util/log.h"
 #include "parser/braces.h"
 #include "parser/converter.h"
 #include "parser/links.h"
@@ -33,8 +33,8 @@
 #include "parser/quotes.h"
 #include "parser/redirect.h"
 #include "parser/table.h"
-#include "string_util.h"
-#include "thread_buffer.h"
+#include "util/string_util.h"
+#include "util/thread_buffer.h"
 #include "token.h"
 
 /* build() is declared in build.h */

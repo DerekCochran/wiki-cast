@@ -9,7 +9,7 @@
 #include <stdbool.h>
 #include <stddef.h>
 #include <stdio.h>
-#include "thread_buffer.h"
+#include "util/thread_buffer.h"
 
 /* ── Token type enum ──────────────────────────────────────────────────────── */
 typedef enum {

@@ -2,7 +2,7 @@
 #include <pcre2.h>
 
 #include "accum.h"
-#include "log.h"
+#include "util/log.h"
 #include "parser/html.h"
 #include "string_util.h"
 #include <stringzilla/stringzilla.h>

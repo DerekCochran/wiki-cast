@@ -20,7 +20,7 @@
  * IN THE SOFTWARE.
  */
 
-#include "log.h"
+#include "util/log.h"
 
 #include <ctype.h>
 #include <pthread.h>

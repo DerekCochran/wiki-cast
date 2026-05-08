@@ -1,7 +1,7 @@
 /* tr.h — TrToken constructor helper */
 #pragma once
-#include "../token.h"
-#include "../accum.h"
+#include "token.h"
+#include "accum.h"
 
 /** Create a TrToken with given syntax and attr, push into accum, and return it.
  * syntax_len / attr_len are byte lengths and may include embedded NUL bytes.

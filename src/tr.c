@@ -1,8 +1,8 @@
 #include "parser/tr.h"
-#include "string_util.h"
+#include "util/string_util.h"
 #include "stringzilla/stringzilla.h"
 #include "token.h"
-#include "thread_buffer.h"
+#include "util/thread_buffer.h"
 #include <assert.h>
 #include <stdlib.h>
 #include <string.h>

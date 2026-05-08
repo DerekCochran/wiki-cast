@@ -1,6 +1,6 @@
 #define PCRE2_CODE_UNIT_WIDTH 8
 #include "util/pcre_cache.h"
-#include "log.h"
+#include "util/log.h"
 #include "parser/braces.h"
 #include "string_util.h"
 #include "title.h"

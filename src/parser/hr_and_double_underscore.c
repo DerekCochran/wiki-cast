@@ -1,7 +1,7 @@
 #define PCRE2_CODE_UNIT_WIDTH 8
 #include <pcre2.h>
 
-#include "log.h"
+#include "util/log.h"
 #include "parser/hr_and_double_underscore.h"
 #include "string_util.h"
 #include "thread_buffer.h"

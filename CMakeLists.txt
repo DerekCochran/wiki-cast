@@ -37,6 +37,7 @@ include_directories(
     ${CJSON_INCLUDE_DIRS}
     ${ICU_INCLUDE_DIRS}
     ${CMAKE_CURRENT_SOURCE_DIR}/include
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/include
 )
 
 # ── Library ────────────────────────────────────────────────────────────────── 

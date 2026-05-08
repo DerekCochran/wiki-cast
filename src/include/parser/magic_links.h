@@ -2,9 +2,9 @@
  * magic_links.h — Stage 8: free URLs, RFC/PMID/ISBN (parseMagicLinks)
  */
 #pragma once
-#include "../token.h"
-#include "../accum.h"
-#include "../config.h"
+#include "token.h"
+#include "accum.h"
+#include "config.h"
 #include "../string_util.h"
 
 #include <stdbool.h>

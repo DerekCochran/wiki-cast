@@ -2,10 +2,10 @@
  * quotes.h — Stage 6: bold/italic quote balancing (parseQuotes)
  */
 #pragma once
-#include "../token.h"
-#include "../accum.h"
-#include "../config.h"
-#include "../string_util.h"
+#include "token.h"
+#include "accum.h"
+#include "config.h"
+#include "util/string_util.h"
 #include <stdbool.h>
 
 /**
