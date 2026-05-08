@@ -1,0 +1,168 @@
+{{Short description|Order of dicot flowering plants}}
+{{Automatic taxobox
+| taxon = Brassicales
+| image = (MHNT) Alliaria petiolata - flowers.jpg
+| image_caption = ''[[Alliaria petiolata]]'', garlic mustard ([[Brassicaceae]])
+| authority = [[Edward Bromhead|Bromhead]]<ref name=APGIII2009>{{cite journal |last=Angiosperm Phylogeny Group |year=2009 |title=An update of the Angiosperm Phylogeny Group classification for the orders and families of flowering plants: APG III |journal=Botanical Journal of the Linnean Society |volume=161 |issue=2 |pages=105–121 |doi=10.1111/j.1095-8339.2009.00996.x |doi-access=free |hdl=10654/18083 |hdl-access=free }}</ref>
+| subdivision_ranks = Families
+| subdivision =
+* [[Akaniaceae]]
+* [[Bataceae]]
+* [[Brassicaceae]]
+* [[Capparaceae]]
+* [[Caricaceae]]
+* [[Cleomaceae]]
+* [[Emblingiaceae]]
+* [[Gyrostemonaceae]]
+* [[Koeberliniaceae]]
+* [[Limnanthaceae]]
+* [[Moringaceae]]
+* [[Pentadiplandraceae]]
+* [[Resedaceae]]
+* [[Salvadoraceae]]
+* [[Setchellanthaceae]]
+* [[Tiganophytaceae]]
+* [[Tovariaceae]]
+* [[Tropaeolaceae]]
+}}
+
+The '''Brassicales''' (or '''Cruciales''') are an [[order (biology)|order]] of flowering plants, belonging to the [[malvid]] group of [[eudicotyledon]]s under the [[APG IV]] system.<ref>{{cite journal|last=Angiosperm Phylogeny Group |year=2016 |title=An update of the Angiosperm Phylogeny Group classification for the orders and families of flowering plants: APG IV |journal=[[Botanical Journal of the Linnean Society]] |volume=181 |issue=1 |pages=1–20 |doi=10.1111/boj.12385 |doi-access=free}}</ref> Well-known members of Brassicales include [[cabbage]], [[cauliflower]], [[Brussels sprout]], [[broccoli]], [[kale]], [[Mustard_plant|mustard]], [[turnip]], [[bok choy]], [[rapeseed]], [[radish]], [[horseradish]], [[caper]], [[papaya]], [[Moringa_oleifera|moringa or drumstick tree]], [[Reseda_(plant)|mignonette]], [[Tropaeolum|nasturtium]], and [[Arabidopsis_thaliana|arabidopsis]].
+
+One character common to many members of the order is the production of [[isothiocyanate]] (mustard oil) compounds. Most systems of classification have included this order, although sometimes under the name '''Capparales''' (the name chosen depending on which is thought to have priority).<ref name="hall2002">{{cite journal |author=Jocelyn C. Hall, Kenneth J. Sytsma & Hugh H. Iltis |year=2002 |title=Phylogeny of Capparaceae and Brassicaceae based on chloroplast sequence data |journal=[[American Journal of Botany]] |volume=89 |issue=11 |pages=1826–1842 |pmid=21665611 |doi=10.3732/ajb.89.11.1826|doi-access=free |bibcode=2002AmJB...89.1826H }}</ref>
+
+The order typically contains the following families:<ref name="Haston">{{cite journal |author1=Elspeth Haston |author2=James E. Richardson |author3=Peter F. Stevens |author4=Mark W. Chase |author5=David J. Harris |year=2007 |title=A linear sequence of Angiosperm Phylogeny Group II families |journal=[[Taxon (journal)|Taxon]] |volume=56 |issue=1 |pages=7–12 |doi=10.2307/25065731 |jstor=25065731 |doi-access=free |bibcode=2007Taxon..56....7H }}</ref>
+* [[Akaniaceae]] – two species of turnipwood trees, native to Asia and eastern Australia
+* [[Bataceae]] – salt-tolerant shrubs from America and [[Australasian realm|Australasia]]
+* [[Brassicaceae]] – [[Mustard plant|mustard]] and [[cabbage]] family; may include the [[Cleomaceae]]
+* [[Capparaceae]] – [[caper]] family, sometimes included in [[Brassicaceae]]
+* [[Caricaceae]] – [[papaya]] family
+* [[Cleomaceae]]<ref name=APGIII2009 />
+* [[Emblingiaceae]]
+* [[Gyrostemonaceae]] – several genera of small shrubs and trees endemic to temperate parts of Australia
+* [[Koeberliniaceae]] – one species of thorn bush native to Mexico and the US Southwest
+* [[Limnanthaceae]] – [[meadowfoam]] family
+* [[Moringaceae]] – thirteen species of trees from Africa and India including the [[Drumstick (fruit)|drumstick]]
+* [[Pentadiplandraceae]] – African species whose berries have two highly sweet tasting proteins
+* [[Resedaceae]] – [[Mignonette (Reseda)|mignonette]] family
+* [[Salvadoraceae]] – three genera found from Africa to Java
+* [[Setchellanthaceae]]
+* [[Tiganophytaceae]]
+* [[Tovariaceae]]
+* [[Tropaeolaceae]] – [[Tropaeolum|nasturtium]] family
+
+== Classification ==
+The following diagram shows the phylogeny of the Brassicales families along with their estimated ages, based on a 2018 study of [[plastid]] DNA:<ref>{{cite journal| last1 = Edger| first1 = Patrick P.| last2 = Hall| first2 = Jocelyn C.| last3 = Harkess| first3 = Alex| last4 = Tang| first4 = Michelle| last5 = Coombs| first5 = Jill| last6 = Mohammadin| first6 = Setareh| last7 = Schranz| first7 = M. Eric| last8 = Xiong| first8 = Zhiyong| last9 = Leebens-Mack| first9 = James| last10 = Meyers| first10 = Blake C.| last11 = Sytsma| first11 = Kenneth J.| last12 = Koch| first12 = Marcus A.| last13 = Al-Shehbaz| first13 = Ihsan A.| last14 = Pires| first14 = J. Chris| date = 2018| title = Brassicales phylogeny inferred from 72 plastid genes: A reanalysis of the phylogenetic localization of two paleopolyploid events and origin of novel chemical defenses| journal = American Journal of Botany| volume = 105| issue = 3| pages = 463–69| doi = 10.1002/ajb2.1040| pmid = 29574686| doi-access = free}}</ref>
+{{cladogram
+|align=left
+|title = Brassicales families
+|caption=Phylogentic relationships based on data from [[plastid]] DNA. The numbers next to each branching point indicate its estimated date (million years ago). Families with more than 30 species are in '''bold'''.
+|cladogram=
+ {{clade
+   |label1={{sigfig|36.3|2}}
+   |1={{clade
+     |1={{clade
+        |1=[[Akaniaceae]]
+        |2='''[[Tropaeolaceae]]'''
+        }}
+      }}
+   |label2={{nbsp}}{{sigfig|92.2|2}}
+   |2={{clade
+     |label1={{nbsp}}{{sigfig|64.2|2}}
+     |1={{clade
+        |1=[[Moringaceae]]
+        |2='''[[Caricaceae]]'''
+        }}
+     |2={{clade
+        |1=[[Setchellanthaceae]]
+        |label2={{nbsp}}{{sigfig|85|2}}
+        |2={{clade
+             |1=[[Limnanthaceae]]
+             |label2={{nbsp}}{{sigfig|77.5|2}}
+             |2={{clade
+                |1={{clade
+                   |1=[[Salvadoraceae]]
+                   |2=[[Bataceae]]
+                   }}
+                |label2={{nbsp}}{{sigfig|73.2|2}}
+                |2={{clade
+                   |1=[[Koeberliniaceae]]
+                   |label2={{nbsp}}{{sigfig|66.1|2}}
+                   |2={{clade
+                      |1=[[Emblingiaceae]]
+                      |label2={{nbsp}}{{sigfig|61.2|2}}
+                      |2={{clade
+                        |label1={{nbsp}}{{sigfig|54.8|2}}
+                        |1={{clade
+                           |1=[[Pentadiplandraceae]]
+                           |label2={{nbsp}}{{sigfig|46.4|2}}
+                           |2={{clade
+                              |1='''[[Resedaceae]]'''
+                              |2=[[Gyrostemonaceae]]
+                              }}
+                           }}
+                        |2={{clade
+                           |1=[[Tovariaceae]]
+                           |label2={{nbsp}}{{sigfig|49|2}}
+                           |2={{clade
+                              |1='''[[Capparaceae]]'''
+                              |label2={{nbsp}}{{sigfig|42.8|2}}
+                              |2={{clade
+                                 |1='''[[Cleomaceae]]'''
+                                 |2='''[[Brassicaceae]]'''
+                                 }}
+                              }}
+                           }}
+                         }}
+                      }}
+                   }}
+                }}
+           }}
+        }}
+      }}
+    }}
+|width=500}}
+{{clear}}
+
+On 20 April 2020, a newly described monotypic species from [[Namibia]], namely, ''Tiganophyton karasense'' {{small|Swanepoel, F.Forest & A.E. van Wyk}} is placed under this order as a monotypic member of new family [[Tiganophytaceae]], which is closely related to [[Bataceae]], [[Salvadoraceae]] and [[Koeberliniaceae]].<ref>{{Cite journal|last1=Swanepoel|first1=Wessel|last2=Chase|first2=Mark W.|author-link2=Mark Wayne Chase|last3=Christenhusz|first3=Maarten J.M.|author-link3=Maarten J. M. Christenhusz|last4=Maurin|first4=Olivier|last5=Forest|first5=Félix|last6=van Wyk|first6=Abraham E.|author-link6=Abraham Erasmus van Wyk|year=2020|title=From the frying pan: an unusual dwarf shrub from Namibia turns out to be a new brassicalean family|journal=Phytotaxa|volume=439|number=3|pages=171–185|doi=10.11646/phytotaxa.439.3.1|doi-access=free|bibcode=2020Phytx.439..171S }}</ref>
+
+== Historic classifications ==
+Under the [[Cronquist system]], the Brassicales were called the Capparales, and included among the "[[Dilleniidae]]".  The only families included were the [[Brassicaceae]] and [[Capparaceae]] (treated as separate families), the [[Tovariaceae]], [[Resedaceae]], and [[Moringaceae]].  Other taxa now included here were placed in various other orders.
+
+The families Capparaceae and Brassicaceae are closely related.  One group, consisting of ''[[Cleome]]'' and related genera, was traditionally included in the Capparaceae but doing so results in a [[paraphyletic]] Capparaceae.<ref name="hall2002" />  Therefore, this group is generally now either included in the Brassicaceae or as its own family, [[Cleomaceae]].<ref name="Haston" /><ref>{{cite journal |author=Jocelyn C. Hall, Hugh H. Iltis & Kenneth J. Sytsma |year=2004 |title=Molecular phylogenetics of core Brassicales, placement of orphan genera ''Emblingia'', ''Forchhammeria'', ''Tirania'', and character evolution |journal=[[Systematic Botany]] |volume=29 |issue=3 |pages=654–669 |doi=10.1600/0363644041744491 |bibcode=2004SysBo..29..654H |s2cid=86218316 |url=http://www.botany.wisc.edu/sytsma/pdf/Hall2004.pdf |archive-url=https://wayback.archive-it.org/all/20110401041157/http://www.botany.wisc.edu/sytsma/pdf/Hall2004.pdf |url-status=dead |archive-date=2011-04-01 |access-date=2016-08-26 }}</ref>
+
+== Gallery of type genera ==
+{{For|[[etymologies]]|List of plant family names with etymologies}}
+
+<gallery mode=packed> 
+Akania bidwillii leaves.jpg |''[[Akania bidwillii]]'' (turnipwood family)   |alt="foliage"
+Batis maritima male.jpg |''[[Batis maritima]]'' (turtleweed family)  |alt="flowers and foliage"
+Cabbage fertilized with compost and urine (15470416069).jpg |''[[Brassica oleracea]]'' (cabbage family) |alt="foliage"
+Kappari01.jpg |''[[Capparis spinosa]]'' (caper family) |alt="flowers and foliage"
+Carica papaya 005.JPG |''[[Carica papaya]]'' (papaya family) |alt="fruit and foliage"
+Cleome (Spider Flower) in Gavi.jpg |''[[Cleome hassleriana]]'' (spiderflower family) |alt="flowers and foliage"
+Emblingia calceoliflora.jpg |''[[Emblingia calceoliflora]]'' (slippercreeper family)  |alt="botanical illustration"
+Gyrostemon ramulosis habitus.jpg |''[[Gyrostemon ramulosis]]'' (buttoncreeper family) |alt="tree"
+Koeberlinia spinosa, the Crucifixion Thorn (10584228396).jpg |''[[Koeberlinia spinosa]]'' (allthorn family)  |alt="flowers"
+Limnanthes douglasii flowers.JPG |''[[Limnanthes douglasii]]'' (meadowfoam family)  |alt="flowers"
+辣木 Moringa oleifera -新加坡植物園 Singapore Botanic Gardens- (9237473791).jpg |''[[Moringa oleifera]]'' (horseradish-tree family)  |alt="flowers"
+Pentadiplandra etching 1909.jpg |''[[Pentadiplandra brazzeana]]'' (oubli family) |alt="botanical illustration"
+Reseda lutea RHu.JPG |''[[Reseda lutea]]'' (mignonette family) |alt="flowers"
+Salvadora persica kz04.jpg |''[[Salvadora persica]]'' (toothbrush-tree family) |alt="flowers"
+Tovaria pendula 03.jpg |''[[Tovaria pendula]]'' (stinkbush family) |alt="flowers, fruit and foliage"
+Nasturtium-Tropaeolum.jpg |''[[Tropaeolum majus]]'' (nasturtium family) |alt="flowers"
+</gallery>
+
+[[Setchellanthaceae]] is sometimes known as the azulita family.<ref>{{cite book | last1=Christenhusz | first1=Maarten | last2=Fay | first2= Michael Francis| last3=Chase | first3=Mark Wayne | title=Plants of the World: An Illustrated Encyclopedia of Vascular Plants | publisher=Kew Publishing and The University of Chicago Press | location=Chicago, Illinois | year=2017 | isbn=978-0-226-52292-0 | pages=401–419 }}</ref>
+
+== References ==
+{{Reflist|32em}}
+
+== External links ==
+*{{Commons category-inline|Brassicales}}
+
+{{Angiosperm orders}}
+{{Taxonbar|from=Q21904}}
+{{Authority control}}
+
+[[Category:Brassicales| ]]
+[[Category:Angiosperm orders]]

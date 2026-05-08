@@ -1,0 +1,835 @@
+{{short description|Pioneering five-bit character encodings}}
+{{Use dmy dates|date=January 2021}}
+[[File:Clavier Baudot.jpg|thumb|An early "piano" Baudot keyboard]]
+The '''Baudot code''' ({{IPA|fr|bodo}}) is an early [[character encoding]] for [[telegraphy]] invented by [[Émile Baudot]] in the 1870s.<ref>{{Citation | editor-last = Ralston | editor-first = Anthony | editor2-last = Reilly | editor2-first = Edwin D. | year = 1993 | title = Encyclopedia of Computer Science | chapter = Baudot Code | edition = Third | publisher = IEEE Press/Van Nostrand Reinhold | location = New York | isbn = 0-442-27679-6 }}</ref> It was the predecessor to the International Telegraph Alphabet No. 2 (ITA2), the most common [[teleprinter]] code in use before [[ASCII]]. Each [[Character (symbol)|character]] in the alphabet is represented by a series of five [[bit]]s, sent over a [[communication channel]] such as a telegraph [[wire]] or a [[radio signal]] by [[asynchronous serial communication]]. The [[symbol rate]] measurement is known as [[baud]], and is derived from the same name.
+
+==History==
+
+==={{anchor|ITA1}}Baudot code (ITA1)===
+{{Infobox character encoding
+| name = Baudot code (ITA1)
+| alias = International Telegraph Alphabet 1
+| image = Baudot Code - from 1888 patent.png
+| caption = An early version from Baudot's 1888 US patent, listing A through Z, {{du|t}} and ∗&nbsp;(Erasure)
+| prev = [[Morse code]]
+| next = [[#ITA2|ITA2]]
+| status = Replaced by [[#ITA2|ITA2]] (not mutually compatible).
+| classification = 5-bit [[state (computer science)|stateful]]{{citation needed|date=October 2023}} [[ISO Basic Latin alphabet|basic Latin]] encoding
+}}
+In the below table, Columns I, II, III, IV, and V show the code; the Let. and Fig. columns show the letters and numbers for the Continental and UK versions; and the sort keys present the table in the order: alphabetical, Gray and UK
+{|class="wikitable collapsible sortable" style="border:none"
+|+Baudot code (Continental and UK versions).<ref>in [[gray code|RBK order]]</ref>
+|-
+! colspan="7" |Europe
+!scope="col" colspan="2" |sort keys
+! colspan="7" scope="col" | UK
+!scope="col" | sort keys
+|-
+! colspan="2" scope="col" width="25" class="unsortable" |
+! scope="col" width="10" class="unsortable" | I
+! scope="col" width="10" class="unsortable" | II
+! scope="col" width="10" class="unsortable" | III 
+! scope="col" width="10" class="unsortable" | IV 
+! scope="col" class="unsortable" |  V
+! scope="col" width="15" | Con&shy;ti&shy;nen&shy;tal
+! scope="col" width="15" | [[Gray code|Gray]]
+! scope="col" width="15" class="unsortable"| Let.
+! scope="col" width="15" class="unsortable" | Fig. 
+! scope="col" width="15" class="unsortable" | I
+! scope="col" width="15" class="unsortable" | II
+! scope="col" width="15" class="unsortable" | III 
+! scope="col" width="15" class="unsortable" | IV
+! scope="col" width="15" class="unsortable" | V
+! scope="col" width="15" | UK
+|-
+| ||   ||   ||   ||     ||
+| || data-sort-value="32" |  -       || data-sort-value="000"|- ||  ||     || || || || || || data-sort-value="08" |-
+|-
+| A || 1 || ● ||   ||     ||
+| || data-sort-value="01" | || data-sort-value="001"| || A || 1 || ● || || || || || data-sort-value="01" |
+|-
+| É || & || ● || ● ||     ||
+| || data-sort-value="06" | || data-sort-value="002"| || / || <sup>1</sup>/|| ● || ● || || || || data-sort-value="04" |
+|-
+| E || 2 ||   || ● ||     ||
+| || data-sort-value="05" | || data-sort-value="003"| || E || 2 || || ● || || || || data-sort-value="02" |
+|-
+| I || {{du|o}} ||   || ● || ● ||
+| || data-sort-value="10" | || data-sort-value="004"| || I || <sup>3</sup>/|| || ● || ●   || || || data-sort-value="05" |
+|-
+| O || 5 || ● || ● || ●  ||
+| || data-sort-value="16" | || data-sort-value="005"| || O || 5 || ● || ● || ●    || || || data-sort-value="07" |
+|-
+| U || 4 || ● ||   || ●  ||
+| || data-sort-value="22" | || data-sort-value="006"| || U || 4 || ● || || ●   || || || data-sort-value="06" |
+|-
+| Y || 3 ||   ||   || ●  ||
+| || data-sort-value="26" | || data-sort-value="007"| || Y || 3 || || || ●    || || || data-sort-value="03" |
+|-
+| B || 8 ||   ||   || ●  || ● 
+| || data-sort-value="02" | || data-sort-value="010"| || B || 8 || || || ●    || ● || || data-sort-value="11" |
+|-
+| C || 9 || ● ||   || ●  || ● 
+| || data-sort-value="03" | || data-sort-value="011"| || C || 9 || ● || || ●   || ● || || data-sort-value="14" |
+|-
+| D || 0 || ● || ● || ●  || ● 
+| || data-sort-value="04" | || data-sort-value="012"| || D || 0 || ● || ● || ●    || ● || || data-sort-value="15" |
+|-
+| F || {{du|f}} ||   || ● || ●   || ● 
+| || data-sort-value="07" | || data-sort-value="013"| || F || <sup>5</sup>/|| || ● || ●   || ● || || data-sort-value="13" |
+|-collapsed
+| G || 7 ||   || ● ||     || ● 
+| || data-sort-value="08" | || data-sort-value="014"| || G || 7 || || ● || || ● || || data-sort-value="10" |
+|-
+| H || {{du|h}} || ● || ● ||    || ● 
+| || data-sort-value="09" | || data-sort-value="015" | || H || ¹ || ● || ● || || ● || || data-sort-value="12" |
+|-
+| J || 6 || ● ||   ||  || ● 
+| || data-sort-value="11" | || data-sort-value="016 " | || J || 6 || ● || || || ● || || data-sort-value="09" |
+|-
+|  ''Figure''  || ''Blank'' || || || || ● 
+| || data-sort-value="30" | || data-sort-value="017" | ||  ''Fig.''  || ''Bl.'' || || || || ● || || data-sort-value="16" |
+|-
+|   ''Erasure'' ||   ''Erasure'' || || || || ● 
+| ● || data-sort-value="29" | || data-sort-value="020" | || * || * || || || || ● || ● || data-sort-value="32" |
+|-
+| K || ( || ● ||   ||    || ● 
+| ● || data-sort-value="12" | || data-sort-value="021" | || K || ( || ● || || || ● || ● || data-sort-value="25" |
+|-
+| L || = || ● || ● ||    || ● 
+| ● || data-sort-value="13" | || data-sort-value="022" | || L || = || ● || ● || || ● || ● || data-sort-value="28" |
+|-
+| M || ) ||   || ● ||    || ● 
+| ● || data-sort-value="14" | || data-sort-value="023" | || M || ) || || ● || || ● || ● || data-sort-value="26" |
+|-
+| N || N°||   || ● || ●  || ● 
+| ● || data-sort-value="15" | || data-sort-value="024" | || N || £ || || ● || ● || ● || ● || data-sort-value="29 " |
+|-
+| P || % || ● || ● || ●  || ● 
+| ● || data-sort-value="17" | || data-sort-value="025" | || P || + || ● || ● || ● || ● || ● || data-sort-value="31" |
+|-
+| Q || / || ● ||   || ●  || ● 
+| ● || data-sort-value="18" | || data-sort-value="026" | || Q || / || ● || || ● || ● || ● || data-sort-value="30" |
+|-
+| R || – ||   ||   || ●  || ● 
+| ● || data-sort-value="19" | || data-sort-value="027" | || R || – || || || ● || ● || ● || data-sort-value="27" |
+|-
+| S || ; ||   ||   || ●  ||
+| ● || data-sort-value="20" | || data-sort-value="030" | || S || <sup>7</sup>/|| || || ●  || || ● || data-sort-value="19" |
+|-
+| T || ! || ● ||   || ●  ||
+| ● || data-sort-value="21" | || data-sort-value="031" | || T || ² || ● || || ● || || ● || data-sort-value="22" |
+|-
+| V || ' || ● || ● || ●  ||
+| ● || data-sort-value="23" | || data-sort-value="032" | || V || ¹ || ● || ● || ● || || ● || data-sort-value="23" |
+|-
+| W || ? ||   || ● || ●  ||
+| ● || data-sort-value="24" | || data-sort-value="033" | || W || ? || || ● || ● || || ● || data-sort-value="21" |
+|-
+| X ||, ||   || ● ||     ||
+| ● || data-sort-value="25" | || data-sort-value="034" | || X || <sup>9</sup>/|| || ● || || || ● || data-sort-value="18" |
+|-
+| Z || : || ● || ● ||    ||
+| ● || data-sort-value="27" | || data-sort-value="035" | || Z || : || ● || ● || || || ● || data-sort-value="20" |
+|-
+| {{du|t}} || . || ● ||   ||   ||
+| ● || data-sort-value="28" | || data-sort-value="036" | || – || . || ● || || || || ● || data-sort-value="17" |
+|-
+|   ''Blank'' ||''Letter'' ||  || || ||
+| ● || data-sort-value="31" | || data-sort-value="037" | ||  ''Bl.''||   ''Let.''    || || || || || ● || data-sort-value="24" |
+|}
+
+Baudot developed his first multiplexed telegraph in 1872<ref name=emmons/><ref name="Fischer_2000">{{cite web |author-last=Fischer |author-first=Eric N. |date=2000-06-20 |title=The Evolution of Character Codes, 1874–1968 |url=https://archive.org/details/enf-ascii |access-date=2020-12-20 |id=ark:/13960/t07x23w8s |quote=[...] In 1872, [Baudot] started research toward a telegraph system that would allow multiple operators to transmit simultaneously over a single wire and, as the transmissions were received, would print them in ordinary alphabetic characters on a strip of paper. He received a patent for such a system on June 17, 1874. [...] Instead of a variable delay followed by a single-unit pulse, Baudot's system used a uniform six time units to transmit each character. [...] his early telegraph probably used the six-unit code [...] that he attributes to [[Edward Davy|Davy]] in an 1877 article. [...] in 1876 Baudot redesigned his equipment to use a five-unit code. Punctuation and digits were still sometimes needed, though, so he adopted from [[David Edward Hughes|Hughes]] the use of two special letter space and figure space characters that would cause the printer to shift between cases at the same time as it advanced the paper without printing. The five-unit code he began using at this time [...] was structured to suit his keyboard [...], which controlled two units of each character with switches operated by the left hand and the other three units with the right hand. [...]}} [https://web.archive.org/web/20180919020435/http://index-of.es/Varios-2/ASCII%20The%20Evolution%20of%20Character%20Codes.pdf][https://archive.org/details/enf-ascii]</ref> and patented it in 1874.<ref name="Fischer_2000"/><ref name="Baudot_1874">{{cite web |author-first=Jean-Maurice-Émile |author-last=Baudot |author-link=Jean-Maurice-Émile Baudot |title=Système de télégraphie rapide |language=fr |date=June 1874 |id=Patent Brevet 103,898 |publisher=Archives [[Institut National de la Propriété Industrielle]] (INPI) |url=http://leoferres.info/images/baudot_cp1874.jpg |url-status=dead |archive-url=https://web.archive.org/web/20171216144029/http://leoferres.info/images/baudot_cp1874.jpg |archive-date=2017-12-16}}</ref> In 1876, he changed from a six-bit code to a five-bit code,<ref name="Fischer_2000"/> as suggested by [[Carl Friedrich Gauss]] and [[Wilhelm Eduard Weber|Wilhelm Weber]] in 1834,<ref name=emmons>{{cite journal
+|journal=Wire & Radio Communications
+|title=Printer Systems
+|author=H. A. Emmons
+|date=1 May 1916
+|volume=34
+|url = https://books.google.com/books?id=ozopAAAAYAAJ&pg=PA209
+|page=209
+}}</ref><ref>{{cite journal
+|journal=Transactions
+|publisher=American Institute of Electrical Engineers
+|title=A New Page-Printing Telegraph
+|author=William V. Vansize
+|date=25 January 1901
+|volume=18
+|page=22
+|url=https://books.google.com/books?id=WlNLAAAAMAAJ&q=gauss+weber+baudot&pg=PA22
+}}</ref>
+with equal on and off intervals, which allowed for transmission of the Roman alphabet, and included punctuation and control signals. The code itself was not patented (only the machine) because French patent law does not allow concepts to be patented.<ref>Procès d'Amiens Baudot vs Mimault</ref>
+
+Baudot's 5-bit code was adapted to be sent from a manual keyboard, and no teleprinter equipment was ever constructed that used it in its original form.<ref name = "TomJennings-Baudot">{{Cite web |last1=Jennings |first1=Tom |author-link=Tom Jennings |title=An annotated history of some character codes: Baudot's code |year=2020 |url=https://www.sensitiveresearch.com/Archive/CharCodeHist/index.html#BAUDOT |access-date=20 September 2025}}</ref> The code was entered on a keyboard which had just five piano-type keys and was operated using two fingers of the left hand and three fingers of the right hand. Once the keys had been pressed, they were locked down until mechanical contacts in a distributor unit passed over the sector connected to that particular keyboard, at which time the keyboard was unlocked ready for the next character to be entered, with an audible click (known as the "cadence signal") to warn the operator. Operators had to maintain a steady rhythm, and the usual speed of operation was 30 words per minute.<ref>{{cite book |last=Beauchamp |first=K.G. |title=History of Telegraphy: Its Technology and Application |publisher=[[Institution of Engineering and Technology]] |year=2001 |pages=394–395 |isbn=0-85296-792-6}}</ref>
+
+The table "shows the allocation of the Baudot code which was employed in the [[General Post Office#New communication systems|British Post Office]] for continental and inland services. A number of characters in the continental code are replaced by fractionals in the inland code. Code elements 1, 2 and 3 are transmitted by keys 1, 2 and 3, and these are operated by the first three fingers of the right hand. Code elements 4 and 5 are transmitted by keys 4 and 5, and these are operated by the first two fingers of the left hand."<ref name = "TomJennings-Baudot" /><ref>Alan G. Hobbs, ''[http://www.nadcomm.com/?p=95 5 Unit Codes]'', section ''Baudot Multiplex System''</ref><ref>{{cite book |last=Gleick |first=James |title=The Information: A History, a Theory, a Flood |year=2011 |publisher=Fourth Estate |location=London |isbn=978-0-00-742311-8 |pages=203 |url=http://around.com/the-information}}</ref>
+
+Baudot's code became known as the '''International Telegraph Alphabet No. 1''' ('''ITA1'''). It is no longer used.
+
+===Murray code===
+[[File:Baudot Tape.JPG|thumb|240px|upright|Paper tape with holes representing the "Baudot–Murray Code". Note the fully punched columns of "Delete/Letters select" codes at end of the message (on the right) which were used to cut the band easily between distinct messages. The last symbols before the fully punched columns at the end are BRASIL CR LF CR FS (word Brasil, carriage return, line feed, carriage return, shift to figures)]]
+In 1901, Baudot's code was modified by [[Donald Murray (inventor)|Donald Murray]] (1865–1945), prompted by his development of a typewriter-like keyboard. The Murray system employed an intermediate step: an operator used a keyboard perforator to punch a paper tape and then a transmitter to send the message from the [[punched tape]]. At the receiving end of the line, a printing mechanism would print on a paper tape, and/or a reperforator would make a perforated copy of the message.<ref>{{cite journal |last=Foster |first=Maximilian |date=August 1901 |title=A Successful Printing Telegraph |journal=[[World's Work|The World's Work: A History of Our Time]] |volume=II |pages=1195–1199 |url=https://books.google.com/books?id=IF6tNZnhO7wC&pg=PA1195 |access-date=2009-07-09 }}</ref>
+
+Because there was no longer a connection between the operator's hand movement and the bits transmitted, there was no concern about arranging the code to minimize operator fatigue. Instead, Murray designed the code to minimize wear on the machinery by assigning the code combinations with the fewest punched holes to the most [[letter frequencies|frequently used characters]].<ref>{{Harvnb|Copeland|2006|p=38}}</ref><ref>{{cite book |title=Telegraph and Telephone Age |url=https://books.google.com/books?id=TFUiAQAAMAAJ|year=1921 |quote=I allocated the most frequently used letters in English language to the signals represented by the fewest holes in the perforated tape, and so on in proportion.}}</ref> For example, the one-hole letters are E and T. The ten two-hole letters are AOINSHRDLZ, very similar to the "[[Etaoin shrdlu]]" order used in [[Linotype machine]]s. Ten more letters, BCGFJMPUWY, have three holes each, and the four-hole letters are VXKQ.
+
+The Murray code also introduced what became known as "format affectors" or "[[control character]]s"{{snd}} the [[Carriage return|CR]] (Carriage Return) and [[Newline|LF]] (Line Feed) codes. A few of Baudot's codes moved to the positions where they have stayed ever since: the NULL or BLANK and the DEL code. NULL/BLANK was used as an idle code for when no messages were being sent, but the same code was used to encode the space separation between words. Sequences of DEL codes (fully punched columns) were used at start or end of messages or between them which made it easier to separate distinct messages. (BELL codes could be inserted in those sequences to signal to the remote operator that a new message was coming or that transmission of a message was terminated).
+
+Early [[Creed & Company|British Creed]] machines also used the Murray system.
+
+===Western Union===
+[[File:Baudotkeyboard.png|right|frame|Keyboard of a [[teleprinter]] using the Baudot code (US variant), with FIGS and LTRS shift keys]]
+Murray's code was adopted by [[Western Union]] which used it until the 1950s, with a few changes that consisted of omitting some characters and adding more control codes. An explicit SPC (space) character was introduced, in place of the BLANK/NULL, and a new [[Bell character|BEL]] code rang a bell or otherwise produced an audible signal at the receiver. Additionally, the [[Enquiry character|WRU]] or "Who aRe yoU?" code was introduced, which caused a receiving machine to send an identification stream back to the sender.
+{{clear}}
+
+==={{anchor|MTK-2}}ITA2===
+{{Infobox character encoding
+| name = ITA2 Baudot–Murray code
+| alias = International Telegraph Alphabet 2
+| image = International Telegraph Alphabet 2 brightened.jpg
+| caption = British variant of ITA2
+| prev = [[#ITA1|ITA1]]
+| next = [[FIELDATA]],<br />[[ARQ-M#ITA3|ITA 3 (van Duuren code)]],<br />[[ITU T.50|ITA 5]] ([[ISO 646]], [[ASCII]])
+| classification = 5-bit [[state (computer science)|stateful]]{{citation needed|date=October 2023}} [[ISO Basic Latin alphabet|basic Latin]] encoding
+}}
+{{Infobox character encoding
+| name = MTK-2
+| alias = 
+| image = 
+| caption = 
+| prev = [[Russian Morse code]]
+| next = [[KOI-7]]
+| lang = [[Russian language|Russian]]
+| classification = 5-bit [[state (computer science)|stateful]]{{citation needed|date=October 2023}} [[Russian alphabet|Russian Cyrillic]] encoding
+}}
+In 1932, the [[CCITT]] introduced the '''International Telegraph Alphabet No. 2''' ('''ITA2''') code<ref>{{cite web |url=http://handle.itu.int/11.1004/020.1000/4.5.43.en.101 |title=Telegraph Regulations and Final Protocol (Madrid, 1932) |access-date=10 May 2024 |archive-url=https://web.archive.org/web/20230821020920/https://search.itu.int/history/HistoryDigitalCollectionDocLibrary/4.5.43.en.101.pdf |archive-date=21 August 2023}}</ref> as an international standard, which was based on the Western Union code with some minor changes. The US standardized on a version of ITA2 called the [[American Teletypewriter code]] (US TTY) which was the basis for 5-bit teletypewriter codes until the debut of 7-bit [[ASCII]] in 1963.<ref>{{cite web | last = Smith | first = Gil | title = Teletype Communication Codes | publisher = Baudot.net | year = 2001 | url = http://www.baudot.net/docs/smith--teletype-codes.pdf | access-date = 2008-07-11| archive-url= https://web.archive.org/web/20080820043949/http://www.baudot.net/docs/smith--teletype-codes.pdf| archive-date= 20 August 2008 <!--DASHBot-->|url-status = live}}</ref>
+
+Some code points (marked blue in the table) were reserved for national-specific usage.<ref name="Steinbuch-Weber_1974">{{cite book |title=Taschenbuch der Informatik - Band III - Anwendungen und spezielle Systeme der Nachrichtenverarbeitung |language=de |editor-first1=Karl W. |editor-last1=Steinbuch |editor-link1=Karl W. Steinbuch |editor-first2=Wolfgang |editor-last2=Weber |date=1974 |orig-year=1967 |edition=3 |volume=3 |work=Taschenbuch der Nachrichtenverarbeitung |publisher=[[Springer Verlag]] |location=Berlin, Germany |isbn=3-540-06242-4 |lccn=73-80607 |pages=328–329}}</ref>
+
+[[File:Cyrillic teletype keyboard.jpg|thumb|A four-row teletype keyboard with Roman and Cyrillic letters.]]
+{|class="wikitable sortable collapsible" style="border:none"
+|+International telegraphy alphabet No. 2 (Baudot–Murray code)<ref>{{Cite web | last = dataIP Limited | title = The "Baudot" Code | url = http://www.dataip.co.uk/technical-information/the-baudot-code/ | access-date = 16 July 2017 | archive-url = https://web.archive.org/web/20171223093021/http://www.dataip.co.uk/technical-information/the-baudot-code/ | archive-date = 23 December 2017}}</ref>
+|-
+!scope="col" colspan="3"| Impulse patterns<br/> (1=mark, 0=space)
+!scope="col" colspan="2"| Letter shift
+!scope="col" colspan="3"| Figure shift
+|-
+!scope="col" width="6em"| [[Least significant bit|LSB]] on<br /> right;<br />''code elements:''<br /> 543·21
+!scope="col" width="6em"| [[Least significant bit|LSB]] on<br /> left;<br /> ''code elements:''<br /> 12·345
+!scope="col" width="2em"| Count of punched marks
+!scope="col" width="4em"| ITA2<br /> standard
+!scope="col" width="4em"| Russian<br />MTK-2<br /> variant
+!scope="col" width="4em"| Russian<br />MTK-2<br /> variant
+!scope="col" width="4em"| ITA2<br /> standard
+!scope="col" width="4em"| US TTY<br /> variant
+|-
+| 000·00 || 00·000 || 0 ||colspan="2" style="background:#CCF"| Null || style="background:#FCC" | Shift to Russian Letters (RS) ||colspan="2" style="background:#CCF"| Null 
+|-		        
+| 010·00 || 00·010 || 1 ||style="background:#FCC" colspan="5"| Carriage return
+|-		        
+| 000·10 || 01·000 || 1 ||style="background:#FCC" colspan="5"| Line feed
+|-		        
+| 001·00 || 00·100 || 1 ||colspan="5"| Space
+|-		        
+| 101·11 || 11·101 || 4 || Q || Я ||colspan="3"| 1
+|-		        
+| 100·11 || 11·001 || 3 || W || В ||colspan="3"| 2
+|-		        
+| 000·01 || 10·000 || 1 || E || Е ||colspan="3"| 3
+|-		        
+| 010·10 || 01·010 || 2 || R || Р || 4, Ч ||colspan="2"| 4
+|-		        
+| 100·00 || 00·001 || 1 || T || Т ||colspan="3"| 5
+|-		        
+| 101·01 || 10·101 || 3 || Y || Ы ||colspan="3"| 6
+|-		        
+| 001·11 || 11·100 || 3 || U || У ||colspan="3"| 7
+|-		        
+| 001·10 || 01·100 || 2 || I || И ||colspan="3"| 8
+|-		        
+| 110·00 || 00·011 || 2 || O || О ||colspan="3"| 9
+|-		        
+| 101·10 || 01·101 || 3 || P || П ||colspan="3"| 0
+|-		        
+| 000·11 || 11·000 || 2 || A || А ||colspan="3"| –
+|-		        
+| 001·01 || 10·100 || 2 || S || С ||colspan="2"| ' ||style="background:#FCC"| Bell
+|-		        
+| 010·01 || 10·010 || 2 || D || Д ||colspan="2"| [[enquiry character|<abbr title="Who are you?">WRU?</abbr>]] || $
+|-		        
+| 011·01 || 10·110 || 3 || F || Ф || style="background:#CCF"|Э || style="background:#CCF" colspan="2"| !
+|-		        
+| 110·10 || 01·011 || 3 || G || Г || style="background:#CCF"|Ш || style="background:#CCF" colspan="2"| &
+|-		        
+| 101·00 || 00·101 || 2 || H || Х || style="background:#CCF"|Щ || style="background:#CCF"|£ || style="background:#CCF"|#
+|-		        
+| 010·11 || 11·010 || 3 || J || Й || Ю, Bell ||style="background:#FCC"| Bell || '
+|-		        
+| 011·11 || 11·110 || 4 || K || К ||colspan="3"| (
+|-		        
+| 100·10 || 01·001 || 2 || L || Л ||colspan="3"| )
+|-		        
+| 100·01 || 10·001 || 2 || Z || З ||colspan="2"| + || "
+|-		        
+| 111·01 || 10·111 || 4 || X || Ь ||colspan="3"| /
+|-		        
+| 011·10 || 01·110 || 3 || C || Ц ||colspan="3"| :
+|-		        
+| 111·10 || 01·111 || 4 || V || Ж ||colspan="2"| = || ;
+|-		        
+| 110·01 || 10·011 || 3 || B || Б ||colspan="3"| ?
+|-		        
+| 011·00 || 00·110 || 2 || N || Н ||colspan="3"| ,
+|-		        
+| 111·00 || 00·111 || 3 || M || М ||colspan="3"| .
+|-		        
+| 110·11 || 11·011 || 4 ||style="background:#FCC" colspan="2"| Shift to Figures (FS) ||style="background:#CCC" colspan="3"| ''Reserved for<br/> figures extension''
+|-		        
+| 111·11 || 11·111 || 5 ||style="background:#CCC" colspan="2"| ''Reserved for<br/> lettercase extension'' ||style="background:#FCC" colspan="3"| Shift to Letters (LS)<br /> / Erasure / Delete
+|}
+
+The code position assigned to Null was in fact used only for the idle state of teleprinters. During long periods of idle time, the impulse rate was not synchronized between both devices (which could even be powered off or not permanently interconnected on commuted phone lines). To start a message it was first necessary to calibrate the impulse rate, a sequence of regularly timed "mark" pulses (1), by a group of five pulses, which could also be detected by simple passive electronic devices to turn on the teleprinter. This sequence of pulses generated a series of Erasure/Delete characters while also initializing the state of the receiver to the Letters shift mode. However, the first pulse could be lost, so this power on procedure could then be terminated by a single Null immediately followed by an Erasure/Delete character. To preserve the synchronization between devices, the Null code could not be used arbitrarily in the middle of messages (this was an improvement to the initial Baudot system where spaces were not explicitly differentiated, so it was difficult to maintain the pulse counters for repeating spaces on teleprinters). But it was then possible to resynchronize devices at any time by sending a Null in the middle of a message (immediately followed by an Erasure/Delete/LS control if followed by a letter, or by a FS control if followed by a figure). Sending Null controls also did not cause the paper band to advance to the next row (as nothing was punched), so this saved precious lengths of punchable paper band. On the other hand, the Erasure/Delete/LS control code was always punched and always shifted to the (initial) letters mode. According to some sources, the Null code point was reserved for country-internal usage only.<ref name="Steinbuch-Weber_1974"/>
+
+The Shift to Letters code (LS) is also usable as a way to cancel/delete text from a punched tape after it has been read, allowing the safe destruction of a message before discarding the punched band.{{clarify|date=October 2020}} Functionally, it can also play the same filler role as the Delete code in ASCII (or other 7-bit and 8-bit encodings, including EBCDIC for punched cards). After codes in a fragment of text have been replaced by an arbitrary number of LS codes, what follows is still preserved and decodable. It can also be used as an initiator to make sure that the decoding of the first code will not give a digit or another symbol from the figures page (because the Null code can be arbitrarily inserted near the end or beginning of a punch band, and has to be ignored, whereas the Space code is significant in text).
+
+The cells marked as reserved for extensions (which use the LS code again a second time—just after the first LS code—to shift from the figures page to the letters shift page) has been defined to shift into a new mode. In this new mode, the letters page contains only lowercase letters, but retains access to a third code page for uppercase letters, either by encoding for a single letter (by sending LS before that letter), or locking (with FS+LS) for an unlimited number of capital letters or digits before then unlocking (with a single LS) to return to lowercase mode.<ref>[[ITU-T]] [https://www.itu.int/rec/dologin_pub.asp?lang=e&id=T-REC-S.1-198811-S!!PDF-E Recommendation S.2 / 11/1988], published in Fascicle VII.1 of the ''Blue Book''</ref> The cell marked as "Reserved" is also usable (using the FS code from the figures shift page) to switch the page of figures (which normally contains digits and ''national'' lowercase letters or symbols) to a fourth page (where national letters are uppercase and other symbols may be encoded).
+
+ITA2 is still used in [[telecommunications devices for the deaf]] (TDD), [[Telex]], and some [[amateur radio]] applications, such as [[radioteletype]] ("RTTY"). ITA2 is also used in Enhanced Broadcast Solution, an early 21st-century financial protocol specified by [[Deutsche Börse]], to reduce the character encoding footprint.<ref>{{Cite web | title = Enhanced Broadcast Solution – Interface Specification Final Version | publisher = Deutsche Börse | date = 17 May 2010 | url = https://www9.deutsche-boerse.com/INTERNET/XETRA/x4_member.nsf/0/4502210270B32DA8C1257600005247F5/$FILE/MUI11010_EnBS_FinalVersion.pdf/MUI11010_EnBS_FinalVersion.pdf?OpenElement | access-date = 10 August 2011 | archive-date = 8 February 2012 | archive-url = https://web.archive.org/web/20120208070449/https://www9.deutsche-boerse.com/INTERNET/XETRA/x4_member.nsf/0/4502210270B32DA8C1257600005247F5/$FILE/MUI11010_EnBS_FinalVersion.pdf/MUI11010_EnBS_FinalVersion.pdf?OpenElement | url-status = dead }}</ref>
+
+==Nomenclature==
+Nearly all 20th-century teleprinter equipment used Western Union's code, ITA2, or variants thereof. Radio amateurs casually call ITA2 and variants "Baudot" incorrectly,<ref>{{cite book | last = Gillam | first = Richard | title = Unicode Demystified | publisher = Addison-Wesley | year = 2002 | page = 30 | isbn = 0-201-70052-2}}</ref> and even the [[American Radio Relay League]]'s Amateur Radio Handbook does so, though in more recent editions the tables of codes correctly identifies it as ITA2.
+
+==Character set==
+The values shown in each cell are the [[Unicode]] codepoints, given for comparison.
+
+===Original Baudot variants===
+
+====Original Baudot, domestic UK====
+
+{|{{chset-table-header1|Original Baudot code, UK domestic variant (letter set, switched to with 0x10)<ref name="nadcomm" />{{anchor|0x10UK}}}}
+|-
+|{{chset-left1|0x}}
+|{{chset-ctrl1|U+0000 NULL|{{ctrl|NUL}}}}
+|{{chset-cell1|U+0041 LATIN CAPITAL LETTER A|[[A]]}}
+|{{chset-cell1|U+0045 LATIN CAPITAL LETTER E|[[E]]}}
+|{{chset-cell1|U+002F SOLIDUS|[[Forward slash|/]]}}
+|{{chset-cell1|U+0059 LATIN CAPITAL LETTER Y|[[Y]]}}
+|{{chset-cell1|U+0055 LATIN CAPITAL LETTER U|[[U]]}}
+|{{chset-cell1|U+0049 LATIN CAPITAL LETTER I|[[I]]}}
+|{{chset-cell1|U+004F LATIN CAPITAL LETTER O|[[O]]}}
+|{{chset-ctrl1|U+000E SHIFT OUT|[[#0x08UK|FIGS]]}}
+|{{chset-cell1|U+004A LATIN CAPITAL LETTER J|[[J]]}}
+|{{chset-cell1|U+0047 LATIN CAPITAL LETTER G|[[G]]}}
+|{{chset-cell1|U+0048 LATIN CAPITAL LETTER H|[[H]]}}
+|{{chset-cell1|U+0042 LATIN CAPITAL LETTER B|[[B]]}}
+|{{chset-cell1|U+0043 LATIN CAPITAL LETTER C|[[C]]}}
+|{{chset-cell1|U+0046 LATIN CAPITAL LETTER F|[[F]]}}
+|{{chset-cell1|U+0044 LATIN CAPITAL LETTER D|[[D]]}}
+|-
+|{{chset-left1|1x}}
+|{{chset-ctrl1|U+0020 SPACE|&nbsp;{{ctrl|SP}}&nbsp;}}
+|{{chset-cell1|U+002D HYPHEN-MINUS|[[-]]}}
+|{{chset-cell1|U+0058 LATIN CAPITAL LETTER X|[[X]]}}
+|{{chset-cell1|U+005A LATIN CAPITAL LETTER Z|[[Z]]}}
+|{{chset-cell1|U+0053 LATIN CAPITAL LETTER S|[[S]]}}
+|{{chset-cell1|U+0054 LATIN CAPITAL LETTER T|[[T]]}}
+|{{chset-cell1|U+0057 LATIN CAPITAL LETTER W|[[W]]}}
+|{{chset-cell1|U+0056 LATIN CAPITAL LETTER V|[[V]]}}
+|{{chset-ctrl1|U+007F DELETE|{{ctrl|DEL}}}}
+|{{chset-cell1|U+004B LATIN CAPITAL LETTER K|[[K]]}}
+|{{chset-cell1|U+004D LATIN CAPITAL LETTER M|[[M]]}}
+|{{chset-cell1|U+004C LATIN CAPITAL LETTER L|[[L]]}}
+|{{chset-cell1|U+0052 LATIN CAPITAL LETTER R|[[R]]}}
+|{{chset-cell1|U+0051 LATIN CAPITAL LETTER Q|[[Q]]}}
+|{{chset-cell1|U+004E LATIN CAPITAL LETTER N|[[N]]}}
+|{{chset-cell1|U+0050 LATIN CAPITAL LETTER P|[[P]]}}
+|}
+
+{|{{chset-table-header1|Original Baudot code, UK domestic variant (figure set, switched to with 0x08)<ref name="nadcomm" />{{anchor|0x08UK}}}}
+|-
+|{{chset-left1|0x}}
+|{{chset-ctrl1|U+0000 NULL|{{ctrl|NUL}}}}
+|{{chset-cell1|U+0031 DIGIT ONE|[[1]]}}
+|{{chset-cell1|U+0032 DIGIT TWO|[[2]]}}
+|{{chset-cell1|U+215F FRACTION NUMERATOR ONE|[[Vulgar fraction|⅟]]}}
+|{{chset-cell1|U+0033 DIGIT THREE|[[3]]}}
+|{{chset-cell1|U+0034 DIGIT FOUR|[[4]]}}
+|{{chset-cell1|U+00B3 SUPERSCRIPT THREE, U+2044 FRACTION SLASH|[[Vulgar fraction|³⁄]]}}
+|{{chset-cell1|U+0035 DIGIT FIVE|[[5]]}}
+|{{chset-ctrl1|U+0020 SPACE|&nbsp;{{ctrl|SP}}&nbsp;}}
+|{{chset-cell1|U+0036 DIGIT SIX|[[6]]}}
+|{{chset-cell1|U+0037 DIGIT SEVEN|[[7]]}}
+|{{chset-cell1|U+00B9 SUPERSCRIPT ONE|[[¹]]}}
+|{{chset-cell1|U+0038 DIGIT EIGHT|[[8]]}}
+|{{chset-cell1|U+0039 DIGIT NINE|[[9]]}}
+|{{chset-cell1|U+2075 SUPERSCRIPT FIVE, U+2044 FRACTION SLASH|[[Vulgar fraction|⁵⁄]]}}
+|{{chset-cell1|U+0030 DIGIT ZERO|[[0]]}}
+|-
+|{{chset-left1|1x}}
+|{{chset-ctrl1|U+000F SHIFT IN|[[#0x10UK|LTRS]]}}
+|{{chset-cell1|U+002E FULL STOP|[[Full stop|.]]}}
+|{{chset-cell1|U+2079 SUPERSCRIPT NINE, U+2044 FRACTION SLASH|[[Vulgar fraction|⁹⁄]]}}
+|{{chset-cell1|U+003A COLON|[[Colon (typography)|:]]}}
+|{{chset-cell1|U+2077 SUPERSCRIPT SEVEN, U+2044 FRACTION SLASH|[[Vulgar fraction|⁷⁄]]}}
+|{{chset-cell1|U+00B2 SUPERSCRIPT TWO|[[²]]}}
+|{{chset-cell1|U+003F QUESTION MARK|[[?]]}}
+|{{chset-cell1|U+0027 APOSTROPHE|[[']]}}
+|{{chset-ctrl1|U+007F DELETE|{{ctrl|DEL}}}}
+|{{chset-cell1|U+0028 LEFT PARENTHESIS|[[(]]}}
+|{{chset-cell1|U+0029 RIGHT PARENTHESIS|[[)]]}}
+|{{chset-cell1|U+003D EQUALS SIGN|[[=]]}}
+|{{chset-cell1|U+002D HYPHEN-MINUS|[[-]]}}
+|{{chset-cell1|U+002F SOLIDUS|[[Forward slash|/]]}}
+|{{chset-cell1|U+00A3 POUND SIGN|[[£]]}}
+|{{chset-cell1|U+002B PLUS SIGN|[[+]]}}
+|}
+
+====Original Baudot, Continental European====
+{|{{chset-table-header1|Original Baudot code, continental European variant (letter set, switched to with 0x10)<ref name="nadcomm" />{{anchor|0x10EU}}}}
+|-
+|{{chset-left1|0x}}
+|{{chset-ctrl1|U+0000 NULL|{{ctrl|NUL}}}}
+|{{chset-cell1|U+0041 LATIN CAPITAL LETTER A|[[A]]}}
+|{{chset-cell1|U+0045 LATIN CAPITAL LETTER E|[[E]]}}
+|{{chset-cell1|U+00C9 LATIN CAPITAL LETTER E WITH ACUTE|[[É]]}}
+|{{chset-cell1|U+0059 LATIN CAPITAL LETTER Y|[[Y]]}} <!-- Jennings gives IOUY here, which he references to the NADCOMM source. Consulting the NADCOMM source itself, however, this is incorrect (quick check: the letter-figure correspondences are different); YUIO would appear to be correct. Jennings also lists Z twice and omits N, so it's fair to say that he made some copying errors. -->
+|{{chset-cell1|U+0055 LATIN CAPITAL LETTER U|[[U]]}}
+|{{chset-cell1|U+0049 LATIN CAPITAL LETTER I|[[I]]}}
+|{{chset-cell1|U+004F LATIN CAPITAL LETTER O|[[O]]}}
+|{{chset-ctrl1|U+000E SHIFT OUT|[[#0x08EU|FIGS]]}}
+|{{chset-cell1|U+004A LATIN CAPITAL LETTER J|[[J]]}}
+|{{chset-cell1|U+0047 LATIN CAPITAL LETTER G|[[G]]}}
+|{{chset-cell1|U+0048 LATIN CAPITAL LETTER H|[[H]]}}
+|{{chset-cell1|U+0042 LATIN CAPITAL LETTER B|[[B]]}}
+|{{chset-cell1|U+0043 LATIN CAPITAL LETTER C|[[C]]}}
+|{{chset-cell1|U+0046 LATIN CAPITAL LETTER F|[[F]]}}
+|{{chset-cell1|U+0044 LATIN CAPITAL LETTER D|[[D]]}}
+|-
+|{{chset-left1|1x}}
+|{{chset-ctrl1|U+0020 SPACE|&nbsp;{{ctrl|SP}}&nbsp;}}
+|{{chset-cell1|U+1E6F LATIN SMALL LETTER T WITH LINE BELOW|[[ṯ]]}}
+|{{chset-cell1|U+0058 LATIN CAPITAL LETTER X|[[X]]}}
+|{{chset-cell1|U+005A LATIN CAPITAL LETTER Z|[[Z]]}}
+|{{chset-cell1|U+0053 LATIN CAPITAL LETTER S|[[S]]}}
+|{{chset-cell1|U+0054 LATIN CAPITAL LETTER T|[[T]]}}
+|{{chset-cell1|U+0057 LATIN CAPITAL LETTER W|[[W]]}}
+|{{chset-cell1|U+0056 LATIN CAPITAL LETTER V|[[V]]}}
+|{{chset-ctrl1|U+007F DELETE|{{ctrl|DEL}}}}
+|{{chset-cell1|U+004B LATIN CAPITAL LETTER K|[[K]]}}
+|{{chset-cell1|U+004D LATIN CAPITAL LETTER M|[[M]]}}
+|{{chset-cell1|U+004C LATIN CAPITAL LETTER L|[[L]]}}
+|{{chset-cell1|U+0052 LATIN CAPITAL LETTER R|[[R]]}}
+|{{chset-cell1|U+0051 LATIN CAPITAL LETTER Q|[[Q]]}}
+|{{chset-cell1|U+004E LATIN CAPITAL LETTER N|[[N]]}} <!-- Jennings erroneously lists this as a second Z and does not list an N, see comment at 0x04 above. -->
+|{{chset-cell1|U+0050 LATIN CAPITAL LETTER P|[[P]]}}
+|}
+
+{|{{chset-table-header1|Original Baudot code, continental variant (figure set, switched to with 0x08)<ref name="nadcomm" />{{anchor|0x08EU}}}}
+|-
+|{{chset-left1|0x}}
+|{{chset-ctrl1|U+0000 NULL|{{ctrl|NUL}}}}
+|{{chset-cell1|U+0031 DIGIT ONE|[[1]]}}
+|{{chset-cell1|U+0032 DIGIT TWO|[[2]]}}
+|{{chset-cell1|U+0026 AMPERSAND|[[&]]}}
+|{{chset-cell1|U+0033 DIGIT THREE|[[3]]}}
+|{{chset-cell1|U+0034 DIGIT FOUR|[[4]]}}
+|{{chset-cell1|U+00BA MASCULINE ORDINAL INDICATOR|[[º]]}}
+|{{chset-cell1|U+0035 DIGIT FIVE|[[5]]}}
+|{{chset-ctrl1|U+0020 SPACE|&nbsp;{{ctrl|SP}}&nbsp;}}
+|{{chset-cell1|U+0036 DIGIT SIX|[[6]]}}
+|{{chset-cell1|U+0037 DIGIT SEVEN|[[7]]}}
+|{{chset-cell1|U+02B0 MODIFIER SMALL LETTER H+0335|ʰ̵}}
+|{{chset-cell1|U+0038 DIGIT EIGHT|[[8]]}}
+|{{chset-cell1|U+0039 DIGIT NINE|[[9]]}}
+|{{chset-cell1|U+1DA0 MODIFIER SMALL LETTER F+0335|ᶠ̵}}
+|{{chset-cell1|U+0030 DIGIT ZERO|[[0]]}}
+|-
+|{{chset-left1|1x}}
+|{{chset-ctrl1|U+000F SHIFT IN|[[#0x10EU|LTRS]]}}
+|{{chset-cell1|U+002E FULL STOP|[[Full stop|.]]}}
+|{{chset-cell1|U+002C COMMA|[[,]]}}
+|{{chset-cell1|U+003A COLON|[[Colon (typography)|:]]}}
+|{{chset-cell1|U+003B SEMICOLON|[[;]]}}
+|{{chset-cell1|U+0021 EXCLAMATION MARK|[[!]]}}
+|{{chset-cell1|U+003F QUESTION MARK|[[?]]}}
+|{{chset-cell1|U+0027 APOSTROPHE|[[']]}}
+|{{chset-ctrl1|U+007F DELETE|{{ctrl|DEL}}}}
+|{{chset-cell1|U+0028 LEFT PARENTHESIS|[[(]]}}
+|{{chset-cell1|U+0029 RIGHT PARENTHESIS|[[)]]}}
+|{{chset-cell1|U+003D EQUALS SIGN|[[=]]}}
+|{{chset-cell1|U+002D HYPHEN-MINUS|[[-]]}}
+|{{chset-cell1|U+002F SOLIDUS|[[Forward slash|/]]}}
+|{{chset-cell1|U+2116 NUMERO SIGN|[[№]]}}
+|{{chset-cell1|U+0025 PERCENT SIGN|[[%]]}}
+|}
+
+====Original Baudot, ITA 1====
+{|{{chset-table-header1|ITA 1 (letter set, switched to with 0x10)<ref name="nadcomm" />{{anchor|0x10UA}}}}
+|-
+|{{chset-left1|0x}}
+|{{chset-ctrl1|U+0000 NULL|{{ctrl|NUL}}}}
+|{{chset-cell1|U+0041 LATIN CAPITAL LETTER A|[[A]]}}
+|{{chset-cell1|U+0045 LATIN CAPITAL LETTER E|[[E]]}}
+|{{chset-ctrl1|U+000D CARRIAGE RETURN (CR)|&nbsp;{{ctrl|CR}}&nbsp;}}
+|{{chset-cell1|U+0059 LATIN CAPITAL LETTER Y|[[Y]]}}
+|{{chset-cell1|U+0055 LATIN CAPITAL LETTER U|[[U]]}}
+|{{chset-cell1|U+0049 LATIN CAPITAL LETTER I|[[I]]}}
+|{{chset-cell1|U+004F LATIN CAPITAL LETTER O|[[O]]}}
+|{{chset-ctrl1|U+000E SHIFT OUT|[[#0x08EU|FIGS]]}}
+|{{chset-cell1|U+004A LATIN CAPITAL LETTER J|[[J]]}}
+|{{chset-cell1|U+0047 LATIN CAPITAL LETTER G|[[G]]}}
+|{{chset-cell1|U+0048 LATIN CAPITAL LETTER H|[[H]]}}
+|{{chset-cell1|U+0042 LATIN CAPITAL LETTER B|[[B]]}}
+|{{chset-cell1|U+0043 LATIN CAPITAL LETTER C|[[C]]}}
+|{{chset-cell1|U+0046 LATIN CAPITAL LETTER F|[[F]]}}
+|{{chset-cell1|U+0044 LATIN CAPITAL LETTER D|[[D]]}}
+|-
+|{{chset-left1|1x}}
+|{{chset-ctrl1|U+0020 SPACE|&nbsp;{{ctrl|SP}}&nbsp;}}
+|{{chset-ctrl1|U+000A LINE FEED (LF)|&nbsp;{{ctrl|LF}}&nbsp;}}
+|{{chset-cell1|U+0058 LATIN CAPITAL LETTER X|[[X]]}}
+|{{chset-cell1|U+005A LATIN CAPITAL LETTER Z|[[Z]]}}
+|{{chset-cell1|U+0053 LATIN CAPITAL LETTER S|[[S]]}}
+|{{chset-cell1|U+0054 LATIN CAPITAL LETTER T|[[T]]}}
+|{{chset-cell1|U+0057 LATIN CAPITAL LETTER W|[[W]]}}
+|{{chset-cell1|U+0056 LATIN CAPITAL LETTER V|[[V]]}}
+|{{chset-ctrl1|U+007F DELETE|{{ctrl|DEL}}}}
+|{{chset-cell1|U+004B LATIN CAPITAL LETTER K|[[K]]}}
+|{{chset-cell1|U+004D LATIN CAPITAL LETTER M|[[M]]}}
+|{{chset-cell1|U+004C LATIN CAPITAL LETTER L|[[L]]}}
+|{{chset-cell1|U+0052 LATIN CAPITAL LETTER R|[[R]]}}
+|{{chset-cell1|U+0051 LATIN CAPITAL LETTER Q|[[Q]]}}
+|{{chset-cell1|U+004E LATIN CAPITAL LETTER N|[[N]]}}
+|{{chset-cell1|U+0050 LATIN CAPITAL LETTER P|[[P]]}}
+|}
+
+{|{{chset-table-header1|ITA 1 (figure set, switched to with 0x08)<ref name="nadcomm">{{cite web|archive-url=https://web.archive.org/web/19991104220621/http://www.nadcomm.com/fiveunit/fiveunits.htm|archive-date=4 November 1999|url=http://www.nadcomm.com:80/fiveunit/fiveunits.htm|title=Five-unit codes|publisher=NADCOMM museum|url-status = dead|access-date=5 December 2001}}</ref>{{anchor|0x08IA}}}}
+|-
+|{{chset-left1|0x}}
+|{{chset-ctrl1|U+0000 NULL|{{ctrl|NUL}}}}
+|{{chset-cell1|U+0031 DIGIT ONE|[[1]]}}
+|{{chset-cell1|U+0032 DIGIT TWO|[[2]]}}
+|{{chset-ctrl1|U+000D CARRIAGE RETURN (CR)|&nbsp;{{ctrl|CR}}&nbsp;}}
+|{{chset-cell1|U+0033 DIGIT THREE|[[3]]}}
+|{{chset-cell1|U+0034 DIGIT FOUR|[[4]]}}
+|{{chset-ctrl1||{{ctrl|PU1|PU}}|fn={{efn|name=pua}}}}
+|{{chset-cell1|U+0035 DIGIT FIVE|[[5]]}}
+|{{chset-ctrl1|U+0020 SPACE|&nbsp;{{ctrl|SP}}&nbsp;}}
+|{{chset-cell1|U+0036 DIGIT SIX|[[6]]}}
+|{{chset-cell1|U+0037 DIGIT SEVEN|[[7]]}}
+|{{chset-cell1|U+002B PLUS SIGN|[[+]]}}
+|{{chset-cell1|U+0038 DIGIT EIGHT|[[8]]}}
+|{{chset-cell1|U+0039 DIGIT NINE|[[9]]}}
+|{{chset-ctrl1||{{ctrl|PU1|PU}}|fn={{efn|name=pua|1="At the disposal of each administration for its internal service"{{refn|name=nadcomm}}}}}}
+|{{chset-cell1|U+0030 DIGIT ZERO|[[0]]}}
+|-
+|{{chset-left1|1x}}
+|{{chset-ctrl1|U+000F SHIFT IN|[[#0x10EU|LTRS]]}}
+|{{chset-ctrl1|U+000A LINE FEED (LF)|&nbsp;{{ctrl|LF}}&nbsp;}}
+|{{chset-cell1|U+002C COMMA|[[,]]}}
+|{{chset-cell1|U+003A COLON|[[Colon (typography)|:]]}}
+|{{chset-cell1|U+002E FULL STOP|[[Full stop|.]]}}
+|{{chset-ctrl1||{{ctrl|PU1|PU}}|fn={{efn|name=pua}}}}
+|{{chset-cell1|U+003F QUESTION MARK|[[?]]}}
+|{{chset-cell1|U+0027 APOSTROPHE|[[']]}}
+|{{chset-ctrl1|U+007F DELETE|{{ctrl|DEL}}}}
+|{{chset-cell1|U+0028 LEFT PARENTHESIS|[[(]]}}
+|{{chset-cell1|U+0029 RIGHT PARENTHESIS|[[)]]}}
+|{{chset-cell1|U+003D EQUALS SIGN|[[=]]}}
+|{{chset-cell1|U+002D HYPHEN-MINUS|[[-]]}}
+|{{chset-cell1|U+002F SOLIDUS|[[Forward slash|/]]}}
+|{{chset-ctrl1||{{ctrl|PU1|PU}}|fn={{efn|name=pua}}}}
+|{{chset-cell1|U+0025 PERCENT SIGN|[[%]]}}
+|}
+
+===Baudot–Murray variants===
+<!-- Western Union, for example, would also go here -->
+
+====Murray Code====
+{|{{chset-table-header1|Murray code (letter set, switched to with 0x04)<ref name="nadcomm" />{{anchor|0x04Murray}}}}
+|-
+|{{chset-left1|0x}}
+|{{chset-ctrl1|U+0000 NULL or&#10;U+0020 SPACE|&nbsp;{{ctrl|SP}}&nbsp;}}
+|{{chset-cell1|U+0045 LATIN CAPITAL LETTER E|[[E]]}}
+|{{chset-ctrl1||COL}} <!-- CR (000D) ??? (Jennings gives LF but see comment at 0x08) -->
+|{{chset-cell1|U+0041 LATIN CAPITAL LETTER A|[[A]]}}
+|{{chset-ctrl1|U+000F SHIFT IN|{{ctrl|SI|LTRS}}}}
+|{{chset-cell1|U+0053 LATIN CAPITAL LETTER S|[[S]]}}
+|{{chset-cell1|U+0049 LATIN CAPITAL LETTER I|[[I]]}}
+|{{chset-cell1|U+0055 LATIN CAPITAL LETTER U|[[U]]}}
+|{{chset-ctrl1|U+000A LINE FEED (LF)|&nbsp;{{ctrl|LF}}&nbsp;}} <!-- "Line Page" in NADCOMM source, presumably being a linefeed. Jennings gives CR but references the NADCOMM source as the source of his information. -->
+|{{chset-cell1|U+0044 LATIN CAPITAL LETTER D|[[D]]}}
+|{{chset-cell1|U+0052 LATIN CAPITAL LETTER R|[[R]]}}
+|{{chset-cell1|U+004A LATIN CAPITAL LETTER J|[[J]]}}
+|{{chset-cell1|U+004E LATIN CAPITAL LETTER N|[[N]]}}
+|{{chset-cell1|U+0046 LATIN CAPITAL LETTER F|[[F]]}}
+|{{chset-cell1|U+0043 LATIN CAPITAL LETTER C|[[C]]}}
+|{{chset-cell1|U+004B LATIN CAPITAL LETTER K|[[K]]}}
+|-
+|{{chset-left1|1x}}
+|{{chset-cell1|U+0054 LATIN CAPITAL LETTER T|[[T]]}}
+|{{chset-cell1|U+005A LATIN CAPITAL LETTER Z|[[Z]]}}
+|{{chset-cell1|U+004C LATIN CAPITAL LETTER L|[[L]]}}
+|{{chset-cell1|U+0057 LATIN CAPITAL LETTER W|[[W]]}}
+|{{chset-cell1|U+0048 LATIN CAPITAL LETTER H|[[H]]}}
+|{{chset-cell1|U+0059 LATIN CAPITAL LETTER Y|[[Y]]}}
+|{{chset-cell1|U+0050 LATIN CAPITAL LETTER P|[[P]]}}
+|{{chset-cell1|U+0051 LATIN CAPITAL LETTER Q|[[Q]]}}
+|{{chset-cell1|U+004F LATIN CAPITAL LETTER O|[[O]]}}
+|{{chset-cell1|U+0042 LATIN CAPITAL LETTER B|[[B]]}}
+|{{chset-cell1|U+0047 LATIN CAPITAL LETTER G|[[G]]}}
+|{{chset-ctrl1|U+000E SHIFT OUT|[[#0x1BMurray|FIGS]]}}
+|{{chset-cell1|U+004D LATIN CAPITAL LETTER M|[[M]]}}
+|{{chset-cell1|U+0058 LATIN CAPITAL LETTER X|[[X]]}}
+|{{chset-cell1|U+0056 LATIN CAPITAL LETTER V|[[V]]}}
+|{{chset-cell1|U+007F DELETE or&#10;U+002A ASTERISK|{{ctrl|DEL|{{sc|DEL}}}}/[[Asterisk|*]]|fn={{efn|name=murraydelstar|"[G]ives invisible correction on page printers & <code>*</code> on slip printers."{{refn|name=nadcomm}} }} }}
+|}
+
+{|{{chset-table-header1|Murray code (figure set, switched to with 0x1B){{anchor|0x1BMurray}}}}
+|-
+|{{chset-left1|0x}}
+|{{chset-ctrl1|U+0000 NULL or&#10;U+0020 SPACE|&nbsp;{{ctrl|SP}}&nbsp;}}
+|{{chset-cell1|U+0033 DIGIT THREE|[[3]]}}
+|{{chset-ctrl1||COL}} <!-- CR (000D) ??? (Jennings gives LF but see comment at 0x08) -->
+|
+|{{chset-ctrl1|U+000F SHIFT IN|[[#0x04Murray|LTRS]]}}
+|{{chset-cell1|U+0027 APOSTROPHE|[[Apostrophe|']]}}
+|{{chset-cell1|U+0038 DIGIT EIGHT|[[8]]}}
+|{{chset-cell1|U+0037 DIGIT SEVEN|[[7]]}}
+|{{chset-ctrl1|U+000A LINE FEED (LF)|&nbsp;{{ctrl|LF}}&nbsp;}} <!-- "Line Page" in NADCOMM source, presumably being a linefeed. Jennings gives CR but references the NADCOMM source as the source of his information. -->
+|{{chset-cell1|U+00B2 SUPERSCRIPT TWO|[[²]]}}
+|{{chset-cell1|U+0034 DIGIT FOUR|[[4]]}}
+|{{chset-cell1|U+2077 SUPERSCRIPT SEVEN, U+2044 FRACTION SLASH|[[Vulgar fraction|⁷⁄]]}}
+|{{chset-cell1|U+002D HYPHEN-MINUS/2212|[[−]]}}
+|{{chset-cell1|U+215F FRACTION NUMERATOR ONE|[[Vulgar fraction|⅟]]}}
+|{{chset-cell1|U+0028 LEFT PARENTHESIS|[[Left parenthesis|(]]}}
+|{{chset-cell1|U+2079 SUPERSCRIPT NINE, U+2044 FRACTION SLASH|[[Vulgar fraction|⁹⁄]]}}
+|-
+|{{chset-left1|1x}}
+|{{chset-cell1|U+0035 DIGIT FIVE|[[5]]}}
+|{{chset-cell1|U+002E FULL STOP|[[Full stop|.]]}}
+|{{chset-cell1|U+002F SOLIDUS|[[Slash (punctuation)|/]]}}
+|{{chset-cell1|U+0032 DIGIT TWO|[[2]]}}
+|{{chset-cell1|U+2075 SUPERSCRIPT FIVE, U+2044 FRACTION SLASH|[[Vulgar fraction|⁵⁄]]}}
+|{{chset-cell1|U+0036 DIGIT SIX|[[6]]}}
+|{{chset-cell1|U+0030 DIGIT ZERO|[[0]]}}
+|{{chset-cell1|U+0031 DIGIT ONE|[[1]]}}
+|{{chset-cell1|U+0039 DIGIT NINE|[[9]]}}
+|{{chset-cell1|U+003F QUESTION MARK|[[Question mark|?]]}}
+|{{chset-cell1|U+00B3 SUPERSCRIPT THREE, U+2044 FRACTION SLASH|[[Vulgar fraction|³⁄]]}}
+|{{chset-ctrl1|U+000E SHIFT OUT|{{ctrl|SO|FIGS}}}}
+|{{chset-cell1|U+002C COMMA|[[Comma|,]]}}
+|{{chset-cell1|U+00A3 POUND SIGN|[[£]]}}
+|{{chset-cell1|U+0029 RIGHT PARENTHESIS|[[Right parenthesis|)]]}}
+|{{chset-cell1|U+007F DELETE or&#10;U+002A ASTERISK|{{ctrl|DEL|{{sc|DEL}}}}/[[Asterisk|*]]|fn={{efn|name=murraydelstar}} }}
+|}
+
+====ITA 2 and US-TTY====
+{|{{chset-table-header1|ITA2 and US-TTY Baudot–Murray code (letter set, switched to with 0x1F){{anchor|0x1F}}}}
+|-
+|{{chset-left1|0x}}
+|{{chset-ctrl1|U+0000 NULL|{{ctrl|NUL}}}}
+|{{chset-cell1|U+0045 LATIN CAPITAL LETTER E|[[E]]}}
+|{{chset-ctrl1|U+000A LINE FEED (LF)|&nbsp;{{ctrl|LF}}&nbsp;}}
+|{{chset-cell1|U+0041 LATIN CAPITAL LETTER A|[[A]]}}
+|{{chset-ctrl1|U+0020 SPACE|&nbsp;{{ctrl|SP}}&nbsp;}}
+|{{chset-cell1|U+0053 LATIN CAPITAL LETTER S|[[S]]}}
+|{{chset-cell1|U+0049 LATIN CAPITAL LETTER I|[[I]]}}
+|{{chset-cell1|U+0055 LATIN CAPITAL LETTER U|[[U]]}}
+|{{chset-ctrl1|U+000D CARRIAGE RETURN (CR)|&nbsp;{{ctrl|CR}}&nbsp;}}
+|{{chset-cell1|U+0044 LATIN CAPITAL LETTER D|[[D]]}}
+|{{chset-cell1|U+0052 LATIN CAPITAL LETTER R|[[R]]}}
+|{{chset-cell1|U+004A LATIN CAPITAL LETTER J|[[J]]}}
+|{{chset-cell1|U+004E LATIN CAPITAL LETTER N|[[N]]}}
+|{{chset-cell1|U+0046 LATIN CAPITAL LETTER F|[[F]]}}
+|{{chset-cell1|U+0043 LATIN CAPITAL LETTER C|[[C]]}}
+|{{chset-cell1|U+004B LATIN CAPITAL LETTER K|[[K]]}}
+|-
+|{{chset-left1|1x}}
+|{{chset-cell1|U+0054 LATIN CAPITAL LETTER T|[[T]]}}
+|{{chset-cell1|U+005A LATIN CAPITAL LETTER Z|[[Z]]}}
+|{{chset-cell1|U+004C LATIN CAPITAL LETTER L|[[L]]}}
+|{{chset-cell1|U+0057 LATIN CAPITAL LETTER W|[[W]]}}
+|{{chset-cell1|U+0048 LATIN CAPITAL LETTER H|[[H]]}}
+|{{chset-cell1|U+0059 LATIN CAPITAL LETTER Y|[[Y]]}}
+|{{chset-cell1|U+0050 LATIN CAPITAL LETTER P|[[P]]}}
+|{{chset-cell1|U+0051 LATIN CAPITAL LETTER Q|[[Q]]}}
+|{{chset-cell1|U+004F LATIN CAPITAL LETTER O|[[O]]}}
+|{{chset-cell1|U+0042 LATIN CAPITAL LETTER B|[[B]]}}
+|{{chset-cell1|U+0047 LATIN CAPITAL LETTER G|[[G]]}}
+|{{chset-ctrl1|U+000E SHIFT OUT|[[#0x1B|FIGS]]}}
+|{{chset-cell1|U+004D LATIN CAPITAL LETTER M|[[M]]}}
+|{{chset-cell1|U+0058 LATIN CAPITAL LETTER X|[[X]]}}
+|{{chset-cell1|U+0056 LATIN CAPITAL LETTER V|[[V]]}}
+|{{chset-ctrl1|U+000F SHIFT IN or&#10;U+007F DELETE|{{ctrl|SI|LTRS}}/{{ctrl|DEL}}}}
+|}
+
+{|{{chset-table-header1|US-TTY Baudot–Murray code (figure set, switched to with 0x1B){{anchor|0x1B}}}}
+|-
+|{{chset-left1|0x}}
+|{{chset-ctrl1|U+0000 NULL|{{ctrl|NUL}}}}
+|{{chset-cell1|U+0033 DIGIT THREE|[[3]]}}
+|{{chset-ctrl1|U+000A LINE FEED (LF)|&nbsp;{{ctrl|LF}}&nbsp;}}
+|{{chset-cell1|U+002D HYPHEN-MINUS/2212|[[−]]}}
+|{{chset-ctrl1|U+0020 SPACE|&nbsp;{{ctrl|SP}}&nbsp;}}
+|{{chset-ctrl1|U+0007 BELL|{{ctrl|BEL}}}}
+|{{chset-cell1|U+0038 DIGIT EIGHT|[[8]]}}
+|{{chset-cell1|U+0037 DIGIT SEVEN|[[7]]}}
+|{{chset-ctrl1|U+000D CARRIAGE RETURN (CR)|&nbsp;{{ctrl|CR}}&nbsp;}}
+|{{chset-cell1|U+0024 DOLLAR SIGN|[[Dollar sign|$]]}}
+|{{chset-cell1|U+0034 DIGIT FOUR|[[4]]}}
+|{{chset-cell1|U+0027 APOSTROPHE|[[Apostrophe|']]}}
+|{{chset-cell1|U+002C COMMA|[[Comma|,]]}}
+|{{chset-cell1|U+0021 EXCLAMATION MARK|[[Exclamation mark|!]]}}
+|{{chset-cell1|U+003A COLON|[[Colon (punctuation)|:]]}}
+|{{chset-cell1|U+0028 LEFT PARENTHESIS|[[Left parenthesis|(]]}}
+|-
+|{{chset-left1|1x}}
+|{{chset-cell1|U+0035 DIGIT FIVE|[[5]]}}
+|{{chset-cell1|U+0022 QUOTATION MARK|[[Quotation mark|"]]}}
+|{{chset-cell1|U+0029 RIGHT PARENTHESIS|[[Right parenthesis|)]]}}
+|{{chset-cell1|U+0032 DIGIT TWO|[[2]]}}
+|{{chset-cell1|U+0023 NUMBER SIGN|[[Number sign|#]]}}
+|{{chset-cell1|U+0036 DIGIT SIX|[[6]]}}
+|{{chset-cell1|U+0030 DIGIT ZERO|[[0]]}}
+|{{chset-cell1|U+0031 DIGIT ONE|[[1]]}}
+|{{chset-cell1|U+0039 DIGIT NINE|[[9]]}}
+|{{chset-cell1|U+003F QUESTION MARK|[[Question mark|?]]}}
+|{{chset-cell1|U+0026 AMPERSAND|[[Ampersand|&]]}}
+|{{chset-ctrl1|U+000E SHIFT OUT|{{ctrl|SO|FIGS}}}}
+|{{chset-cell1|U+002E FULL STOP|[[Full stop|.]]}}
+|{{chset-cell1|U+002F SOLIDUS|[[Slash (punctuation)|/]]}}
+|{{chset-cell1|U+003B SEMICOLON|[[Semicolon|;]]}}
+|{{chset-ctrl1|U+000F SHIFT IN|[[#0x1F|LTRS]]}}
+|}
+
+{|{{chset-table-header1|{{anchor|0x1B}}ITA2 Baudot–Murray code (figure set, switched to with 0x1B)}}
+|-
+|{{chset-left1|0x}}
+|{{chset-ctrl1|U+0000 NULL|{{ctrl|NUL}}}}
+|{{chset-cell1|U+0033 DIGIT THREE|[[3]]}}
+|{{chset-ctrl1|U+000A LINE FEED (LF)|&nbsp;{{ctrl|LF}}&nbsp;}}
+|{{chset-cell1|U+002D HYPHEN-MINUS/2212|[[−]]}}
+|{{chset-ctrl1|U+0020 SPACE|&nbsp;{{ctrl|SP}}&nbsp;}}
+|{{chset-cell1|U+0027 APOSTROPHE|[[Apostrophe|']]}}
+|{{chset-cell1|U+0038 DIGIT EIGHT|[[8]]}}
+|{{chset-cell1|U+0037 DIGIT SEVEN|[[7]]}}
+|{{chset-ctrl1|U+000D CARRIAGE RETURN (CR)|&nbsp;{{ctrl|CR}}&nbsp;}}
+|{{chset-ctrl1|U+0005 ENQUIRY|{{ctrl|ENQ}}}}
+|{{chset-cell1|U+0034 DIGIT FOUR|[[4]]}}
+|{{chset-ctrl1|U+0007 BELL|{{ctrl|BEL}}}}
+|{{chset-cell1|U+002C COMMA|[[Comma|,]]}}
+|{{chset-cell1|U+0021 EXCLAMATION MARK|[[Exclamation mark|!]]}}
+|{{chset-cell1|U+003A COLON|[[Colon (punctuation)|:]]}}
+|{{chset-cell1|U+0028 LEFT PARENTHESIS|[[Left parenthesis|(]]}}
+|-
+|{{chset-left1|1x}}
+|{{chset-cell1|U+0035 DIGIT FIVE|[[5]]}}
+|{{chset-cell1|U+002B PLUS SIGN|[[Plus sign|+]]}}
+|{{chset-cell1|U+0029 RIGHT PARENTHESIS|[[Right parenthesis|)]]}}
+|{{chset-cell1|U+0032 DIGIT TWO|[[2]]}}
+|{{chset-cell1|U+00A3 POUND SIGN|[[Pound sign|£]]}}
+|{{chset-cell1|U+0036 DIGIT SIX|[[6]]}}
+|{{chset-cell1|U+0030 DIGIT ZERO|[[0]]}}
+|{{chset-cell1|U+0031 DIGIT ONE|[[1]]}}
+|{{chset-cell1|U+0039 DIGIT NINE|[[9]]}}
+|{{chset-cell1|U+003F QUESTION MARK|[[Question mark|?]]}}
+|{{chset-cell1|U+0026 AMPERSAND|[[Ampersand|&]]}}
+|{{chset-ctrl1|U+000E SHIFT OUT|{{ctrl|SO|FIGS}}}}
+|{{chset-cell1|U+002E FULL STOP|[[Full stop|.]]}}
+|{{chset-cell1|U+002F SOLIDUS|[[Slash (punctuation)|/]]}}
+|{{chset-cell1|U+003D EQUALS SIGN|[[Equals sign|=]]}}
+|{{chset-ctrl1|U+000F SHIFT IN|[[#0x1F|LTRS]]}}
+|}
+
+===Weather code===
+Meteorologists used a variant of ITA2 with the figures-case symbols, except for the ten digits, BEL and a few other characters, replaced by weather symbols:
+
+[[File:WeatherTeletypeChart.jpg|thumb|center|upright=2.5|Weather teleprinter encoding]]
+
+{|{{chset-table-header1|Meteorological Baudot–Murray code (figure set, switched to with 0x1B){{anchor|0x1B}}}}
+|-
+|{{chset-left1|0x}}
+|{{chset-cell1|U+002D HYPHEN-MINUS|[[Minus sign|-]]}}
+|{{chset-cell1|U+0033 DIGIT THREE|[[3]]}}
+|{{chset-ctrl1|U+000A LINE FEED (LF)|&nbsp;{{ctrl|LF}}&nbsp;}}
+|{{chset-cell1|U+2191 UPWARDS ARROW|↑}}
+|{{chset-ctrl1|U+0020 SPACE|&nbsp;{{ctrl|SP}}&nbsp;}}
+|{{chset-ctrl1|U+0007 BELL|{{ctrl|BEL}}}}
+|{{chset-cell1|U+0038 DIGIT EIGHT|[[8]]}}
+|{{chset-cell1|U+0037 DIGIT SEVEN|[[7]]}}
+|{{chset-ctrl1|U+000D CARRIAGE RETURN (CR)|&nbsp;{{ctrl|CR}}&nbsp;}}
+|{{chset-cell1|U+2197 NORTH EAST ARROW|↗}}
+|{{chset-cell1|U+0034 DIGIT FOUR|[[4]]}}
+|{{chset-cell1|U+2199 SOUTH WEST ARROW|↙}}
+|{{chset-cell1|U+29B7 CIRCLED PARALLEL|⦷}}
+|{{chset-cell1|U+2192 RIGHTWARDS ARROW|→}}
+|{{chset-cell1|U+25EF LARGE CIRCLE|◯}}
+|{{chset-cell1|U+2190 LEFTWARDS ARROW|←}}
+|-
+|{{chset-left1|1x}}
+|{{chset-cell1|U+0035 DIGIT FIVE|[[5]]}}
+|{{chset-cell1|U+002B PLUS SIGN|[[Plus sign|+]]}}
+|{{chset-cell1|U+2196 NORTH WEST ARROW|↖}}
+|{{chset-cell1|U+0032 DIGIT TWO|[[2]]}}
+|{{chset-cell1|U+2193 DOWNWARDS ARROW|↓}}
+|{{chset-cell1|U+0036 DIGIT SIX|[[6]]}}
+|{{chset-cell1|U+0030 DIGIT ZERO|[[0]]}}
+|{{chset-cell1|U+0031 DIGIT ONE|[[1]]}}
+|{{chset-cell1|U+0039 DIGIT NINE|[[9]]}}
+|{{chset-cell1|U+2295 CIRCLED PLUS|⊕}}
+|{{chset-cell1|U+2198 SOUTH EAST ARROW|↘}}
+|{{chset-ctrl1|U+000E SHIFT OUT|{{ctrl|SO|FIGS}}}}
+|{{chset-cell1|U+002E FULL STOP|[[Full stop|.]]}}
+|{{chset-cell1|U+002F SOLIDUS|[[Slash (punctuation)|/]]}}
+|{{chset-cell1|U+29B6 CIRCLED VERTICAL BAR|⦶}}
+|{{chset-ctrl1|U+000F SHIFT IN|[[#0x1F|LTRS]]}}
+|}
+
+{{clear}}
+
+==Details==
+{{More citations needed section|date=November 2023}}
+Note: This table presumes the space called "1" by Baudot and Murray is rightmost, and least significant. The way the transmitted bits were packed into larger codes varied by manufacturer. The most common solution allocates the bits from the least significant bit towards the most significant bit (leaving the three most significant bits of a byte unused).
+[[File:Ita2.png|right|frame|Table of ITA2 codes (expressed as [[hexadecimal]] numbers)]]
+In ITA2, characters are expressed using five bits. ITA2 uses two code sub-sets, the "letter shift" (LTRS), and the "figure shift" (FIGS). The FIGS character (11011) signals that the following characters are to be interpreted as being in the FIGS set, until this is reset by the LTRS (11111) character.<ref>{{FOLDOC|Baudot+code}}</ref> In use, the LTRS or FIGS shift key is pressed and released, transmitting the corresponding shift character to the other machine. The desired letters or figures characters are then typed. Unlike a typewriter or modern computer keyboard, the shift key isn't kept depressed whilst the corresponding characters are typed. "ENQuiry" will trigger the other machine's answerback. It means "Who are you?"
+
+CR is [[carriage return]], LF is [[line feed]], BEL is the [[bell character]] which rang a small [[bell (instrument)|bell]] (often used to alert operators to an incoming message), SP is space, and NUL is the [[null character]] (blank tape).
+
+Note: the binary conversions of the codepoints are often shown in reverse order, depending on (presumably) from which side one views the paper tape. Note further that the [[control character|"control" characters]] were chosen so that they were either symmetric or in useful pairs so that inserting a tape "upside down" did not result in problems for the equipment and the resulting printout could be deciphered.  Thus FIGS (11011), LTRS (11111) and space (00100) are invariant, while CR (00010) and LF (01000), generally used as a pair, are treated the same regardless of order by page printers.<ref>{{cite web |url=https://www.sensitiveresearch.com/Archive/CharCodeHist/index.html#ITA2 |title=An annotated history of some character codes: ITA2 |last=Jennings |first=Tom |author-link=Tom Jennings |date=5 February 2020 |access-date=20 September 2025 |quote=[...] the characters that are 'transmission control' related [...] are bit-wise symmetrical – the codes for FIGS, LTRS, space and BLANK – are the same reversed left to right! Further, the codes for CR and LF, equal each other when reversed left to right!}}</ref> LTRS could also be used to overpunch characters to be deleted on a paper tape (much like DEL in 7-bit [[ASCII]]).
+
+The sequence ''[[RY (test signal)|RYRYRY...]]'' is often used in test messages, and at the start of every transmission. Since R is 01010 and Y is 10101, the sequence exercises much of a teleprinter's mechanical components at maximum stress.  Also, at one time, fine-tuning of the receiver was done using two coloured lights (one for each tone).  'RYRYRY...' produced 0101010101..., which made the lights glow with equal brightness when the tuning was correct. This tuning sequence is only useful when ITA2 is used with two-tone [[Frequency-shift keying|FSK]] modulation, such as is commonly seen in [[radioteletype]] (RTTY) usage.
+
+US implementations of Baudot code may differ in the addition of a few characters, such as #, & on the FIGS layer.
+
+The Russian version of Baudot code ([[MTK-2]]) used three shift modes; the [[Cyrillic letter]] mode was activated by the character (00000). Because of the larger number of characters in the Cyrillic alphabet, the characters [[Exclamation Mark|!]], [[Ampersand|&]], [[Pound sign|£]] were omitted and replaced by Cyrillics, and [[Bell character|BEL]] has the same code as Cyrillic letter Ю. The Cyrillic letters [[Ъ]] and [[Yo (Cyrillic)|Ё]] are omitted, and Ч is merged with the numeral 4.
+
+==See also==
+* [[Bacon's cipher]] – A 5-bit binary encoding of the English alphabet devised by [[Francis Bacon]] in 1605.<ref name="Bacon_1605">{{cite book |author-last=Bacon |author-first=Francis |author-link=Francis Bacon |title=The Proficience and Advancement of Learning Divine and Humane |year=1605}}</ref>
+* [[CCIR 476]]
+* [[List of information system character sets]]
+* {{section link|Telegraph code#Automatic telegraph codes}}
+
+== Explanatory notes ==
+{{Notelist}}
+
+==References==
+{{Reflist}}
+
+==Further reading==
+* {{Cite book | editor-last = Copeland | editor-first = B. Jack | editor-link = Jack Copeland | title = Colossus: The Secrets of Bletchley Park's Codebreaking Computers | place = Oxford | publisher = Oxford University Press | year = 2006 | isbn = 978-0-19-284055-4 }}
+* {{Cite web | last = Hobbs | first = Alan G  | title = NADCOMM Papers and Writings: Five-unit codes | url = http://www.nadcomm.com/?p=95 | access-date = 10 February 2017}}
+* [http://www.sensi.org/~alec/locale/other/mtk-2.html MTK-2 code table]
+* [http://www.quadibloc.com/crypto/tele03.htm Baudot, Murray, ITA2, ITA5, etc.]
+* {{cite web|url=http://chem.ch.huji.ac.il/history/baudot.html|title=Jean-Maurice-Émile Baudot|archive-url=https://web.archive.org/web/20090913085736/http://chem.ch.huji.ac.il/history/baudot.html|archive-date=13 September 2009}}
+
+== External links ==
+* {{Commons-inline}}
+
+{{Character encoding}}
+
+{{DEFAULTSORT:Baudot Code}}
+[[Category:Amateur radio]]
+[[Category:Character encoding]]
+[[Category:Character sets]]
+[[Category:Telegraphy]]
+[[Category:1870s introductions]]
+[[Category:French inventions]]

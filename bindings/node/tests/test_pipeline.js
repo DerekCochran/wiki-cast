@@ -9,8 +9,8 @@ const { newProto, nativeProto } = require('./native_token_patch');
 // This should loop through each test and fast fail on the first mismatch.
 
 const tests = [
-  `[[File:A map of the descendants of Abu Bakr al-Siddiq.svg | alt=A map showing the 
-  ]]`,
+  `<section begin="UK General Election 2001"/>`,
+  `[[File:A map of the descendants of Abu Bakr al-Siddiq.svg | alt=A map showing the ]]`,
   `<ref name="https://pt.scribd.com/document/742344591/smartproxy-cities"/>`,
   `[[Mushroom poisoning|deadly mushrooms]]`,
   `; A'''B''' : C`,

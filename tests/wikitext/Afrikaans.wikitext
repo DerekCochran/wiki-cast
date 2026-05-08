@@ -1,0 +1,1412 @@
+{{Short description|West Germanic language spoken in South Africa}}
+{{For|white Afrikaans speakers|Afrikaners}}
+{{Distinguish|List of ethnic groups of Africa{{!}}Africans}}
+{{Use dmy dates|date=April 2020}}
+{{Infobox language
+| name             = Afrikaans
+| pronunciation    = {{IPA|af|afriˈkɑːns|}}
+| region           = [[Southern Africa]]
+| states           = {{Plainlist|
+* [[South Africa]]
+* [[Namibia]]
+ }}
+| speakers         = 7.2 million (2016)<br />10.3 million L2 speakers in South Africa
+| date             = 2011
+| ref              = e19
+| ethnicity        = [[Afrikaners]]<br />[[Coloureds]]
+| speakers2        = 
+| familycolor      = Indo-European
+| fam2             = [[Germanic languages|Germanic]]
+| fam3             = [[West Germanic languages|West Germanic]]
+| fam4             = [[Weser–Rhine Germanic]]
+| fam5             = [[Low Franconian languages|Low Franconian]]
+| ancestor         = [[Frankish language|Frankish]]
+| ancestor2        = [[Old Dutch language|Old Dutch]]
+| ancestor3        = [[Middle Dutch]]
+| ancestor4        = [[Modern Dutch]]
+| ancestor5        = 17th-century [[Dutch language|Dutch]]
+| ancestor6        = [[Central Dutch dialects|Central Dutch]]
+| ancestor7        = [[Hollandic dialect|Hollandic]]
+| script           = Latin script (Afrikaans alphabet), [[Arabic Afrikaans|Arabic script]]
+| sign             = [[Signed Afrikaans]]<ref>Aarons & Reynolds, "South African Sign Language" in Monaghan (ed.), ''Many Ways to be Deaf: International Variation in Deaf Communities'' (2003).</ref>
+| nation           = [[South Africa]]
+| agency           = [[Die Taalkommissie]]
+| minority         = [[Namibia]]
+| iso1             = af
+| iso2             = afr
+| iso3             = afr
+| glotto           = afri1274
+| glottorefname    = Afrikaans
+| lingua           = 52-ACB-ba
+| map              = Idioma afrikáans.png
+| mapcaption       = {{legend|#0081ff|&nbsp;spoken by a majority}}{{legend|#89c6ff|&nbsp;spoken by a minority}}
+| map2             = Lang Status 80-VU.svg
+| mapcaption2      = {{center|{{small|Afrikaans is classified as Vulnerable by the [[UNESCO]] ''[[Atlas of the World's Languages in Danger]]''}}}}<ref>{{cite web|last=Daniels|first=Keliah|date=30 March 2013|title=Afrikaans now potentially a 'vulnerable' language – UNESCO|url=https://www.thesouthafrican.com/gauteng/afrikaans-now-potentially-a-vulnerable-language-unesco-30-march-2023/}}</ref><ref>{{cite web|last= Mahogo|first=Princess|date=29 March 2013|title=Afrikaans listed as 'potentially vulnerable' by UNESCO: AfriForum|url=https://www.jacarandafm.com/news/news/afrikaans-listed-potentially-vulnerable-unesco-afriforum/}}</ref>
+| notice           = IPA
+| dia1             = [[Kaaps]]
+| dia2             = [[Boeraans]]
+| dia3             = [[Afrikaans (Eastern Cape dialect)|Eastern Cape]]
+| dia4             = [[Afrikaans (Northern Cape dialect)|Northern Cape]]
+| dia5             = [[Patagonian Afrikaans|Patagonian]]
+| dia6             = [[Namibian Afrikaans|Namibian]]
+| fam6             = [[Dutch language|Dutch]]
+}}
+
+[[File:Colin speaks Afrikaans.webm|thumb|Colin speaking Afrikaans]]
+[[File:WIKITONGUES- Alaric speaking Afrikaans.webm|thumb|Alaric speaking Afrikaans]]
+[[File:WIKITONGUES- Roussow speaking Afrikaans.webm|thumb|Rossouw speaking Afrikaans]]
+
+'''Afrikaans'''{{refn|{{IPAc-en|ˌ|æ|f|r|ᵻ|ˈ|k|ɑː|n|s|}} {{respell|AF|rih|KAHNSS}}, {{IPAc-en|ˌ|ɑː|f|-|,_|-|ˈ|k|ɑː|n|z}} {{respell|AHF|-|,_|-|KAHNZ}}<ref>{{cite book |last = Wells |first = John C. |year = 2008 |title = Longman Pronunciation Dictionary |edition=3rd |publisher=Longman |isbn = 978-1-4058-8118-0 }}</ref><ref>{{cite book |last=Roach|first=Peter |url=https://archive.org/details/englishpronounci00dani|title=Cambridge English Pronouncing Dictionary |publisher=Cambridge University Press |year=2011|isbn=978-0-521-15253-2 |edition=18th|url-access=registration}}</ref>|group="n"}} is a [[West Germanic languages|West Germanic language]] spoken in [[South Africa]], [[Namibia]], and to a lesser extent [[Botswana]], [[Zambia]], [[Zimbabwe]], and also [[Argentina]], where a group in [[Sarmiento, Chubut|Sarmiento]] speaks a [[Patagonian Afrikaans|Patagonian dialect]]. It evolved from the [[Dutch language|Dutch vernacular]]<ref>K. Pithouse, C. Mitchell, R. Moletsane, Making Connections: Self-Study & Social Action, p.91</ref><ref name=Heese1971>{{cite book|publisher=A. A. Balkema |publication-place=Cape Town|title=Die herkoms van die Afrikaner, 1657–1867 |ol=5361614M|author=J. A. Heese |publication-date=1971|oclc=1821706 |language=Afrikaans|trans-title=The origin of the Afrikaner }}</ref> of [[South Holland]] ([[Hollandic dialect]])<ref>[http://www.dbnl.org/tekst/kloe004herk01_01/kloe004herk01_01.pdf Herkomst en groei van het Afrikaans – G.G. Kloeke (1950)]</ref><ref name="Heeringade Wet2015">{{cite journal|last1=Heeringa|first1=Wilbert|last2=de Wet|first2=Febe|last3=van Huyssteen|first3=Gerhard B.|title=The origin of Afrikaans pronunciation: a comparison to west Germanic languages and Dutch dialects|journal=Stellenbosch Papers in Linguistics Plus|volume=47|year=2015|issn=2224-3380|doi=10.5842/47-0-649|doi-access=free}}</ref> spoken by the [[Free Burghers in the Dutch Cape Colony|predominantly Dutch settlers]] and [[slavery in South Africa#Dutch rule|enslaved population]] of the [[Dutch Cape Colony]], where in the 17th and 18th centuries it gradually developed characteristics that distinguish it from Dutch.<ref name="coetzee">{{Cite book |url=http://www.dbnl.org/arch/coet003stan01_01/pag/coet003stan01_01.pdf |title=Standaard Afrikaans|author=Abel Coetzee|publisher=Afrikaner Pers|year=1948 }}</ref>
+
+[[File:AfrikaanseTaalmonumentObelisks.jpg|thumb|Obelisks of the [[Afrikaans Language Monument]] near [[Paarl]]]]
+
+Although Afrikaans has adopted words from other languages, including [[German language|German]], [[Malay language|Malay]], and [[Khoisan languages]], an estimated 90 to 95% of its vocabulary is of Dutch origin.{{refn|Afrikaans borrowed from other languages such as Portuguese, German, Malay, Bantu, and Khoisan languages; see {{harvnb|Sebba|1997|p=160}}, {{harvnb|Niesler|Louw|Roux|2005|p=459}}.{{pb}}Ninety to ninety-five percent of Afrikaans vocabulary is ultimately of Dutch origin; see {{harvnb|Mesthrie|1995|p=214}}, {{harvnb|Mesthrie|2002|p=205}}, {{harvnb|Kamwangamalu|2004|p=203}}, {{harvnb|Berdichevsky|2004|p=131}}, {{harvnb|Brachin|Vincent|1985|p=132}}.|group="n"}} [[Differences between Afrikaans and Dutch]] often lie in the more [[analytic language|analytic]] [[Morphology (linguistics)|morphology]] and grammar of Afrikaans, and different spellings.{{refn|For morphology; see {{harvnb|Holm|1989|p=338}}, {{harvnb|Geerts|Clyne|1992|p=72}}. For grammar and spelling; see {{harvnb|Sebba|1997|p=161}}.|group="n"}} There is a large degree of [[mutual intelligibility]] between the two languages, especially in [[#Orthography|written form]].<ref name=":3"/>
+
+== Etymology ==
+
+The language's name comes directly from the Dutch word {{lang|nl|Afrikaansch}} (now spelled {{lang|nl|Afrikaans}}){{refn|The changed spelling rule was introduced in article 1, rule 3, of the Dutch "orthography law" of 14 February 1947. In 1954 the ''[[Word list of the Dutch language]]'' which regulates the spelling of individual words including the word ''Afrikaans'' was first published.<ref>{{Cite web |title=Wet voorschriften schrijfwijze Nederlandsche taal |url=https://wetten.overheid.nl/BWBR0002027/1997-02-21 |archive-url=https://web.archive.org/web/20210205160501/https://wetten.overheid.nl/BWBR0002027/1997-02-21 |archive-date=5 February 2021 |access-date=2023-03-10 |publisher=Royal Dutch [[Ministry of the Interior and Kingdom Relations]] |date=21 February 1997 |language=nl }}</ref>|group="n"}} meaning 'African'.<ref>{{cite web |title=Afrikaans |url=https://www.etymonline.com/search?q=afrikaans&ref=searchbar_searchhint |website=Online Etymology Dictionary |publisher=Douglas Harper |access-date=24 January 2020}}</ref> It was previously called 'Cape Dutch' ({{lang|nl|Kaap-Hollands}} or {{lang|nl|Kaap-Nederlands}}), a term also used to refer to the [[Cape Dutch|early Cape settlers]] collectively, or the derogatory 'kitchen Dutch' ({{lang|nl|kombuistaal}}) from its use by slaves of colonial settlers "in the kitchen".
+
+==History==
+
+===Origin===
+
+The Afrikaans language arose in the [[Dutch Cape Colony]] through a gradual divergence from European [[Dutch dialects]] during the 18th century.<ref name="omniglot.com">{{cite web |url=http://www.omniglot.com/writing/afrikaans.htm |title=Afrikaans |work=Omniglot |access-date=22 September 2010 }}</ref><ref>{{cite encyclopedia |url=https://www.britannica.com/EBchecked/topic/8437/Afrikaans-language |title=Afrikaans language |encyclopedia=[[Encyclopædia Britannica]] |access-date=22 September 2010 |archive-url=https://web.archive.org/web/20100831105055/https://www.britannica.com/EBchecked/topic/8437/Afrikaans-language|archive-date=31 August 2010 |url-status=live }}</ref> As early as the mid-18th century and as recently as the early-20th century, many in Southern Africa viewed pre-standardized Afrikaans as 'kitchen Dutch' ({{langx|af|kombuistaal|links=no}}), lacking the prestige accorded an officially recognised language like standard Dutch and English. In the 19th-century Boer republics, proto-Afrikaans was not yet widely seen by the Afrikaner population or its leaders as a separate language from standard Dutch. Dutch was expressly the sole and only legally recognised language at that time. Other early epithets in Southern Africa setting apart {{lang|nl|Kaaps Hollands}} ('[[Cape Dutch]]', i.e. Proto-Afrikaans) as putatively beneath official Dutch language standards included {{lang|nl|geradbraakt}}, {{lang|nl|gebroken}} and {{lang|nl|onbeschaafd Hollands}} (respectively 'mutilated', 'broken', and 'uncivilised Dutch'), as well as {{lang|nl|verkeerd Nederlands}} ('incorrect Dutch').<ref>{{cite book|last1=Alatis |last2=Hamilton |first3=Ai-Hui |last3=Tan |year=2002 |title=Georgetown University Round Table on Languages and Linguistics 2000: Linguistics, Language and the Professions: Education, Journalism, Law, Medicine, and Technology |location=Washington, DC |publisher=[[Georgetown University Press]] |isbn=978-0-87840-373-8 |page=132}}</ref><ref>{{cite book |editor-first=Keith |editor-last=Brown |editor-first2=Sarah |editor-last2=Ogilvie |year=2008 |title=Concise Encyclopedia of Languages of the World |location=Oxford |publisher=[[Elsevier]] |isbn=978-0-08-087774-7 |page=8}}</ref>
+{{Infobox language
+| name             = {{vanchor|Hottentot Dutch}}
+| region           = 
+| era              = 
+| familycolor      = pidgin
+| family           = Dutch-based [[pidgin]]
+| iso3             = none
+| glotto2          = hott1234
+| glottorefname2   = Hottentot Dutch
+| isoexception     = historical
+}}
+
+Historical linguist Hans den Besten theorises that modern Standard Afrikaans derives from two sources:<ref>{{cite book |first=Hans |last=den Besten |year=1989 |chapter=From Khoekhoe foreignertalk via Hottentot Dutch to Afrikaans: the creation of a novel grammar |editor-last=Pütz |editor-last2=Dirven |title=Wheels within wheels: papers of the Duisburg symposium on pidgin and creole languages |pages=207–250 |location=Frankfurt-am-Main |publisher=Peter Lang}}</ref>
+* [[Cape Dutch]], a direct transplantation of European Dutch to Southern Africa, and
+* 'Hottentot Dutch',<ref>{{cite web |editor1-last=Hammarström |editor1-first=Harald |editor2-last=Forke |editor2-first=Robert |editor3-last=Haspelmath |editor3-first=Martin |editor4-last=Bank |editor4-first=Sebastian |year=2020 |title=Hottentot Dutch |work=[[Glottolog]] 4.3 |url=https://glottolog.org/resource/languoid/id/hott1234 }}</ref> a [[pidgin]] that descended from 'Foreigner Talk' and ultimately from the Dutch [[pidgin]] spoken by slaves, via hypothetical [[Dutch-based creole languages]].
+
+So Afrikaans, in his view, is neither a creole nor a direct descendant of Dutch, but a fusion of two transmission pathways.
+
+=== Development ===
+[[File:Stuttafords Huisgenoot.jpg|thumb|right|[[Standard Dutch]] used in a 1916 South African newspaper before Afrikaans replaced it for use in media]]
+Most of the first [[free Burghers|settler]]s whose descendants today are the [[Afrikaner]]s were from the [[Republic of the Seven United Provinces of the Netherlands|United Provinces]] (now Netherlands),<ref name="zastudy">{{cite book |title=Area Handbook for the Republic of South Africa |last=Kaplan |first=Irving |pages=46–771 |year=1971 |url=https://files.eric.ed.gov/fulltext/ED056947.pdf }}</ref> with up to one-sixth of the community of French [[Huguenot]] origin, and a seventh from Germany.<ref name="Britannica1933">{{cite encyclopedia |year=1933 |title=Cape Colony |encyclopedia=[[Encyclopædia Britannica]]|editor=James Louis Garvin}}</ref>
+
+African and Asian workers, [[Cape Coloureds|Cape Coloured]] children of European settlers and [[Khoekhoe|Khoikhoi]] women,<ref>{{Cite book |last=Clark |first=Nancy L. |title=South Africa: The Rise and Fall of Apartheid |date=2016 |publisher=Routledge |author2=William H. Worger |isbn=978-1-138-12444-8 |edition=3rd |location=Abingdon, UK |language=en |oclc=883649263}}</ref> and slaves contributed to the development of Afrikaans. The slave population comprised people from East Africa, West Africa, [[Mughal Empire|Mughal India]], [[Merina Kingdom|Madagascar]], and the [[Dutch East Indies]] (modern Indonesia).<ref name="Worden">{{cite book |last=Worden |first=Nigel |title=Slavery in Dutch South Africa |year=2010 |pages=40–43 |publisher=[[Cambridge University Press]] |isbn=978-0521152662 }}</ref> Many were also indigenous [[Khoisan]] people, who were valued as interpreters, domestic servants, and labourers. Many free and enslaved women married or cohabited with male Dutch settlers. M. F. Valkhoff argued that 75% of children born to female slaves in the Dutch Cape Colony between 1652 and 1672 had a Dutch father.{{sfnp|Thomason|Kaufman|1988|pp=252–254}} Sarah Grey Thomason and Terrence Kaufman argue that Afrikaans' development as a separate language was "heavily conditioned by nonwhites who learned Dutch imperfectly as a second language."{{sfnp|Thomason|Kaufman|1988|p=256}}
+
+Beginning in about 1815, Afrikaans started to replace [[Malay language|Malay]] as the language of instruction in [[Madrasa|Muslim schools]] in South Africa, written with the [[Arabic alphabet]]: see [[Arabic Afrikaans]]. Later, Afrikaans, now written with the [[Latin script]], started to appear in newspapers and political and religious works in around 1850 (alongside the already established Dutch).<ref name="omniglot.com" />
+
+In 1875 a group of Afrikaans-speakers from the Cape formed the {{lang|af|[[Genootskap van Regte Afrikaners|Genootskap vir Regte Afrikaaners]]}} ('Society for Real Afrikaners'),<ref name="omniglot.com" /> and published a number of books in Afrikaans, including grammars, dictionaries, religious materials, and histories.
+
+Until the early 20th century Afrikaans was considered a [[Dutch dialect]], alongside [[Standard Dutch]], which it eventually replaced as an official language.<ref name=":3">{{cite web |title=Afrikaans Language Courses in London |url=http://www.keylanguages.com/new_english/afrikaans.html |archive-url=https://web.archive.org/web/20070812185524/http://www.keylanguages.com/new_english/afrikaans.html |archive-date=12 August 2007 |access-date=22 September 2010 |publisher=Keylanguages.com }}</ref> Before the [[Boer wars]], "and indeed for some time afterwards, Afrikaans was regarded as inappropriate for educated discourse. Rather, Afrikaans was described derogatorily as 'a kitchen language' or 'a bastard jargon', suitable for communication mainly between the Boers and their servants."<ref name=":0">{{cite web |last1=Kaplan |first1=R. B. |last2=Baldauf |first2=R. B. |title=Language Planning & Policy: Language Planning and Policy in Africa: Botswana, Malawi, Mozambique and South Africa }} {{registration required}}</ref>{{better source needed |date=July 2019 }}
+
+=== Recognition ===
+
+[[File:The Afrikaans Language Monument 23.JPG|thumb|upright=1.2|{{lang|af|"Dit is ons erns"}} ("This is our earnestness"), {{nowrap|at the [[Afrikaans Language Monument]]}}]]
+
+In 1925 Afrikaans was recognised by the South African government as a distinct language rather than simply a vernacular of Dutch.<ref name="omniglot.com" /> On 8 May 1925, 23 years after the [[Second Boer War]] ended,<ref name=":0" /> the [[Official Languages of the Union Act, 1925]] was passed—mostly due to the efforts of the [[Afrikaans language movement]]—at a joint sitting of the [[House of Assembly (South Africa)|House of Assembly]] and the [[Senate of South Africa|Senate]], in which the Afrikaans language was declared a variety of Dutch.<ref>{{cite web |url=http://www.sahistory.org.za/dated-event/afrikaans-becomes-official-language-union-south-africa |title=Afrikaans becomes the official language of the Union of South Africa |date=2011-03-16 |website=South African History Online |access-date=2017-03-17 }}</ref> The [[South African Constitution of 1961|Constitution of 1961]] reversed the position of Afrikaans and Dutch, so that English and Afrikaans were the official languages and Afrikaans was deemed to include Dutch. The [[South African Constitution of 1983|Constitution of 1983]] removed any mention of Dutch altogether.
+
+The [[Afrikaans Language Monument]] is on a hill overlooking [[Paarl]] in the [[Western Cape Province]]. Officially opened on 10 October 1975,<ref name="Botha-speech">{{cite web |url=http://www.info.gov.za/speeches/2005/05111709451003.htm |title=Speech by the Minister of Art and Culture, N Botha, at the 30th anniversary festival of the Afrikaans Language Monument |date=10 October 2005 |publisher=[[South African Department of Arts and Culture]] |language=af |access-date=28 November 2009 |url-status=dead |archive-url=https://web.archive.org/web/20110604111627/http://www.info.gov.za/speeches/2005/05111709451003.htm |archive-date=4 June 2011}}</ref> it was erected on the 100th anniversary of the founding of the [[Society of Real Afrikaners]],<ref>{{cite journal |last=Galasko |first=C. |date=November 2008 |title=The Afrikaans Language Monument |journal=[[Spine (journal)|Spine]] |volume=33 |issue=23 |doi=10.1097/01.brs.0000339413.49211.e6 }}</ref> and the 50th anniversary of Afrikaans being declared an official language of South Africa in distinction to Dutch.
+
+===Standardisation===
+[[File:Pretoriase kunsmuseum 1.jpg|thumb|The side view of the [[Pretoria Art Museum]], in [[Arcadia, Pretoria]], with its name written in Afrikaans, Xhosa and Southern Ndebele]]
+The earliest Afrikaans texts were some [[doggerel|doggerel verses]] from 1795 and a dialogue transcribed by a Dutch traveller in 1825. Afrikaans used the Latin alphabet around this time, although the [[Cape Malays|Cape Muslim]] community used the Arabic script. In 1861, L. H. Meurant published his {{lang|af|Zamenspraak tusschen Klaas Waarzegger en Jan Twyfelaar}} (''Conversation between Nicholas Truthsayer and John Doubter''), which is considered the first book published in Afrikaans.<ref name=":2">{{Cite book |last1=Tomasz |first1=Kamusella |title=The Social and Political History of Southern Africa's Languages |last2=Finex |first2=Ndhlovu |publisher=[[Palgrave Macmillan]] |year=2018 |isbn=978-1-137-01592-1 |pages=17–18 }}</ref>
+
+The first grammar book was published in 1876; a bilingual dictionary was published in 1902. The main modern Afrikaans dictionary in use is the {{lang|af|[[Verklarende Handwoordeboek van die Afrikaanse Taal]]}} (HAT). A new authoritative dictionary, {{lang|af|[[Woordeboek van die Afrikaanse Taal]]}} (WAT), was under development {{as of|2018|post=.}} The official [[orthography]] of Afrikaans is the {{lang|af|Afrikaanse Woordelys en Spelreëls}}, compiled by {{lang|af|[[Die Taalkommissie]]}}.<ref name=":2" />
+
+===The Afrikaans Bible===
+{{more citations needed section|date=February 2024}}
+{{Main|Bible translations into Afrikaans}}
+
+The Afrikaners primarily were Protestants, of the [[Dutch Reformed Church]] of the 17th century. Their religious practices were later influenced in South Africa by British ministries during the 1800s.<ref>{{cite web |title=Afrikaner |url=http://www.sahistory.org.za/article/afrikaner |website=South African History Online |publisher=South African History Online (SAHO) |access-date=20 October 2017 }}</ref> A landmark in the language's development was the translation of the Bible into Afrikaans. While significant advances had been made in the [[textual criticism]] of the Bible, especially the Greek [[New Testament]], the 1933 translation followed the [[Textus Receptus]] and was closely akin to the {{lang|nl|[[Statenbijbel]]}}. Before this, most Cape Dutch-Afrikaans speakers had to rely on the Dutch {{lang|nl|[[Statenbijbel]]}}. This {{lang|nl|[[Statenvertaling]]}} had its origins with the [[Synod of Dordrecht]] of 1618 and was thus in an archaic form of Dutch. This was hard for Dutch speakers to understand, and increasingly unintelligible for Afrikaans speakers.
+
+C. P. Hoogehout, [[Arnoldus Pannevis]], and [[Stephanus Jacobus du Toit]] were the first [[Bible translations (Afrikaans)|Afrikaans Bible]] translators. An important landmark in the translation of the Scriptures as C. P. Hoogehout's 1878 translation of the {{lang|af|Evangelie volgens Markus}} ([[Gospel of Mark]], lit. 'Gospel according to Mark'), but it was never published. The manuscript is in the South African National Library, Cape Town.
+
+The first official translation of the entire Bible into Afrikaans was in 1933 by [[Totius (poet)|J. D. du Toit]], E. E. van Rooyen, J. D. Kestell, H. C. M. Fourie, and [[BB Keet]].<ref>{{cite web |url=http://www.enigstetroos.org/bybelstudie.htm |title=Bybelstudies |access-date=23 September 2008 |last=Bogaards |first=Attie H. |language=af |archive-url=https://web.archive.org/web/20081010173208/http://www.enigstetroos.org/bybelstudie.htm |archive-date=10 October 2008 |url-status=dead }}</ref><ref>{{cite web |url=http://www.bybelgenootskap.co.za/afr/bybelgenootskap/jongste_nuus.asp |title=Afrikaanse Bybel vier 75 jaar |access-date=23 September 2008 |date=25 August 2008 |publisher=Bybelgenootskap van Suid-Afrika |language=af |archive-url=https://web.archive.org/web/20080609161131/http://www.bybelgenootskap.co.za/afr/bybelgenootskap/jongste_nuus.asp |archive-date=9 June 2008 |url-status=dead}}</ref> This monumental work established Afrikaans as {{lang|af|'n suiwer en ordentlike taal}}—"a pure and proper language" for religious purposes, especially among the deeply [[Calvinist]] Afrikaans religious community that previously had been sceptical of a [[Bible translation]] that varied from the Dutch version they were used to.
+
+In 1983 a fresh translation marked the 50th anniversary of the 1933 version. It was edited by E. P. Groenewald, A. H. van Zyl, P. A. Verhoef, J. L. Helberg and W. Kempen. It was influenced by [[Eugene Nida]]'s theory of [[Dynamic and formal equivalence|dynamic equivalence]], which focused on finding the nearest equivalent in the receptor language to the idea that the Greek, Hebrew, or Aramaic conveyed.
+
+A new translation, {{lang|af|Die Bybel: 'n Direkte Vertaling}} was released in November 2020. It is the first truly [[ecumenism|ecumenical]] translation of the Bible in Afrikaans as translators from various churches, including the [[Roman Catholic]] and [[Anglican]] Churches, were involved.<ref>{{Cite web |title=Afrikaans Bible translation |url=https://www.bybelgenootskap.co.za/index.php/take-action/projects/19-projects/82-afrikaans-bible-translation |publisher=Bible Society of South Africa |access-date=2020-05-30 |archive-date=25 July 2020 |archive-url=https://web.archive.org/web/20200725003816/https://www.bybelgenootskap.co.za/index.php/take-action/projects/19-projects/82-afrikaans-bible-translation |url-status=dead }}</ref>
+
+=== Classification ===
+* [[Indo-European languages]]
+** [[Germanic languages|Germanic]]
+*** [[West Germanic languages|West Germanic]]
+**** [[Low Franconian languages|Low Franconian]]
+***** [[Dutch language|Dutch]]
+****** Afrikaans
+
+Afrikaans descended from Dutch dialects in the 17th century. It belongs to a [[West Germanic languages|West Germanic]] sub-group, the [[Low Franconian languages]].<ref>{{Cite book |last=Harbert |first=Wayne |title=The Germanic Languages |url=https://archive.org/details/germaniclanguage00harb|url-access=limited |publisher=[[Cambridge University Press]] |year=2007 |isbn=978-0-521-80825-5 |pages=[https://archive.org/details/germaniclanguage00harb/page/n30 17] }}</ref> Other West Germanic languages related to Afrikaans are German, English, the [[Frisian languages]], [[Yiddish]], and the unstandardised language [[Low German]].
+
+==Geographic distribution==
+===Statistics===
+[[File:South Africa Afrikaans speakers proportion map.svg|thumb|upright=1.2|The geographical distribution of Afrikaans in South Africa: proportion of the population that speaks Afrikaans at home
+{{colbegin|colwidth=30em}}
+{{legend|#EDF8E9|0–20%}}
+{{legend|#BAE4B3|20–40%}}
+{{legend|#74C476|40–60%}}
+{{legend|#31A354|60–80%}}
+{{legend|#006D2C|80–100%}}
+{{colend}}]]
+
+{| class="wikitable sortable"
+|-
+! Country !! Speakers !! Percentage of speakers !! Year !! Reference
+|-
+|{{flagu|South Africa}}|| 6,855,082 || 94.71% || 2011 || {{Citation needed|date=March 2024}}
+|-
+|{{flagu|Namibia}}|| 219,760 || 3.04% || 2011 || {{Citation needed|date=March 2024}}
+|-
+|{{flagu|Australia}}|| 49,375 || 0.68% || 2021 ||<ref name="undata">{{cite web |title=ABS: Language used at Home by State and Territory |url=https://www.abs.gov.au/statistics/people/people-and-communities/cultural-diversity-census/2021/Cultural%20diversity%20data%20summary.xlsx |access-date=28 June 2022 |publisher=ABS}}</ref>
+|-
+|{{flagu|New Zealand}}|| 36,966 || 0.51% || 2018 ||<ref>{{cite web |title=Top 25 Languages in New Zealand |url-status=live |url= https://www.ethniccommunities.govt.nz/resources-2/our-languages-o-tatou-reo/new-registry-page/ |archive-date= May 6, 2023 |archive-url= https://web.archive.org/web/20230506094339/https://www.ethniccommunities.govt.nz/resources-2/our-languages-o-tatou-reo/new-registry-page/|website=Ministry for Ethnic Communities}}</ref>
+|-
+|{{flagu|Canada}}|| 29,670 || 0.41% || 2021 ||<ref>{{cite web|title=Profile table, Census Profile, 2021 Census of Population |website=Statistics Canada |url=https://www12.statcan.gc.ca/census-recensement/2021/dp-pd/prof/details/page.cfm?Lang=E&SearchText=canada&DGUIDlist=2021A000011124&GENDERlist=1,2,3&STATISTIClist=1,4&HEADERlist=0 |date=5 November 2023 |access-date=1 September 2024}}</ref>
+|-
+|{{flagu|United States}}
+|28,406
+|0.39%
+|2016
+|<ref name="ACS20162">{{Cite web
+| title= 2016 American Community Survey, 5-year estimates
+|url=https://usa.ipums.org/usa/sda/|access-date=2023-03-10
+| publisher= University of Minnesota
+|website=Ipums USA <!-- IPUMS is not an acronym, although it initially stood for Integrated Public Use Microdata Series -->
+| url-access= registration}}</ref>
+|-
+|{{flagu|Botswana}}|| 8,082 || 0.11% || 2011 ||{{Citation needed|date=March 2024}}
+|-
+|{{flagu|United Kingdom}}|| 7,489 || 0.10% || 2021 ||<ref>{{cite web|title=2011 Census: Detailed analysis – English language proficiency in parts of the United Kingdom, Main language and general health characteristics |url=https://www.ons.gov.uk/peoplepopulationandcommunity/culturalidentity/language/bulletins/languageenglandandwales/census2021#main-languages-in-england-and-wales |publisher=Office for National Statistics|access-date=1 September 2024}}</ref>
+|-
+|{{flagu|Pakistan}}|| 2,228 || 0.03% || 2016 ||{{Citation needed|date=March 2025}}
+|-
+|{{flagu|Argentina}}
+|650
+|0.01%
+|2019
+|<ref>{{cite web|title=Afrikaans is making a comeback in Argentina – along with koeksisters and milktart|url=https://www.businessinsider.co.za/afrikaans-is-making-a-comeback-in-argentina-2019-1 |publisher=Business Insider South Africa|access-date=11 October 2019}}</ref>
+|-
+|{{flagu|Finland}}|| 150 || 0.002% || 2023 ||<ref>{{cite web |title=Language according to age and sex by region, 1990-2023|url=https://pxdata.stat.fi/PxWeb/pxweb/en/StatFin/StatFin__vaerak/statfin_vaerak_pxt_11rl.px/ |publisher=Statistics Finland |access-date=1 September 2024}}</ref>
+|-
+|{{flagu|Mauritius}}|| 36 || 0.0005% || 2011 || {{Citation needed|date=March 2024}}
+|-
+!Total
+!7,237,894
+!
+!
+!
+|}
+
+===Sociolinguistics===
+[[File:South Africa Afrikaans speakers density map.svg|thumb|upright=1.2|The geographical distribution of Afrikaans in South Africa: density of Afrikaans home-language speakers
+{{colbegin|small=yes|colwidth=10em}}
+{{legend|#ffffcc|<1&nbsp;/km<sup>2</sup>}}
+{{legend|#ffeda0|1–3&nbsp;/km<sup>2</sup>}}
+{{legend|#fed976|3–10&nbsp;/km<sup>2</sup>}}
+{{legend|#feb24c|10–30&nbsp;/km<sup>2</sup>}}
+{{legend|#fd8d3c|30–100&nbsp;/km<sup>2</sup>}}
+{{legend|#fc4e2a|100–300&nbsp;/km<sup>2</sup>}}
+{{legend|#e31a1c|300–1000&nbsp;/km<sup>2</sup>}}
+{{legend|#bc0026|1000–3000&nbsp;/km<sup>2</sup>}}
+{{legend|#800026|>3000&nbsp;/km<sup>2</sup>}}
+{{colend}}]]
+
+[[File:Distribution of Afrikaans in Namibia.png|thumb|The geographical distribution of Afrikaans in Namibia]]
+Besides South-Africa, Afrikaans is also widely spoken in [[Namibia]]. Before independence, Afrikaans had equal status with German as an official language. Since independence in 1990, Afrikaans has had constitutional recognition as a national, but not official, language.<ref>{{cite book |last=Frydman |first=Jenna |editor-last=Bokamba |editor-first=Eyamba G. |chapter=A Critical Analysis of Namibia's English-only language policy |title=Selected proceedings of the 40th Annual Conference on African Linguistics – African languages and linguistics today |year=2011 |publisher=Cascadilla Proceedings Project |location=[[Somerville, Massachusetts]] |isbn=978-1-57473-446-1 |pages=178–189 |url=http://www.lingref.com/cpp/acal/40/paper2574.pdf |archive-url=https://ghostarchive.org/archive/20221009/http://www.lingref.com/cpp/acal/40/paper2574.pdf |archive-date=2022-10-09 |url-status=live}}</ref><ref>{{cite book |last=Willemyns |first=Roland |title=Dutch: Biography of a Language |year=2013 |publisher=Oxford University Press |isbn=978-0-19-985871-2 |page=232 |url=https://books.google.com/books?id=Xo2MGkyEfbMC }}</ref> There is a much smaller number of Afrikaans speakers among [[Zimbabwe]]'s white minority, as most have left the country since 1980. Afrikaans was also a medium of instruction for schools in [[Bophuthatswana]], an Apartheid-era [[Bantustan]].<ref>{{cite web |title=Armoria patriæ – Republic of Bophuthatswana |url = http://www.geocities.com/haigariep/BopE.html |archive-url = https://web.archive.org/web/20091026202203/http://www.geocities.com/haigariep/BopE.html |archive-date=26 October 2009 |url-status=dead}}</ref> [[Eldoret]], [[Kenya]], was founded by Afrikaners.<ref>{{Cite web|url=https://www.businessdailyafrica.com/lifestyle/society/Eldoret-the-town-that-South-African-Boers-started-/3405664-1323654-7f6ldnz/index.html|title=Eldoret, the town that South African Boers started|last=Kamau|first=John|website=Business Daily|date=25 December 2020 }}</ref>
+
+There are also around 30,000 [[South Africans in the Netherlands|South-Africans in the Netherlands]], of which the majority are of Afrikaans-speaking Afrikaner and Coloured South-African descent.<ref>{{Cite web |title=Cbs.nl statline |url=https://opendata.cbs.nl/statline/#/CBS/nl/dataset/37325/table?fromstatweb}}</ref> A much smaller and unknown number of Afrikaans speakers also reside in the [[Dutch Caribbean]].
+
+Contrary to popular belief, the majority of Afrikaans speakers today are not [[Afrikaners]] or [[Boers]], but [[Coloureds]].<ref>{{Cite web |date=2014-05-01 |title=Afrikaans se môre is bruin {{!}} Rapport |url=http://www.rapport.co.za/Suid-Afrika/Nuus/Afrikaans-se-more-is-bruin-20130323 |access-date=2024-11-07 |archive-date=1 May 2014 |archive-url=https://web.archive.org/web/20140501095350/http://www.rapport.co.za/Suid-Afrika/Nuus/Afrikaans-se-more-is-bruin-20130323 |url-status=bot: unknown }}</ref>
+
+In 1976, secondary-school pupils in [[Soweto]] began [[Soweto riots|a rebellion]] in response to the government's decision that Afrikaans be used as the language of instruction for half the subjects taught in non-White schools (with English continuing for the other half). Although [[South African English|English]] is the [[First language|mother tongue]] of only 8.2% of the population, it is the language most widely understood, and the [[second language]] of a majority of South Africans.<ref>[http://www.sagoodnews.co.za/public_sector/govt_info_available_online_in_all_official_languages.html Govt info available online in all official languages – South Africa – The Good News<!-- Bot generated title -->] {{webarchive|url=https://web.archive.org/web/20160304032342/http://www.sagoodnews.co.za/public_sector/govt_info_available_online_in_all_official_languages.html |date=4 March 2016 }}</ref> Afrikaans is more widely spoken than English in the Northern and Western Cape provinces, several hundred kilometres from Soweto. The Black community's opposition to Afrikaans and preference for continuing English instruction was underlined when the government rescinded the policy one month after the uprising: 96% of Black schools chose English (over Afrikaans or native languages) as the language of instruction.{{sfnp|Phaswana|2003|p=120}} Afrikaans-medium schools were also accused of using language policy to deter Black African parents.<ref name="lafon1">{{cite conference |last=Lafon |first=Michel |title=Asikhulume! African Languages for all: a powerful strategy for spearheading transformation and improvement of the South African education system |editor1-last=Lafon |editor1-first=Michel |editor2-last=Webb |editor2-first=Vic |editor3-last=Wa Kabwe Segatti |editor3-first=Aurelia |book-title=The Standardisation of African Languages: Language political realities |date=2008 |publisher=Institut Français d'Afrique du Sud Johannesburg |page=47 |url=https://halshs.archives-ouvertes.fr/halshs-00449090/document |access-date=30 January 2021 |via=HAL-SHS}}</ref> Some of these parents, in part supported by provincial departments of education, initiated litigation which enabled enrolment with English as language of instruction. By 2006 there were 300 single-medium Afrikaans schools, compared to 2,500 in 1994, after most converted to dual-medium education.<ref name="lafon1"/> Due to Afrikaans being viewed as the "language of the white oppressor" by some, pressure has been increased to remove Afrikaans as a teaching language in South African universities, resulting in bloody student protests in 2015.<ref>{{cite web |url=http://www.stamfordadvocate.com/news/world/article/South-Africa-Protesting-students-torch-6853287.php |title=South Africa: Protesting students torch university buildings |author=Lynsey Chutel |agency=[[Associated Press]] |work=[[The Advocate (Stamford)|Stamford Advocate]] |archive-url= https://web.archive.org/web/20160305040206/http://www.stamfordadvocate.com/news/world/article/South-Africa-Protesting-students-torch-6853287.php |archive-date=5 March 2016 |date=25 February 2016 }}</ref><ref>{{cite web |url=http://diepresse.com/home/politik/aussenpolitik/4933544/Studentenunruhen_Konflikte-zwischen-Schwarz-und-Weiss |title=Studentenunruhen: Konflikte zwischen Schwarz und Weiß |trans-title=Student unrest: conflicts between black and white |work=[[Die Presse]] |date=25 February 2016 }}</ref><ref>{{cite web |url=http://de.euronews.com/2016/02/26/suedafrika-unerklaerliche-gewaltserie-an-universitaeten/ |title=Südafrika: "Unerklärliche" Gewaltserie an Universitäten |trans-title=South Africa: "Unexplained" violence at universities |work=[[Euronews]] |date=25 February 2016 |access-date=28 February 2016 |archive-url=https://web.archive.org/web/20160227101650/http://de.euronews.com/2016/02/26/suedafrika-unerklaerliche-gewaltserie-an-universitaeten/ |archive-date=27 February 2016 |url-status=dead }}</ref>
+
+Under [[Constitution of South Africa|South Africa's Constitution]] of 1996, Afrikaans remains an [[languages of South Africa|official language]], and has equal status to English and ten other languages. The new policy means that the use of Afrikaans is now often reduced in favour of English, or to accommodate the other official languages. In 1996, for example, the [[South African Broadcasting Corporation]] reduced the amount of television airtime in Afrikaans, while [[South African Airways]] dropped its Afrikaans name {{lang|af|Suid-Afrikaanse Lugdiens}} from its [[livery]]. Similarly, South Africa's [[diplomatic mission]]s overseas now display the name of the country only in English and their host country's language, and not in Afrikaans. Meanwhile, the [[constitution of the Western Cape]], which went into effect in 1998, declares Afrikaans to be an official language of the province alongside English and [[Xhosa language|Xhosa]].<ref>Constitution of the Western Cape, 1997, Chapter 1, {{avoid wrap|section 5(1)(a)}}</ref>
+
+The Afrikaans-language general-interest family magazine {{lang|af|[[Huisgenoot]]}} has the largest readership of any magazine in the country.<ref>{{cite web |url=http://www.superbrands.com/za/pdfs/HUISGENOOT.pdf |access-date=21 March 2012 |url-status=dead |title=Superbrands.com |archive-date=24 September 2015|archive-url= https://web.archive.org/web/20150924111839/http://www.superbrands.com/za/pdfs/HUISGENOOT.pdf}}</ref>
+
+When the British design magazine ''[[Wallpaper (magazine)|Wallpaper]]''<!--"Wallpaper" per WP:MOSTM--> described Afrikaans as "one of the world's ugliest languages" in its September 2005 article about the [[Afrikaans Language Monument|monument]],<ref>{{Cite news |date=5 December 2005 |first=Donwald |last=Pressly |title=Rupert snubs mag over Afrikaans slur |url=http://business.iafrica.com/news/657706.htm |access-date=2023-03-10 |website=Business Africa |archive-date=16 February 2006 |archive-url=https://web.archive.org/web/20060216042054/http://business.iafrica.com/news/657706.htm |url-status=dead }}</ref> South African billionaire [[Johann Rupert]] (chairman of the [[Richemont|Richemont Group]]), responded by withdrawing advertising for brands such as [[Cartier SA|Cartier]], [[Van Cleef & Arpels]], [[Montblanc (pens)|Montblanc]] and [[Alfred Dunhill]] from the magazine.<ref>[http://www.iol.co.za/news/south-africa/afrikaans-stars-join-row-over-ugly-language-1.261058 Afrikaans stars join row over 'ugly language'] {{Webarchive|url=https://web.archive.org/web/20111127210538/http://www.iol.co.za/news/south-africa/afrikaans-stars-join-row-over-ugly-language-1.261058 |date=27 November 2011 }} ''[[Cape Argus]]'', 10 December 2005.</ref> The author of the article, Bronwyn Davies, was an [[South African English|English]]-speaking South African.
+
+=== Mutual intelligibility with Dutch ===
+{{Main|Comparison of Afrikaans and Dutch}}
+
+An estimated 90 to 95 percent of the Afrikaans lexicon is ultimately of Dutch origin,{{sfnp|Mesthrie|1995|page=214}}{{sfnp|Brachin|Vincent|1985|page=132}}{{sfnp|Mesthrie|2002|page=205}} and there are few lexical differences between the two languages.{{sfnp|Sebba|1997|p=161}} Afrikaans has a considerably more regular morphology,{{sfnp|Holm|1989|p=338}} grammar, and spelling.{{sfnp|Sebba|1997}} There is a high degree of [[mutual intelligibility]] between the two languages,{{sfnp|Baker|Prys Jones|1997|page=302}}{{sfnp|Egil Breivik|Håkon Jahr|1987|page=232}} particularly in written form.{{sfnp|Sebba|1997}}{{sfnp|Sebba|2007}}{{sfnp|Gooskens|2007|pp=445–467}}
+
+Afrikaans acquired some lexical and syntactical borrowings from other languages such as [[Malay language|Malay]], [[Khoisan languages]], Portuguese,<ref name="deumert">{{cite book |url=https://books.google.com/books?id=8ciimg5gGqQC |title=Language Standardization and Language Change: The Dynamics of Cape Dutch |first=Ana |last=Deumert |publisher=John Benjamins Publishing Company |date=2004 |page=22 |isbn=9027218579 |access-date=10 November 2008 }}</ref> German and [[Bantu languages]].{{sfnp|Niesler|Louw|Roux|2005|pages=459–474}} Afrikaans has also been significantly influenced by [[South African English]], especially in the Western Cape.<ref>{{cite web |url=http://www.lycos.com/info/afrikaans--standard-afrikaans.html |title=Afrikaans: Standard Afrikaans |publisher=Lycos Retriever |archive-url=https://web.archive.org/web/20111120182430/http://www.lycos.com/info/afrikaans--standard-afrikaans.html |archive-date=20 November 2011 }}</ref> Dutch speakers are confronted with fewer non-cognates when listening to Afrikaans than the other way round.{{sfnp|Gooskens|2007|p=460}} Mutual intelligibility thus tends to be asymmetrical, as it is easier for Dutch speakers to understand Afrikaans than for Afrikaans speakers to understand Dutch.{{sfnp|Gooskens|2007|p=464}}
+
+In general, mutual intelligibility between Dutch and Afrikaans is far better than between Dutch and [[West Frisian language|Frisian]]<ref name="thije">{{cite book |url=https://books.google.com/books?id=8gIEN068J3gC |title=Receptive Multilingualism: Linguistic analyses, language policies and didactic concepts |last1=ten Thije |first1=Jan D. |last2=Zeevaert |first2=Ludger |publisher=John Benjamins Publishing Company |year=2007 |page=17 |isbn=978-9027219268 |access-date=19 May 2010}}</ref> or [[North Germanic languages#Mutual intelligibility|between]] Danish and [[Swedish language|Swedish]].{{sfnp|Gooskens|2007|p=463}} The South African poet writer [[Breyten Breytenbach]], attempting to visualise the language distance for [[English-speaking world|Anglophones]], once remarked that the differences between (Standard) Dutch and Afrikaans are comparable to those between the [[Received Pronunciation]] and [[Southern American English]].<ref>{{cite magazine |magazine=[[Salmagundi (magazine)|Salmagundi]] |number=128–129: Fall 2000 – Winter 2001 |date=29 September 2020|last=Linfield |first=Susie|title=An Interview with Breyten Breytenbach|pages=249–274|jstor=40549282}}</ref>
+
+==Current status==
+
+{| class="wikitable sortable" style="float: left;"
+|+Use of Afrikaans as a first language by province
+|-
+! Province || 1996<ref name="wdat">{{cite web |title=Languages — Afrikaans |url=http://www.world-data-atlas.com/statssa/?subject=-1451660640 |publisher=World Data Atlas |access-date=17 September 2014 |archive-url=https://web.archive.org/web/20141004063251/http://www.world-data-atlas.com/statssa/?subject=-1451660640 |archive-date=4 October 2014 |url-status=dead }}</ref> || 2001<ref name=wdat/> || 2011<ref name=wdat/> || 2022<ref name=":52"/>
+|-
+| [[Western Cape]] || 58.5% || 55.3% || 49.7% || 41.2%
+|-
+| [[Eastern Cape]] || 9.8% || 9.6% || 10.6% || 9.6%
+|-
+| [[Northern Cape]] || 57.2% || 56.6% || 53.8% || 54.6%
+|-
+| [[Free State (province)|Free State]] || 14.4% || 11.9% || 12.7% || 10.3%
+|-
+| [[KwaZulu-Natal]] || 1.6% || 1.5% || 1.6% || 1.0%
+|-
+| [[North West (South African province)|North West]] || 8.8% || 8.8% || 9.0% || 5.2%
+|-
+| [[Gauteng]] || 15.6% || 13.6% || 12.4% || 7.7%
+|-
+| [[Mpumalanga]] || 7.1% || 5.5% || 7.2% || 3.2%
+|-
+| [[Limpopo]] || 2.6% || 2.6% || 2.6% || 2.3%
+|-
+! {{flagu|South Africa}} || 14.4%<ref name="ssa96">{{cite web |title = 2.8 Home language by province (percentages) |url = http://www.statssa.gov.za/census01/Census96/HTML/CIB/Population/28.htm|publisher=Statistics South Africa |access-date=17 September 2013|url-status=dead |archive-url = https://web.archive.org/web/20070824075509/http://www.statssa.gov.za/census01/Census96/HTML/CIB/Population/28.htm|archive-date=24 August 2007}}</ref> || 13.3%<ref name="cib2001">{{cite web |title=Table 2.6: Home language within provinces (percentages) |url=http://www.statssa.gov.za/census01/html/CInBrief/CIB2001.pdf |work=Census 2001 – Census in brief |publisher=Statistics South Africa |access-date=17 September 2013 |page=16 |url-status=dead |archive-url = https://web.archive.org/web/20050505140723/http://www.statssa.gov.za/census01/HTML/CInBrief/CIB2001.pdf |archive-date = 5 May 2005}}</ref> || 13.5%<ref name="cib11">{{cite book |title = Census 2011: Census in brief |url = http://www.statssa.gov.za/census/census_2011/census_products/Census_2011_Census_in_brief.pdf |publisher=Statistics South Africa |location=Pretoria |year=2012 |isbn=9780621413885 |archive-url = https://web.archive.org/web/20150513171240/http://www.statssa.gov.za/census/census_2011/census_products/Census_2011_Census_in_brief.pdf |archive-date=13 May 2015 |url-status=live |page=27 }}</ref> || 10.6%<ref name=":52" />
+|}
+{{clear}}
+Afrikaans is an official language of the Republic of South Africa and a recognised national language of the Republic of Namibia. [[Post-apartheid South Africa]] has seen a loss of preferential treatment by the government for Afrikaans, in terms of education, social events, [[mass media in South Africa|media]] (TV and radio), and general status throughout the country, given that it now shares its place as official language with ten other languages. Nevertheless, Afrikaans remains more prevalent in the media – radio, newspapers and television<ref>Oranje FM, Radio Sonder Grense, Jacaranda FM, Radio Pretoria, Rapport, Beeld, Die Burger, Die Son, Afrikaans news is run every day; the PRAAG website is a web-based news service. On pay channels, it is provided as second language on all sports, Kyknet</ref> – than any of the other official languages except English. More than 300 book titles in Afrikaans are published annually.<ref>{{cite web |url=http://www.oulitnet.co.za/taaldebat/multilin.asp |title=Hannes van Zyl |publisher=Oulitnet.co.za |access-date=1 October 2009 |url-status=dead |archive-url = https://web.archive.org/web/20081228004644/http://www.oulitnet.co.za/taaldebat/multilin.asp |archive-date=28 December 2008}}</ref> South African census figures suggest a decreasing number of first language Afrikaans speakers in South Africa from 13.5% in 2011 to 10.6% in 2022.<ref name=":52">{{Cite web |date=10 October 2023 |title=Census 2022: Statistical Release |url=https://census.statssa.gov.za/assets/documents/2022/P03014_Census_2022_Statistical_Release.pdf |access-date=12 October 2023 |website=statssa.gov.za |page=9}}</ref> The [[South African Institute of Race Relations]] (SAIRR) projects that a growing majority of Afrikaans speakers will be [[Coloured]].<ref name=Rapport-2013>{{cite news|last=Prince |first=Llewellyn |title=Afrikaans se môre is bruin (Afrikaans' tomorrow is coloured) |url=http://www.rapport.co.za/Suid-Afrika/Nuus/Afrikaans-se-more-is-bruin-20130323 |archive-url=https://web.archive.org/web/20130331034159/http://www.rapport.co.za/Suid-Afrika/Nuus/Afrikaans-se-more-is-bruin-20130323 |url-status=dead |archive-date=31 March 2013 |access-date=25 March 2013 |newspaper=Rapport |date=23 March 2013 }}</ref> Afrikaans speakers experience higher employment rates than other South African language groups, though {{as of|2012|lc=y}} half a million were unemployed.<ref name="Beeld-2012">{{cite news |last1=Pienaar |first1=Antoinette |last2=Otto |first2=Hanti |date=30 October 2012 |title=Afrikaans groei, sê sensus (Afrikaans growing according to census) |url=http://www.beeld.com/Suid-Afrika/Nuus/Afrikaans-bly-groei-se-sensus-20121030 |url-status=dead |archive-url=https://web.archive.org/web/20121102235326/http://www.beeld.com/Suid-Afrika/Nuus/Afrikaans-bly-groei-se-sensus-20121030 |archive-date=2 November 2012 |access-date=25 March 2013 |newspaper=Beeld}}</ref>
+
+Despite the challenges of demotion and emigration that it faces in South Africa, the Afrikaans vernacular remains competitive, being popular in [[DSTV]] pay channels and several internet sites, while generating high newspaper and music CD sales. A resurgence in Afrikaans popular music since the late 1990s has invigorated the language, especially among a younger generation of South Africans. A recent trend is the increased availability of pre-school educational CDs and DVDs. Such media also prove popular with the extensive Afrikaans-speaking emigrant communities who seek to retain language proficiency in a household context.
+
+Afrikaans-language cinema showed signs of new vigour in the early 21st century. The 2007 film {{lang|af|Ouma se slim kind}}, the first full-length Afrikaans movie since {{lang|af|[[Paljas]]}} in 1998, is seen as the dawn of a new era in Afrikaans cinema. Several short films have been created and more feature-length movies, such as ''[[Poena Is Koning]]'' and {{lang|af|[[Bakgat]]}} (both in 2008) have been produced, besides the 2011 Afrikaans-language film {{lang|af|[[Skoonheid]]}}, which was the first Afrikaans film to screen at the [[Cannes Film Festival]]. The film {{lang|af|Platteland}} was also released in 2011.<ref>{{cite web|url=http://www.plattelanddiemovie.com/|title=Platteland Film|website=www.plattelanddiemovie.com}}</ref> The Afrikaans film industry started gaining international recognition via the likes of big Afrikaans Hollywood film stars, like [[Charlize Theron]] (''[[Monster (2003 film)|Monster]]'') and [[Sharlto Copley]] (''[[District 9]]'') promoting their mother tongue.
+
+[[SABC 3]] announced early in 2009 that it would increase Afrikaans programming due to the "growing Afrikaans-language market and [their] need for working capital as Afrikaans advertising is the only advertising that sells in the current [[Television in South Africa|South African television]] market". In April 2009, SABC3 started screening several Afrikaans-language programmes.<ref>[http://www.screenafrica.com/news/industry/997616.htm SABC3 "tests" Afrikaans programming] {{Webarchive|url=https://web.archive.org/web/20110716024421/http://www.screenafrica.com/news/industry/997616.htm |date=16 July 2011 }}, ''Screen Africa'', 15 April 2009</ref> There is a groundswell movement within Afrikaans to be inclusive, and to promote itself along with the indigenous official languages. In Namibia, the percentage of Afrikaans speakers declined from 11.4% (2001 Census) to 10.4% (2011 Census). The major concentrations are in [[Hardap Region|Hardap]] (41.0%), [[ǁKaras Region|ǁKaras]] (36.1%), [[Erongo Region|Erongo]] (20.5%), [[Khomas Region|Khomas]] (18.5%), [[Omaheke Region|Omaheke]] (10.0%), [[Otjozondjupa Region|Otjozondjupa]] (9.4%), [[Kunene Region|Kunene]] (4.2%), and [[Oshikoto Region|Oshikoto]] (2.3%).<ref>{{Cite web|url=http://www.nsa.org.na/files/downloads/Namibia%202011%20Population%20and%20Housing%20Census%20Main%20Report.pdf|archive-url=https://web.archive.org/web/20131002064316/http://www.nsa.org.na/files/downloads/Namibia%202011%20Population%20and%20Housing%20Census%20Main%20Report.pdf|url-status=dead|title=Namibia 2011 Population & Housing Census Main Report|archive-date=2 October 2013}}</ref>
+
+Some native speakers of Bantu languages and [[South African English|English]] also speak Afrikaans as a second language. It is widely taught in South African schools, with about 10.3&nbsp;million second-language students.<ref name="e19"/>
+
+Afrikaans is offered at many universities outside South Africa, including in the Netherlands, Belgium, Germany, Poland, Russia and the United States.<ref>{{cite web |url=http://www.afrikaans.com/news-headlines/het-jy.../afrikaans-floreer-in-die-buiteland |title=Afrikaans floreer in die buiteland|trans-title=Afrikaans is flourishing abroad|website=Afrilaans.com}}{{Dead link|date=May 2019|bot=InternetArchiveBot|fix-attempted=yes}}</ref><ref>{{cite web |title=Where outside of Southern Africa can you learn Afrikaans? |url=https://www.afrikaans.us/afrikaans/home-afrikaans/afrikaans-abroad-whos-who/ |website=Afrikaans Abroad –Afrikaans.US |first=Jacques |last=du Plessis |date=27 December 2020 |access-date=5 September 2024 |archive-date=21 January 2021 |archive-url=https://web.archive.org/web/20210121053518/https://www.afrikaans.us/afrikaans/home-afrikaans/afrikaans-abroad-whos-who/ |url-status=dead }}</ref>
+
+==Grammar==
+{{Main|Afrikaans grammar}}
+
+In Afrikaans grammar, there is no distinction between the [[infinitive]] and present forms of verbs, with the exception of the verbs 'to be' and 'to have'.<ref>{{Cite book |last=Donaldson |first=Bruce C. |url=https://books.google.com/books?id=bP2elQCb7T8C |title=A Grammar of Afrikaans |date=2011-05-12 |publisher=Walter de Gruyter |isbn=978-3-11-086315-4 |pages=218 |language=en}}</ref>
+{| class="wikitable"
+|- style="background:#ffdead;"
+! infinitive form
+! present indicative form
+! Dutch
+! English
+|-
+| {{lang|af|wees}} || {{lang|af|is}} || {{lang|nl|zijn}} or {{lang|nl|wezen}} || be
+|-
+| {{lang|af|hê}} || ''het''|| {{lang|nl|hebben}} || have
+|}
+
+In addition, verbs do not [[grammatical conjugation|conjugate]] differently depending on the subject. For example,
+{| class="wikitable"
+|- style="background:#ffdead;"
+! Afrikaans || Dutch || English
+|-
+| {{lang|af|ek is}} || {{lang|nl|ik ben}} || I am
+|-
+| {{lang|af|jy/u is}} || {{lang|nl|jij/u bent}} || you are (sing.)
+|-
+| {{lang|af|hy/sy/dit is}} || {{lang|nl|hij/zij/het is}} || he/she/it is
+|-
+| {{lang|af|ons is}} || {{lang|nl|wij zijn}} || we are
+|-
+| {{lang|af|julle is}} || {{lang|nl|jullie zijn}} || you are (plur.)
+|-
+| {{lang|af|hulle is}} || {{lang|nl|zij zijn}} || they are
+|}
+
+Only a handful of Afrikaans verbs have a [[preterite]], namely the auxiliary {{lang|af|wees}} ('to be'), the [[modal verbs]], and the verb {{lang|af|dink}} ('to think').<ref>{{Cite journal |last=Conradie |first=C. Jac |date=1999 |title=Preterite Loss in Early Afrikaans |url=http://dx.doi.org/10.1515/flin.1999.33.1-2.19 |journal=Folia Linguistica |volume=33 |issue=1–2 |doi=10.1515/flin.1999.33.1-2.19 |issn=0165-4004|url-access=subscription }}</ref> The preterite of {{lang|af|mag}} ('may') is rare in contemporary Afrikaans.
+
+{| class="wikitable"
+|- style="background:#ffdead;"
+! colspan=2 | Afrikaans
+! colspan=2 | Dutch
+! colspan=2 | English
+|-
+! present
+! past
+! present
+! past
+! present
+! past
+|-
+| {{lang|af|ek is}} || {{lang|af|ek was}} || {{lang|nl|ik ben}} || {{lang|nl|ik was}} || I am || I was
+|-
+| {{lang|af|ek kan}} || {{lang|af|ek kon}} || {{lang|nl|ik kan}} || {{lang|nl|ik kon}} || I can || I could
+|-
+| {{lang|af|ek moet}} || {{lang|af|ek moes}} || {{lang|nl|ik moet}} || {{lang|nl|ik moest}} || I must || (I had to)
+|-
+| {{lang|af|ek wil}} || {{lang|af|ek wou}} || {{lang|nl|ik wil}} || {{lang|nl|ik wilde/wou}} || I want to || I wanted to
+|-
+| {{lang|af|ek sal}} || {{lang|af|ek sou}} || {{lang|nl|ik zal}} || {{lang|nl|ik zou}} || I shall|| I should
+|-
+| {{lang|af|ek mag}} || {{lang|af|(ek mog)}} || {{lang|nl|ik mag}} || {{lang|nl|ik mocht}} || I may || I might
+|-
+| {{lang|af|ek dink}} || {{lang|af|ek dog}} || {{lang|nl|ik denk}} || {{lang|nl|ik dacht}} || I think || I thought
+|}
+
+All other verbs use the perfect tense, het + past participle (ge-), for the past. Therefore, there is no distinction in Afrikaans between ''I drank'' and ''I have drunk''. (In colloquial German, the past tense is also often replaced with the perfect.)
+
+{| class="wikitable"
+|- style="background:#ffdead;"
+! Afrikaans || Dutch || English
+|-
+| rowspan="2" | {{lang|af|ek het gedrink}} || {{lang|nl|ik dronk}} || I drank
+|-
+<!--| {{lang|af|ek het gedrink}}--> || {{lang|nl|ik heb gedronken}} || I have drunk
+|}
+
+When telling a longer story, Afrikaans speakers usually avoid the perfect and simply use the present tense, or [[historical present tense]] instead (as is possible, but less common, in English as well).
+
+A particular feature of Afrikaans is its use of the [[double negative]]; it is classified in Afrikaans as ''{{lang|af|ontkennende vorm}}'' and is something that is absent from the other West Germanic standard languages. For example:
+
+: {{langx|af|Hy kan '''nie''' Afrikaans praat '''nie'''|lit=He can not Afrikaans speak not|links=no}}
+: {{langx|nl|Hij spreekt '''geen''' Afrikaans.|links=no}}
+: English: He can'''''not''''' speak Afrikaans. / He '''''can't''''' speak Afrikaans.
+
+Both French and San origins have been suggested for double negation in Afrikaans. While double negation is still found in [[Low Franconian|Low Franconian dialects]] in [[West Flanders]] and in some "isolated" villages in the centre of the Netherlands (such as [[Garderen]]), it takes a different form, which is not found in Afrikaans. The following is an example:
+: {{langx|af|Ek wil nie dit doen nie.|links=no}}<sup>*</sup> (''lit.'' I want not this do not.)
+: {{langx|nl|Ik wil dit niet doen.|links=no}}
+: English: I do not want to do this.
+
+<sup>*</sup> Compare with {{lang|af|Ek wil dit nie doen nie}}, which changes the meaning to 'I want not to do this'. Whereas {{lang|af|Ek wil nie dit doen nie}} emphasizes a lack of desire to act, {{lang|af|Ek wil dit nie doen nie}} emphasizes the act itself.
+
+The {{lang|dum|-ne}} was the [[Middle Dutch]] way to negate but it has been suggested that since {{lang|dum|-ne}} became highly non-voiced, {{lang|dum|nie}} or {{lang|dum|niet}} was needed to complement the {{lang|dum|-ne}}. With time the {{lang|dum|-ne}} disappeared in most Dutch dialects.
+
+The double negative construction has been fully grammaticalised in standard Afrikaans and its proper use follows a set of fairly complex rules as the examples below show:
+
+{| class="wikitable"
+|-
+! Afrikaans
+! Dutch (literally translated)
+! More correct Dutch
+! Literal English
+! Idiomatic English
+|-
+| {{lang|af|Ek het (nie) geweet dat hy (nie) sou kom (nie).}}
+| {{lang|nl|Ik heb (niet) geweten dat hij (niet) zou komen.}}
+| {{lang|nl|Ik wist (niet) dat hij (niet) zou komen.}}
+| I did (not) know that he would (not) come.
+| I did (not) know that he was (not) going to come.
+|-
+| {{lang|af|Hy sal nie kom nie, want hy is siek.}}{{refn|{{lang|af|kan}} would be best used in this case because {{lang|af|kan nie}} means cannot and since he is sick he is unable to come, whereas {{lang|af|sal}} is 'will' in English and is thus not the best word choice.|group="n"}}
+| {{lang|nl|Hij zal niet komen, want hij is ziek.}}
+| {{lang|nl|Hij komt niet, want hij is ziek.}}
+| He will not come, as he is sick.
+| He is sick and is not going to come.
+|-
+| {{lang|af|Dis (Dit is) nie so moeilik om Afrikaans te leer nie.}}
+| colspan="2" align="center" | {{lang|nl|Het is niet zo moeilijk (om) Afrikaans te leren.}}
+| colspan="2" align="center" | It is not so difficult to learn Afrikaans.
+|}
+
+A notable exception to this is the use of the negating grammar form that coincides with negating the English [[present participle]]. In this case there is only a single negation.
+: {{langx|af|Hy is in die hospitaal, maar hy eet nie.|links=no}}
+: {{langx|nl|Hij is in het ziekenhuis, maar hij eet niet.|links=no}}
+: English: He is in [the] hospital, though he doesn't eat.
+
+Certain words in Afrikaans would be contracted. For example, {{lang|af|moet nie}}, which literally means 'must not', usually becomes {{lang|af|moenie}}; although one does not have to write or say it like this, virtually all Afrikaans speakers will change the two words to {{lang|af|moenie}} in the same way as ''do not'' is contracted to ''don't'' in English.
+
+The Dutch word {{lang|nl|het}} ('it' in English) does not correspond to {{lang|af|het}} in Afrikaans. The Dutch words corresponding to Afrikaans {{lang|af|het}} are {{lang|nl|heb}}, {{lang|nl|hebt}}, {{lang|nl|heeft}} and {{lang|nl|hebben}}.
+{| class="wikitable"
+|-
+! Afrikaans
+! Dutch
+! English
+|-
+| {{lang|af|het}}
+| {{lang|nl|heb, hebt, heeft, hebben}}
+| have, has
+|-
+| {{lang|af|die}}
+| {{lang|nl|de, het}}
+| the
+|-
+| {{lang|af|dit}}
+| {{lang|nl|het}}
+| it
+|}
+
+==Phonology==
+{{Main|Afrikaans phonology}}
+
+[[File:Stem van Suid-Afrika.ogg|thumb|A voice recording of {{lang|af|[[Die Stem van Suid-Afrika]]}} ('The Voice of South Africa'), the former national anthem, read in poetic form]]
+
+===Vowels===
+{| class="wikitable" style=text-align:center
+|+ Monophthong phonemes{{sfnp|Donaldson|1993|pp=2–7}}{{sfnp|Wissing|2016}}
+! rowspan="3" |
+! colspan="4" | [[Front vowel|Front]]
+! colspan="4" | [[Central vowel|Central]]
+! colspan="2" rowspan="2" | [[Back vowel|Back]]
+|- style="font-size: smaller;"
+! colspan="2" | [[Roundedness|unrounded]]
+! colspan="2" | [[Roundedness|rounded]]
+! colspan="2" | unrounded
+! colspan="2" |rounded
+|- style="font-size: smaller;"
+! [[Short vowel|short]]
+! [[Long vowel|long]]
+! short
+! long
+! short
+! long
+! short
+! long
+! short
+! long
+|-
+! [[Close vowel|Close]]
+| {{IPA link|i}}
+| ({{IPA link|iː}})
+| {{IPA link|y}}
+| {{IPA link|yː}}
+| colspan="2" |
+|
+|
+| {{IPA link|u}}
+| ({{IPA link|uː}})
+|-
+! [[Mid vowel|Mid]]
+| {{IPA link|ɛ̝|e}}
+| {{IPA link|ɛ̝|eː}}
+|
+|
+| {{IPA link|ə}}
+| ({{IPA link|əː}})
+| {{IPA link|œ}}
+| ({{IPA link|œː}})
+| {{IPA link|ɔ̝|o}}
+| ({{IPA link|ɔ̝|oː}})
+|-
+! [[Near-open vowel|Near-open]]
+| ({{IPA link|æ}})
+| ({{IPA link|æː}})
+|
+|
+| colspan="2" |
+|
+|
+| colspan="2" |
+|-
+! [[Open vowel|Open]]
+| {{IPA link|a}}
+|
+|
+|
+| colspan="2" |
+|
+|
+|
+| {{IPA link|ɑː}}
+|}
+* As phonemes, {{IPA|/iː/}} and {{IPA|/uː/}} occur only in the words {{lang|af|spieël}} {{IPA|/spiːl/}} 'mirror' and {{lang|af|koeël}} {{IPA|/kuːl/}} 'bullet', which used to be pronounced with sequences {{IPA|/i.ə/}} and {{IPA|/u.ə/}}, respectively. In other cases, {{IPAblink|iː}} and {{IPAblink|uː}} occur as allophones of, respectively, {{IPA|/i/}} and {{IPA|/u/}} before {{IPA|/r/}}.{{sfnp|Donaldson|1993|pp=4–6}}
+* {{IPA|/y/}} is phonetically long {{IPAblink|yː}} before {{IPA|/r/}}.{{sfnp|Donaldson|1993|pp=5–6}}
+* {{IPA|/əː/}} is always stressed and occurs only in the word {{lang|af|wîe}} 'wedges'.{{sfnp|Donaldson|1993|pp=4, 6–7}}
+* The closest unrounded counterparts of {{IPA|/œ, œː/}} are central {{IPA|/ə, əː/}}, rather than front {{IPA|/e, eː/}}.{{sfnp|Swanepoel|1927|p=38}}
+* {{IPA|/œː, oː/}} occur only in a few words.{{sfnp|Donaldson|1993|p=7}}
+* {{IPAblink|æ}} occurs as an allophone of {{IPA|/e/}} before {{IPA|/k, χ, l, r/}}, though this occurs primarily dialectally, most commonly in the former [[Transvaal Province|Transvaal]] and [[Free State (South African province)|Free State]] provinces.{{sfnp|Donaldson|1993|pp=3, 7}}
+
+====Diphthongs====
+{|class="wikitable"
+|+ [[Diphthong]] phonemes{{sfnp|Donaldson|1993|pp=2, 8–10}}{{sfnp|Lass|1987|pp=117–119}}
+! rowspan="2" colspan="2" | Starting point
+! colspan="3" | Ending point
+|-
+! [[Front vowel|Front]]
+! [[Central vowel|Central]]
+! [[Back vowel|Back]]
+|- align="center"
+! rowspan="2" | [[Mid vowel|Mid]]
+! {{small|unrounded}}
+| {{IPA|ɪø, əɪ}}
+| {{IPA|ɪə}}
+|
+|- align="center"
+! {{small|rounded}}
+| {{IPA|œɪ, ɔɪ}}
+| {{IPA|ʊə}}
+| {{IPA|œʊ}}
+|- align="center"
+! [[Open vowel|Open]]
+! {{small|unrounded}}
+| {{IPA|aɪ, ɑːɪ}}
+|
+|
+|}
+* {{IPA|/ɔi, ai/}} occur mainly in loanwords.{{sfnp|Donaldson|1993|p=10}}
+
+=== Consonants ===
+{| class="wikitable" style="text-align:center;"
+|-
+|+ Consonant phonemes
+! colspan="2" |
+! [[Labial consonant|Labial]]
+! [[Alveolar consonant|Alveolar]]
+! [[Palatal consonant|Post-<br />alveolar]]
+! [[Dorsal consonant|Dorsal]]
+! [[Glottal consonant|Glottal]]
+|-
+! colspan="2" | [[Nasal consonant|Nasal]]
+| {{IPA link|m}}
+| {{IPA link|n}}
+|
+|{{IPA link|ŋ}}
+|
+|-
+! rowspan="2" | [[Stop consonant|Plosive]]
+! {{small|[[voicelessness|voiceless]]}}
+| {{IPA link|p}}
+| {{IPA link|t}}
+| {{IPA link|t͡ʃ}}
+| {{IPA link|k}}
+|
+|-
+! {{small|[[voice (phonetics)|voiced]]}}
+| {{IPA link|b}}
+| {{IPA link|d}}
+| ({{IPA link|d͡ʒ}})
+| ({{IPA link|ɡ}})
+|
+|-
+! rowspan="2" | [[Fricative consonant|Fricative]]
+! {{small|[[voicelessness|voiceless]]}}
+| {{IPA link|f}}
+| {{IPA link|s}}
+| {{IPA link|ʃ}} ({{IPA link|ɹ̠̊˔}})
+| {{IPA link|χ}}
+|
+|-
+! {{small|[[voice (phonetics)|voiced]]}}
+| rowspan="2" | {{IPA link|v}}
+| ({{IPA link|z}})
+| {{IPA link|ʒ}}
+|
+| {{IPA link|ɦ}}
+|-
+! colspan="2" | [[Approximant consonant|Approximant]]
+| {{IPA link|l|l}}
+|
+| {{IPA link|j}}
+|
+|-
+! colspan="2" | [[Rhotic consonant|Rhotic]]
+|
+| colspan="2" | {{IPA link|r}} ~ {{IPA link|ɾ}} ~ {{IPA link|ʀ}} ~ {{IPA link|ʁ}}
+|
+|
+|}
+* All [[obstruent]]s at the ends of words are [[final-obstruent devoicing|devoiced]], so that e.g. a final {{IPA|/d/}} is realized as {{IPA|[t]}}.{{sfnp|Donaldson|1993|pp=13–15}}
+* {{IPA|/ɡ, dʒ, z/}} occur only in loanwords. {{IPA|[ɡ]}} is also an allophone of {{IPA|/χ/}} in some environments.{{sfnp|Donaldson|1993|pp=13–14, 20–22}}
+* {{IPA|/χ/}} is most often uvular {{IPA|[{{IPAplink|χ}} ~ {{IPAplink|ʀ̥}}]}}.{{sfnp|Den Besten|2012}}<ref name="wells">{{cite web |title=John Wells's phonetic blog: velar or uvular? |url=http://phonetic-blog.blogspot.com/2011/12/velar-or-uvular.html |date=5 December 2011 |access-date=12 February 2015 }} Only this source mentions the trilled realization.</ref>{{sfnp|Bowerman|2004|p=939}} Velar {{IPAblink|x}} occurs only in some speakers.<ref name="wells"/>
+* The rhotic is usually an alveolar trill {{IPAblink|r}} or tap {{IPAblink|ɾ}}.{{sfnp|Lass|1987|p=117}} In some parts of the former [[Cape Province]], it is realized uvularly, either as a trill {{IPAblink|ʀ}} or a fricative {{IPAblink|ʁ}}.{{sfnp|Donaldson|1993|p=15}}
+
+==Dialects==
+[[File:Graham Maclachlan - Gevaar Slagysters.jpg|thumb|A warning sign in Afrikaans: {{lang|af|Gevaar Slagysters!}}, "Danger, Traps!"]]
+
+Following early dialectal studies of Afrikaans, it was theorised that three main historical dialects probably existed after the Great Trek in the 1830s. These dialects are the Northern Cape, Western Cape, and Eastern Cape dialects.{{refn|They were named before the establishment of the current [[Western Cape]], Eastern Cape, and [[Northern Cape]] provinces, and are not dialects of those provinces {{lang|la|per se}}.|group="n"}} Northern Cape dialect may have resulted from contact between Dutch settlers and the [[Khoekhoe]] people between the Great Karoo and the Kunene, and Eastern Cape dialect between the Dutch and the Xhosa. Remnants of these dialects still remain in present-day Afrikaans, although the standardising effect of Standard Afrikaans has contributed to a great levelling of differences in modern times.<ref name=":1" />{{Better source needed|date=April 2020}}
+Oranjerivier-Afrikaans (Orange River Afrikaans) is a major variety, including the Oranjerivier Afrikaans spoken by whites and 
+Griqua Afrikaans spoken by Griqua as well as [[Namakwalands]].
+There is also a prison [[cant (language)|cant]], known as [[Sabela]], which is based on Afrikaans, yet heavily influenced by [[Zulu language|Zulu]]. This language is used as a secret language in prison and is taught to initiates.<ref name=":1">{{cite web |title=Afrikaans 101 |url=http://www.101languages.net/afrikaans/history.html |access-date=24 April 2010 }}</ref>
+
+=== Patagonian Afrikaans ===
+{{Main|Patagonian Afrikaans}}
+
+Patagonian Afrikaans is a distinct dialect of Afrikaans that is spoken by the 650-member [[South African Argentines|South African community]] of Argentina, in the region of [[Patagonia]].<ref>{{cite news |url=https://qz.com/africa/1522565/a-unique-afrikaans-dialect-is-making-a-comeback-in-patagonia/ |title=An almost-extinct Afrikaans dialect is making an unlikely comeback in Argentina |first1=Ryan |last1=Szpiech |first2=Andries |last2=W. Coetzee |first3=Lorenzo |last3=García-Amaya |first4=Nicholas |last4=Henriksen |first5=Paulina |last5=L. Alberto |first6=Victoria
+|last6=Langland |newspaper=[[Quartz (publication)|Quartz]] |date=14 January 2019 }}</ref>
+
+=== Namibian Afrikaans ===
+Namibian Afrikaans is a variety of Afrikaans spoken in [[Namibia]]. The country was governed by South Africa until 1990, which had favoured Afrikaans. Before that, Dutch had been introduced when the Dutch occupied [[Walvis Bay]] and the surrounding area.<ref>[http://www.republikein.com.na/index.php Website van de ''Republikein'', een krant in Namibisch-Afrikaans]</ref>
+
+== Influences on Afrikaans from other languages ==
+
+=== Malay ===
+Due to the early settlement of a [[Cape Malay]] community in [[Cape Town]], who are now known as [[Coloured]]s, numerous [[History of the Malay language#Classical Malay|Classical Malay]] words were brought into Afrikaans. Some of these words entered Dutch via people arriving from what is now known as Indonesia as part of their colonial heritage. Malay words in Afrikaans include:<ref name="safariafrica.co.za">{{cite web |url=http://www.safariafrica.co.za/tourist-information/afrikaans.htm |title=Afrikaans history and development. The Unique Language of South Africa |publisher=Safariafrica.co.za |access-date=2015-04-02 |archive-date=17 September 2011 |archive-url=https://web.archive.org/web/20110917052132/http://www.safariafrica.co.za/tourist-information/afrikaans.htm |url-status=dead }}</ref>
+* '''{{lang|af|baie}}''', which means 'very'/'much'/'many' (from {{wikt-lang|id|banyak}}) is a very commonly used Afrikaans word, different from its Dutch equivalent {{lang|nl|veel}} or {{lang|nl|erg}}.
+* '''{{lang|af|baadjie}}''', Afrikaans for jacket (from {{wikt-lang|id|baju}}, ultimately from [[Persian language|Persian]]), used where Dutch would use {{lang|nl|jas}} or {{lang|nl|vest}}. The word ''{{lang|nl|baadje}}'' in Dutch is now considered archaic and only used in written, literary texts.
+* '''{{lang|af|[[bobotie]]}}''', a traditional Cape-Malay dish, made from spiced [[ground meat|minced meat]] baked with an egg-based topping.
+* '''{{lang|af|piesang}}''', which means banana. This is different from the common Dutch word ''{{lang|nl|banaan}}''. The Indonesian word {{lang|id|pisang}} is also used in Dutch, though usage is less common.
+* '''{{lang|af|piering}}''', which means [[saucer]] (from {{wikt-lang|id|piring}}, also from Persian).
+* '''{{lang|af|sosatie}}''', a dish similar to [[shish kebab]].
+
+=== Portuguese ===
+Some words originally came from Portuguese such as {{lang|af|sambreel}} ('umbrella') from the Portuguese {{lang|pt|sombreiro}}, {{lang|af|kraal}} ('pen/cattle enclosure') from the Portuguese {{lang|pt|curral}} and {{lang|af|mielie}} ('corn', from {{lang|pt|milho}}). Some of these words also exist in Dutch, like {{lang|nl|sambreel}} 'parasol',<ref>{{Cite web |url=http://www.etymologiebank.nl/trefwoord/sambreel |title=Sambreel – (Zonnescherm) |publisher=Etymologiebank.nl |access-date=2015-04-02}}</ref> though usage is less common and meanings can slightly differ.
+
+=== Khoisan languages ===
+* '''{{lang|af|dagga}}''', meaning [[cannabis]]<ref name="safariafrica.co.za" />
+* '''{{lang|af|geitjie}}''', meaning lizard, diminutive adapted from a [[Khoekhoe]] word<ref name="austin" />
+* '''{{lang|af|gogga}}''', meaning insect, from the [[Khoisan languages|Khoisan]] {{lang|khi|xo-xo}}
+* '''{{lang|af|karos}}''', blanket of animal hides
+* '''{{lang|af|kierie}}''', walking stick from [[Khoekhoe]]<ref name="austin">{{Cite book |url=https://books.google.com/books?id=Q3tAqIU0dPsC&pg=PA97 |title=One Thousand Languages: Living, Endangered, and Lost |publisher=University of California Press |year=2008 |editor-last=Austin |editor-first=Peter |page=97 |isbn=9780520255609 }}</ref>
+
+Some of these words also exist in Dutch, though with a more specific meaning: {{lang|nl|assegaai}} for example means 'South-African tribal javelin'<ref>{{cite web |url=http://gtb.inl.nl/iWDB/search?actie=article&wdb=WNT&id=M004523 |title=ASSAGAAI |website=gtb.inl.nl |url-status=dead |archive-url=https://web.archive.org/web/20190920072214/http://gtb.inl.nl/iWDB/search?actie=article |archive-date=20 September 2019 |access-date=2019-10-07 }}</ref> and {{lang|nl|karos}} means 'South-African tribal blanket of animal hides'.<ref>{{cite web |url = http://gtb.inl.nl/iWDB/search?actie=article&wdb=WNT&id=M030549 |title=Karos II&thinsp;: Kros |website = Gtb.inl.nl |access-date=2015-04-02 }}</ref>
+
+=== Bantu languages ===
+Loanwords from [[Bantu languages]] in Afrikaans include the names of indigenous birds, such as {{lang|af|mahem}} and {{lang|af|sakaboela}}, and indigenous plants, such as {{lang|af|maroela}} and {{lang|af|tamboekie(gras)}}.<ref name="Potgieter">{{Cite encyclopedia |year=1970 |entry=Afrikaans |encyclopedia=Standard Encyclopaedia of Southern Africa |publisher=NASOU |url=https://books.google.com/books?id=HTzjAAAAMAAJ&q=%22Bantu+loan-words+in+Afrikaans%22 |editor-last=Potgieter |editor-first=D. J. |volume=1 |page=111 |isbn=9780625003280 }}</ref>
+* '''{{lang|af|fundi}}''', from the [[Zulu language|Zulu]] word {{lang|zu|umfundi}} meaning 'scholar' or 'student"',<ref>{{cite book |url = https://books.google.com/books?id=sIDFHOQrYgoC&q=umfundi%20zulu&pg=PA87 |title = A Zulu-Kafir Dictionary, Etymologically Explained... Preceded by an Introduction on the Zulu-Kafir Language |last=Döhne |first = J. L. |year = 1857 |publisher=Printed at G.J. Pike's Machine Printing Office |location = Cape Town |page = 87 }}</ref> but used to mean someone who is a student of/expert on a certain subject, i.e. ''He is a language {{lang|af|fundi}}''.
+* '''{{lang|af|lobola}}''', meaning bride price, from (and referring to) ''[[lobolo]]'' of the [[Nguni languages]]<ref name="Ngcongwane">{{cite book |url = https://books.google.com/books?id=A8IzAAAAIAAJ&q=sakaboela |title=The Languages We Speak |author=Samuel Doggie Ngcongwane |publisher=University of Zululand |year=1985 |page=51 |isbn=9780907995494 }}</ref>
+* '''{{lang|af|mahem}}''', the [[grey crowned crane]], known in Latin as ''Balearica regulorum''
+* '''{{lang|af|maroela}}''', medium-sized [[dioecy|dioecious]] tree known in Latin as ''[[Sclerocarya birrea]]''<ref>{{cite book |last1=Johnson |first1=David |last2=Johnson |first2=Sally |title=Down to Earth: Gardening with Indigenous Trees |date=2002 |publisher=Penguin Random House South Africa |isbn=978-1-86872-775-9 |page=92 |language=en |url-access=subscription |url=https://books.google.com/books?id=glO0vAEACAAJ}}</ref>
+* '''{{lang|af|tamboekiegras}}''', species of thatching grass known as ''[[Hyparrhenia]]''<ref>{{Cite journal |last1=Strohbach |first1=Ben J. |last2=Walters |first2 = H.J.A. (Wally) |date=November 2015 |title=An overview of grass species used for thatching in the Zambezi, Kavango East and Kavango West Regions, Namibia |url = https://www.researchgate.net/publication/286447092 |journal=Dinteria |location=Windhoek, Namibia |pages=13–42 |number=35}}</ref>
+* '''{{lang|af|tambotie}}''', deciduous tree also known by its [[Latin]] name, ''[[Spirostachys africana]]''<ref>{{cite book |url=https://books.google.com/books?id=ZzASAQAAIAAJ&q=tambotie+ |title=South African Journal of Ethnology |volume=22–24 |publisher=Bureau for Scientific Publications of the Foundation for Education, Science and Technology |date=1999 |page=157 }}</ref>
+* '''{{lang|af|tjaila}} / {{lang|af|tjailatyd}}''', an adaption of the word ''{{lang|zu|chaile}}'', meaning "to go home" or "to knock off (from work)".<ref>{{citation |url=https://books.google.com/books?id=ThsMAQAAMAAJ&q=%22chaile%22+|title=<!--title and author of article needed--> TF|magazine=Toward Freedom |volume=45–46 |year=1996 |page=47 }}{{full citation needed|date=September 2024}}</ref>{{full citation needed|date=September 2024}}
+
+=== French ===
+The revoking of the [[Edict of Nantes]] on 22 October 1685 was a milestone in the history of South Africa, for it marked the beginning of the great [[Huguenots|Huguenot]] exodus from France. It is estimated that between 250,000 and 300,000 Protestants left France between 1685 and 1700; out of these, according to [[François-Michel le Tellier, Marquis de Louvois|Louvois]], 100,000 had received military training. A measure of the calibre of these immigrants and of their acceptance by host countries (in particular South Africa) is given by [[H. V. Morton]] in his book: ''In Search of South Africa'' (London, 1948). The Huguenots were responsible for a great linguistic contribution to Afrikaans, particularly in terms of military terminology as many of them fought on the battlefields during the wars of the [[Great Trek]].
+
+Most of the words in this list are descendants from Dutch borrowings from French, Old French or Latin, and are not direct influences from French on Afrikaans.
+
+{| class="wikitable"
+|+
+! Afrikaans
+! Dutch
+! French
+! English
+|-
+| '''{{lang|af|advies}}'''
+| {{lang|nl|advies}}
+| {{lang|fr|avis}}
+| advice
+|-
+| '''{{lang|af|alarm}}'''
+| {{lang|nl|alarm}}
+| {{lang|fr|alarme}}
+| alarm
+|-
+| '''{{lang|af|ammunisie}}'''
+| {{lang|nl|ammunitie, munitie}}
+| {{lang|fr|munition}}
+| ammunition
+|-
+| '''{{lang|af|amusant}}'''
+| {{lang|nl|amusant}}
+| {{lang|fr|amusant}}
+| funny
+|-
+| '''{{lang|af|artillerie}}'''
+| {{lang|nl|artillerie}}
+| {{lang|fr|artillerie}}
+| artillery
+|-
+| '''{{lang|af|ateljee}}'''
+| {{lang|nl|atelier}}
+| {{lang|fr|atelier}}
+| studio
+|-
+| '''{{lang|af|bagasie}}'''
+| {{lang|nl|bagage}}
+| {{lang|fr|bagage}}
+| luggage
+|-
+| '''{{lang|af|bastion}}'''
+| {{lang|nl|bastion}}
+| {{lang|fr|bastion}}
+| bastion
+|-
+| '''{{lang|af|bataljon}}'''
+| {{lang|nl|bataljon}}
+| {{lang|fr|bataillon}}
+| battalion
+|-
+| '''{{lang|af|battery}}'''
+| {{lang|nl|batterij}}
+| {{lang|fr|batterie}}
+| battery
+|-
+| '''{{lang|af|biblioteek}}'''
+| {{lang|nl|bibliotheek}}
+| {{lang|fr|bibliothèque}}
+| library
+|-
+| '''{{lang|af|faktuur}}'''
+| {{lang|nl|factuur}}
+| {{lang|fr|facture}}
+| invoice
+|-
+| '''{{lang|af|fort}}'''
+| {{lang|nl|fort}}
+| {{lang|fr|fort}}
+| fort
+|-
+| '''{{lang|af|frikkadel}}'''
+| {{lang|nl|frikandel}}
+| {{lang|fr|fricadelle}}
+| meatball
+|-
+| '''{{lang|af|garnisoen}}'''
+| {{lang|nl|garnizoen}}
+| {{lang|fr|garnison}}
+| garrison
+|-
+| '''{{lang|af|generaal}}'''
+| {{lang|nl|generaal}}
+| {{lang|fr|général}}
+| general
+|-
+| '''{{lang|af|granaat}}'''
+| {{lang|nl|granaat}}
+| {{lang|fr|grenade}}
+| grenade
+|-
+| '''{{lang|af|infanterie}}'''
+| {{lang|nl|infanterie}}
+| {{lang|fr|infanterie}}
+| infantry
+|-
+| '''{{lang|af|interessant}}'''
+| {{lang|nl|interessant}}
+| {{lang|fr|intéressant}}
+| interesting
+|-
+| '''{{lang|af|kaliber}}'''
+| {{lang|nl|kaliber}}
+| {{lang|fr|calibre}}
+| calibre
+|-
+| '''{{lang|af|kanon}}'''
+| {{lang|nl|kanon}}
+| {{lang|fr|canon}}
+| cannon
+|-
+| '''{{lang|af|kanonnier}}'''
+| {{lang|nl|kanonnier}}
+| {{lang|fr|canonier}}
+| gunner
+|-
+| '''{{lang|af|kardoes}}'''
+| {{lang|nl|kardoes, cartouche}}
+| {{lang|fr|cartouche}}
+| cartridge
+|-
+| '''{{lang|af|kaptein}}'''
+| {{lang|nl|kapitein}}
+| {{lang|fr|capitaine}}
+| captain
+|-
+| '''{{lang|af|kolonel}}'''
+| {{lang|nl|kolonel}}
+| {{lang|fr|colonel}}
+| colonel
+|-
+| '''{{lang|af|kommandeur}}'''
+| {{lang|nl|commandeur}}
+| {{lang|fr|commandeur}}
+| commander
+|-
+| '''{{lang|af|kwartier}}'''
+| {{lang|nl|kwartier}}
+| {{lang|fr|quartier}}
+| quarter
+|-
+| '''{{lang|af|lieutenant}}'''
+| {{lang|nl|lieutenant}}
+| {{lang|fr|lieutenant}}
+| lieutenant
+|-
+| '''{{lang|af|magasyn}}'''
+| {{lang|nl|magazijn}}
+| {{lang|fr|magasin}}
+| magazine
+|-
+| '''{{lang|af|manier}}'''
+| {{lang|nl|manier}}
+| {{lang|fr|manière}}
+| way
+|-
+| '''{{lang|af|marsjeer}}'''
+| {{lang|nl|marcheer, marcheren}}
+| {{lang|fr|marcher}}
+| (to) march
+|-
+| '''{{lang|af|meubels}}'''
+| {{lang|nl|meubels}}
+| {{lang|fr|meubles}}
+| furniture
+|-
+| '''{{lang|af|militêr}}'''
+| {{lang|nl|militair}}
+| {{lang|fr|militaire}}
+| militarily
+|-
+| '''{{lang|af|morsel}}'''
+| {{lang|nl|morzel}}
+| {{lang|fr|morceau}}
+| piece
+|-
+| '''{{lang|af|mortier}}'''
+| {{lang|nl|mortier}}
+| {{lang|fr|mortier}}
+| mortar
+|-
+| '''{{lang|af|muit}}'''
+| {{lang|nl|muit, muiten}}
+| {{lang|fr|mutiner}}
+| (to) mutiny
+|-
+| '''{{lang|af|musket}}'''
+| {{lang|nl|musket}}
+| {{lang|fr|mousquet}}
+| musket
+|-
+| '''{{lang|af|muur}}'''
+| {{lang|nl|muur}}
+| {{lang|fr|mur}}
+| wall
+|-
+| '''{{lang|af|myn}}'''
+| {{lang|nl|mijn}}
+| {{lang|fr|mine}}
+| mine
+|-
+| '''{{lang|af|offisier}}'''
+| {{lang|nl|officier}}
+| {{lang|fr|officier}}
+| officer
+|-
+| '''{{lang|af|orde}}'''
+| {{lang|nl|orde}}
+| {{lang|fr|ordre}}
+| order
+|-
+| '''{{lang|af|papier}}'''
+| {{lang|nl|papier}}
+| {{lang|fr|papier}}
+| paper
+|-
+| '''{{lang|af|pionier}}'''
+| {{lang|nl|pionier}}
+| {{lang|fr|pionnier}}
+| pioneer
+|-
+| '''{{lang|af|plafon}}'''
+| {{lang|nl|plafond}}
+| {{lang|fr|plafond}}
+| ceiling
+|-
+| '''{{lang|af|plat}}'''
+| {{lang|nl|plat}}
+| {{lang|fr|plat}}
+| flat
+|-
+| '''{{lang|af|pont}}'''
+| {{lang|nl|pont}}
+| {{lang|fr|pont}}
+| ferry
+|-
+| '''{{lang|af|provoos}}'''
+| {{lang|nl|provoost}}
+| {{lang|fr|prévôt}}
+| chief
+|-
+| '''{{lang|af|rondte}}'''
+| {{lang|nl|rondte, ronde}}
+| {{lang|fr|ronde}}
+| round
+|-
+| '''{{lang|af|salvo}}'''
+| {{lang|nl|salvo}}
+| {{lang|fr|salve}}
+| salvo
+|-
+| '''{{lang|af|soldaat}}'''
+| {{lang|nl|soldaat}}
+| {{lang|fr|soldat}}
+| soldier
+|-
+| '''{{lang|af|tante}}'''
+| {{lang|nl|tante}}
+| {{lang|fr|tante}}
+| aunt
+|-
+| '''{{lang|af|tapyt}}'''
+| {{lang|nl|tapijt}}
+| {{lang|fr|tapis}}
+| carpet
+|-
+| '''{{lang|af|tros}}'''
+| {{lang|nl|tros}}
+| {{lang|fr|trousse}}
+| bunch
+|}
+
+==Orthography==
+The Afrikaans [[writing system]] is based on [[Dutch language|Dutch]], using the 26 letters of the [[ISO basic Latin alphabet]], plus 16 additional vowel sounds represented by adding [[diacritic]]s. The [[hyphen]] (e.g. in a compound like {{lang|af|see-eend}} 'sea duck'), [[apostrophe]] (e.g. {{lang|af|ma's}} 'mothers'), and a [[whitespace character]] (e.g. in multi-word units like {{lang|af|Dooie See}} 'Dead Sea') is part of the [[orthography]] of words, while the indefinite article {{lang|af|[[ŉ]]}} is a [[ligature (writing)|ligature]]. All the alphabet letters, including those with diacritics, have capital letters as [[allograph]]s; the {{lang|af|[[ŉ]]}} does not have a capital letter allograph. This means that Afrikaans has 88 [[grapheme]]s with allographs in total.
+{| style="table-layout: fixed; width: 50em; text-align: center;"
+! colspan="43" style="background: #efefef; font-weight: normal;" |[[Capital letters|Majuscule forms]] (also called uppercase or capital letters)
+|-
+|[[A]]
+|[[Á]]
+|[[Ä]]
+|[[B]]
+|[[C]]
+|[[D]]
+|[[E]]
+|[[É]]
+|[[È]]
+|[[Ê]]
+|[[Ë]]
+|[[F]]
+|[[G]]
+|[[H]]
+|[[I]]
+|[[Í]]
+|[[Î]]
+|[[Ï]]
+|[[J]]
+|[[K]]
+|[[L]]
+|[[M]]
+|[[N]]
+|
+|[[O]]
+|[[Ó]]
+|[[Ô]]
+|[[Ö]]
+|[[P]]
+|[[Q]]
+|[[R]]
+|[[S]]
+|[[T]]
+|[[U]]
+|[[Ú]]
+|[[Û]]
+|[[Ü]]
+|[[V]]
+|[[W]]
+|[[X]]
+|[[Y]]
+|[[Ý]]
+|[[Z]]
+|-
+! colspan="43" style="background: #efefef; font-weight: normal;" |[[Lower case|Minuscule forms]] (also called lowercase or small letters)
+|-
+|a
+|á
+|[[ä]]
+|b
+|[[c]]
+|d
+|e
+|é
+|[[è]]
+|[[ê]]
+|[[ë]]
+|f
+|g
+|h
+|i
+|í
+|[[î]]
+|[[ï]]
+|j
+|k
+|l
+|m
+|n
+|''[[ŉ]]''
+|o
+|ó
+|[[Circumflex|ô]]
+|[[ö]]
+|p
+|[[q]]
+|r
+|s
+|t
+|u
+|ú
+|[[û]]
+|[[ü]]
+|v
+|[[w]]
+|x
+|y
+|ý
+|z
+|}
+In Afrikaans, many consonants are dropped from the earlier Dutch spelling. For example, ''{{lang|nl|slechts}}'' ('only') in Dutch becomes ''{{lang|af|slegs}}'' in Afrikaans. Also, Afrikaans and some Dutch dialects make no distinction between {{IPA|/s/}} and {{IPA|/z/}}, having merged the latter into the former; while the word for "south" is written ''{{lang|nl|zuid}}'' in Dutch, it is spelled ''{{lang|af|suid}}'' in Afrikaans (as well as dialectal Dutch writings) to represent this merger. Similarly, the Dutch digraph ''{{lang|nl|[[IJ (digraph)|ĳ]]}}'', normally pronounced as {{IPA|/ɛi/}}, corresponds to Afrikaans ''{{lang|af|y}}'', except where it replaces the Dutch [[affix|suffix]] ''{{lang|nl|–lijk}}'' which is pronounced as {{IPA|/lək/}}, as in ''{{lang|nl|waarschijnlijk}} > {{lang|af|waarskynlik}}''.
+
+Another difference is the indefinite article, ''{{lang|af|'n}}'' in Afrikaans and {{lang|nl|een}} in Dutch. "A book" is ''{{lang|af|'n boek}}'' in Afrikaans, whereas it is either ''{{lang|nl|een boek}}'' or ''{{lang|nl|'n boek}}'' in Dutch. This ''{{lang|af|'n}}'' is usually pronounced as just a [[weak vowel]], {{IPA|[ə]}}, just like English "a".
+
+The [[diminutive]] suffix in Afrikaans is ''{{lang|af|-tjie}}'', ''{{lang|af|-djie}}'' or ''{{lang|af|-ie}}'', whereas in Dutch it is ''{{lang|nl|-tje}}'' or ''{{lang|nl|dje}}'', hence a "bit" is [[ŉ]] {{Lang|af|bie'''tjie'''}} in Afrikaans and {{Lang|nl|bee'''tje'''}} in Dutch.
+
+The letters ''c'', ''q'', ''x'', and ''z'' occur almost exclusively in borrowings from French, English, Greek and [[Latin language|Latin]]. This is usually because words that had ''c'' and ''ch'' in the original Dutch are spelled with ''k'' and ''g'', respectively, in Afrikaans. Similarly original ''qu'' and ''x'' are most often spelt ''kw'' and ''ks'', respectively. For example, ''{{lang|af|ekwatoriaal}}'' instead of ''equatoriaal'', and ''{{lang|af|ekskuus}}'' instead of ''excuus''.
+
+The vowels with diacritics in non-loanword Afrikaans are: ''á'', ''ä'', ''é'', ''è'', ''ê'', ''ë'', ''í'', ''î'', ''ï'', ''ó'', ''ô'', ''ö'', ''ú'', ''û'', ''ü'', ''ý''. Diacritics are ignored when alphabetising, but it is important to include them even if they are difficult to type. For example, ''{{lang|af|geëet}}'' ("ate") instead of the 3 e's alongside each other: ''*{{lang|af|geeet}}'', which can never occur in Afrikaans, or ''{{lang|af|sê}}'', which translates to "say", whereas ''{{lang|af|se}}'' is a possessive form. The primary function of the acute accent (''á'', ''é'', ''í'', ''ó'', ''ú, ý)'' is to indicate an emphasised syllable. For example, ''sál'' ("will" (verb)), ''néé'' ('no'), ''móét'' ("must"), ''hý'' ("he"), ''gewéét'' ("knew"). The acute is only placed on an ''i'' if that is the only vowel in an emphasised word: ''wil'' ('want' (verb)) becomes ''wíl'', but ''lui'' ('lazy') becomes ''lúi.'' Only a few non-loan words are spelled with acutes, e.g. ''dié'' ('this'), ''ná'' ('after'), ''óf ... óf'' ('either ... or'), ''nóg ... nóg'' ('neither ... nor'), etc. Only four non-loan words are spelled with the grave accent: ''{{lang|af|nè}}'' ('yes?', 'right?', 'eh?'), ''{{lang|af|dè}}'' ('here, take this!' or '[this is] yours!'), ''hè'' ('huh?', 'what?', 'eh?'), and ''appèl'' ('(formal) appeal' (noun)).
+
+=== Initial apostrophes ===
+A few short words in Afrikaans take initial apostrophes. In modern Afrikaans, these words are always written in lower case (except when writing in all-capitals); if they occur at the beginning of a sentence, the following word that has no initial apostrophe is capitalised instead. Three examples of such apostrophed words are ''{{lang|af|'k, 't, 'n}}''. The last (the indefinite article) is the only such word common in modern written Afrikaans, since the others are shortened versions of words that are usually written out (''{{lang|af|ek}}'' and ''{{lang|af|het}}'', respectively) and are rarely found outside of a poetic context.<ref>{{cite web |url=http://www.101languages.net/afrikaans/grammar.html |title=Retrieved 12 April 2010 |website=101languages.net |date=26 August 2007 |access-date=22 September 2010 |archive-url=https://web.archive.org/web/20101015164510/http://101languages.net/afrikaans/grammar.html |archive-date=15 October 2010 |url-status=dead }}</ref>
+
+Here are a few examples:
+{| class="wikitable"
+|-
+! Apostrophed version
+! Usual version
+! Translation
+! Notes
+|-
+| {{lang|af|'k 't Dit gesê}} <br /> '''or''' <br /> {{lang|af|Ek't dit gesê}}
+| {{lang|af|Ek het dit gesê}}
+| I said it
+| Version with two apostrophes is uncommon
+|-
+| {{lang|af|'t Jy dit geëet?}}
+| {{lang|af|Het jy dit geëet?}}
+| Did you eat it?
+| Extremely uncommon
+|-
+| {{lang|af|'n Man loop daar}}
+|
+| A man walks there
+| Standard Afrikaans pronounces ''{{lang|af|'n}}'' as a [[schwa]] vowel.
+|}
+
+The apostrophe and the following letter are regarded as two separate characters, and are never written using a single glyph, although a single-character variant of the indefinite article appears in Unicode, {{lang|af|ŉ}}.
+
+===Table of characters===
+For more on the pronunciation of the letters below, see ''[[Help:IPA/Afrikaans]]''.
+
+{| class="wikitable"
+|+Afrikaans letters and pronunciation
+|-
+! Grapheme !! IPA !! Examples and Notes
+|-
+| a || {{IPA|/a/}}, {{IPA|/ɑː/}}
+| ''{{lang|af|appel}}'' ('apple'; {{IPA|/a/}}), ''{{lang|af|tale}}'' ('languages'; {{IPA|/ɑː/}}). Represents {{IPA|/a/}} in closed syllables and {{IPA|/ɑː/}} in stressed open syllables
+|-
+|á
+|/a/, /ɑː/
+|''ná'' (after)
+|-
+|ä
+|/a/, /ɑː/
+|''sebraägtig'' ('zebra-like'). The diaeresis indicates the start of new syllable.
+|-
+| aa || {{IPA|/ɑː/}} || ''{{lang|af|aap}}'' ('monkey', 'ape'). Only occurs in closed syllables.
+|-
+| aai || {{IPA|/ɑːi/}} || ''{{lang|af|draai}}'' ('turn')
+|-
+| ae || {{IPA|/ɑːə/}}|| ''{{lang|af|vrae}}'' ('questions'); the vowels belong to two separate syllables
+|-
+| ai || {{IPA|/ai/}} || ''{{lang|af|baie}}'' ('many', 'much' or 'very'), ''{{lang|af|ai}}'' (expression of frustration or resignation)
+|-
+| b || {{IPA|/b/}}, /p/ ||''{{lang|af|boom}}'' ('tree')
+|-
+| c || {{IPA|/s/}}, {{IPA|/k/}}
+| Found only in borrowed words or proper nouns; the former pronunciation occurs before 'e', 'i', or 'y'; featured in the Latinate plural ending ''{{lang|af|-ici}}'' (singular form ''{{lang|af|-ikus}}'')
+|-
+| ch || {{IPA|/ʃ/}}, {{IPA|/x/}}, {{IPA|/k/}}
+| ''{{lang|af|chirurg}}'' ('surgeon'; {{IPA|/ʃ/}}; typically ''{{lang|af|sj}}'' is used instead), ''{{lang|af|chemie}}'' ('chemistry'; {{IPA|/x/}}), ''{{lang|af|chitien}}'' ('chitin'; {{IPA|/k/}}). Found only in recent loanwords and in proper nouns
+|-
+| d || {{IPA|/d/}}, {{IPA|/t/}}|| ''{{lang|af|dag}}'' ('day'), ''{{lang|af|deel}}'' ('part', 'divide', 'share')
+|-
+| dj || {{IPA|/d͡ʒ/}}, {{IPA|/k/}} || ''{{lang|af|djati}}'' ('teak'), ''{{lang|af|broodjie}}'' ('sandwich'). Used to transcribe foreign words for the former pronunciation, and in the diminutive suffix ''{{lang|af|-djie}}'' for the latter in words ending with ''d''
+|-
+| e || {{IPA|/e(ː)/}}, {{IPA|/æ(ː)/}}, {{IPA|/ɪə/}}, {{IPA|/ɪ/}}, {{IPA|/ə/}}
+| ''{{lang|af|bed}}'' ({{IPA|/e/}}), ''{{lang|af|mens}}'' ('person', /eː/) (lengthened before {{IPA|/n/}}) ''{{lang|af|ete}}'' ('meal', {{IPA|/ɪə/}} and {{IPA|/ə/}} respectively), ''{{lang|af|berg}}'' ('mountain', /æ/), ''sker'' ('scissors', /æː/). {{IPA|/ɪ/}} is the unstressed allophone of {{IPA|/ɪə/}}
+|-
+|é
+|{{IPA|/e(ː)/}}, {{IPA|/æ(ː)/}}, {{IPA|/ɪə/}}
+|''dié'' ('this'), ''mét'' ('with', emphasised), ''ék'' ('I; me', emphasised), ''wéét'' ('know', emphasised)
+|-
+| è || {{IPA|/e/}} || Found in loanwords (like ''crèche'') and proper nouns (like ''Eugène'') where the spelling was maintained, and in four non-loanwords: ''{{lang|af|nè}}'' ('yes?', 'right?', 'eh?'), ''{{lang|af|dè}}'' ('here, take this!' or '[this is] yours!'), ''hè'' ('huh?', 'what?', 'eh?'), and ''appèl'' ('(formal) appeal' (noun)).
+|-
+| ê || {{IPA|/eː/}}, {{IPA|/æː/}} || ''{{lang|af|sê}}'' ('to say'), ''{{lang|af|wêreld}}'' ('world'), {{lang|af|lêer}} ('file') (Allophonically {{IPA|/æː/}} before {{IPA|/(ə)r/}})
+|-
+| ë || –
+| This diaeresis only indicates the start of a new syllable, thus ''{{lang|af|ë}}'', ''{{lang|af|ëe}}'' and ''{{lang|af|ëi}}'' are pronounced the same as 'e', 'ee' and 'ei', respectively
+|-
+| ee || {{IPA|/ɪə/}} || ''{{lang|af|weet}}'' ('to know'), ''{{lang|af|een}}'' ('one')
+|-
+| eeu || {{IPA|/ɪu/}} || ''leeu'' ('lion'), ''eeu'' ('century', 'age')
+|-
+| ei || {{IPA|/ei/}}||''{{lang|af|lei}}'' ('to lead')
+|-
+| eu || {{IPA|/ɪɵ/}} || ''{{lang|af|seun}}'' ('son' or 'lad')
+|-
+| f || {{IPA|/f/}} || ''{{lang|af|fiets}}'' ('bicycle')
+|-
+| g || {{IPA|/x/}}, {{IPA|/ɡ/}} || {{IPA|/ɡ/}} exists as the allophone of {{IPA|/x/}} if at the end of a root word preceded by a stressed single vowel + {{IPA|/r/}} and suffixed with a schwa, e.g. {{lang|af|berg}} ('mountain') is pronounced as {{IPA|/bæːrx/}}, and {{lang|af|berge}} is pronounced as {{IPA|/bæːrɡə/}}
+|-
+| gh || {{IPA|/ɡ/}}
+| ''{{lang|af|gholf}}'' ('golf'). Used for {{IPA|/ɡ/}} when it is not an allophone of {{IPA|/x/}}; found only in borrowed words. If the ''h'' instead begins the next syllable, the two letters are pronounced separately.
+|-
+| h || {{IPA|/ɦ/}} || ''{{lang|af|hael}}'' ('hail'), ''{{lang|af|hond}}'' ('dog')
+|-
+| i || {{IPA|/i/}}, {{IPA|/ə/}}
+| ''{{lang|af|kind}}'' ('child'; {{IPA|/ə/}}), ''{{lang|af|ink}}'' ('ink'; {{IPA|/ə/}}), ''{{lang|af|krisis}}'' ('crisis'; {{IPA|/i/}} and {{IPA|/ə/}} respectively), ''{{lang|af|elektrisiteit}}'' ('electricity'; {{IPA|/i/}} for all three; third 'i' is part of diphthong 'ei')
+|-
+|í
+|/i/, /ə/
+|''{{lang|af|krísis}}'' ('crisis', emphasised), ''{{lang|af|dít}}'' ('that', emphasised)
+|-
+| î || {{IPA|/əː/}} || ''{{lang|af|wîe}}'' (plural of ''{{lang|af|wig}}''; 'wedges' or 'quoins')
+|-
+| ï || /i/, /ə/
+| Found in words such as ''{{lang|af|beïnvloed}}'' ('to influence'). The diaeresis indicates the start of a new syllable.
+|-
+| {{Not a typo|ie}} || {{IPA|/i(ː)/}} || ''{{lang|af|iets}}'' ('something'), ''{{lang|af|vier}}'' ('four')
+|-
+| j || {{IPA|/j/}} || ''{{lang|af|julle}}'' (plural 'you')
+|-
+| k || {{IPA|/k/}} || ''{{lang|af|kat}}'' ('cat'), ''{{lang|af|kan}}'' ('can' (verb) or 'jug')
+|-
+| l || {{IPA|/l/}} || ''{{lang|af|lag}}'' ('laugh')
+|-
+| m || {{IPA|/m/}} || ''{{lang|af|man}}'' ('man')
+|-
+| n || {{IPA|/n/}} || ''{{lang|af|nael}}'' ('nail')
+|-
+|ŉ
+|/ə/
+|indefinite article ''ŉ'' ('a'), styled as a ligature (Unicode character U+0149)
+|-
+| ng || {{IPA|/ŋ/}} || ''{{lang|af|sing}}'' ('to sing')
+|-
+| o || {{IPA|/o/}}, {{IPA|/ʊə/}}, {{IPA|/ʊ/}} || ''{{lang|af|op}}'' ('up(on)'; {{IPA|/o/}}), ''{{lang|af|grote}}'' ('size'; {{IPA|/ʊə/}}), ''{{lang|af|polisie}}'' ('police'; {{IPA|/ʊ/}})
+|-
+|ó
+|{{IPA|/o/}}, {{IPA|/ʊə/}}
+|''óp'' ('done, finished', emphasised), ''gróót'' ('huge', emphasised)
+|-
+| ô || {{IPA|/oː/}} || ''{{lang|af|môre}}'' ([[wikt:morrow|'tomorrow']])
+|-
+| ö || {{IPA|/o/}}, {{IPA|/ʊə/}}
+| Found in words such as ''{{lang|af|koöperasie}}'' ('co-operation'). The diaeresis indicates the start of new syllable, thus ''{{lang|af|ö}}'' is pronounced the same as 'o' based on the following remainder of the word.
+|-
+| oe || {{IPA|/u(ː)/}} || ''{{lang|af|boek}}'' ('book'), ''{{lang|af|koers}}'' ('course', 'direction')
+|-
+| oei || {{IPA|/ui/}} || ''{{lang|af|koei}}'' ('cow')
+|-
+<!-- | oi || {{IPA|/ʊi/}} || 'toilet'
+|- -->
+| oo || {{IPA|/ʊə/}} || ''{{lang|af|oom}}'' ('uncle' or 'sir')
+|-
+| ooi || {{IPA|/oːi/}} || ''{{lang|af|mooi}}'' ('pretty', 'beautiful'), ''{{lang|af|nooi}}'' ('invite')
+|-
+| ou || {{IPA|/ɵu/}} || ''{{lang|af|die ou}}'' ('the guy'), ''{{lang|af|die ou skoen}}'' ('the old shoe'). Sometimes spelled ''{{lang|af|ouw}}'' in loanwords and surnames, for example {{lang|af|Louw}}.
+|-
+| p || {{IPA|/p/}} || ''{{lang|af|pot}}'' ('pot'), ''{{lang|af|pers}}'' ('purple' — or 'press' indicating the news media; the latter is often spelled with an <ê>)
+|-
+| q || {{IPA|/k/}}
+| Found only in foreign words with original spelling maintained; typically ''{{lang|af|k}}'' is used instead
+|-
+| r || {{IPA|/r/}} || ''{{lang|af|rooi}}'' ('red')
+|-
+| s || {{IPA|/s/}}, {{IPA|/z/}}, {{IPA|/ʃ/}}, {{IPA|/ʒ/}} || ''{{lang|af|ses}}'' ('six'), ''{{lang|af|stem}}'' ('voice' or 'vote'), ''{{lang|af|posisie}}'' ('position', {{IPA|/z/}} for first 's', {{IPA|/s/}} for second 's'), ''{{lang|af|rasioneel}}'' ('rational', {{IPA|/ʃ/}} (nonstandard; formally /s/ is used instead) ''{{lang|af|visuëel}}'' ('visual', {{IPA|/ʒ/}} (nonstandard; /z/ is more formal)
+|-
+| sj || {{IPA|/ʃ/}} || ''{{lang|af|sjaal}}'' ('shawl'), ''{{lang|af|sjokolade}}'' ('chocolate')
+|-
+| t || {{IPA|/t/}} || ''{{lang|af|tafel}}'' ('table')
+|-
+| tj || {{IPA|/tʃ/}}, {{IPA|/k/}} || ''{{lang|af|tjank}}'' ('whine like a dog' or 'to cry incessantly'). The latter pronunciation occurs in the common diminutive suffix ''{{lang|af|"-(e)tjie"}}''
+|-
+| u || {{IPA|/ɵ/}}, {{IPA|/y(ː)/}} || {{lang|af|stuk}} ('piece'), {{lang|af|unie}} ('union')
+|-
+|ú
+|/œ/, /y(ː)/
+|''búk'' ('bend over', emphasised), ''ú'' ('you', formal, emphasised)
+|-
+| û || {{IPA|/ɵː/}} || ''{{lang|af|brûe}}'' ('bridges')
+|-
+| ü || –
+| Indicates the start of a new syllable in words such as ''{{lang|af|reünie}}'' ('reunion'), where it is pronounced the same as ''{{lang|af|u}}''. In German words, including surnames such as {{lang|de|Müller}}, it is pronounced as in German.
+|-
+| ui || {{IPA|/ɵi/}}||''{{lang|af|uit}}'' ('out')
+|-
+| uu || {{IPA|/y(ː)/}} || ''{{lang|af|uur}}'' ('hour')
+|-
+| v || {{IPA|/f/}}, /v/ ||''{{lang|af|vis}}'' ('fish'), ''visuëel'' ('visual')
+|-
+| w || {{IPA|/v/}}, {{IPA|/w/}} || ''{{lang|af|water}}'' ('water'; {{IPA|/v/}}); allophonically {{IPA|/w/}} after obstruents within a root; an example: ''{{lang|af|kwas}}'' ('brush'; {{IPA|/w/}})
+|-
+| x || {{IPA|/z/}}, {{IPA|/ks/}} || ''{{lang|af|xifoïed}}'' ('xiphoid'; {{IPA|/z/}}), ''{{lang|af|x-straal}}'' ('x-ray'; {{IPA|/ks/}}).
+|-
+| y || {{IPA|/əi/}} || ''{{lang|af|byt}}'' ('bite')
+|-
+|ý
+|/əi/
+|''hý'' ('he', emphasised)
+|-
+| z || {{IPA|/z/}} || ''{{lang|af|Zoeloe}}'' ('Zulu'). Found only in [[onomatopoeia]] and loanwords
+|}
+
+== Sample text ==
+[[File:Universal Declaration of Human Rights - afk - cdb - Art1.ogg|thumb|Afrikaans pronunciation]]
+Article 1 of the ''[[Universal Declaration of Human Rights]]'':<ref>{{cite web|title=Universal Declaration of Human Rights|website=ohchr.org|url=https://www.ohchr.org/en/human-rights/universal-declaration/translations/afrikaans|access-date=30 December 2024|archive-date=29 December 2024|archive-url=https://web.archive.org/web/20241229014902/https://www.ohchr.org/en/human-rights/universal-declaration/translations/afrikaans|url-status=live}}</ref>
+:{{lang|af|Alle menslike wesens word vry, met gelyke waardigheid en regte, gebore. Hulle het rede en gewete en behoort in die gees van broederskap teenoor mekaar op te tree.}}
+
+[[Psalm 23]] 1953 translation:<ref name="verse compare"/>
+
+<poem style="margin-left: 1em; font-style: italic;" lang="af">
+Die Here is my Herder, niks sal my ontbreek nie.
+Hy laat my neerlê in groen weivelde; na waters waar rus is, lei Hy my heen.
+Hy verkwik my siel; Hy lei my in die spore van geregtigheid, om sy Naam ontwil.
+Al gaan ek ook in 'n dal van doodskaduwee, ek sal geen onheil vrees nie; want U is met my: u stok en u staf die vertroos my. 
+</poem>
+
+[[Psalm 23]] 1983 translation:<ref name="verse compare">{{multiref2
+| 1 = {{citation|url=http://bybel.co.za/search/search-detail.php?prev=-3&book=PSA&chapter=23&version=0&GO=Wys|title=Psalm 23 – 1953 vertailing|trans-title=Psalm 23 – 1953 translation |language=af |work=Bybelgenootskap van Suid-Africa|trans-work=Bible companion from South Africa|access-date=11 May 2020|archive-url= https://archive.today/20200511184428/http://bybel.co.za/search/search-detail.php?prev=-3&book=PSA&chapter=23&version=0&GO=Wys |archive-date=11 May 2020|url-status=dead}}
+| 2 = {{cite web|url=http://bybel.co.za/search/search-detail.php?prev=-2&book=PSA&chapter=23&version=1&GO=Wys|title=Psalm 23 – 1983 vertailing|trans-title=Psalm 23 – 1983 translation |language=af |work=Bybelgenootskap van Suid-Africa|access-date=11 May 2020|archive-url=https://archive.today/20200511183723/http://bybel.co.za/search/search-detail.php?prev=-2&book=PSA&chapter=23&version=1&GO=Wys|archive-date=11 May 2020|url-status=dead}}
+}}</ref>
+
+<poem style="margin-left: 1em; font-style: italic;" lang="af">
+Die Here is my Herder, ek kom niks kort nie.
+Hy laat my rus in groen weivelde. Hy bring my by waters waar daar vrede is.
+Hy gee my nuwe krag. Hy lei my op die regte paaie tot eer van Sy naam.
+Selfs al gaan ek deur donker dieptes, sal ek nie bang wees nie, want U is by my. In U hande is ek veilig.
+</poem>
+
+[[Lord's Prayer]] (Afrikaans New Living Version translation):<ref>{{cite web |title=MATTEUS 6, NLV Bybel |url=https://www.bible.com/af/bible/117/MAT.6.NLV |website=Bible.com |publisher=YouVersion |access-date=7 June 2024 |language=af}}</ref>
+
+<poem style="margin-left: 1em; font-style: italic;" lang="af">
+Ons Vader in die hemel, laat u Naam geheilig word.
+Laat u koninkryk kom.
+Laat u wil hier op aarde uitgevoer word soos in die hemel.
+Gee ons die porsie brood wat ons vir vandag nodig het.
+En vergeef ons ons sondeskuld soos ons ook óns skuldenaars vergewe het.
+Bewaar ons sodat ons nie aan verleiding sal toegee nie; maar bevry ons van die greep van die bose.
+Want aan U behoort die koningskap,
+en die krag,
+en die heerlikheid,
+vir altyd.
+Amen.
+</poem>
+
+[[Lord's Prayer]] (Original translation):{{citation needed|date=June 2024}}
+
+<poem style="margin-left: 1em; font-style: italic;" lang="af">
+Onse Vader wat in die hemel is,
+laat U Naam geheilig word;
+laat U koninkryk kom;
+laat U wil geskied op die aarde,
+net soos in die hemel.
+Gee ons vandag ons daaglikse brood;
+en vergeef ons ons skulde
+soos ons ons skuldenaars vergewe
+en laat ons nie in die versoeking nie
+maar verlos ons van die bose
+Want aan U behoort die koninkryk
+en die krag
+en die heerlikheid
+tot in ewigheid.
+Amen
+</poem>
+
+== See also ==
+{{Portal|Language|South Africa|Netherlands}}
+* ''{{lang|af|[[Aardklop]]}}'' Arts Festival
+* [[Afrikaans literature]]
+* [[Afrikaans speaking population in South Africa]]
+* [[Arabic Afrikaans]]
+* ''{{lang|af|[[Handwoordeboek van die Afrikaanse Taal]]}} (HAT)'' (Concise Afrikaans Dictionary)
+* ''{{lang|af|[[Woordeboek van die Afrikaanse Taal]]}} (WAT)'' (Comprehensive Afrikaans Dictionary)
+* [[Differences between Afrikaans and Dutch]]
+* [[Help:IPA/Afrikaans|IPA/Afrikaans]]
+* ''{{lang|af|[[Klein Karoo Nasionale Kunstefees]]}}'' (Arts Festival)
+* [[Languages of South Africa]]
+* {{section link|Languages of Zimbabwe|Afrikaans}}
+* [[List of Afrikaans language poets]]
+* [[List of Afrikaans singers]]
+* [[List of English words of Afrikaans origin]]
+* [[South African Translators' Institute]]
+* {{lang|af|[[Tsotsitaal]]}}
+
+== Notes ==
+{{reflist|group=n}}
+
+== References ==
+=== Citations ===
+{{Reflist}}
+
+=== Sources ===
+{{refbegin|30em}}
+* {{Citation |url=https://books.google.com/books?id=Ghqf-m6ILIgC |title=Language Attitudes in Sub-Saharan Africa: A Sociolinguistic Overview |access-date=10 November 2008 |first=Efurosibina E. |last=Adegbija |work=Multilingual Matters |year=1994 |isbn=9781853592393 }}
+* {{Citation |language=fr |url=https://books.google.com/books?id=NKjBVF8krYIC |title=Parlons Afrikaans |access-date=3 June 2010 |first=Jaco |last=Alant |publisher=[[Éditions L'Harmattan]] |year=2004 |isbn=9782747576369 }}
+* {{Citation |url=https://books.google.com/books?id=YgtSqB9oqDIC |title=Encyclopedia of bilingualism and bilingual education |access-date=19 May 2010 |first1=Colin |last1=Baker |first2=Sylvia |last2=Prys Jones |publisher=Multilingual Matters Ltd. |year=1997 |isbn=9781853593628 }}
+* {{Citation |url=https://books.google.com/books?id=_q14xoaXj1UC |title=Nations, language, and citizenship |first=Norman |last=Berdichevsky |year=2004 |publisher=Norman Berdichevsky |isbn=9780786427000 |access-date=31 May 2010 }}
+* {{Citation |url=https://books.google.com/books?id=yoZ_fU_B0KgC |title=Language decline and death in Africa: causes, consequences, and challenges |first=Herman |last=Batibo |work=Oxford Linguistics |year=2005 |publisher=Multilingual Matters Ltd |isbn=9781853598081 |access-date=24 May 2010 }}
+* {{Citation |url=https://books.google.com/books?id=LT6E6YdAh-MC |title=The Phonology of Dutch. |first=Geert |last=Booij |work=Oxford Linguistics |year=1999 |publisher=[[Oxford University Press]] |isbn=0-19-823869-X |access-date=24 May 2010 }}
+* {{Citation |url=http://cs.engr.uky.edu/~gstump/periphrasispapers/Progressive.pdf |title=Constructional idioms and periphrasis: the progressive construction in Dutch. |first=Geert |last=Booij |work=Paradigms and Periphrasis |year=2003 |publisher=[[University of Kentucky]] |access-date=19 May 2010 |url-status=dead |archive-url=https://web.archive.org/web/20110503201606/http://cs.engr.uky.edu/~gstump/periphrasispapers/Progressive.pdf |archive-date=3 May 2011 }}
+* {{Citation |last=Bowerman |first=Sean |editor-last=Schneider |editor-first=Edgar W. |editor2-last=Burridge |editor2-first=Kate |editor3-last=Kortmann |editor3-first=Bernd |editor4-last=Mesthrie |editor4-first=Rajend |editor5-last=Upton |editor5-first=Clive |year=2004 |title=A handbook of varieties of English |chapter=White South African English: phonology |volume = 1: Phonology |publisher=Mouton de Gruyter |pages=931–942 |isbn=3-11-017532-0}}
+* {{Citation |url=https://books.google.com/books?id=GeUUAAAAIAAJ |title=The Dutch Language: A Survey |first1=Pierre |last1=Brachin |first2=Paul |last2=Vincent |publisher=Brill Archive |access-date=3 November 2008 |year=1985 |isbn=9004075933 }}
+* {{Citation |url=https://books.google.com/books?id=lxjtToDh_g4C |title=Globalisation and African languages: risks and benefits |access-date=28 May 2010 |first1=Katrin |last1=Bromber |first2=Birgit |last2=Smieja |work=Trends in Linguistics |publisher=[[Walter de Gruyter]] |year=2004 |isbn=9783110180992 }}
+* {{Citation |url=https://books.google.com/books?id=AYfRwLd8LCEC |title=Language of the land: policy, politics, identity |contribution=Languages, language learning, and nationalism in South Africa |access-date=19 May 2010 |first=Diane |last=Brook Napier |editor1-first=Katherine |editor1-last=Schuster |editor2-first=David |editor2-last=Witkosky |series=Studies in the history of education |publisher=Information Age Publishing |year=2007 |isbn=9781593116170 }}
+* {{Citation |url=https://books.google.com/books?id=3fSsa7DPlNQC |title=The final stages of deflection – The case of Afrikaans "het" |work=Historical Linguistics 2005 |access-date=29 May 2010 |first=C. Jac |last=Conradie |publisher=[[John Benjamins Publishing Company]] |year=2005 |isbn=9027247994 }}
+* {{Citation |last=Den Besten |first=Hans |chapter=Speculations of {{IPA|[χ]}}-elision and intersonorantic {{IPA|[ʋ]}} in Afrikaans |editor-last=van der Wouden |editor-first=Ton |year=2012 |title=Roots of Afrikaans: Selected Writings of Hans Den Besten |publisher=[[John Benjamins Publishing Company]] |pages=79–93 |isbn=978-90-272-5267-8}}
+* {{Citation |url=https://books.google.com/books?id=LYNHubXRzJAC |title=Standardization and social networks – The emergence and diffusion of standard Afrikaans |work=Standardization – Studies from the Germanic languages |access-date=29 May 2010 |first=Ana |last=Deumert |publisher=[[John Benjamins Publishing Company]] |year=2002 |isbn=9027247471 }}
+* {{Citation |url=https://books.google.com/books?id=o-qM3Wk4nZ0C&pg=PA15 |title=Germanic standardizations: past to present |access-date=28 May 2010 |first1=Ana |last1=Deumert |first2=Wim |last2=Vandenbussche |work=Trends in Linguistics |publisher=[[John Benjamins Publishing Company]] |year=2003 |isbn=9027218560 }}
+* {{Citation |url=https://books.google.com/books?id=8ciimg5gGqQC |title=Language Standardization and Language Change: The Dynamics of Cape Dutch |access-date=10 November 2008 |first=Ana |last=Deumert |publisher=[[John Benjamins Publishing Company]] |year=2004 |isbn=9027218579 }}
+* {{Citation |url=https://books.google.com/books?id=d-Jd5KkyFpwC |title=Words of the world: the global language system |access-date=3 June 2010 |first=Abram |last=de Swaan |publisher=A. de Swaan |year=2001 |isbn=9780745627489 }}
+* {{Citation |url=https://books.google.com/books?id=aSlp7wze6OMC |title=Sociolinguistic and language planning organizations |first1=Francesc |last1=Domínguez |first2=Núria |last2=López |access-date=28 May 2010 |year=1995 |publisher=[[John Benjamins Publishing Company]] |isbn=9027219516 }}
+* {{Citation |url=https://books.google.com/books?id=ftzioRvJzTUC |title=A grammar of Afrikaans |first=Bruce C. |last=Donaldson |access-date=28 May 2010 |year=1993 |publisher=[[Walter de Gruyter]] |isbn=9783110134261 }}
+* {{Citation |url=https://books.google.com/books?id=z7zlUp5Xuc8C |title=Language change: contributions to the study of its causes |access-date=19 May 2010 |first1=Leiv |last1=Egil Breivik |first2=Ernst |last2=Håkon Jahr |publisher=[[Walter de Gruyter]] |year=1987 |isbn=9783110119954 }}
+* {{Citation |url=https://books.google.com/books?id=wawGFWNuHiwC |title=Pluricentric languages: differing norms in different nations |access-date=19 May 2010 |first1=G. |last1=Geerts |first2=Michael G. |last2=Clyne |publisher=[[Walter de Gruyter]] |year=1992 |isbn=9783110128550 }}
+* {{Citation |url=http://www.let.rug.nl/gooskens/pdf/publ_JMMD_2007.pdf |archive-url=https://ghostarchive.org/archive/20221009/http://www.let.rug.nl/gooskens/pdf/publ_JMMD_2007.pdf |archive-date=2022-10-09 |url-status=live |title=The Contribution of Linguistic Factors to the Intelligibility of Closely Related Languages |first=Charlotte |last=Gooskens |work=Journal of Multilingual and Multicultural Development |volume=28 |issue=6 |date=November 2007 |pages=445–467 |publisher=[[University of Groningen]] |access-date=19 May 2010 }}
+* {{Citation |url=http://www.let.rug.nl/~heeringa/dialectology/papers/prasa08.pdf |title=The origin of Afrikaans pronunciation: a comparison to west Germanic languages and Dutch dialects |first1=Wilbert |last1=Heeringa |first2=Febe |last2=de Wet |pages=445–467 |year=2007 |publisher=[[University of Groningen]] |access-date=19 May 2010 |url-status=dead |archive-url=https://web.archive.org/web/20110429011940/http://www.let.rug.nl/~heeringa/dialectology/papers/prasa08.pdf |archive-date=29 April 2011 }}
+* {{Citation |url=https://books.google.com/books?id=PpPNMf5ESsoC |title=Language policies in English-dominant countries: six case studies |access-date=19 May 2010 |first1=Michael L. |last1=Herriman |first2=Barbara |last2=Burnaby |publisher=Multilingual Matters Ltd. |year=1996 |isbn=9781853593468 }}
+* {{Citation |url=http://www.lancs.ac.uk/fss/linguistics/staff/kerswill/pkpubs/HinskensAuerKerswill2005Conv.pdf |archive-url=https://ghostarchive.org/archive/20221009/http://www.lancs.ac.uk/fss/linguistics/staff/kerswill/pkpubs/HinskensAuerKerswill2005Conv.pdf |archive-date=2022-10-09 |url-status=live |title=The study of dialect convergence and divergence: conceptual and methodological considerations. |first1=Frans |last1=Hiskens |first2=Peter |last2=Auer |first3=Paul |last3=Kerswill |year=2005 |publisher=[[Lancaster University]] |access-date=19 May 2010 }}
+* {{Citation |url=https://books.google.com/books?id=PcD7p9y3EIcC |title=Pidgins and Creoles: References survey |access-date=19 May 2010 |first=John A. |last=Holm |publisher=[[Cambridge University Press]] |year=1989 |isbn=9780521359405 }}
+* {{Citation |url=http://dare.ubn.kun.nl/dspace/bitstream/2066/56692/1/56692_JS&N20070001.pdf |title=The influence of spelling conventions on perceived plurality in compounds. A comparison of Afrikaans and Dutch. |first1=Carel |last1=Jansen |first2=Robert |last2=Schreuder |first3=Anneke |last3=Neijt |work=Written Language & Literacy 10:2 |year=2007 |publisher=[[Radboud University Nijmegen]] |access-date=19 May 2010 |url-status=dead |archive-url=https://web.archive.org/web/20110429011926/http://dare.ubn.kun.nl/dspace/bitstream/2066/56692/1/56692_JS%26N20070001.pdf |archive-date=29 April 2011 }}
+* {{Citation |url=https://books.google.com/books?id=nVrsAmvjhNQC |title=Language planning and policy in Africa |contribution=The language planning situation in South Africa |access-date=31 May 2010 |first=Nkonko M. |last=Kamwangamalu |editor1-first=Richard B. |editor1-last=Baldauf |editor2-first=Robert B. |editor2-last=Kaplan |publisher=Multilingual Matters Ltd. |year=2004 |isbn=9781853597251 }}
+* {{Citation |url=https://books.google.com/books?id=M9uNEf_FPVoC |title=Linguistic purism in the Germanic languages |access-date=28 May 2010 |first1=Nils |last1=Langer |first2=Winifred V. |last2=Davies |publisher=[[Walter de Gruyter]] |year=2005 |isbn=9783110183375 }}
+* {{Citation |last=Lass |first=Roger |year=1984 |title=Vowel System Universals and Typology: Prologue to Theory |journal=[[Phonology (journal)|Phonology Yearbook]] |publisher=[[Cambridge University Press]] |volume=1 |pages=75–111 |jstor = 4615383 |doi=10.1017/S0952675700000300|s2cid=143681251 }}
+* {{Citation |last=Lass |first=Roger |chapter=Intradiphthongal Dependencies |editor-last=Anderson |editor-first=John |editor2-last=Durand |editor2-first=Jacques |year=1987 |title=Explorations in Dependency Phonology |location=Dordrecht |publisher=Foris Publications Holland |pages=109–131 |isbn=90-6765-297-0 |url=https://books.google.com/books?id=CWEjAAAAQBAJ }}
+* {{Citation |url=https://books.google.com/books?id=XFKYdKGSEiAC |title=Language anxiety: conflict and change in the history of English |access-date=3 June 2010 |first=Tim William |last=Machan |publisher=[[Oxford University Press]] |year=2009 |isbn=9780191552489 }}
+* {{Citation |url=https://books.google.com/books?id=SIu244rlVu8C |title=Post-imperial English: status change in former British and American colonies, 1940–1990 |contribution=English in South Africa 1940–1996 |access-date=31 May 2010 |first1=Daryl |last1=McLean |first2=Kay |last2=McCormick |editor1-first=Joshua A. |editor1-last=Fishman |editor2-first=Andrew W. |editor2-last=Conrad |editor3-first=Alma |editor3-last=Rubal-Lopez |publisher=[[Walter de Gruyter]] |year=1996 |isbn=9783110147544 }}
+* {{Citation |url=https://eresearch.qmu.ac.uk/handle/20.500.12289/152 |title=Acquisition of Dutch phonology: an overview |first1=Ineke |last1=Mennen |first2=Clara |last2=Levelt |first3=Ellen |last3=Gerrits |work=Speech Science Research Centre Working Paper WP10 |year=2006 |publisher=[[Queen Margaret University College]] |access-date=19 May 2010 }}
+* {{Citation |url=https://books.google.com/books?id=aIivedw-oZYC |title=Language and Social History: Studies in South African Sociolinguistics |access-date=23 August 2008 |first=Rajend |last=Mesthrie |publisher=New Africa Books |year=1995 |isbn=9780864862808 }}
+* {{Citation |url=https://books.google.com/books?id=cqaGb_SEQHUC |title=Language in South Africa |access-date=18 May 2010 |first=Rajend |last=Mesthrie |publisher=[[Cambridge University Press]] |year=2002 |isbn=9780521791052 }}
+* {{Citation |url=https://books.google.com/books?id=HdHMKJaw2Q0C |title=Multiple voices: an introduction to bilingualism |access-date=31 May 2010 |first=Carol |last=Myers-Scotton |publisher=Blackwell Publishing |year=2006 |isbn=9780631219378 }}
+* {{Citation |url=http://academic.sun.ac.za/su_clast/documents/SALALS2005.pdf |first1=Thomas |last1=Niesler |first2=Philippa |last2=Louw |first3=Justus |last3=Roux |year=2005 |title=Phonetic analysis of Afrikaans, English, Xhosa and Zulu using South African speech databases |journal=Southern African Linguistics and Applied Language Studies |volume=23 |issue=4 |pages=459–474 |url-status=dead |archive-url=https://web.archive.org/web/20121221175729/http://academic.sun.ac.za/su_clast/documents/SALALS2005.pdf |archive-date=21 December 2012 |doi=10.2989/16073610509486401 |s2cid=7138676 }}
+* {{Citation |url=https://books.google.com/books?id=G9dys7IenowC |title=Mixed jurisdictions worldwide: the third legal family |access-date=3 June 2010 |first=Vernon Valentine |last=Palmer |publisher=Vernon V. Palmer |year=2001 |isbn=9780521781541 }}
+* {{Citation |url=https://books.google.com/books?id=qFTHBoRvQbsC |title=Colonialism: an international, social, cultural, and political encyclopedia |access-date=19 May 2010 |first1=Melvin Eugene |last1=Page |first2=Penny M. |last2=Sonnenburg |publisher=Melvin E. Page |year=2003 |isbn=9781576073353 }}
+* {{cite book |chapter=Contradiction or affirmation? The South African language policy and the South African national government |last1=Phaswana |first1=Khelebeni |editor1=Sinfree Makoni |others=Foreword by Ngugi wa Thiong'o |editor2=Geneva Smitherman |editor3=Arnetha Ball |editor4=Arthur K. Spears |title=Black Linguistics: Language, Society and Politics in Africa and the Americas |date=2003 |publisher=Routledge |location=London |isbn=9780415261388 |pages=117–132 |edition=1st |url=https://criticallanguagepolicy.paginas.ufsc.br/files/2019/03/Makoni_Black_Linguistics_Language_SocietBookFi.org_.pdf }}
+* {{Citation |language=de |url=https://books.google.com/books?id=ntrXXGDGoK8C |title=Von Intentionalität zur Bedeutung konventionalisierter Zeichen |contribution=Spuren der Kreolisierung im Lexikon des Afrikaans |access-date=3 June 2010 |first=Kristel |last=Proost |editor1-first=Kristel |editor1-last=Proost |editor2-first=Edeltraud |editor2-last=Winkler |series=Studien zur Deutschen Sprache |publisher=Gunter Narr Verlag |year=2006 |isbn=9783823362289 }}
+* {{Citation |language=fr |url=https://books.google.com/books?id=DAm0uHJGemQC |title=Si loin, si proche&nbsp;...: Une langue européenne à découvrir : le néerlandais |access-date=3 June 2010 |first=Laurent Philippe |last=Réguer |publisher=[[Sorbonne Nouvelle]] |year=2004 |isbn=9782910212308 }}
+* {{Citation |url=https://books.google.com/books?id=bRT_jZl39AMC |title=Contact languages: pidgins and creoles |access-date=19 May 2010 |first=Mark |last=Sebba |publisher=[[Palgrave Macmillan]] |year=1997 |isbn=9780312175719 }}
+* {{Citation |url=https://books.google.com/books?id=JHgsfADZF9IC |title=Spelling and society: the culture and politics of orthography around the world |access-date=19 May 2010 |first=Mark |last=Sebba |publisher=[[Cambridge University Press]] |year=2007 |isbn=9781139462020 }}
+* {{Citation |url=https://books.google.com/books?id=I7qsTVO4IK4C |title=Language and national identity in Africa |access-date=31 May 2010 |first=Andrew |last=Simpson |publisher=[[Oxford University Press]] |year=2008 |isbn=9780199286751 }}
+* {{Citation |url=http://www.researchportal.be/en/project/mapping-linguistic-communication-across-colour-divides-black-afrikaans-in-central-south-africa-%28VUB_500000000019265%29/ |title=Mapping linguistic communication across colour divides: Black Afrikaans in Central South Africa |access-date=2 June 2010 |first=Gerard |last=Stell |publisher=[[Vrije Universiteit Brussel]] |year=2008–2011 |archive-date=6 October 2011 |archive-url=https://web.archive.org/web/20111006125418/http://www.researchportal.be/en/project/mapping-linguistic-communication-across-colour-divides-black-afrikaans-in-central-south-africa-(VUB_500000000019265)/ |url-status=dead }}
+* {{Citation |url=http://www.dbnl.org/arch/swan020soun01_01/pag/swan020soun01_01.pdf |archive-url=https://ghostarchive.org/archive/20221009/http://www.dbnl.org/arch/swan020soun01_01/pag/swan020soun01_01.pdf |archive-date=2022-10-09 |url-status=live |title=The sounds of Afrikaans. Their Dialectic Variations and the Difficulties They Present to an Englishman |first=J. F. |last=Swanepoel |publisher=[[Longman|Longmans, Green & Co]] |year=1927 }}
+* {{Citation |last1=Thomason |first1=Sarah Grey |last2=Kaufman |first2=Terrence |year=1988 |title=Language Contact, Creolization, and Genetic Linguistics |publisher = University of California Press |publication-date = 1991 |isbn = 0-520-07893-4}}
+* {{Citation |url=https://books.google.com/books?id=ujANkZqRALsC |first=Victor N. |last=Webb |year=2002 |title=Language in South Africa: the role of language in national transformation, reconstruction and development |series=IMPACT: Studies in Language and Society |volume=14 |publisher=[[John Benjamins Publishing Company]] |isbn=9789027297631 |doi=10.1075/impact.14 |url-access=subscription }}
+* {{Citation |url=http://www.up.ac.za/academic/libarts/crpl/language-dev-in-SA.pdf |first=Victor N. |last=Webb |year=2003 |title=Language policy development in South Africa |work=Centre for Research in the Politics of Language |publisher=[[University of Pretoria]] |url-status=dead |archive-url=https://web.archive.org/web/20031209231442/http://www.up.ac.za/academic/libarts/crpl/language-dev-in-SA.pdf |archive-date=9 December 2003 }}
+* {{Citation |url=http://www.grnnet.gov.na/aboutnam.html |title=Languages Spoken in Namibia |access-date=28 May 2010 |year=2001 |last=Namibian Population Census |publisher=Government of Namibia |archive-url=https://web.archive.org/web/20100516114611/http://www.grnnet.gov.na/aboutnam.html |archive-date=16 May 2010 |url-status=dead }}
+* {{Citation |last=Wissing |first=Daan |year=2016 |title=Afrikaans phonology – segment inventory |url=http://www.taalportaal.org/taalportaal/topic/pid/topic-14610909940908011 |website=Taalportaal |archive-url=https://web.archive.org/web/20170415194042/http://www.taalportaal.org/taalportaal/topic/pid/topic-14610909940908011 |archive-date=15 April 2017 |url-status=dead |access-date=16 April 2017 }}
+* {{Citation |url = https://www.cia.gov/the-world-factbook/countries/namibia/ |archive-url = https://web.archive.org/web/20210110010829/https://www.cia.gov/the-world-factbook/countries/namibia |url-status = dead |archive-date = 10 January 2021 |title = The World Factbook (CIA) — Namibia |author = CIA |year = 2010 |access-date = 28 May 2010 |publisher = [[Central Intelligence Agency]] }}
+{{Refend}}
+
+== Further reading ==
+* Grieshaber, Nicky. 2011. ''Diacs and Quirks in a Nutshell – Afrikaans spelling explained''. Pietermaritzburg. {{ISBN|978-0-620-51726-3}}; e-{{ISBN|978-0-620-51980-9}}.
+* {{Citation |last=Roberge |first = P. T. |year=2002 |chapter=Afrikaans – considering origins |title=Language in South Africa |publisher=Cambridge University Press |location=Cambridge, England |isbn=0-521-53383-X }}
+* {{Citation |last=Thomas |first = C. H. |year= 1899 |chapter= Boer language |chapter-url = http://www.angloboerwar.com/books/60-thomas-origin-of-the-anglo-boer-war-revealed/1255-thomas-boer-language |title=Origin of the Anglo-Boer War revealed |publisher = Hodder and Stoughton |location= London, England }}
+
+== External links ==
+{{InterWiki |code = af }}
+{{Wikivoyage|Afrikaans phrasebook|Afrikaans|a phrasebook}}
+{{Wikibooks|Afrikaans}}
+{{Wikiquote|Afrikaans}}
+* [https://afrikaans.com afrikaans.com]
+* [https://web.archive.org/web/20120604085505/http://hablaa.com/afrikaans-english/ Afrikaans English Online Dictionary at Hablaa] (archived 4 June 2012)
+* [http://www.majstro.com/dictionaries/Afrikaans-English/ Afrikaans-English Online Dictionary at majstro.com]
+* [https://www.afrikaans.us/Afrikaans/ Learn Afrikaans Online]{{Dead link|date=November 2024 |bot=InternetArchiveBot |fix-attempted=yes }} (Open Learning Environment)
+* [http://www.fak.org.za/ Federasie van Afrikaanse Kultuurvereniginge (FAK)] – Federation of Afrikaans Cultural Associations
+* [http://www.wdl.org/en/item/4326 ''Dutch Writers from South Africa: A Cultural-Historical Study, Part I''] from the [[World Digital Library]]
+* [http://www.ascleiden.nl/?q=content/webdossiers/afrikaans-literature-and-language ''Afrikaans Literature and Language'' Web dossier African Studies Centre, Leiden (2011)] {{Webarchive|url=https://web.archive.org/web/20130518170007/http://www.ascleiden.nl/?q=content/webdossiers/afrikaans-literature-and-language |date=18 May 2013 }}
+
+{{Clear}}
+{{Germanic languages}}
+{{Languages of Botswana}}
+{{Languages of Namibia}}
+{{Languages of South Africa}}
+{{Languages of Swaziland}}
+
+{{Authority control}}
+
+[[Category:Afrikaans| ]]
+[[Category:Analytic languages]]
+[[Category:Articles containing video clips]]
+[[Category:Languages of Botswana]]
+[[Category:Languages of Namibia]]
+[[Category:Languages of South Africa]]
+[[Category:Languages of Eswatini]]
+[[Category:Low Franconian languages]]
+[[Category:Stress-timed languages]]
+[[Category:Subject–object–verb languages]]
+[[Category:Verb-second languages]]

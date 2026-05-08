@@ -1,0 +1,470 @@
+{{Short description|Self-balancing binary search tree}}
+{{Cleanup MOS|date=November 2021}}
+{{Infobox data structure-amortized
+| name = AVL tree
+| type = [[Tree (data structure)|Tree]]
+| invented_by = [[Georgy Adelson-Velsky]] and [[Evgenii Landis]]
+| invented_year = 1962|
+| space_avg = <math>\text{O}(n)</math>
+| search_avg = <math>\text{O}(\log n)</math><ref name="wiscurl">{{Cite web |last=Eric Alexander |title=AVL Trees |url=http://pages.cs.wisc.edu/~ealexand/cs367/NOTES/AVL-Trees/index.html |archive-url=https://web.archive.org/web/20190731124716/https://pages.cs.wisc.edu/~ealexand/cs367/NOTES/AVL-Trees/index.html |archive-date=July 31, 2019}}</ref>
+| search_worst = <math>\text{O}(\log n)</math><ref name="wiscurl" />
+| insert_avg = <math>\text{O}(\log n)</math><ref name="wiscurl" />
+| insert_worst = <math>\text{O}(\log n)</math><ref name="wiscurl" />
+| delete_avg = <math>\text{O}(\log n)</math><ref name="wiscurl" />
+| delete_worst = <math>\text{O}(\log n)</math><ref name="wiscurl" />
+}}
+[[File:AVL Tree Example.gif|thumb|Animation showing the insertion of several elements into an AVL tree. It includes left, right, left-right and right-left rotations.]]
+[[Image:AVL-tree-wBalance_K.svg|thumb|right|262px|Fig. 1: AVL tree with balance factors (green)]]
+
+In [[computer science]], an '''AVL tree''' (named after inventors '''A'''delson-'''V'''elsky and '''L'''andis) is a [[self-balancing binary search tree]]. In an AVL tree, the heights of the two [[child nodes|child]] subtrees of any node differ by not more than one; if at any time they differ by more than one, rebalancing is done to restore this property. Lookup, insertion, and deletion all take {{math|[[big O notation|O]](log ''n'')}} time in both the average and worst cases, where <math>n</math> is the number of nodes in the tree prior to the operation. Insertions and deletions may require the tree to be rebalanced by one or more [[tree rotation]]s.
+
+The AVL tree is named after its two [[Soviet Union|Soviet]] inventors, [[Georgy Adelson-Velsky]] and [[Evgenii Landis]], who published it in their 1962 paper "An algorithm for the organization of information".<ref>{{Cite journal |last1=Adelson-Velsky |first1=Georgy |last2=Landis |first2=Evgenii |year=1962 |title=An algorithm for the organization of information |journal=[[Proceedings of the USSR Academy of Sciences]] |language=ru |volume=146 |pages=263–266}} [https://zhjwpku.com/assets/pdf/AED2-10-avl-paper.pdf English translation] by Myron J. Ricci in ''Soviet Mathematics - Doklady'', 3:1259–1263, 1962.</ref>  It is the first self-balancing binary search tree [[data structure]] to be invented.<ref>{{Cite book |last=Sedgewick |first=Robert |title=Algorithms |publisher=Addison-Wesley |year=1983 |isbn=0-201-06672-6 |page=[https://archive.org/details/algorithms00sedg/page/199 199] |chapter=Balanced Trees |author-link=Robert Sedgewick (computer scientist) |chapter-url=https://archive.org/details/algorithms00sedg/page/199 |chapter-url-access=registration}}</ref>
+
+AVL trees are often compared with [[red–black tree]]s because both support the same set of operations and take <math>\text{O}(\log n)</math> time for the basic operations. For lookup-intensive applications, AVL trees are faster than red–black trees because they are more strictly balanced.<ref name="Pfaff1">{{Cite web |last=Pfaff |first=Ben |date=June 2004 |title=Performance Analysis of BSTs in System Software |url=http://www.stanford.edu/~blp/papers/libavl.pdf |publisher=[[Stanford University]]}}</ref> Similar to red–black trees, AVL trees are height-balanced. Both are, in general, neither [[Weight-balanced tree|weight-balanced]] nor <math>\mu</math>-balanced for any <math>\mu\leq\tfrac{1}{2}</math>;<ref>[https://cs.stackexchange.com/q/421 AVL trees are not weight-balanced? (meaning: AVL trees are not μ-balanced?)] <br />Thereby: A Binary Tree is called <math>\mu</math>-balanced, with <math>0 \le\mu\leq\tfrac12</math>, if for every node <math>N</math>, the inequality
+
+:<math>\tfrac12-\mu\le\tfrac{|N_l|}{|N|+1}\le \tfrac12+\mu</math>
+holds and <math>\mu</math> is minimal with this property. <math>|N|</math> is the number of nodes below the tree with <math>N</math> as root (including the root) and <math>N_l</math> is the left child node of <math>N</math>.</ref> that is, sibling nodes can have hugely differing numbers of descendants.
+
+==Definition==
+
+===Balance factor===
+In a [[binary tree]] the ''balance factor'' of a node ''X'' is defined to be the height difference
+
+:<math> \mathrm{BF}(X) := \mathrm{Height}(\mathrm{RightSubtree}(X)) - \mathrm{Height}(\mathrm{LeftSubtree}(X)) </math><ref name="Knuth">{{Cite book |last=Knuth |first=Donald E. |title=Sorting and searching |publisher=Addison-Wesley |year=2000 |isbn=0-201-89685-0 |edition=2. ed., 6. printing, newly updated and rev. |location=Boston [u.a.] |author-link=Donald Knuth}}</ref>{{rp|459}}
+
+of its two child sub-trees rooted by node ''X''.
+
+A binary tree is defined to be an ''AVL tree'' if
+:<math>\mathrm{BF}(X) \in \{-1,0,1\}</math>
+holds for every node ''X'' in the tree.
+
+A node ''X'' with <math>\mathrm{BF}(X)<0</math> is called "left-heavy", one with <math>\mathrm{BF}(X)>0</math> is called "right-heavy", and one with <math>\mathrm{BF}(X)=0</math> is sometimes simply called "balanced".
+
+===Properties===
+Balance factors can be kept up-to-date by knowing the previous balance factors and the change in height – it is not necessary to know the absolute height. For holding the AVL balance information, two bits per node are sufficient.<ref>However, the balance information can be kept in the child nodes as one bit indicating whether the parent is higher by 1 or by 2; thereby higher by 2 cannot occur for both children. This way the AVL tree is a [[WAVL tree|"rank balanced" tree]], as coined by [[#Haeupler|Haeupler, Sen and Tarjan]].</ref>
+
+The height <math>h</math> (counted as the maximal number of levels) of an AVL tree with <math>n</math> nodes lies in the interval:<ref name="Knuth" />{{rp|460}}
+:<math>\log_2(n+1) \le h < \log_\varphi(n+2) + b</math> 
+where <math>\varphi := \tfrac{1+\sqrt 5}2 \approx 1.618</math>&nbsp; is the [[golden ratio]] and <math>b := \frac{\log_2 5}{2 \log_2 \varphi} - 2 \approx \; -0.3277 .</math>
+This is because an AVL tree of height <math>h</math> contains at least <math>F_{h+2}-1</math> nodes where <math>\{F_n\}_{n\in\N}</math> is the [[Fibonacci number|Fibonacci sequence]] with the seed values <math>F_1=F_2=1 .</math>
+
+==Operations==
+Read-only operations of an AVL tree involve carrying out the same actions as would be carried out on an unbalanced [[binary search tree]], but modifications have to observe and restore the height balance of the sub-trees.
+
+===Searching===
+Searching for a specific key in an AVL tree can be done the same way as that of any balanced or unbalanced [[Binary search tree#Searching|binary search tree]].<ref name="dixit-mastering-data-structures">{{Cite book |last=Dixit |first=J. B. |title=Mastering data structures through 'C' language |publisher=University Science Press, an imprint of Laxmi Publications Pvt. Ltd. |year=2010 |isbn=9789380386720 |location=New Delhi, India |oclc=939446542}}</ref>{{rp|ch. 8}} In order for search to work effectively it has to employ a comparison function which establishes a [[total order]] (or at least a [[Weak ordering#Total preorders|total preorder]]) on the set of keys.<ref name="brass-advanced-data-structures">{{Cite book |last=Brass |first=Peter |title=Advanced data structures |date=2008 |publisher=Cambridge University Press |isbn=9780511438202 |location=Cambridge |oclc=312435417}}</ref>{{rp|23}} The number of comparisons required for successful search is limited by the height {{math|''h''}} and for unsuccessful search is very close to {{math|''h''}}, so both are in {{math|O(log ''n'')}}, where n is the number of nodes in the tree.<ref name="hubbard-outline-theory-problems">{{Cite book |last=Hubbard |first=John Rast |url=https://archive.org/details/schaumsoutlineof0000hubb |title=Schaum's outline of theory and problems of data structures with Java |date=2000 |publisher=McGraw-Hill |isbn=0071378707 |location=New York |oclc=48139308 |url-access=registration}}</ref>{{rp|216}}
+
+===Traversal===
+As a read-only operation the traversal of an AVL tree functions the same way as on any other binary tree. Exploring all {{math|''n''}} nodes of the tree visits each link exactly twice: one downward visit to enter the subtree rooted by that node, another visit upward to leave that node's subtree after having explored it.
+
+Once a node has been found in an AVL tree, the ''next'' or ''previous'' node can be accessed in [[amortized complexity|amortized]] constant time.<ref name="Pfaff" />{{rp|58}} Some instances of exploring these "nearby" nodes require traversing up to {{math|''h'' ∝ log(''n'')}} links (particularly when navigating from the rightmost leaf of the root's left subtree to the root or from the root to the leftmost leaf of the root's right subtree; in the AVL tree of figure 1, navigating from node P to the next-to-the-right node Q takes 3 steps). Since there are {{math|''n''−1}} links in any tree, the amortized cost is {{math|2×(''n''−1)/''n''}}, or approximately 2.
+
+===Insert===
+When inserting a node into an AVL tree, you initially follow the same process as inserting into a [[Binary Search Tree]]. If the tree is empty, then the node is inserted as the root of the tree. If the tree is not empty, then we go down the root, and recursively go down the tree searching for the location to insert the new node. This traversal is guided by the comparison function. In this case, the node always replaces a NULL reference (left or right) of an external node in the tree i.e., the node is either made a left-child or a right-child of the external node.
+
+After this insertion, if a tree becomes unbalanced, only ancestors of the newly inserted node are unbalanced. This is because only those nodes have their sub-trees altered.<ref>{{Cite book |last=Weiss |first=Mark Allen  |title=Data structures and algorithm analysis in C++ |date=2006 |publisher=Pearson Addison-Wesley |isbn=0-321-37531-9 |edition=3rd |location=Boston |pages=145 |oclc=61278554}}</ref> So it is necessary to check each of the node's ancestors for consistency with the invariants of AVL trees: this is called "retracing". This is achieved by considering the [[#Balance factor|balance factor]] of each node.<ref name="Knuth" />{{rp|458–481}} <ref name="Pfaff">{{Cite book |last=Pfaff |first=Ben |title=An Introduction to Binary Search Trees and Balanced Trees |date=2004 |publisher=Free Software Foundation, Inc.}}</ref>{{rp|108}}
+
+Since with a single insertion the height of an AVL subtree cannot increase by more than one, the temporary balance factor of a node after an insertion will be in the range {{nowrap|[–2,+2].}} For each node checked, if the temporary balance factor remains in the range from –1 to +1 then only an update of the balance factor and no rotation is necessary. However, if the temporary balance factor is ±2, the subtree rooted at this node is AVL unbalanced, and a rotation is needed.<ref name="brass-advanced-data-structures" />{{rp|52}} With insertion as the code below shows, the adequate rotation immediately perfectly [[#Rebalancing|rebalances]] the tree.
+
+In figure 1, by inserting the new node Z as a child of node X the height of that subtree Z increases from 0 to 1.
+
+;[[Loop invariant|Invariant]] of the retracing loop for an insertion
+The height of the subtree rooted by Z has increased by 1. It is already in AVL shape.
+{{Collapse top|Example code for an insert operation}}
+<syntaxhighlight lang="c" style="overflow:hidden" line="1">
+for (X = parent(Z); X != null; X = parent(Z)) { // Loop (possibly up to the root)
+    // BF(X) has to be updated:
+    if (Z == right_child(X)) { // The right subtree increases
+        if (BF(X) > 0) { // X is right-heavy
+            // ==> the temporary BF(X) == +2
+            // ==> rebalancing is required.
+            G = parent(X); // Save parent of X around rotations
+            if (BF(Z) < 0)                  // Right Left Case  (see figure 3)
+                N = rotate_RightLeft(X, Z); // Double rotation: Right(Z) then Left(X)
+            else                            // Right Right Case (see figure 2)
+                N = rotate_Left(X, Z);      // Single rotation Left(X)
+            // After rotation adapt parent link
+        } else {
+            if (BF(X) < 0) {
+                BF(X) = 0; // Z’s height increase is absorbed at X.
+                break; // Leave the loop
+            }
+            BF(X) = +1;
+            Z = X; // Height(Z) increases by 1
+            continue;
+        }
+    } else { // Z == left_child(X): the left subtree increases
+        if (BF(X) < 0) { // X is left-heavy
+            // ==> the temporary BF(X) == -2
+            // ==> rebalancing is required.
+            G = parent(X); // Save parent of X around rotations
+            if (BF(Z) > 0)                  // Left Right Case
+                N = rotate_LeftRight(X, Z); // Double rotation: Left(Z) then Right(X)
+            else                            // Left Left Case
+                N = rotate_Right(X, Z);     // Single rotation Right(X)
+            // After rotation adapt parent link
+        } else {
+            if (BF(X) > 0) {
+                BF(X) = 0; // Z’s height increase is absorbed at X.
+                break; // Leave the loop
+            }
+            BF(X) = -1;
+            Z = X; // Height(Z) increases by 1
+            continue;
+        }
+    }
+    // After a rotation adapt parent link:
+    // N is the new root of the rotated subtree
+    // Height does not change: Height(N) == old Height(X)
+    parent(N) = G;
+    if (G != null) {
+        if (X == left_child(G))
+            left_child(G) = N;
+        else
+            right_child(G) = N;
+    } else
+        tree->root = N; // N is the new root of the total tree
+    break;
+    // There is no fall thru, only break; or continue;
+}
+// Unless loop is left via break, the height of the total tree increases by 1.
+</syntaxhighlight>
+{{Collapse bottom}}
+In order to update the balance factors of all nodes, first observe that all nodes requiring correction lie from child to parent along the path of the inserted leaf. If the above procedure is applied to nodes along this path, starting from the leaf, then every node in the tree will again have a balance factor of −1, 0, or 1.
+
+The retracing can stop if the balance factor becomes 0 implying that the height of that subtree remains unchanged.
+
+If the balance factor becomes ±1 then the height of the subtree increases by one and the retracing needs to continue.
+
+If the balance factor temporarily becomes ±2, this has to be repaired by an appropriate rotation after which the subtree has the same height as before (and its root the balance factor 0).
+
+The time required is {{math|O(log ''n'')}} for lookup, plus a maximum of {{math|O(log ''n'')}} retracing levels ({{math|O(1)}} on average) on the way back to the root, so the operation can be completed in {{math|O(log ''n'')}} time.<ref name="brass-advanced-data-structures" />{{rp|53}}
+
+===Delete===
+The preliminary steps for deleting a node are the same as for a [[Binary search tree#Deletion|Binary search tree]].
+There, the effective deletion of the subject node or the replacement node decreases the height of the corresponding child tree either from 1 to 0 or from 2 to 1, if that node had a child.
+
+Starting at this subtree, it is necessary to check each of the ancestors for consistency with the invariants of AVL trees. This is called "retracing".
+
+Since with a single deletion the height of an AVL subtree cannot decrease by more than one, the temporary balance factor of a node will be in the range from −2 to +2.
+If the balance factor remains in the range from −1 to +1 it can be adjusted in accord with the AVL rules. If it becomes ±2 then the subtree is unbalanced and needs to be rotated. (Unlike insertion where a rotation always balances the tree, after delete, there may be BF(Z) ≠ 0 (see figures 2 and 3), so that after the appropriate single or double rotation the height of the rebalanced subtree decreases by one meaning that the tree has to be rebalanced again on the next higher level.) The various cases of rotations are described in section [[#Rebalancing|Rebalancing]].
+
+;Invariant of the retracing loop for a deletion
+The height of the subtree rooted by N has decreased by 1. It is already in AVL shape.
+{{Collapse top|Example code for a delete operation}}
+<syntaxhighlight lang="c" style="overflow:hidden" line="1">
+for (X = parent(N); X != null; X = G) { // Loop (possibly up to the root)
+    G = parent(X); // Save parent of X around rotations
+    // BF(X) has not yet been updated!
+    if (N == left_child(X)) { // the left subtree decreases
+        if (BF(X) > 0) { // X is right-heavy
+            // ==> the temporary BF(X) == +2
+            // ==> rebalancing is required.
+            Z = right_child(X); // Sibling of N (higher by 2)
+            b = BF(Z);
+            if (b < 0)                      // Right Left Case  (see figure 3)
+                N = rotate_RightLeft(X, Z); // Double rotation: Right(Z) then Left(X)
+            else                            // Right Right Case (see figure 2)
+                N = rotate_Left(X, Z);      // Single rotation Left(X)
+            // After rotation adapt parent link
+        } else {
+            if (BF(X) == 0) {
+                BF(X) = +1; // N’s height decrease is absorbed at X.
+                break; // Leave the loop
+            }
+            N = X;
+            BF(N) = 0; // Height(N) decreases by 1
+            continue;
+        }
+    } else { // (N == right_child(X)): The right subtree decreases
+        if (BF(X) < 0) { // X is left-heavy
+            // ==> the temporary BF(X) == -2
+            // ==> rebalancing is required.
+            Z = left_child(X); // Sibling of N (higher by 2)
+            b = BF(Z);
+            if (b > 0)                      // Left Right Case
+                N = rotate_LeftRight(X, Z); // Double rotation: Left(Z) then Right(X)
+            else                            // Left Left Case
+                N = rotate_Right(X, Z);     // Single rotation Right(X)
+            // After rotation adapt parent link
+        } else {
+            if (BF(X) == 0) {
+                BF(X) = -1; // N’s height decrease is absorbed at X.
+                break; // Leave the loop
+            }
+            N = X;
+            BF(N) = 0; // Height(N) decreases by 1
+            continue;
+        }
+    }
+    // After a rotation adapt parent link:
+    // N is the new root of the rotated subtree
+    parent(N) = G;
+    if (G != null) {
+        if (X == left_child(G))
+            left_child(G) = N;
+        else
+            right_child(G) = N;
+    } else
+        tree->root = N; // N is the new root of the total tree
+ 
+    if (b == 0)
+        break; // Height does not change: Leave the loop
+ 
+    // Height(N) decreases by 1 (== old Height(X)-1)
+}
+// If (b != 0) the height of the total tree decreases by 1.
+</syntaxhighlight>
+{{Collapse bottom}}
+The retracing can stop if the balance factor becomes ±1 (it must have been 0) meaning that the height of that subtree remains unchanged.
+
+If the balance factor becomes 0 (it must have been ±1) then the height of the subtree decreases by one and the retracing needs to continue.
+
+If the balance factor temporarily becomes ±2, this has to be repaired by an appropriate rotation. It depends on the balance factor of the sibling Z (the higher child tree in figure 2) whether the height of the subtree decreases by one –and the retracing needs to continue– or does not change (if Z has the balance factor 0) and the whole tree is in AVL-shape.
+
+The time required is {{math|O(log ''n'')}} for lookup, plus a maximum of {{math|O(log ''n'')}} retracing levels ({{math|O(1)}} on average) on the way back to the root, so the operation can be completed in {{math|O(log ''n'')}} time.
+
+===Set operations and bulk operations===
+In addition to the single-element insert, delete and lookup operations, several set operations have been defined on AVL trees: [[Union (set theory)|union]], [[Intersection (set theory)|intersection]] and [[set difference]]. Then fast ''bulk'' operations on insertions or deletions can be implemented based on these set functions. These set operations rely on two helper operations, ''Split'' and ''Join''. With the new operations, the implementation of AVL trees can be more efficient and highly-parallelizable.<ref name="join-based">{{Citation |last1=Blelloch |first1=Guy E. |title=Symposium on Parallel Algorithms and Architectures |pages=253–264 |year=2016 |chapter=Just join for parallel ordered sets |publisher=ACM |arxiv=1602.02120 |doi=10.1145/2935764.2935768 |isbn=978-1-4503-4210-0 |s2cid=2897793 |last2=Ferizovic |first2=Daniel |last3=Sun |first3=Yihan}}.</ref>
+
+The function ''Join'' on two AVL trees {{math|''t''<sub>1</sub>}} and {{math|''t''<sub>2</sub>}} and a key {{mvar|k}} will return a tree containing all elements in {{math|''t''<sub>1</sub>}}, {{math|''t''<sub>2</sub>}} as well as {{mvar|k}}. It requires {{mvar|k}} to be greater than all keys in {{math|''t''<sub>1</sub>}} and smaller than all keys in {{math|''t''<sub>2</sub>}}. If the two trees differ by height at most one, ''Join'' simply create a new node with left subtree {{math|''t''<sub>1</sub>}}, root {{mvar|k}} and right subtree {{math|''t''<sub>2</sub>}}. Otherwise, suppose that {{math|''t''<sub>1</sub>}} is higher than {{math|''t''<sub>2</sub>}} for more than one (the other case is symmetric). ''Join'' follows the right spine of {{math|''t''<sub>1</sub>}} until a node {{mvar|c}} which is balanced with {{math|''t''<sub>2</sub>}}. At this point a new node with left child {{mvar|c}}, root {{mvar|k}} and right child {{math|''t''<sub>2</sub>}} is created to replace c. The new node satisfies the AVL invariant, and its height is one greater than {{mvar|c}}. The increase in height can increase the height of its ancestors, possibly invalidating the AVL invariant of those nodes. This can be fixed either with a double rotation if invalid at the parent or a single left rotation if invalid higher in the tree, in both cases restoring the height for any further ancestor nodes. ''Join'' will therefore require at most two rotations. The cost of this function is the difference of the heights between the two input trees.
+{{Collapse top|Pseudocode implementation for the Join algorithm}}
+ '''function''' JoinRightAVL(T<sub>L</sub>, k, T<sub>R</sub>)
+     (l, k', c) = expose(T<sub>L</sub>)
+     '''if''' (Height(c) <= Height(T<sub>R</sub>)+1)
+        T' = Node(c, k, T<sub>R</sub>)
+        if (Height(T') <= Height(l)+1) then '''return''' Node(l, k', T')
+        else '''return''' rotateLeft(Node(l, k', rotateRight(T')))
+     '''else''' 
+         T' = JoinRightAVL(c, k, T<sub>R</sub>)
+         T<nowiki>''</nowiki> = Node(l, k', T')
+         '''if''' (Height(T') <= Height(l)+1) '''return''' T<nowiki>''</nowiki>
+         '''else''' '''return''' rotateLeft(T<nowiki>''</nowiki>)
+
+ '''function''' JoinLeftAVL(T<sub>L</sub>, k, T<sub>R</sub>)
+   /* symmetric to JoinRightAVL */
+
+ '''function''' Join(T<sub>L</sub>, k, T<sub>R</sub>)
+     '''if''' (Height(T<sub>L</sub>)>Height(T<sub>R</sub>)+1) '''return''' JoinRightAVL(T<sub>L</sub>, k, T<sub>R</sub>)
+     '''if''' (Height(T<sub>R</sub>)>Height(T<sub>L</sub>)+1) '''return''' JoinLeftAVL(T<sub>L</sub>, k, T<sub>R</sub>)
+     '''return''' Node(T<sub>L</sub>, k, T<sub>R</sub>)
+Here Height(v) is the height of a subtree (node) {{mvar|v}}. (l,k,r) = expose(v) extracts {{mvar|v}}'s left child {{mvar|l}}, the key {{mvar|k}} of {{mvar|v}}'s root, and the right child {{mvar|r}}. Node(l,k,r) means to create a node of left child {{mvar|l}}, key {{mvar|k}}, and right child {{mvar|r}}.
+{{Collapse bottom}}
+
+To split an AVL tree into two smaller trees, those smaller than key {{mvar|k}}, and those greater than key {{mvar|k}}, first draw a path from the root by inserting {{mvar|k}} into the AVL. After this insertion, all values less than {{mvar|k}} will be found on the left of the path, and all values greater than {{mvar|k}} will be found on the right. By applying ''Join'', all the subtrees on the left side are merged bottom-up using keys on the path as intermediate nodes from bottom to top to form the left tree, and the right part is asymmetric. The cost of ''Split'' is {{math|O(log ''n'')}}, order of the height of the tree.
+{{Collapse top|Pseudocode implementation for the Split algorithm}}
+ '''function''' Split(T, k)
+     '''if''' (T = nil) return (nil, false, nil)
+     (L,m,R) = expose(T)
+     '''if''' (k = m) return (L, true, R)
+     '''if''' (k<m) 
+        (L',b,R') = Split(L,k)
+        '''return''' (L', b, Join(R', m, R))
+     '''if''' (k>m) 
+        (L',b,R') = Split(R, k)
+        '''return''' (Join(L, m, L'), b, R'))
+{{Collapse bottom}}
+
+The union of two AVL trees {{math|''t''<sub>1</sub>}} and {{math|''t''<sub>2</sub>}} representing sets {{mvar|A}} and {{mvar|B}}, is an AVL {{mvar|''t''}} that represents {{math|''A'' ∪ ''B''}}.
+
+{{Collapse top|Pseudocode implementation for the Union algorithm}}
+ '''function''' Union(t<sub>1</sub>, t<sub>2</sub>):
+     '''if''' t<sub>1</sub> = nil:
+         '''return''' t<sub>2</sub>
+     '''if''' t<sub>2</sub> = nil:
+         '''return''' t<sub>1</sub>
+     (t<sub><</sub>, b, t<sub>></sub>) = Split(t<sub>2</sub>, t<sub>1</sub>.root)
+     '''return''' Join(Union(left(t<sub>1</sub>), t<sub><</sub>), t<sub>1</sub>.root, Union(right(t<sub>1</sub>), t<sub>></sub>))
+
+Here, ''Split'' is presumed to return two trees: one holding the keys less its input key, one holding the greater keys. (The algorithm is [[persistent data structure|non-destructive]], but an in-place destructive version exists as well.)
+{{Collapse bottom}}
+
+The algorithm for intersection or difference is similar, but requires the ''Join2'' helper routine that is the same as ''Join'' but without the middle key. Based on the new functions for union, intersection or difference, either one key or multiple keys can be inserted to or deleted from the AVL tree. Since ''Split'' calls ''Join'' but does not deal with the balancing criteria of AVL trees directly, such an implementation is usually called the [[Join-based tree algorithms|"join-based" implementation]].
+
+The complexity of each of union, intersection and difference is <math>\text{O}\left(m \log \left({n\over m}+1\right)\right)</math> for AVL trees of sizes <math>m</math> and <math>n \; (\ge m)</math>. More importantly, since the recursive calls to union, intersection or difference are independent of each other, they can be executed [[parallel programming|in parallel]] with a [[Analysis of parallel algorithms|parallel depth]] <math>\text{O}(\log m\log n)</math>.<ref name="join-based" /> When <math>m=1</math>, the join-based implementation has the same computational DAG as single-element insertion and deletion.
+
+==Rebalancing==
+If during a modifying operation the height difference between two child subtrees changes, this may, as long as it is < 2, be reflected by an adaption of the balance information at the parent. During insert and delete operations a (temporary) height difference of 2 may arise, which means that the parent subtree has to be "rebalanced". The given repair tools are the so-called [[tree rotation]]s, because they move the keys only "vertically", so that the ("horizontal") in-order sequence of the keys is fully preserved (which is essential for a binary-search tree).<ref name="Knuth" />{{rp|458–481}} <ref name="Pfaff" />{{rp|33}}
+
+Let X be the node that has a (temporary) balance factor of −2 or +2. Its left or right subtree was modified. Let Z be the child with the higher subtree (see figures 2 and 3). Note that both children are in AVL shape by [[Mathematical induction|induction hypothesis]].
+
+In case of insertion this insertion has happened to one of Z's children in a way that Z's height has increased.
+In case of deletion this deletion has happened to the sibling t<sub>1</sub> of Z in a way so that t<sub>1</sub>'s height being already lower has decreased. (This is the only case where Z's balance factor may also be 0.)
+
+There are four possible variants of the violation:
+
+{| 
+|-
+| style="width:1em" | || Right Right || ⟹ Z is a ''right'' || child of its parent X and BF(Z) ≥ 0
+|-
+| || Left Left || ⟹ Z is a ''left'' || child of its parent X and BF(Z) ≤ 0
+|-
+| || Right Left || ⟹ Z is a ''right'' || child of its parent X and BF(Z) < 0
+|-
+| || Left Right || ⟹ Z is a ''left'' || child of its parent X and BF(Z) > 0
+|}
+
+And the rebalancing is performed differently:
+{| 
+|-
+| style="width:1em" | || Right Right || ⟹ X is rebalanced with a || simple || rotation <code>rotate_Left</code> || (see figure 2)
+|-
+| || Left Left || ⟹ X is rebalanced with a || simple || rotation <code>rotate_Right</code> || (mirror-image of figure 2)
+|-
+| || Right Left || ⟹ X is rebalanced with a || double || rotation <code>rotate_RightLeft</code> || (see figure 3)
+|-
+| || Left Right || ⟹ X is rebalanced with a || double || rotation <code>rotate_LeftRight</code> || (mirror-image of figure 3)
+|}
+
+Thereby, the situations are denoted as {{nowrap|''C B'',}} where ''C'' (= child direction) and ''B'' (= balance) come from the set {{nowrap|{ ''Left'', ''Right'' }}} with {{nowrap|1=''Right'' := −''Left''.}} The balance violation of case {{nowrap|1=''C'' == ''B''}} is repaired by a simple rotation {{nowrap|<code>rotate_</code>(−''C''),}} whereas the case {{nowrap|1=''C'' != ''B''}} is repaired by a double rotation {{nowrap|<code>rotate_</code>''CB''.}}
+
+The cost of a rotation, either simple or double, is constant.
+
+===Simple rotation===
+Figure 2 shows a Right Right situation. In its upper half, node X has two child trees with a balance factor of <span style="color:#FF0000;">+2</span>. Moreover, the inner child t<sub>23</sub> of Z (i.e., left child when Z is right child, or right child when Z is left child) is not higher than its sibling t<sub>4</sub>. This can happen by a height increase of subtree t<sub>4</sub> or by a height decrease of subtree t<sub>1</sub>. In the latter case, also the pale situation where t<sub>23</sub> has the same height as t<sub>4</sub> may occur.
+
+The result of the left rotation is shown in the lower half of the figure. Three links (thick edges in figure 2) and two balance factors are to be updated.
+
+As the figure shows, before an insertion, the leaf layer was at level h+1, temporarily at level h+2 and after the rotation again at level h+1. In case of a deletion, the leaf layer was at level h+2, where it is again, when t<sub>23</sub> and t<sub>4</sub> were of same height. Otherwise the leaf layer reaches level h+1, so that the height of the rotated tree decreases.
+
+[[File:AVL-simple-left_K.svg|thumb|right|194px|Fig. 2: Simple rotation<br />''rotate_Left''(''X'',''Z'')]]
+;Code snippet of a simple left rotation
+{|
+|-
+| style="width:4em;" | Input: || X = root of subtree to be rotated left
+|-
+| || Z = right child of X, Z is right-heavy
+|-
+| || &nbsp; &nbsp; with height == {{math|Height(LeftSubtree(}}X{{math|))+2}}
+|-
+|Result: || new root of rebalanced subtree
+|}
+<syntaxhighlight lang="c" style="overflow:hidden" line="1">
+node *rotate_Left(node *X, node *Z) {
+    // Z is by 2 higher than its sibling
+    t23 = left_child(Z); // Inner child of Z
+    right_child(X) = t23;
+    if (t23 != null)
+        parent(t23) = X;
+    left_child(Z) = X;
+    parent(X) = Z;
+    // 1st case, BF(Z) == 0,
+    //   only happens with deletion, not insertion:
+    if (BF(Z) == 0) { // t23 has been of same height as t4
+        BF(X) = +1;   // t23 now higher
+        BF(Z) = –1;   // t4 now lower than X
+    } else
+    { // 2nd case happens with insertion or deletion:
+        BF(X) = 0;
+        BF(Z) = 0;
+    }
+    return Z; // return new root of rotated subtree
+}
+</syntaxhighlight>
+
+===Double rotation===
+Figure 3 shows a Right Left situation. In its upper third, node X has two child trees with a balance factor of <span style="color:#FF0000;">+2</span>. But unlike figure 2, the inner child Y of Z is higher than its sibling t<sub>4</sub>. This can happen by the insertion of Y itself or a height increase of one of its subtrees t<sub>2</sub> or t<sub>3</sub> (with the consequence that they are of different height) or by a height decrease of subtree t<sub>1</sub>. In the latter case, it may also occur that t<sub>2</sub> and t<sub>3</sub> are of the same height.
+
+The result of the first, the right, rotation is shown in the middle third of the figure. (With respect to the balance factors, this rotation is not of the same kind as the other AVL single rotations, because the height difference between Y and t<sub>4</sub> is only 1.) The result of the final left rotation is shown in the lower third of the figure. Five links (thick edges in figure 3) and three balance factors are to be updated.
+
+As the figure shows, before an insertion, the leaf layer was at level h+1, temporarily at level h+2 and after the double rotation again at level h+1. In case of a deletion, the leaf layer was at level h+2 and after the double rotation it is at level h+1, so that the height of the rotated tree decreases.
+
+[[File:AVL-double-rl_K.svg|thumb|right|264px|Fig. 3: Double rotation ''rotate_RightLeft''(''X'',''Z'')<br/>= ''rotate_Right'' around ''Z'' followed by<br/>''rotate_Left'' around ''X'']]
+;Code snippet of a right-left double rotation
+{|
+|-
+| style="width:4em;" | Input: || X = root of subtree to be rotated
+|-
+| || Z = its right child, left-heavy
+|-
+| || &nbsp; &nbsp; with height == {{math|Height(LeftSubtree(}}X{{math|))+2}}
+|-
+|Result: || new root of rebalanced subtree
+|}
+<syntaxhighlight lang="c" style="overflow:hidden" line="1">
+node *rotate_RightLeft(node *X, node *Z) {
+    // Z is by 2 higher than its sibling
+    Y = left_child(Z); // Inner child of Z
+    // Y is by 1 higher than sibling
+    t3 = right_child(Y);
+    left_child(Z) = t3;
+    if (t3 != null)
+        parent(t3) = Z;
+    right_child(Y) = Z;
+    parent(Z) = Y;
+    t2 = left_child(Y);
+    right_child(X) = t2;
+    if (t2 != null)
+        parent(t2) = X;
+    left_child(Y) = X;
+    parent(X) = Y;
+    // 1st case, BF(Y) == 0
+    if (BF(Y) == 0) {
+        BF(X) = 0;
+        BF(Z) = 0;
+    } else if (BF(Y) > 0) {
+        // t3 was higher
+        BF(X) = –1;  // t1 now higher
+        BF(Z) = 0;
+    } else {
+        // t2 was higher
+        BF(X) = 0;
+        BF(Z) = +1;  // t4 now higher
+    }
+    BF(Y) = 0;
+    return Y; // return new root of rotated subtree
+}
+</syntaxhighlight>
+
+==Comparison to other structures==
+Both AVL trees and red–black (RB) trees are self-balancing binary search trees and they are related mathematically. Indeed, every AVL tree can be colored red–black,<ref>{{Cite web |last=Paul E. Black |date=2015-04-13 |title=AVL tree |url=https://xlinux.nist.gov/dads/HTML/avltree.html |access-date=2016-07-02 |publisher=[[National Institute of Standards and Technology]] |periodical=Dictionary of Algorithms and Data Structures}}</ref> but there are RB trees which are not AVL balanced. For maintaining the AVL (or RB) tree's invariants, rotations play an important role. In the worst case, even without rotations, AVL or RB insertions or deletions require {{math|O(log ''n'')}} inspections and/or updates to AVL balance factors (or RB colors). RB insertions and deletions and AVL insertions require from zero to three [[Tail call|tail-recursive]] rotations and run in [[Amortized analysis|amortized]] {{math|O(1)}} time,<ref>{{Cite book |last1=Mehlhorn |first1=Kurt |url=http://link.springer.com/10.1007/978-3-540-77978-0 |title=Algorithms and Data Structures |last2=Sanders |first2=Peter |date=2008 |publisher=Springer Berlin Heidelberg |isbn=978-3-540-77977-3 |location=Berlin, Heidelberg |language=en |doi=10.1007/978-3-540-77978-0}}</ref>{{rp|pp.165,158}} <ref name="Dinesh">{{Cite book |url=https://www.taylorfrancis.com/books/edit/10.1201/9781315119335/handbook-data-structures-applications-dinesh-mehta-sartaj-sahni |title=Handbook of Data Structures and Applications  |date=2017-12-15 |publisher=Chapman and Hall/CRC |isbn=978-1-315-11933-5 |editor=Dinesh P. Mehta |editor2=Sartaj Sahni |edition=2 |location=New York |doi=10.1201/9781315119335}}</ref> thus equally constant on average. AVL deletions requiring {{math|O(log ''n'')}} rotations in the worst case are also {{math|O(1)}} on average. RB trees require storing one bit of information (the color) in each node, while AVL trees mostly use two bits for the balance factor, although, when stored at the children, one bit with meaning «lower than sibling» suffices. The bigger difference between the two data structures is their height limit.
+
+For a tree of size {{math|''n'' ≥ 1}}
+*an AVL tree's height is at most
+*:<math>
+\begin{array}{ll}
+h & \leqq \; c \log_2 (n + d) + b \\
+& < \; c \log_2 (n + 2) + b
+\end{array}
+</math>
+:where <math>\varphi := \tfrac{1+\sqrt 5}2 \approx 1.618</math>&nbsp; the [[golden ratio]], <math>c := \tfrac 1{\log_2 \varphi} \approx 1.440,</math> &nbsp; <math>b := \tfrac{c}2 \log_2 5 - 2 \approx \; -0.328,</math> and&nbsp; <math>d:=1+\tfrac{1}{\varphi^4\sqrt{5}} \approx 1.065</math>.
+*a RB tree's height is at most 
+*:<math>
+\begin{array}{ll}
+h & \leqq \; 2\log_2(n+1)
+\end{array}
+</math>&nbsp;.<ref>[[Red–black tree#Proof of bounds]]</ref>
+
+AVL trees are more rigidly balanced than RB trees with an [[Asymptotic analysis|asymptotic]] relation AVL/RB ≈0.720 of the maximal heights. For insertions and deletions, Ben Pfaff shows in 79 measurements a relation of AVL/RB between 0.677 and 1.077 with [[median]] ≈0.947 and [[geometric mean]] ≈0.910.<ref name="Pfaff1" />
+
+==See also==
+*[[WAVL tree]]
+*[[Weight-balanced tree]]
+*[[Splay tree]]
+*[[Scapegoat tree]]
+*[[B-tree]]
+*[[T-tree]]
+*[[List of data structures]]
+
+==References==
+<references />
+
+==Further reading==
+* [[Donald Knuth]]. ''[[The Art of Computer Programming]]'', Volume 3: ''Sorting and Searching'', Third Edition. Addison-Wesley, 1997. {{ISBN|0-201-89685-0}}. Pages 458–475 of section 6.2.3: Balanced Trees.
+* {{Anchor|Haeupler}}{{Citation |last1=Haeupler |first1=Bernhard |title=Rank-balanced trees |url=http://sidsen.azurewebsites.net/papers/rb-trees-talg.pdf |journal=ACM Transactions on Algorithms |volume=11 |issue=4 |page=Art. 30, 26 |year=2015 |doi=10.1145/2689412 |mr=3361215 |s2cid=1407290 |last2=Sen |first2=Siddhartha |last3=Tarjan |first3=Robert E. |author-link3=Robert Tarjan}}.
+
+==External links==
+{{Wikibooks|Algorithm Implementation|Trees/AVL tree|AVL tree}}
+{{Commons category}}
+*{{DADS|AVL Tree|avltree}}
+
+{{CS-Trees}}
+{{Data structures}}
+
+{{DEFAULTSORT:AVL Tree}}
+[[Category:1962 in computing]]
+[[Category:Articles with example pseudocode]]
+[[Category:Binary trees]]
+[[Category:Soviet inventions]]
+[[Category:Search trees]]
+[[Category:Amortized data structures]]

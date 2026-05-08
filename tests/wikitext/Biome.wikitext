@@ -1,0 +1,546 @@
+{{Short description|Biogeographical unit with a particular biological community}}
+[[File:Vegetation.png|thumb|upright=1.654|One way of mapping terrestrial biomes around the world (excluding [[Tundra#Antarctic|Antarctic tundra]])]]
+
+A '''biome''' ({{IPAc-en|ˈ|b|aɪ|.|oʊ|m}} {{respell|BY|ohm}}) is a distinct [[geographical region]] with specific [[climate]], [[vegetation]], [[animal life]], and an [[ecosystem]]. It consists of a biological [[community (ecology)|community]] that has formed in response to its physical environment and regional [[climate]].<ref>{{Cite book |last1=Bowman |first1=William D. |title=Ecology |last2=Hacker |first2=Sally D. |publisher=[[Oxford University Press]] |year=2021 |isbn=978-1-60535-921-2 |edition=5th |pages=H3–1–51 A}};<br />Meira Neto, J. A. A. (Org.). ''Fitossociologia no Brasil: métodos e estudos de caso.'' Vol. 1. Viçosa: Editora UFV. pp. 44–85. [http://files.hisaias.webnode.com/200000112-37f2239e9a/Cap%202.pdf] {{Webarchive|url=https://web.archive.org/web/20160924062109/http://files.hisaias.webnode.com/200000112-37f2239e9a/Cap%202.pdf|date=2016-09-24}}. Earlier version, 2003, [http://www2.ib.unicamp.br/profs/fsantos/bt682/2003/Apostila-FormasVida-2003.pdf] {{Webarchive|url=https://web.archive.org/web/20160827014258/http://www2.ib.unicamp.br/profs/fsantos/bt682/2003/Apostila-FormasVida-2003.pdf|date=2016-08-27}}.</ref> In 1935, [[Arthur Tansley|Tansley]] added the climatic and soil aspects to the idea, calling it ''[[ecosystem]]''.<ref>{{cite book|last1=Cox |first1=C. B. |last2=Moore |first2=P.D. |last3=Ladle |first3=R. J. |date=2016 |title=Biogeography: an ecological and evolutionary approach |edition=9th |publisher=[[John Wiley & Sons]] |location=Hoboken |page=20 |isbn=978-1-118-96858-1 |url=https://books.google.com/books?id=RBcWCgAAQBAJ |archive-url=https://web.archive.org/web/20161126224232/https://books.google.com/books?id=RBcWCgAAQBAJ |archive-date=2016-11-26 |via=[[Google Books]]}}</ref><ref>{{cite journal|last=Tansley |first=A.G. |date=1935 |title=The use and abuse of vegetational terms and concepts. |journal=[[Ecology (journal)|Ecology]] |volume=16 |number=3 |pages=284–307 |doi=10.2307/1930070 |jstor=1930070 |bibcode=1935Ecol...16..284T |url=http://www.ecology150anniversary.net/wp-content/uploads/2015/12/tansley-1935.pdf |access-date=2016-09-24 |archive-url=https://web.archive.org/web/20161006125220/http://www.ecology150anniversary.net/wp-content/uploads/2015/12/tansley-1935.pdf |archive-date=2016-10-06}}</ref> The [[International Biological Program]] (1964–74) projects popularized the concept of biome.<ref>Box, E.O. & Fujiwara, K. (2005). Vegetation types and their broad-scale distribution. In: [[Eddy van der Maarel|van der Maarel, E.]] (ed.). ''Vegetation ecology''. Blackwell Scientific, Oxford. pp. 106–128, [https://e.famnit.upr.si/pluginfile.php/14045/mod_resource/content/1/Vegetation%20Ecology.pdf] {{Webarchive|url=https://web.archive.org/web/20160828093637/https://e.famnit.upr.si/pluginfile.php/14045/mod_resource/content/1/Vegetation%20Ecology.pdf|date=2016-08-28}}.</ref>
+
+However, in some contexts, the term ''biome'' is used in a different manner. In German literature, particularly in the [[Heinrich Walter|Walter]] terminology, the term is used similarly as ''[[biotope]]'' (a concrete geographical unit), while the biome definition used in this article is used as an international, non-regional, terminology—irrespectively of the continent in which an area is present, it takes the same biome name—and corresponds to his "zonobiome", "orobiome" and "pedobiome" (biomes determined by [[climate zone]], [[altitude]], or [[soil]]).<ref name="Walter-2002">{{cite book|last1=Walter |first1=H. |last2=Breckle |first2=S-W. |date=2002 |title=Walter's Vegetation of the Earth: The Ecological Systems of the Geo-Biosphere |location=New York |publisher=[[Springer-Verlag]] |page=86 |isbn=978-3-540-43315-6 |url=https://books.google.com/books?id=SdaCSwxK5bIC |archive-url=https://web.archive.org/web/20161127041949/https://books.google.com/books?id=SdaCSwxK5bIC |archive-date=2016-11-27 |via=[[Google Books]]}}</ref>
+
+In the Brazilian literature, the term ''biome'' is sometimes used as a synonym of ''[[biogeographic province]]'', an area based on [[species composition]] (the term ''[[floristic province]]'' being used when plant species are considered), or also as synonym of the "morphoclimatic and phytogeographical domain" of [[Aziz Ab'Sáber|Ab'Sáber]], a geographic space with subcontinental dimensions, with the predominance of similar geomorphologic and climatic characteristics, and of a certain vegetation form. Both include many biomes in fact.<ref name="Coutinho-2006">{{cite journal|last=Coutinho |first=L. M. |date=2006 |title=O conceito de bioma |language=pt |trans-title=The biome concept |journal=[[Acta Botanica Brasilica]] |volume=20 |number=1 |pages=13–23 |doi=10.1590/S0102-33062006000100002 |doi-access=free |bibcode=2006AcBBr..20...13C }}</ref><ref>{{cite journal|last=Batalha |first=M.A. |date=2011 |title=The Brazilian cerrado is not a biome. |journal=Biota Neotropica |volume=11 |pages=21–24 |doi=10.1590/S1676-06032011000100001 |doi-access=free }}</ref><ref>{{cite journal |last1=Fiaschi |first1=P. |last2=Pirani |first2=J.R. |date=2009 |title=Review of plant biogeographic studies in Brazil |journal=[[Journal of Systematics and Evolution]] |volume=47 |issue=5 |pages=477–496 |doi=10.1111/j.1759-6831.2009.00046.x |bibcode=2009JSyEv..47..477F |s2cid=84315246 |url=https://www.researchgate.net/publication/249500929 |archive-url=https://web.archive.org/web/20170831040555/https://www.researchgate.net/publication/249500929_Review_of_plant_biogeographic_studies_in_Brazil |archive-date=2017-08-31}}</ref>
+
+== Classifications ==
+To divide the world into a few ecological zones is difficult, notably because of the small-scale variations that exist everywhere on earth and because of the gradual changeover from one biome to the other. Their boundaries must therefore be drawn arbitrarily and their characterization made according to the average conditions that predominate in them.<ref>{{cite book |last1=Schultz |first1=Jürgen |date=1995 |title=The ecozones of the world |pages=2–3 |isbn=978-3-540-28527-4 |publisher=Springer}}</ref>
+
+A 1978 study on North American [[grasslands]]<ref>{{cite journal |last1=Sims |first1=Phillip L. |last2=Singh |first2=J.S. |title=The Structure and Function of Ten Western North American Grasslands: III. Net Primary Production, Turnover and Efficiencies of Energy Capture and Water Use |journal=[[Journal of Ecology]] |date=July 1978 |volume=66 |issue=2 |pages=573–597 |publisher=[[British Ecological Society]] |doi=10.2307/2259152 |jstor=2259152|bibcode=1978JEcol..66..573S }}</ref> found a positive [[Logistic regression|logistic correlation]] between [[evapotranspiration]] in mm/yr and above-ground net primary production in g/m<sup>2</sup>/yr. The general results from the study were that precipitation and water use led to above-ground primary production, while [[solar irradiance|solar irradiation]] and temperature lead to below-ground primary production (roots), and temperature and water lead to cool and warm season growth habit.<ref>{{cite book |editor1-last=Pomeroy |editor1-first=Lawrence R. |editor2-last=Alberts |editor2-first=James J. |title=Concepts of Ecosystem Ecology |location=New York |publisher=[[Springer-Verlag]] |date=1988}}</ref> These findings help explain the categories used in Holdridge's bioclassification scheme (see below), which were then later simplified by Whittaker. The number of classification schemes and the variety of determinants used in those schemes, however, should be taken as strong indicators that biomes do not fit perfectly into the classification schemes created.
+
+=== Holdridge (1947, 1964) life zones ===
+[[Image:Lifezones Pengo.svg|thumb|upright=2.3|Holdridge life zone classification scheme. Although conceived as three-dimensional by its originator, it is usually shown as a two-dimensional array of hexagons in a triangular frame.]]
+{{Main|Holdridge life zones}}
+In 1947, the American botanist and climatologist [[Leslie Holdridge]] classified climates based on the biological effects of temperature and [[rainfall]] on [[vegetation]] under the assumption that these two [[abiotic]] factors are the largest determinants of the types of vegetation found in a habitat. Holdridge uses the four axes to define 30 so-called "humidity provinces", which are clearly visible in his diagram. While this scheme largely ignores soil and sun exposure, Holdridge acknowledged that these were important.
+
+=== Allee (1949) biome-types ===
+The principal biome-types by Allee (1949):<ref>{{Cite book|last=Allee |first=W.C. |date=1949 |title=Principles of animal ecology |location=Philadelphia |publisher=Saunders Co. |url=https://www.biodiversitylibrary.org/bibliography/7325#/summary |archive-url=https://web.archive.org/web/20171001021240/http://www.biodiversitylibrary.org/bibliography/7325#/summary |archive-date=2017-10-01}}</ref>
+* [[Tundra]]
+* [[Taiga]]
+* [[Deciduous|Deciduous forest]]
+* [[Grassland]]s
+* [[Desert]]
+* [[High plateau]]s
+* [[Tropical forest]]
+* [[Minor terrestrial biomes]]
+
+=== Kendeigh (1961) biomes ===
+The principal biomes of the world by Kendeigh (1961):<ref>{{cite book|last=Kendeigh |first=S.C. |date=1961 |title=Animal ecology |location=Englewood Cliffs, NJ |publisher=[[Prentice-Hall]]}}</ref>
+* ''Terrestrial''
+** [[Temperate deciduous forest]]
+** [[Taiga|Coniferous forest]]
+** [[Woodland]]
+** [[Chaparral]]
+** [[Tundra]]
+** [[Grassland]]
+** [[Desert]]
+** [[Tropical savanna]]
+** [[Tropical forest]]
+* Marine
+** [[Ocean]]ic [[plankton]] and [[nekton]]
+** Balanoid-gastropod-[[thallophyte]]
+** [[Pelecypod]]-[[annelid]]
+** [[Coral reef]]
+
+=== Whittaker (1962, 1970, 1975) biome-types ===
+[[File:Climate influence on terrestrial biome.svg|thumb|The distribution of vegetation types as a function of mean annual temperature and precipitation.]]
+[[Robert Harding Whittaker|Whittaker]] classified biomes using two abiotic factors: precipitation and temperature. His scheme can be seen as a simplification of Holdridge's; more readily accessible, but missing Holdridge's greater specificity.
+
+Whittaker based his approach on theoretical assertions and empirical sampling. He had previously compiled a review of biome classifications.<ref>{{cite journal|last=Whittaker |first=Robert H. |journal=[[Botanical Review]] |title=Classification of Natural Communities |volume=28 |number=1 |date=January–March 1962 |pages=1–239|doi=10.1007/BF02860872 |bibcode=1962BotRv..28....1W |s2cid=25771073 }}</ref>
+
+==== Key definitions for understanding Whittaker's scheme ====
+* [[Physiognomy]]: sometimes referring to the plants' appearance; or the biome's apparent characteristics, outward features, or appearance of ecological communities or species – including plants.
+* Biome: a grouping of terrestrial ecosystems on a given continent that is similar in vegetation structure, physiognomy, features of the environment and characteristics of their animal communities.
+* [[Formation (vegetation)|Formation]]: a major kind of community of plants on a given continent.
+* Biome-type: grouping of convergent biomes or formations of different continents, defined by physiognomy.
+* Formation-type: a grouping of convergent formations.
+
+Whittaker's distinction between biome and formation can be simplified: formation is used when applied to [[plant communities]] only, while biome is used when concerned with both plants and animals. Whittaker's convention of biome-type or formation-type is a broader method to categorize similar communities.<ref name="Whittaker-1975">{{cite book|last1=Whittaker |first1=Robert H. |title=Communities and Ecosystems |location=New York |publisher=[[MacMillan Publishing]] |date=1975}}</ref> <!---The world biome-types, as displayed on a world map, can be viewed at the following link: [http://www.marietta.edu/~biol/biomes/biomemap.html here] (This link is now dead.)--->
+
+==== Whittaker's parameters for classifying biome-types ====
+Whittaker used what he called "gradient analysis" of [[ecocline]] patterns to relate communities to climate on a worldwide scale. Whittaker considered four main ecoclines in the terrestrial realm.<ref name="Whittaker-1975"/>
+# Intertidal levels: The wetness gradient of areas that are exposed to alternating water and dryness with intensities that vary by location from high to low tide
+# Climatic moisture gradient
+# Temperature gradient by altitude
+# Temperature gradient by latitude
+
+Along these gradients, Whittaker noted several trends that allowed him to qualitatively establish biome-types:
+* The gradient runs from favorable to the extreme, with corresponding changes in productivity.
+* Changes in physiognomic complexity vary with how favorable of an environment exists (decreasing community structure and reduction of stratal differentiation as the environment becomes less favorable).
+* Trends in the diversity of structure follow trends in species diversity; alpha and beta species diversities decrease from favorable to extreme environments.
+* Each growth-form (i.e. grasses, shrubs, etc.) has its characteristic place of maximum importance along the ecoclines.
+* The same growth forms may be dominant in similar environments in widely different parts of the world.
+
+Whittaker summed the effects of gradients (3) and (4) to get an overall temperature gradient and combined this with a gradient (2), the moisture gradient, to express the above conclusions in what is known as the Whittaker classification scheme. The scheme graphs average annual precipitation (x-axis) versus average annual temperature (y-axis) to classify biome-types.
+
+==== Biome-types ====
+{{Div col}}
+# [[Tropical rainforest]]
+# [[Seasonal tropical forest|Tropical seasonal rainforest]]
+#* [[deciduous]]
+#* [[semideciduous]]
+# [[Temperate giant rainforest]]
+# [[Montane rainforest]]
+# [[Temperate deciduous forest]]
+# [[Temperate evergreen forest]]
+#* [[needleleaf]]
+#* [[sclerophyll]]
+# Subarctic-subalpine needle-leaved forests ([[taiga]])
+# [[Elfin woodland]]
+# [[Thorn forest]]
+# [[Thorn scrub]]
+# [[Temperate woodland]]
+# [[Temperate shrublands]]
+#* [[deciduous]]
+#* [[heath]]
+#* [[sclerophyll]]
+#* [[subalpine-needleleaf]]
+#* [[subalpine-broadleaf]]
+# [[Savanna]]
+# [[Temperate grassland]]
+# [[Alpine grasslands]]
+# [[Tundra]]
+# [[Tropical desert]]
+# [[Warm-temperate desert]]
+# [[Cool temperate desert scrub]]
+# [[Arctic-alpine desert]]
+# [[Bog]]
+# [[Tropical fresh-water swamp forest]]
+# [[Temperate fresh-water swamp forest]]
+# [[Mangrove swamp]]
+# [[Salt marsh]]
+# Wetland<ref>Whittaker, R. H. (1970). ''Communities and Ecosystems''. Toronto, pp. 51–64, [https://books.google.com/books?id=T6m0AAAAIAAJ].</ref>
+{{Div col end}}
+
+=== Goodall (1974–) ecosystem types ===
+The multi-authored series ''Ecosystems of the World'', edited by [[David W. Goodall]], provides a comprehensive coverage of the major "ecosystem types or biomes" on Earth:<ref>{{cite book|editor-last=Goodall |editor-first=D. W. |title=Ecosystems of the World |publisher=[[Elsevier]] |location=Amsterdam |volume=36 |url=https://www.elsevier.com/books/book-series/ecosystems-of-the-world |archive-url=https://web.archive.org/web/20160918205830/https://www.elsevier.com/books/book-series/ecosystems-of-the-world |archive-date=2016-09-18}}</ref>
+
+{{Ordered list |list_style_type=upper-roman
+|Terrestrial Ecosystems
+  {{Ordered list |list_style_type=upper-alpha
+  |Natural Terrestrial Ecosystems
+    {{Ordered list
+    |Wet Coastal Ecosystems
+    |Dry Coastal Ecosystems
+    |Polar and Alpine Tundra
+    |Mires: Swamp, Bog, Fen, and Moor
+    |Temperate Deserts and Semi-Deserts
+    |Coniferous Forests
+    |Temperate Deciduous Forests
+    |Natural Grasslands
+    |Heathlands and Related Shrublands
+    |Temperate Broad-Leaved Evergreen Forests
+    |Mediterranean-Type Shrublands
+    |Hot Deserts and Arid Shrublands
+    |Tropical Savannas
+    |Tropical Rain Forest Ecosystems
+    |Wetland Forests
+    |Ecosystems of Disturbed Ground
+    }}
+  |Managed Terrestrial Ecosystems
+    {{Ordered list|start = 17
+    |Managed Grasslands
+    |Field Crop Ecosystems
+    |Tree Crop Ecosystems
+    |Greenhouse Ecosystems
+    |Bioindustrial Ecosystems
+    }}
+  }}
+|Aquatic Ecosystems
+  {{Ordered list |list_style_type=upper-alpha
+  |Inland Aquatic Ecosystems
+    {{Ordered list|start = 22
+    |River and Stream Ecosystems
+    |Lakes and Reservoirs
+    }}
+  |Marine Ecosystems
+    {{Ordered list|start = 24
+    |Intertidal and Littoral Ecosystems
+    |Coral Reefs
+    |Estuaries and Enclosed Seas
+    |Ecosystems of the Continental Shelves
+    |Ecosystems of the Deep Ocean
+    }}
+  |Managed Aquatic Ecosystems
+    {{Ordered list|start = 29|Managed Aquatic Ecosystems}}
+  }}
+|Underground Ecosystems
+  {{Ordered list|start = 30|Cave Ecosystems}}
+}}
+
+=== Walter (1976, 2002) zonobiomes ===
+The eponymously named [[Heinrich Walter]] classification scheme considers the seasonality of temperature and precipitation. The system, also assessing precipitation and temperature, finds nine major biome types, with the important climate traits and [[vegetation classification|vegetation types]]. The boundaries of each biome correlate to the conditions of moisture and cold stress that are strong determinants of plant form, and therefore the vegetation that defines the region. Extreme conditions, such as flooding in a swamp, can create different kinds of communities within the same biome.<ref name="Walter-2002"/><ref>{{cite book |last=Walter |first=H. |date=1976 |title=Die ökologischen Systeme der Kontinente (Biogeosphäre). Prinzipien ihrer Gliederung mit Beispielen |language=de |trans-title=The ecological systems of the continents (biogeosphere). Principles of their outline with examples |location=Stuttgart}}</ref><ref>{{cite book |last1=Walter |first1=H. |last2=Breckle |first2=S-W. |date=1991 |title=Ökologie der Erde |language=de |trans-title=Ecology of the Earth |volume=1, Grundlagen |location=Stuttgart}}</ref>
+
+{| class="wikitable"
+! Number
+! Zonobiome
+! Zonal soil type
+! Zonal vegetation type
+|-
+! ZB I
+| [[Equatorial region|Equatorial]], always moist, little temperature seasonality
+| Equatorial brown clays
+| Evergreen [[tropical rainforest]]
+|-
+! ZB II
+| [[Tropical]], summer rainy season and cooler "winter" dry season
+| Red clays or red earths
+| [[Tropical seasonal forest]], seasonal [[Tropical and subtropical dry broadleaf forests|dry forest]], scrub, or savanna
+|-
+! ZB III
+| [[Subtropical]], highly seasonal, [[arid]] climate
+| Serosemes, sierozemes
+| Desert vegetation with considerable exposed surface
+|-
+! ZB IV
+| [[Mediterranean climate|Mediterranean]], winter rainy season and summer drought
+| Mediterranean brown earths
+| [[Sclerophyll]]ous (drought-adapted), frost-sensitive shrublands and woodlands
+|-
+! ZB V
+| Warm temperate, occasional frost, often with summer rainfall maximum
+| Yellow or red forest soils, slightly podsolic soils
+| Temperate evergreen forest, somewhat frost-sensitive
+|-
+! ZB VI
+| [[Nemoral]], moderate climate with winter freezing
+| Forest brown earths and grey forest soils
+| Frost-resistant, [[deciduous]], temperate forest
+|-
+! ZB VII
+| [[continental climate|Continental]], arid, with warm or hot summers and cold winters
+| Chernozems to serozems
+| Grasslands and temperate deserts
+|-
+! ZB VIII
+| [[Boreal climate|Boreal]], cold temperate with cool summers and long winters
+| Podsols
+| Evergreen, frost-hardy, needle-leaved forest ([[taiga]])
+|-
+! ZB IX
+| [[polar climate|Polar]], short, cool summers and long, cold winters
+| Tundra humus soils with solifluction ([[permafrost]] soils)
+| Low, evergreen vegetation, without trees, growing over permanently frozen soils
+|-
+|}
+
+=== Schultz (1988) eco-zones ===
+Schultz (1988, 2005) defined nine ''ecozones'' (his concept of ecozone is more similar to the concept of biome than to the concept of [[biogeographic realm|ecozone]] of BBC):<ref name="Schultz1988">Schultz, J. ''Die Ökozonen der Erde'', 1st ed., Ulmer, Stuttgart, Germany, 1988, 488 pp.; 2nd ed., 1995, 535 pp.; 3rd ed., 2002; 4th ed., 2008; 5th ed., 2016. Transl.: ''The Ecozones of the World: The Ecological Divisions of the Geosphere''. Berlin: Springer-Verlag, 1995; 2nd ed., 2005, [https://books.google.com/books?id=V9L8yPzAjxIC].</ref>
+{{Div col}}
+# polar/subpolar zone
+# boreal zone
+# humid mid-latitudes
+# dry mid-latitudes
+# subtropics with winter rain
+# subtropics with year-round rain
+# dry tropics and subtropics
+# tropics with summer rain
+# tropics with year-round rain
+{{Div col end}}
+
+=== Bailey (1989) ecoregions ===
+[[Robert Bailey (geographer)|Robert G. Bailey]] nearly developed a [[biogeography|biogeographical]] classification system of [[ecoregion]]s for the United States in a map published in 1976. He subsequently expanded the system to include the rest of North America in 1981, and the world in 1989. The Bailey system, based on climate, is divided into four domains (polar, humid temperate, dry, and humid tropical), with further divisions based on other climate characteristics (subarctic, warm temperate, hot temperate, and subtropical; marine and continental; lowland and mountain).<ref>{{cite web |url=http://www.fs.fed.us/land/ecosysmgmt/index.html |archive-url=https://web.archive.org/web/20090101030631/http://www.fs.fed.us/land/ecosysmgmt/index.html |archive-date=2009-01-01 |title=Bailey System |publisher=[[US Forest Service]]}}</ref><ref>{{cite journal |last=Bailey |first=R. G. |date=1989 |title=Explanatory supplement to ecoregions map of the continents. |journal=[[Environmental Conservation (journal)|Environmental Conservation]] |volume=16 |issue=4 |pages=307–309|doi=10.1017/S0376892900009711 |bibcode=1989EnvCo..16..307B |s2cid=83599915 }} [With map of land-masses of the world, "Ecoregions of the Continents – Scale 1 : 30,000,000", published as a supplement.]</ref>
+* '''100 Polar Domain'''
+** 120 [[Tundra]] Division (Köppen: [[Ice Cap Climate|Ft]])
+** M120 Tundra Division&nbsp;– Mountain Provinces
+** 130 Subarctic Division (Köppen: [[Tundra|E]])
+** M130 Subarctic Division&nbsp;– Mountain Provinces
+* '''200 Humid Temperate Domain'''
+** 210 Warm Continental Division (Köppen: portion of [[Humid continental climate|Dcb]])
+** M210 Warm Continental Division&nbsp;– Mountain Provinces
+** 220 Hot Continental Division (Köppen: portion of [[Humid continental climate|Dca]])
+** M220 Hot Continental Division&nbsp;– Mountain Provinces
+** 230 Subtropical Division (Köppen: portion of [[Humid subtropical climate|Cf]])
+** M230 Subtropical Division&nbsp;– Mountain Provinces
+** 240 Marine Division (Köppen: [[Oceanic climate|Do]])
+** M240 Marine Division&nbsp;– Mountain Provinces
+** 250 Prairie Division (Köppen: arid portions of [[Humid subtropical climate|Cf]], [[Humid continental climate|Dca]], [[Humid continental climate|Dcb]])
+** 260 Mediterranean Division (Köppen: [[Mediterranean climate|Cs]])
+** M260 Mediterranean Division&nbsp;– Mountain Provinces
+* '''300 Dry Domain'''
+** 310 Tropical/Subtropical Steppe Division
+** M310 Tropical/Subtropical Steppe Division&nbsp;– Mountain Provinces
+** 320 Tropical/Subtropical Desert Division
+** 330 Temperate Steppe Division
+** 340 Temperate Desert Division
+* '''400 Humid Tropical Domain'''
+** 410 Savanna Division
+** 420 Rainforest Division
+
+{{Anchor|Biome_WWF_System}}
+
+=== Olson & Dinerstein (1998) biomes for WWF / Global 200 ===
+{{Main|Global 200}}
+
+[[File:Biomes_of_the_world.svg|thumb|upright 2
+|<small>Terrestrial biomes of the world according to Olson & Dinerstein et al. and used by the WWF and Global 200.
+{{Legend|#447821|01. [[Tropical and subtropical moist broadleaf forests]]}}
+{{Legend|#D4AA00|02. [[Tropical and subtropical dry broadleaf forests]]}}
+{{Legend|#66FF00|03. [[Tropical and subtropical coniferous forests]]}}
+{{Legend|#71C837|04. [[Temperate broadleaf and mixed forests]]}}
+{{Legend|#005500|05. [[Temperate coniferous forests]]}}
+{{Legend|#2CA05A|06. [[Taiga|Taiga and Boreal forest]]}}
+{{Legend|#FFDD55|07. [[Tropical and subtropical grasslands, savannas, and shrublands]]}}
+{{Legend|#CDDE87|08. [[Temperate grasslands, savannas, and shrublands]]}}
+{{Legend|#80B3FF|09. [[Flooded grasslands and savannas]]}}
+{{Legend|#C6AFE9|10. [[Montane grasslands and shrublands]]}}
+{{Legend|#87DECD|11. [[Tundra]]}}
+{{Legend|#C87137|12. [[Mediterranean forests, woodlands, and scrub]]}}
+{{Legend|#FFF6D5|13. [[Deserts and xeric shrublands]]}}
+{{Legend|#D400AA|14. [[Mangrove forest|Mangroves]]}}
+{{Legend|#ECECEC|{{ill|Rock and Ice, or Abiotic Land Zones|fr|Zones terrestres abiotiques}}}}
+</small>
+]]
+
+A team of biologists convened by the [[World Wide Fund for Nature|World Wildlife Fund]] (WWF) developed a scheme that divided the world's land area into [[biogeographic realm]]s (called "ecozones" in a BBC scheme), and these into [[ecoregion]]s (Olson & Dinerstein, 1998, etc.). Each ecoregion is characterized by a main biome (also called major habitat type).<ref name="Olson-1998">Olson, D. M. & E. Dinerstein (1998). The Global 200: A representation approach to conserving the Earth's most biologically valuable ecoregions. ''Conservation Biol.'' 12:502–515, [http://planet.uwc.ac.za/nisl/Biodiversity/pdf/OlsonDinerstein1998.pdf] {{Webarchive|url=https://web.archive.org/web/20161007001330/http://planet.uwc.ac.za/nisl/Biodiversity/pdf/OlsonDinerstein1998.pdf|date=2016-10-07}}.</ref><ref name="Olson-2001">Olson, D. M., Dinerstein, E., Wikramanayake, E. D., Burgess, N. D., Powell, G. V. N., Underwood, E. C., D'Amico, J. A., Itoua, I., Strand, H. E., Morrison, J. C., Loucks, C. J., Allnutt, T. F., Ricketts, T. H., Kura, Y., Lamoreux, J. F., Wettengel, W. W., Hedao, P., Kassem, K. R. (2001). Terrestrial ecoregions of the world: a new map of life on Earth. ''Bioscience'' 51(11):933–938, [http://wolfweb.unr.edu/~ldyer/classes/396/olsonetal.pdf] {{Webarchive|url=https://web.archive.org/web/20120917072415/http://wolfweb.unr.edu/~ldyer/classes/396/olsonetal.pdf|date=2012-09-17}}.</ref>
+
+This classification is used to define the [[Global 200]] list of [[ecoregion]]s identified by the WWF as priorities for conservation.<ref name="Olson-1998" />
+
+For the [[terrestrial ecoregions]], there is a specific EcoID, format XXnnNN (XX is the [[biogeographic realm]], nn is the biome number, NN is the individual number).
+
+==== [[Biogeographic realm]]s (terrestrial and freshwater) ====
+[[File:Western palearctic biomes.svg|thumb|upright 2|<small>The western [[Palearctic realm|Palearctic terrestrial ecozone]] has 9 of the 14 biomes numbered by Olson & Dinerstein et al.
+{{Legend|#71C837|04. [[Temperate broadleaf and mixed forests]]}}
+{{Legend|#005500|05. [[Temperate coniferous forests]]}}
+{{Legend|#2CA05A|06. [[Taiga|Taiga and Boreal forest]]}}
+{{Legend|#CDDE87|08. [[Temperate grasslands, savannas, and shrublands]]}}
+{{Legend|#80B3FF|09. [[Flooded grasslands and savannas]]}}
+{{Legend|#C6AFE9|10. [[Montane grasslands and shrublands]]}}
+{{Legend|#87DECD|11. [[Tundra]]}}
+{{Legend|#C87137|12. [[Mediterranean forests, woodlands, and scrub]]}}
+{{Legend|#FFF6D5|13. [[Deserts and xeric shrublands]]}}
+{{Legend|#ECECEC|Rock and Ice, or Abiotic Land Zones}}
+</small>]]
+
+{{Div col}}
+* NA: [[Nearctic realm|Nearctic]]
+* PA: [[Palearctic realm|Palearctic]]
+* AT: [[Afrotropical realm|Afrotropic]]
+* IM: [[Indomalayan realm|Indomalaya]]
+* AA: [[Australasian realm|Australasia]]
+* NT: [[Neotropical realm|Neotropic]]
+* OC: [[Oceanian realm|Oceania]]
+* AN: [[Antarctic realm|Antarctic]]<ref name="Olson-2001" />
+{{Div col end}}
+The applicability of the realms scheme above – based on Udvardy (1975)—to most freshwater taxa is unresolved.<ref name="Abell-2008">Abell, R., M. Thieme, C. Revenga, M. Bryer, M. Kottelat, N. Bogutskaya, B. Coad, N. Mandrak, S. Contreras-Balderas, W. Bussing, M. L. J. Stiassny, P. Skelton, G. R. Allen, P. Unmack, A. Naseka, R. Ng, N. Sindorf, J. Robertson, E. Armijo, J. Higgins, T. J. Heibel, E. Wikramanayake, D. Olson, H. L. Lopez, R. E. d. Reis, J. G. Lundberg, M. H. Sabaj Perez, and P. Petry. (2008). Freshwater ecoregions of the world: A new map of biogeographic units for freshwater biodiversity conservation. ''BioScience'' 58:403–414, [http://www.feow.org/downloads/Abell_et_al_08_BioScience.pdf] {{Webarchive|url=https://web.archive.org/web/20161006151241/http://www.feow.org/downloads/Abell_et_al_08_BioScience.pdf|date=2016-10-06}}.</ref>
+
+==== Biogeographic realms ([[Marine ecoregion|marine]]) ====
+{{Div col}}
+* [[Arctic]]
+* [[Temperate Northern Atlantic]]
+* [[Temperate Northern Pacific]]
+* [[Tropical Atlantic]]
+* [[Western Indo-Pacific]]
+* [[Central Indo-Pacific]]
+* [[Eastern Indo-Pacific]]
+* [[Tropical Eastern Pacific]]
+* [[Temperate South America]]
+* [[Temperate Southern Africa]]
+* [[Temperate Australasia]]
+* [[Southern Ocean]]<ref name="Spalding-2007" >Spalding, M. D. et al. (2007). Marine ecoregions of the world: a bioregionalization of coastal and shelf areas. ''BioScience'' 57: 573–583, [http://algae.thu.edu.tw/lab/2013_Meeting_FebJune/2007_Marine_ecoregions_of_the_world.pdf] {{Webarchive|url=https://web.archive.org/web/20161006104440/http://algae.thu.edu.tw/lab/2013_Meeting_FebJune/2007_Marine_ecoregions_of_the_world.pdf |date=2016-10-06 }}.</ref>
+{{Div col end}}
+
+==== Biomes (terrestrial) ====
+# [[Tropical and subtropical moist broadleaf forests]] (tropical and subtropical, humid)
+# [[Tropical and subtropical dry broadleaf forests]] (tropical and subtropical, semihumid)
+# [[Tropical and subtropical coniferous forests]] (tropical and subtropical, semihumid)
+# [[Temperate broadleaf and mixed forests]] (temperate, humid)
+# [[Temperate coniferous forests]] (temperate, humid to semihumid)
+# [[Taiga|Boreal forests/taiga]] (subarctic, humid)
+# [[Tropical and subtropical grasslands, savannas, and shrublands]] (tropical and subtropical, semiarid)
+# [[Temperate grasslands, savannas, and shrublands]] (temperate, semiarid)
+# [[Flooded grasslands and savannas]] (temperate to tropical, fresh or brackish water inundated)
+# [[Montane grasslands and shrublands]] (alpine or montane climate)
+# [[Tundra]] (Arctic)
+# [[Mediterranean forests, woodlands, and scrub]] or [[sclerophyll forest]]s (temperate warm, semihumid to semiarid with winter rainfall)
+# [[Deserts and xeric shrublands]] (temperate to tropical, arid)
+# [[Mangrove]] (subtropical and tropical, salt water inundated)<ref name="Olson-2001" />
+
+==== Biomes (freshwater) ====
+According to the WWF, the following are classified as [[freshwater]] biomes:<ref>"Freshwater Ecoregions of the World: Major Habitat Types" {{cite web |url=http://www.feow.org/mht.php |title=Freshwater Ecoregions of the World |access-date=2008-05-13 |archive-url=https://web.archive.org/web/20081007024422/http://www.feow.org/mht.php |archive-date=2008-10-07}}</ref>
+{{Div col}}
+* Large [[lake]]s
+* Large [[river deltas]]
+* Polar [[freshwater]]s
+* Montane [[freshwater]]s
+* Temperate [[Upland and lowland (freshwater ecology)|coastal rivers]]
+* Temperate floodplain rivers and [[wetland]]s
+* Temperate [[Upland and lowland (freshwater ecology)|upland rivers]]
+* Tropical and subtropical [[Upland and lowland (freshwater ecology)|coastal rivers]]
+* Tropical and subtropical floodplain rivers and [[wetland]]s
+* Tropical and subtropical [[Upland and lowland (freshwater ecology)|upland rivers]]
+* Xeric freshwaters and [[endorheic basin]]s
+* [[Oceanic islands]]
+{{Div col end}}
+
+==== Biomes (marine) ====
+Biomes of the coastal and [[continental shelf]] areas ([[neritic zone]]):
+* Polar
+* Temperate shelves and sea
+* Temperate [[upwelling]]
+* Tropical [[upwelling]]
+* [[Coral reef|Tropical coral]]<ref>{{cite web|website=[[World Wide Fund]] |url=http://www.worldwildlife.org/science/ecoregions/marine/item1266.html |title=Marine Ecoregions of the World |archive-url=https://web.archive.org/web/20090207101156/http://www.worldwildlife.org/science/ecoregions/marine/item1266.html |archive-date=2009-02-07}}</ref>
+
+==== Summary of the scheme ====
+* [[Biosphere]]
+** [[Biogeographic realm]]s (terrestrial) (8)
+*** [[Ecoregions]] (867), each characterized by a biome, a major habitat type (14)
+**** [[Ecosystems]] ([[biotope]]s)
+* [[Biosphere]]
+** [[Biogeographic realm]]s (freshwater) (8)
+*** [[Ecoregions]] (426), each characterized by a biome, a major habitat type (12)
+**** [[Ecosystems]] (biotopes)
+* [[Biosphere]]
+** Biogeographic realms (marine) (12)
+*** ([[Ecoregion#Marine|Marine provinces]]) (62)
+**** [[Ecoregions]] (232), each characterized by a biome, a major habitat type (5)
+***** [[Ecosystems]] (biotopes)
+
+Example:
+* [[Biosphere]]
+** [[Biogeographic realm]]: [[Palearctic]]
+*** [[Ecoregion]]: [[Dinaric Mountains mixed forests]] (PA0418); biome type: [[temperate broadleaf and mixed forests]]
+**** [[Ecosystem]]: [[Orjen]], vegetation belt between 1,100 and 1,450 m, Oromediterranean zone, nemoral zone (temperate zone)
+***** [[Biotope]]: ''Oreoherzogio-Abietetum illyricae'' Fuk. ([[Dinaric calcareous block fir forest#Plant list|Plant list]])
+****** Plant: Silver fir (''[[Abies alba]]'')
+
+== Other biomes ==
+
+=== Marine biomes ===
+{{further|Marine habitats}}
+
+Pruvot (1896) zones or "systems":<ref>{{Cite book|last=Pruvot |first=G. |title=Conditions générales de la vie dans les mers et principes de distribution des organismes marins: Année Biologique |language=fr |trans-title=General conditions of life in the seas and principles of distribution of marine organisms: Biological Year |volume=2 |pages=559–587 |date=1896 |url=https://www.biodiversitylibrary.org/item/23581#page/597/mode/1up |archive-url=https://web.archive.org/web/20161018205608/http://www.biodiversitylibrary.org/item/23581#page/597/mode/1up |archive-date=2016-10-18}}</ref>
+* [[Littoral|Littoral zone]]
+* [[Pelagic zone]]
+* [[Abyssal zone]]
+
+[[Longhurst code|Longhurst (1998) biomes]]:<ref>{{Cite book|last=Longhurst |first=A. |date=1998 |title=Ecological Geography of the Sea |location=San Diego |publisher=[[Academic Press]] |isbn=978-0-12-455559-4 |url=https://books.google.com/books?id=MFHK18F5aCsC |via=[[Google Books]]}}</ref>
+* Coastal
+* [[Polar seas]]
+* Trade wind
+* Westerly
+
+Other marine [[habitat type]]s (not covered yet by the Global 200/WWF scheme):{{citation needed|date=September 2016}}
+{{Div col}}
+* [[Open sea]]
+* [[Deep sea]]
+* [[Hydrothermal vent]]s
+* [[Cold seep]]s
+* [[Benthic zone]]
+* [[Pelagic zone]] (trades and westerlies)
+* [[Abyssal]]
+* [[Hadal]] (ocean trench)
+* [[Littoral zone|Littoral]]/[[Intertidal zone]]
+* [[Salt marsh]]
+* [[Estuary|Estuaries]]
+* Coastal lagoons/Atoll lagoons
+* [[Kelp forest]]
+* [[Pack ice]]
+{{Div col end}}
+
+=== Anthropogenic biomes ===
+{{further|Anthropogenic biome}}
+
+{{multiple image
+ | total_width = 
+ | align = center
+ | direction = horizontal
+ | background color = 
+ | width = 
+ | height = 
+ | image1 = Anthropogenic Biomes of the World, Version 2, 1800 Global (13603332645).jpg
+ | alt1 = 
+ | image2 = Anthropogenic Biomes of the World, Version 2, 1900 Global (13603726573).jpg
+ | alt2 = 
+ | image3 = Anthropogenic Biomes of the World, Version 2, 2000 Global (13603947015).jpg
+ | alt3 =
+ | footer_background = 
+ | footer_align = center
+ | footer = Anthropogenic biomes have grown dramatically in the past few centuries}}
+
+Humans have altered global patterns of [[biodiversity]] and [[ecosystem]] processes. As a result, vegetation forms predicted by conventional biome systems can no longer be observed across much of Earth's land surface as they have been replaced by crops and rangelands or cities. [[Anthropogenic biomes]] provide an alternative view of the terrestrial biosphere based on global patterns of sustained direct human interaction with ecosystems, including [[agriculture]], [[human settlement]]s, [[urbanization]], [[forestry]] and other [[land use|uses of land]]. Anthropogenic biomes offer a way to recognize the irreversible coupling of human and ecological systems at global scales and manage Earth's biosphere and anthropogenic biomes.
+
+[[File:Land cover IGBP.png|thumb|upright 2.22
+|<small>Similarities can be seen between the 14 terrestrial bioregions of Olson & Dinerstein et al. and the 17 [[land cover]] classes of the [[International Geosphere-Biosphere Programme]], "which includes 11 natural vegetation classes, 3 developed and mosaicked land classes, and 3 non-vegetated land classes", as detected by satellites.<ref>{{cite web | url=https://ladsweb.modaps.eosdis.nasa.gov/missions-and-measurements/products/MCD12C1/ | title=MODIS/Terra+Aqua Land Cover Type Yearly L3 Global 0.05Deg CMG – LAADS DAAC }}</ref>
+{{columns-start|num=2}}
+{{Legend|#000080|[[Water]]}}
+{{Legend|#008000|[[Evergreen]] [[Coniferous forest|Needleleaf forest]]}}
+{{Legend|#00FF00|Evergreen [[Broadleaf forest]]}}
+{{Legend|#99CC00|[[Deciduous]] Needleleaf Forest}}
+{{Legend|#99FF99|Deciduous Broadleaf Forest}}
+{{Legend|#339966|[[Mixed Forest]]}}
+{{Legend|#993366|Closed [[Shrubland]]}}
+{{Legend|#FFCC99|Open Shrubland}}
+{{Legend|#CCFFCC|Woody [[Savannas]]}}
+{{column}}
+{{Legend|#FFCC00|Savannas}}
+{{Legend|#FF9900|[[Grasslands]]}}
+{{Legend|#006699|Permanent [[Wetlands]]}}
+{{Legend|#FFFF00|[[Croplands]]}}
+{{Legend|#FF0000|[[Urban area|Urban]] and Built-Up}}
+{{Legend|#999966|Cropland/Natural Vegetation Mosaic}}
+{{Legend|#FFFFFF|[[Snow]] and [[Ice]]}}
+{{Legend|#808080|[[Barren vegetation|Barren]] or Sparsely Vegetated}}
+{{columns-end}}
+</small>
+]]
+
+Major anthropogenic biomes:
+* Dense settlements
+* [[Cropland]]s
+* [[Rangeland]]s
+* Forested
+* Indoor<ref>{{Cite news |url=https://www.nytimes.com/2015/03/19/science/the-next-frontier-the-great-indoors.html?ref=science |title=The Next Frontier: The Great Indoors |last=Zimmer |first=Carl |date=March 19, 2015 |work=[[The New York Times]] |access-date=2021-02-04 |archive-url=https://web.archive.org/web/20180614024514/https://www.nytimes.com/2015/03/19/science/the-next-frontier-the-great-indoors.html?ref=science |archive-date=June 14, 2018 |url-status=live}}</ref>
+
+=== Microbial biomes ===
+{{main|Microbiome}}
+
+{{Further|Habitat#Microhabitats}}
+
+==== Endolithic biomes ====
+The [[endolith]]ic biome, consisting entirely of microscopic life in rock [[porosity|pores]] and cracks, kilometers beneath the surface, has only recently been discovered, and does not fit well into most classification schemes.<ref>{{cite web |title=What is the Endolithic Biome? (with picture) |url=http://www.wisegeek.com/what-is-the-endolithic-biome.htm |website=wiseGEEK |access-date=2017-03-07 |archive-url=https://web.archive.org/web/20170307124108/http://www.wisegeek.com/what-is-the-endolithic-biome.htm |archive-date=2017-03-07 |url-status=live}}</ref>
+
+== Effects of climate change ==
+
+Anthropogenic [[climate change]] has the potential to greatly alter the distribution of Earth's biomes.<ref name="Dobrowski-2021">{{Cite journal |last1=Dobrowski |first1=Solomon Z. |last2=Littlefield |first2=Caitlin E. |last3=Lyons |first3=Drew S. |last4=Hollenberg |first4=Clark |last5=Carroll |first5=Carlos |last6=Parks |first6=Sean A. |last7=Abatzoglou |first7=John T. |last8=Hegewisch |first8=Katherine |last9=Gage |first9=Josh |date=September 29, 2021 |title=Protected-area targets could be undermined by climate change-driven shifts in ecoregions and biomes |journal=[[Communications Earth & Environment]] |volume=2 |issue=1 |page=198 |doi=10.1038/s43247-021-00270-z |bibcode=2021ComEE...2..198D |s2cid=238208819|doi-access=free }}</ref><ref>{{cite book |last1=Rockström |first1=Johan |chapter='A Safe Operating Space for Humanity' (2009) |date=2017-12-31 |title=The Future of Nature |pages=491–505 |publisher=[[Yale University Press]] |last2=Steffen |first2=Will |last3=Noone |first3=Kevin |doi=10.12987/9780300188479-042 |hdl=11858/00-001M-0000-0014-8264-2 |isbn=978-0-300-18847-9 |s2cid=246162286 }}</ref> Meaning, biomes around the world could change so much that they would be at risk of becoming new biomes entirely.<ref>{{Cite journal |last1=Nolan |first1=Connor |last2=Overpeck |first2=Jonathan T. |last3=Allen |first3=Judy R. M. |last4=Anderson |first4=Patricia M. |last5=Betancourt |first5=Julio L. |last6=Binney |first6=Heather A. |last7=Brewer |first7=Simon |last8=Bush |first8=Mark B. |last9=Chase |first9=Brian M. |last10=Cheddadi |first10=Rachid |last11=Djamali |first11=Morteza |last12=Dodson |first12=John |last13=Edwards |first13=Mary E. |last14=Gosling |first14=William D. |last15=Haberle |first15=Simon |date=2018-08-31 |title=Past and future global transformation of terrestrial ecosystems under climate change |journal=Science |language=en |volume=361 |issue=6405 |pages=920–923 |doi=10.1126/science.aan5360 |pmid=30166491 |bibcode=2018Sci...361..920N |s2cid=52131254 |issn=0036-8075|doi-access=free }}</ref> More specifically, between 54% and 22% of global land area will experience climates that correspond to other biomes.<ref name="Dobrowski-2021" /> 3.6% of land area will experience climates that are completely new or unusual.<ref>{{Cite journal |last1=Abatzoglou |first1=John T. |last2=Dobrowski |first2=Solomon Z. |last3=Parks |first3=Sean A. |date=2020-03-03 |title=Multivariate climate departures have outpaced univariate changes across global lands |journal=Scientific Reports |volume=10 |issue=1 |page=3891 |doi=10.1038/s41598-020-60270-5 |pmid=32127547 |pmc=7054431 |bibcode=2020NatSR..10.3891A |issn=2045-2322 }}</ref><ref>{{Cite journal |last1=Williams |first1=John W. |last2=Jackson |first2=Stephen T. |last3=Kutzbach |first3=John E. |date=2007-04-03 |title=Projected distributions of novel and disappearing climates by 2100 AD |journal=[[Proceedings of the National Academy of Sciences]] |volume=104 |issue=14 |pages=5738–5742 |doi=10.1073/pnas.0606292104 |pmid=17389402 |pmc=1851561 |bibcode=2007PNAS..104.5738W |issn=0027-8424 |doi-access=free}}</ref> An example of a biome shift is [[woody plant encroachment]], which can change grass savanna into shrub savanna.<ref>{{Cite journal |last1=Stevens |first1=Nicola |last2=Lehmann |first2=Caroline E. R. |last3=Murphy |first3=Brett P. |last4=Durigan |first4=Giselda |date=January 2017 |title=Savanna woody encroachment is widespread across three continents |url=https://onlinelibrary.wiley.com/doi/10.1111/gcb.13409 |journal=Global Change Biology |language=en |volume=23 |issue=1 |pages=235–244 |doi=10.1111/gcb.13409 |pmid=27371937 |bibcode=2017GCBio..23..235S |issn=1354-1013 |hdl=20.500.11820/ff572887-5c50-4c25-8b65-a9ce5bd8ea2a |hdl-access=free |archive-date=2025-04-15 |access-date=2024-04-15 |archive-url=https://web.archive.org/web/20250415112927/https://onlinelibrary.wiley.com/doi/10.1111/gcb.13409 |url-status=live |url-access=subscription }}</ref>
+
+Average temperatures have risen more than twice the usual amount in both arctic and mountainous biomes,<ref name="De Boeck-2019">{{Cite journal |last1=De Boeck |first1=Hans J. |last2=Hiltbrunner |first2=Erika |last3=Jentsch |first3=Anke |last4=Vandvik |first4=Vigdis |date=2019-03-28 |title=Editorial: Responses to Climate Change in the Cold Biomes |journal=[[Frontiers in Plant Science]] |volume=10 |article-number=347 |doi=10.3389/fpls.2019.00347 |issn=1664-462X |pmc=6447700 |pmid=30984216 |bibcode=2019FrPS...10..347D |doi-access=free}}</ref><ref>{{Cite journal |last1=Gobiet |first1=Andreas |last2=Kotlarski |first2=Sven |last3=Beniston |first3=Martin |last4=Heinrich |first4=Georg |last5=Rajczak |first5=Jan |last6=Stoffel |first6=Markus |date=September 15, 2014 |title=21st century climate change in the European Alps—A review |journal=[[Science of the Total Environment]] |language=en |volume=493 |pages=1138–1151 |doi=10.1016/j.scitotenv.2013.07.050 |pmid=23953405 |bibcode=2014ScTEn.493.1138G|doi-access=free |hdl=20.500.11850/87298 |hdl-access=free }}</ref><ref>{{Cite journal |last1=Johannessen |first1=Ola M. |last2=Kuzmina |first2=Svetlana I. |last3=Bobylev |first3=Leonid P. |last4=Miles |first4=Martin W. |date=2016-12-01 |title=Surface air temperature variability and trends in the Arctic: new amplification assessment and regionalisation |journal=[[Tellus A: Dynamic Meteorology and Oceanography]] |volume=68 |issue=1 |article-number=28234 |doi=10.3402/tellusa.v68.28234 |bibcode=2016TellA..6828234J |s2cid=123468873 |issn=1600-0870|doi-access=free }}</ref> which leads to the conclusion that arctic and mountainous biomes are currently the most vulnerable to climate change.<ref name="De Boeck-2019" /> South American terrestrial biomes have been predicted to go through the same temperature trends as arctic and mountainous biomes.<ref name="Anjos-2021">{{Cite journal |last1=Anjos |first1=Luciano J. S. |last2=Barreiros de Souza |first2=Everaldo |last3=Amaral |first3=Calil Torres |last4=Igawa |first4=Tassio Koiti |last5=Mann de Toledo |first5=Peter |date=2021-01-01 |title=Future projections for terrestrial biomes indicate widespread warming and moisture reduction in forests up to 2100 in South America |journal=[[Global Ecology and Conservation]] |language=en |volume=25 |article-number=e01441 |doi=10.1016/j.gecco.2020.e01441 |issn=2351-9894 |s2cid=234107449 |doi-access=free|bibcode=2021GEcoC..2501441A }}</ref><ref>{{Cite journal |last1=Locosselli |first1=Giuliano Maselli |last2=Brienen |first2=Roel J. W. |last3=Leite |first3=Melina de Souza |last4=Gloor |first4=Manuel |last5=Krottenthaler |first5=Stefan |last6=Oliveira |first6=Alexandre A. de |last7=Barichivich |first7=Jonathan |last8=Anhuf |first8=Dieter |last9=Ceccantini |first9=Gregorio |last10=Schöngart |first10=Jochen |last11=Buckeridge |first11=Marcos |date=2020-12-14 |title=Global tree-ring analysis reveals rapid decrease in tropical tree longevity with temperature |journal=[[Proceedings of the National Academy of Sciences]] |volume=117 |issue=52 |pages=33358–33364 |doi=10.1073/pnas.2003873117 |pmid=33318167 |pmc=7776984 |bibcode=2020PNAS..11733358M |issn=0027-8424 |doi-access=free}}</ref> With its annual average temperature continuing to increase, the moisture currently located in forest biomes will dry up.<ref name="Anjos-2021" /><ref name="Marcolla-2020">{{Cite journal |last1=Marcolla |first1=Barbara |last2=Migliavacca |first2=Mirco |last3=Rödenbeck |first3=Christian |last4=Cescatti |first4=Alessandro |date=2020-04-30 |title=Patterns and trends of the dominant environmental controls of net biome productivity |url=https://bg.copernicus.org/articles/17/2365/2020/ |journal=[[Biogeosciences]] |language=English |volume=17 |issue=8 |pages=2365–2379 |bibcode=2020BGeo...17.2365M |doi=10.5194/bg-17-2365-2020 |issn=1726-4170 |s2cid=219056644 |doi-access=free |hdl-access=free |hdl=10449/64139 |archive-date=2022-08-29 |access-date=2022-09-20 |archive-url=https://web.archive.org/web/20220829154202/https://bg.copernicus.org/articles/17/2365/2020/ |url-status=live }}</ref>{{excerpt|Effects of climate change on biomes|paragraphs=1}}
+
+== See also ==
+{{Div col}}
+* {{annotated link|Climate classification}}
+* {{annotated link|Ecotope}}
+* {{annotated link|Life zone}}
+* {{annotated link|Natural environment}}
+{{Div col end}}
+
+== References ==
+{{reflist}}
+
+== Further reading ==
+* Ritter, Michael E. (2005). [https://web.archive.org/web/20110228054041/http://www.uwsp.edu/geo/faculty/ritter/geog101/textbook/biomes/outline.html The Physical Environment: an Introduction to Physical Geography]. University of Wisconsin-Stevens Point.
+
+== External links ==
+{{Wiktionary|Biome}}
+{{Wikivoyage|Biomes and ecosystems}}
+* University of California Museum of Paleontology Berkeley's [https://web.archive.org/web/20170119163155/https://ucmp.berkeley.edu/glossary/gloss5/biome/ The World's Biomes]
+* Gale/Cengage [https://web.archive.org/web/20110711070312/http://www.galeschools.com/environment/biomes/overview.htm Biome Overview] (archived 11 July 2011)
+* {{Cite web| url=http://www.eoearth.org/topics/view/51cbfc84f702fc2ba812bc2d/| title=Biomes| publisher=[[Encyclopedia of Earth]]| access-date=2016-02-25| archive-date=2013-07-02| archive-url=https://web.archive.org/web/20130702105456/http://www.eoearth.org/topics/view/51cbfc84f702fc2ba812bc2d/| url-status=live}}
+* [http://www.theglobaleducationproject.org/earth/global-ecology.php#3 Global Currents and Terrestrial Biomes Map] {{Webarchive|url=https://web.archive.org/web/20100104112214/http://www.theglobaleducationproject.org/earth/global-ecology.php#3 |date=2010-01-04 }}
+* [https://web.archive.org/web/20110222001659/http://www.worldbiomes.com/ WorldBiomes.com] (archived 22 February 2011)
+* Panda.org's [https://web.archive.org/web/20170706065633/http://wwf.panda.org/about_our_earth/ecoregions/about/habitat_types/ Major Habitat Types] (archived 6 July 2017)
+* NASA's Earth Observatory [http://earthobservatory.nasa.gov/Experiments/Biome/ Mission: Biomes] {{Webarchive|url=https://web.archive.org/web/20200805013605/https://earthobservatory.nasa.gov/experiments/biome |date=2020-08-05 }}
+* [https://databayou.com/world/deserts.html World Map of Desert Biomes] {{Webarchive|url=https://web.archive.org/web/20221014190329/https://databayou.com/world/deserts.html |date=2022-10-14 }}
+
+{{Biomes}}
+{{Earth}}
+{{Biological organisation}}
+{{Portal bar|Biology|Earth sciences|Ecology|Environment}}
+{{Authority control}}
+
+[[Category:Biomes| ]]
+[[Category:Habitats]]

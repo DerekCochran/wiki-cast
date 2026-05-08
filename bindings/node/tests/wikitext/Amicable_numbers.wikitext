@@ -1,0 +1,197 @@
+{{Short description|Pair of integers related by their divisors}}
+{{redirect|Amicable|the definition|Wiktionary:amicable}}
+{{Distinguish|friendly numbers}}
+[[File:Amicable numbers rods 220 and 284.png|thumb|Demonstration with [[Cuisenaire rods]] of the amicability of the pair of numbers (220,284), the first of the series.]]
+
+In [[mathematics]], the '''amicable numbers''' are two different [[natural number]]s related in such a way that the [[addition|sum]] of the [[proper divisor]]s of each is equal to the other number. That is, ''s''(''a'')=''b'' and ''s''(''b'')=''a'', where ''s''(''n'')=σ(''n'') − ''n'' is equal to the sum of positive divisors of ''n'' except ''n'' itself (see also [[divisor function]]).
+
+The smallest pair of amicable numbers is ([[220 (number)|220]], [[284 (number)|284]]). They are amicable because the proper divisors of 220 are 1, 2, 4, 5, 10, 11, 20, 22, 44, 55 and 110, of which the sum is 284; and the proper divisors of 284 are 1, 2, 4, 71 and 142, of which the sum is 220.
+
+The first ten amicable pairs are: (220, 284), (1184, 1210), (2620, 2924), (5020, 5564), (6232, 6368), (10744, 10856), (12285, 14595), (17296, 18416), (63020, 76084), and (66928, 66992) {{OEIS|id=A259180}}. It is unknown if there are infinitely many pairs of amicable numbers.
+
+A pair of amicable numbers constitutes an [[aliquot sequence]] of [[Periodic sequence|period]] 2. A related concept is that of a [[perfect number]], which is a number that equals the sum of ''its own'' proper divisors, in other words a number which forms an aliquot sequence of period 1. Numbers that are members of an aliquot sequence with period greater than 2 are known as [[sociable number]]s.
+
+== History ==
+{{unsolved|mathematics|Are there infinitely many amicable numbers?}}
+Amicable numbers were known to the [[Pythagoreanism|Pythagoreans]], who credited them with many mystical properties. A general formula by which some of these numbers could be derived was invented circa 850 by the [[Iraqi people|Iraqi]] mathematician [[Thābit ibn Qurra]] (826–901). Other [[Arab]] mathematicians who studied amicable numbers are [[Maslamah Ibn Ahmad al-Majriti|al-Majriti]] (died 1007), [[Ibn Tahir al-Baghdadi|al-Baghdadi]] (980–1037), and [[Kamāl al-Dīn al-Fārisī|al-Fārisī]] (1260–1320). The [[Iran]]ian mathematician [[Muhammad Baqir Yazdi]] (16th century) discovered the pair (9363584, 9437056), though this has often been attributed to [[René Descartes|Descartes]].<ref>{{cite journal | last = Costello | first = Patrick | title = New Amicable Pairs Of Type (2; 2) And Type (3; 2) | journal = Mathematics of Computation | volume = 72 | pages = 489–497 | date = 1 May 2002 | url = https://www.ams.org/mcom/2003-72-241/S0025-5718-02-01414-X/S0025-5718-02-01414-X.pdf | access-date = 19 April 2007 | issue = 241 | doi = 10.1090/S0025-5718-02-01414-X | archive-date = 2008-02-29 | archive-url = https://web.archive.org/web/20080229172358/http://www.ams.org/mcom/2003-72-241/S0025-5718-02-01414-X/S0025-5718-02-01414-X.pdf | url-status = live }}</ref> Much of the work of [[Mathematics in medieval Islam|Eastern mathematicians]] in this area has been forgotten.
+
+Thābit ibn Qurra's formula was rediscovered by [[Pierre de Fermat|Fermat]] (1601–1665) and [[René Descartes|Descartes]] (1596–1650), to whom it is sometimes ascribed, and extended by [[Leonhard Euler|Euler]] (1707–1783). It was extended further by [[Walter Borho|Borho]] in 1972. Fermat and Descartes also rediscovered pairs of amicable numbers known to Arab mathematicians. Euler also discovered dozens of new pairs.<ref name=Sandifer/> The second smallest pair, (1184, 1210), was discovered in 1867 by 16-year-old B. Nicolò I. Paganini (not to be confused with the composer and violinist), having been overlooked by earlier mathematicians.<ref>{{cite web|last=Sprugnoli|first=Renzo|title=Introduzione alla matematica: La matematica della scuola media|url=http://www.dsi.unifi.it/~resp/media.pdf|publisher=Universita degli Studi di Firenze: Dipartimento di Sistemi e Informatica|access-date=21 August 2012|page=59|language=it|date=27 September 2005|url-status=dead|archive-url=https://web.archive.org/web/20120913033238/http://www.dsi.unifi.it/~resp/media.pdf|archive-date=13 September 2012}}</ref><Ref>
+{{cite book|url=https://books.google.com/books?id=kE0FEAAAQBAJ&dq=Nicol%C3%B2+I.+Paganini+mathematician&pg=PA168|page=168|author=[[Martin Gardner]]|title=Mathematical Magic Show|orig-date=Originally published in 1977|date=2020|publisher=[[American Mathematical Society]]|isbn=9781470463588|access-date=2023-03-18|archive-date=2023-09-12|archive-url=https://web.archive.org/web/20230912194538/https://books.google.com/books?id=kE0FEAAAQBAJ&dq=Nicol%C3%B2+I.+Paganini+mathematician&pg=PA168|url-status=live}}
+</ref>
+
+{| class="wikitable sortable"
+|+ The first ten amicable pairs
+|-
+!''#''   !! ''m'' !! ''n''
+|-
+|1	||	220	||	284
+|-				
+|2	||	1,184	||	1,210
+|-				
+|3	||	2,620	||	2,924
+|-				
+|4	||	5,020	||	5,564
+|-				
+|5	||	6,232	||	6,368
+|-				
+|6	||	10,744	||	10,856
+|-				
+|7	||	12,285	||	14,595
+|-				
+|8	||	17,296	||	18,416
+|-				
+|9	||	63,020	||	76,084
+|-				
+|10	||	66,928	||	66,992
+|}
+
+There are over 1 billion known amicable pairs.<ref>{{cite web|first=Sergei|last=Chernykh|url=http://sech.me/ap/|title=Amicable pairs list|access-date=2024-05-28}}</ref>
+
+== Rules for generation ==
+While these rules do generate some pairs of amicable numbers, many other pairs are known, so these rules are by no means comprehensive.
+
+In particular, the two rules below produce only even amicable pairs, so they are of no interest for the open problem of finding amicable pairs coprime to 210 = 2·3·5·7, while over 1000 pairs coprime to 30 = 2·3·5 are known [García, Pedersen & te Riele (2003), Sándor & Crstici (2004)].
+
+===Thābit ibn Qurrah theorem===
+The '''Thābit ibn Qurrah theorem''' is a method for discovering amicable numbers invented in the 9th century by the [[Arab]] [[mathematician]] [[Thābit ibn Qurrah]].<ref name="Rashed"/>
+
+It states that if
+<math display=block>\begin{align}
+  p &= 3 \times 2^{n-1} - 1, \\
+  q &= 3 \times 2^{n} - 1, \\
+  r &= 9 \times 2^{2n - 1} - 1,
+\end{align}</math>
+
+where {{math|''n'' > 1}} is an [[integer]] and {{mvar|p, q, r}} are [[prime number]]s, then {{math|2<sup>''n''</sup> × ''p'' × ''q''}} and {{math|2<sup>''n''</sup> × ''r''}} are a pair of amicable numbers. This formula gives the pairs {{math|(220, 284)}} for {{math|''n'' {{=}} 2}}, {{math|(17296, 18416)}} for {{math|''n'' {{=}} 4}}, and {{math|(9363584, 9437056)}} for {{math|''n'' {{=}} 7}}, but no other such pairs are known. Numbers of the form {{math|3 × 2<sup>''n''</sup> − 1}} are known as [[Thabit number]]s. In order for Ibn Qurrah's formula to produce an amicable pair, two consecutive Thabit numbers must be prime; this severely restricts the possible values of {{mvar|n}}.
+
+To establish the theorem, Thâbit ibn Qurra proved nine [[Lemma (mathematics)|lemmas]] divided into two groups. The first three lemmas deal with the determination of the aliquot parts of a [[natural integer]]. The second group of lemmas deals more specifically with the formation of perfect, abundant and deficient numbers.<ref name="Rashed">{{cite book|last=Rashed|first=Roshdi|title=The development of Arabic mathematics: between arithmetic and algebra.|publisher=Kluwer Academic Publishers|location=Dordrecht, Boston, London|year=1994|volume=156|isbn=978-0-7923-2565-9|page=278,279}}</ref>
+
+===Euler's rule===
+''Euler's rule'' is a generalization of the Thâbit ibn Qurra theorem. It states that if
+<math display=block>\begin{align}
+  p &= (2^{n-m} + 1) \times 2^m - 1, \\
+  q &= (2^{n-m} + 1) \times 2^n - 1, \\
+  r &= (2^{n-m} + 1)^2 \times 2^{m+n} - 1,
+\end{align}</math>
+where {{math|''n'' > ''m'' > 0}} are [[integer]]s and {{mvar|p, q, r}} are [[prime number]]s, then {{math|2<sup>''n''</sup> × ''p'' × ''q''}} and {{math|2<sup>''n''</sup> × ''r''}} are a pair of amicable numbers. 
+
+Note that
+<math display=block>\begin{align}
+p q &= r - (2^{n-m} + 1) (2^n + 2^m) + 2 
+\\
+pq &= r - ((2^{n-m} + 1) (2^n + 2^m) - 2)
+\\
+pq &= r - (p + q) 
+\end{align}</math>
+thus <math> pq + (p+q) = r </math>
+
+Thābit ibn Qurra's theorem corresponds to the case {{math|''m'' {{=}} ''n'' − 1}}. Euler's rule creates additional amicable pairs for {{math|(''m'',''n'') {{=}} (1,8), (29,40)}} with no others being known. Euler (1747 & 1750) overall found 58 new pairs increasing the number of pairs that were then known to 61.<ref name=Sandifer>{{cite book | title=How Euler Did It | last=Sandifer | first=C. Edward | isbn=978-0-88385-563-8 | pages=49–55 | year=2007 | publisher=[[Mathematical Association of America]] }}</ref><ref>See [[William Dunham (mathematician)|William Dunham]] in a video: [https://www.youtube.com/watch?v=h-DV26x6n_Q&t=37m An Evening with Leonhard Euler – YouTube] {{Webarchive|url=https://web.archive.org/web/20160516062654/https://www.youtube.com/watch?v=h-DV26x6n_Q&t=37m |date=2016-05-16 }}</ref>
+
+== Regular pairs ==
+Let ({{mvar|m}}, {{mvar|n}}) be a pair of amicable numbers with {{math|''m'' < ''n''}}, and write {{math|''m'' {{=}} ''gM''}} and {{math|''n'' {{=}} ''gN''}} where {{mvar|g}} is the [[greatest common divisor]] of {{mvar|m}} and {{mvar|n}}. If {{mvar|M}} and {{mvar|N}} are both [[coprime]] to {{mvar|g}} and [[Square-free integer|square free]] then the pair ({{mvar|m}}, {{mvar|n}}) is said to be '''regular''' {{OEIS|A215491}}; otherwise, it is called '''irregular''' or '''exotic'''. If ({{mvar|m}}, {{mvar|n}}) is regular and {{mvar|M}} and {{mvar|N}} have {{mvar|i}} and {{mvar|j}} prime factors respectively, then {{math|(''m'', ''n'')}} is said to be of '''type''' {{math|(''i'', ''j'')}}.
+
+For example, with {{math|(''m'', ''n'') {{=}} (220, 284)}}, the greatest common divisor is {{math|4}} and so {{math|''M'' {{=}} 55}} and {{math|''N'' {{=}} 71}}. Therefore, {{math|(220, 284)}} is regular of type {{math|(2, 1)}}.
+
+== Twin amicable pairs ==
+An amicable pair {{math|(''m'', ''n'')}} is twin if there are no integers between {{mvar|m}} and {{mvar|n}} belonging to any other amicable pair {{OEIS|A273259}}.
+
+== Other results ==
+In every known case, the numbers of a pair are either both [[Even and odd numbers|even]] or both odd. It is not known whether an even-odd pair of amicable numbers exists, but if it does, the even number must either be a square number or twice one, and the odd number must be a square number. However, amicable numbers where the two members have different smallest prime factors do exist: there are seven such pairs known.<ref>{{Cite web|url=http://sech.me/ap/news.html#20160130|title=Amicable pairs news|access-date=2016-01-31|archive-date=2021-07-18|archive-url=https://web.archive.org/web/20210718213137/https://sech.me/ap/news.html#20160130|url-status=live}}</ref> Also, every known pair shares at least one common prime [[Divisor|factor]]. It is not known whether a pair of [[coprime]] amicable numbers exists, though if any does, the [[product (mathematics)|product]] of the two must be greater than 10<sup>67</sup>.<ref>{{cite journal
+ | last = Hagis | first = Peter, Jr.
+ | doi = 10.2307/2004381
+ | journal = Mathematics of Computation
+ | mr = 246816
+ | pages = 539–543
+ | title = On relatively prime odd amicable numbers
+ | volume = 23
+ | year = 1969| issue = 107
+ | jstor = 2004381
+ }}</ref><ref>{{cite journal
+ | last = Hagis | first = Peter, Jr.
+ | doi = 10.2307/2004629
+ | journal = Mathematics of Computation
+ | mr = 276167
+ | pages = 963–968
+ | title = Lower bounds for relatively prime amicable numbers of opposite parity
+ | volume = 24
+ | year = 1970| issue = 112
+ | jstor = 2004629
+ }}</ref> Also, a pair of co-prime amicable numbers cannot be generated by Thabit's formula (above), nor by any similar formula.
+
+In 1955 [[Paul Erdős]] showed that the density of amicable numbers, relative to the positive integers, was 0.<ref>{{cite journal|last1=Erdős|first1=Paul|title=On amicable numbers|journal=Publicationes Mathematicae Debrecen|year=2022 |volume=4|issue=1–2 |pages=108–111|doi=10.5486/PMD.1955.4.1-2.16 |s2cid=253787916 |url=https://www.renyi.hu/~p_erdos/1955-03.pdf |archive-url=https://ghostarchive.org/archive/20221009/https://www.renyi.hu/~p_erdos/1955-03.pdf |archive-date=2022-10-09 |url-status=live}}</ref>
+
+In 1968 [[Martin Gardner]] noted that most even amicable pairs have sums divisible by 9,<ref>{{Cite journal|last=Gardner|first=Martin|title=Mathematical Games|date=1968|url=https://www.jstor.org/stable/24926005|journal=Scientific American|volume=218|issue=3|pages=121–127|doi=10.1038/scientificamerican0368-121|jstor=24926005|bibcode=1968SciAm.218c.121G|issn=0036-8733|access-date=2020-09-07|archive-date=2022-09-25|archive-url=https://web.archive.org/web/20220925113302/https://www.jstor.org/stable/24926005|url-status=live}}</ref> and that a rule for characterizing the exceptions {{OEIS|A291550}} was obtained.<ref>{{Cite journal|last=Lee|first=Elvin|date=1969|title=On Divisibility by Nine of the Sums of Even Amicable Pairs|journal=Mathematics of Computation|volume=23|issue=107|pages=545–548|doi=10.2307/2004382|jstor=2004382|issn=0025-5718|doi-access=free}}</ref>
+
+According to the sum of amicable pairs conjecture, as the number of the [[oeis:A360054|amicable]] numbers approaches infinity, the percentage of the sums of the amicable pairs divisible by ten approaches 100% {{OEIS|A291422}}. 
+
+Although all amicable pairs up to 10,000 are even pairs, the proportion of odd amicable pairs increases steadily towards higher numbers, and presumably there are more of them than of the even amicable pairs (sequence [[oeis:A360054|A360054]] in [[oeis:|OEIS]]).
+
+There are amicable pairs where the sum of one number from the first pair and one number from the second pair equals the sum of the remaining two numbers, e.g. 67212 = 220 + 66992 = 284 + 66928 where (220, 284) and (66928, 66992) are two amicable pairs (sequence [[oeis:A359334|A359334]] in [[oeis:|OEIS]]).
+
+[[Gaussian integer]] amicable pairs exist,<ref>Patrick Costello, Ranthony A. C. Edmonds. "Gaussian Amicable Pairs." Missouri Journal of Mathematical Sciences, 30(2) 107-116 November 2018.</ref><ref>{{Cite journal|url=https://encompass.eku.edu/etd/158/|title=Gaussian Amicable Pairs|first=Ranthony|last=Clark|date=January 1, 2013|journal=Online Theses and Dissertations}}</ref> e.g. 
+s(8008 + 3960''i'')	=	4232 − 8280''i''	and s(4232 − 8280''i'')	=	8008 + 3960''i''.<ref>{{Cite web|url=https://mathworld.wolfram.com/AmicablePair.html|title=Amicable Pair|first=Eric W.|last=Weisstein|website=mathworld.wolfram.com}}</ref>
+
+== Generalizations ==
+
+=== Amicable tuples ===
+Amicable numbers <math>(m, n)</math> satisfy <math>\sigma(m)-m=n</math> and <math>\sigma(n)-n=m</math> which can be written together as <math>\sigma(m)=\sigma(n)=m+n</math>. This can be generalized to larger tuples, say <math>(n_1,n_2,\ldots,n_k)</math>, where we require
+
+:<math>\sigma(n_1)=\sigma(n_2)= \dots =\sigma(n_k) = n_1+n_2+ \dots +n_k</math>
+
+For example, (1980, 2016, 2556) is an [[amicable triple]] {{OEIS|id=A125490}}, and (3270960, 3361680, 3461040, 3834000) is an amicable quadruple {{OEIS|id=A036471}}.
+
+Amicable [[multiset]]s are defined analogously and generalizes this a bit further {{OEIS|id=A259307}}.
+
+=== Sociable numbers ===
+{{main article|Sociable number}}
+
+Sociable numbers are the numbers in cyclic lists of numbers (with a length greater than 2) where each number is the sum of the proper divisors of the preceding number. For example, <math>1264460 \mapsto 1547860 \mapsto 1727636 \mapsto 1305184 \mapsto 1264460 \mapsto\dots</math> are sociable numbers of order 4.
+
+==== Searching for sociable numbers ====
+The [[aliquot sequence]] can be represented as a [[directed graph]], <math>G_{n,s}</math>, for a given integer <math>n</math>, where <math>s(k)</math> denotes the
+sum of the proper divisors of <math>k</math>.<ref>{{citation|title=Distributed cycle detection in large-scale sparse graphs|first1=Rodrigo Caetano|last1=Rocha|first2=Bhalchandra|last2=Thatte|year=2015|publisher=Simpósio Brasileiro de Pesquisa Operacional (SBPO)|doi=10.13140/RG.2.1.1233.8640}}</ref>
+[[cycle (graph theory)|Cycles]] in <math>G_{n,s}</math> represent [[sociable numbers]] within the interval <math>[1,n]</math>. Two special cases are loops that represent [[perfect numbers]] and cycles of length two that represent [[amicable pairs]].
+
+== References in popular culture ==
+* Amicable numbers are featured in the novel ''[[The Housekeeper and the Professor]]'' by [[Yōko Ogawa]], and in the [[The Professor's Beloved Equation (film)|Japanese film]] based on it.
+* [[Paul Auster]]'s collection of short stories entitled ''True Tales of American Life'' contains a story ('Mathematical Aphrodisiac' by Alex Galt) in which amicable numbers play an important role.
+* Amicable numbers are featured briefly in the novel ''The Stranger House'' by [[Reginald Hill]].
+* Amicable numbers are mentioned in the French novel ''[[The Parrot's Theorem]]'' by [[Denis Guedj]].
+* Amicable numbers are mentioned in the JRPG ''[[Persona 4 Golden]]''.
+* Amicable numbers are featured in the visual novel ''[[Rewrite (visual novel)|Rewrite]]''.
+* Amicable numbers (220, 284) are referenced in episode 13 of the 2017 Korean drama [[Andante (TV series)|Andante]].
+* Amicable numbers are featured in the Greek movie ''[[The Other Me (2016 film)]]''.
+* Amicable numbers are discussed in the book ''Are Numbers Real?'' by [[Brian Clegg (writer)|Brian Clegg]].
+* Amicable numbers are mentioned in the 2020 novel ''[[Apeirogon_(novel)|Apeirogon]]'' by [[Colum McCann]].
+* Amicable numbers are featured in the 2022 visual novel ''[[Heaven Burns Red]]'' by [[Key (company)|Key]].
+
+== See also ==
+* [[Betrothed numbers]] (quasi-amicable numbers)
+* [[Amicable triple]] - Three-number variation of Amicable numbers.
+
+== Notes ==
+{{reflist}}
+
+== References ==
+{{Wikisource1911Enc|Amicable Numbers}}
+* {{EB1911|wstitle=Amicable Numbers}}
+* {{cite book | last1=Sándor | first1=Jozsef | last2=Crstici | first2=Borislav | title=Handbook of number theory II | location=Dordrecht | publisher=Kluwer Academic | year=2004 | isbn=978-1-4020-2546-4 | pages=32–36 | zbl=1079.11001  }}
+* {{cite book | last=Wells | first=D. | year=1987 | title=The Penguin Dictionary of Curious and Interesting Numbers | pages=145–147 | location=London | publisher=[[Penguin Group]] | title-link=The Penguin Dictionary of Curious and Interesting Numbers }}
+* {{MathWorld |title=Amicable Pair|urlname=AmicablePair}}
+* {{MathWorld |title=Thâbit ibn Kurrah Rule|urlname=ThabitibnKurrahRule|author =Weisstein, Eric W.}}
+* {{MathWorld |title=Euler's Rule|urlname=EulersRule|author =Weisstein, Eric W.}}
+
+== External links ==
+* {{cite journal |author1=M. García |author2=J.M. Pedersen |author3=H.J.J. te Riele |title=Amicable pairs, a survey |journal=Report MAS-R0307 |date=2003-07-31 |url=http://oai.cwi.nl/oai/asset/4143/04143D.pdf}}
+* {{cite web|last=Grime|first=James|title=220 and 284 (Amicable Numbers)|url=http://www.numberphile.com/videos/220_284.html|work=Numberphile|publisher=[[Brady Haran]]|access-date=2013-04-02|archive-url=https://web.archive.org/web/20170716184637/http://www.numberphile.com/videos/220_284.html|archive-date=2017-07-16|url-status=dead}}
+* {{cite web|last=Grime|first=James|title=MegaFavNumbers - The Even Amicable Numbers Conjecture|url=https://www.youtube.com/watch?v=R2eQVqdUQLI| archive-url=https://ghostarchive.org/varchive/youtube/20211123/R2eQVqdUQLI| archive-date=2021-11-23 | url-status=live|work=YouTube|access-date=2020-06-09}}{{cbignore}}
+* {{cite web|last=Koutsoukou-Argyraki|first=Angeliki|title=Amicable Numbers (Formal proof development in Isabelle/HOL, Archive of Formal Proofs) |date=4 August 2020 |url=https://www.isa-afp.org/entries/Amicable_Numbers.html}}
+* {{cite web|first=Sergei|last=Chernykh|url=https://sech.me/ap/|title=Amicable pairs list|access-date=2023-09-10}} (database of all known amicable numbers)
+
+{{Divisor classes}}
+{{Classes of natural numbers}}
+
+{{DEFAULTSORT:Amicable Number}}
+[[Category:Arithmetic dynamics]]
+[[Category:Divisor function]]
+[[Category:Integer sequences]]
