@@ -37,7 +37,8 @@
       "cflags": [
         "-std=c17",
         "-O3",
-        "-Wall"
+        "-Wall",
+        "--debug"
       ],
       "xcode_settings": {
         "OTHER_CFLAGS": [ "-std=c17" ]
