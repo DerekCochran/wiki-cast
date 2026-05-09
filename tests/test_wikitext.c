@@ -81,7 +81,8 @@ static char *read_file(const char *path)
 
 static bool load_directory_samples(const char *dir_path,
                                    char ***samples_out,
-                                   size_t *count_out)
+                                   char ***names_out,
+                                  size_t *count_out)
 {
     DIR *dir = opendir(dir_path);
     if (!dir) {
@@ -182,26 +183,15 @@ static bool load_directory_samples(const char *dir_path,
         }
     }
 
-    for (size_t i = 0; i < count; ++i) {
-        free(names[i]);
-    }
-    free(names);
-
-    if (!ok) {
-        for (size_t i = 0; i < count; ++i) {
-            free(samples[i]);
-        }
-        free(samples);
-        return false;
-    }
-
     *samples_out = samples;
+    *names_out = names;
     *count_out = count;
     return true;
 }
 
 static bool load_file_samples(const char *path,
                               char ***samples_out,
+                              char ***names_out,
                               size_t *count_out)
 {
     char **samples = malloc(sizeof(char *));
@@ -216,7 +206,25 @@ static bool load_file_samples(const char *path,
         return false;
     }
 
+    char **names = malloc(sizeof(char *));
+    if (!names) {
+        fprintf(stderr, "ERROR: malloc\n");
+        free(samples[0]);
+        free(samples);
+        return false;
+    }
+
+    names[0] = strdup(path);
+    if (!names[0]) {
+        fprintf(stderr, "ERROR: malloc\n");
+        free(names);
+        free(samples[0]);
+        free(samples);
+        return false;
+    }
+
     *samples_out = samples;
+    *names_out = names;
     *count_out = 1;
     return true;
 }
@@ -249,12 +257,13 @@ int main(int argc, char **argv)
     }
 
     char **samples = NULL;
+    char **names = NULL;
     size_t sample_count = 0;
     bool loaded = false;
     if (S_ISDIR(st.st_mode)) {
-        loaded = load_directory_samples(input_path, &samples, &sample_count);
+        loaded = load_directory_samples(input_path, &samples, &names, &sample_count);
     } else {
-        loaded = load_file_samples(input_path, &samples, &sample_count);
+        loaded = load_file_samples(input_path, &samples, &names, &sample_count);
     }
 
     if (!loaded) {
@@ -262,11 +271,22 @@ int main(int argc, char **argv)
         return 1;
     }
 
-    size_t failed = run_parser_samples("wikitext", (const char **)samples, sample_count, cfg, false, 10);
+    size_t total_failed = 0;
+    for (size_t i = 0; i < sample_count; ++i) {
+        const char *single_sample = samples[i];
+        size_t failed = run_parser_samples("wikitext", &single_sample, 1, cfg, false, 10);
+        if (failed > 0) {
+            printf("FAILED: %s\n", names[i]);
+            total_failed++;
+        }
+    }
+
     for (size_t i = 0; i < sample_count; ++i) {
         free(samples[i]);
+        free(names[i]);
     }
     free(samples);
+    free(names);
     config_free(cfg);
-    return failed == 0 ? 0 : 1;
+    return total_failed == 0 ? 0 : 1;
 }

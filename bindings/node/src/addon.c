@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
+#include <assert.h>
 
 /* extern_tokenizer headers */
 #include "parse.h"
@@ -77,37 +78,28 @@ static napi_value json_stringify_wrapper(napi_env env, napi_callback_info info) 
     return result;
 }
 
-/**
- * Helper to convert a JS configuration object into a C ParserConfig struct.
- * It uses JSON.stringify in JS to get a JSON string, then config_load_string in C.
- */
-static napi_status get_config_from_js(napi_env env, napi_value config_obj, ParserConfig **out_cfg) {
-    napi_value global, json, stringify, result;
-    napi_get_global(env, &global);
-    napi_value key_json, key_stringify;
-    napi_create_string_utf8(env, "JSON", NAPI_AUTO_LENGTH, &key_json);
-    napi_get_property(env, global, key_json, &json);
-    napi_create_string_utf8(env, "stringify", NAPI_AUTO_LENGTH, &key_stringify);
-    napi_get_property(env, json, key_stringify, &stringify);
+static ParserConfig* get_token_config_json(napi_env env, napi_value token, char **json_out, size_t *json_len_out) {
+  napi_value get_attr_fn;
+  napi_status status = napi_get_named_property(env, token, "getAttribute", &get_attr_fn);
+  if (status != napi_ok) return NULL;
 
-    // Call JSON.stringify(config_obj)
-    napi_call_function(env, json, stringify, 1, &config_obj, &result);
+  napi_value key;
+  status = napi_create_string_utf8(env, "config", NAPI_AUTO_LENGTH, &key);
+  if (status != napi_ok) return NULL;
 
-    // Get the resulting JSON string
-    size_t len;
-    napi_get_value_string_utf8(env, result, NULL, 0, &len);
-    char *json_str = malloc(len + 1);
-    if (!json_str) return napi_generic_failure;
-    napi_get_value_string_utf8(env, result, json_str, len + 1, &len);
+  napi_value argv[1] = { key };
+  napi_value config_val;
+  status = napi_call_function(env, token, get_attr_fn, 1, argv, &config_val);
+  if (status != napi_ok) return NULL;
 
-    // Load the config using the existing C API
-    *out_cfg = config_load_string(json_str, len);
-    free(json_str);
+  char *path;
+  status = napi_unwrap(env, config_val, (void **)&path);
+  if (status != napi_ok) {
+      napi_throw_error(env, NULL, "Failed to unwrap Token object");
+      return NULL;
+  }
 
-    if (*out_cfg == NULL) {
-        return napi_generic_failure;
-    }
-    return napi_ok;
+  return config_load_file(path);
 }
 
 /**
@@ -177,7 +169,8 @@ static napi_value token_to_js(napi_env env, const Token *token, bool wrap_root) 
 static napi_value parse(napi_env env, napi_callback_info info) {
     size_t argc = 2;
     napi_value args[2];
-    napi_status status = napi_get_cb_info(env, info, &argc, args, NULL, NULL);
+    napi_value this_arg;
+    napi_status status = napi_get_cb_info(env, info, &argc, args, &this_arg, NULL);
     if (status != napi_ok || argc < 2) {
         napi_throw_error(env, NULL, "Invalid arguments. Expected (Buffer, {config: ...})");
         return NULL;
@@ -217,17 +210,13 @@ static napi_value parse(napi_env env, napi_callback_info info) {
     // The wikitext is a view into the buffer starting at the offset
     const char *wikitext = (const char *)((char *)buffer_data + byte_offset);
 
-    // 2. Extract config from args[1]
-    napi_value config_wrapper = args[1];
-    napi_value config_obj;
-    napi_value key_config;
-    napi_create_string_utf8(env, "config", NAPI_AUTO_LENGTH, &key_config);
-    napi_get_property(env, config_wrapper, key_config, &config_obj);
-
-    ParserConfig *cfg = NULL;
-    status = get_config_from_js(env, config_obj, &cfg);
-    if (status != napi_ok || cfg == NULL) {
-        napi_throw_error(env, NULL, "Failed to load config from JS object.");
+    /* Load parser config from the calling JS Token instance. */
+    char *cfg_json = NULL;
+    size_t cfg_json_len = 0;
+    ParserConfig* cfg = get_token_config_json(env, this_arg, &cfg_json, &cfg_json_len);
+    free(cfg_json);
+    if (!cfg) {
+        napi_throw_error(env, NULL, "Failed to load parser config from Token instance");
         return NULL;
     }
 

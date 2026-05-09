@@ -381,9 +381,9 @@ function nodeToJSON(node) {
  * @param {boolean} include
  * @param {boolean} tidy
  */
-function runParse(wikitext, parseFn, include = false, tidy = false, runLabel = 'parse') {
+function runParse(wikitext, parser, include = false, tidy = false, runLabel = 'parse') {
   const parseStart = process.hrtime.bigint();
-    root = parseFn(wikitext, include, MAX_STAGE);
+  const root = parser.parse(wikitext, include, MAX_STAGE);
   const parseEnd = process.hrtime.bigint();
   const toStringStart = process.hrtime.bigint();
   const text = String(root.toString());
@@ -419,16 +419,16 @@ function compareSample(wikitext, { include = false, tidy = false, name = 'sample
 
   try {
     try {
-      jsResult = runParse(wikitext, wikiparser.parse, include, tidy, 'js');
+      jsResult = runParse(wikitext, wikiparser, include, tidy, 'js');
     } catch (e) {
-      console.log('ERROR (JS)  ', label, e && e.message);
+      console.log('ERROR (JS)  ', label, e && e.message, e && e.stack);
       return false;
     }
 
     try {
-      nativeResult = runParse(wikitext, nativeParser.parse, include, tidy, 'native');
+      nativeResult = runParse(Buffer.from(wikitext, 'utf-8'), nativeParser, include, tidy, 'native');
     } catch (e) {
-      console.log('ERROR (NAT) ', label, e && e.message);
+      console.log('ERROR (NAT) ', label, e && e.message, e && e.stack);
       return false;
     }
   } finally {
