@@ -8,59 +8,73 @@
 #include "token.h"
 #include "config.h"
 
-/** Prorotypes for the tokens */
-static napi_value token_prototype = NULL;
+static napi_ref token_prototype_ref; // Use a reference to keep it alive
 
-static napi_status token_finalizer(napi_env env, void *finalize_data, void *finalize_context) {
+static void token_finalizer(napi_env env, void *finalize_data, void *finalize_context) {
     Token *token = (Token *)finalize_data;
     token_free(token);
-    return napi_ok;
+    return;
 }
 
-static napi_status toString_wrapper(napi_env env, napi_callback_info info) {
+static napi_value toString_wrapper(napi_env env, napi_callback_info info) {
     size_t argc = 1;
     napi_value args[1];
-    napi_status status = napi_get_cb_info(env, info, &argc, args, NULL, NULL);
-    if (status != napi_ok) return status;
+    napi_value this_arg;
+    // We usually unwrap 'this' if these are methods on the prototype
+    napi_status status = napi_get_cb_info(env, info, &argc, args, &this_arg, NULL);
+    
+    // If no argument was passed, we might be calling this as a method: obj.toString()
+    napi_value target = (argc > 0) ? args[0] : this_arg;
 
     Token *token;
-    status = napi_unwrap(env, args[0], (void **)&token);
-    if (status != napi_ok) return status;
+    status = napi_unwrap(env, target, (void **)&token);
+    if (status != napi_ok) {
+        napi_throw_error(env, NULL, "Failed to unwrap Token object");
+        return NULL;
+    }
 
     ThreadBuf *scratch = wiki_thread_buf_acquire_scratch();
     char *str = token_to_string(token, scratch);
     
     if (!str) {
         wiki_thread_buf_release_scratch(scratch);
-        return napi_generic_failure;
+        napi_throw_error(env, NULL, "Internal conversion to string failed");
+        return NULL;
     }
 
     napi_value result;
     status = napi_create_string_utf8(env, str, scratch->len, &result);
     
     wiki_thread_buf_release_scratch(scratch);
-    return status;
+    
+    if (status != napi_ok) return NULL;
+    return result; 
 }
 
-static napi_status json_stringify_wrapper(napi_env env, napi_callback_info info) {
+static napi_value json_stringify_wrapper(napi_env env, napi_callback_info info) {
     size_t argc = 1;
     napi_value args[1];
-    napi_status status = napi_get_cb_info(env, info, &argc, args, NULL, NULL);
-    if (status != napi_ok) return status;
+    napi_value this_arg;
+    napi_get_cb_info(env, info, &argc, args, &this_arg, NULL);
+
+    napi_value target = (argc > 0) ? args[0] : this_arg;
 
     Token *token;
-    status = napi_unwrap(env, args[0], (void **)&token);
-    if (status != napi_ok) return status;
+    if (napi_unwrap(env, target, (void **)&token) != napi_ok) {
+        napi_throw_error(env, NULL, "Failed to unwrap Token for JSON conversion");
+        return NULL;
+    }
 
     ThreadBuf *scratch = wiki_thread_buf_acquire_scratch();
-    
     json_stringify_wikiparser_node(token, scratch);
     
     napi_value result;
-    status = napi_create_string_utf8(env, scratch->buf, scratch->len, &result);
+    napi_status status = napi_create_string_utf8(env, scratch->buf, scratch->len, &result);
     
     wiki_thread_buf_release_scratch(scratch);
-    return status;
+    
+    if (status != napi_ok) return NULL;
+    return result;
 }
 
 /**
@@ -104,11 +118,10 @@ static napi_value token_to_js(napi_env env, const Token *token, bool wrap_root) 
     napi_value js_token;
     napi_create_object(env, &js_token);
 
-    if (wrap_root && token_prototype != NULL) {
-        napi_set_prototype(env, js_token, token_prototype);
-    }
-
     if (wrap_root) {
+        napi_value proto;
+        napi_get_reference_value(env, token_prototype_ref, &proto);
+        napi_set_named_property(env, js_token, "__proto__", proto);
         napi_wrap(env, js_token, (void *)token, token_finalizer, NULL, NULL);
     }
 
@@ -237,21 +250,21 @@ static napi_value parse(napi_env env, napi_callback_info info) {
  * N-API Module Initialization
  */
 napi_value Init(napi_env env, napi_value exports) {
-    // 2. Create the parse function
     napi_property_descriptor desc = { "parse", 0, parse, 0, 0, 0, napi_default, 0 };
     napi_define_properties(env, exports, 1, &desc);
 
-    // 2. Create a prototype for the tokens
     napi_value proto;
     napi_create_object(env, &proto);
+    
     napi_property_descriptor proto_descs[] = {
         { "toString", 0, toString_wrapper, 0, 0, 0, napi_default, 0 },
         { "jsonStringifyWikiparserNode", 0, json_stringify_wrapper, 0, 0, 0, napi_default, 0 }
     };
     napi_define_properties(env, proto, 2, proto_descs);
-    token_prototype = proto;
+
+    // Create a persistent reference so the prototype lives forever
+    napi_create_reference(env, proto, 1, &token_prototype_ref);
 
     return exports;
 }
-
 NAPI_MODULE(NODE_GYP_MODULE_NAME, Init)

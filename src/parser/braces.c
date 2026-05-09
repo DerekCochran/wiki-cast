@@ -537,12 +537,13 @@ static Token *build_template_token(const char **parts_restored, const size_t *pa
 					token_append_child(param, val_tok);
 
 			char idx_buf[32];
-			int n= snprintf(idx_buf, sizeof(idx_buf), "%zu", positional++);
-			if(n > 0) {
-				char *pname= malloc((size_t)n + 1);
-				if(pname) {
-					sz_copy(pname, idx_buf, (size_t)n + 1);
-					param->name= pname;
+			int n = snprintf(idx_buf, sizeof(idx_buf), "%zu", positional++);
+			if (n > 0) {
+				// strdup handles the malloc and the copy in one go.
+				// It is safe because it only copies the exact length of the string.
+				char *pname = strdup(idx_buf);
+				if (pname) {
+					param->name = pname;
 				}
 			}
 		}

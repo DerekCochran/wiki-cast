@@ -1,11 +1,11 @@
 cmake_minimum_required(VERSION 3.16)
 project(wiki_tokenizer C)
 
-set(CMAKE_C_STANDARD 11)
+set(CMAKE_C_STANDARD 17)
 set(CMAKE_C_STANDARD_REQUIRED ON)
 
-# Ensure the C11 dialect is explicitly used by the compiler.
-add_compile_options(-std=gnu11)
+# Ensure the C17 dialect is explicitly used by the compiler.
+add_compile_options(-std=gnu17)
 
 option(TOKENIZER_USE_NATIVE "Enable native CPU optimization flags (-march=native -mtune=native)" ON)
 
@@ -23,6 +23,7 @@ set(_TOKENIZER_ALL_C_FLAGS "${CMAKE_C_FLAGS} ${CMAKE_C_FLAGS_DEBUG} ${CMAKE_C_FL
 if(_TOKENIZER_ALL_C_FLAGS MATCHES "(^|[ ;])-fsanitize=undefined([ ;]|$)")
     add_compile_definitions(SZ_USE_MISALIGNED_LOADS=0)
 endif()
+add_compile_definitions(_DEFAULT_SOURCE)
 
 set(TOKENIZER_NODE_GYP_CFLAGS "-march=native -mtune=native -O3 -flto")
 

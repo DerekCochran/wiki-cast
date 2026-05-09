@@ -57,7 +57,6 @@ so ICU is required for both CMake and Node addon builds.
 **Build**
 
 ```bash
-cd extern_tokenizer
 mkdir -p build
 cd build
 cmake ..

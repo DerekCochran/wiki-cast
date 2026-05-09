@@ -2,6 +2,7 @@
   "targets": [
     {
       "target_name": "wikiparser-node-c-tokenizer",
+      "defines": [ "NAPI_VERSION=9", "_DEFAULT_SOURCE" ],
       "sources": [
         "src/addon.c",
         "../../src/accum.c",
