@@ -11,6 +11,11 @@
 /** Prorotypes for the tokens */
 static napi_value token_prototype = NULL;
 
+static napi_status token_finalizer(napi_env env, void *finalize_data, void *finalize_context) {
+    Token *token = (Token *)finalize_data;
+    token_free(token);
+    return napi_ok;
+}
 
 static napi_status toString_wrapper(napi_env env, napi_callback_info info) {
     size_t argc = 1;
@@ -95,9 +100,17 @@ static napi_status get_config_from_js(napi_env env, napi_value config_obj, Parse
  * Recursively converts a Token tree into a JavaScript object.
  * This mirrors the structure of the JS Token class.
  */
-static napi_value token_to_js(napi_env env, const Token *token) {
+static napi_value token_to_js(napi_env env, const Token *token, bool wrap_root) {
     napi_value js_token;
     napi_create_object(env, &js_token);
+
+    if (wrap_root && token_prototype != NULL) {
+        napi_set_prototype(env, js_token, token_prototype);
+    }
+
+    if (wrap_root) {
+        napi_wrap(env, js_token, (void *)token, token_finalizer, NULL, NULL);
+    }
 
     // type
     napi_value type_val;
@@ -123,7 +136,7 @@ static napi_value token_to_js(napi_env env, const Token *token) {
                 napi_create_string_utf8(env, child->text, child->text_len, &text_val);
                 napi_set_element(env, children_array, i, text_val);
             } else {
-                napi_value child_js = token_to_js(env, child->token);
+                napi_value child_js = token_to_js(env, child->token, false);
                 napi_set_element(env, children_array, i, child_js);
             }
         }
@@ -135,171 +148,6 @@ static napi_value token_to_js(napi_env env, const Token *token) {
     napi_create_object(env, &data_obj);
     bool has_data = false;
 
-    // switch (token->type) {
-    //     case TOKEN_HEADING: {
-    //         napi_value level_val;
-    //         napi_create_int32(env, token->data.heading.level, &level_val);
-    //         napi_set_named_property(env, data_obj, "level", level_val);
-    //         has_data = true;
-    //         break;
-    //     }
-    //     case TOKEN_COMMENT: {
-    //         napi_value closed_val;
-    //         napi_get_boolean(env, token->data.comment.closed, &closed_val);
-    //         napi_set_named_property(env, data_obj, "closed", closed_val);
-    //         has_data = true;
-    //         break;
-    //     }
-    //     case TOKEN_HTML: {
-    //         napi_value self_closing_val, closing_val, orig_tag_val;
-    //         napi_get_boolean(env, token->data.html.self_closing, &self_closing_val);
-    //         napi_get_boolean(env, token->data.html.closing, &closing_val);
-    //         napi_set_named_property(env, data_obj, "self_closing", self_closing_val);
-    //         napi_set_named_property(env, data_obj, "closing", closing_val);
-    //         if (token->data.html.orig_tag) {
-    //             napi_create_string_utf8(env, token->data.html.orig_tag, NAPI_AUTO_LENGTH, &orig_tag_val);
-    //             napi_set_named_property(env, data_obj, "orig_tag", orig_tag_val);
-    //         }
-    //         has_data = true;
-    //         break;
-    //     }
-    //     case TOKEN_TD: {
-    //         if (token->data.td.inner_syntax) {
-    //             napi_value inner_syntax_val;
-    //             napi_create_string_utf8(env, token->data.td.inner_syntax, NAPI_AUTO_LENGTH, &inner_syntax_val);
-    //             napi_set_named_property(env, data_obj, "inner_syntax", inner_syntax_val);
-    //         }
-    //         has_data = true;
-    //         break;
-    //     }
-    //     case TOKEN_DOUBLE_UNDERSCORE: {
-    //         napi_value case_sensitive_val, fullwidth_val;
-    //         napi_get_boolean(env, token->data.dunder.case_sensitive, &case_sensitive_val);
-    //         napi_get_boolean(env, token->data.dunder.fullwidth, &fullwidth_val);
-    //         napi_set_named_property(env, data_obj, "case_sensitive", case_sensitive_val);
-    //         napi_set_named_property(env, data_obj, "fullwidth", fullwidth_val);
-    //         has_data = true;
-    //         break;
-    //     }
-    //     case TOKEN_QUOTE: {
-    //         napi_value bold_val, italic_val;
-    //         napi_get_boolean(env, token->data.quote.bold, &bold_val);
-    //         napi_get_boolean(env, token->data.quote.italic, &italic_val);
-    //         napi_set_named_property(env, data_obj, "bold", bold_val);
-    //         napi_set_named_property(env, data_obj, "italic", italic_val);
-    //         has_data = true;
-    //         break;
-    //     }
-    //     case TOKEN_REDIRECT: {
-    //         if (token->data.redirect.pre) {
-    //             napi_value pre_val;
-    //             napi_create_string_utf8(env, token->data.redirect.pre, NAPI_AUTO_LENGTH, &pre_val);
-    //             napi_set_named_property(env, data_obj, "pre", pre_val);
-    //         }
-    //         if (token->data.redirect.post) {
-    //             napi_value post_val;
-    //             napi_create_string_utf8(env, token->data.redirect.post, NAPI_AUTO_LENGTH, &post_val);
-    //             napi_set_named_property(env, data_obj, "post", post_val);
-    //         }
-    //         if (token->data.redirect.link) {
-    //             napi_value link_val;
-    //             napi_create_string_utf8(env, token->data.redirect.link, NAPI_AUTO_LENGTH, &link_val);
-    //             napi_set_named_property(env, data_obj, "link", link_val);
-    //         }
-    //         if (token->data.redirect.display) {
-    //             napi_value display_val;
-    //             napi_create_string_utf8(env, token->data.redirect.display, NAPI_AUTO_LENGTH, &display_val);
-    //             napi_set_named_property(env, data_obj, "display", display_val);
-    //         }
-    //         has_data = true;
-    //         break;
-    //     }
-    //     case TOKEN_EXT: {
-    //         if (token->data.ext.name) {
-    //             napi_value name_val;
-    //             napi_create_string_utf8(env, token->data.ext.name, NAPI_AUTO_LENGTH, &name_val);
-    //             napi_set_named_property(env, data_obj, "name", name_val);
-    //         }
-    //         if (token->data.ext.attr) {
-    //             napi_value attr_val;
-    //             napi_create_string_utf8(env, token->data.ext.attr, NAPI_AUTO_LENGTH, &attr_val);
-    //             napi_set_named_property(env, data_obj, "attr", attr_val);
-    //         }
-    //         if (token->data.ext.inner) {
-    //             napi_value inner_val;
-    //             napi_create_string_utf8(env, token->data.ext.inner, NAPI_AUTO_LENGTH, &inner_val);
-    //             napi_set_named_property(env, data_obj, "inner", inner_val);
-    //         }
-    //         if (token->data.ext.closing) {
-    //             napi_value closing_val;
-    //             napi_create_string_utf8(env, token->data.ext.closing, NAPI_AUTO_LENGTH, &closing_val);
-    //             napi_set_named_property(env, data_obj, "closing", closing_val);
-    //         }
-    //         napi_value self_closing_val;
-    //         napi_get_boolean(env, token->data.ext.self_closing, &self_closing_val);
-    //         napi_set_named_property(env, data_obj, "self_closing", self_closing_val);
-    //         has_data = true;
-    //         break;
-    //     }
-    //     case TOKEN_INCLUDE: {
-    //         if (token->data.include.tag) {
-    //             napi_value tag_val;
-    //             napi_create_string_utf8(env, token->data.include.tag, NAPI_AUTO_LENGTH, &tag_val);
-    //             napi_set_named_property(env, data_obj, "tag", tag_val);
-    //         }
-    //         if (token->data.include.attr) {
-    //             napi_value attr_val;
-    //             napi_create_string_utf8(env, token->data.include.attr, NAPI_AUTO_LENGTH, &attr_val);
-    //             napi_set_named_property(env, data_obj, "attr", attr_val);
-    //         }
-    //         if (token->data.include.inner) {
-    //             napi_value inner_val;
-    //             napi_create_string_utf8(env, token->data.include.inner, NAPI_AUTO_LENGTH, &inner_val);
-    //             napi_set_named_property(env, data_obj, "inner", inner_val);
-    //         }
-    //         if (token->data.include.closing) {
-    //             napi_value closing_val;
-    //             napi_create_string_utf8(env, token->data.include.closing, NAPI_AUTO_LENGTH, &closing_val);
-    //             napi_set_named_property(env, data_obj, "closing", closing_val);
-    //         }
-    //         has_data = true;
-    //         break;
-    //     }
-    //     case TOKEN_EXT_ATTR: {
-    //         if (token->data.ext_attr.equal) {
-    //             napi_value equal_val;
-    //             napi_create_string_utf8(env, token->data.ext_attr.equal, NAPI_AUTO_LENGTH, &equal_val);
-    //             napi_set_named_property(env, data_obj, "equal", equal_val);
-    //         }
-    //         napi_value quote_open_val, quote_close_val;
-    //         napi_get_boolean(env, token->data.ext_attr.quote_open != '\0', &quote_open_val);
-    //         napi_get_boolean(env, token->data.ext_attr.quote_close != '\0', &quote_close_val);
-    //         napi_set_named_property(env, data_obj, "quote_open", quote_open_val);
-    //         napi_set_named_property(env, data_obj, "quote_close", quote_close_val);
-    //         has_data = true;
-    //         break;
-    //     }
-    //     case TOKEN_EXT_LINK: {
-    //         if (token->data.ext_link.space) {
-    //             napi_value space_val;
-    //             napi_create_string_utf8(env, token->data.ext_link.space, NAPI_AUTO_LENGTH, &space_val);
-    //             napi_set_named_property(env, data_obj, "space", space_val);
-    //         }
-    //         has_data = true;
-    //         break;
-    //     }
-    //     case TOKEN_TRANSCLUDE: {
-    //         if (token->data.transclude.modifier) {
-    //             napi_value modifier_val;
-    //             napi_create_string_utf8(env, token->data.transclude.modifier, NAPI_AUTO_LENGTH, &modifier_val);
-    //             napi_set_named_property(env, data_obj, "modifier", modifier_val);
-    //         }
-    //         has_data = true;
-    //         break;
-    //     }
-    //     default:
-    //         break;
-    // }
 
     if (has_data) {
         napi_set_named_property(env, js_token, "data", data_obj);
@@ -380,7 +228,7 @@ static napi_value parse(napi_env env, napi_callback_info info) {
     }
 
     // 4. Convert the Token tree to a JS object
-    napi_value js_root = token_to_js(env, root);
+    napi_value js_root = token_to_js(env, root, true);
 
     // 5. Cleanup the C token tree
     token_free(root);
@@ -392,8 +240,20 @@ static napi_value parse(napi_env env, napi_callback_info info) {
  * N-API Module Initialization
  */
 napi_value Init(napi_env env, napi_value exports) {
+    // 2. Create the parse function
     napi_property_descriptor desc = { "parse", 0, parse, 0, 0, 0, napi_default, 0 };
     napi_define_properties(env, exports, 1, &desc);
+
+    // 2. Create a prototype for the tokens
+    napi_value proto;
+    napi_create_object(env, &proto);
+    napi_property_descriptor proto_descs[] = {
+        { "toString", 0, toString_wrapper, 0, 0, 0, napi_default, 0 },
+        { "jsonStringifyWikiparserNode", 0, json_stringify_wrapper, 0, 0, 0, napi_default, 0 }
+    };
+    napi_define_properties(env, proto, 2, proto_descs);
+    token_prototype = proto;
+
     return exports;
 }
 
