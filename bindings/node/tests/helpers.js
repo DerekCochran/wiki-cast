@@ -4,15 +4,11 @@ const path = require('path');
 const fs = require('fs');
 const os = require('os');
 const { spawnSync } = require('child_process');
+const wikiparser = require("wikiparser-node");
+const nativeParser = require(path.join(__dirname, '..', 'build', 'Debug', 'wikiparser-node-c-tokenizer.node'));
 
-const { newProto, nativeProto } = require('./native_token_patch.js');
 const { ok } = require('assert');
 const MAX_STAGE = 20;
-let proto;
-// Token constructor (derived from the new JS implementation's prototype)
-const Token = newProto && newProto.constructor ? newProto.constructor : null;
-// Parser module (top-level API)
-const Parser = require(path.resolve(__dirname, '..', '..', '..', 'new-js', 'dist', 'index.js'));
 const LAST_SAMPLE_PATH = '/tmp/wiki_latest_test_input.txt';
 const PERF_LOG_PATH = '/tmp/wikitext_perf.txt';
 const DEFAULT_WIKI_CONFIG = path.join(__dirname, '..', '..', '..', 'config', 'enwiki.json');
@@ -21,8 +17,8 @@ if (!process.env.WIKI_CONFIG) {
   process.env.WIKI_CONFIG = DEFAULT_WIKI_CONFIG;
 }
 
-newProto.config = process.env.WIKI_CONFIG;
-nativeProto.config = process.env.WIKI_CONFIG;
+wikiparser.config = process.env.WIKI_CONFIG;
+nativeParser.config = process.env.WIKI_CONFIG;
 
 function writeLatestSampleCheckpoint(wikitext, opts) {
   fs.writeFileSync(LAST_SAMPLE_PATH, wikitext, 'utf8');
@@ -55,10 +51,6 @@ function writeTextFile(filePath, content) {
 
 function appendTextFile(filePath, content) {
   fs.appendFileSync(filePath, String(content), 'utf8');
-}
-
-function nowNs() {
-  return process.hrtime.bigint();
 }
 
 function nsToMsRounded(ns) {
@@ -390,26 +382,12 @@ function nodeToJSON(node) {
  * @param {boolean} tidy
  */
 function runParse(wikitext, parseFn, include = false, tidy = false, runLabel = 'parse') {
-  proto = parseFn;
-  // Temporarily patch Token.prototype.parse to use the supplied parse implementation
-  const parseMethod = parseFn && typeof parseFn.parse === 'function' ? parseFn.parse : parseFn;
-  const oldParse = Token && Token.prototype ? Token.prototype.parse : undefined;
-  if (Token && Token.prototype && parseMethod) {
-    Token.prototype.parse = parseMethod;
-  }
-  const parseStart = nowNs();
-  let root;
-  try {
-    root = Parser.parse(wikitext, include, MAX_STAGE);
-  } finally {
-    if (Token && Token.prototype && typeof oldParse !== 'undefined') {
-      Token.prototype.parse = oldParse;
-    }
-  }
-  const parseEnd = nowNs();
-  const toStringStart = nowNs();
+  const parseStart = process.hrtime.bigint();
+    root = parseFn(wikitext, include, MAX_STAGE);
+  const parseEnd = process.hrtime.bigint();
+  const toStringStart = process.hrtime.bigint();
   const text = String(root.toString());
-  const toStringEnd = nowNs();
+  const toStringEnd = process.hrtime.bigint();
   return {
     root,
     text,
@@ -441,14 +419,14 @@ function compareSample(wikitext, { include = false, tidy = false, name = 'sample
 
   try {
     try {
-      jsResult = runParse(wikitext, newProto, include, tidy, 'js');
+      jsResult = runParse(wikitext, wikiparser.parse, include, tidy, 'js');
     } catch (e) {
       console.log('ERROR (JS)  ', label, e && e.message);
       return false;
     }
 
     try {
-      nativeResult = runParse(wikitext, nativeProto, include, tidy, 'native');
+      nativeResult = runParse(wikitext, nativeParser.parse, include, tidy, 'native');
     } catch (e) {
       console.log('ERROR (NAT) ', label, e && e.message);
       return false;

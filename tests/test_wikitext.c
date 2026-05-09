@@ -14,7 +14,7 @@
 #include "test_common.h"
 
 #ifndef CONFIG_PATH
-#define CONFIG_PATH "../config/default.json"
+#define CONFIG_PATH "../config/enwiki.json"
 #endif
 
 static int compare_filenames(const void *a, const void *b)
