@@ -167,18 +167,10 @@ static void thread_buf_append_char(ThreadBuf *tb, char ch) {
 void token_log_json(const Token *t) {
 	if(!t) return;
 
-	char *json= NULL;
-	size_t json_len= 0;
-	FILE *fp= open_memstream(&json, &json_len);
-	if(!fp) return;
-
-	token_to_json(t, fp);
-	fclose(fp);
-
-	if(json) {
-		log_debug("token_to_json=%s", json);
-		free(json);
-	}
+	ThreadBuf *tb = wiki_thread_buf_acquire_scratch();
+	token_to_json(t, tb);
+	log_debug("token_to_json=%s", tb->buf);
+	wiki_thread_buf_release_scratch(tb);
 }
 
 static void token_to_string_rec(const Token *t, ThreadBuf *tb) {
@@ -770,37 +762,40 @@ char *token_to_string(const Token *t, ThreadBuf *tb) {
 
 /* ── JSON serialization ──────────────────────────────────────────────────── */
 
-static void json_string(const char *s, FILE *fp) {
-	fputc('"', fp);
+static void json_string(ThreadBuf *tb, const char *s) {
+	thread_buf_append_char(tb, '"');
 	if(!s) {
-		fputc('"', fp);
+		thread_buf_append_char(tb, '"');
 		return;
 	}
 	for(; *s; s++) {
 		unsigned char c= (unsigned char)*s;
 		if(c == '"')
-			fputs("\\\"", fp);
+			thread_buf_append(tb, "\\\"", 2);
 		else if(c == '\\')
-			fputs("\\\\", fp);
+			thread_buf_append(tb, "\\\\", 2);
 		else if(c == '\n')
-			fputs("\\n", fp);
+			thread_buf_append(tb, "\\n", 2);
 		else if(c == '\r')
-			fputs("\\r", fp);
+			thread_buf_append(tb, "\\r", 2);
 		else if(c == '\t')
-			fputs("\\t", fp);
-		else if(c < 0x20)
-			fprintf(fp, "\\u%04x", c);
+			thread_buf_append(tb, "\\t", 2);
+		else if(c < 0x20) {
+			char buf[8];
+			int len = snprintf(buf, sizeof(buf), "\\u%04x", c);
+			thread_buf_append(tb, buf, len);
+		}
 		else
-			fputc(c, fp);
+			thread_buf_append_char(tb, c);
 	}
-	fputc('"', fp);
+	thread_buf_append_char(tb, '"');
 }
 
-/* Write a JSON-escaped string of given length to fp (surrounded by quotes). */
-static void json_write_escaped_len(const char *s, size_t len, FILE *fp) {
-	fputc('"', fp);
+/* Write a JSON-escaped string of given length to tb (surrounded by quotes). */
+static void json_write_escaped_len(ThreadBuf *tb, const char *s, size_t len) {
+	thread_buf_append_char(tb, '"');
 	if(!s || len == 0) {
-		fputc('"', fp);
+		thread_buf_append_char(tb, '"');
 		return;
 	}
 	const char *p = s;
@@ -809,16 +804,21 @@ static void json_write_escaped_len(const char *s, size_t len, FILE *fp) {
 	while(p < end) {
 		unsigned char ch = (unsigned char)*p;
 		if(ch == '"' || ch == '\\' || ch < 0x20) {
-			if(chunk < p) fwrite(chunk, 1, p - chunk, fp);
+			if(chunk < p) thread_buf_append(tb, chunk, p - chunk);
 			switch(ch) {
-			case '"': fputs("\\\"", fp); break;
-			case '\\': fputs("\\\\", fp); break;
-			case '\b': fputs("\\b", fp); break;
-			case '\f': fputs("\\f", fp); break;
-			case '\n': fputs("\\n", fp); break;
-			case '\r': fputs("\\r", fp); break;
-			case '\t': fputs("\\t", fp); break;
-			default: fprintf(fp, "\\u%04x", ch); break;
+			case '"': thread_buf_append(tb, "\\\"", 2); break;
+			case '\\': thread_buf_append(tb, "\\\\", 2); break;
+			case '\b': thread_buf_append(tb, "\\b", 2); break;
+			case '\f': thread_buf_append(tb, "\\f", 2); break;
+			case '\n': thread_buf_append(tb, "\\n", 2); break;
+			case '\r': thread_buf_append(tb, "\\r", 2); break;
+			case '\t': thread_buf_append(tb, "\\t", 2); break;
+			default: {
+				char buf[8];
+				int len_esc = snprintf(buf, sizeof(buf), "\\u%04x", ch);
+				thread_buf_append(tb, buf, len_esc);
+				break;
+			}
 			}
 			p++;
 			chunk = p;
@@ -826,49 +826,49 @@ static void json_write_escaped_len(const char *s, size_t len, FILE *fp) {
 			p++;
 		}
 	}
-	if(chunk < end) fwrite(chunk, 1, end - chunk, fp);
-	fputc('"', fp);
+	if(chunk < end) thread_buf_append(tb, chunk, end - chunk);
+	thread_buf_append_char(tb, '"');
 }
 
-void token_to_json(const Token *t, FILE *fp) {
+void token_to_json(const Token *t, ThreadBuf *tb) {
 	if(!t) {
-		fputs("null", fp);
+		thread_buf_append(tb, "null", 4);
 		return;
 	}
 
 	if(t->type == TOKEN_TEXT) {
 		/* Text node: {"type":"text","data":"..."} */
-		fprintf(fp, "{\"type\":\"text\",\"data\":");
+		thread_buf_append(tb, "{\"type\":\"text\",\"data\":", 25);
 		assert(t->child_count == 1 && t->children[0].is_text);
-		json_write_escaped_len(t->children[0].text, t->children[0].text_len, fp);
-		fputc('}', fp);
+		json_write_escaped_len(tb, t->children[0].text, t->children[0].text_len);
+		thread_buf_append_char(tb, '}');
 		return;
 	}
 
-	fputs("{\"type\":", fp);
-	json_string(t->type_name, fp);
+	thread_buf_append(tb, "{\"type\":", 9);
+	json_string(tb, t->type_name);
 
 	if(t->name) {
-		fputs(",\"name\":", fp);
-		json_string(t->name, fp);
+		thread_buf_append(tb, ",\"name\":", 9);
+		json_string(tb, t->name);
 	}
 
 	if(t->child_count > 0) {
-		fputs(",\"childNodes\":[", fp);
+		thread_buf_append(tb, ",\"childNodes\":[", 15);
 		for(size_t i= 0; i < t->child_count; i++) {
-			if(i > 0) fputc(',', fp);
+			if(i > 0) thread_buf_append_char(tb, ',');
 			const Child *c= &t->children[i];
 			if(c->is_text) {
-				fprintf(fp, "{\"type\":\"text\",\"data\":");
-				json_write_escaped_len(c->text, c->text_len, fp);
-				fputc('}', fp);
+				thread_buf_append(tb, "{\"type\":\"text\",\"data\":", 25);
+				json_write_escaped_len(tb, c->text, c->text_len);
+				thread_buf_append_char(tb, '}');
 			} else {
-				token_to_json(c->token, fp);
+				token_to_json(c->token, tb);
 			}
 		}
-		fputs("]", fp);
+		thread_buf_append(tb, "]", 1);
 	}
-	fputc('}', fp);
+	thread_buf_append_char(tb, '}');
 }
 
 char token_sentinel_char(TokenType type) {

@@ -168,8 +168,10 @@ void token_free(Token *t);
  */
 void token_free_shallow(Token *t);
 
-/** Serialize a token tree to JSON, writing to fp. */
-void token_to_json(const Token *t, FILE *fp);
+/** Serialize a token tree to JSON, writing to fp. 
+ * This is used ONLY to test between teh wikiparser-node and this tokenizer
+*/
+void json_stringify_wikiparser_node(const Token *t, ThreadBuf *tb);
 void token_log_json(const Token *t);
 
 /**

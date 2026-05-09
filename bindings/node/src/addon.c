@@ -8,6 +8,56 @@
 #include "token.h"
 #include "config.h"
 
+/** Prorotypes for the tokens */
+static napi_value token_prototype = NULL;
+
+
+static napi_status toString_wrapper(napi_env env, napi_callback_info info) {
+    size_t argc = 1;
+    napi_value args[1];
+    napi_status status = napi_get_cb_info(env, info, &argc, args, NULL, NULL);
+    if (status != napi_ok) return status;
+
+    Token *token;
+    status = napi_unwrap(env, args[0], (void **)&token);
+    if (status != napi_ok) return status;
+
+    ThreadBuf *scratch = wiki_thread_buf_acquire_scratch();
+    char *str = token_to_string(token, scratch);
+    
+    if (!str) {
+        wiki_thread_buf_release_scratch(scratch);
+        return napi_generic_failure;
+    }
+
+    napi_value result;
+    status = napi_create_string_utf8(env, str, scratch->len, &result);
+    
+    wiki_thread_buf_release_scratch(scratch);
+    return status;
+}
+
+static napi_status json_stringify_wrapper(napi_env env, napi_callback_info info) {
+    size_t argc = 1;
+    napi_value args[1];
+    napi_status status = napi_get_cb_info(env, info, &argc, args, NULL, NULL);
+    if (status != napi_ok) return status;
+
+    Token *token;
+    status = napi_unwrap(env, args[0], (void **)&token);
+    if (status != napi_ok) return status;
+
+    ThreadBuf *scratch = wiki_thread_buf_acquire_scratch();
+    
+    json_stringify_wikiparser_node(token, scratch);
+    
+    napi_value result;
+    status = napi_create_string_utf8(env, scratch->buf, scratch->len, &result);
+    
+    wiki_thread_buf_release_scratch(scratch);
+    return status;
+}
+
 /**
  * Helper to convert a JS configuration object into a C ParserConfig struct.
  * It uses JSON.stringify in JS to get a JSON string, then config_load_string in C.

@@ -238,7 +238,7 @@ static napi_value parse_wrapped(napi_env env, napi_callback_info info) {
     napi_throw_error(env, NULL, "open_memstream failed");
     return NULL;
   }
-  token_to_json(root, jf);
+  json_stringify_wikiparser_node(root, jf);
   fclose(jf);
 
   /* Build the reconstructed string from token tree. */

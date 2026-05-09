@@ -278,7 +278,7 @@ static void stage_json_write_token(const Token *t, FILE *fp, const Accum *accum)
 /* Append a JSON snapshot representing the current root content (ws)
  * to <stage_log_dir>/native-stage.log. The ws buffer is scanned for
  * sentinel markers (\0<digits><ch>\x7F) and token entries from the
- * accumulator are embedded via token_to_json(). */
+ * accumulator are embedded via json_stringify_wikiparser_node(). */
 static void append_native_stage_json(const char *stage_log_dir, int stage, ThreadBuf *ws, Accum *accum) {
 	if(!stage_log_dir || !ws) return;
 	char pathbuf[1024];
