@@ -33,7 +33,15 @@
         "../../src/util/pcre_cache.c"
       ],
       "include_dirs": [ "../../include", "../../src/include" ],
-      "libraries": [ "-lpcre2-8", "-lcjson", "-licuuc", "-licudata" ]
+      "libraries": [ "-lpcre2-8", "-lcjson", "-licuuc", "-licudata" ],
+      "cflags": [
+        "-std=c17",
+        "-O3",
+        "-Wall"
+      ],
+      "xcode_settings": {
+        "OTHER_CFLAGS": [ "-std=c17" ]
+      }
     }
   ]
 }

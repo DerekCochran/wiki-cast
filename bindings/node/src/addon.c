@@ -230,9 +230,6 @@ static napi_value parse(napi_env env, napi_callback_info info) {
     // 4. Convert the Token tree to a JS object
     napi_value js_root = token_to_js(env, root, true);
 
-    // 5. Cleanup the C token tree
-    token_free(root);
-
     return js_root;
 }
 
