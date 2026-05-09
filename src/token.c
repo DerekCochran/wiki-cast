@@ -168,8 +168,8 @@ void token_log_json(const Token *t) {
 	if(!t) return;
 
 	ThreadBuf *tb = wiki_thread_buf_acquire_scratch();
-	token_to_json(t, tb);
-	log_debug("token_to_json=%s", tb->buf);
+	json_stringify_wikiparser_node(t, tb);
+	log_debug("json_stringify_wikiparser_node=%s", tb->buf);
 	wiki_thread_buf_release_scratch(tb);
 }
 
@@ -830,7 +830,7 @@ static void json_write_escaped_len(ThreadBuf *tb, const char *s, size_t len) {
 	thread_buf_append_char(tb, '"');
 }
 
-void token_to_json(const Token *t, ThreadBuf *tb) {
+void json_stringify_wikiparser_node(const Token *t, ThreadBuf *tb) {
 	if(!t) {
 		thread_buf_append(tb, "null", 4);
 		return;
@@ -863,7 +863,7 @@ void token_to_json(const Token *t, ThreadBuf *tb) {
 				json_write_escaped_len(tb, c->text, c->text_len);
 				thread_buf_append_char(tb, '}');
 			} else {
-				token_to_json(c->token, tb);
+				json_stringify_wikiparser_node(c->token, tb);
 			}
 		}
 		thread_buf_append(tb, "]", 1);
