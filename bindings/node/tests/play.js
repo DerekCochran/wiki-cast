@@ -15,15 +15,19 @@ const nativeImpl = nativeProto.parse(testBuffer, {
     config: config
 });
 
-if( jsImpl.toString() !== nativeImpl.toString() ) {
-    console.log("jsImpl.toString(): "+ jsImpl.toString());
-    console.log("nativeImpl.toString(): "+ nativeImpl.toString());
+const jsString = jsImpl.toString();
+const nativeString = nativeImpl.toString();
+if( jsString !== nativeString ) {
+    console.log("jsImpl.toString(): "+ jsString);
+    console.log("nativeImpl.toString(): "+ nativeString);
     console.error("Error: The string representations of the AST outputs differ between implementations.");
 }
-if (JSON.stringify(jsImpl) === JSON.stringify(nativeImpl)) {
+const jsJSON = JSON.stringify(jsImpl);
+const nativeJSON = nativeImpl.jsonStringifyWikiparserNode();
+if (jsJSON === nativeJSON) {
     console.log("Success: Both implementations produce the same AST.");
 } else {
-    console.log("jsImpl JSON: "+ JSON.stringify(jsImpl));
-    console.log("nativeImpl JSON: "+ JSON.stringify(nativeImpl));
+    console.log("js JSON: "+ jsJSON);
+    console.log("c  JSON: "+ nativeJSON);
     console.error("Error: The AST outputs differ between implementations.");
 }

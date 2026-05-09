@@ -837,36 +837,36 @@ void json_stringify_wikiparser_node(const Token *t, ThreadBuf *tb) {
 	}
 
 	if(t->type == TOKEN_TEXT) {
-		/* Text node: {"type":"text","data":"..."} */
-		thread_buf_append(tb, "{\"type\":\"text\",\"data\":", 25);
+		/* Text node: {"data":"..."} */
+		thread_buf_append(tb, "{\"data\":", 8);
 		assert(t->child_count == 1 && t->children[0].is_text);
 		json_write_escaped_len(tb, t->children[0].text, t->children[0].text_len);
 		thread_buf_append_char(tb, '}');
 		return;
 	}
 
-	thread_buf_append(tb, "{\"type\":", 9);
-	json_string(tb, t->type_name);
+	thread_buf_append_char(tb, '{');
 
-	if(t->name) {
-		thread_buf_append(tb, ",\"name\":", 9);
+	if(t->name && strlen(t->name) > 0) {
+		thread_buf_append(tb, "\"name\":", 7);
 		json_string(tb, t->name);
+		thread_buf_append_char(tb, ',');
 	}
 
 	if(t->child_count > 0) {
-		thread_buf_append(tb, ",\"childNodes\":[", 15);
+		thread_buf_append(tb, "\"childNodes\":[", 14);
 		for(size_t i= 0; i < t->child_count; i++) {
 			if(i > 0) thread_buf_append_char(tb, ',');
 			const Child *c= &t->children[i];
 			if(c->is_text) {
-				thread_buf_append(tb, "{\"type\":\"text\",\"data\":", 25);
+				thread_buf_append(tb, "{\"data\":", 8);
 				json_write_escaped_len(tb, c->text, c->text_len);
 				thread_buf_append_char(tb, '}');
 			} else {
 				json_stringify_wikiparser_node(c->token, tb);
 			}
 		}
-		thread_buf_append(tb, "]", 1);
+		thread_buf_append_char(tb, ']');
 	}
 	thread_buf_append_char(tb, '}');
 }
