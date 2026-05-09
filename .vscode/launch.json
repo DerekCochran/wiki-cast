@@ -5,9 +5,8 @@
             "name": "Debug Native Addon",
             "type": "cppdbg",
             "request": "launch",
-            // Use the absolute path from 'which node'
             "program": "/usr/bin/node", 
-            "args": ["${workspaceFolder}/bindings/node/tests/play.js"],
+            "args": ["${workspaceFolder}/bindings/node/tests/debug_c.js"],
             "cwd": "${workspaceFolder}",
             "externalConsole": false,
             "MIMode": "gdb",
