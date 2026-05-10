@@ -362,8 +362,12 @@ function artifactRootDir() {
  * Text nodes expose their raw data string.
  */
 function nodeToJSON(node) {
-  if (!node) return null;
-  if (node.type === 'text') {
+  if (!node) 
+    return null;
+  if( typeof node === 'string' ) {
+    return { type: 'text', data: node };
+  }
+  if (node.type === 'text' ) {
     return { type: 'text', data: String(node.data) };
   }
   return {

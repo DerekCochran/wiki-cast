@@ -193,8 +193,6 @@ configure_parser_test_env(wikitext_c)
 add_custom_target(node_binding ALL
     COMMAND ${CMAKE_COMMAND} -E echo "Building Node native addon"
     COMMAND ${CMAKE_COMMAND} -E env
-            CFLAGS=${TOKENIZER_NODE_GYP_CFLAGS}
-            CXXFLAGS=${TOKENIZER_NODE_GYP_CFLAGS}
             npx node-gyp rebuild --debug
     WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/bindings/node
     DEPENDS wikitokenizer

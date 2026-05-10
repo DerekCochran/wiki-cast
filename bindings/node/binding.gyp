@@ -36,13 +36,19 @@
       "include_dirs": [ "../../include", "../../src/include" ],
       "libraries": [ "-lpcre2-8", "-lcjson", "-licuuc", "-licudata" ],
       "cflags": [
-        "-std=c17",
-        "-O3",
+        "-g3",
+        "-O0",
+        "-fno-omit-frame-pointer",
         "-Wall",
         "--debug"
       ],
       "xcode_settings": {
-        "OTHER_CFLAGS": [ "-std=c17" ]
+        "OTHER_CFLAGS": [ 
+          "-std=c17", 
+          "-g3", 
+          "-O0" 
+        ],
+        "GCC_OPTIMIZATION_LEVEL": "0"
       }
     }
   ]

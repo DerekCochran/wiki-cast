@@ -6,7 +6,7 @@ const nativeProto = require(path.join(__dirname, '..', 'build', 'Debug', 'wikipa
 wikiparser.config = "enwiki";
 nativeProto.config = "/home/djc/git/wikiparser-node-c-tokenizer/config/enwiki.json";
 
-const testString = "{{Template}}";
+const testString = '{{Template|}}';
 const jsImpl = wikiparser.parse(testString);
 
 const testBuffer = Buffer.from(testString, 'utf-8');
@@ -23,6 +23,8 @@ const jsJSON = JSON.stringify(jsImpl);
 const nativeJSON = nativeImpl.jsonStringifyWikiparserNode();
 if (jsJSON === nativeJSON) {
     console.log("Success: Both implementations produce the same AST.");
+    console.log("js JSON: "+ jsJSON);
+    console.log("c  JSON: "+ nativeJSON);
 } else {
     console.log("js JSON: "+ jsJSON);
     console.log("c  JSON: "+ nativeJSON);

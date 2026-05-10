@@ -859,9 +859,8 @@ void json_stringify_wikiparser_node(const Token *t, ThreadBuf *tb) {
 		thread_buf_append_char(tb, ']');
 	}
 	if(t->name && strlen(t->name) > 0) {
-		thread_buf_append(tb, "\"name\":", 7);
+		thread_buf_append(tb, ",\"name\":", 8);
 		json_string(tb, t->name);
-		thread_buf_append_char(tb, ',');
 	}
 
 	thread_buf_append_char(tb, '}');
