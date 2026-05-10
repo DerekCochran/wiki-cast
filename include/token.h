@@ -172,7 +172,6 @@ void token_free_shallow(Token *t);
  * This is used ONLY to test between teh wikiparser-node and this tokenizer
 */
 void json_stringify_wikiparser_node(const Token *t, ThreadBuf *tb);
-void token_log_json(const Token *t);
 
 /**
  * Recursively serialise a token tree into a caller-provided buffer,

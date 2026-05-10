@@ -164,15 +164,6 @@ static void thread_buf_append_char(ThreadBuf *tb, char ch) {
 	tb->buf[tb->len++]= ch;
 }
 
-void token_log_json(const Token *t) {
-	if(!t) return;
-
-	ThreadBuf *tb = wiki_thread_buf_acquire_scratch();
-	json_stringify_wikiparser_node(t, tb);
-	log_debug("json_stringify_wikiparser_node=%s", tb->buf);
-	wiki_thread_buf_release_scratch(tb);
-}
-
 static void token_to_string_rec(const Token *t, ThreadBuf *tb) {
 	if(!t || !tb) return;
 
