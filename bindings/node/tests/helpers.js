@@ -252,8 +252,8 @@ function compareSample(wikitext, { include = false, tidy = false, name = 'sample
 
   const textOk = jsResult.text === nativeResult.text;
   const cmp = compareAST(jsResult.tree, nativeResult.tree);
-
   const ok = textOk && cmp.success;
+
   if (!ok) {
     console.error('FAIL', label);
 
@@ -320,7 +320,7 @@ function compareSample(wikitext, { include = false, tidy = false, name = 'sample
         try { fs.copyFileSync(src, dst); } catch (e) { /* ignore */ }
       }
       // Read the js-stage.log and native-stage.log.  Match each on stage names and print which stage they do not match on.
-      if( name.startsWith('pipeline')) {
+      if( ! name.startsWith('export') && ! name.startsWith('wikitext')) {
         const jsStageLogPath = path.join(stageDir, 'js-stage.log');
         const nativeStageLogPath = path.join(stageDir, 'native-stage.log');
         if (fs.existsSync(jsStageLogPath) && fs.existsSync(nativeStageLogPath)) {

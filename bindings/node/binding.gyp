@@ -30,6 +30,7 @@
         "../../src/token.c",
         "../../src/tr.c",
         "../../src/util/thread_buffer.c",
+        "../../src/util/token_to_json.c",
         "../../src/util/log.c",
         "../../src/util/pcre_cache.c"
       ],

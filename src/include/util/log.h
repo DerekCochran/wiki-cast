@@ -12,8 +12,7 @@
 #include <stdarg.h>
 #include <stdbool.h>
 #include <time.h>
-#include <cjson/cJSON.h>
-#include "token.h"
+#include "token_to_json.h"
 
 #define LOG_VERSION "0.1.0"
 
