@@ -231,7 +231,7 @@ static size_t run_parser_samples(const char *parser_name,
     size_t failed = 0;
     for (size_t i = 0; i < sample_count; i++) {
         const char *wikitext = samples[i];
-        Token *root = wiki_parse(wikitext, cfg, include, max_stage);
+        Token *root = wiki_parse(wikitext, strlen(wikitext), cfg, include, max_stage);
         if (!root) {
             printf("FAIL [%s][%zu] parse returned NULL: %s\n",
                    parser_name, i + 1, wikitext);

@@ -843,12 +843,6 @@ void json_stringify_wikiparser_node(const Token *t, ThreadBuf *tb) {
 
 	thread_buf_append_char(tb, '{');
 
-	if(t->name && strlen(t->name) > 0) {
-		thread_buf_append(tb, "\"name\":", 7);
-		json_string(tb, t->name);
-		thread_buf_append_char(tb, ',');
-	}
-
 	if(t->child_count > 0) {
 		thread_buf_append(tb, "\"childNodes\":[", 14);
 		for(size_t i= 0; i < t->child_count; i++) {
@@ -864,6 +858,12 @@ void json_stringify_wikiparser_node(const Token *t, ThreadBuf *tb) {
 		}
 		thread_buf_append_char(tb, ']');
 	}
+	if(t->name && strlen(t->name) > 0) {
+		thread_buf_append(tb, "\"name\":", 7);
+		json_string(tb, t->name);
+		thread_buf_append_char(tb, ',');
+	}
+
 	thread_buf_append_char(tb, '}');
 }
 

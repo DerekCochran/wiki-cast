@@ -207,19 +207,14 @@ static napi_value parse(napi_env env, napi_callback_info info) {
         return NULL;
     }
 
-    // 4. Now get the underlying ArrayBuffer info
-    void *buffer_data;
-    size_t buffer_byte_length;
-    napi_get_arraybuffer_info(env, buffer, &buffer_data, &buffer_byte_length);
-
     // The wikitext is a view into the buffer starting at the offset
-    const char *wikitext = (const char *)((char *)buffer_data + byte_offset);
+    const char *wikitext = (const char *)data;
 
     /* Load parser config from the calling JS Token instance. */
     ParserConfig* cfg = get_token_config_json(env, this_arg);
 
     // 3. Call the C parser
-    Token *root = wiki_parse(wikitext, buffer_byte_length, cfg, false, 10);
+    Token *root = wiki_parse(wikitext, byte_length, cfg, false, 10);
     config_free(cfg);
 
     if (root == NULL) {

@@ -6,7 +6,7 @@ const nativeProto = require(path.join(__dirname, '..', 'build', 'Debug', 'wikipa
 wikiparser.config = "enwiki";
 nativeProto.config = "/home/djc/git/wikiparser-node-c-tokenizer/config/enwiki.json";
 
-const testString = "{{T|v=RFC 2119}}";
+const testString = "{{Template}}";
 const jsImpl = wikiparser.parse(testString);
 
 const testBuffer = Buffer.from(testString, 'utf-8');
