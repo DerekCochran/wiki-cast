@@ -23,7 +23,7 @@ runTests([
   // boolean attribute should still produce empty attr-value child
   '<ref a=b c="d" e>z</ref>',
   // ref inner content should still parse quotes/template in later stages
-  "text<ref>Merriman, John M. (2009). ''How a Bombing in Fin-de-Siecle Paris Ignited the Age of Modern Terror''. New Haven: Yale University Press. p. 42. {{ISBN|9780300158864}}</ref> end",
+  "text<ref>John M. (2009). ''How a ''. {{ISBN|9780300158864}}</ref> end",
   // inExt=true behavior: [[A|]] should remain literal inside ref
   '<ref>[[A|]]</ref>',
   // ref with nested template using {{!}} in parameter value

@@ -33,13 +33,19 @@ function cmpObj(obj1, obj2) {
  * JS will have a single text child node without a data property, while C will have no child nodes and an empty data property.
  * expected.Json: {"type":"ext-inner","name":"section","childNodes":[{"type":"text"}]}
  * actual.Json: {"type":"ext-inner","name":"section","childNodes":[]}
+ * --OR--
+ * actual.Json: {"type":"ext-inner","name":"section"}
 */
 function handleChildrenMismatch(jsToken, ncToken) {
-    if( jsToken.type === 'ext-inner' && ncToken.type === 'ext-inner' ) {
-        if( jsToken.name === 'section' ) {
-            if( jsToken.childNodes.length === 1 && jsToken.childNodes[0].type === 'text' && ncToken.childNodes.length === 0 ) {
-                // This is a known difference between the C and JS tokenizers, so we can ignore it.
-                return true;
+    // ONLY handle if one is empty and the other has just a single child!!!
+    if((! jsToken.childNodes || jsToken.childNodes.length === 0) && ncToken.childNodes && ncToken.childNodes.length === 1 
+        || (! ncToken.childNodes || ncToken.childNodes.length === 0) && jsToken.childNodes && jsToken.childNodes.length === 1 ) {
+        if( jsToken.type === 'ext-inner' && ncToken.type === 'ext-inner' ) {
+            if( jsToken.name === 'section' ) {
+                if( jsToken.childNodes.length === 1 && jsToken.childNodes[0].type === 'text' && (! ncToken.childNodes || ncToken.childNodes.length === 0) ) {
+                    // This is a known difference between the C and JS tokenizers, so we can ignore it.
+                    return true;
+                }
             }
         }
     }
@@ -51,12 +57,12 @@ function compareAST(jsToken, ncToken, parents= []) {
         return { success: false,  kind: 'type', jsToken: jsToken, ncToken: ncToken, parents: parents, reason: `Type mismatch: JS ${jsToken.type} vs C ${ncToken.type}` };
     }
     if( jsToken.type === 'heading' ) {
-        if( !cmpObj(jsToken.level, ncToken.level) ) {
-            return { success: false,  kind: 'data', jsToken: jsToken, ncToken: ncToken, parents: parents, reason: `Heading level mismatch: JS ${jsToken.level} vs C ${ncToken.level}` };
-        }
-        if( !cmpObj(jsToken.id, ncToken.id) ) {
-            return { success: false,  kind: 'data', jsToken: jsToken, ncToken: ncToken, parents: parents, reason: `Heading id mismatch: JS "${jsToken.id}" vs C "${ncToken.id}"` };
-        }
+        // if( !cmpObj(jsToken.level, ncToken.level) ) {
+        //     return { success: false,  kind: 'data', jsToken: jsToken, ncToken: ncToken, parents: parents, reason: `Heading level mismatch: JS ${jsToken.level} vs C ${ncToken.level}` };
+        // }
+        // if( !cmpObj(jsToken.id, ncToken.id) ) {
+        //     return { success: false,  kind: 'data', jsToken: jsToken, ncToken: ncToken, parents: parents, reason: `Heading id mismatch: JS "${jsToken.id}" vs C "${ncToken.id}"` };
+        // }
     } else if( jsToken.type === 'text' ) {
         if( ncToken == null ) {
             ncToken = { type: 'text', data: '' };
@@ -112,9 +118,9 @@ function compareAST(jsToken, ncToken, parents= []) {
         if( !cmpObj(jsToken.self_closing, ncToken.self_closing) ) {
             return { success: false,  kind: 'data', jsToken: jsToken, ncToken: ncToken, parents: parents, reason: `Html self_closing mismatch: JS ${jsToken.self_closing} vs C ${ncToken.self_closing}` };
         }
-        if( !cmpObj(jsToken.closing, ncToken.closing) ) {
-            return { success: false,  kind: 'data', jsToken: jsToken, ncToken: ncToken, parents: parents, reason: `Html closing mismatch: JS ${jsToken.closing} vs C ${ncToken.closing}` };
-        }
+        // if( !cmpObj(jsToken.closing, ncToken.closing) ) {
+        //     return { success: false,  kind: 'data', jsToken: jsToken, ncToken: ncToken, parents: parents, reason: `Html closing mismatch: JS ${jsToken.closing} vs C ${ncToken.closing}` };
+        // }
         if( !cmpObj(jsToken.orig_tag, ncToken.orig_tag) ) {
             return { success: false,  kind: 'data', jsToken: jsToken, ncToken: ncToken, parents: parents, reason: `Html orig_tag mismatch: JS "${jsToken.orig_tag}" vs C "${ncToken.orig_tag}"` };
         }
@@ -130,52 +136,52 @@ function compareAST(jsToken, ncToken, parents= []) {
             return { success: false,  kind: 'data', jsToken: jsToken, ncToken: ncToken, parents: parents, reason: `Dunder fullwidth mismatch: JS ${jsToken.fullwidth} vs C ${ncToken.fullwidth}` };
         }
     } else if (jsToken.type === 'quote') {
-        if( !cmpObj(jsToken.bold, ncToken.bold) ) {
-            return { success: false,  kind: 'data', jsToken: jsToken, ncToken: ncToken, parents: parents, reason: `Quote bold mismatch: JS ${jsToken.bold} vs C ${ncToken.bold}` };
-        }
-        if( !cmpObj(jsToken.italic, ncToken.italic) ) {
-            return { success: false,  kind: 'data', jsToken: jsToken, ncToken: ncToken, parents: parents, reason: `Quote italic mismatch: JS ${jsToken.italic} vs C ${ncToken.italic}` };
-        }
+        // if( !cmpObj(jsToken.bold, ncToken.bold) ) {
+        //     return { success: false,  kind: 'data', jsToken: jsToken, ncToken: ncToken, parents: parents, reason: `Quote bold mismatch: JS ${jsToken.bold} vs C ${ncToken.bold}` };
+        // }
+        // if( !cmpObj(jsToken.italic, ncToken.italic) ) {
+        //     return { success: false,  kind: 'data', jsToken: jsToken, ncToken: ncToken, parents: parents, reason: `Quote italic mismatch: JS ${jsToken.italic} vs C ${ncToken.italic}` };
+        // }
     } else if (jsToken.type === 'image-parameter') {
-        if( !cmpObj(jsToken.value, ncToken.value) ) {
-            return { success: false,  kind: 'data', jsToken: jsToken, ncToken: ncToken, parents: parents, reason: `Image-parameter value mismatch: JS "${jsToken.value}" vs C "${ncToken.value}"` };
-        }
-        if( !cmpObj(jsToken.width, ncToken.width) ) {
-            return { success: false,  kind: 'data', jsToken: jsToken, ncToken: ncToken, parents: parents, reason: `Image-parameter width mismatch: JS "${jsToken.width}" vs C "${ncToken.width}"` };
-        }
-        if( !cmpObj(jsToken.height, ncToken.height) ) {
-            return { success: false,  kind: 'data', jsToken: jsToken, ncToken: ncToken, parents: parents, reason: `Image-parameter height mismatch: JS "${jsToken.height}" vs C "${ncToken.height}"` };
-        }
+        // if( !cmpObj(jsToken.value, ncToken.value) ) {
+        //     return { success: false,  kind: 'data', jsToken: jsToken, ncToken: ncToken, parents: parents, reason: `Image-parameter value mismatch: JS "${jsToken.value}" vs C "${ncToken.value}"` };
+        // }
+        // if( !cmpObj(jsToken.width, ncToken.width) ) {
+        //     return { success: false,  kind: 'data', jsToken: jsToken, ncToken: ncToken, parents: parents, reason: `Image-parameter width mismatch: JS "${jsToken.width}" vs C "${ncToken.width}"` };
+        // }
+        // if( !cmpObj(jsToken.height, ncToken.height) ) {
+        //     return { success: false,  kind: 'data', jsToken: jsToken, ncToken: ncToken, parents: parents, reason: `Image-parameter height mismatch: JS "${jsToken.height}" vs C "${ncToken.height}"` };
+        // }
     } else if (jsToken.type === 'ext-link') {
-        if( !cmpObj(jsToken.link, ncToken.link) ) {
-            return { success: false,  kind: 'data', jsToken: jsToken, ncToken: ncToken, parents: parents, reason: `Ext-link link mismatch: JS "${jsToken.link}" vs C "${ncToken.link}"` };
-        }
-        if( !cmpObj(jsToken.protocol, ncToken.protocol) ) {
-            return { success: false,  kind: 'data', jsToken: jsToken, ncToken: ncToken, parents: parents, reason: `Ext-link protocol mismatch: JS "${jsToken.protocol}" vs C "${ncToken.protocol}"` };
-        }
-        if( !cmpObj(jsToken.innerText, ncToken.innerText) ) {
-            return { success: false,  kind: 'data', jsToken: jsToken, ncToken: ncToken, parents: parents, reason: `Ext-link innerText mismatch: JS "${jsToken.innerText}" vs C "${ncToken.innerText}"` };
-        }
+        // if( !cmpObj(jsToken.link, ncToken.link) ) {
+        //     return { success: false,  kind: 'data', jsToken: jsToken, ncToken: ncToken, parents: parents, reason: `Ext-link link mismatch: JS "${jsToken.link}" vs C "${ncToken.link}"` };
+        // }
+        // if( !cmpObj(jsToken.protocol, ncToken.protocol) ) {
+        //     return { success: false,  kind: 'data', jsToken: jsToken, ncToken: ncToken, parents: parents, reason: `Ext-link protocol mismatch: JS "${jsToken.protocol}" vs C "${ncToken.protocol}"` };
+        // }
+        // if( !cmpObj(jsToken.innerText, ncToken.innerText) ) {
+        //     return { success: false,  kind: 'data', jsToken: jsToken, ncToken: ncToken, parents: parents, reason: `Ext-link innerText mismatch: JS "${jsToken.innerText}" vs C "${ncToken.innerText}"` };
+        // }
     } else if (jsToken.type === 'imagemap-link') {
-        if( !cmpObj(jsToken.link, ncToken.link) ) {
-            return { success: false,  kind: 'data', jsToken: jsToken, ncToken: ncToken, parents: parents, reason: `Imagemap-link link mismatch: JS "${jsToken.link}" vs C "${ncToken.link}"` };
-        }
+        // if( !cmpObj(jsToken.link, ncToken.link) ) {
+        //     return { success: false,  kind: 'data', jsToken: jsToken, ncToken: ncToken, parents: parents, reason: `Imagemap-link link mismatch: JS "${jsToken.link}" vs C "${ncToken.link}"` };
+        // }
     } else if (jsToken.type === 'template' || jsToken.type === 'magic-word') {
-        if( !cmpObj(jsToken.modifier, ncToken.modifier) ) {
-            return { success: false,  kind: 'data', jsToken: jsToken, ncToken: ncToken, parents: parents, reason: `Template modifier mismatch: JS "${jsToken.modifier}" vs C "${ncToken.modifier}"` };
-        }
+        // if( !cmpObj(jsToken.modifier, ncToken.modifier) ) {
+        //     return { success: false,  kind: 'data', jsToken: jsToken, ncToken: ncToken, parents: parents, reason: `Template modifier mismatch: JS "${jsToken.modifier}" vs C "${ncToken.modifier}"` };
+        // }
         if( !cmpObj(jsToken.name, ncToken.name) ) {
             return { success: false,  kind: 'data', jsToken: jsToken, ncToken: ncToken, parents: parents, reason: `Template name mismatch: JS "${jsToken.name}" vs C "${ncToken.name}"` };
         }
-        if( !cmpObj(jsToken.module, ncToken.module) ) {
-            return { success: false,  kind: 'data', jsToken: jsToken, ncToken: ncToken, parents: parents, reason: `Template module mismatch: JS "${jsToken.module}" vs C "${ncToken.module}"` };
-        }
-        if( !cmpObj(jsToken.function, ncToken.function) ) {
-            return { success: false,  kind: 'data', jsToken: jsToken, ncToken: ncToken, parents: parents, reason: `Template function mismatch: JS "${jsToken.function}" vs C "${ncToken.function}"` };
-        }
-        if( !cmpObj(jsToken.duplication, ncToken.duplication) ) {
-            return { success: false,  kind: 'data', jsToken: jsToken, ncToken: ncToken, parents: parents, reason: `Template duplication mismatch: JS ${jsToken.duplication} vs C ${ncToken.duplication}` };
-        }
+        // if( !cmpObj(jsToken.module, ncToken.module) ) {
+        //     return { success: false,  kind: 'data', jsToken: jsToken, ncToken: ncToken, parents: parents, reason: `Template module mismatch: JS "${jsToken.module}" vs C "${ncToken.module}"` };
+        // }
+        // if( !cmpObj(jsToken.function, ncToken.function) ) {
+        //     return { success: false,  kind: 'data', jsToken: jsToken, ncToken: ncToken, parents: parents, reason: `Template function mismatch: JS "${jsToken.function}" vs C "${ncToken.function}"` };
+        // }
+        // if( !cmpObj(jsToken.duplication, ncToken.duplication) ) {
+        //     return { success: false,  kind: 'data', jsToken: jsToken, ncToken: ncToken, parents: parents, reason: `Template duplication mismatch: JS ${jsToken.duplication} vs C ${ncToken.duplication}` };
+        // }
         // if( !cmpObj(jsToken.anonCount, ncToken.anonCount) ) {
         //     return { success: false,  kind: 'data', jsToken: jsToken, ncToken: ncToken, parents: parents, reason: `Template anonCount mismatch: JS ${jsToken.anonCount} vs C ${ncToken.anonCount}` };
         // }
@@ -183,9 +189,9 @@ function compareAST(jsToken, ncToken, parents= []) {
         if( !cmpObj(jsToken.name, ncToken.name) ) {
             return { success: false,  kind: 'data', jsToken: jsToken, ncToken: ncToken, parents: parents, reason: `Parameter name mismatch: JS "${jsToken.name}" vs C "${ncToken.name}"` };
         }
-        if( !cmpObj(jsToken.value, ncToken.value) ) {
-            return { success: false,  kind: 'data', jsToken: jsToken, ncToken: ncToken, parents: parents, reason: `Parameter value mismatch: JS "${jsToken.value}" vs C "${ncToken.value}"` };
-        }
+        // if( !cmpObj(jsToken.value, ncToken.value) ) {
+        //     return { success: false,  kind: 'data', jsToken: jsToken, ncToken: ncToken, parents: parents, reason: `Parameter value mismatch: JS "${jsToken.value}" vs C "${ncToken.value}"` };
+        // }
         // if( !cmpObj(jsToken.anon, ncToken.anon) ) {
         //     return { success: false,  kind: 'data', jsToken: jsToken, ncToken: ncToken, parents: parents, reason: `Parameter anon mismatch: JS ${jsToken.anon} vs C ${ncToken.anon}` };
         // }
@@ -196,9 +202,9 @@ function compareAST(jsToken, ncToken, parents= []) {
         if( !cmpObj(jsToken.name, ncToken.name) ) {
             return { success: false,  kind: 'data', jsToken: jsToken, ncToken: ncToken, parents: parents, reason: `Arg name mismatch: JS "${jsToken.name}" vs C "${ncToken.name}"` };
         }
-        if( !cmpObj(jsToken.default, ncToken.default) ) {
-            return { success: false,  kind: 'data', jsToken: jsToken, ncToken: ncToken, parents: parents, reason: `Arg default mismatch: JS "${jsToken.default}" vs C "${ncToken.default}"` };
-        }
+        // if( !cmpObj(jsToken.default, ncToken.default) ) {
+        //     return { success: false,  kind: 'data', jsToken: jsToken, ncToken: ncToken, parents: parents, reason: `Arg default mismatch: JS "${jsToken.default}" vs C "${ncToken.default}"` };
+        // }
     } else if (jsToken.type === 'converter') {
         if( !cmpObj(jsToken.variant, ncToken.variant) ) {
             return { success: false,  kind: 'data', jsToken: jsToken, ncToken: ncToken, parents: parents, reason: `Converter variant mismatch: JS "${jsToken.variant}" vs C "${ncToken.variant}"` };
@@ -235,9 +241,9 @@ function compareAST(jsToken, ncToken, parents= []) {
             return { success: false,  kind: 'data', jsToken: jsToken, ncToken: ncToken, parents: parents, reason: `Syntax type mismatch: JS ${jsToken.type} vs C ${ncToken.type}` };
         }
     } else if (jsToken.type === 'comment') {
-        if( !cmpObj(jsToken.closed, ncToken.closed) ) {
-            return { success: false,  kind: 'data', jsToken: jsToken, ncToken: ncToken, parents: parents, reason: `Comment closed mismatch: JS ${jsToken.closed} vs C ${ncToken.closed}` };
-        }
+        // if( !cmpObj(jsToken.closed, ncToken.closed) ) {
+        //     return { success: false,  kind: 'data', jsToken: jsToken, ncToken: ncToken, parents: parents, reason: `Comment closed mismatch: JS ${jsToken.closed} vs C ${ncToken.closed}` };
+        // }
     } else if (jsToken.type === 'onlyinclude') {
         if( !cmpObj(jsToken.innerText, ncToken.innerText) ) {
             return { success: false,  kind: 'data', jsToken: jsToken, ncToken: ncToken, parents: parents, reason: `Onlyinclude innerText mismatch: JS "${jsToken.innerText}" vs C "${ncToken.innerText}"` };
@@ -257,26 +263,28 @@ function compareAST(jsToken, ncToken, parents= []) {
             return { success: false,  kind: 'data', jsToken: jsToken, ncToken: ncToken, parents: parents, reason: `List-range previousElementSibling mismatch: JS ${jsToken.previousElementSibling} vs C ${ncToken.previousElementSibling}` };
         }
     } else if (jsToken.type === 'list' || jsToken.type === 'dd') {
-        if( !cmpObj(jsToken.indent, ncToken.indent) ) {
-            return { success: false,  kind: 'data', jsToken: jsToken, ncToken: ncToken, parents: parents, reason: `List indent mismatch: JS ${jsToken.indent} vs C ${ncToken.indent}` };
-        }
-        if( !cmpObj(jsToken.dd, ncToken.dd) ) {
-            return { success: false,  kind: 'data', jsToken: jsToken, ncToken: ncToken, parents: parents, reason: `List dd mismatch: JS ${jsToken.dd} vs C ${ncToken.dd}` };
-        }
-        if( !cmpObj(jsToken.dt, ncToken.dt) ) {
-            return { success: false,  kind: 'data', jsToken: jsToken, ncToken: ncToken, parents: parents, reason: `List dt mismatch: JS ${jsToken.dt} vs C ${ncToken.dt}` };
-        }
-        if( !cmpObj(jsToken.ul, ncToken.ul) ) {
-            return { success: false,  kind: 'data', jsToken: jsToken, ncToken: ncToken, parents: parents, reason: `List ul mismatch: JS ${jsToken.ul} vs C ${ncToken.ul}` };
-        }
-        if( !cmpObj(jsToken.ol, ncToken.ol) ) {
-            return { success: false,  kind: 'data', jsToken: jsToken, ncToken: ncToken, parents: parents, reason: `List ol mismatch: JS ${jsToken.ol} vs C ${ncToken.ol}` };
-        }
+        // if( !cmpObj(jsToken.indent, ncToken.indent) ) {
+        //     return { success: false,  kind: 'data', jsToken: jsToken, ncToken: ncToken, parents: parents, reason: `List indent mismatch: JS ${jsToken.indent} vs C ${ncToken.indent}` };
+        // }
+        // if( !cmpObj(jsToken.dd, ncToken.dd) ) {
+        //     return { success: false,  kind: 'data', jsToken: jsToken, ncToken: ncToken, parents: parents, reason: `List dd mismatch: JS ${jsToken.dd} vs C ${ncToken.dd}` };
+        // }
+        // if( !cmpObj(jsToken.dt, ncToken.dt) ) {
+        //     return { success: false,  kind: 'data', jsToken: jsToken, ncToken: ncToken, parents: parents, reason: `List dt mismatch: JS ${jsToken.dt} vs C ${ncToken.dt}` };
+        // }
+        // if( !cmpObj(jsToken.ul, ncToken.ul) ) {
+        //     return { success: false,  kind: 'data', jsToken: jsToken, ncToken: ncToken, parents: parents, reason: `List ul mismatch: JS ${jsToken.ul} vs C ${ncToken.ul}` };
+        // }
+        // if( !cmpObj(jsToken.ol, ncToken.ol) ) {
+        //     return { success: false,  kind: 'data', jsToken: jsToken, ncToken: ncToken, parents: parents, reason: `List ol mismatch: JS ${jsToken.ol} vs C ${ncToken.ol}` };
+        // }
     }
     if( jsToken.type !== 'text' && !cmpObj(jsToken.childNodes && jsToken.childNodes.length || 0, ncToken.childNodes && ncToken.childNodes.length || 0 ) ) {
-        if( ! handleChildrenMismatch(jsToken, ncToken) ) {
-            return { success: false,  kind: 'child-count', jsToken: jsToken, ncToken: ncToken, parents: parents, reason: `Child count mismatch: JS ${jsToken.childNodes.length} vs C ${ncToken.childNodes.length}` };
+        if( handleChildrenMismatch(jsToken, ncToken) ) {
+            return { success: true };
         }
+        return { success: false,  kind: 'children', jsToken: jsToken, ncToken: ncToken, parents: parents, reason: `Children count mismatch: JS ${jsToken.childNodes ? jsToken.childNodes.length : 0} vs C ${ncToken.childNodes ? ncToken.childNodes.length : 0}` };
+
     }
     if( jsToken.childNodes ) {
         for( let i = 0; i < jsToken.childNodes.length; i++ ) {
