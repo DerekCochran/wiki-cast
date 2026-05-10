@@ -208,7 +208,7 @@ void log_log_env_token(int level, const char *file, int line, const char *env, c
 		cJSON *root = token_to_json(token);
         json_str = cJSON_PrintUnformatted(root);
         cJSON_Delete(root);
-    }else {
+    }else if (token != NULL){
 		return;
 	}
 

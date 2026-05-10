@@ -64,8 +64,7 @@ static char *lower_copy(const char *s, size_t len);
 
 /* JS parity: parser/braces.js getSymbol() for {{...}} replacements. */
 static char braces_get_symbol(const char *name, size_t len,
-															const ParserConfig *cfg,
-															bool *is_magic_out) {
+			const ParserConfig *cfg, bool *is_magic_out) {
 	if(is_magic_out) *is_magic_out= false;
 	if(!name || len == 0) return 't';
 
@@ -189,6 +188,13 @@ static char braces_get_symbol(const char *name, size_t len,
 		}
 	}
 
+	if(is_magic_out) {
+		log_debug_env_token("WTC_DEBUG_STAGE_1", NULL, 
+			"Get braces symbol: out=%c lc=%s is_magic_out=%d", out, lc, *is_magic_out);
+	}else {
+		log_debug_env_token("WTC_DEBUG_STAGE_1", NULL, 
+			"Get braces symbol: out=%c lc=%s is_magic_out=NULL", out, lc);
+	}
 	free(base_buf);
 	free(base_orig_buf);
 	free(trimmed);

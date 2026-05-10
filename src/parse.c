@@ -1469,23 +1469,23 @@ Token *wiki_parse_with_page(const char *wikitext, size_t input_len, const Parser
 		return NULL;
 	}
 
-	/* Log StringZilla capabilities and dispatch info once when the parser is first used. */
-	static int sz_caps_logged = 0;
-	if(!sz_caps_logged) {
-		sz_caps_logged = 1;
-		sz_capability_t caps = sz_capabilities();
-		const char *caps_str = sz_capabilities_to_string(caps);
-		int dynamic = sz_dynamic_dispatch();
+	// /* Log StringZilla capabilities and dispatch info once when the parser is first used. */
+	// static int sz_caps_logged = 0;
+	// if(!sz_caps_logged) {
+	// 	sz_caps_logged = 1;
+	// 	sz_capability_t caps = sz_capabilities();
+	// 	const char *caps_str = sz_capabilities_to_string(caps);
+	// 	int dynamic = sz_dynamic_dispatch();
 
-		if(caps_str && *caps_str) {
-			/* Pick the final capability name as the best-guessed backend. */
-			const char *last = strrchr(caps_str, ',');
-			const char *backend = last && *(last + 1) ? last + 1 : caps_str;
-			log_info("StringZilla dynamic_dispatch=%d; capabilities: %s; chosen backend: %s", dynamic, caps_str, backend);
-		} else {
-			log_info("StringZilla dynamic_dispatch=%d; capabilities: (none)", dynamic);
-		}
-	}
+	// 	if(caps_str && *caps_str) {
+	// 		/* Pick the final capability name as the best-guessed backend. */
+	// 		const char *last = strrchr(caps_str, ',');
+	// 		const char *backend = last && *(last + 1) ? last + 1 : caps_str;
+	// 		log_info("StringZilla dynamic_dispatch=%d; capabilities: %s; chosen backend: %s", dynamic, caps_str, backend);
+	// 	} else {
+	// 		log_info("StringZilla dynamic_dispatch=%d; capabilities: (none)", dynamic);
+	// 	}
+	// }
 
 	/* ── Grab a thread-local snapshot of the input ─────────────────────────
 	 * The caller's string may be modified by another thread while we are
