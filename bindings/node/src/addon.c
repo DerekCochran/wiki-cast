@@ -127,16 +127,6 @@ static napi_value token_to_js(napi_env env, const Token *token, bool wrap_root) 
         napi_set_named_property(env, js_token, "childNodes", children_array);
     }
 
-    // data (union payload)
-    napi_value data_obj;
-    napi_create_object(env, &data_obj);
-    bool has_data = false;
-
-
-    if (has_data) {
-        napi_set_named_property(env, js_token, "data", data_obj);
-    }
-
     return js_token;
 }
 
