@@ -7,7 +7,7 @@ const { spawnSync } = require('child_process');
 const { compareAST } = require('./compareAST');
 const { buildJsAst } = require('./buildJsAst');
 
-const wikiparser = require("wikiparser-node");
+const wikiparser = require(path.join(__dirname, '..', '..', '..', 'new-js', 'dist', 'index.js'));
 const nativeParser = require(path.join(__dirname, '..', 'build', 'Debug', 'wikiparser-node-c-tokenizer.node'));
 
 const MAX_STAGE = 10;
@@ -114,46 +114,6 @@ function analyzeAstDiff(cmp, name = 'sample', wikitext = '') {
   lines.push(`expected.Json: ${JSON.stringify(buildJsAst(cmp.jsToken))}`);
   lines.push(`actual.String: ${cmp.ncToken.toString()}`);
   lines.push(`actual.Json: ${JSON.stringify(cmp.ncToken, Object.getOwnPropertyNames(cmp.ncToken))}`);
-//     if( cmp.a && cmp.b) {
-//       if( ! cmp.a.parent && ! cmp.b.parent) {
-//         lines.push('No parent available for context on this node, root must of failed to parse.');
-//         // Search through aJson and find children that do not exist in bJson and print them out as possible candidates for new test cases.
-//         for (let i = 0; i < cmp.a.childNodes.length ; i++) {
-//           var bFound = false;
-//           for (let j = 0; j < cmp.b.childNodes.length ; j++) {
-//             if( cmp.a.childNodes[i].name == cmp.b.childNodes[j].name ) {
-//               bFound = true;
-//               break
-//             }
-//           }
-//           if( ! bFound) {
-//             lines.push(`expected.Json[${i}]: ${cmp.a.childNodes[i].name}`);
-//           } 
-//         }
-//         // Search through bJson and find children that do not exist in aJson and print them out as possible candidates for new test cases.
-//         for (let i = 0; i < cmp.b.childNodes.length ; i++) {
-//           var aFound = false;
-//           for (let j = 0; j < cmp.a.childNodes.length ; j++) {
-//             if( cmp.b.childNodes[i].name == cmp.a.childNodes[j].name ) {
-//               aFound = true;
-//               break
-//             }
-//           }
-//           if( ! aFound) {
-//             lines.push(`got.Json[${i}]: ${cmp.b.childNodes[i].name}`);
-//           }
-//         }
-
-//         return lines.join('\n') + '\n';
-//       }else {
-//         if( ! name.startsWith('pipeline')) {
-//           console.log('Possible string to add to the test_pipeline.js:'+ `\`${cmp.jsToken.toString()}\`,\n`);
-//         }
-//         lines.push(`expected.parent.String: ${cmp.jsToken.toString()}`);
-//         lines.push(`expected.parent.Json: ${JSON.stringify(cmp.jsToken, noCircular)}`);
-//       }
-//     }
-
   return lines.join('\n') + '\n';
 }
 
@@ -232,7 +192,6 @@ function compareSample(wikitext, { include = false, tidy = false, name = 'sample
   const label = sampleLabel == null ? JSON.stringify(wikitext.slice(0, 70)) : String(sampleLabel);
 
   let jsResult, nativeResult;
-  // Prepare a per-sample stage log directory and enable stage logging
   const stageDir = path.join(os.tmpdir(), `wiki_stage_${Date.now()}_${process.pid}_${Math.random().toString(36).slice(2,8)}`);
   ensureDir(stageDir);
   const prevStageDir = process.env.WIKI_STAGE_LOG_DIR;
@@ -330,24 +289,24 @@ function compareSample(wikitext, { include = false, tidy = false, name = 'sample
         try { fs.copyFileSync(src, dst); } catch (e) { /* ignore */ }
       }
       // Read the js-stage.log and native-stage.log.  Match each on stage names and print which stage they do not match on.
-      // if( ! name.startsWith('export') && ! name.startsWith('wikitext')) {
-      //   const jsStageLogPath = path.join(stageDir, 'js-stage.log');
-      //   const nativeStageLogPath = path.join(stageDir, 'native-stage.log');
-      //   if (fs.existsSync(jsStageLogPath) && fs.existsSync(nativeStageLogPath)) {
-      //     // Filter both files where the lines start with Stage #
-      //     const jsStageLog = fs.readFileSync(jsStageLogPath, 'utf8').split('\n').filter(line => line.trim() && line.startsWith('Stage '));
-      //     const nativeStageLog = fs.readFileSync(nativeStageLogPath, 'utf8').split('\n').filter(line => line.trim() && line.startsWith('Stage '));
-      //     const minLength = Math.min(jsStageLog.length, nativeStageLog.length);
-      //     for (let i = 0; i < minLength; i++) {
-      //       if (jsStageLog[i] !== nativeStageLog[i]) {
-      //         console.log(`  stage mismatch:`);
-      //         console.log(`    JS   : ${jsStageLog[i]}`);
-      //         console.log(`    NAT  : ${nativeStageLog[i]}`);
-      //         break;
-      //       }
-      //     }
-      //   }
-      // }
+      if( ! name.startsWith('export') && ! name.startsWith('wikitext')) {
+        const jsStageLogPath = path.join(stageDir, 'js-stage.log');
+        const nativeStageLogPath = path.join(stageDir, 'native-stage.log');
+        if (fs.existsSync(jsStageLogPath) && fs.existsSync(nativeStageLogPath)) {
+          // Filter both files where the lines start with Stage #
+          const jsStageLog = fs.readFileSync(jsStageLogPath, 'utf8').split('\n').filter(line => line.trim() && line.startsWith('Stage '));
+          const nativeStageLog = fs.readFileSync(nativeStageLogPath, 'utf8').split('\n').filter(line => line.trim() && line.startsWith('Stage '));
+          const minLength = Math.min(jsStageLog.length, nativeStageLog.length);
+          for (let i = 0; i < minLength; i++) {
+            if (jsStageLog[i] !== nativeStageLog[i]) {
+              console.log(`  stage mismatch:`);
+              console.log(`    JS   : ${jsStageLog[i]}`);
+              console.log(`    NAT  : ${nativeStageLog[i]}`);
+              break;
+            }
+          }
+        }
+      }
 
       if( name.startsWith('wikitext')) {
         const smallestDiff = getWikiTextSmallesDiff(cmp.jsToken, cmp.ncToken, cmp.parents);
