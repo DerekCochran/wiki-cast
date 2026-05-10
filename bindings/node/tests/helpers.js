@@ -17,8 +17,8 @@ if (!process.env.WIKI_CONFIG) {
   process.env.WIKI_CONFIG = DEFAULT_WIKI_CONFIG;
 }
 
-wikiparser.config = "enwiki.json";
-nativeParser.config = "/home/djc/git/wikiparser-node-c-tokenizer/config/enwiki.json";
+wikiparser.config = process.env.WIKI_CONFIG;
+nativeParser.config = process.env.WIKI_CONFIG;
 
 function writeLatestSampleCheckpoint(wikitext, opts) {
   fs.writeFileSync(LAST_SAMPLE_PATH, wikitext, 'utf8');

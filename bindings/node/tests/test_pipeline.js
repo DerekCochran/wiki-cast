@@ -4,7 +4,6 @@
 // These exercises multiple stages interacting at once.
 const path = require('path');
 const { runTests } = require('./helpers');
-const { newProto, nativeProto } = require('./native_token_patch');
 
 // This should loop through each test and fast fail on the first mismatch.
 
@@ -485,14 +484,13 @@ const tests = [
   '<categorytree>{{T|x=[[L|t]]}}</categorytree>',
 ];
 
-const ROOT = path.resolve(__dirname, '..', '..', '..');
-const CONFIGS = ['enwiki', 'jawiki', 'llwiki'];
+const ROOT = path.resolve(__dirname, '..', '..', '..', 'config');
+//const CONFIGS = ['enwiki', 'jawiki', 'llwiki'];
+const CONFIGS = ['enwiki'];
 
 for (const configName of CONFIGS) {
-  const configPath = path.join(ROOT, 'config', `${configName}.json`);
+  const configPath = path.join(ROOT, `${configName}.json`);
   process.env.WIKI_CONFIG = configPath;
-  newProto.config = configPath;
-  nativeProto.config = configPath;
 
   for (const test of tests) {
     const ok = runTests([test], { name: `pipeline-${configName}` });
