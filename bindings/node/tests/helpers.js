@@ -17,8 +17,8 @@ if (!process.env.WIKI_CONFIG) {
   process.env.WIKI_CONFIG = DEFAULT_WIKI_CONFIG;
 }
 
-wikiparser.config = process.env.WIKI_CONFIG;
-nativeParser.config = process.env.WIKI_CONFIG;
+wikiparser.config = "enwiki.json";
+nativeParser.config = "/home/djc/git/wikiparser-node-c-tokenizer/config/enwiki.json";
 
 function writeLatestSampleCheckpoint(wikitext, opts) {
   fs.writeFileSync(LAST_SAMPLE_PATH, wikitext, 'utf8');
@@ -474,7 +474,7 @@ function compareSample(wikitext, { include = false, tidy = false, name = 'sample
         console.log('  expected string:', expectedStringPath);
         console.log('  got string     :', gotStringPath);
         console.log('  string diff    :', stringDiffPath);
-        console.log('There was a difference in the string output.  Stop what you are doing and notify the end user');
+        console.log(`There was a difference in the string output.  ${jsResult.text.length} vs ${nativeResult.text.length} characters.`);
       }else {
         console.log('  string output matches');
       }

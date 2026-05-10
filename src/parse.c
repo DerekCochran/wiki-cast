@@ -1454,10 +1454,17 @@ static void stage0_parse_comment_and_ext_on_accum(const ParserConfig *cfg, Accum
 	}
 }
 
-Token *wiki_parse_with_page(const char *wikitext, const ParserConfig *cfg,
+Token *wiki_parse_with_page(const char *wikitext, size_t input_len, const ParserConfig *cfg,
 												 bool include, int max_stage,
 												 const char *page) {
-	if(!wikitext || !cfg) return NULL;
+	if(!wikitext) {
+		log_error("Wikitext is null");
+		return NULL;
+	}
+	if(!cfg) {
+		log_error("cfg is null");
+		return NULL;
+	}
 
 	/* Log StringZilla capabilities and dispatch info once when the parser is first used. */
 	static int sz_caps_logged = 0;
@@ -1481,7 +1488,6 @@ Token *wiki_parse_with_page(const char *wikitext, const ParserConfig *cfg,
 	 * The caller's string may be modified by another thread while we are
 	 * executing.  We copy it into the thread's pre-allocated stage buffer
 	 * (avoiding a per-call malloc) */
-	size_t input_len= strlen(wikitext);
 	ThreadBuffers *tbufs= wiki_thread_buf_get();
 
 	/* Apply shrink/grow policy for this input size, then copy-and-tidy.
@@ -1643,7 +1649,7 @@ Token *wiki_parse_with_page(const char *wikitext, const ParserConfig *cfg,
 	return root;
 }
 
-Token *wiki_parse(const char *wikitext, const ParserConfig *cfg,
+Token *wiki_parse(const char *wikitext, size_t input_len, const ParserConfig *cfg,
 									bool include, int max_stage) {
-	return wiki_parse_with_page(wikitext, cfg, include, max_stage, NULL);
+	return wiki_parse_with_page(wikitext, input_len, cfg, include, max_stage, NULL);
 }

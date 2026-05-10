@@ -4,16 +4,13 @@ const wikiparser = require("wikiparser-node");
 const nativeProto = require(path.join(__dirname, '..', 'build', 'Debug', 'wikiparser-node-c-tokenizer.node'));
 
 wikiparser.config = "enwiki";
-const testString = "[[#Section]]";
-const config = wikiparser.getConfig();
-const jsImpl = wikiparser.parse(testString, {
-    config: config
-});
+nativeProto.config = "/home/djc/git/wikiparser-node-c-tokenizer/config/enwiki.json";
+
+const testString = "{{T|v=RFC 2119}}";
+const jsImpl = wikiparser.parse(testString);
 
 const testBuffer = Buffer.from(testString, 'utf-8');
-const nativeImpl = nativeProto.parse(testBuffer, {
-    config: config
-});
+const nativeImpl = nativeProto.parse(testBuffer);
 
 const jsString = jsImpl.toString();
 const nativeString = nativeImpl.toString();

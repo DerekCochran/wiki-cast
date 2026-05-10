@@ -751,12 +751,8 @@ static void token_to_string_rec(const Token *t, ThreadBuf *tb) {
 
 char *token_to_string(const Token *t, ThreadBuf *tb) {
 	assert(tb);
-	wiki_thread_buf_assert_no_leased_scratch("token_to_string(entry)", tb);
 	tb->len= 0;
 	token_to_string_rec(t, tb);
-	wiki_thread_buf_reserve(tb, tb->len);
-	tb->buf[tb->len]= '\0';
-	wiki_thread_buf_assert_no_leased_scratch("token_to_string(exit)", tb);
 	return tb->buf;
 }
 

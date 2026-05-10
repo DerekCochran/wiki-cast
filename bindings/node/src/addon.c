@@ -78,28 +78,33 @@ static napi_value json_stringify_wrapper(napi_env env, napi_callback_info info) 
     return result;
 }
 
-static ParserConfig* get_token_config_json(napi_env env, napi_value token, char **json_out, size_t *json_len_out) {
-  napi_value get_attr_fn;
-  napi_status status = napi_get_named_property(env, token, "getAttribute", &get_attr_fn);
-  if (status != napi_ok) return NULL;
+static ParserConfig* get_token_config_json(napi_env env, napi_value token) {
+    napi_value config_val;
+    napi_status status;
 
-  napi_value key;
-  status = napi_create_string_utf8(env, "config", NAPI_AUTO_LENGTH, &key);
-  if (status != napi_ok) return NULL;
+    // Directly get the .config property from the object
+    status = napi_get_named_property(env, token, "config", &config_val);
+    if (status != napi_ok) return NULL;
 
-  napi_value argv[1] = { key };
-  napi_value config_val;
-  status = napi_call_function(env, token, get_attr_fn, 1, argv, &config_val);
-  if (status != napi_ok) return NULL;
+    // Check if it's actually a string
+    napi_valuetype type;
+    napi_typeof(env, config_val, &type);
+    if (type != napi_string) {
+        napi_throw_error(env, NULL, "Property 'config' must be a string");
+        return NULL;
+    }
 
-  char *path;
-  status = napi_unwrap(env, config_val, (void **)&path);
-  if (status != napi_ok) {
-      napi_throw_error(env, NULL, "Failed to unwrap Token object");
-      return NULL;
-  }
+    // Extract the string content
+    size_t path_len;
+    napi_get_value_string_utf8(env, config_val, NULL, 0, &path_len);
+    
+    char *path = malloc(path_len + 1);
+    napi_get_value_string_utf8(env, config_val, path, path_len + 1, &path_len);
 
-  return config_load_file(path);
+    ParserConfig* cfg = config_load_file(path);
+    free(path); 
+    
+    return cfg;
 }
 
 /**
@@ -171,7 +176,7 @@ static napi_value parse(napi_env env, napi_callback_info info) {
     napi_value args[2];
     napi_value this_arg;
     napi_status status = napi_get_cb_info(env, info, &argc, args, &this_arg, NULL);
-    if (status != napi_ok || argc < 2) {
+    if (status != napi_ok || argc < 1) {
         napi_throw_error(env, NULL, "Invalid arguments. Expected (Buffer, {config: ...})");
         return NULL;
     }
@@ -211,17 +216,10 @@ static napi_value parse(napi_env env, napi_callback_info info) {
     const char *wikitext = (const char *)((char *)buffer_data + byte_offset);
 
     /* Load parser config from the calling JS Token instance. */
-    char *cfg_json = NULL;
-    size_t cfg_json_len = 0;
-    ParserConfig* cfg = get_token_config_json(env, this_arg, &cfg_json, &cfg_json_len);
-    free(cfg_json);
-    if (!cfg) {
-        napi_throw_error(env, NULL, "Failed to load parser config from Token instance");
-        return NULL;
-    }
+    ParserConfig* cfg = get_token_config_json(env, this_arg);
 
     // 3. Call the C parser
-    Token *root = wiki_parse(wikitext, cfg, false, 10);
+    Token *root = wiki_parse(wikitext, buffer_byte_length, cfg, false, 10);
     config_free(cfg);
 
     if (root == NULL) {
