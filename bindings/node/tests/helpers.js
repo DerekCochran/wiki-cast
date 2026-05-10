@@ -4,11 +4,11 @@ const path = require('path');
 const fs = require('fs');
 const os = require('os');
 const { spawnSync } = require('child_process');
+const { compareAST } = require('./compareAST');
 const wikiparser = require("wikiparser-node");
 const nativeParser = require(path.join(__dirname, '..', 'build', 'Debug', 'wikiparser-node-c-tokenizer.node'));
 
-const { ok } = require('assert');
-const MAX_STAGE = 20;
+const MAX_STAGE = 10;
 const LAST_SAMPLE_PATH = '/tmp/wiki_latest_test_input.txt';
 const PERF_LOG_PATH = '/tmp/wikitext_perf.txt';
 const DEFAULT_WIKI_CONFIG = path.join(__dirname, '..', '..', '..', 'config', 'enwiki.json');
@@ -91,261 +91,68 @@ function writeUnifiedDiff(expectedPath, gotPath, diffPath) {
   }
 }
 
-function astNodeSummary(node) {
-  if (!node) return 'null';
-  if (node.type === 'text') return `text(${JSON.stringify(node.data).slice(0, 40)})`;
-  return `${node.type}${node.name != null ? `:${node.name}` : ''}`;
+// Parent is an array of { js: jsToken, c: ncToken }
+function getCmpPath(parents) {
+  return parents.map(p => `${p.js.type}(${p.js.name || ''})`).join(' > ');
 }
 
-function analyzeAstDiff(expected, got, name = 'sample' ) {
+function analyzeAstDiff(cmp, name = 'sample', wikitext = '') {
   const lines = [];
-  const queue = [{ path: 'root', a: expected, b: got }];
-  let found = null;
-  const noCircular = (key, val) => key === 'parent' ? undefined : val;
-  /** Walk up the parent chain to find the best ancestor to use as a test case.
-   * Stops when the next parent has no parent (i.e. current node IS a top-level
-   * child of root) or when parent is undefined. */
-  const getTopLevelAncestor = (node) => {
-    if (!node) return node;
-    let cur = node;
-    let startLevel = 1;
-    while (cur.parent && startLevel >= 0) {
-      cur = cur.parent;
-      startLevel--;
-    }
-    return cur;
-  };
-
-  while (queue.length > 0) {
-    const cur = queue.shift();
-    const { path: p, a, b } = cur;
-    if (a == null || b == null) {
-      found = { kind: 'null-mismatch', path: p, a, b };
-      break;
-    }
-
-    const ta = a.type == null ? 'undefined' : String(a.type);
-    const tb = b.type == null ? 'undefined' : String(b.type);
-    if (ta !== tb) {
-      found = { kind: 'type', path: p, ta, tb, a, b };
-      break;
-    }
-
-    const na = a.name == null ? null : String(a.name);
-    const nb = b.name == null ? null : String(b.name);
-    if (na !== nb) {
-      found = { kind: 'name', path: p, na, nb, a, b};
-      break;
-    }
-
-    if (ta === 'text') {
-      const da = a.data == null ? '' : String(a.data);
-      const db = b.data == null ? '' : String(b.data);
-      if (da !== db) {
-        found = { kind: 'text-data', path: p, da, db, a, b};
-        break;
-      }
-      continue;
-    }
-
-    const ach = Array.isArray(a.childNodes) ? a.childNodes : [];
-    const bch = Array.isArray(b.childNodes) ? b.childNodes : [];
-    if (ach.length !== bch.length) {
-      found = { kind: 'child-count', path: p, aCount: ach.length, bCount: bch.length, a, b };
-      break;
-    }
-
-    for (let i = 0; i < ach.length; i++) {
-      if (ach[i] && typeof ach[i] === 'object') {
-        ach[i].parent = a;
-      }
-      if (bch[i] && typeof bch[i] === 'object') {
-        bch[i].parent = b;
-      }
-      queue.push({ path: `${p}.childNodes[${i}]`, a: ach[i], b: bch[i]});
-    }
-  }
 
   lines.push('AST analysis report');
-  if (!found) {
+  if (cmp && cmp.success) {
     lines.push('No structural differences found by analyzer.');
     return lines.join('\n') + '\n';
   }
 
-  lines.push(`first_mismatch.kind: ${found.kind}`);
-  lines.push(`first_mismatch.path: ${found.path}`);
-  if (found.kind === 'type') {
-    lines.push(`expected.type: ${found.ta}`);
-    lines.push(`got.type: ${found.tb}`);
-    if( found.a && found.b) {
-      if( ! name.startsWith('pipeline')) {
-        console.log('Possible string to add to the test_pipeline.js:'+ `\`${found.a.toString()}\`,\n`);
-      }
-      lines.push(`expected.parent.String: ${found.a.parent.toString()}`);
-      lines.push(`expected.parent.Json: ${JSON.stringify(found.a.parent, noCircular)}`);
-      if( name == 'wikitext') {
-        // Write the found.a.parent.toString() to test_pipeline.js after const tests = [ using a tick to handle new lines.
-        const pipelinePath = path.join(__dirname, 'test_pipeline.js');
-        const pipelineContent = fs.readFileSync(pipelinePath, 'utf8');
-        const insertPoint = pipelineContent.indexOf('const tests = [');
-        if (insertPoint !== -1) {
-          const before = pipelineContent.slice(0, insertPoint + 'const tests = ['.length);
-          const after = pipelineContent.slice(insertPoint + 'const tests = ['.length);
-          const newContent = `${before}\n\`${getTopLevelAncestor(found.a).toString()}\`,${after}`;
-          fs.writeFileSync(pipelinePath, newContent, 'utf8');
-          console.log(`Inserted new test case into ${pipelinePath}`);
-          console.log(`Run the below commands to execute the new test case:
-cd ${path.dirname(__filename)}
-node test_pipeline.js`);
-        } else {
-          console.warn(`Could not find const tests = [ in ${pipelinePath}, skipping automatic insertion of new test case.`);
-        }
-      }
-    }
-  } else if (found.kind === 'name') {
-    lines.push(`expected.name: ${found.na}`);
-    lines.push(`got.name: ${found.nb}`);
-    if( found.a && found.b) {
-      if( ! name.startsWith('pipeline')) {
-        console.log('Possible string to add to the test_pipeline.js:'+ `\`${found.a.toString()}\`,\n`);
-      }
-      lines.push(`expected.parent.String: ${found.a.parent.toString()}`);
-      lines.push(`expected.parent.Json: ${JSON.stringify(found.a.parent, noCircular)}`);
-      if( name == 'wikitext') {
-        // Write the found.a.parent.toString() to test_pipeline.js after const tests = [ using a tick to handle new lines.
-        const pipelinePath = path.join(__dirname, 'test_pipeline.js');
-        const pipelineContent = fs.readFileSync(pipelinePath, 'utf8');
-        const insertPoint = pipelineContent.indexOf('const tests = [');
-        if (insertPoint !== -1) {
-          const before = pipelineContent.slice(0, insertPoint + 'const tests = ['.length);
-          const after = pipelineContent.slice(insertPoint + 'const tests = ['.length);
-          const newContent = `${before}\n\`${getTopLevelAncestor(found.a).toString()}\`,${after}`;
-          fs.writeFileSync(pipelinePath, newContent, 'utf8');
-          console.log(`Inserted new test case into ${pipelinePath}`);
-          console.log(`Run the below commands to execute the new test case:
-cd ${path.dirname(__filename)}
-node test_pipeline.js`);
-        } else {
-          console.warn(`Could not find const tests = [ in ${pipelinePath}, skipping automatic insertion of new test case.`);
-        }
-      }
-    }
-  } else if (found.kind === 'text-data') {
-    lines.push(`expected.text.hex: ${Buffer.from(found.da).toString('hex')}`);
-    lines.push(`got.text.hex: ${Buffer.from(found.db).toString('hex')}`);
-    if( found.a && found.b) {
-      if( ! name.startsWith('pipeline')) {
-        console.log('Possible string to add to the test_pipeline.js:'+ `\`${found.a.toString()}\`,\n`);
-      }
-      lines.push(`expected.parent.String: ${found.a.parent.toString()}`);
-      lines.push(`expected.parent.Json: ${JSON.stringify(found.a.parent, noCircular)}`);
-      if( name == 'wikitext') {
-        // Write the found.a.parent.toString() to test_pipeline.js after const tests = [ using a tick to handle new lines.
-        const pipelinePath = path.join(__dirname, 'test_pipeline.js');
-        const pipelineContent = fs.readFileSync(pipelinePath, 'utf8');
-        const insertPoint = pipelineContent.indexOf('const tests = [');
-        if (insertPoint !== -1) {
-          const before = pipelineContent.slice(0, insertPoint + 'const tests = ['.length);
-          const after = pipelineContent.slice(insertPoint + 'const tests = ['.length);
-          const newContent = `${before}\n\`${getTopLevelAncestor(found.a).toString()}\`,${after}`;
-          fs.writeFileSync(pipelinePath, newContent, 'utf8');
-          console.log(`Inserted new test case into ${pipelinePath}`);
-          console.log(`Run the below commands to execute the new test case:
-cd ${path.dirname(__filename)}
-node test_pipeline.js`);
-        } else {
-          console.warn(`Could not find const tests = [ in ${pipelinePath}, skipping automatic insertion of new test case.`);
-        }
-      }
-    }
-  } else if (found.kind === 'child-count') {
-    lines.push(`expected.childCount: ${found.aCount}`);
-    lines.push(`got.childCount: ${found.bCount}`);
-    if( found.a.parent && found.b.parent) {
-      lines.push(`expected.Json: ${JSON.stringify(found.a, noCircular)}`);
-      lines.push(`got.Json: ${JSON.stringify(found.b, noCircular)}`);
-    }
-    if( found.a && found.b) {
-      if( ! found.a.parent && ! found.b.parent) {
-        lines.push('No parent available for context on this node, root must of failed to parse.');
-        // Search through aJson and find children that do not exist in bJson and print them out as possible candidates for new test cases.
-        for (let i = 0; i < found.a.childNodes.length ; i++) {
-          var bFound = false;
-          for (let j = 0; j < found.b.childNodes.length ; j++) {
-            if( found.a.childNodes[i].name == found.b.childNodes[j].name ) {
-              bFound = true;
-              break
-            }
-          }
-          if( ! bFound) {
-            lines.push(`expected.Json[${i}]: ${found.a.childNodes[i].name}`);
-          } 
-        }
-        // Search through bJson and find children that do not exist in aJson and print them out as possible candidates for new test cases.
-        for (let i = 0; i < found.b.childNodes.length ; i++) {
-          var aFound = false;
-          for (let j = 0; j < found.a.childNodes.length ; j++) {
-            if( found.b.childNodes[i].name == found.a.childNodes[j].name ) {
-              aFound = true;
-              break
-            }
-          }
-          if( ! aFound) {
-            lines.push(`got.Json[${i}]: ${found.b.childNodes[i].name}`);
-          }
-        }
+  lines.push(`wikitext: '${wikitext}'`);
+  lines.push(`first_mismatch.kind: ${cmp.kind}`);
+  lines.push(`first_mismatch.path: ${getCmpPath(cmp.parents)}`);
+  lines.push(`first_mismatch.reason: ${cmp.reason}`);
+  lines.push(`expected.String: ${cmp.jsToken.toString()}`);
+  lines.push(`expected.Json: ${JSON.stringify(cmp.jsToken, Object.getOwnPropertyNames(cmp.jsToken))}`);
+  lines.push(`actual.String: ${cmp.ncToken.toString()}`);
+  lines.push(`actual.Json: ${JSON.stringify(cmp.ncToken, Object.getOwnPropertyNames(cmp.ncToken))}`);
+//     if( cmp.a && cmp.b) {
+//       if( ! cmp.a.parent && ! cmp.b.parent) {
+//         lines.push('No parent available for context on this node, root must of failed to parse.');
+//         // Search through aJson and find children that do not exist in bJson and print them out as possible candidates for new test cases.
+//         for (let i = 0; i < cmp.a.childNodes.length ; i++) {
+//           var bFound = false;
+//           for (let j = 0; j < cmp.b.childNodes.length ; j++) {
+//             if( cmp.a.childNodes[i].name == cmp.b.childNodes[j].name ) {
+//               bFound = true;
+//               break
+//             }
+//           }
+//           if( ! bFound) {
+//             lines.push(`expected.Json[${i}]: ${cmp.a.childNodes[i].name}`);
+//           } 
+//         }
+//         // Search through bJson and find children that do not exist in aJson and print them out as possible candidates for new test cases.
+//         for (let i = 0; i < cmp.b.childNodes.length ; i++) {
+//           var aFound = false;
+//           for (let j = 0; j < cmp.a.childNodes.length ; j++) {
+//             if( cmp.b.childNodes[i].name == cmp.a.childNodes[j].name ) {
+//               aFound = true;
+//               break
+//             }
+//           }
+//           if( ! aFound) {
+//             lines.push(`got.Json[${i}]: ${cmp.b.childNodes[i].name}`);
+//           }
+//         }
 
-        return lines.join('\n') + '\n';
-      }else {
-        if( ! name.startsWith('pipeline')) {
-          console.log('Possible string to add to the test_pipeline.js:'+ `\`${found.a.toString()}\`,\n`);
-        }
-        lines.push(`expected.parent.String: ${found.a.parent.toString()}`);
-        lines.push(`expected.parent.Json: ${JSON.stringify(found.a.parent, noCircular)}`);
-        if( name == 'wikitext') {
-          const pipelinePath = path.join(__dirname, 'test_pipeline.js');
-          const pipelineContent = fs.readFileSync(pipelinePath, 'utf8');
-          const insertPoint = pipelineContent.indexOf('const tests = [');
-          if (insertPoint !== -1) {
-            const before = pipelineContent.slice(0, insertPoint + 'const tests = ['.length);
-            const after = pipelineContent.slice(insertPoint + 'const tests = ['.length);
-            const newContent = `${before}\n\`${getTopLevelAncestor(found.a).toString()}\`,${after}`;
-            fs.writeFileSync(pipelinePath, newContent, 'utf8');
-            console.log(`Inserted new test case into ${pipelinePath}`);
-            console.log(`Run the below commands to execute the new test case:
-cd ${path.dirname(__filename)}
-node test_pipeline.js`);
-          } else {
-            console.warn(`Could not find const tests = [ in ${pipelinePath}, skipping automatic insertion of new test case.`);
-          }
-        }
-      }
-    }
-  } else if (found.kind === 'null-mismatch') {
-    lines.push(`expected.node: ${astNodeSummary(found.a)}`);
-    lines.push(`got.node: ${astNodeSummary(found.b)}`);
-    if( name == 'wikitext' && found.a) {
-      const pipelinePath = path.join(__dirname, 'test_pipeline.js');
-      const pipelineContent = fs.readFileSync(pipelinePath, 'utf8');
-      const insertPoint = pipelineContent.indexOf('const tests = [');
-      if (insertPoint !== -1) {
-        const before = pipelineContent.slice(0, insertPoint + 'const tests = ['.length);
-        const after = pipelineContent.slice(insertPoint + 'const tests = ['.length);
-        const newContent = `${before}\n\`${getTopLevelAncestor(found.a).toString()}\`,${after}`;
-        fs.writeFileSync(pipelinePath, newContent, 'utf8');
-        console.log(`Inserted new test case into ${pipelinePath}`);
-        console.log(`Run the below commands to execute the new test case:
-cd ${path.dirname(__filename)}
-node test_pipeline.js`);
-      } else {
-        console.warn(`Could not find const tests = [ in ${pipelinePath}, skipping automatic insertion of new test case.`);
-      }
-    }
+//         return lines.join('\n') + '\n';
+//       }else {
+//         if( ! name.startsWith('pipeline')) {
+//           console.log('Possible string to add to the test_pipeline.js:'+ `\`${cmp.jsToken.toString()}\`,\n`);
+//         }
+//         lines.push(`expected.parent.String: ${cmp.jsToken.toString()}`);
+//         lines.push(`expected.parent.Json: ${JSON.stringify(cmp.jsToken, noCircular)}`);
+//       }
+//     }
 
-  }
-
-  lines.push(`expected.node.summary: ${astNodeSummary(found.a)}`);
-  lines.push(`got.node.summary: ${astNodeSummary(found.b)}`);
   return lines.join('\n') + '\n';
 }
 
@@ -444,11 +251,9 @@ function compareSample(wikitext, { include = false, tidy = false, name = 'sample
   appendPerfLine(name, sampleIndex, jsResult.timing, nativeResult.timing);
 
   const textOk = jsResult.text === nativeResult.text;
-  const treeJs = JSON.stringify(jsResult.tree);
-  const treeNat = JSON.stringify(nativeResult.tree);
-  const treeOk = treeJs === treeNat;
+  const cmp = compareAST(jsResult.tree, nativeResult.tree);
 
-  const ok = textOk && treeOk;
+  const ok = textOk && cmp.success;
   if (!ok) {
     console.error('FAIL', label);
 
@@ -483,22 +288,27 @@ function compareSample(wikitext, { include = false, tidy = false, name = 'sample
         console.log('  string output matches');
       }
 
-      if(!treeOk && name != 'wikitext') {
+      if(!cmp.success && name != 'wikitext') {
         writeTextFile(expectedJsonPath, JSON.stringify(jsResult.tree, null, 2) + '\n');
         writeTextFile(gotJsonPath, JSON.stringify(nativeResult.tree, null, 2) + '\n');
         writeUnifiedDiff(expectedJsonPath, gotJsonPath, jsonDiffPath);
         console.log('  expected JSON:', expectedJsonPath);
         console.log('  got JSON     :', gotJsonPath);
         console.log('  JSON diff    :', jsonDiffPath);
-      }else if(!treeOk) {
+      }else if(!cmp.success) {
         console.log('  JSON output does not match');
       }else {
         console.log('  JSON output matches');
       }
 
-      const astAnalysis = analyzeAstDiff(jsResult.root, nativeResult.root, name);
-      writeTextFile(astAnalysisPath, astAnalysis);
-      console.log('  ast analysis :', astAnalysisPath);
+      const astAnalysis = analyzeAstDiff(cmp, name, wikitext);
+      // If wikitext is under 50 characters, print the AST analysis to the console as well for easier debugging of small samples.
+      if( wikitext.length <= 50) {
+        console.log(astAnalysis);
+      }else {
+        writeTextFile(astAnalysisPath, astAnalysis);
+        console.log('  ast analysis :', astAnalysisPath);
+      }
 
       // Copy any stage logs collected into the suite artifact directory
       ensureDir(suiteDir);
