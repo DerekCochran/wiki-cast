@@ -1128,6 +1128,8 @@ static void postprocess_parameter_value_inline_impl(Token *t, const ParserConfig
 																				const Token *grandparent) {
 	if(!t) return;
 
+	log_debug_env_token("DEBUG_PARAM_VALUE", t, "postprocess_parameter_value_inline_impl start");
+
 	for(size_t i= 0; i < t->child_count; i++) {
 		if(!t->children[i].is_text && t->children[i].token) {
 			postprocess_parameter_value_inline_impl(t->children[i].token, cfg, accum, page, t, parent);
@@ -1277,6 +1279,7 @@ static void postprocess_parameter_value_inline_impl(Token *t, const ParserConfig
 			postprocess_nested_plain(t->children[i].token, cfg, accum, page);
 		}
 	}
+	log_debug_env_token("DEBUG_PARAM_VALUE", t, "postprocess_parameter_value_inline_impl end");
 }
 
 static void postprocess_parameter_value_inline(Token *t, const ParserConfig *cfg, Accum *accum,

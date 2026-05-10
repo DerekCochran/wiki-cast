@@ -541,6 +541,10 @@ function compareSample(wikitext, { include = false, tidy = false, name = 'sample
  * @param {object}   [opts]
  */
 function runTests(samples, opts = {}) {
+  // These are specific for debugging if a env is set
+  process.env.DEBUG_PARAM_VALUES = 'true';
+
+
   const include = Boolean(opts && opts.include);
   const tidy = Boolean(opts && opts.tidy);
   const suiteName = resolveSuiteName(opts);

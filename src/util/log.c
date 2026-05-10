@@ -340,17 +340,15 @@ void log_log_env_token(int level, const char *file, int line, const char *env, c
     lock();
 
     // 2. Handle stderr output
-    if (!L.quiet && level >= L.level) {
-        init_event(&ev, stderr);
-        va_start(ev.ap, fmt);
-        stdout_callback(&ev);
-        va_end(ev.ap);
-        
-        if (json_str) {
-            fprintf(stderr, " | Token: %s", json_str);
-        }
-        fprintf(stderr, "\n"); // Ensure newline after the extra token data
-    }
+	init_event(&ev, stderr);
+	va_start(ev.ap, fmt);
+	stdout_callback(&ev);
+	va_end(ev.ap);
+	
+	if (json_str) {
+		fprintf(stderr, "   --> %s", json_str);
+	}
+	fprintf(stderr, "\n"); // Ensure newline after the extra token data
 
     // 3. Handle all other callbacks (e.g., file logging)
     for (int i = 0; i < MAX_CALLBACKS && L.callbacks[i].fn; i++) {

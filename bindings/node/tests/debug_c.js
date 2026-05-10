@@ -3,6 +3,8 @@ const path = require('path');
 const wikiparser = require("wikiparser-node");
 const nativeProto = require(path.join(__dirname, '..', 'build', 'Debug', 'wikiparser-node-c-tokenizer.node'));
 
+process.env.DEBUG_PARAM_VALUE = 'true';
+
 wikiparser.config = "enwiki";
 nativeProto.config = "/home/djc/git/wikiparser-node-c-tokenizer/config/enwiki.json";
 
