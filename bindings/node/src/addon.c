@@ -52,32 +52,6 @@ static napi_value toString_wrapper(napi_env env, napi_callback_info info) {
     return result; 
 }
 
-static napi_value json_stringify_wrapper(napi_env env, napi_callback_info info) {
-    size_t argc = 1;
-    napi_value args[1];
-    napi_value this_arg;
-    napi_get_cb_info(env, info, &argc, args, &this_arg, NULL);
-
-    napi_value target = (argc > 0) ? args[0] : this_arg;
-
-    Token *token;
-    if (napi_unwrap(env, target, (void **)&token) != napi_ok) {
-        napi_throw_error(env, NULL, "Failed to unwrap Token for JSON conversion");
-        return NULL;
-    }
-
-    ThreadBuf *scratch = wiki_thread_buf_acquire_scratch();
-    json_stringify_wikiparser_node(token, scratch);
-    
-    napi_value result;
-    napi_status status = napi_create_string_utf8(env, scratch->buf, scratch->len, &result);
-    
-    wiki_thread_buf_release_scratch(scratch);
-    
-    if (status != napi_ok) return NULL;
-    return result;
-}
-
 static ParserConfig* get_token_config_json(napi_env env, napi_value token) {
     napi_value config_val;
     napi_status status;
@@ -239,8 +213,7 @@ napi_value Init(napi_env env, napi_value exports) {
     napi_create_object(env, &proto);
     
     napi_property_descriptor proto_descs[] = {
-        { "toString", 0, toString_wrapper, 0, 0, 0, napi_default, 0 },
-        { "jsonStringifyWikiparserNode", 0, json_stringify_wrapper, 0, 0, 0, napi_default, 0 }
+        { "toString", 0, toString_wrapper, 0, 0, 0, napi_default, 0 }
     };
     napi_define_properties(env, proto, 2, proto_descs);
 
