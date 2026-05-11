@@ -1,49 +1,49 @@
 #define PCRE2_CODE_UNIT_WIDTH 8
-#include "util/pcre_cache.h"
-#include "util/log.h"
 #include "parser/braces.h"
-#include "util/callback_parser.h"
-#include "util/wiki_parser_rules.h"
-#include "util/string_util.h"
 #include "title.h"
 #include "token.h"
-#include <stringzilla/stringzilla.h>
+#include "util/callback_parser.h"
+#include "util/log.h"
+#include "util/pcre_cache.h"
+#include "util/string_util.h"
+#include "util/wiki_parser_rules.h"
 #include <assert.h>
 #include <ctype.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <stringzilla/stringzilla.h>
 
 /* ── brace-event scanner (wikitext-specific; lives here, not in callback_parser) ── */
 
 typedef enum {
-    BRACE_EVT_HEADING_OPEN    = 0,
-    BRACE_EVT_WIKILINK_OPEN   = 1,
-    BRACE_EVT_CONVERTER_OPEN  = 2,
-    BRACE_EVT_BRACE_OPEN      = 3,
-    BRACE_EVT_NEWLINE         = 4,
-    BRACE_EVT_PIPE            = 5,
-    BRACE_EVT_EQUALS          = 6,
-    BRACE_EVT_BRACE_CLOSE     = 7,
-    BRACE_EVT_CONVERTER_CLOSE = 8,
-    BRACE_EVT_WIKILINK_CLOSE  = 9,
+	BRACE_EVT_HEADING_OPEN= 0,
+	BRACE_EVT_WIKILINK_OPEN= 1,
+	BRACE_EVT_CONVERTER_OPEN= 2,
+	BRACE_EVT_BRACE_OPEN= 3,
+	BRACE_EVT_NEWLINE= 4,
+	BRACE_EVT_PIPE= 5,
+	BRACE_EVT_EQUALS= 6,
+	BRACE_EVT_BRACE_CLOSE= 7,
+	BRACE_EVT_CONVERTER_CLOSE= 8,
+	BRACE_EVT_WIKILINK_CLOSE= 9,
 } BraceEventKind;
 
 /* Returns true and fills *out_len if buf[pos..] is a \0<digits><allowed_type>\x7F sentinel. */
 static bool parse_sentinel_at_allowed(const char *buf, size_t len, size_t pos,
-                                      const char *allowed_types, size_t *out_len) {
-    if (!buf || pos >= len) return false;
-    if ((unsigned char)buf[pos] != 0) return false;
-    size_t j = pos + 1;
-    if (j >= len || buf[j] < '0' || buf[j] > '9') return false;
-    while (j < len && buf[j] >= '0' && buf[j] <= '9') j++;
-    if (j >= len) return false;
-    char t = buf[j];
-    if (allowed_types && strchr(allowed_types, t) == NULL) return false;
-    if (j + 1 >= len) return false;
-    if ((unsigned char)buf[j + 1] != (unsigned char)0x7F) return false;
-    if (out_len) *out_len = (j + 2) - pos;
-    return true;
+												  const char *allowed_types, size_t *out_len) {
+	if(!buf || pos >= len) return false;
+	if((unsigned char)buf[pos] != 0) return false;
+	size_t j= pos + 1;
+	if(j >= len || buf[j] < '0' || buf[j] > '9') return false;
+	while(j < len && buf[j] >= '0' && buf[j] <= '9') j++;
+	if(j >= len) return false;
+	char t= buf[j];
+	if(allowed_types && strchr(allowed_types, t) == NULL) return false;
+	if(j + 1 >= len) return false;
+	if((unsigned char)buf[j + 1] != (unsigned char)0x7F) return false;
+	if(out_len) *out_len= (j + 2) - pos;
+	return true;
 }
 
 /*
@@ -56,149 +56,177 @@ static bool parse_sentinel_at_allowed(const char *buf, size_t len, size_t pos,
  */
 static bool __attribute__((unused))
 brace_event_next(const char *buf, size_t len, size_t *pos,
-                             BraceEventKind *kind_out, size_t *match_len_out,
-                             size_t *brace_count_out, size_t *equals_count_out,
-                             size_t *sentinel_len_out) {
-    if (!buf || !pos || *pos >= len) return false;
-    const char cand[] = { '\0', '[', '-', '{', '\n', '|', '=', '}', ']' };
-    size_t i = *pos;
-    while (i < len) {
-        const char *found = (const char *)sz_find_byte_from(buf + i, len - i, cand, sizeof(cand));
-        if (!found) return false;
-        size_t p = (size_t)(found - buf);
-        char ch = buf[p];
+					  BraceEventKind *kind_out, size_t *match_len_out,
+					  size_t *brace_count_out, size_t *equals_count_out,
+					  size_t *sentinel_len_out) {
+	if(!buf || !pos || *pos >= len) return false;
+	const char cand[]= {'\0', '[', '-', '{', '\n', '|', '=', '}', ']'};
+	size_t i= *pos;
+	while(i < len) {
+		const char *found= (const char *)sz_find_byte_from(buf + i, len - i, cand, sizeof(cand));
+		if(!found) return false;
+		size_t p= (size_t)(found - buf);
+		char ch= buf[p];
 
-        if (ch == '\0') {
-            size_t cur = p, total_sl = 0, sl = 0;
-            while (cur < len && parse_sentinel_at_allowed(buf, len, cur, "cno", &sl)) {
-                total_sl += sl; cur += sl;
-            }
-            bool at_line = (p == 0) || (buf[p - 1] == '\n');
-            if (total_sl > 0 && at_line) {
-                size_t eqpos = p + total_sl, eqcount = 0;
-                while (eqpos < len && buf[eqpos] == '=' && eqcount < 6) { eqpos++; eqcount++; }
-                if (eqcount >= 1) {
-                    if (kind_out)        *kind_out        = BRACE_EVT_HEADING_OPEN;
-                    if (match_len_out)   *match_len_out   = total_sl + eqcount;
-                    if (brace_count_out) *brace_count_out = 0;
-                    if (equals_count_out)*equals_count_out= eqcount;
-                    if (sentinel_len_out)*sentinel_len_out= total_sl;
-                    *pos = p + total_sl + eqcount;
-                    return true;
-                }
-            }
-            i = p + 1; continue;
-        }
-        if (ch == '[') {
-            if (p + 1 < len && buf[p + 1] == '[') {
-                if (kind_out)        *kind_out        = BRACE_EVT_WIKILINK_OPEN;
-                if (match_len_out)   *match_len_out   = 2;
-                if (brace_count_out) *brace_count_out = 0;
-                if (equals_count_out)*equals_count_out= 0;
-                if (sentinel_len_out)*sentinel_len_out= 0;
-                *pos = p + 2; return true;
-            }
-            i = p + 1; continue;
-        }
-        if (ch == '-') {
-            if (p + 1 < len && buf[p + 1] == '{' && !(p + 2 < len && buf[p + 2] == '{')) {
-                if (kind_out)        *kind_out        = BRACE_EVT_CONVERTER_OPEN;
-                if (match_len_out)   *match_len_out   = 2;
-                if (brace_count_out) *brace_count_out = 0;
-                if (equals_count_out)*equals_count_out= 0;
-                if (sentinel_len_out)*sentinel_len_out= 0;
-                *pos = p + 2; return true;
-            }
-            if (p + 1 < len && buf[p + 1] == '}') {
-                if (kind_out)        *kind_out        = BRACE_EVT_CONVERTER_CLOSE;
-                if (match_len_out)   *match_len_out   = 2;
-                if (brace_count_out) *brace_count_out = 0;
-                if (equals_count_out)*equals_count_out= 0;
-                if (sentinel_len_out)*sentinel_len_out= 0;
-                *pos = p + 2; return true;
-            }
-            i = p + 1; continue;
-        }
-        if (ch == '{') {
-            size_t cnt = 0;
-            while (p + cnt < len && buf[p + cnt] == '{') cnt++;
-            if (cnt >= 2) {
-                size_t bc = cnt > 3 ? 3 : cnt;
-                if (kind_out)        *kind_out        = BRACE_EVT_BRACE_OPEN;
-                if (match_len_out)   *match_len_out   = bc;
-                if (brace_count_out) *brace_count_out = bc;
-                if (equals_count_out)*equals_count_out= 0;
-                if (sentinel_len_out)*sentinel_len_out= 0;
-                *pos = p + bc; return true;
-            }
-            i = p + 1; continue;
-        }
-        if (ch == '\n') {
-            /* Skip firing an event when followed by blank-line boundary
+		if(ch == '\0') {
+			size_t cur= p, total_sl= 0, sl= 0;
+			while(cur < len && parse_sentinel_at_allowed(buf, len, cur, "cno", &sl)) {
+				total_sl+= sl;
+				cur+= sl;
+			}
+			bool at_line= (p == 0) || (buf[p - 1] == '\n');
+			if(total_sl > 0 && at_line) {
+				size_t eqpos= p + total_sl, eqcount= 0;
+				while(eqpos < len && buf[eqpos] == '=' && eqcount < 6) {
+					eqpos++;
+					eqcount++;
+				}
+				if(eqcount >= 1) {
+					if(kind_out) *kind_out= BRACE_EVT_HEADING_OPEN;
+					if(match_len_out) *match_len_out= total_sl + eqcount;
+					if(brace_count_out) *brace_count_out= 0;
+					if(equals_count_out) *equals_count_out= eqcount;
+					if(sentinel_len_out) *sentinel_len_out= total_sl;
+					*pos= p + total_sl + eqcount;
+					return true;
+				}
+			}
+			i= p + 1;
+			continue;
+		}
+		if(ch == '[') {
+			if(p + 1 < len && buf[p + 1] == '[') {
+				if(kind_out) *kind_out= BRACE_EVT_WIKILINK_OPEN;
+				if(match_len_out) *match_len_out= 2;
+				if(brace_count_out) *brace_count_out= 0;
+				if(equals_count_out) *equals_count_out= 0;
+				if(sentinel_len_out) *sentinel_len_out= 0;
+				*pos= p + 2;
+				return true;
+			}
+			i= p + 1;
+			continue;
+		}
+		if(ch == '-') {
+			if(p + 1 < len && buf[p + 1] == '{' && !(p + 2 < len && buf[p + 2] == '{')) {
+				if(kind_out) *kind_out= BRACE_EVT_CONVERTER_OPEN;
+				if(match_len_out) *match_len_out= 2;
+				if(brace_count_out) *brace_count_out= 0;
+				if(equals_count_out) *equals_count_out= 0;
+				if(sentinel_len_out) *sentinel_len_out= 0;
+				*pos= p + 2;
+				return true;
+			}
+			if(p + 1 < len && buf[p + 1] == '}') {
+				if(kind_out) *kind_out= BRACE_EVT_CONVERTER_CLOSE;
+				if(match_len_out) *match_len_out= 2;
+				if(brace_count_out) *brace_count_out= 0;
+				if(equals_count_out) *equals_count_out= 0;
+				if(sentinel_len_out) *sentinel_len_out= 0;
+				*pos= p + 2;
+				return true;
+			}
+			i= p + 1;
+			continue;
+		}
+		if(ch == '{') {
+			size_t cnt= 0;
+			while(p + cnt < len && buf[p + cnt] == '{') cnt++;
+			if(cnt >= 2) {
+				size_t bc= cnt > 3 ? 3 : cnt;
+				if(kind_out) *kind_out= BRACE_EVT_BRACE_OPEN;
+				if(match_len_out) *match_len_out= bc;
+				if(brace_count_out) *brace_count_out= bc;
+				if(equals_count_out) *equals_count_out= 0;
+				if(sentinel_len_out) *sentinel_len_out= 0;
+				*pos= p + bc;
+				return true;
+			}
+			i= p + 1;
+			continue;
+		}
+		if(ch == '\n') {
+			/* Skip firing an event when followed by blank-line boundary
                ([^\S\n] | \0\d+[cn]\x7F)* then another \n. */
-            size_t j = p + 1;
-            while (j < len) {
-                unsigned char cj = (unsigned char)buf[j];
-                if (cj == '\0') {
-                    size_t sl = 0;
-                    if (parse_sentinel_at_allowed(buf, len, j, "cn", &sl)) { j += sl; continue; }
-                    break;
-                }
-                if (cj == ' ' || cj == '\t' || cj == '\v' || cj == '\f' || cj == '\r') { j++; continue; }
-                break;
-            }
-            if (j < len && buf[j] == '\n') { i = p + 1; continue; }
-            if (kind_out)        *kind_out        = BRACE_EVT_NEWLINE;
-            if (match_len_out)   *match_len_out   = 1;
-            if (brace_count_out) *brace_count_out = 0;
-            if (equals_count_out)*equals_count_out= 0;
-            if (sentinel_len_out)*sentinel_len_out= 0;
-            *pos = p + 1; return true;
-        }
-        if (ch == '|') {
-            if (kind_out)        *kind_out        = BRACE_EVT_PIPE;
-            if (match_len_out)   *match_len_out   = 1;
-            if (brace_count_out) *brace_count_out = 0;
-            if (equals_count_out)*equals_count_out= 0;
-            if (sentinel_len_out)*sentinel_len_out= 0;
-            *pos = p + 1; return true;
-        }
-        if (ch == '=') {
-            if (kind_out)        *kind_out        = BRACE_EVT_EQUALS;
-            if (match_len_out)   *match_len_out   = 1;
-            if (brace_count_out) *brace_count_out = 0;
-            if (equals_count_out)*equals_count_out= 1;
-            if (sentinel_len_out)*sentinel_len_out= 0;
-            *pos = p + 1; return true;
-        }
-        if (ch == '}') {
-            size_t cnt = 0;
-            while (p + cnt < len && buf[p + cnt] == '}') cnt++;
-            if (cnt >= 2) {
-                size_t bc = cnt > 3 ? 3 : cnt;
-                if (kind_out)        *kind_out        = BRACE_EVT_BRACE_CLOSE;
-                if (match_len_out)   *match_len_out   = bc;
-                if (brace_count_out) *brace_count_out = bc;
-                if (equals_count_out)*equals_count_out= 0;
-                if (sentinel_len_out)*sentinel_len_out= 0;
-                *pos = p + bc; return true;
-            }
-            i = p + 1; continue;
-        }
-        if (ch == ']') {
-            if (p + 1 < len && buf[p + 1] == ']') {
-                if (kind_out)        *kind_out        = BRACE_EVT_WIKILINK_CLOSE;
-                if (match_len_out)   *match_len_out   = 2;
-                if (brace_count_out) *brace_count_out = 0;
-                if (equals_count_out)*equals_count_out= 0;
-                if (sentinel_len_out)*sentinel_len_out= 0;
-                *pos = p + 2; return true;
-            }
-            i = p + 1; continue;
-        }
-        i = p + 1;
-    }
-    return false;
+			size_t j= p + 1;
+			while(j < len) {
+				unsigned char cj= (unsigned char)buf[j];
+				if(cj == '\0') {
+					size_t sl= 0;
+					if(parse_sentinel_at_allowed(buf, len, j, "cn", &sl)) {
+						j+= sl;
+						continue;
+					}
+					break;
+				}
+				if(cj == ' ' || cj == '\t' || cj == '\v' || cj == '\f' || cj == '\r') {
+					j++;
+					continue;
+				}
+				break;
+			}
+			if(j < len && buf[j] == '\n') {
+				i= p + 1;
+				continue;
+			}
+			if(kind_out) *kind_out= BRACE_EVT_NEWLINE;
+			if(match_len_out) *match_len_out= 1;
+			if(brace_count_out) *brace_count_out= 0;
+			if(equals_count_out) *equals_count_out= 0;
+			if(sentinel_len_out) *sentinel_len_out= 0;
+			*pos= p + 1;
+			return true;
+		}
+		if(ch == '|') {
+			if(kind_out) *kind_out= BRACE_EVT_PIPE;
+			if(match_len_out) *match_len_out= 1;
+			if(brace_count_out) *brace_count_out= 0;
+			if(equals_count_out) *equals_count_out= 0;
+			if(sentinel_len_out) *sentinel_len_out= 0;
+			*pos= p + 1;
+			return true;
+		}
+		if(ch == '=') {
+			if(kind_out) *kind_out= BRACE_EVT_EQUALS;
+			if(match_len_out) *match_len_out= 1;
+			if(brace_count_out) *brace_count_out= 0;
+			if(equals_count_out) *equals_count_out= 1;
+			if(sentinel_len_out) *sentinel_len_out= 0;
+			*pos= p + 1;
+			return true;
+		}
+		if(ch == '}') {
+			size_t cnt= 0;
+			while(p + cnt < len && buf[p + cnt] == '}') cnt++;
+			if(cnt >= 2) {
+				size_t bc= cnt > 3 ? 3 : cnt;
+				if(kind_out) *kind_out= BRACE_EVT_BRACE_CLOSE;
+				if(match_len_out) *match_len_out= bc;
+				if(brace_count_out) *brace_count_out= bc;
+				if(equals_count_out) *equals_count_out= 0;
+				if(sentinel_len_out) *sentinel_len_out= 0;
+				*pos= p + bc;
+				return true;
+			}
+			i= p + 1;
+			continue;
+		}
+		if(ch == ']') {
+			if(p + 1 < len && buf[p + 1] == ']') {
+				if(kind_out) *kind_out= BRACE_EVT_WIKILINK_CLOSE;
+				if(match_len_out) *match_len_out= 2;
+				if(brace_count_out) *brace_count_out= 0;
+				if(equals_count_out) *equals_count_out= 0;
+				if(sentinel_len_out) *sentinel_len_out= 0;
+				*pos= p + 2;
+				return true;
+			}
+			i= p + 1;
+			continue;
+		}
+		i= p + 1;
+	}
+	return false;
 }
 
 static bool str_list_contains_ci(const StrList *sl, const char *needle) {
@@ -217,8 +245,8 @@ static char *braces_make_match_subject(const char *buf, size_t len) {
 
 	/* Quick check: if the input contains no NUL sentinels, avoid the copy
 	 * and let the caller use the original buffer. This is the common case. */
-	char needle = '\0';
-	const char *found = sz_find_byte(buf, len, &needle);
+	char needle= '\0';
+	const char *found= sz_find_byte(buf, len, &needle);
 	if(!found) return NULL;
 
 	char *subject= malloc(len);
@@ -227,12 +255,12 @@ static char *braces_make_match_subject(const char *buf, size_t len) {
 
 	/* Replace embedded NUL bytes with SOH in the copied buffer. Use
 	 * sz_find_byte to locate NULs efficiently. */
-	const char *p = found;
+	const char *p= found;
 	while(p && p < buf + len) {
-		size_t idx = (size_t)(p - buf);
-		subject[idx] = '\x01';
+		size_t idx= (size_t)(p - buf);
+		subject[idx]= '\x01';
 		if(idx + 1 >= len) break;
-		p = sz_find_byte(p + 1, len - idx - 1, &needle);
+		p= sz_find_byte(p + 1, len - idx - 1, &needle);
 	}
 	return subject;
 }
@@ -250,10 +278,9 @@ static const char *str_map_get_exact(const StrMap *m, const char *key) {
 /* Forward declaration: lower_copy is defined later but used above. */
 static char *lower_copy(const char *s, size_t len);
 
-
 /* JS parity: parser/braces.js getSymbol() for {{...}} replacements. */
 static char braces_get_symbol(const char *name, size_t len,
-			const ParserConfig *cfg, bool *is_magic_out) {
+										const ParserConfig *cfg, bool *is_magic_out) {
 	if(is_magic_out) *is_magic_out= false;
 	if(!name || len == 0) return 't';
 
@@ -265,12 +292,12 @@ static char braces_get_symbol(const char *name, size_t len,
 
 	/* trim ASCII whitespace */
 	size_t i= 0, j= cleaned_len;
-	while(i < cleaned_len && isspace((unsigned char)cleaned[i])) i++; 
-	while(j > i && isspace((unsigned char)cleaned[j - 1])) j--; 
-	if(j <= i) { 
-		free(cleaned); 
-		return 't'; 
-	} 
+	while(i < cleaned_len && isspace((unsigned char)cleaned[i])) i++;
+	while(j > i && isspace((unsigned char)cleaned[j - 1])) j--;
+	if(j <= i) {
+		free(cleaned);
+		return 't';
+	}
 
 	size_t n= j - i;
 	char *trimmed= malloc(n + 1);
@@ -292,7 +319,7 @@ static char braces_get_symbol(const char *name, size_t len,
 	const char *canonical= NULL;
 	const char *base_orig= trimmed;
 	size_t base_orig_len= n;
-	char colon_ch = ':';
+	char colon_ch= ':';
 	const char *colon_orig= sz_find_byte(trimmed, n, &colon_ch);
 	if(colon_orig && colon_orig > trimmed) {
 		base_orig_len= (size_t)(colon_orig - trimmed);
@@ -379,10 +406,10 @@ static char braces_get_symbol(const char *name, size_t len,
 
 	if(is_magic_out) {
 		log_debug_env_token("WTC_DEBUG_STAGE_1", NULL,
-			"Get braces symbol: out=%c base_lc=%s is_magic_out=%d", out, base_lc, *is_magic_out);
+								  "Get braces symbol: out=%c base_lc=%s is_magic_out=%d", out, base_lc, *is_magic_out);
 	} else {
 		log_debug_env_token("WTC_DEBUG_STAGE_1", NULL,
-			"Get braces symbol: out=%c base_lc=%s is_magic_out=NULL", out, base_lc);
+								  "Get braces symbol: out=%c base_lc=%s is_magic_out=NULL", out, base_lc);
 	}
 	free(base_buf);
 	free(base_orig_buf);
@@ -421,16 +448,16 @@ static char *lower_copy(const char *s, size_t len) {
 	 * bulk lowercase transformation. This preserves the byte-wise tolower()
 	 * semantics used previously (C locale/unsigned-char based). */
 	static unsigned char lut[256];
-	static int lut_inited = 0;
+	static int lut_inited= 0;
 	if(!lut_inited) {
-		for(int i = 0; i < 256; ++i) lut[i] = (unsigned char)tolower((unsigned char)i);
-		lut_inited = 1;
+		for(int i= 0; i < 256; ++i) lut[i]= (unsigned char)tolower((unsigned char)i);
+		lut_inited= 1;
 	}
 
-	char *out = malloc(len + 1);
+	char *out= malloc(len + 1);
 	if(!out) return NULL;
 	sz_lookup(out, len, s, (const char *)lut);
-	out[len] = '\0';
+	out[len]= '\0';
 	return out;
 }
 
@@ -463,11 +490,11 @@ static const char *parser_function_canonical(const ParserConfig *cfg, const char
  * on whether '=' appeared in the raw (pre-restore) part — JS parity for
  * part.indexOf('=') being called before restore(). */
 static Token *build_template_token(const char **parts_restored, const size_t *parts_lens,
-																	 size_t parts_count,
-																	 bool is_arg, const ParserConfig *cfg, Accum *accum,
-																	 const bool *part_is_named) {
+											  size_t parts_count,
+											  bool is_arg, const ParserConfig *cfg, Accum *accum,
+											  const bool *part_is_named) {
 	Token *t= token_new(is_arg ? TOKEN_ARG : TOKEN_TRANSCLUDE,
-											is_arg ? "arg" : "template");
+							  is_arg ? "arg" : "template");
 	if(!t) return NULL;
 
 	/* ArgToken: [arg-name, arg-default?, hidden*] */
@@ -480,7 +507,7 @@ static Token *build_template_token(const char **parts_restored, const size_t *pa
 			}
 
 			/* Persist the name into the tokens arena to avoid dangling views */
-			const char *name_view = wiki_thread_buf_append_to_tokens(parts_restored[0], parts_lens[0]);
+			const char *name_view= wiki_thread_buf_append_to_tokens(parts_restored[0], parts_lens[0]);
 			token_append_text_n(name_tok, name_view, parts_lens[0]);
 			token_append_child(t, name_tok);
 
@@ -492,7 +519,7 @@ static Token *build_template_token(const char **parts_restored, const size_t *pa
 			Token *def_tok= token_new(TOKEN_PLAIN, "arg-default");
 			if(def_tok) {
 				/* Persist default text into tokens arena */
-				const char *def_view = wiki_thread_buf_append_to_tokens(parts_restored[1], parts_lens[1]);
+				const char *def_view= wiki_thread_buf_append_to_tokens(parts_restored[1], parts_lens[1]);
 				token_append_text_n(def_tok, def_view, parts_lens[1]);
 				token_append_child(t, def_tok);
 			}
@@ -503,7 +530,7 @@ static Token *build_template_token(const char **parts_restored, const size_t *pa
 			Token *hidden= token_new(TOKEN_HIDDEN, "hidden");
 			if(!hidden) continue;
 			/* Persist hidden part into tokens arena */
-			const char *hid_view = wiki_thread_buf_append_to_tokens(parts_restored[k], parts_lens[k]);
+			const char *hid_view= wiki_thread_buf_append_to_tokens(parts_restored[k], parts_lens[k]);
 			token_append_text_n(hidden, hid_view, parts_lens[k]);
 			token_append_child(t, hidden);
 		}
@@ -535,7 +562,7 @@ static Token *build_template_token(const char **parts_restored, const size_t *pa
 	size_t title_part_len= (parts_count > 0) ? parts_lens[0] : 0;
 
 	if(title_part && cfg) {
-		char colon_ch = ':';
+		char colon_ch= ':';
 		const char *colon= sz_find_byte(title_part, title_part_len, &colon_ch);
 		if(colon) {
 			size_t prefix_len= (size_t)(colon - title_part);
@@ -568,13 +595,13 @@ static Token *build_template_token(const char **parts_restored, const size_t *pa
 		if(magic) {
 			transclude_is_magic= true;
 			magic_title_len= p0_len;
-				char colon_ch = ':';
-				const char *colon= sz_find_byte(title_part, p0_len, &colon_ch);
-				if(colon) {
-					magic_title_len= (size_t)(colon - title_part);
-					magic_first_arg= colon + 1;
-					magic_first_arg_len= p0_len - magic_title_len - 1;
-				}
+			char colon_ch= ':';
+			const char *colon= sz_find_byte(title_part, p0_len, &colon_ch);
+			if(colon) {
+				magic_title_len= (size_t)(colon - title_part);
+				magic_first_arg= colon + 1;
+				magic_first_arg_len= p0_len - magic_title_len - 1;
+			}
 
 			free(t->type_name);
 			t->type_name= strdup("magic-word");
@@ -605,7 +632,7 @@ static Token *build_template_token(const char **parts_restored, const size_t *pa
 			Token *mw_name= token_new(TOKEN_SYNTAX, "magic-word-name");
 			if(mw_name) {
 				/* Persist magic-word name into tokens arena */
-				const char *mw_view = wiki_thread_buf_append_to_tokens(title_part, magic_title_len);
+				const char *mw_view= wiki_thread_buf_append_to_tokens(title_part, magic_title_len);
 				token_append_text_n(mw_name, mw_view, magic_title_len);
 				token_append_child(t, mw_name);
 			}
@@ -613,7 +640,7 @@ static Token *build_template_token(const char **parts_restored, const size_t *pa
 			Token *tpl_name= token_new(TOKEN_ATOM, "template-name");
 			if(tpl_name) {
 				/* Persist template name into tokens arena */
-				const char *tpl_view = wiki_thread_buf_append_to_tokens(title_part, p0_len);
+				const char *tpl_view= wiki_thread_buf_append_to_tokens(title_part, p0_len);
 				token_append_text_n(tpl_name, tpl_view, p0_len);
 				token_append_child(t, tpl_name);
 			}
@@ -628,17 +655,17 @@ static Token *build_template_token(const char **parts_restored, const size_t *pa
 		if(invoke_magic) {
 			Token *mod_tok= token_new(TOKEN_ATOM, "invoke-module");
 			if(mod_tok) {
-					/* Persist module name into tokens arena */
-					const char *mod_view = wiki_thread_buf_append_to_tokens(magic_first_arg, magic_first_arg_len);
-					token_append_text_n(mod_tok, mod_view, magic_first_arg_len);
+				/* Persist module name into tokens arena */
+				const char *mod_view= wiki_thread_buf_append_to_tokens(magic_first_arg, magic_first_arg_len);
+				token_append_text_n(mod_tok, mod_view, magic_first_arg_len);
 				token_append_child(t, mod_tok);
 			}
 			if(parts_count > 1 && parts_restored[1]) {
 				Token *fn_tok= token_new(TOKEN_ATOM, "invoke-function");
 				if(fn_tok) {
-						/* Persist invoke-function into tokens arena */
-						const char *fn_view = wiki_thread_buf_append_to_tokens(parts_restored[1], parts_lens[1]);
-						token_append_text_n(fn_tok, fn_view, parts_lens[1]);
+					/* Persist invoke-function into tokens arena */
+					const char *fn_view= wiki_thread_buf_append_to_tokens(parts_restored[1], parts_lens[1]);
+					token_append_text_n(fn_tok, fn_view, parts_lens[1]);
 					token_append_child(t, fn_tok);
 				}
 				params_start_idx= 2;
@@ -657,9 +684,9 @@ static Token *build_template_token(const char **parts_restored, const size_t *pa
 					/* JS parity: the first parser-function argument after ':' is
 					 * always positional, even if it contains '='. */
 					token_append_child(param, key_tok);
-						/* Persist positional magic argument into tokens arena */
-						const char *val_view = wiki_thread_buf_append_to_tokens(part, part_len);
-						token_append_text_n(val_tok, val_view, part_len);
+					/* Persist positional magic argument into tokens arena */
+					const char *val_view= wiki_thread_buf_append_to_tokens(part, part_len);
+					token_append_text_n(val_tok, val_view, part_len);
 					token_append_child(param, val_tok);
 
 					char *pname= strdup("1");
@@ -680,79 +707,80 @@ static Token *build_template_token(const char **parts_restored, const size_t *pa
 
 		const char *part= parts_restored[k];
 		size_t part_len= parts_lens[k];
-                
-                /* JS parity: for certain magic words, don't split early parameters on '='.
+
+		/* JS parity: for certain magic words, don't split early parameters on '='.
                  * For #tag, only parameters at k > params_start_idx (3rd+) allow key=value splitting.
                  * Earlier params remain positional. */
-                bool force_positional= false;
-                if(transclude_is_magic && t->name) {
-                        if(strcmp(t->name, "tag") == 0 && k == params_start_idx) {
-                                /* #tag: first param after ':' is positional even if it contains '=' */
-                                force_positional= true;
-                        }
-                }
-                
-                /* JS parity: use pre-determined named/positional flag when available.
+		bool force_positional= false;
+		if(transclude_is_magic && t->name) {
+			if(strcmp(t->name, "tag") == 0 && k == params_start_idx) {
+				/* #tag: first param after ':' is positional even if it contains '=' */
+				force_positional= true;
+			}
+		}
+
+		/* JS parity: use pre-determined named/positional flag when available.
          * part_is_named[k]==false means the raw part had no '=', so even if
          * the restored text contains '=' (e.g. from [[=]]), it is positional. */
-				char eq_ch = '=';
-				const char *eq= (force_positional || (part_is_named && !part_is_named[k]))
-																			   ? NULL
-																			   : sz_find_byte(part, part_len, &eq_ch);
+		char eq_ch= '=';
+		const char *eq= (force_positional || (part_is_named && !part_is_named[k]))
+							 ? NULL
+							 : sz_find_byte(part, part_len, &eq_ch);
 
-                Token *param= token_new(TOKEN_PARAMETER, "parameter");
-                if(!param) continue;
-                param->sep= '\0';
+		Token *param= token_new(TOKEN_PARAMETER, "parameter");
+		if(!param) continue;
+		param->sep= '\0';
 
-                Token *key_tok= token_new(TOKEN_PLAIN, "parameter-key");
-                Token *val_tok= token_new(TOKEN_PLAIN, "parameter-value");
-                if(!key_tok || !val_tok) {
-                        if(key_tok) token_free(key_tok);
+		Token *key_tok= token_new(TOKEN_PLAIN, "parameter-key");
+		Token *val_tok= token_new(TOKEN_PLAIN, "parameter-value");
+		if(!key_tok || !val_tok) {
+			if(key_tok) token_free(key_tok);
 			continue;
 		}
 
-				if(eq) {
-					size_t key_len= (size_t)(eq - part);
-					size_t val_len= part_len - key_len - 1;
-					/* Persist key and value into tokens arena */
-					const char *key_view = wiki_thread_buf_append_to_tokens(part, key_len);
-					const char *val_view = wiki_thread_buf_append_to_tokens(eq + 1, val_len);
-					{
-						char _vhbuf[128]; size_t _vhp = 0;
-						size_t _vls = (val_len > 86) ? 86 : 0;
-						size_t _vle = (_vls + 6 < val_len) ? _vls + 6 : val_len;
-						for(size_t _qi = _vls; _qi < _vle && _vhp+3 < sizeof(_vhbuf); _qi++) {
-							int _wn = snprintf(_vhbuf+_vhp, sizeof(_vhbuf)-_vhp, "%02X", (unsigned char)val_view[_qi]);
-							if(_wn > 0) _vhp += (size_t)_wn;
-							if(_qi+1 < _vle && _vhp < sizeof(_vhbuf)) _vhbuf[_vhp++] = ' ';
-						}
-						_vhbuf[_vhp] = '\0';
-						log_debug_env_token("WTC_DEBUG_STAGE_1", NULL,
-							"[C build_tpl_named] val_view=%p val_len=%zu bytes_at[%zu..%zu]=%s",
-							(void*)val_view, val_len, _vls, _vle, _vhbuf);
-					}
-					token_append_text_n(key_tok, key_view, key_len);
-					token_append_text_n(val_tok, val_view, val_len);
-					token_append_child(param, key_tok);
-					token_append_child(param, val_tok);
+		if(eq) {
+			size_t key_len= (size_t)(eq - part);
+			size_t val_len= part_len - key_len - 1;
+			/* Persist key and value into tokens arena */
+			const char *key_view= wiki_thread_buf_append_to_tokens(part, key_len);
+			const char *val_view= wiki_thread_buf_append_to_tokens(eq + 1, val_len);
+			{
+				char _vhbuf[128];
+				size_t _vhp= 0;
+				size_t _vls= (val_len > 86) ? 86 : 0;
+				size_t _vle= (_vls + 6 < val_len) ? _vls + 6 : val_len;
+				for(size_t _qi= _vls; _qi < _vle && _vhp + 3 < sizeof(_vhbuf); _qi++) {
+					int _wn= snprintf(_vhbuf + _vhp, sizeof(_vhbuf) - _vhp, "%02X", (unsigned char)val_view[_qi]);
+					if(_wn > 0) _vhp+= (size_t)_wn;
+					if(_qi + 1 < _vle && _vhp < sizeof(_vhbuf)) _vhbuf[_vhp++]= ' ';
+				}
+				_vhbuf[_vhp]= '\0';
+				log_debug_env_token("WTC_DEBUG_STAGE_1", NULL,
+										  "[C build_tpl_named] val_view=%p val_len=%zu bytes_at[%zu..%zu]=%s",
+										  (void *)val_view, val_len, _vls, _vle, _vhbuf);
+			}
+			token_append_text_n(key_tok, key_view, key_len);
+			token_append_text_n(val_tok, val_view, val_len);
+			token_append_child(param, key_tok);
+			token_append_child(param, val_tok);
 
 			char *pname= trim_copy(part, key_len);
 			if(pname) param->name= pname;
-				} else {
-					/* Persist positional parameter value into tokens arena */
-					const char *val_view = wiki_thread_buf_append_to_tokens(part, part_len);
-					token_append_child(param, key_tok);
-					token_append_text_n(val_tok, val_view, part_len);
-					token_append_child(param, val_tok);
+		} else {
+			/* Persist positional parameter value into tokens arena */
+			const char *val_view= wiki_thread_buf_append_to_tokens(part, part_len);
+			token_append_child(param, key_tok);
+			token_append_text_n(val_tok, val_view, part_len);
+			token_append_child(param, val_tok);
 
 			char idx_buf[32];
-			int n = snprintf(idx_buf, sizeof(idx_buf), "%zu", positional++);
-			if (n > 0) {
+			int n= snprintf(idx_buf, sizeof(idx_buf), "%zu", positional++);
+			if(n > 0) {
 				// strdup handles the malloc and the copy in one go.
 				// It is safe because it only copies the exact length of the string.
-				char *pname = strdup(idx_buf);
-				if (pname) {
-					param->name = pname;
+				char *pname= strdup(idx_buf);
+				if(pname) {
+					param->name= pname;
 				}
 			}
 		}
@@ -766,11 +794,11 @@ static Token *build_template_token(const char **parts_restored, const size_t *pa
 /* Helper: split inner content on '|', restore link-stack entries in each part,
  * and build a template/arg token.  Uses do-while to handle trailing '|'. */
 static Token *build_from_inner(const char *inner, size_t inner_len,
-															 bool is_arg,
-															 char **link_stack, size_t link_count,
-															 const size_t *link_stack_lens,
-															 const ParserConfig *cfg,
-															 Accum *accum) {
+										 bool is_arg,
+										 char **link_stack, size_t link_count,
+										 const size_t *link_stack_lens,
+										 const ParserConfig *cfg,
+										 Accum *accum) {
 	size_t part_cap= 8, part_count= 0;
 	char **parts= malloc(part_cap * sizeof(char *));
 	size_t *plens= malloc(part_cap * sizeof(size_t));
@@ -797,7 +825,7 @@ static Token *build_from_inner(const char *inner, size_t inner_len,
 			/* JS parity: part.indexOf('=') on the raw (sentinel-containing) part
              * before restore() so '=' inside [[=]] sentinels is never detected
              * as a named-parameter separator. */
-			char eq_ch = '=';
+			char eq_ch= '=';
 			const char *eq_in_raw= sz_find_byte(raw, plen, &eq_ch);
 			if(eq_in_raw) {
 				is_named= true;
@@ -806,9 +834,9 @@ static Token *build_from_inner(const char *inner, size_t inner_len,
 				size_t val_raw_len= plen - key_raw_len - 1;
 				size_t key_len= 0, val_len= 0;
 				char *key= str_restore(raw, key_raw_len,
-															 (const char **)link_stack, link_count, link_stack_lens, &key_len);
+											  (const char **)link_stack, link_count, link_stack_lens, &key_len);
 				char *val= str_restore(eq_in_raw + 1, val_raw_len,
-															 (const char **)link_stack, link_count, link_stack_lens, &val_len);
+											  (const char **)link_stack, link_count, link_stack_lens, &val_len);
 				restored_len= key_len + 1 + val_len;
 				restored= malloc(restored_len + 1);
 				assert(restored);
@@ -840,23 +868,23 @@ static Token *build_from_inner(const char *inner, size_t inner_len,
 		}
 		/* Debug: log restored part bytes if it contains sentinel-like bytes */
 		{
-			char needle = '\x7F';
-			const char *has_del = sz_find_byte(restored, restored_len, &needle);
-			char nul = '\0';
-			const char *has_nul = sz_find_byte(restored, restored_len, &nul);
+			char needle= '\x7F';
+			const char *has_del= sz_find_byte(restored, restored_len, &needle);
+			char nul= '\0';
+			const char *has_nul= sz_find_byte(restored, restored_len, &nul);
 			if(has_del || has_nul) {
 				char hexbuf[256];
-				size_t hexpos = 0;
-				size_t look = restored_len > 64 ? 64 : restored_len;
-				for(size_t ii = 0; ii < look && hexpos + 3 < sizeof(hexbuf); ii++) {
-					int wn = snprintf(hexbuf + hexpos, sizeof(hexbuf) - hexpos, "%02X", (unsigned char)restored[ii]);
-					if(wn > 0) hexpos += (size_t)wn;
-					if(ii + 1 < look && hexpos + 1 < sizeof(hexbuf)) hexbuf[hexpos++] = ' ';
+				size_t hexpos= 0;
+				size_t look= restored_len > 64 ? 64 : restored_len;
+				for(size_t ii= 0; ii < look && hexpos + 3 < sizeof(hexbuf); ii++) {
+					int wn= snprintf(hexbuf + hexpos, sizeof(hexbuf) - hexpos, "%02X", (unsigned char)restored[ii]);
+					if(wn > 0) hexpos+= (size_t)wn;
+					if(ii + 1 < look && hexpos + 1 < sizeof(hexbuf)) hexbuf[hexpos++]= ' ';
 				}
-				hexbuf[hexpos] = '\0';
+				hexbuf[hexpos]= '\0';
 				log_debug_env_token("WTC_DEBUG_STAGE_1", NULL,
-					"[C build_from_inner] part %zu restored_len=%zu preview_hex=%s",
-					part_count, restored_len, hexbuf);
+										  "[C build_from_inner] part %zu restored_len=%zu preview_hex=%s",
+										  part_count, restored_len, hexbuf);
 			}
 		}
 		parts[part_count]= restored;
@@ -972,7 +1000,7 @@ static bool brace_frame_init(BraceFrame *frame, const char *open, size_t open_le
 		if(!parts_add_empty(&frame->parts)) {
 			/* parts_add_empty failed: free open and any partial parts allocations */
 			free(frame->open);
-			frame->open = NULL;
+			frame->open= NULL;
 			parts_free(&frame->parts);
 			return false;
 		}
@@ -990,15 +1018,15 @@ static void brace_frame_free(BraceFrame *frame) {
 }
 
 static bool brace_push_part(BraceFrame *frame, const char *buf, size_t from, size_t to,
-														const char **link_stack, size_t link_count,
-														const size_t *link_stack_lens) {
+									 const char **link_stack, size_t link_count,
+									 const size_t *link_stack_lens) {
 	if(!frame || !frame->has_parts) return true;
 	size_t len= to > from ? to - from : 0;
 	if(len == 0) return true;
 	size_t restored_len= 0;
 	char *restored= str_restore(buf + from, len,
-															(const char **)link_stack, link_count,
-															link_stack_lens, &restored_len);
+										 (const char **)link_stack, link_count,
+										 link_stack_lens, &restored_len);
 	if(!restored) return false;
 	bool ok= parts_append_text(&frame->parts, restored, restored_len);
 	free(restored);
@@ -1037,12 +1065,12 @@ static bool brace_frame_append_part(BraceFrame *frame) {
 static char braces_arg_symbol(const char *inner, size_t inner_len, const ParserConfig *cfg);
 
 static bool braces_state_machine(ThreadBuf *tb, const ParserConfig *cfg,
-																 Accum *accum, char **link_stack, size_t link_count,
-																 const size_t *link_stack_lens) {
+											Accum *accum, char **link_stack, size_t link_count,
+											const size_t *link_stack_lens) {
 	if(!tb || !tb->buf) return false;
 	const char *pattern= "^((?:\\0\\d+[cno]\\x7F)*)={1,6}|\\[\\[|-\\{(?!\\{)|\\{{2,}|\\n(?!(?:[^\\S\\n]|\\0\\d+[cn]\\x7F)*\\n)|[|=]|\\}{2,}|\\}-|\\]\\]";
-	pcre2_code *re = pcre_cache_get(pattern, PCRE2_UTF | PCRE2_MULTILINE);
-	pcre2_match_data *md = pcre2_match_data_create_from_pattern(re, NULL);
+	pcre2_code *re= pcre_cache_get(pattern, PCRE2_UTF | PCRE2_MULTILINE);
+	pcre2_match_data *md= pcre2_match_data_create_from_pattern(re, NULL);
 	if(!md) {
 		log_error("braces: pcre2_match_data_create_from_pattern failed");
 		return false;
@@ -1069,12 +1097,12 @@ static bool braces_state_machine(ThreadBuf *tb, const ParserConfig *cfg,
 	bool has_last_index= false;
 	//size_t last_index= 0;
 
-#define ENSURE_OUT_CAP(need)             \
-	do {                                   \
+#define ENSURE_OUT_CAP(need)               \
+	do {                                    \
 		while(out_len + (need) >= out_cap) { \
-			out_cap*= 2;                       \
-			out= realloc(out, out_cap);        \
-			assert(out);                       \
+			out_cap*= 2;                      \
+			out= realloc(out, out_cap);       \
+			assert(out);                      \
 		}                                    \
 	} while(0)
 
@@ -1148,54 +1176,54 @@ static bool braces_state_machine(ThreadBuf *tb, const ParserConfig *cfg,
 			if(has_top && top.open_len == 1 && top.open[0] == '=') {
 				const char *slice= tb->buf + top.index;
 				size_t slice_len= cur_index - top.index;
-				pcre2_code *hd_re = pcre_cache_get("^(={1,6})(.+)\\1((?:\\s|\\0\\d+[cn]\\x7F)*)$", PCRE2_UTF);
-				pcre2_match_data *hd_md = pcre2_match_data_create_from_pattern(hd_re, NULL);
+				pcre2_code *hd_re= pcre_cache_get("^(={1,6})(.+)\\1((?:\\s|\\0\\d+[cn]\\x7F)*)$", PCRE2_UTF);
+				pcre2_match_data *hd_md= pcre2_match_data_create_from_pattern(hd_re, NULL);
 				if(hd_md) {
-					int hrc = pcre2_match(hd_re, (PCRE2_SPTR)slice, slice_len, 0, 0, hd_md, NULL);
+					int hrc= pcre2_match(hd_re, (PCRE2_SPTR)slice, slice_len, 0, 0, hd_md, NULL);
 					if(hrc > 0) {
-						PCRE2_SIZE *hov = pcre2_get_ovector_pointer(hd_md);
-						size_t title_start = hov[2];
-						size_t title_end = hov[3];
-						size_t trail_start = hov[4];
-						size_t trail_end = hov[5];
-						size_t title_len = title_end - title_start;
-						size_t trail_len = trail_end - trail_start;
-						char *title = str_restore(slice + title_start, title_len, (const char **)link_stack, link_count, link_stack_lens, &title_len);
+						PCRE2_SIZE *hov= pcre2_get_ovector_pointer(hd_md);
+						size_t title_start= hov[2];
+						size_t title_end= hov[3];
+						size_t trail_start= hov[4];
+						size_t trail_end= hov[5];
+						size_t title_len= title_end - title_start;
+						size_t trail_len= trail_end - trail_start;
+						char *title= str_restore(slice + title_start, title_len, (const char **)link_stack, link_count, link_stack_lens, &title_len);
 						if(title) {
-							Token *heading_tok = token_new(TOKEN_HEADING, "heading");
+							Token *heading_tok= token_new(TOKEN_HEADING, "heading");
 							if(heading_tok) {
-								Token *title_tok = token_new(TOKEN_PLAIN, "heading-title");
+								Token *title_tok= token_new(TOKEN_PLAIN, "heading-title");
 								if(title_tok) {
 									/* Persist heading title into tokens arena */
-									const char *title_view = wiki_thread_buf_append_to_tokens(title, title_len);
+									const char *title_view= wiki_thread_buf_append_to_tokens(title, title_len);
 									token_append_text_n(title_tok, title_view, title_len);
 									token_append_child(heading_tok, title_tok);
 									if(trail_len > 0) {
-										Token *trail_tok = token_new(TOKEN_SYNTAX, "heading-trail");
+										Token *trail_tok= token_new(TOKEN_SYNTAX, "heading-trail");
 										if(trail_tok) {
 											/* Persist heading trail into tokens arena */
-											const char *trail_view = wiki_thread_buf_append_to_tokens(slice + trail_start, trail_len);
+											const char *trail_view= wiki_thread_buf_append_to_tokens(slice + trail_start, trail_len);
 											token_append_text_n(trail_tok, trail_view, trail_len);
 											token_append_child(heading_tok, trail_tok);
 										}
 									}
 									accum_push(accum, heading_tok);
-									size_t idx = accum->count - 1;
+									size_t idx= accum->count - 1;
 									char sent[64];
 									size_t slen;
 									work_str_sentinel(idx, 'h', sent, &slen);
 									{
 										char hexbuf[128];
-										size_t hexpos = 0;
-										for(size_t _i = 0; _i < slen && hexpos + 3 < sizeof(hexbuf); _i++) {
-											int wn = snprintf(hexbuf + hexpos, sizeof(hexbuf) - hexpos, "%02X", (unsigned char)sent[_i]);
-											if(wn > 0) hexpos += (size_t)wn;
-											if(_i + 1 < slen && hexpos + 1 < sizeof(hexbuf)) hexbuf[hexpos++] = ' ';
+										size_t hexpos= 0;
+										for(size_t _i= 0; _i < slen && hexpos + 3 < sizeof(hexbuf); _i++) {
+											int wn= snprintf(hexbuf + hexpos, sizeof(hexbuf) - hexpos, "%02X", (unsigned char)sent[_i]);
+											if(wn > 0) hexpos+= (size_t)wn;
+											if(_i + 1 < slen && hexpos + 1 < sizeof(hexbuf)) hexbuf[hexpos++]= ' ';
 										}
-										hexbuf[hexpos] = '\0';
+										hexbuf[hexpos]= '\0';
 										log_debug_env_token("WTC_DEBUG_STAGE_1", NULL,
-											"[C parseBraces] wrote sentinel idx=%zu type=%c slen=%zu hex=%s",
-											idx, 'h', slen, hexbuf);
+																  "[C parseBraces] wrote sentinel idx=%zu type=%c slen=%zu hex=%s",
+																  idx, 'h', slen, hexbuf);
 									}
 									ENSURE_OUT_CAP((top.index > next_write ? top.index - next_write : 0) + slen);
 									if(top.index > next_write) {
@@ -1359,11 +1387,11 @@ static bool braces_state_machine(ThreadBuf *tb, const ParserConfig *cfg,
 			break;
 		}
 
-			/* If we popped a frame into `top` but didn't requeue it, free it
+		/* If we popped a frame into `top` but didn't requeue it, free it
 			 * now to avoid leaking its heap allocations (open, parts). */
-			if(has_top && !top_requeued) {
-				brace_frame_free(&top);
-			}
+		if(has_top && !top_requeued) {
+			brace_frame_free(&top);
+		}
 		search_at= syntax_end;
 		if(search_at == ms) search_at= ms + 1;
 	}
@@ -1379,7 +1407,7 @@ static bool braces_state_machine(ThreadBuf *tb, const ParserConfig *cfg,
 	free(out);
 	/* Free any remaining frames stored in the stack to avoid leaking their
 	 * inner allocations (open, parts). */
-	for(size_t si = 0; si < stack_len; si++) {
+	for(size_t si= 0; si < stack_len; si++) {
 		brace_frame_free(&stack[si]);
 	}
 	free(stack);
@@ -1454,42 +1482,42 @@ static char braces_arg_symbol(const char *inner, size_t inner_len, const ParserC
 
 typedef struct {
 	const ParserConfig *cfg;
-	Accum              *accum;
-	ThreadBuf          *out_tb;
+	Accum *accum;
+	ThreadBuf *out_tb;
 } BracesContext;
 
 static void braces_append(BracesContext *ctx, const char *data, size_t len) {
-	wiki_thread_buf_append(ctx->out_tb, (sz_string_view_t){ .start = data, .length = len });
+	wiki_thread_buf_append(ctx->out_tb, (sz_string_view_t){.start= data, .length= len});
 }
 
 static void braces_callback(const char *segment, size_t len,
-							ParserSegmentKind kind, void *user_data) {
-	BracesContext *ctx = (BracesContext *)user_data;
-	if (kind != PARSER_SEG_INNER) {
+									 ParserSegmentKind kind, void *user_data) {
+	BracesContext *ctx= (BracesContext *)user_data;
+	if(kind != PARSER_SEG_INNER) {
 		braces_append(ctx, segment, len);
 		return;
 	}
 
-	Token *tok = build_from_inner(segment, len, true, NULL, 0, NULL, ctx->cfg, ctx->accum);
-	if (tok) {
+	Token *tok= build_from_inner(segment, len, true, NULL, 0, NULL, ctx->cfg, ctx->accum);
+	if(tok) {
 		char sentinel[64];
 		size_t slen;
-		char sym = braces_arg_symbol(segment, len, ctx->cfg);
-			work_str_sentinel(ctx->accum->count - 1, sym, sentinel, &slen);
-			{
-				char hexbuf[128];
-				size_t hexpos = 0;
-				for(size_t _i = 0; _i < slen && hexpos + 3 < sizeof(hexbuf); _i++) {
-					int wn = snprintf(hexbuf + hexpos, sizeof(hexbuf) - hexpos, "%02X", (unsigned char)sentinel[_i]);
-					if(wn > 0) hexpos += (size_t)wn;
-					if(_i + 1 < slen && hexpos + 1 < sizeof(hexbuf)) hexbuf[hexpos++] = ' ';
-				}
-				hexbuf[hexpos] = '\0';
-				log_debug_env_token("WTC_DEBUG_STAGE_1", NULL,
-					"[C parseBraces] wrote sentinel idx=%zu type=%c slen=%zu hex=%s",
-					ctx->accum->count - 1, sym, slen, hexbuf);
+		char sym= braces_arg_symbol(segment, len, ctx->cfg);
+		work_str_sentinel(ctx->accum->count - 1, sym, sentinel, &slen);
+		{
+			char hexbuf[128];
+			size_t hexpos= 0;
+			for(size_t _i= 0; _i < slen && hexpos + 3 < sizeof(hexbuf); _i++) {
+				int wn= snprintf(hexbuf + hexpos, sizeof(hexbuf) - hexpos, "%02X", (unsigned char)sentinel[_i]);
+				if(wn > 0) hexpos+= (size_t)wn;
+				if(_i + 1 < slen && hexpos + 1 < sizeof(hexbuf)) hexbuf[hexpos++]= ' ';
 			}
-			braces_append(ctx, sentinel, slen);
+			hexbuf[hexpos]= '\0';
+			log_debug_env_token("WTC_DEBUG_STAGE_1", NULL,
+									  "[C parseBraces] wrote sentinel idx=%zu type=%c slen=%zu hex=%s",
+									  ctx->accum->count - 1, sym, slen, hexbuf);
+		}
+		braces_append(ctx, sentinel, slen);
 	} else {
 		braces_append(ctx, "{{{", 3);
 		braces_append(ctx, segment, len);
@@ -1498,64 +1526,64 @@ static void braces_callback(const char *segment, size_t len,
 }
 
 typedef struct {
-	ThreadBuf          *tb;
+	ThreadBuf *tb;
 	const ParserConfig *cfg;
-	Accum              *accum;
+	Accum *accum;
 } BracesPassCtx;
 
 static void braces_run_pass(void *user_data) {
-	BracesPassCtx *p = (BracesPassCtx *)user_data;
+	BracesPassCtx *p= (BracesPassCtx *)user_data;
 
-	ThreadBuf *out_tb = wiki_thread_buf_acquire_scratch();
+	ThreadBuf *out_tb= wiki_thread_buf_acquire_scratch();
 	assert(out_tb);
-	out_tb->len = 0;
+	out_tb->len= 0;
 
-	BracesContext ctx = { .cfg = p->cfg, .accum = p->accum, .out_tb = out_tb };
+	BracesContext ctx= {.cfg= p->cfg, .accum= p->accum, .out_tb= out_tb};
 	parser_scan(p->tb->buf, p->tb->len, &wiki_rule_triple_brace_arg, braces_callback, &ctx);
 
-	if (out_tb->len != p->tb->len || sz_equal(p->tb->buf, out_tb->buf, p->tb->len) != sz_true_k) {
+	if(out_tb->len != p->tb->len || sz_equal(p->tb->buf, out_tb->buf, p->tb->len) != sz_true_k) {
 		wiki_thread_buf_set(p->tb, out_tb->buf, out_tb->len);
 	}
 	wiki_thread_buf_release_scratch(out_tb);
 }
 
 static const char *braces_get_buf(void *tb) { return ((ThreadBuf *)tb)->buf; }
-static size_t      braces_get_len(void *tb) { return ((ThreadBuf *)tb)->len; }
+static size_t braces_get_len(void *tb) { return ((ThreadBuf *)tb)->len; }
 
 static void parse_simple_args(ThreadBuf *tb, const ParserConfig *cfg, Accum *accum) {
-	BracesPassCtx p = { .tb = tb, .cfg = cfg, .accum = accum };
+	BracesPassCtx p= {.tb= tb, .cfg= cfg, .accum= accum};
 	parser_scan_until_stable(tb, braces_run_pass, &p, braces_get_buf, braces_get_len);
 }
 
 /* ── ParserRules for the outer fixpoint loop in parse_braces ─────────────── */
 
-static const char s_main_pat_dbl_bracket[]   = { '[', '[' };
-static const char s_main_pat_nl_then_nul[]   = { '\n', '\0' };
+static const char s_main_pat_dbl_bracket[]= {'[', '['};
+static const char s_main_pat_nl_then_nul[]= {'\n', '\0'};
 
-static const char *const s_main_tpl_patterns[]      = { s_main_pat_dbl_bracket, s_main_pat_nl_then_nul };
-static const size_t      s_main_tpl_pattern_lens[]  = { 2, 2 };
+static const char *const s_main_tpl_patterns[]= {s_main_pat_dbl_bracket, s_main_pat_nl_then_nul};
+static const size_t s_main_tpl_pattern_lens[]= {2, 2};
 
-static const char *const s_main_link_patterns[]     = { s_main_pat_nl_then_nul };
-static const size_t      s_main_link_pattern_lens[] = { 2 };
+static const char *const s_main_link_patterns[]= {s_main_pat_nl_then_nul};
+static const size_t s_main_link_pattern_lens[]= {2};
 
 /*
  * {{...}} template alternation 1 – JS parity for (?<!\{)\{\{inner\}\}:
  * no_preceding_byte='{' implements the lookbehind; no lookahead guard.
  * inner = [^\n{}\[]|\[(?!\[)|\n(?!\x00)
  */
-static const ParserRules s_rule_main_template_1 = {
-.open_delim                = "{{",
-.open_len                  = 2,
-.close_delim               = "}}",
-.close_len                 = 2,
-.match_mode                = PARSER_MATCH_FIRST_CLOSE,
-.prohibited_chars          = "{}",
-.prohibited_chars_len      = 2,
-.prohibited_patterns       = s_main_tpl_patterns,
-.prohibited_pattern_lens   = s_main_tpl_pattern_lens,
-.prohibited_patterns_count = 2,
-.no_preceding_byte         = '{',
-.no_following_byte         = 0,
+static const ParserRules s_rule_main_template_1= {
+.open_delim= "{{",
+.open_len= 2,
+.close_delim= "}}",
+.close_len= 2,
+.match_mode= PARSER_MATCH_FIRST_CLOSE,
+.prohibited_chars= "{}",
+.prohibited_chars_len= 2,
+.prohibited_patterns= s_main_tpl_patterns,
+.prohibited_pattern_lens= s_main_tpl_pattern_lens,
+.prohibited_patterns_count= 2,
+.no_preceding_byte= '{',
+.no_following_byte= 0,
 };
 
 /*
@@ -1563,19 +1591,19 @@ static const ParserRules s_rule_main_template_1 = {
  * no_following_byte='}' implements the lookahead; no lookbehind guard.
  * Catches templates preceded by '{' that alternation 1 skipped.
  */
-static const ParserRules s_rule_main_template_2 = {
-.open_delim                = "{{",
-.open_len                  = 2,
-.close_delim               = "}}",
-.close_len                 = 2,
-.match_mode                = PARSER_MATCH_FIRST_CLOSE,
-.prohibited_chars          = "{}",
-.prohibited_chars_len      = 2,
-.prohibited_patterns       = s_main_tpl_patterns,
-.prohibited_pattern_lens   = s_main_tpl_pattern_lens,
-.prohibited_patterns_count = 2,
-.no_preceding_byte         = 0,
-.no_following_byte         = '}',
+static const ParserRules s_rule_main_template_2= {
+.open_delim= "{{",
+.open_len= 2,
+.close_delim= "}}",
+.close_len= 2,
+.match_mode= PARSER_MATCH_FIRST_CLOSE,
+.prohibited_chars= "{}",
+.prohibited_chars_len= 2,
+.prohibited_patterns= s_main_tpl_patterns,
+.prohibited_pattern_lens= s_main_tpl_pattern_lens,
+.prohibited_patterns_count= 2,
+.no_preceding_byte= 0,
+.no_following_byte= '}',
 };
 
 /*
@@ -1583,17 +1611,17 @@ static const ParserRules s_rule_main_template_2 = {
  * Parked in link_stack; not processed at this stage.
  * inner = [^\n\[\]\{]|\n(?!\x00)
  */
-static const ParserRules s_rule_main_wikilink = {
-.open_delim                = "[[",
-.open_len                  = 2,
-.close_delim               = "]]",
-.close_len                 = 2,
-.match_mode                = PARSER_MATCH_FIRST_CLOSE,
-.prohibited_chars          = "[]{",
-.prohibited_chars_len      = 3,
-.prohibited_patterns       = s_main_link_patterns,
-.prohibited_pattern_lens   = s_main_link_pattern_lens,
-.prohibited_patterns_count = 1,
+static const ParserRules s_rule_main_wikilink= {
+.open_delim= "[[",
+.open_len= 2,
+.close_delim= "]]",
+.close_len= 2,
+.match_mode= PARSER_MATCH_FIRST_CLOSE,
+.prohibited_chars= "[]{",
+.prohibited_chars_len= 3,
+.prohibited_patterns= s_main_link_patterns,
+.prohibited_pattern_lens= s_main_link_pattern_lens,
+.prohibited_patterns_count= 1,
 };
 
 /*
@@ -1601,136 +1629,136 @@ static const ParserRules s_rule_main_wikilink = {
  * Parked in link_stack; not processed at this stage.
  * inner = [^\n{}\[]|\[(?!\[)|\n(?!\x00) – same inner as template.
  */
-static const ParserRules s_rule_main_converter = {
-.open_delim                = "-{",
-.open_len                  = 2,
-.close_delim               = "}-",
-.close_len                 = 2,
-.match_mode                = PARSER_MATCH_FIRST_CLOSE,
-.prohibited_chars          = "{}",
-.prohibited_chars_len      = 2,
-.prohibited_patterns       = s_main_tpl_patterns,
-.prohibited_pattern_lens   = s_main_tpl_pattern_lens,
-.prohibited_patterns_count = 2,
+static const ParserRules s_rule_main_converter= {
+.open_delim= "-{",
+.open_len= 2,
+.close_delim= "}-",
+.close_len= 2,
+.match_mode= PARSER_MATCH_FIRST_CLOSE,
+.prohibited_chars= "{}",
+.prohibited_chars_len= 2,
+.prohibited_patterns= s_main_tpl_patterns,
+.prohibited_pattern_lens= s_main_tpl_pattern_lens,
+.prohibited_patterns_count= 2,
 };
 
 /* ── Callbacks for the outer fixpoint loop ─────────────────────────────────── */
 
 typedef struct {
-const ParserConfig *cfg;
-Accum              *accum;
-ThreadBuf          *out;
-char            ***link_stack;       /* &(char **) – one extra level for realloc */
-size_t           **link_stack_lens;  /* &(size_t *) */
-size_t            *link_count;
-size_t            *link_cap;
-const ParserRules  *active_rule;
+	const ParserConfig *cfg;
+	Accum *accum;
+	ThreadBuf *out;
+	char ***link_stack;		  /* &(char **) – one extra level for realloc */
+	size_t **link_stack_lens; /* &(size_t *) */
+	size_t *link_count;
+	size_t *link_cap;
+	const ParserRules *active_rule;
 } MainBracesCtx;
 
 /* Restore any nested link-stack placeholders in text[0..len), push to
  * link_stack, and emit the numeric placeholder \0<N>\x7F into ctx->out. */
 static void main_braces_push_link_stack(MainBracesCtx *ctx,
-                                        const char *text, size_t text_len) {
-size_t restored_len = 0;
-char *restored = str_restore(text, text_len,
-                             (const char **)*ctx->link_stack,
-                             *ctx->link_count,
-                             *ctx->link_stack_lens,
-                             &restored_len);
-if (*ctx->link_count >= *ctx->link_cap) {
-*ctx->link_cap *= 2;
-*ctx->link_stack      = (char **)realloc(*ctx->link_stack,      *ctx->link_cap * sizeof(char *));
-*ctx->link_stack_lens = (size_t *)realloc(*ctx->link_stack_lens, *ctx->link_cap * sizeof(size_t));
-assert(*ctx->link_stack && *ctx->link_stack_lens);
-}
-(*ctx->link_stack)[*ctx->link_count]     = restored;
-(*ctx->link_stack_lens)[*ctx->link_count] = restored_len;
-size_t link_idx = (*ctx->link_count)++;
+													 const char *text, size_t text_len) {
+	size_t restored_len= 0;
+	char *restored= str_restore(text, text_len,
+										 (const char **)*ctx->link_stack,
+										 *ctx->link_count,
+										 *ctx->link_stack_lens,
+										 &restored_len);
+	if(*ctx->link_count >= *ctx->link_cap) {
+		*ctx->link_cap*= 2;
+		*ctx->link_stack= (char **)realloc(*ctx->link_stack, *ctx->link_cap * sizeof(char *));
+		*ctx->link_stack_lens= (size_t *)realloc(*ctx->link_stack_lens, *ctx->link_cap * sizeof(size_t));
+		assert(*ctx->link_stack && *ctx->link_stack_lens);
+	}
+	(*ctx->link_stack)[*ctx->link_count]= restored;
+	(*ctx->link_stack_lens)[*ctx->link_count]= restored_len;
+	size_t link_idx= (*ctx->link_count)++;
 
-char mark[64];
-int n = snprintf(mark + 1, sizeof(mark) - 2, "%zu", link_idx);
-mark[0] = '\0';
-mark[1 + n] = '\x7F';
-size_t mlen = (size_t)(n + 2);
-wiki_thread_buf_append(ctx->out, (sz_string_view_t){ .start = mark, .length = mlen });
+	char mark[64];
+	int n= snprintf(mark + 1, sizeof(mark) - 2, "%zu", link_idx);
+	mark[0]= '\0';
+	mark[1 + n]= '\x7F';
+	size_t mlen= (size_t)(n + 2);
+	wiki_thread_buf_append(ctx->out, (sz_string_view_t){.start= mark, .length= mlen});
 }
 
 /* Callback for {{...}} template matches: process inner via build_from_inner,
  * or park in link_stack if build_from_inner rejects it. */
 static void main_braces_template_cb(const char *segment, size_t len,
-                                    ParserSegmentKind kind, void *user_data) {
-MainBracesCtx *ctx = (MainBracesCtx *)user_data;
-if (kind == PARSER_SEG_TEXT) {
-wiki_thread_buf_append(ctx->out, (sz_string_view_t){ .start = segment, .length = len });
-return;
-}
-/* PARSER_SEG_INNER: segment is the inner content of {{ ... }} */
-const char *inner     = segment;
-size_t      inner_len = len;
+												ParserSegmentKind kind, void *user_data) {
+	MainBracesCtx *ctx= (MainBracesCtx *)user_data;
+	if(kind == PARSER_SEG_TEXT) {
+		wiki_thread_buf_append(ctx->out, (sz_string_view_t){.start= segment, .length= len});
+		return;
+	}
+	/* PARSER_SEG_INNER: segment is the inner content of {{ ... }} */
+	const char *inner= segment;
+	size_t inner_len= len;
 
-Token *tok = build_from_inner(inner, inner_len,
-                              false,
-                              *ctx->link_stack, *ctx->link_count,
-                              *ctx->link_stack_lens,
-                              ctx->cfg, ctx->accum);
-if (tok) {
-size_t tok_idx = ctx->accum->count - 1;
-char sym = 't';
-if (inner_len > 0) {
-size_t p0_end = 0;
-while (p0_end < inner_len && inner[p0_end] != '|') p0_end++;
-sym = braces_get_symbol(inner, p0_end, ctx->cfg, NULL);
-}
-char sent[64];
-size_t slen;
-work_str_sentinel(tok_idx, sym, sent, &slen);
-log_debug_env_token("WTC_DEBUG_STAGE_1", NULL,
-"[C parseBraces] wrote sentinel idx=%zu type=%c slen=%zu",
-tok_idx, sym, slen);
-wiki_thread_buf_append(ctx->out, (sz_string_view_t){ .start = sent, .length = slen });
-} else {
-/* Park the full {{inner}} text in link_stack and emit placeholder. */
-size_t full_len = 2 + inner_len + 2;
-char *tmp = malloc(full_len + 1);
-assert(tmp);
-memcpy(tmp,                 "{{", 2);
-memcpy(tmp + 2,             inner, inner_len);
-memcpy(tmp + 2 + inner_len, "}}", 2);
-tmp[full_len] = '\0';
-main_braces_push_link_stack(ctx, tmp, full_len);
-free(tmp);
-}
+	Token *tok= build_from_inner(inner, inner_len,
+										  false,
+										  *ctx->link_stack, *ctx->link_count,
+										  *ctx->link_stack_lens,
+										  ctx->cfg, ctx->accum);
+	if(tok) {
+		size_t tok_idx= ctx->accum->count - 1;
+		char sym= 't';
+		if(inner_len > 0) {
+			size_t p0_end= 0;
+			while(p0_end < inner_len && inner[p0_end] != '|') p0_end++;
+			sym= braces_get_symbol(inner, p0_end, ctx->cfg, NULL);
+		}
+		char sent[64];
+		size_t slen;
+		work_str_sentinel(tok_idx, sym, sent, &slen);
+		log_debug_env_token("WTC_DEBUG_STAGE_1", NULL,
+								  "[C parseBraces] wrote sentinel idx=%zu type=%c slen=%zu",
+								  tok_idx, sym, slen);
+		wiki_thread_buf_append(ctx->out, (sz_string_view_t){.start= sent, .length= slen});
+	} else {
+		/* Park the full {{inner}} text in link_stack and emit placeholder. */
+		size_t full_len= 2 + inner_len + 2;
+		char *tmp= malloc(full_len + 1);
+		assert(tmp);
+		memcpy(tmp, "{{", 2);
+		memcpy(tmp + 2, inner, inner_len);
+		memcpy(tmp + 2 + inner_len, "}}", 2);
+		tmp[full_len]= '\0';
+		main_braces_push_link_stack(ctx, tmp, full_len);
+		free(tmp);
+	}
 }
 
 /* Callback for [[...]] and -{...}- matches: park the full match in link_stack. */
 static void main_braces_park_cb(const char *segment, size_t len,
-                                ParserSegmentKind kind, void *user_data) {
-MainBracesCtx *ctx = (MainBracesCtx *)user_data;
-if (kind == PARSER_SEG_TEXT) {
-wiki_thread_buf_append(ctx->out, (sz_string_view_t){ .start = segment, .length = len });
-return;
-}
-/* PARSER_SEG_INNER: reconstruct open+inner+close, park, emit placeholder. */
-const ParserRules *r = ctx->active_rule;
-size_t full_len = r->open_len + len + r->close_len;
-char *tmp = malloc(full_len + 1);
-assert(tmp);
-memcpy(tmp,                       r->open_delim,  r->open_len);
-memcpy(tmp + r->open_len,         segment,        len);
-memcpy(tmp + r->open_len + len,   r->close_delim, r->close_len);
-tmp[full_len] = '\0';
-main_braces_push_link_stack(ctx, tmp, full_len);
-free(tmp);
+										  ParserSegmentKind kind, void *user_data) {
+	MainBracesCtx *ctx= (MainBracesCtx *)user_data;
+	if(kind == PARSER_SEG_TEXT) {
+		wiki_thread_buf_append(ctx->out, (sz_string_view_t){.start= segment, .length= len});
+		return;
+	}
+	/* PARSER_SEG_INNER: reconstruct open+inner+close, park, emit placeholder. */
+	const ParserRules *r= ctx->active_rule;
+	size_t full_len= r->open_len + len + r->close_len;
+	char *tmp= malloc(full_len + 1);
+	assert(tmp);
+	memcpy(tmp, r->open_delim, r->open_len);
+	memcpy(tmp + r->open_len, segment, len);
+	memcpy(tmp + r->open_len + len, r->close_delim, r->close_len);
+	tmp[full_len]= '\0';
+	main_braces_push_link_stack(ctx, tmp, full_len);
+	free(tmp);
 }
 
 typedef struct {
-ThreadBuf          *tb;
-const ParserConfig *cfg;
-Accum              *accum;
-char            ***link_stack;
-size_t           **link_stack_lens;
-size_t            *link_count;
-size_t            *link_cap;
+	ThreadBuf *tb;
+	const ParserConfig *cfg;
+	Accum *accum;
+	char ***link_stack;
+	size_t **link_stack_lens;
+	size_t *link_count;
+	size_t *link_cap;
 } MainBracesPassArgs;
 
 /*
@@ -1739,51 +1767,50 @@ size_t            *link_cap;
  * then converter parking). Called by parser_scan_until_stable until stable.
  */
 static void main_braces_run_pass(void *user_data) {
-MainBracesPassArgs *args = (MainBracesPassArgs *)user_data;
-ThreadBuf *out = wiki_thread_buf_acquire_scratch();
-assert(out);
+	MainBracesPassArgs *args= (MainBracesPassArgs *)user_data;
+	ThreadBuf *out= wiki_thread_buf_acquire_scratch();
+	assert(out);
 
-MainBracesCtx ctx = {
-.cfg             = args->cfg,
-.accum           = args->accum,
-.out             = out,
-.link_stack      = args->link_stack,
-.link_stack_lens = args->link_stack_lens,
-.link_count      = args->link_count,
-.link_cap        = args->link_cap,
-};
+	MainBracesCtx ctx= {
+	.cfg= args->cfg,
+	.accum= args->accum,
+	.out= out,
+	.link_stack= args->link_stack,
+	.link_stack_lens= args->link_stack_lens,
+	.link_count= args->link_count,
+	.link_cap= args->link_cap,
+	};
 
-/* Sub-pass 1a: {{...}} not preceded by { (alternation 1). */
-out->len = 0;
-ctx.active_rule = &s_rule_main_template_1;
-parser_scan(args->tb->buf, args->tb->len, &s_rule_main_template_1,
-            main_braces_template_cb, &ctx);
-wiki_thread_buf_set(args->tb, out->buf, out->len);
+	/* Sub-pass 1a: {{...}} not preceded by { (alternation 1). */
+	out->len= 0;
+	ctx.active_rule= &s_rule_main_template_1;
+	parser_scan(args->tb->buf, args->tb->len, &s_rule_main_template_1,
+					main_braces_template_cb, &ctx);
+	wiki_thread_buf_set(args->tb, out->buf, out->len);
 
-/* Sub-pass 1b: {{...}} not followed by } (alternation 2). */
-out->len = 0;
-ctx.active_rule = &s_rule_main_template_2;
-parser_scan(args->tb->buf, args->tb->len, &s_rule_main_template_2,
-            main_braces_template_cb, &ctx);
-wiki_thread_buf_set(args->tb, out->buf, out->len);
+	/* Sub-pass 1b: {{...}} not followed by } (alternation 2). */
+	out->len= 0;
+	ctx.active_rule= &s_rule_main_template_2;
+	parser_scan(args->tb->buf, args->tb->len, &s_rule_main_template_2,
+					main_braces_template_cb, &ctx);
+	wiki_thread_buf_set(args->tb, out->buf, out->len);
 
-/* Sub-pass 2: park [[...]] wikilinks. */
-out->len = 0;
-ctx.active_rule = &s_rule_main_wikilink;
-parser_scan(args->tb->buf, args->tb->len, &s_rule_main_wikilink,
-            main_braces_park_cb, &ctx);
-wiki_thread_buf_set(args->tb, out->buf, out->len);
+	/* Sub-pass 2: park [[...]] wikilinks. */
+	out->len= 0;
+	ctx.active_rule= &s_rule_main_wikilink;
+	parser_scan(args->tb->buf, args->tb->len, &s_rule_main_wikilink,
+					main_braces_park_cb, &ctx);
+	wiki_thread_buf_set(args->tb, out->buf, out->len);
 
-/* Sub-pass 3: park -{...}- converters. */
-out->len = 0;
-ctx.active_rule = &s_rule_main_converter;
-parser_scan(args->tb->buf, args->tb->len, &s_rule_main_converter,
-            main_braces_park_cb, &ctx);
-wiki_thread_buf_set(args->tb, out->buf, out->len);
+	/* Sub-pass 3: park -{...}- converters. */
+	out->len= 0;
+	ctx.active_rule= &s_rule_main_converter;
+	parser_scan(args->tb->buf, args->tb->len, &s_rule_main_converter,
+					main_braces_park_cb, &ctx);
+	wiki_thread_buf_set(args->tb, out->buf, out->len);
 
-wiki_thread_buf_release_scratch(out);
+	wiki_thread_buf_release_scratch(out);
 }
-
 
 /* Main parse function */
 void parse_braces(ThreadBuf *tb, const ParserConfig *cfg, Accum *accum) {
@@ -1791,7 +1818,6 @@ void parse_braces(ThreadBuf *tb, const ParserConfig *cfg, Accum *accum) {
 
 	/* First, replace simple innermost triple-brace args. */
 	parse_simple_args(tb, cfg, accum);
-
 
 	/* linkStack: temporarily holds [[...]] and -{...}- text so brace matching
      * can proceed without those patterns interfering.  Stores the FULL matched
@@ -1804,33 +1830,33 @@ void parse_braces(ThreadBuf *tb, const ParserConfig *cfg, Accum *accum) {
 	assert(link_stack && link_stack_lens);
 
 	{
-		MainBracesPassArgs args = {
-			.tb             = tb,
-			.cfg            = cfg,
-			.accum          = accum,
-			.link_stack     = &link_stack,
-			.link_stack_lens= &link_stack_lens,
-			.link_count     = &link_count,
-			.link_cap       = &link_cap,
+		MainBracesPassArgs args= {
+		.tb= tb,
+		.cfg= cfg,
+		.accum= accum,
+		.link_stack= &link_stack,
+		.link_stack_lens= &link_stack_lens,
+		.link_count= &link_count,
+		.link_cap= &link_cap,
 		};
 		parser_scan_until_stable(tb, main_braces_run_pass, &args,
-		                         braces_get_buf, braces_get_len);
+										 braces_get_buf, braces_get_len);
 	}
 
 	/* Second-pass state machine: handle nested templates/links and heading
      * closures that the simple regex replacement loop cannot resolve. */
 	log_debug_env_token("WTC_DEBUG_STAGE_1", NULL,
-		"[C parseBraces] entering state machine: len=%zu, buf=%.200s, link_count=%zu",
-		 tb->len, tb->buf, link_count);
+							  "[C parseBraces] entering state machine: len=%zu, buf=%.200s, link_count=%zu",
+							  tb->len, tb->buf, link_count);
 	braces_state_machine(tb, cfg, accum, link_stack, link_count, link_stack_lens);
 
 	/* Final restoration of parked [[...]] / -{...}- placeholders. */
 	{
 		size_t restored_len= 0;
 		char *restored_all= str_restore(tb->buf, tb->len,
-																		(const char **)link_stack, link_count,
-																		link_stack_lens,
-																		&restored_len);
+												  (const char **)link_stack, link_count,
+												  link_stack_lens,
+												  &restored_len);
 		wiki_thread_buf_set(tb, restored_all, restored_len);
 		free(restored_all);
 	}
