@@ -47,6 +47,124 @@ static bool parse_sentinel_at_allowed(const char *buf, size_t len, size_t pos,
 }
 
 /*
+ * Heading line result for the validator used in stage 4.
+ */
+typedef struct {
+	const char *lead;         /* leading \x00\d+[cn]\x7F group; may be empty */
+	size_t      lead_len;
+	const char *open_eq;      /* pointer to first '=' of opening run         */
+	size_t      eq_count;     /* 1–6                                          */
+	const char *content;      /* (.+): inner heading text, non-empty          */
+	size_t      content_len;
+	const char *trail;        /* (\s|\x00\d+[cn]\x7F)*: trailing group        */
+	size_t      trail_len;
+} HeadingLineResult;
+
+/* Shared helper: parse one \x00\d+[cn]\x7F sentinel at `p`.
+ * Returns the byte count consumed, or 0 if `p` does not start a valid
+ * sentinel with a 'c' or 'n' type character.
+ */
+static size_t skip_cn_sentinel(const char *p, size_t remaining) {
+	if(!p || remaining < 4) return 0;
+	if((unsigned char)p[0] != 0) return 0;
+	size_t j = 1;
+	/* require at least one digit */
+	if(j >= remaining || p[j] < '0' || p[j] > '9') return 0;
+	while(j < remaining && p[j] >= '0' && p[j] <= '9') j++;
+	if(j >= remaining) return 0;
+	char t = p[j];
+	if(t != 'c' && t != 'n') return 0;
+	if(j + 1 >= remaining) return 0;
+	if((unsigned char)p[j + 1] != (unsigned char)0x7F) return 0;
+	return (j + 2);
+}
+
+/*
+ * Apply to one line (no embedded '\n'). Returns true on match.
+ *
+ * Steps:
+ *   1. pos=0. Consume zero or more \x00\d+[cn]\x7F sentinels -> lead.
+ *   2. At `pos`, count '=' run r (1–6); if 0 or >6, return false.
+ *   3. Scan from right end, stripping (\s | \x00\d+[cn]\x7F)* -> trail.
+ *   4. Verify exactly r '=' bytes immediately left of the trail boundary.
+ *      If mismatched, return false.
+ *   5. right -= r. content = line[pos+r .. right). Must be non-empty.
+ *   6. Fill *out and return true.
+ */
+static bool heading_line_parse_with_sentinels(const char        *line,
+											  size_t             len,
+											  HeadingLineResult *out) {
+	if(!line || !out || len == 0) return false;
+	/* init out */
+	out->lead = NULL; out->lead_len = 0;
+	out->open_eq = NULL; out->eq_count = 0;
+	out->content = NULL; out->content_len = 0;
+	out->trail = NULL; out->trail_len = 0;
+
+	size_t pos = 0;
+	/* 1) consume leading sentinels */
+	while(pos < len) {
+		size_t sl = skip_cn_sentinel(line + pos, len - pos);
+		if(sl == 0) break;
+		pos += sl;
+	}
+	out->lead = line;
+	out->lead_len = pos;
+
+	/* 2) count opening '=' run (1..6) */
+	size_t eq_count = 0;
+	while(pos + eq_count < len && line[pos + eq_count] == '=' && eq_count < 6) eq_count++;
+	if(eq_count == 0) return false;
+	out->open_eq = line + pos;
+	out->eq_count = eq_count;
+
+	/* 3) strip trailing (\s | sentinel)* from the right */
+	size_t r = len;
+	while(r > 0) {
+		unsigned char last = (unsigned char)line[r - 1];
+		if(last == (unsigned char)0x7F) {
+			/* attempt to parse a trailing sentinel that ends at r-1 */
+			if(r < 4) break;
+			size_t type_pos = r - 2;
+			char t = line[type_pos];
+			if(t != 'c' && t != 'n') break;
+			/* last digit is at type_pos - 1 */
+			if(type_pos == 0) break;
+			size_t k_end = type_pos - 1;
+			if(!(line[k_end] >= '0' && line[k_end] <= '9')) break;
+			size_t k_start = k_end;
+			while(k_start > 0 && line[k_start - 1] >= '0' && line[k_start - 1] <= '9') k_start--;
+			if(k_start == 0) break;
+			if((unsigned char)line[k_start - 1] != 0) break;
+			/* sentinel spans from k_start-1 .. r-1 */
+			r = k_start - 1;
+			continue;
+		} else if(isspace(last)) {
+			r--;
+			continue;
+		}
+		break;
+	}
+	out->trail = line + r;
+	out->trail_len = len - r;
+
+	/* 4) verify exactly eq_count '=' bytes immediately left of trail boundary */
+	if(r < eq_count) return false;
+	size_t close_eq_start = r - eq_count;
+	for(size_t i = 0; i < eq_count; i++) {
+		if(line[close_eq_start + i] != '=') return false;
+	}
+
+	/* 5) compute content bounds */
+	size_t content_start = pos + eq_count;
+	if(close_eq_start <= content_start) return false; /* empty content not allowed */
+	out->content = line + content_start;
+	out->content_len = close_eq_start - content_start;
+
+	return true;
+}
+
+/*
  * Advance *pos to the next brace-grammar event in buf[*pos .. len).
  * Returns true and fills the out-params on success; false when exhausted.
  *
