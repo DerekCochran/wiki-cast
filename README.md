@@ -62,7 +62,70 @@ cd build
 cmake ..
 make -j
 ```
+The project defaults to a Release build for single-config generators. Examples:
 
+Release (default):
+
+```bash
+cmake -S . -B build -DCMAKE_BUILD_TYPE=Release
+cmake --build build -j"$(nproc)"
+```
+
+Debug (unoptimised, good for stepping/debugging):
+
+```bash
+cmake -S . -B build -DCMAKE_BUILD_TYPE=Debug
+cmake --build build -j"$(nproc)"
+```
+
+RelWithDebInfo (optimised with debug symbols — recommended for profiling):
+
+```bash
+cmake -S . -B build -DCMAKE_BUILD_TYPE=RelWithDebInfo
+cmake --build build -j"$(nproc)"
+```
+
+Notes:
+ - CMake caches `CMAKE_BUILD_TYPE` at configure time. Setting `CMAKE_BUILD_TYPE=Release` in the environment when running `cmake --build` does NOT change the cached value — the build will still use whatever configuration was chosen when `cmake` was run. To switch to Release reconfigure and rebuild:
+
+ ```bash
+ cmake -S . -B build -DCMAKE_BUILD_TYPE=Release
+ cmake --build build -j"$(nproc)"
+ ```
+
+ - If you only need the Node addon in Release (without reconfiguring the whole tree) rebuild it directly from the `bindings/node` directory:
+
+ ```bash
+ cd bindings/node
+ npx node-gyp rebuild --release
+ ```
+
+ - Tests and test helpers may load the `build/Debug/...` addon path. After a Release build either copy the Release `.node` into the Debug folder:
+
+ ```bash
+ cp bindings/node/build/Release/wikiparser-node-c-tokenizer.node bindings/node/build/Debug/
+ ```
+
+   or update `bindings/node/tests/helpers.js` to prefer the `build/Release` artifact (recommended for CI).
+
+ - For profiling use `RelWithDebInfo` so you have optimisation plus symbols.
+
+## Node native addon (bindings/node)
+
+The Node native addon is built as part of the CMake `node_binding` target. The addon build is invoked with `node-gyp` using `--release` by default; when CMake is configured for `Debug` the addon will be built with `node-gyp --debug`.
+
+To build the addon manually from `bindings/node`:
+
+```bash
+# Release
+cd bindings/node
+npx node-gyp rebuild --release
+
+# Debug
+npx node-gyp rebuild --debug
+```
+
+The `binding.gyp` file now contains separate `Debug` and `Release` configurations; the original debug flags (`-g3 -O0 -fno-omit-frame-pointer`) are preserved in the `Debug` configuration.
 This produces `libwikitokenizer.a` and test binaries (for example
 `test_stage0`) in `build`.
 

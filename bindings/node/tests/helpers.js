@@ -8,7 +8,13 @@ const { compareAST } = require('./compareAST');
 const { buildJsAst } = require('./buildJsAst');
 
 const wikiparser = require(path.join(__dirname, '..', '..', '..', 'new-js', 'dist', 'index.js'));
-const nativeParser = require(path.join(__dirname, '..', 'build', 'Debug', 'wikiparser-node-c-tokenizer.node'));
+// Get the native parser by looking in the Release directory fist, then Debug if not found.  This allows running tests in both dev and prod builds without changing the test code.
+let nativeParser;
+try {  
+  nativeParser = require(path.join(__dirname, '..', 'build', 'Release', 'wikiparser-node-c-tokenizer.node'));
+}catch(e) {
+   nativeParser = require(path.join(__dirname, '..', 'build', 'Debug', 'wikiparser-node-c-tokenizer.node'));
+}
 
 const MAX_STAGE = 10;
 const LAST_SAMPLE_PATH = '/tmp/wiki_latest_test_input.txt';

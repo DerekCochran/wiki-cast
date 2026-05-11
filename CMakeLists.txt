@@ -7,8 +7,10 @@ set(CMAKE_C_STANDARD_REQUIRED ON)
 # Ensure the C17 dialect is explicitly used by the compiler.
 add_compile_options(-std=gnu17)
 
-option(TOKENIZER_USE_NATIVE "Enable native CPU optimization flags (-march=native -mtune=native)" ON)
-
+# Default to Release for single-config generators unless user overrides.
+if(NOT CMAKE_BUILD_TYPE)
+    set(CMAKE_BUILD_TYPE "Release" CACHE STRING "Build type (Debug/Release/RelWithDebInfo)" FORCE)
+endif()
 # Apply native CPU tuning and high optimization unconditionally to maximize
 # performance on the build host. This intentionally removes the previous
 # compiler/option guard so the flags are always added; keep the option for
@@ -24,9 +26,6 @@ if(_TOKENIZER_ALL_C_FLAGS MATCHES "(^|[ ;])-fsanitize=undefined([ ;]|$)")
     add_compile_definitions(SZ_USE_MISALIGNED_LOADS=0)
 endif()
 add_compile_definitions(_DEFAULT_SOURCE)
-
-set(TOKENIZER_NODE_GYP_CFLAGS "-march=native -mtune=native -O3 -flto")
-
 # ── Dependencies ─────────────────────────────────────────────────────────────
 find_package(PkgConfig REQUIRED)
 pkg_check_modules(PCRE2   REQUIRED libpcre2-8)
@@ -192,11 +191,18 @@ add_test(NAME wikitext_c COMMAND test_wikitext
          ${CMAKE_CURRENT_SOURCE_DIR}/tests/wikitext)
 configure_parser_test_env(wikitext_c)
 
+## Pick appropriate node-gyp flag based on CMake config. Default to --release.
+if(CMAKE_BUILD_TYPE STREQUAL "Debug")
+    set(NODE_GYP_CONFIG_FLAG "--debug")
+else()
+    set(NODE_GYP_CONFIG_FLAG "--release")
+endif()
+
 # Build the Node native addon from bindings/node as part of the CMake build.
 add_custom_target(node_binding ALL
-    COMMAND ${CMAKE_COMMAND} -E echo "Building Node native addon"
+    COMMAND ${CMAKE_COMMAND} -E echo "Building Node native addon ${NODE_GYP_CONFIG_FLAG}"
     COMMAND ${CMAKE_COMMAND} -E env
-            npx node-gyp rebuild --debug
+            npx node-gyp rebuild ${NODE_GYP_CONFIG_FLAG}
     WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/bindings/node
     DEPENDS wikitokenizer
 )

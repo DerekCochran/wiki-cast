@@ -38,20 +38,34 @@
       ],
       "include_dirs": [ "../../include", "../../src/include" ],
       "libraries": [ "-lpcre2-8", "-lcjson", "-licuuc", "-licudata" ],
-      "cflags": [
-        "-g3",
-        "-O0",
-        "-fno-omit-frame-pointer",
-        "-Wall",
-        "--debug"
-      ],
-      "xcode_settings": {
-        "OTHER_CFLAGS": [ 
-          "-std=c17", 
-          "-g3", 
-          "-O0" 
-        ],
-        "GCC_OPTIMIZATION_LEVEL": "0"
+      "configurations": {
+        "Debug": {
+          "cflags": [
+            "-g3",
+            "-O0",
+            "-fno-omit-frame-pointer",
+            "-Wall",
+            "--debug"
+          ],
+          "xcode_settings": {
+            "OTHER_CFLAGS": ["-std=c17", "-g3", "-O0"],
+            "GCC_OPTIMIZATION_LEVEL": "0"
+          }
+        },
+        "Release": {
+          "defines": ["NDEBUG"],
+          "cflags": [
+            "-march=native",
+            "-mtune=native",
+            "-O3",
+            "-flto",
+            "-Wall"
+          ],
+          "xcode_settings": {
+            "OTHER_CFLAGS": ["-std=c17", "-O3"],
+            "GCC_OPTIMIZATION_LEVEL": "0"
+          }
+        }
       }
     }
   ]
