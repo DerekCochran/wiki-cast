@@ -1537,92 +1537,6 @@ static void parse_simple_args(ThreadBuf *tb, const ParserConfig *cfg, Accum *acc
 
 /* ── ParserRules for the outer fixpoint loop in parse_braces ─────────────── */
 
-static const char s_main_pat_dbl_bracket[]= {'[', '['};
-
-/*
- * NOTE: The original PCRE used braces_make_match_subject() to replace every
- * NUL byte (sentinel start) with SOH before matching, so its inner-content
- * guard \n(?![\x00]) could never actually fire — all NULs were already gone.
- * Therefore \n before a sentinel IS allowed, and we must NOT prohibit the
- * sequence \n\0 in any of these rules.
- */
-static const char *const s_main_tpl_patterns[]= {s_main_pat_dbl_bracket};
-static const size_t s_main_tpl_pattern_lens[]= {2};
-
-/*
- * {{...}} template alternation 1 – JS parity for (?<!\{)\{\{inner\}\}:
- * no_preceding_byte='{' implements the lookbehind; no lookahead guard.
- * inner = [^\n{}\[]|\[(?!\[)|\n(?!\x00)
- */
-static const ParserRules s_rule_main_template_1= {
-.open_delim= "{{",
-.open_len= 2,
-.close_delim= "}}",
-.close_len= 2,
-.match_mode= PARSER_MATCH_FIRST_CLOSE,
-.prohibited_chars= "{}",
-.prohibited_chars_len= 2,
-.prohibited_patterns= s_main_tpl_patterns,
-.prohibited_pattern_lens= s_main_tpl_pattern_lens,
-.prohibited_patterns_count= 1,
-.no_preceding_byte= '{',
-.no_following_byte= 0,
-};
-
-/*
- * {{...}} template alternation 2 – JS parity for \{\{inner\}\}(?!\}):
- * no_following_byte='}' implements the lookahead; no lookbehind guard.
- * Catches templates preceded by '{' that alternation 1 skipped.
- */
-static const ParserRules s_rule_main_template_2= {
-.open_delim= "{{",
-.open_len= 2,
-.close_delim= "}}",
-.close_len= 2,
-.match_mode= PARSER_MATCH_FIRST_CLOSE,
-.prohibited_chars= "{}",
-.prohibited_chars_len= 2,
-.prohibited_patterns= s_main_tpl_patterns,
-.prohibited_pattern_lens= s_main_tpl_pattern_lens,
-.prohibited_patterns_count= 1,
-.no_preceding_byte= 0,
-.no_following_byte= '}',
-};
-
-/*
- * [[...]] wikilink – JS parity for alternation 3 of reReplace.
- * Parked in link_stack; not processed at this stage.
- * inner = [^\n\[\]\{]|\n(?!\x00)
- */
-static const ParserRules s_rule_main_wikilink= {
-.open_delim= "[[",
-.open_len= 2,
-.close_delim= "]]",
-.close_len= 2,
-.match_mode= PARSER_MATCH_FIRST_CLOSE,
-.prohibited_chars= "[]{",
-.prohibited_chars_len= 3,
-.prohibited_patterns_count= 0,  /* \n before sentinels is allowed (see note above) */
-};
-
-/*
- * -{...}- converter – JS parity for alternation 4 of reReplace.
- * Parked in link_stack; not processed at this stage.
- * inner = [^\n{}\[]|\[(?!\[)|\n(?!\x00) – same inner as template.
- */
-static const ParserRules s_rule_main_converter= {
-.open_delim= "-{",
-.open_len= 2,
-.close_delim= "}-",
-.close_len= 2,
-.match_mode= PARSER_MATCH_FIRST_CLOSE,
-.prohibited_chars= "{}",
-.prohibited_chars_len= 2,
-.prohibited_patterns= s_main_tpl_patterns,
-.prohibited_pattern_lens= s_main_tpl_pattern_lens,
-.prohibited_patterns_count= 2,
-};
-
 /* ── Callbacks for the outer fixpoint loop ─────────────────────────────────── */
 
 typedef struct {
@@ -1764,30 +1678,30 @@ static void main_braces_run_pass(void *user_data) {
 
 	/* Sub-pass 1a: {{...}} not preceded by { (alternation 1). */
 	out->len= 0;
-	ctx.active_rule= &s_rule_main_template_1;
-	parser_scan(args->tb->buf, args->tb->len, &s_rule_main_template_1,
-					main_braces_template_cb, &ctx);
+	ctx.active_rule= &wiki_rule_main_template_1;
+	parser_scan(args->tb->buf, args->tb->len, &wiki_rule_main_template_1,
+				main_braces_template_cb, &ctx);
 	wiki_thread_buf_set(args->tb, out->buf, out->len);
 
 	/* Sub-pass 1b: {{...}} not followed by } (alternation 2). */
 	out->len= 0;
-	ctx.active_rule= &s_rule_main_template_2;
-	parser_scan(args->tb->buf, args->tb->len, &s_rule_main_template_2,
-					main_braces_template_cb, &ctx);
+	ctx.active_rule= &wiki_rule_main_template_2;
+	parser_scan(args->tb->buf, args->tb->len, &wiki_rule_main_template_2,
+				main_braces_template_cb, &ctx);
 	wiki_thread_buf_set(args->tb, out->buf, out->len);
 
 	/* Sub-pass 2: park [[...]] wikilinks. */
 	out->len= 0;
-	ctx.active_rule= &s_rule_main_wikilink;
-	parser_scan(args->tb->buf, args->tb->len, &s_rule_main_wikilink,
-					main_braces_park_cb, &ctx);
+	ctx.active_rule= &wiki_rule_main_wikilink;
+	parser_scan(args->tb->buf, args->tb->len, &wiki_rule_main_wikilink,
+				main_braces_park_cb, &ctx);
 	wiki_thread_buf_set(args->tb, out->buf, out->len);
 
 	/* Sub-pass 3: park -{...}- converters. */
 	out->len= 0;
-	ctx.active_rule= &s_rule_main_converter;
-	parser_scan(args->tb->buf, args->tb->len, &s_rule_main_converter,
-					main_braces_park_cb, &ctx);
+	ctx.active_rule= &wiki_rule_main_converter;
+	parser_scan(args->tb->buf, args->tb->len, &wiki_rule_main_converter,
+				main_braces_park_cb, &ctx);
 	wiki_thread_buf_set(args->tb, out->buf, out->len);
 
 	wiki_thread_buf_release_scratch(out);

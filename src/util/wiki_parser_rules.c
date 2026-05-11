@@ -88,7 +88,63 @@ const ParserRules wiki_rule_triple_brace_arg = {
     .no_preceding_byte         = '{',
     .no_following_byte         = '}',
 };
+/* (?<!\{)\{\{(inner)\}\}  — outer fixpoint pass template alternation 1 */
+const ParserRules wiki_rule_main_template_1 = {
+    .open_delim                = "{{",
+    .open_len                  = 2,
+    .close_delim               = "}}",
+    .close_len                 = 2,
+    .match_mode                = PARSER_MATCH_FIRST_CLOSE,
+    .prohibited_chars          = "{}",
+    .prohibited_chars_len      = 2,
+    .prohibited_patterns       = s_tpl_prohibited_patterns,
+    .prohibited_pattern_lens   = s_tpl_prohibited_pattern_lens,
+    .prohibited_patterns_count = 1,
+    .no_preceding_byte         = '{',
+    .no_following_byte         = 0,
+};
 
+/* \{\{(inner)\}\}(?!\})  — outer fixpoint pass template alternation 2 */
+const ParserRules wiki_rule_main_template_2 = {
+    .open_delim                = "{{",
+    .open_len                  = 2,
+    .close_delim               = "}}",
+    .close_len                 = 2,
+    .match_mode                = PARSER_MATCH_FIRST_CLOSE,
+    .prohibited_chars          = "{}",
+    .prohibited_chars_len      = 2,
+    .prohibited_patterns       = s_tpl_prohibited_patterns,
+    .prohibited_pattern_lens   = s_tpl_prohibited_pattern_lens,
+    .prohibited_patterns_count = 1,
+    .no_preceding_byte         = 0,
+    .no_following_byte         = '}',
+};
+
+/* \[\[(?:inner_link)*\]\]  — outer fixpoint pass wikilink parking */
+const ParserRules wiki_rule_main_wikilink = {
+    .open_delim                = "[[",
+    .open_len                  = 2,
+    .close_delim               = "]]",
+    .close_len                 = 2,
+    .match_mode                = PARSER_MATCH_FIRST_CLOSE,
+    .prohibited_chars          = "[]{}",
+    .prohibited_chars_len      = 4,
+    .prohibited_patterns_count = 0,
+};
+
+/* -\{(?:inner)*\}-  — outer fixpoint pass converter parking */
+const ParserRules wiki_rule_main_converter = {
+    .open_delim                = "-{",
+    .open_len                  = 2,
+    .close_delim               = "}-",
+    .close_len                 = 2,
+    .match_mode                = PARSER_MATCH_FIRST_CLOSE,
+    .prohibited_chars          = "{}",
+    .prohibited_chars_len      = 2,
+    .prohibited_patterns       = s_tpl_prohibited_patterns,
+    .prohibited_pattern_lens   = s_tpl_prohibited_pattern_lens,
+    .prohibited_patterns_count = 2,
+};
 /* ── lookup table ─────────────────────────────────────────────────────────── */
 
 static const struct {
@@ -102,6 +158,10 @@ static const struct {
     { "<translate( nowrap)?>[\\s\\S]*?<\\/translate>",  &wiki_rule_translate         },
     /* braces */
     { "(?<!\\{)\\{\\{\\{(inner)\\}\\}\\}(?!\\})",       &wiki_rule_triple_brace_arg  },
+    { "(?<!\\{)\\{\\{(inner)\\}\\}",                         &wiki_rule_main_template_1 },
+    { "\\{\\{(inner)\\}\\}(?!\\})",                         &wiki_rule_main_template_2 },
+    { "\\[\\[(?:inner_link)*\\]\\]",                         &wiki_rule_main_wikilink },
+    { "-\\{(?:inner)*\\}-",                                     &wiki_rule_main_converter },
 };
 
 const ParserRules *wiki_parser_rules_get(const char *regex) {

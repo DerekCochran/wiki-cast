@@ -37,6 +37,18 @@ extern const ParserRules wiki_rule_translate;
 /* (?<!\{)\{\{\{(inner)\}\}\}(?!\})  —  triple-brace arg, simple-args pass */
 extern const ParserRules wiki_rule_triple_brace_arg;
 
+/* (?<!\{)\{\{(inner)\}\}  — outer fixpoint pass template alternation 1 */
+extern const ParserRules wiki_rule_main_template_1;
+
+/* \{\{(inner)\}\}(?!\})  — outer fixpoint pass template alternation 2 */
+extern const ParserRules wiki_rule_main_template_2;
+
+/* \[\[(?:inner_link)*\]\]  — outer fixpoint pass wikilink parking */
+extern const ParserRules wiki_rule_main_wikilink;
+
+/* -\{(?:inner)*\}-  — outer fixpoint pass converter parking */
+extern const ParserRules wiki_rule_main_converter;
+
 /* ── lookup ───────────────────────────────────────────────────────────────── */
 
 /**
