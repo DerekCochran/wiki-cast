@@ -515,6 +515,10 @@ Title *title_parse_half_parsed(const char *raw, size_t raw_len,
 	int ns= default_ns;
 	const char *title= norm + start;
 	size_t title_len= end - start;
+	/* Preserve the original title length before stripping leading "../" segments
+	 * so validity checks can mirror JS (which treats a non-empty original
+	 * title as significant even if the remaining "sub" is empty). */
+	size_t orig_title_len = title_len;
 
 	if(subpage || page_subpage) {
 		ns= 0;
@@ -635,7 +639,10 @@ Title *title_parse_half_parsed(const char *raw, size_t raw_len,
 		page_ok= page_parts > level;
 	}
 
-	t->valid= (title_len > 0 || t->interwiki[0] != '\0' || (self_link && t->ns == 0 && t->fragment != NULL)) && html_idempotent && page_ok && !title_has_invalid_chars(sub, title_len);
+	/* JS parity with tightening: treat the original title-length as
+	 * significant only for subpage ("../") inputs. This avoids accepting
+	 * namespace-only titles like "File:" while still accepting "../". */
+	t->valid= ((title_len > 0) || t->interwiki[0] != '\0' || (self_link && t->ns == 0 && t->fragment != NULL) || (subpage && orig_title_len > 0)) && html_idempotent && page_ok && !title_has_invalid_chars(sub, title_len);
 
 	t->title= title_compose_resolved(t, page);
 	if(!t->title) {

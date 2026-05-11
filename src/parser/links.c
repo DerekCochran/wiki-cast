@@ -604,6 +604,8 @@ void parse_links(ThreadBuf *tb, const ParserConfig *cfg, Accum *accum,
      * bits[0]       = everything before first "[[" (initial s = bits.shift())
      * bits[1..n]    = text after each "[[" up to the next "[[" (or end of buf)
      */
+	log_debug_env_token("WTC_DEBUG_STAGE_5", NULL,
+		"[C parse_links] start: buf_len=%zu buf=%.200s", tb->len, tb->buf);
 	size_t *bb_pos= NULL;
 	size_t bb_count= 0, bb_cap= 0;
 	/* Find occurrences of "[[" using sz_find for faster scanning */
@@ -644,11 +646,14 @@ void parse_links(ThreadBuf *tb, const ParserConfig *cfg, Accum *accum,
 	ENSURE_OUT(bits[0].len + 1);
 	sz_copy(out + out_len, bits[0].ptr, bits[0].len);
 	out_len+= bits[0].len;
-
+	log_debug_env_token("WTC_DEBUG_STAGE_5", NULL,
+		"[C parse_links] bits_count=%zu first_after_lbrack_len=%zu", bits_count, bits_count>1?bits[1].len:0);
 	/* Main loop: for (let i = 0; i < bits.length; i++) — bi indexes bits[1..bb_count] */
 	for(size_t bi= 1; bi <= bb_count; bi++) {
 		const char *x= bits[bi].ptr;
 		size_t xlen= bits[bi].len;
+		log_debug_env_token("WTC_DEBUG_STAGE_5", NULL,
+			"[C parse_links] bi=%zu xlen=%zu x=%.200s", bi, xlen, xlen>200?"(trunc)":x);
 
 		bool mightBeImg= false;
 		const char *link_ptr= NULL;
@@ -685,6 +690,9 @@ void parse_links(ThreadBuf *tb, const ParserConfig *cfg, Accum *accum,
 				}
 				link_found= true;
 				pcre2_match_data_free(md);
+				log_debug_env_token("WTC_DEBUG_STAGE_5", NULL,
+					"[C parse_links] regex_main matched: link_len=%zu delim_len=%zu text_len=%zu after_len=%zu",
+					link_len, delim_len, text_len, after_len);
 
 				/* JS: if (after.startsWith(']') && text?.includes('[')) { text += ']'; after = after.slice(1); } */
 				if(after_len > 0 && after_ptr[0] == ']' && text_ptr) {
@@ -696,6 +704,9 @@ void parse_links(ThreadBuf *tb, const ParserConfig *cfg, Accum *accum,
 						after_len-= 1;
 					}
 				}
+			} else {
+				log_debug_env_token("WTC_DEBUG_STAGE_5", NULL,
+					"[C parse_links] regex_main did NOT match at bi=%zu", bi);
 			}
 		}
 
@@ -717,6 +728,9 @@ void parse_links(ThreadBuf *tb, const ParserConfig *cfg, Accum *accum,
 				mightBeImg= true;
 				link_found= true;
 				pcre2_match_data_free(md);
+				log_debug_env_token("WTC_DEBUG_STAGE_5", NULL,
+					"[C parse_links] regex_img matched: link_len=%zu delim_len=%zu text_len=%zu",
+					link_len, delim_len, text_len);
 			}
 		}
 
@@ -746,6 +760,8 @@ void parse_links(ThreadBuf *tb, const ParserConfig *cfg, Accum *accum,
 				pcre2_match_data_free(md);
 			}
 		}
+		log_debug_env_token("WTC_DEBUG_STAGE_5", NULL,
+			"[C parse_links] proto=%d has_sentinel_in_link=%d", is_proto, has_sentinel_in_link);
 		if(is_proto || has_sentinel_in_link) {
 			ENSURE_OUT(2 + xlen + 1);
 			out[out_len++]= '[';
@@ -769,6 +785,9 @@ void parse_links(ThreadBuf *tb, const ParserConfig *cfg, Accum *accum,
 		const char *trim_ptr= no_comment;
 		size_t trim_len= tmp_len;
 		trim_view(&trim_ptr, &trim_len);
+		log_debug_env_token("WTC_DEBUG_STAGE_5", NULL,
+			"[C parse_links] after remove_comment trim_len=%zu trim='%.*s' force=%d",
+			trim_len, (int)(trim_len>200?200:trim_len), trim_ptr, (int)(trim_len>0 && trim_ptr[0]==':'));
 
 		bool force= (trim_len > 0 && trim_ptr[0] == ':');
 
@@ -784,6 +803,14 @@ void parse_links(ThreadBuf *tb, const ParserConfig *cfg, Accum *accum,
 		}
 
 		Title *parsed= title_parse_half_parsed(trim_ptr, trim_len, 0, cfg, true, page);
+		if(parsed) {
+			log_debug_env_token("WTC_DEBUG_STAGE_5", NULL,
+				"[C parse_links] title_parse_half_parsed: valid=%d ns=%d interwiki='%s' title='%s'",
+				parsed->valid, parsed->ns, parsed->interwiki?parsed->interwiki:"(null)", parsed->title?parsed->title:"(null)");
+		} else {
+			log_debug_env_token("WTC_DEBUG_STAGE_5", NULL,
+				"[C parse_links] title_parse_half_parsed returned NULL");
+		}
 		if(!parsed || !parsed->valid) {
 			title_free(parsed);
 			free(no_comment);

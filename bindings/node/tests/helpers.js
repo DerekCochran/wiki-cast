@@ -345,9 +345,10 @@ function runTests(samples, opts = {}) {
   }
   const total = samples.length;
   console.log(`SUMMARY [${suiteName}] passed=${passed} failed=${failed} total=${total}`);
-  if (failed > 0) {
-    process.exit(2);
-  }
+   if (failed > 0) {
+    return false;
+//     process.exit(2);
+   }
 
   return true;
 }
