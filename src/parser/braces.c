@@ -1558,13 +1558,16 @@ static void parse_simple_args(ThreadBuf *tb, const ParserConfig *cfg, Accum *acc
 /* ── ParserRules for the outer fixpoint loop in parse_braces ─────────────── */
 
 static const char s_main_pat_dbl_bracket[]= {'[', '['};
-static const char s_main_pat_nl_then_nul[]= {'\n', '\0'};
 
-static const char *const s_main_tpl_patterns[]= {s_main_pat_dbl_bracket, s_main_pat_nl_then_nul};
-static const size_t s_main_tpl_pattern_lens[]= {2, 2};
-
-static const char *const s_main_link_patterns[]= {s_main_pat_nl_then_nul};
-static const size_t s_main_link_pattern_lens[]= {2};
+/*
+ * NOTE: The original PCRE used braces_make_match_subject() to replace every
+ * NUL byte (sentinel start) with SOH before matching, so its inner-content
+ * guard \n(?![\x00]) could never actually fire — all NULs were already gone.
+ * Therefore \n before a sentinel IS allowed, and we must NOT prohibit the
+ * sequence \n\0 in any of these rules.
+ */
+static const char *const s_main_tpl_patterns[]= {s_main_pat_dbl_bracket};
+static const size_t s_main_tpl_pattern_lens[]= {2};
 
 /*
  * {{...}} template alternation 1 – JS parity for (?<!\{)\{\{inner\}\}:
@@ -1581,7 +1584,7 @@ static const ParserRules s_rule_main_template_1= {
 .prohibited_chars_len= 2,
 .prohibited_patterns= s_main_tpl_patterns,
 .prohibited_pattern_lens= s_main_tpl_pattern_lens,
-.prohibited_patterns_count= 2,
+.prohibited_patterns_count= 1,
 .no_preceding_byte= '{',
 .no_following_byte= 0,
 };
@@ -1601,7 +1604,7 @@ static const ParserRules s_rule_main_template_2= {
 .prohibited_chars_len= 2,
 .prohibited_patterns= s_main_tpl_patterns,
 .prohibited_pattern_lens= s_main_tpl_pattern_lens,
-.prohibited_patterns_count= 2,
+.prohibited_patterns_count= 1,
 .no_preceding_byte= 0,
 .no_following_byte= '}',
 };
@@ -1619,9 +1622,7 @@ static const ParserRules s_rule_main_wikilink= {
 .match_mode= PARSER_MATCH_FIRST_CLOSE,
 .prohibited_chars= "[]{",
 .prohibited_chars_len= 3,
-.prohibited_patterns= s_main_link_patterns,
-.prohibited_pattern_lens= s_main_link_pattern_lens,
-.prohibited_patterns_count= 1,
+.prohibited_patterns_count= 0,  /* \n before sentinels is allowed (see note above) */
 };
 
 /*
