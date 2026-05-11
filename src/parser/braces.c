@@ -3,6 +3,7 @@
 #include "util/log.h"
 #include "parser/braces.h"
 #include "util/callback_parser.h"
+#include "util/wiki_parser_rules.h"
 #include "util/string_util.h"
 #include "title.h"
 #include "token.h"
@@ -12,6 +13,193 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+
+/* ── brace-event scanner (wikitext-specific; lives here, not in callback_parser) ── */
+
+typedef enum {
+    BRACE_EVT_HEADING_OPEN    = 0,
+    BRACE_EVT_WIKILINK_OPEN   = 1,
+    BRACE_EVT_CONVERTER_OPEN  = 2,
+    BRACE_EVT_BRACE_OPEN      = 3,
+    BRACE_EVT_NEWLINE         = 4,
+    BRACE_EVT_PIPE            = 5,
+    BRACE_EVT_EQUALS          = 6,
+    BRACE_EVT_BRACE_CLOSE     = 7,
+    BRACE_EVT_CONVERTER_CLOSE = 8,
+    BRACE_EVT_WIKILINK_CLOSE  = 9,
+} BraceEventKind;
+
+/* Returns true and fills *out_len if buf[pos..] is a \0<digits><allowed_type>\x7F sentinel. */
+static bool parse_sentinel_at_allowed(const char *buf, size_t len, size_t pos,
+                                      const char *allowed_types, size_t *out_len) {
+    if (!buf || pos >= len) return false;
+    if ((unsigned char)buf[pos] != 0) return false;
+    size_t j = pos + 1;
+    if (j >= len || buf[j] < '0' || buf[j] > '9') return false;
+    while (j < len && buf[j] >= '0' && buf[j] <= '9') j++;
+    if (j >= len) return false;
+    char t = buf[j];
+    if (allowed_types && strchr(allowed_types, t) == NULL) return false;
+    if (j + 1 >= len) return false;
+    if ((unsigned char)buf[j + 1] != (unsigned char)0x7F) return false;
+    if (out_len) *out_len = (j + 2) - pos;
+    return true;
+}
+
+/*
+ * Advance *pos to the next brace-grammar event in buf[*pos .. len).
+ * Returns true and fills the out-params on success; false when exhausted.
+ *
+ * Replaces the alternation regex:
+ *   ^((?:\0\d+[cno]\x7F)*)={1,6}|\[\[|-\{(?!\{)|\{{2,}
+ *   |\n(?!(?:[^\S\n]|\0\d+[cn]\x7F)*\n)|[|=]|\}{2,}|\}-|\]\]
+ */
+static bool __attribute__((unused))
+brace_event_next(const char *buf, size_t len, size_t *pos,
+                             BraceEventKind *kind_out, size_t *match_len_out,
+                             size_t *brace_count_out, size_t *equals_count_out,
+                             size_t *sentinel_len_out) {
+    if (!buf || !pos || *pos >= len) return false;
+    const char cand[] = { '\0', '[', '-', '{', '\n', '|', '=', '}', ']' };
+    size_t i = *pos;
+    while (i < len) {
+        const char *found = (const char *)sz_find_byte_from(buf + i, len - i, cand, sizeof(cand));
+        if (!found) return false;
+        size_t p = (size_t)(found - buf);
+        char ch = buf[p];
+
+        if (ch == '\0') {
+            size_t cur = p, total_sl = 0, sl = 0;
+            while (cur < len && parse_sentinel_at_allowed(buf, len, cur, "cno", &sl)) {
+                total_sl += sl; cur += sl;
+            }
+            bool at_line = (p == 0) || (buf[p - 1] == '\n');
+            if (total_sl > 0 && at_line) {
+                size_t eqpos = p + total_sl, eqcount = 0;
+                while (eqpos < len && buf[eqpos] == '=' && eqcount < 6) { eqpos++; eqcount++; }
+                if (eqcount >= 1) {
+                    if (kind_out)        *kind_out        = BRACE_EVT_HEADING_OPEN;
+                    if (match_len_out)   *match_len_out   = total_sl + eqcount;
+                    if (brace_count_out) *brace_count_out = 0;
+                    if (equals_count_out)*equals_count_out= eqcount;
+                    if (sentinel_len_out)*sentinel_len_out= total_sl;
+                    *pos = p + total_sl + eqcount;
+                    return true;
+                }
+            }
+            i = p + 1; continue;
+        }
+        if (ch == '[') {
+            if (p + 1 < len && buf[p + 1] == '[') {
+                if (kind_out)        *kind_out        = BRACE_EVT_WIKILINK_OPEN;
+                if (match_len_out)   *match_len_out   = 2;
+                if (brace_count_out) *brace_count_out = 0;
+                if (equals_count_out)*equals_count_out= 0;
+                if (sentinel_len_out)*sentinel_len_out= 0;
+                *pos = p + 2; return true;
+            }
+            i = p + 1; continue;
+        }
+        if (ch == '-') {
+            if (p + 1 < len && buf[p + 1] == '{' && !(p + 2 < len && buf[p + 2] == '{')) {
+                if (kind_out)        *kind_out        = BRACE_EVT_CONVERTER_OPEN;
+                if (match_len_out)   *match_len_out   = 2;
+                if (brace_count_out) *brace_count_out = 0;
+                if (equals_count_out)*equals_count_out= 0;
+                if (sentinel_len_out)*sentinel_len_out= 0;
+                *pos = p + 2; return true;
+            }
+            if (p + 1 < len && buf[p + 1] == '}') {
+                if (kind_out)        *kind_out        = BRACE_EVT_CONVERTER_CLOSE;
+                if (match_len_out)   *match_len_out   = 2;
+                if (brace_count_out) *brace_count_out = 0;
+                if (equals_count_out)*equals_count_out= 0;
+                if (sentinel_len_out)*sentinel_len_out= 0;
+                *pos = p + 2; return true;
+            }
+            i = p + 1; continue;
+        }
+        if (ch == '{') {
+            size_t cnt = 0;
+            while (p + cnt < len && buf[p + cnt] == '{') cnt++;
+            if (cnt >= 2) {
+                size_t bc = cnt > 3 ? 3 : cnt;
+                if (kind_out)        *kind_out        = BRACE_EVT_BRACE_OPEN;
+                if (match_len_out)   *match_len_out   = bc;
+                if (brace_count_out) *brace_count_out = bc;
+                if (equals_count_out)*equals_count_out= 0;
+                if (sentinel_len_out)*sentinel_len_out= 0;
+                *pos = p + bc; return true;
+            }
+            i = p + 1; continue;
+        }
+        if (ch == '\n') {
+            /* Skip firing an event when followed by blank-line boundary
+               ([^\S\n] | \0\d+[cn]\x7F)* then another \n. */
+            size_t j = p + 1;
+            while (j < len) {
+                unsigned char cj = (unsigned char)buf[j];
+                if (cj == '\0') {
+                    size_t sl = 0;
+                    if (parse_sentinel_at_allowed(buf, len, j, "cn", &sl)) { j += sl; continue; }
+                    break;
+                }
+                if (cj == ' ' || cj == '\t' || cj == '\v' || cj == '\f' || cj == '\r') { j++; continue; }
+                break;
+            }
+            if (j < len && buf[j] == '\n') { i = p + 1; continue; }
+            if (kind_out)        *kind_out        = BRACE_EVT_NEWLINE;
+            if (match_len_out)   *match_len_out   = 1;
+            if (brace_count_out) *brace_count_out = 0;
+            if (equals_count_out)*equals_count_out= 0;
+            if (sentinel_len_out)*sentinel_len_out= 0;
+            *pos = p + 1; return true;
+        }
+        if (ch == '|') {
+            if (kind_out)        *kind_out        = BRACE_EVT_PIPE;
+            if (match_len_out)   *match_len_out   = 1;
+            if (brace_count_out) *brace_count_out = 0;
+            if (equals_count_out)*equals_count_out= 0;
+            if (sentinel_len_out)*sentinel_len_out= 0;
+            *pos = p + 1; return true;
+        }
+        if (ch == '=') {
+            if (kind_out)        *kind_out        = BRACE_EVT_EQUALS;
+            if (match_len_out)   *match_len_out   = 1;
+            if (brace_count_out) *brace_count_out = 0;
+            if (equals_count_out)*equals_count_out= 1;
+            if (sentinel_len_out)*sentinel_len_out= 0;
+            *pos = p + 1; return true;
+        }
+        if (ch == '}') {
+            size_t cnt = 0;
+            while (p + cnt < len && buf[p + cnt] == '}') cnt++;
+            if (cnt >= 2) {
+                size_t bc = cnt > 3 ? 3 : cnt;
+                if (kind_out)        *kind_out        = BRACE_EVT_BRACE_CLOSE;
+                if (match_len_out)   *match_len_out   = bc;
+                if (brace_count_out) *brace_count_out = bc;
+                if (equals_count_out)*equals_count_out= 0;
+                if (sentinel_len_out)*sentinel_len_out= 0;
+                *pos = p + bc; return true;
+            }
+            i = p + 1; continue;
+        }
+        if (ch == ']') {
+            if (p + 1 < len && buf[p + 1] == ']') {
+                if (kind_out)        *kind_out        = BRACE_EVT_WIKILINK_CLOSE;
+                if (match_len_out)   *match_len_out   = 2;
+                if (brace_count_out) *brace_count_out = 0;
+                if (equals_count_out)*equals_count_out= 0;
+                if (sentinel_len_out)*sentinel_len_out= 0;
+                *pos = p + 2; return true;
+            }
+            i = p + 1; continue;
+        }
+        i = p + 1;
+    }
+    return false;
+}
 
 static bool str_list_contains_ci(const StrList *sl, const char *needle) {
 	if(!sl || !needle) return false;
@@ -1318,34 +1506,12 @@ typedef struct {
 static void braces_run_pass(void *user_data) {
 	BracesPassCtx *p = (BracesPassCtx *)user_data;
 
-	static const char  pat_double_lbrack[]    = { '[', '[' };
-	static const char  pat_newline_then_nul[] = { '\n', '\0' };
-	static const char *prohibited_patterns[]  = {
-		pat_double_lbrack, pat_newline_then_nul,
-	};
-	static const size_t prohibited_pattern_lens[] = { 2, 2 };
-
-	ParserRules rules = {
-		.open_delim                = "{{{",
-		.open_len                  = 3,
-		.close_delim               = "}}}",
-		.close_len                 = 3,
-		.match_mode                = PARSER_MATCH_FIRST_CLOSE,
-		.prohibited_chars          = "{}",
-		.prohibited_chars_len      = 2,
-		.prohibited_patterns       = prohibited_patterns,
-		.prohibited_pattern_lens   = prohibited_pattern_lens,
-		.prohibited_patterns_count = 2,
-		.no_preceding_byte         = '{',
-		.no_following_byte         = '}',
-	};
-
 	ThreadBuf *out_tb = wiki_thread_buf_acquire_scratch();
 	assert(out_tb);
 	out_tb->len = 0;
 
 	BracesContext ctx = { .cfg = p->cfg, .accum = p->accum, .out_tb = out_tb };
-	parser_scan(p->tb->buf, p->tb->len, &rules, braces_callback, &ctx);
+	parser_scan(p->tb->buf, p->tb->len, &wiki_rule_triple_brace_arg, braces_callback, &ctx);
 
 	if (out_tb->len != p->tb->len || sz_equal(p->tb->buf, out_tb->buf, p->tb->len) != sz_true_k) {
 		wiki_thread_buf_set(p->tb, out_tb->buf, out_tb->len);

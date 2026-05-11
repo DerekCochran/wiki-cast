@@ -1,12 +1,8 @@
-#define PCRE2_CODE_UNIT_WIDTH 8
-#include <pcre2.h>
-
 #include "util/log.h"
 #include "parser/list.h"
 #include "util/string_util.h"
 #include "token.h"
 #include "util/thread_buffer.h"
-#include "util/pcre_cache.h"
 #include <assert.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -165,15 +161,8 @@ void parse_list(ThreadBuf *tb, const ParserConfig *cfg, Accum *accum) {
 	if(!tb || !tb->buf) return;
 	if(config_excluded(cfg, "list")) return;
 
-	/* Compile or reuse cached regexes: full, brace (prefix handled inline) */
-	const char *full_pat= ":+|\\-\\{|\\x00\\d+[xq]\\x7F";
-	const char *brace_pat= "\\-\\{|\\}-";
-
-	pcre2_code *re_full = pcre_cache_get(full_pat, PCRE2_UTF);
-	pcre2_code *re_brace = pcre_cache_get(brace_pat, PCRE2_UTF);
-
-	pcre2_match_data *md_full= pcre2_match_data_create_from_pattern(re_full, NULL);
-	pcre2_match_data *md_br= pcre2_match_data_create_from_pattern(re_brace, NULL);
+	/* Manual scanning for special list syntax (colon runs, -{ / }-, sentinels)
+	 * Replaces previous PCRE-based approach. */
 
 	/* Split tb->buf into lines (preserve empty final line semantics) */
 	const char *buf= tb->buf;
@@ -350,165 +339,174 @@ void parse_list(ThreadBuf *tb, const ParserConfig *cfg, Accum *accum) {
 		}
 
 		/* dt > 0: need to handle ':' tokens that may become dd tokens.
-         * Iterate over matches of full_pat in `out`.  Switch to brace_pat
-         * when encountering -{ / }- sequences.  Maintain lt/lb/li/lc state. */
-		pcre2_code *re_cur= re_full;
-		pcre2_match_data *md_cur= md_full;
-		size_t search_at= 0;
-		int lt= 0;
-		int lc= 0;
-		int lb= 0;
-		int li_flag= 0;
+		 * Manual scanner finds the next special item among:
+		 *  - a run of ':' characters
+		 *  - the sequence '-{' or '}-'
+		 *  - a sentinel of type 'x' or 'q'
+		 * Behavior mirrors the previous PCRE-driven loop. */
+		size_t search_at = 0;
+		int lt = 0;
+		int lc = 0;
+		int lb = 0;
+		int li_flag = 0;
 
 		while(search_at <= out_len && dt > 0) {
-			int rc2= pcre2_match(re_cur, (PCRE2_SPTR)out, out_len, search_at, 0, md_cur, NULL);
-			if(rc2 <= 0) break;
-			PCRE2_SIZE *ov2= pcre2_get_ovector_pointer(md_cur);
-			size_t mstart= ov2[0];
-			size_t mend= ov2[1];
-			size_t slen= mend - mstart;
-			/* Simple cases */
-			if(slen == 2 && out[mstart] == '-' && out[mstart + 1] == '{') {
-				if(!lc) {
-					/* switch to brace regex */
-					re_cur= re_brace;
-					md_cur= md_br;
-				}
-				lc++;
-				search_at= mend;
-				continue;
+			/* find candidate positions for next specials */
+			size_t next_colon_pos = SIZE_MAX;
+			size_t next_nbrace_pos = SIZE_MAX; /* "-{" */
+			size_t next_cbrace_pos = SIZE_MAX; /* "}-" */
+			size_t next_sentinel_pos = SIZE_MAX;
+			size_t sentinel_total_len = 0;
+			size_t sentinel_idx = 0;
+			char sentinel_type = 0;
+
+			/* find next -{ sequence */
+			for(size_t p = search_at; p + 1 < out_len; ) {
+				const char *h = memchr(out + p, '-', out_len - p);
+				if(!h) break;
+				size_t ip = (size_t)(h - out);
+				if(ip + 1 < out_len && out[ip + 1] == '{') { next_nbrace_pos = ip; break; }
+				p = ip + 1;
 			}
-			if(slen == 2 && out[mstart] == '}' && out[mstart + 1] == '-') {
-				lc--;
-				if(!lc) {
-					re_cur= re_full;
-					md_cur= md_full;
-				}
-				search_at= mend;
-				continue;
+			/* find next }- sequence */
+			for(size_t p = search_at; p + 1 < out_len; ) {
+				const char *h = memchr(out + p, '}', out_len - p);
+				if(!h) break;
+				size_t ip = (size_t)(h - out);
+				if(ip + 1 < out_len && out[ip + 1] == '-') { next_cbrace_pos = ip; break; }
+				p = ip + 1;
 			}
 
-			/* Check for sentinel: begins with NUL and ends with 0x7F */
-			if((unsigned char)out[mstart] == 0 && (unsigned char)out[mend - 1] == 0x7F) {
-				/* parse index and type char */
-				if(slen < 3) {
-					search_at= mend;
-					continue;
-				}
-				char typech= out[mend - 2];
-				/* parse decimal index between mstart+1 .. mend-2 */
-				size_t idx= 0;
-				for(size_t k= mstart + 1; k < mend - 2; k++) {
-					if(out[k] < '0' || out[k] > '9') {
-						idx= SIZE_MAX;
+			/* Only consider sentinels and colon runs when not inside a -{ ... }- block */
+			if(lc == 0) {
+				/* next colon position */
+				const char *cptr = memchr(out + search_at, ':', (out_len > search_at) ? (out_len - search_at) : 0);
+				if(cptr) next_colon_pos = (size_t)(cptr - out);
+
+				/* find next sentinel of type 'x' or 'q' */
+				size_t temp_pos = search_at;
+				while(sentinel_scan_next(out, out_len, &temp_pos, &sentinel_idx, &sentinel_type, &sentinel_total_len)) {
+					size_t pstart = temp_pos - sentinel_total_len;
+					if(sentinel_type == 'x' || sentinel_type == 'q') {
+						next_sentinel_pos = pstart;
 						break;
 					}
-					idx= idx * 10 + (size_t)(out[k] - '0');
+					/* continue scanning from temp_pos for the next sentinel */
 				}
-				if(idx == SIZE_MAX) {
-					search_at= mend;
-					continue;
-				}
+			}
 
+			/* pick the earliest match according to the active mode */
+			enum { MT_NONE=0, MT_COLON, MT_NBRACE, MT_CBRACE, MT_SENTINEL } mt = MT_NONE;
+			size_t mpos = SIZE_MAX;
+			if(lc == 0) {
+				if(next_colon_pos != SIZE_MAX) { mpos = next_colon_pos; mt = MT_COLON; }
+				if(next_nbrace_pos != SIZE_MAX && (mt == MT_NONE || next_nbrace_pos < mpos)) { mpos = next_nbrace_pos; mt = MT_NBRACE; }
+				if(next_sentinel_pos != SIZE_MAX && (mt == MT_NONE || next_sentinel_pos < mpos)) { mpos = next_sentinel_pos; mt = MT_SENTINEL; }
+			} else {
+				if(next_nbrace_pos != SIZE_MAX) { mpos = next_nbrace_pos; mt = MT_NBRACE; }
+				if(next_cbrace_pos != SIZE_MAX && (mt == MT_NONE || next_cbrace_pos < mpos)) { mpos = next_cbrace_pos; mt = MT_CBRACE; }
+			}
+
+			if(mt == MT_NONE) break;
+
+			if(mt == MT_NBRACE) {
+				size_t mend = mpos + 2; /* "-{" */
+				if(!lc) {
+					/* switching into brace mode */
+				}
+				lc++;
+				search_at = mend;
+				continue;
+			}
+			if(mt == MT_CBRACE) {
+				size_t mend = mpos + 2; /* "}-" */
+				if(lc > 0) lc--;
+				search_at = mend;
+				continue;
+			}
+			if(mt == MT_SENTINEL) {
+				size_t mstart = next_sentinel_pos;
+				size_t mend = mstart + sentinel_total_len;
+				char typech = sentinel_type;
+				size_t idx = sentinel_idx;
 				if(typech == 'x') {
-					Token *ht= accum_get(accum, idx);
-					const char *name= ht ? ht->name : NULL;
-					bool closing= ht ? ht->data.html.closing : false;
-					bool selfClosing= ht ? ht->data.html.self_closing : false;
-					/* normalTags = cfg->html[0], voidTags = cfg->html[2] */
-					bool is_normal= false;
-					for(size_t ni= 0; ni < cfg->html[0].count; ni++)
-						if(cfg->html[0].items[ni] && name && strcmp(cfg->html[0].items[ni], name) == 0) {
-							is_normal= true;
-							break;
-						}
-					bool is_void= false;
-					for(size_t vi= 0; vi < cfg->html[2].count; vi++)
-						if(cfg->html[2].items[vi] && name && strcmp(cfg->html[2].items[vi], name) == 0) {
-							is_void= true;
-							break;
-						}
+					Token *ht = accum_get(accum, idx);
+					const char *name = ht ? ht->name : NULL;
+					bool closing = ht ? ht->data.html.closing : false;
+					bool selfClosing = ht ? ht->data.html.self_closing : false;
+					bool is_normal = false;
+					for(size_t ni = 0; ni < cfg->html[0].count; ni++)
+						if(cfg->html[0].items[ni] && name && strcmp(cfg->html[0].items[ni], name) == 0) { is_normal = true; break; }
+					bool is_void = false;
+					for(size_t vi = 0; vi < cfg->html[2].count; vi++)
+						if(cfg->html[2].items[vi] && name && strcmp(cfg->html[2].items[vi], name) == 0) { is_void = true; break; }
 					if(is_normal || (!selfClosing && !is_void)) {
-						if(!closing)
-							lt++;
-						else if(lt)
-							lt--;
+						if(!closing) lt++; else if(lt) lt--;
 					}
 				} else if(typech == 'q') {
-					Token *qt= accum_get(accum, idx);
-					bool bold= qt ? qt->data.quote.bold : false;
-					bool italic= qt ? qt->data.quote.italic : false;
+					Token *qt = accum_get(accum, idx);
+					bool bold = qt ? qt->data.quote.bold : false;
+					bool italic = qt ? qt->data.quote.italic : false;
 					if(bold) {
-						if(!lb)
-							lt++;
-						else if(lt)
-							lt--;
-						lb= !lb;
+						if(!lb) lt++; else if(lt) lt--;
+						lb = !lb;
 					}
 					if(italic) {
-						if(!li_flag)
-							lt++;
-						else if(lt)
-							lt--;
-						li_flag= !li_flag;
+						if(!li_flag) lt++; else if(lt) lt--;
+						li_flag = !li_flag;
 					}
 				}
-				search_at= mend;
+				search_at = mend;
 				continue;
 			}
 
-			/* syntax is a sequence of ':' (colon) */
-			if(out[mstart] == ':') {
-				/* count number of ':' characters in the match */
-				size_t colons= slen; /* pattern ':+', so group length equals match length */
-				if(colons >= (size_t)dt && lt == 0) {
-					/* create a dd token for the first dt colons and return early */
-					size_t take= (size_t)dt;
+			/* mt == MT_COLON */
+			if(mt == MT_COLON) {
+				size_t mstart = mpos;
+				size_t i2 = mstart;
+				while(i2 < out_len && out[i2] == ':') i2++;
+				size_t slen = i2 - mstart;
+				if(slen >= (size_t)dt && lt == 0) {
+					size_t take = (size_t)dt;
 					make_dd_token(out + mstart, take, accum);
-					/* build new string: out[0..mstart) + sentinel_of_new_dd + out[mstart + take ..] */
-					char mark[64];
-					size_t mlen= 0;
+					char mark[64]; size_t mlen = 0;
 					work_str_sentinel(accum->count - 1, 'd', mark, &mlen);
-					size_t new_len= mstart + mlen + (out_len - (mstart + take));
-					char *new_out= malloc(new_len + 1);
+					size_t new_len = mstart + mlen + (out_len - (mstart + take));
+					char *new_out = malloc(new_len + 1);
 					assert(new_out);
 					memcpy(new_out, out, mstart);
 					memcpy(new_out + mstart, mark, mlen);
 					memcpy(new_out + mstart + mlen, out + mstart + take, out_len - (mstart + take));
-					new_out[new_len]= '\0';
+					new_out[new_len] = '\0';
 					free(out);
-					/* adopt and finish processing this line */
 					free(line);
-					lines[li]= new_out;
-					lines_len[li]= new_len;
+					lines[li] = new_out;
+					lines_len[li] = new_len;
 					free_parts(parts, parts_count);
 					free(combined);
 					goto next_line;
 				}
 				if(lt == 0) {
-					/* create dd for the matched syntax, reduce dt and continue scanning */
 					make_dd_token(out + mstart, slen, accum);
-					char mark[64];
-					size_t mlen= 0;
+					char mark[64]; size_t mlen = 0;
 					work_str_sentinel(accum->count - 1, 'd', mark, &mlen);
-					/* replace in-place: out = out[0..mstart) + mark + out[mend..] */
-					size_t new_len= mstart + mlen + (out_len - mend);
+					size_t mend = mstart + slen;
+					size_t new_len = mstart + mlen + (out_len - mend);
 					if(new_len + 1 > out_cap) {
-						out= realloc(out, new_len + 1);
+						out = realloc(out, new_len + 1);
 						assert(out);
-						out_cap= new_len + 1;
+						out_cap = new_len + 1;
 					}
 					memmove(out + mstart + mlen, out + mend, out_len - mend);
 					memcpy(out + mstart, mark, mlen);
-					out_len= new_len;
-					dt-= (int)slen;
-					/* continue scanning after the inserted marker */
-					search_at= mstart + mlen;
+					out_len = new_len;
+					dt -= (int)slen;
+					search_at = mstart + mlen;
 					continue;
 				}
+				search_at = i2;
+				continue;
 			}
-
-			search_at= mend;
 		}
 
 		/* finished dd processing for this line: adopt out */
@@ -544,6 +542,4 @@ void parse_list(ThreadBuf *tb, const ParserConfig *cfg, Accum *accum) {
 	if(lastPrefix) free(lastPrefix);
 
 	/* md_pref was removed (prefix parsing handled inline) */
-	pcre2_match_data_free(md_full);
-	pcre2_match_data_free(md_br);
 }

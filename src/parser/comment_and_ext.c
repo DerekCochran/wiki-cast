@@ -11,6 +11,7 @@
 #include "util/thread_buffer.h"
 #include "util/pcre_cache.h"
 #include "util/callback_parser.h"
+#include "util/wiki_parser_rules.h"
 #include <stringzilla/stringzilla.h>
 #include <assert.h>
 #include <ctype.h>
@@ -1259,26 +1260,7 @@ static pcre2_code *compile_ext_regex(const ParserConfig *cfg, bool include_only)
 	return pcre_cache_get(*target_pat, PCRE2_CASELESS | PCRE2_UTF | PCRE2_UCP);
 }
 
-/** JS-PARITY: <nowiki>[\s\S]*?<\/nowiki> */
-static const ParserRules rule_nowiki_paired = {
-	.open_delim       = "<nowiki>",
-	.open_len         = 8,
-	.close_delim      = "</nowiki>",
-	.close_len        = 9,
-	.match_mode       = PARSER_MATCH_FIRST_CLOSE,
-	.case_insensitive = true,
-};
 
-static const ParserRules rule_nowiki_sc = {
-	.open_delim              = "<nowiki",
-	.open_len                = 7,
-	.open_terminator         = '>',
-	.open_attr_forbidden     = "<",
-	.open_attr_forbidden_len = 1,
-	.self_closing_marker     = "/",
-	.self_closing_marker_len = 1,
-	.case_insensitive        = true,
-};
 
 typedef struct {
 	TextStack *st;
@@ -1298,23 +1280,7 @@ static void nowiki_scan_cb(const char *segment, size_t len,
 	append_numeric_placeholder(ctx->out->buf, &ctx->out->len, ctx->st->count - 1);
 }
 
-/* Parser rules for <translate ...> macro (variable-length opener/closer). */
-static const ParserRules rule_translate = {
-	.open_delim               = "<translate",
-	.open_len                 = 10,
-	.open_terminator          = '>',
-	.open_attr_forbidden      = "<",
-	.open_attr_forbidden_len  = 1,
-	.self_closing_marker      = "/",
-	.self_closing_marker_len  = 1,
-	.close_delim              = "</translate",
-	.close_len                = 11,
-	.close_terminator         = '>',
-	.close_attr_forbidden     = "<",
-	.close_attr_forbidden_len = 1,
-	.match_mode               = PARSER_MATCH_FIRST_CLOSE,
-	/* case_insensitive left false: MediaWiki requires exact case */
-};
+
 
 typedef struct {
 	Accum     *accum;
@@ -1410,7 +1376,7 @@ static void apply_translate_prepass(ThreadBuf *tb, const ParserConfig *cfg, Accu
 	out_tb->len = 0;
 
 	NowikiScanCtx ctx = { .st = &st, .out = out_tb };
-	parser_scan(tb->buf, tb->len, &rule_nowiki_paired, nowiki_scan_cb, &ctx);
+	parser_scan(tb->buf, tb->len, &wiki_rule_nowiki_paired, nowiki_scan_cb, &ctx);
 
 	out_tb->buf[out_tb->len]= '\0';
 	wiki_thread_buf_set(tb, out_tb->buf, out_tb->len);
@@ -1423,7 +1389,7 @@ static void apply_translate_prepass(ThreadBuf *tb, const ParserConfig *cfg, Accu
 	out_tb->len = 0;
 
 	ctx.out = out_tb;
-	parser_scan(tb->buf, tb->len, &rule_nowiki_sc, nowiki_scan_cb, &ctx);
+	parser_scan(tb->buf, tb->len, &wiki_rule_nowiki_sc, nowiki_scan_cb, &ctx);
 
 	out_tb->buf[out_tb->len]= '\0';
 	wiki_thread_buf_set(tb, out_tb->buf, out_tb->len);
@@ -1440,10 +1406,10 @@ static void apply_translate_prepass(ThreadBuf *tb, const ParserConfig *cfg, Accu
 		.out   = out_tb,
 		.st    = &st,
 		.buf   = tb->buf,
-		.rules = &rule_translate,
+		.rules = &wiki_rule_translate,
 	};
 
-	parser_scan(tb->buf, tb->len, &rule_translate, translate_scan_cb_wrap, &tctx);
+	parser_scan(tb->buf, tb->len, &wiki_rule_translate, translate_scan_cb_wrap, &tctx);
 
 	out_tb->buf[out_tb->len]= '\0';
 
