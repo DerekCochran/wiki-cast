@@ -3,16 +3,16 @@
 #include <stddef.h>
 
 typedef enum {
-    LEXER_MATCH_FIRST_CLOSE = 0,    /* sz_find  -- regex-equivalent (default) */
-    LEXER_MATCH_OUTERMOST_CLOSE,    /* sz_rfind -- greedy                     */
-    LEXER_MATCH_INNERMOST,          /* forward scan with nested-opener probe  */
-} LexerMatchMode;
+    PARSER_MATCH_FIRST_CLOSE = 0,    /* sz_find  -- regex-equivalent (default) */
+    PARSER_MATCH_OUTERMOST_CLOSE,    /* sz_rfind -- greedy                     */
+    PARSER_MATCH_INNERMOST,          /* forward scan with nested-opener probe  */
+} ParserMatchMode;
 
 typedef enum {
-    LEXER_SEG_TEXT          = 0,    /* plain text outside (or rejected) delimiters */
-    LEXER_SEG_INNER         = 1,    /* inner content of a paired open...close      */
-    LEXER_SEG_SELF_CLOSING  = 2,    /* self-closing match; segment = full opener   */
-} LexerSegmentKind;
+    PARSER_SEG_TEXT          = 0,    /* plain text outside (or rejected) delimiters */
+    PARSER_SEG_INNER         = 1,    /* inner content of a paired open...close      */
+    PARSER_SEG_SELF_CLOSING  = 2,    /* self-closing match; segment = full opener   */
+} ParserSegmentKind;
 
 typedef struct {
     /* === Delimiters === */
@@ -22,7 +22,7 @@ typedef struct {
     size_t      close_len;
 
     /* === Closer-selection strategy === */
-    LexerMatchMode match_mode;
+    ParserMatchMode match_mode;
 
     /* === Variable-length opener (e.g. <ref name="foo">) ===
        When `open_terminator != 0`, the full opener is interpreted as:
@@ -38,7 +38,7 @@ typedef struct {
     /* === Self-closing variant (e.g. <br />, <ref name="x" />) ===
        Only meaningful when open_terminator != 0. If the byte sequence
        immediately preceding the open_terminator equals `self_closing_marker`,
-       the opener is emitted as LEXER_SEG_SELF_CLOSING and the closer search
+       the opener is emitted as PARSER_SEG_SELF_CLOSING and the closer search
        is skipped. Set self_closing_marker="/" (len=1) for HTML "/>". */
     const char *self_closing_marker;
     size_t      self_closing_marker_len;
@@ -76,37 +76,37 @@ typedef struct {
     /* === Lookbehind/lookahead === */
     char no_preceding_byte;     /* opener must NOT be preceded by this byte */
     char no_following_byte;     /* closer must NOT be followed by this byte */
-} LexerRules;
+} ParserRules;
 
 /**
  * Callback fired for every segment of the buffer.
  *
  * @param segment   Pointer into the input buffer.
  * @param len       Length of the segment in bytes.
- * @param kind      LEXER_SEG_TEXT          -- plain text; concatenating all TEXT
+ * @param kind      PARSER_SEG_TEXT          -- plain text; concatenating all TEXT
  *                                             and unaccepted opener/closer spans
  *                                             reproduces the input minus only
  *                                             the open/close delimiters of
  *                                             accepted matches.
- *                  LEXER_SEG_INNER         -- inner content of an accepted
+ *                  PARSER_SEG_INNER         -- inner content of an accepted
  *                                             paired match; open_delim and
  *                                             close_delim are NOT included.
- *                  LEXER_SEG_SELF_CLOSING  -- the entire matched opener span
+ *                  PARSER_SEG_SELF_CLOSING  -- the entire matched opener span
  *                                             of a self-closing tag (e.g. the
  *                                             literal bytes "<br />"). Inner
  *                                             content is empty by definition.
  * @param user_data Opaque caller pointer.
  */
-typedef void (*LexerCallback)(const char       *segment,
+typedef void (*ParserCallback)(const char       *segment,
                               size_t            len,
-                              LexerSegmentKind  kind,
+                              ParserSegmentKind  kind,
                               void             *user_data);
 
 /** Single pass over the buffer. */
-void lexer_scan(const char       *buf,
+void parser_scan(const char       *buf,
                 size_t            len,
-                const LexerRules *rules,
-                LexerCallback     cb,
+                const ParserRules *rules,
+                ParserCallback     cb,
                 void             *user_data);
 
 /**
@@ -116,9 +116,9 @@ void lexer_scan(const char       *buf,
  * the regex forbids `{` inside content, so nested templates can only collapse
  * across multiple passes.
  */
-typedef void (*LexerPassFn)(void *user_data);
-void lexer_scan_until_stable(void                  *tb,
-                             LexerPassFn            run_pass,
+typedef void (*ParserPassFn)(void *user_data);
+void parser_scan_until_stable(void                  *tb,
+                             ParserPassFn            run_pass,
                              void                  *user_data,
                              const char *(*get_buf)(void *tb),
                              size_t      (*get_len)(void *tb));

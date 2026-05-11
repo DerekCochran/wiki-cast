@@ -16,7 +16,7 @@
 /* the fixpoint driver doesn't re-enter this path per byte.                  */
 /* ------------------------------------------------------------------------- */
 
-static inline const char *lexer_find_(const char *h, size_t h_len,
+static inline const char *parser_find_(const char *h, size_t h_len,
                                       const char *n, size_t n_len,
                                       bool case_insensitive) {
     if (n_len == 0 || h_len < n_len) return NULL;
@@ -36,9 +36,9 @@ static inline const char *lexer_find_(const char *h, size_t h_len,
 /* If self-closing, sets *is_self_closing_out = true.                        */
 /* ------------------------------------------------------------------------- */
 
-static const char *lexer_match_var_opener_(const char *open_start,
+static const char *parser_match_var_opener_(const char *open_start,
                                            const char *end,
-                                           const LexerRules *r,
+                                           const ParserRules *r,
                                            size_t *opener_span_out,
                                            bool   *is_self_closing_out) {
     *is_self_closing_out = false;
@@ -84,9 +84,9 @@ static const char *lexer_match_var_opener_(const char *open_start,
 /* Same for variable-length closer.                                          */
 /* ------------------------------------------------------------------------- */
 
-static const char *lexer_match_var_closer_(const char *close_start,
+static const char *parser_match_var_closer_(const char *close_start,
                                            const char *end,
-                                           const LexerRules *r,
+                                           const ParserRules *r,
                                            size_t *closer_span_out) {
     const char *cur = close_start + r->close_len;
     if (cur >= end) return NULL;
@@ -112,7 +112,7 @@ static const char *lexer_match_var_closer_(const char *close_start,
 /* ------------------------------------------------------------------------- */
 
 static bool inner_is_invalid_(const char *inner, size_t inner_len,
-                              const LexerRules *r) {
+                              const ParserRules *r) {
     if (r->prohibited_chars && r->prohibited_chars_len > 0) {
         if (sz_find_byte_from(inner, inner_len,
                               r->prohibited_chars,
@@ -152,11 +152,11 @@ static const char *find_closer_(const char *buf,
                                 const char *open_in,
                                 const char *inner_start_in,
                                 const char *end,
-                                const LexerRules *r,
+                                const ParserRules *r,
                                 const char **open_out,
                                 const char **inner_start_out) {
     switch (r->match_mode) {
-    case LEXER_MATCH_OUTERMOST_CLOSE: {
+    case PARSER_MATCH_OUTERMOST_CLOSE: {
         /* Greedy: last occurrence in remainder. */
         size_t avail = (size_t)(end - inner_start_in);
         const char *p;
@@ -166,7 +166,7 @@ static const char *find_closer_(const char *buf,
             p = NULL;
             const char *probe = inner_start_in;
             for (;;) {
-                const char *h = lexer_find_(probe,
+                const char *h = parser_find_(probe,
                                             (size_t)(end - probe),
                                             r->close_delim,
                                             r->close_len, true);
@@ -189,14 +189,14 @@ static const char *find_closer_(const char *buf,
         return p;
     }
 
-    case LEXER_MATCH_INNERMOST: {
+    case PARSER_MATCH_INNERMOST: {
         /* Walk inward: find the next closer; if a nested opener appears
            before it, descend to that opener and retry. The accepted opener
            is the innermost one with no further nested opener inside.
 
            Works for both fixed- and variable-length openers: when descending
            into a nested opener we re-resolve its full span via
-           lexer_match_var_opener_, and self-closing nested openers are
+           parser_match_var_opener_, and self-closing nested openers are
            skipped (they don't open a region).
 
            LIMITATION: `no_preceding_byte` is checked once on the original
@@ -215,7 +215,7 @@ static const char *find_closer_(const char *buf,
             const char *close;
             const char *p = probe_inner;
             for (;;) {
-                close = lexer_find_(p, (size_t)(end - p),
+                close = parser_find_(p, (size_t)(end - p),
                                     r->close_delim, r->close_len,
                                     r->case_insensitive);
                 if (!close) return NULL;
@@ -225,7 +225,7 @@ static const char *find_closer_(const char *buf,
             }
 
             /* Look for a nested opener strictly inside [probe_inner, close). */
-            const char *nested = lexer_find_(probe_inner,
+            const char *nested = parser_find_(probe_inner,
                                              (size_t)(close - probe_inner),
                                              r->open_delim, r->open_len,
                                              r->case_insensitive);
@@ -240,7 +240,7 @@ static const char *find_closer_(const char *buf,
             if (r->open_terminator != 0) {
                 size_t nested_span;
                 bool   nested_self_closing;
-                const char *nested_inner = lexer_match_var_opener_(
+                const char *nested_inner = parser_match_var_opener_(
                     nested, end, r, &nested_span, &nested_self_closing);
                 if (!nested_inner) {
                     /* Malformed nested opener: don't treat it as a real
@@ -262,11 +262,11 @@ static const char *find_closer_(const char *buf,
         }
     }
 
-    case LEXER_MATCH_FIRST_CLOSE:
+    case PARSER_MATCH_FIRST_CLOSE:
     default: {
         const char *p = inner_start_in;
         for (;;) {
-            const char *h = lexer_find_(p, (size_t)(end - p),
+            const char *h = parser_find_(p, (size_t)(end - p),
                                         r->close_delim, r->close_len,
                                         r->case_insensitive);
             if (!h) return NULL;
@@ -282,26 +282,26 @@ static const char *find_closer_(const char *buf,
 /* Single-pass scanner.                                                      */
 /* ------------------------------------------------------------------------- */
 
-void lexer_scan(const char *buf, size_t len, const LexerRules *r,
-                LexerCallback cb, void *user_data) {
+void parser_scan(const char *buf, size_t len, const ParserRules *r,
+                ParserCallback cb, void *user_data) {
     const char *curr = buf;
     const char *end  = buf + len;
 
     while (curr < end) {
         /* 1) Find the next opener (with optional case-insensitive search). */
-        const char *open = lexer_find_(curr, (size_t)(end - curr),
+        const char *open = parser_find_(curr, (size_t)(end - curr),
                                        r->open_delim, r->open_len,
                                        r->case_insensitive);
         if (!open) {
             if (end > curr) cb(curr, (size_t)(end - curr),
-                               LEXER_SEG_TEXT, user_data);
+                               PARSER_SEG_TEXT, user_data);
             return;
         }
 
         /* 2) Line-anchor check on opener: skip if not at line start. */
         if (r->line_anchored_open && !at_line_start_(buf, open)) {
             size_t emit = (size_t)(open + 1 - curr);
-            cb(curr, emit, LEXER_SEG_TEXT, user_data);
+            cb(curr, emit, PARSER_SEG_TEXT, user_data);
             curr = open + 1;
             continue;
         }
@@ -310,7 +310,7 @@ void lexer_scan(const char *buf, size_t len, const LexerRules *r,
         if (r->no_preceding_byte != 0 &&
             open > buf && open[-1] == r->no_preceding_byte) {
             size_t emit = (size_t)(open - curr) + 1;
-            cb(curr, emit, LEXER_SEG_TEXT, user_data);
+            cb(curr, emit, PARSER_SEG_TEXT, user_data);
             curr = open + 1;
             continue;
         }
@@ -320,31 +320,31 @@ void lexer_scan(const char *buf, size_t len, const LexerRules *r,
         bool   is_self_closing = false;
         const char *inner_start;
         if (r->open_terminator != 0) {
-            inner_start = lexer_match_var_opener_(open, end, r,
+            inner_start = parser_match_var_opener_(open, end, r,
                                                   &opener_span,
                                                   &is_self_closing);
             if (!inner_start) {
                 /* Malformed opener; emit one byte and resume. */
                 size_t emit = (size_t)(open - curr) + 1;
-                cb(curr, emit, LEXER_SEG_TEXT, user_data);
+                cb(curr, emit, PARSER_SEG_TEXT, user_data);
                 curr = open + 1;
                 continue;
             }
         } else {
             inner_start = open + r->open_len;
             if (inner_start > end) {
-                cb(open, (size_t)(end - open), LEXER_SEG_TEXT, user_data);
+                cb(open, (size_t)(end - open), PARSER_SEG_TEXT, user_data);
                 return;
             }
         }
 
         /* 5) Emit plain text before the opener. */
         if (open > curr)
-            cb(curr, (size_t)(open - curr), LEXER_SEG_TEXT, user_data);
+            cb(curr, (size_t)(open - curr), PARSER_SEG_TEXT, user_data);
 
         /* 6) Self-closing fast path. */
         if (is_self_closing) {
-            cb(open, opener_span, LEXER_SEG_SELF_CLOSING, user_data);
+            cb(open, opener_span, PARSER_SEG_SELF_CLOSING, user_data);
             curr = open + opener_span;
             continue;
         }
@@ -357,19 +357,19 @@ void lexer_scan(const char *buf, size_t len, const LexerRules *r,
         const char *close = find_closer_(buf, open, inner_start, end, r,
                                          &shifted_open, &shifted_inner_start);
         if (!close) {
-            cb(open, (size_t)(end - open), LEXER_SEG_TEXT, user_data);
+            cb(open, (size_t)(end - open), PARSER_SEG_TEXT, user_data);
             return;
         }
         if (shifted_open != open) {
             /* Emit the bytes between the original opener and the innermost
                opener as TEXT so concatenated callback output is lossless. */
             cb(open, (size_t)(shifted_open - open),
-               LEXER_SEG_TEXT, user_data);
+               PARSER_SEG_TEXT, user_data);
             open        = shifted_open;
             inner_start = shifted_inner_start;
             /* Recompute opener_span from the shifted positions. Works for
                both fixed-length (inner_start - open == open_len) and
-               variable-length openers (lexer_match_var_opener_ guarantees
+               variable-length openers (parser_match_var_opener_ guarantees
                inner_start == term + 1, so the difference is the full span). */
             opener_span = (size_t)(inner_start - open);
         }
@@ -377,11 +377,11 @@ void lexer_scan(const char *buf, size_t len, const LexerRules *r,
         /* 8) Resolve full closer span (variable-length closers, optional). */
         size_t closer_span = r->close_len;
         if (r->close_terminator != 0) {
-            const char *after = lexer_match_var_closer_(close, end, r,
+            const char *after = parser_match_var_closer_(close, end, r,
                                                         &closer_span);
             if (!after) {
                 /* Malformed closer; treat the whole opener span as text. */
-                cb(open, opener_span, LEXER_SEG_TEXT, user_data);
+                cb(open, opener_span, PARSER_SEG_TEXT, user_data);
                 curr = inner_start;
                 continue;
             }
@@ -390,11 +390,11 @@ void lexer_scan(const char *buf, size_t len, const LexerRules *r,
         /* 9) Lookahead: closer must not be followed by `no_following_byte`.
               Ignored in OUTERMOST_CLOSE mode (no well-defined "next candidate"
               when we already chose the last closer in the buffer). */
-        if (r->match_mode != LEXER_MATCH_OUTERMOST_CLOSE &&
+        if (r->match_mode != PARSER_MATCH_OUTERMOST_CLOSE &&
             r->no_following_byte != 0 &&
             close + closer_span < end &&
             close[closer_span] == r->no_following_byte) {
-            cb(open, opener_span, LEXER_SEG_TEXT, user_data);
+            cb(open, opener_span, PARSER_SEG_TEXT, user_data);
             curr = inner_start;
             continue;
         }
@@ -402,13 +402,13 @@ void lexer_scan(const char *buf, size_t len, const LexerRules *r,
         /* 10) Validate inner content. */
         size_t inner_len = (size_t)(close - inner_start);
         if (inner_is_invalid_(inner_start, inner_len, r)) {
-            cb(open, opener_span, LEXER_SEG_TEXT, user_data);
+            cb(open, opener_span, PARSER_SEG_TEXT, user_data);
             curr = inner_start;
             continue;
         }
 
         /* 11) Accept: hand the inner content to the callback. */
-        cb(inner_start, inner_len, LEXER_SEG_INNER, user_data);
+        cb(inner_start, inner_len, PARSER_SEG_INNER, user_data);
         curr = close + closer_span;
     }
 }
@@ -422,7 +422,7 @@ void lexer_scan(const char *buf, size_t len, const LexerRules *r,
 /* the next pass would diverge again and the loop would resume).             */
 /* ------------------------------------------------------------------------- */
 
-void lexer_scan_until_stable(void *tb, LexerPassFn run_pass, void *user_data,
+void parser_scan_until_stable(void *tb, ParserPassFn run_pass, void *user_data,
                              const char *(*get_buf)(void *),
                              size_t      (*get_len)(void *)) {
     sz_u64_t prev_hash = 0;
