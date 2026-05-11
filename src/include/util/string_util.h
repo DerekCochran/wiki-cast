@@ -93,3 +93,21 @@ const char *str_istr(const char *haystack, size_t hlen,
  * Returns NULL and sets *consumed = 0 if no match.
  */
 char *str_extract_interwiki(const char *s, size_t len, const ParserConfig *cfg, size_t *consumed);
+
+/* ── Sentinel scanning helpers ─────────────────────────────────────────── */
+
+static const char SENTINEL_TYPES[] = "exhbru";
+
+typedef void (*SentinelScanCb)(size_t pos,
+                                size_t total_len,
+                                size_t n,
+                                char   type_char,
+                                void  *user_data);
+
+void sentinel_scan(const char    *buf,
+                   size_t         len,
+                   SentinelScanCb cb,
+                   void          *user_data);
+
+bool sentinel_scan_next(const char *buf, size_t len, size_t *pos,
+                        size_t *out_n, char *out_type, size_t *out_total_len);

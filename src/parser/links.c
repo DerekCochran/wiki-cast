@@ -485,10 +485,9 @@ static void append_file_image_params(Token *file_tok,
 static pcre2_code *s_re_main= NULL;		/* inExt=false link regex */
 static pcre2_code *s_re_main_ext= NULL; /* inExt=true link regex */
 static pcre2_code *s_re_img= NULL;		/* regexImg */
-static pcre2_code *s_re_sentinel= NULL; /* \x00\d+[exhbru]\x7F */
 
 static void ensure_link_regexes(void) {
-	if(s_re_main && s_re_main_ext && s_re_img && s_re_sentinel) return;
+	if(s_re_main && s_re_main_ext && s_re_img) return;
 
 	if(!s_re_main) {
 		const char *pat=
@@ -508,10 +507,7 @@ static void ensure_link_regexes(void) {
 		s_re_img= pcre_cache_get(pat, PCRE2_UTF);
 	}
 
-	if(!s_re_sentinel) {
-		const char *pat= "\\x00\\d+[exhbru]\\x7F";
-		s_re_sentinel= pcre_cache_get(pat, PCRE2_UTF);
-	}
+	/* sentinel regex replaced by sentinel_scan helpers (no-op here) */
 }
 
 /* Compile and cache a protocol-detection regex in cfg->regex_links.
@@ -595,7 +591,6 @@ void parse_links(ThreadBuf *tb, const ParserConfig *cfg, Accum *accum,
 	pcre2_code *re_proto= compile_links_proto(cfg);
 	pcre2_code *re_main= cfg->in_ext ? s_re_main_ext : s_re_main;
 	pcre2_code *re_img_re= s_re_img;
-	pcre2_code *re_sentinel= s_re_sentinel;
 
 	size_t len= tb->len;
 	const char *buf= tb->buf;
@@ -753,11 +748,13 @@ void parse_links(ThreadBuf *tb, const ParserConfig *cfg, Accum *accum,
 			}
 		}
 		bool has_sentinel_in_link= false;
-		if(!is_proto && re_sentinel) {
-			pcre2_match_data *md= match_region(re_sentinel, link_ptr, link_len);
-			if(md) {
-				has_sentinel_in_link= true;
-				pcre2_match_data_free(md);
+		if(!is_proto) {
+			size_t _pos = 0;
+			size_t _n = 0;
+			char _t = '\0';
+			size_t _total = 0;
+			if(sentinel_scan_next(link_ptr, link_len, &_pos, &_n, &_t, &_total)) {
+				has_sentinel_in_link = true;
 			}
 		}
 		log_debug_env_token("WTC_DEBUG_STAGE_5", NULL,

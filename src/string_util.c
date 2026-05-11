@@ -141,6 +141,64 @@ char *str_remove_comment(const char *s, size_t len, size_t *out_len) {
 	return result;
 }
 
+/* ── Sentinel scanning helpers (\x00<digits>[exhbru]\x7F) ─────────────── */
+
+bool sentinel_scan_next(const char *buf, size_t len, size_t *pos,
+						size_t *out_n, char *out_type, size_t *out_total_len) {
+	if(!buf || !pos || *pos >= len) return false;
+	size_t i = *pos;
+	while(i < len) {
+		const char *found = sz_find_byte(buf + i, len - i, "\0");
+		if(!found) return false;
+		size_t p = (size_t)(found - buf);
+		size_t j = p + 1;
+		if(j >= len || !(buf[j] >= '0' && buf[j] <= '9')) { i = p + 1; continue; }
+		size_t k = j;
+		while(k < len && buf[k] >= '0' && buf[k] <= '9') k++;
+		if(k >= len) { i = p + 1; continue; }
+		char t = buf[k];
+		if(strchr(SENTINEL_TYPES, t) == NULL) { i = p + 1; continue; }
+		if(k + 1 >= len || (unsigned char)buf[k + 1] != '\x7F') { i = p + 1; continue; }
+
+		/* parse decimal */
+		size_t n = 0;
+		for(size_t d = j; d < k; ++d) {
+			n = n * 10 + (size_t)(buf[d] - '0');
+		}
+		size_t total = (k + 2) - p; /* includes NUL .. DEL */
+		*pos = p + total;
+		if(out_n) *out_n = n;
+		if(out_type) *out_type = t;
+		if(out_total_len) *out_total_len = total;
+		return true;
+	}
+	return false;
+}
+
+void sentinel_scan(const char *buf, size_t len, SentinelScanCb cb, void *user_data) {
+	if(!buf || !cb) return;
+	size_t i = 0;
+	while(i < len) {
+		const char *found = sz_find_byte(buf + i, len - i, "\0");
+		if(!found) return;
+		size_t p = (size_t)(found - buf);
+		size_t j = p + 1;
+		if(j >= len || !(buf[j] >= '0' && buf[j] <= '9')) { i = p + 1; continue; }
+		size_t k = j;
+		while(k < len && buf[k] >= '0' && buf[k] <= '9') k++;
+		if(k >= len) { i = p + 1; continue; }
+		char t = buf[k];
+		if(strchr(SENTINEL_TYPES, t) == NULL) { i = p + 1; continue; }
+		if(k + 1 >= len || (unsigned char)buf[k + 1] != '\x7F') { i = p + 1; continue; }
+
+		size_t n = 0;
+		for(size_t d = j; d < k; ++d) n = n * 10 + (size_t)(buf[d] - '0');
+		size_t total = (k + 2) - p;
+		cb(p, total, n, t, user_data);
+		i = p + total;
+	}
+}
+
 /* ── trimLc ─────────────────────────────────────────────────────────────── */
 
 char *str_trim_lc(const char *s, size_t len) {
