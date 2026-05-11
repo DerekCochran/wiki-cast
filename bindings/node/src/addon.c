@@ -75,6 +75,7 @@ static ParserConfig* get_token_config_json(napi_env env, napi_value token) {
     char *path = malloc(path_len + 1);
     napi_get_value_string_utf8(env, config_val, path, path_len + 1, &path_len);
 
+    
     ParserConfig* cfg = config_load_file(path);
     free(path); 
     
@@ -136,6 +137,8 @@ static napi_value token_to_js(napi_env env, const Token *token, bool wrap_root) 
  * @param args[1] Object { config: ... }
  */
 static napi_value parse(napi_env env, napi_callback_info info) {
+    printf("parse");
+
     size_t argc = 2;
     napi_value args[2];
     napi_value this_arg;
@@ -196,8 +199,25 @@ static napi_value parse(napi_env env, napi_callback_info info) {
  * N-API Module Initialization
  */
 napi_value Init(napi_env env, napi_value exports) {
-    napi_property_descriptor desc = { "parse", 0, parse, 0, 0, 0, napi_default, 0 };
-    napi_define_properties(env, exports, 1, &desc);
+    napi_value initial_config_val;
+    napi_status status = napi_create_string_utf8(env, "", 0, &initial_config_val);
+    if (status != napi_ok) return NULL;
+
+    napi_property_descriptor desc[] = {
+        {
+            .utf8name = "parse",
+            .method = parse,
+            .attributes = napi_default
+        },
+        {
+            .utf8name = "config",
+            .value = initial_config_val,
+            .attributes = (napi_property_attributes)(napi_writable | napi_enumerable | napi_configurable)
+        }
+    };
+    printf("define props\n");
+    napi_define_properties(env, exports, 2, desc);
+    printf("done define props\n");
 
     napi_value proto;
     napi_create_object(env, &proto);
@@ -205,7 +225,7 @@ napi_value Init(napi_env env, napi_value exports) {
     napi_property_descriptor proto_descs[] = {
         { "toString", 0, toString_wrapper, 0, 0, 0, napi_default, 0 }
     };
-    napi_define_properties(env, proto, 2, proto_descs);
+    napi_define_properties(env, proto, 1, proto_descs);
 
     // Create a persistent reference so the prototype lives forever
     napi_create_reference(env, proto, 1, &token_prototype_ref);

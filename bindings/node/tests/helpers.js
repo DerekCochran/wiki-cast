@@ -15,12 +15,8 @@ const LAST_SAMPLE_PATH = '/tmp/wiki_latest_test_input.txt';
 const PERF_LOG_PATH = '/tmp/wikitext_perf.txt';
 const DEFAULT_WIKI_CONFIG = path.join(__dirname, '..', '..', '..', 'config', 'enwiki.json');
 
-if (!process.env.WIKI_CONFIG) {
-  process.env.WIKI_CONFIG = DEFAULT_WIKI_CONFIG;
-}
-
-wikiparser.config = process.env.WIKI_CONFIG;
-nativeParser.config = process.env.WIKI_CONFIG;
+wikiparser.config = String(DEFAULT_WIKI_CONFIG);
+nativeParser.config = String(DEFAULT_WIKI_CONFIG);
 
 function writeLatestSampleCheckpoint(wikitext, opts) {
   fs.writeFileSync(LAST_SAMPLE_PATH, wikitext, 'utf8');

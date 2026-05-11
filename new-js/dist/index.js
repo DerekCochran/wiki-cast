@@ -125,6 +125,7 @@ const Parser = {
     getConfig(config) {
         /* NOT FOR BROWSER ONLY */
         if (!config && typeof this.config === 'string') {
+            // console.info(`Loading parser configuration from ${this.config}...`);
             if (!path_1.default.isAbsolute(this.config)) {
                 for (const p of this.configPaths) {
                     try {
@@ -143,6 +144,7 @@ const Parser = {
             }
             return this.getConfig();
         }
+        //console.info(`Loading parser configuration from ${JSON.stringify(this.config)}...`);
         /* NOT FOR BROWSER ONLY END */
         const parserConfig = config ?? this.config, { doubleUnderscore, ext, parserFunction, variable, 
         /* NOT FOR BROWSER */
