@@ -11,6 +11,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <ctype.h>
 
 /* Use 48 for inline to keep the total ThreadBuf struct exactly 1 cache line (64 bytes) */
 #define SSO_MAX 47
@@ -100,6 +101,23 @@ const char *wiki_thread_buf_append_to_tokens(const char *s, size_t len) {
 	}
 	sz_string_view_t v = { .start = s, .length = len };
 	wiki_thread_buf_append(tb, v);
+	/* Debug: print a small hex window around the appended region so callers
+	 * can verify the tokens arena contents and pointer offsets. */
+	{
+		char hexbuf[512];
+		size_t hexpos = 0;
+		size_t win_start = off > 32 ? off - 32 : 0;
+		size_t win_end = (off + len + 32) < tb->len ? (off + len + 32) : tb->len;
+		for(size_t i = win_start; i < win_end && hexpos + 3 < sizeof(hexbuf); i++) {
+			int wn = snprintf(hexbuf + hexpos, sizeof(hexbuf) - hexpos, "%02X", (unsigned char)tb->buf[i]);
+			if(wn > 0) hexpos += (size_t)wn;
+			if(i + 1 < win_end && hexpos + 1 < sizeof(hexbuf)) hexbuf[hexpos++] = ' ';
+		}
+		hexbuf[hexpos] = '\0';
+		log_debug_env_token("WTC_DEBUG_STAGE_1", NULL,
+			"[C wiki_thread_buf_append_to_tokens] ptr=%p off=%zu new_len=%zu cap=%zu win=[%zu..%zu] hex=%s",
+			(void*)(tb->buf + off), off, tb->len, tb->cap, win_start, win_end, hexbuf);
+	}
 	return tb->buf + off;
 }
 
@@ -109,6 +127,22 @@ const char *wiki_thread_buf_append_view_to_tokens(sz_string_view_t view) {
 	ThreadBuf *tb = &tbs->tokens;
 	size_t off = tb->len;
 	wiki_thread_buf_append(tb, view);
+	/* Debug: print surrounding tokens arena bytes for the appended view. */
+	{
+		char hexbuf[512];
+		size_t hexpos = 0;
+		size_t win_start = off > 32 ? off - 32 : 0;
+		size_t win_end = (off + view.length + 32) < tb->len ? (off + view.length + 32) : tb->len;
+		for(size_t i = win_start; i < win_end && hexpos + 3 < sizeof(hexbuf); i++) {
+			int wn = snprintf(hexbuf + hexpos, sizeof(hexbuf) - hexpos, "%02X", (unsigned char)tb->buf[i]);
+			if(wn > 0) hexpos += (size_t)wn;
+			if(i + 1 < win_end && hexpos + 1 < sizeof(hexbuf)) hexbuf[hexpos++] = ' ';
+		}
+		hexbuf[hexpos] = '\0';
+		log_debug_env_token("WTC_DEBUG_STAGE_1", NULL,
+			"[C wiki_thread_buf_append_view_to_tokens] ptr=%p off=%zu new_len=%zu cap=%zu win=[%zu..%zu] hex=%s",
+			(void*)(tb->buf + off), off, tb->len, tb->cap, win_start, win_end, hexbuf);
+	}
 	return tb->buf + off;
 }
 
@@ -284,6 +318,147 @@ void wiki_thread_buf_assert_no_leased_scratch(const char *context,
 						details[0] ? "; " : "",
 						details);
 	abort();
+}
+
+/* Helper: build an escaped, human-readable representation of a binary buffer.
+ * Escapes NUL as "\\0" and DEL (0x7F) as "\\x7F". Other non-printable
+ * bytes are emitted as "\\xHH". Output is truncated to out_cap-1 bytes.
+ */
+static void build_escaped_repr(const char *buf, size_t len, char *out, size_t out_cap) {
+	if(!out || out_cap == 0) return;
+	size_t op = 0;
+	for(size_t i = 0; i < len && op + 8 < out_cap; i++) {
+		unsigned char c = (unsigned char)buf[i];
+		if(c == '\0') {
+			int n = snprintf(out + op, out_cap - op, "\\0");
+			if(n > 0) op += (size_t)n;
+		} else if(c == 0x7F) {
+			int n = snprintf(out + op, out_cap - op, "\\x7F");
+			if(n > 0) op += (size_t)n;
+		} else if(c >= 32 && c < 127 && c != '\\') {
+			out[op++] = (char)c;
+		} else {
+			int n = snprintf(out + op, out_cap - op, "\\x%02X", c);
+			if(n > 0) op += (size_t)n;
+		}
+	}
+	if(op >= out_cap) op = out_cap - 1;
+	if(op < out_cap) {
+		if(len > 0 && op + 16 < out_cap) {
+			/* If we truncated, indicate so */
+			if(op + 14 < out_cap) {
+				int n = snprintf(out + op, out_cap - op, "...(trunc)");
+				if(n > 0) op += (size_t)n;
+			}
+		}
+		out[op] = '\0';
+	}
+}
+
+/* Helper: build a sentinel-aware representation of tokens arena.
+ * Replaces sequences of the form \0<digits><type>\x7F with "[#<digits>:<type>]".
+ * Other bytes are escaped like build_escaped_repr. Output truncated to out_cap.
+ */
+static void build_sentinel_repr(const char *buf, size_t len, char *out, size_t out_cap) {
+	if(!out || out_cap == 0) return;
+	size_t op = 0;
+	size_t i = 0;
+	while(i < len && op + 8 < out_cap) {
+		unsigned char c = (unsigned char)buf[i];
+		if(c == '\0') {
+			size_t p = i + 1;
+			size_t digits_start = p;
+			while(p < len && buf[p] >= '0' && buf[p] <= '9') p++;
+			if(p > digits_start && p < len) {
+				unsigned char type_ch = (unsigned char)buf[p];
+				if(p + 1 < len && (unsigned char)buf[p + 1] == 0x7F) {
+					/* matched sentinel */
+					size_t dlen = p - digits_start;
+					if(dlen < 64) {
+						char idxbuf[80];
+						memcpy(idxbuf, buf + digits_start, dlen);
+						idxbuf[dlen] = '\0';
+						if(type_ch >= 32 && type_ch < 127) {
+							int n = snprintf(out + op, out_cap - op, "[#%s:%c]", idxbuf, (char)type_ch);
+							if(n > 0) op += (size_t)n;
+						} else {
+							int n = snprintf(out + op, out_cap - op, "[#%s:0x%02X]", idxbuf, type_ch);
+							if(n > 0) op += (size_t)n;
+						}
+						i = p + 2;
+						continue;
+					}
+				}
+			}
+			/* fallback: emit escaped NUL */
+			int n = snprintf(out + op, out_cap - op, "\\0");
+			if(n > 0) op += (size_t)n;
+			i++;
+		} else if(c >= 32 && c < 127 && c != '\\') {
+			out[op++] = (char)c;
+			i++;
+		} else if(c == 0x7F) {
+			int n = snprintf(out + op, out_cap - op, "\\x7F");
+			if(n > 0) op += (size_t)n;
+			i++;
+		} else {
+			int n = snprintf(out + op, out_cap - op, "\\x%02X", c);
+			if(n > 0) op += (size_t)n;
+			i++;
+		}
+	}
+	if(op >= out_cap) op = out_cap - 1;
+	if(op < out_cap) {
+		if(i < len && op + 12 < out_cap) {
+			int n = snprintf(out + op, out_cap - op, "...(trunc)");
+			if(n > 0) op += (size_t)n;
+		}
+		out[op] = '\0';
+	}
+}
+
+void wiki_thread_buf_log_state(const char *stage_label, ThreadBuf *stage_tb) {
+	if(!getenv("WTC_DEBUG_STAGE_DUMP")) return;
+	if(!stage_label) stage_label = "(stage)";
+
+	ThreadBuffers *tbs = wiki_thread_buf_get();
+	if(!tbs) return;
+	ThreadBuf *tokens = &tbs->tokens;
+
+	/* Allocate bounded buffers for escaping. Make the max configurable via
+	 * WTC_DEBUG_STAGE_DUMP_MAX (bytes). Default to 64KiB to allow long
+	 * dumps while keeping output reasonable. */
+	const char *maxenv = getenv("WTC_DEBUG_STAGE_DUMP_MAX");
+	size_t MAX_OUT = 65536; /* default 64KiB */
+	if(maxenv && *maxenv) {
+		char *endptr = NULL;
+		long v = strtol(maxenv, &endptr, 10);
+		if(endptr && *endptr == '\0' && v > 0) {
+			MAX_OUT = (size_t)v;
+		}
+	}
+	size_t s_cap = stage_tb && stage_tb->len ? (stage_tb->len * 4 + 32) : 128;
+	if(s_cap > MAX_OUT) s_cap = MAX_OUT;
+	char *sbuf = malloc(s_cap + 1);
+	if(!sbuf) return;
+	size_t stage_len = stage_tb ? stage_tb->len : 0;
+	const char *stage_buf = stage_tb ? stage_tb->buf : "";
+	build_escaped_repr(stage_buf, stage_len, sbuf, s_cap);
+	log_debug_env_token("WTC_DEBUG_STAGE_DUMP", NULL,
+		"[C DUMP_STAGE] %s ptr=%p len=%zu cap=%zu data=%s",
+		stage_label, (void*)stage_buf, stage_len, stage_tb ? stage_tb->cap : 0, sbuf);
+
+	size_t t_cap = tokens->len ? (tokens->len * 6 + 64) : 128;
+	if(t_cap > MAX_OUT) t_cap = MAX_OUT;
+	char *tbuf = malloc(t_cap + 1);
+	if(!tbuf) { free(sbuf); return; }
+	build_sentinel_repr(tokens->buf, tokens->len, tbuf, t_cap);
+	log_debug_env_token("WTC_DEBUG_STAGE_DUMP", NULL,
+		"[C DUMP_TOKENS] ptr=%p len=%zu cap=%zu repr=%s",
+		(void*)tokens->buf, tokens->len, tokens->cap, tbuf);
+
+	free(sbuf);
+	free(tbuf);
 }
 
 /* ── Public API ──────────────────────────────────────────────────────────── */

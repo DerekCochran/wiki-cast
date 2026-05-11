@@ -529,6 +529,20 @@ static Token *build_template_token(const char **parts_restored, const size_t *pa
 					/* Persist key and value into tokens arena */
 					const char *key_view = wiki_thread_buf_append_to_tokens(part, key_len);
 					const char *val_view = wiki_thread_buf_append_to_tokens(eq + 1, val_len);
+					{
+						char _vhbuf[128]; size_t _vhp = 0;
+						size_t _vls = (val_len > 86) ? 86 : 0;
+						size_t _vle = (_vls + 6 < val_len) ? _vls + 6 : val_len;
+						for(size_t _qi = _vls; _qi < _vle && _vhp+3 < sizeof(_vhbuf); _qi++) {
+							int _wn = snprintf(_vhbuf+_vhp, sizeof(_vhbuf)-_vhp, "%02X", (unsigned char)val_view[_qi]);
+							if(_wn > 0) _vhp += (size_t)_wn;
+							if(_qi+1 < _vle && _vhp < sizeof(_vhbuf)) _vhbuf[_vhp++] = ' ';
+						}
+						_vhbuf[_vhp] = '\0';
+						log_debug_env_token("WTC_DEBUG_STAGE_1", NULL,
+							"[C build_tpl_named] val_view=%p val_len=%zu bytes_at[%zu..%zu]=%s",
+							(void*)val_view, val_len, _vls, _vle, _vhbuf);
+					}
 					token_append_text_n(key_tok, key_view, key_len);
 					token_append_text_n(val_tok, val_view, val_len);
 					token_append_child(param, key_tok);
@@ -635,6 +649,27 @@ static Token *build_from_inner(const char *inner, size_t inner_len,
 			parts= realloc(parts, part_cap * sizeof(char *));
 			plens= realloc(plens, part_cap * sizeof(size_t));
 			assert(parts && plens);
+		}
+		/* Debug: log restored part bytes if it contains sentinel-like bytes */
+		{
+			char needle = '\x7F';
+			const char *has_del = sz_find_byte(restored, restored_len, &needle);
+			char nul = '\0';
+			const char *has_nul = sz_find_byte(restored, restored_len, &nul);
+			if(has_del || has_nul) {
+				char hexbuf[256];
+				size_t hexpos = 0;
+				size_t look = restored_len > 64 ? 64 : restored_len;
+				for(size_t ii = 0; ii < look && hexpos + 3 < sizeof(hexbuf); ii++) {
+					int wn = snprintf(hexbuf + hexpos, sizeof(hexbuf) - hexpos, "%02X", (unsigned char)restored[ii]);
+					if(wn > 0) hexpos += (size_t)wn;
+					if(ii + 1 < look && hexpos + 1 < sizeof(hexbuf)) hexbuf[hexpos++] = ' ';
+				}
+				hexbuf[hexpos] = '\0';
+				log_debug_env_token("WTC_DEBUG_STAGE_1", NULL,
+					"[C build_from_inner] part %zu restored_len=%zu preview_hex=%s",
+					part_count, restored_len, hexbuf);
+			}
 		}
 		parts[part_count]= restored;
 		plens[part_count]= restored_len;
@@ -961,6 +996,19 @@ static bool braces_state_machine(ThreadBuf *tb, const ParserConfig *cfg,
 									char sent[64];
 									size_t slen;
 									work_str_sentinel(idx, 'h', sent, &slen);
+									{
+										char hexbuf[128];
+										size_t hexpos = 0;
+										for(size_t _i = 0; _i < slen && hexpos + 3 < sizeof(hexbuf); _i++) {
+											int wn = snprintf(hexbuf + hexpos, sizeof(hexbuf) - hexpos, "%02X", (unsigned char)sent[_i]);
+											if(wn > 0) hexpos += (size_t)wn;
+											if(_i + 1 < slen && hexpos + 1 < sizeof(hexbuf)) hexbuf[hexpos++] = ' ';
+										}
+										hexbuf[hexpos] = '\0';
+										log_debug_env_token("WTC_DEBUG_STAGE_1", NULL,
+											"[C parseBraces] wrote sentinel idx=%zu type=%c slen=%zu hex=%s",
+											idx, 'h', slen, hexbuf);
+									}
 									ENSURE_OUT_CAP((top.index > next_write ? top.index - next_write : 0) + slen);
 									if(top.index > next_write) {
 										memcpy(out + out_len, tb->buf + next_write, top.index - next_write);
@@ -1239,8 +1287,21 @@ static void braces_callback(const char *segment, size_t len,
 		char sentinel[64];
 		size_t slen;
 		char sym = braces_arg_symbol(segment, len, ctx->cfg);
-		work_str_sentinel(ctx->accum->count - 1, sym, sentinel, &slen);
-		braces_append(ctx, sentinel, slen);
+			work_str_sentinel(ctx->accum->count - 1, sym, sentinel, &slen);
+			{
+				char hexbuf[128];
+				size_t hexpos = 0;
+				for(size_t _i = 0; _i < slen && hexpos + 3 < sizeof(hexbuf); _i++) {
+					int wn = snprintf(hexbuf + hexpos, sizeof(hexbuf) - hexpos, "%02X", (unsigned char)sentinel[_i]);
+					if(wn > 0) hexpos += (size_t)wn;
+					if(_i + 1 < slen && hexpos + 1 < sizeof(hexbuf)) hexbuf[hexpos++] = ' ';
+				}
+				hexbuf[hexpos] = '\0';
+				log_debug_env_token("WTC_DEBUG_STAGE_1", NULL,
+					"[C parseBraces] wrote sentinel idx=%zu type=%c slen=%zu hex=%s",
+					ctx->accum->count - 1, sym, slen, hexbuf);
+			}
+			braces_append(ctx, sentinel, slen);
 	} else {
 		braces_append(ctx, "{{{", 3);
 		braces_append(ctx, segment, len);
@@ -1432,6 +1493,19 @@ void parse_braces(ThreadBuf *tb, const ParserConfig *cfg, Accum *accum) {
 						sym= braces_get_symbol(inner, p0_end, cfg, NULL);
 					}
 					work_str_sentinel(tok_idx, sym, sent, &slen);
+					{
+						char hexbuf[128];
+						size_t hexpos = 0;
+						for(size_t _i = 0; _i < slen && hexpos + 3 < sizeof(hexbuf); _i++) {
+							int wn = snprintf(hexbuf + hexpos, sizeof(hexbuf) - hexpos, "%02X", (unsigned char)sent[_i]);
+							if(wn > 0) hexpos += (size_t)wn;
+							if(_i + 1 < slen && hexpos + 1 < sizeof(hexbuf)) hexbuf[hexpos++] = ' ';
+						}
+						hexbuf[hexpos] = '\0';
+						log_debug_env_token("WTC_DEBUG_STAGE_1", NULL,
+							"[C parseBraces] wrote sentinel idx=%zu type=%c slen=%zu hex=%s",
+							tok_idx, sym, slen, hexbuf);
+					}
 					ENSURE_CAP(slen);
 					memcpy(out_buf + out_len, sent, slen);
 					out_len+= slen;

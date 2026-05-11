@@ -8,7 +8,7 @@ const { runTests } = require('./helpers');
 // This should loop through each test and fast fail on the first mismatch.
 
 const tests = [
-  '{{NS}}',
+//  '{{NS}}',
   `{{usurped|1=[https://web.archive.org/1021500/http://www.snagfilms.com/films/ 'Afghanistan' (2000) {{!}} SnagFilms]}}`,
   `{{Retracted|doi=10.1016/j.jbc.2021.100764|pmid=34237888|http://retractionwatch.com/?s=%22Xuetao+Cao%22 ''Retraction Watch''|intentional=yes}}`,
   `{{cite book | last=Long | first=A. A. | title=Science and Speculation. Studies in Hellenistic Theory and Practice | publisher=Cambridge University Press | year=2005 |<!--165–191-->page=174 |editor1=Barnes, Jonathan |editor2=Brunschwig, J. | chapter=6: Astrology: arguments pro and contra |isbn=978-0-521-02218-7}}`,

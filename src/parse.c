@@ -164,23 +164,64 @@ static void json_write_escaped_len(const char *s, size_t len, FILE *fp) {
 static void stage_json_write_token(const Token *t, FILE *fp, const Accum *accum);
 
 static bool stage_json_parse_sentinel(const char *s, size_t len, size_t *pos, size_t *idx_out) {
-	if(!s || !pos || !idx_out || *pos >= len || (unsigned char)s[*pos] != '\0') return false;
+	if(!s || !pos || !idx_out) {
+		log_debug_env_token("WTC_DEBUG_STAGE_1", NULL,
+			"[C stage_json_parse_sentinel] invalid args pos_ptr=%p", (void*)pos);
+		return false;
+	}
+	if(*pos >= len) {
+		log_debug_env_token("WTC_DEBUG_STAGE_1", NULL,
+			"[C stage_json_parse_sentinel] pos >= len: pos=%zu len=%zu", *pos, len);
+		return false;
+	}
+	if((unsigned char)s[*pos] != '\0') {
+		log_debug_env_token("WTC_DEBUG_STAGE_1", NULL,
+			"[C stage_json_parse_sentinel] not NUL at pos=%zu byte=%02X", *pos, (unsigned char)s[*pos]);
+		return false;
+	}
 
-	size_t p= *pos + 1;
-	if(p >= len || !isdigit((unsigned char)s[p])) return false;
+	size_t p = *pos + 1; /* first digit */
+	if(p >= len) {
+		log_debug_env_token("WTC_DEBUG_STAGE_1", NULL,
+			"[C stage_json_parse_sentinel] no room for digit at p=%zu len=%zu", p, len);
+		return false;
+	}
+	if(!isdigit((unsigned char)s[p])) {
+		log_debug_env_token("WTC_DEBUG_STAGE_1", NULL,
+			"[C stage_json_parse_sentinel] first char after NUL not digit p=%zu byte=%02X", p, (unsigned char)s[p]);
+		return false;
+	}
 
-	size_t idx= 0;
+	size_t idx = 0;
 	while(p < len && isdigit((unsigned char)s[p])) {
-		idx= idx * 10 + (size_t)(s[p] - '0');
+		idx = idx * 10 + (size_t)(s[p] - '0');
 		p++;
 	}
-	if(p + 1 >= len) return false;
-	/* Any sentinel marker char is accepted; trailing DEL is required. */
-	p++;
-	if((unsigned char)s[p] != 0x7F) return false;
 
-	*idx_out= idx;
-	*pos= p + 1;
+	/* p now points at the type char (should exist) */
+	if(p >= len) {
+		log_debug_env_token("WTC_DEBUG_STAGE_1", NULL,
+			"[C stage_json_parse_sentinel] ran off end after digits p=%zu len=%zu", p, len);
+		return false;
+	}
+
+	unsigned char type_ch = (unsigned char)s[p];
+	if(p + 1 >= len) {
+		log_debug_env_token("WTC_DEBUG_STAGE_1", NULL,
+			"[C stage_json_parse_sentinel] missing DEL after type at p=%zu type=%02X len=%zu", p, type_ch, len);
+		return false;
+	}
+	if((unsigned char)s[p + 1] != 0x7F) {
+		log_debug_env_token("WTC_DEBUG_STAGE_1", NULL,
+			"[C stage_json_parse_sentinel] trailing byte not DEL at del_idx=%zu byte=%02X", p + 1, (unsigned char)s[p + 1]);
+		return false;
+	}
+
+	/* Success: advance pos to after the DEL */
+	*idx_out = idx;
+	*pos = p + 2;
+	log_debug_env_token("WTC_DEBUG_STAGE_1", NULL,
+		"[C stage_json_parse_sentinel] OK parsed idx=%zu type=%02X next_pos=%zu", idx, type_ch, *pos);
 	return true;
 }
 
@@ -199,9 +240,31 @@ static void stage_json_write_text_segments(const char *s, size_t len,
 	size_t pos= 0;
 	while(pos < len) {
 		if((unsigned char)s[pos] == '\0') {
+			/* Debug: log hex around this NUL so we can see sentinel bytes */
+			{
+				char hexbuf[128];
+				size_t hexpos = 0;
+				size_t lookahead = len - pos;
+				if(lookahead > 12) lookahead = 12;
+				for(size_t i = 0; i < lookahead && hexpos + 3 < sizeof(hexbuf); i++) {
+					int wn = snprintf(hexbuf + hexpos, sizeof(hexbuf) - hexpos, "%02X", (unsigned char)s[pos + i]);
+					if(wn > 0) hexpos += (size_t)wn;
+					if(i + 1 < lookahead && hexpos + 1 < sizeof(hexbuf)) hexbuf[hexpos++] = ' ';
+				}
+				hexbuf[hexpos] = '\0';
+				log_debug_env_token("WTC_DEBUG_STAGE_1", NULL,
+					"[C stage_json_write_text_segments] NUL at pos=%zu len=%zu lookahead_hex=%s",
+					pos, len, hexbuf);
+			}
 			size_t idx= 0;
 			size_t p= pos;
-			if(stage_json_parse_sentinel(s, len, &p, &idx) && accum && idx < accum->count && accum->tokens[idx]) {
+			bool _sp_ok = stage_json_parse_sentinel(s, len, &p, &idx);
+			log_debug_env_token("WTC_DEBUG_STAGE_1", NULL,
+				"[C stage_json_write_text_segments] parse_sentinel=%d idx=%zu accum_count=%zu tok=%p",
+				(int)_sp_ok, idx,
+				accum ? accum->count : (size_t)-1,
+				(void*)(accum && idx < accum->count ? accum->tokens[idx] : NULL));
+			if(_sp_ok && accum && idx < accum->count && accum->tokens[idx]) {
 				if(!*first) fputc(',', fp);
 				*first= false;
 				stage_json_write_token(accum->tokens[idx], fp, accum);
@@ -262,6 +325,21 @@ static void stage_json_write_token(const Token *t, FILE *fp, const Accum *accum)
 		for(size_t i= 0; i < t->child_count; i++) {
 			const Child *c= &t->children[i];
 			if(c->is_text) {
+				{
+					char _hbuf[128]; size_t _hp = 0;
+					size_t _ls = (c->text_len > 86) ? 86 : 0;
+					size_t _le = (_ls + 6 < c->text_len) ? _ls + 6 : c->text_len;
+					for(size_t _qi = _ls; _qi < _le && _hp + 3 < sizeof(_hbuf); _qi++) {
+						int _wn = snprintf(_hbuf+_hp, sizeof(_hbuf)-_hp, "%02X", (unsigned char)c->text[_qi]);
+						if(_wn > 0) _hp += (size_t)_wn;
+						if(_qi+1 < _le && _hp < sizeof(_hbuf)) _hbuf[_hp++] = ' ';
+					}
+					_hbuf[_hp] = '\0';
+					log_debug_env_token("WTC_DEBUG_STAGE_1", NULL,
+						"[C write_tok_child] tok_type=%s text_len=%zu ptr=%p bytes_at[%zu..%zu]=%s",
+						t->type_name ? t->type_name : "?", c->text_len, (void*)c->text,
+						_ls, _le, _hbuf);
+				}
 				stage_json_write_text_segments(c->text, c->text_len, fp, accum, &first);
 			} else {
 				if(!first) fputc(',', fp);
@@ -281,6 +359,10 @@ static void stage_json_write_token(const Token *t, FILE *fp, const Accum *accum)
  * accumulator are embedded via json_stringify_wikiparser_node(). */
 static void append_native_stage_json(const char *stage_log_dir, int stage, ThreadBuf *ws, Accum *accum) {
 	if(!stage_log_dir || !ws) return;
+	/* Also emit human-readable dumps of the stage and tokens arena to stdout
+	 * when requested via env var WTC_DEBUG_STAGE_DUMP. This helps narrow which
+	 * stage produces or corrupts sentinel markers. */
+	wiki_thread_buf_log_state(NULL, ws);
 	char pathbuf[1024];
 	snprintf(pathbuf, sizeof(pathbuf), "%s/native-stage.log", stage_log_dir);
 	FILE *f= fopen(pathbuf, "a");
@@ -293,6 +375,21 @@ static void append_native_stage_json(const char *stage_log_dir, int stage, Threa
 	size_t pos= 0;
 	while(pos < ws->len) {
 		if((unsigned char)ws->buf[pos] == '\0') {
+			{
+				char hexbuf[128];
+				size_t hexpos = 0;
+				size_t lookahead = ws->len - pos;
+				if(lookahead > 8) lookahead = 8;
+				for(size_t i = 0; i < lookahead && hexpos + 3 < sizeof(hexbuf); i++) {
+					int wn = snprintf(hexbuf + hexpos, sizeof(hexbuf) - hexpos, "%02X", (unsigned char)ws->buf[pos + i]);
+					if(wn > 0) hexpos += (size_t)wn;
+					if(i + 1 < lookahead && hexpos + 1 < sizeof(hexbuf)) hexbuf[hexpos++] = ' ';
+				}
+				hexbuf[hexpos] = '\0';
+				log_debug_env_token("WTC_DEBUG_STAGE_1", NULL,
+					"[C append_native_stage_json] NUL at pos=%zu lookahead=%zu hex=%s",
+					pos, lookahead, hexbuf);
+			}
 			/* sentinel: \0<digits><ch>\x7F */
 			pos++;
 			size_t numStart= pos;

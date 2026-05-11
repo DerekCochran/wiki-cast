@@ -197,3 +197,9 @@ const char *wiki_thread_buf_append_view_to_tokens(sz_string_view_t view);
  * transparently re-allocate fresh buffers.
  */
 void wiki_thread_buf_finalize_all(void);
+
+/* Debug: log human-readable representations of the stage and tokens buffers
+ * to aid in sentinel debugging. Controlled by env var `WTC_DEBUG_STAGE_DUMP`.
+ * Outputs use the standard `log_debug_env_token` API so they go to stdout.
+ */
+void wiki_thread_buf_log_state(const char *stage_label, ThreadBuf *stage_tb);
