@@ -29,9 +29,10 @@
         "../../src/title.c",
         "../../src/token.c",
         "../../src/tr.c",
+        "../../src/util/callback_parser.c",
+        "../../src/util/log.c",
         "../../src/util/thread_buffer.c",
         "../../src/util/token_to_json.c",
-        "../../src/util/log.c",
         "../../src/util/pcre_cache.c"
       ],
       "include_dirs": [ "../../include", "../../src/include" ],

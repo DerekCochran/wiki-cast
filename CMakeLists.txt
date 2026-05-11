@@ -67,6 +67,7 @@ add_library(wikitokenizer STATIC
     src/table_token.c
     src/tr.c
     src/td.c
+    src/util/callback_parser.c
     src/util/log.c
     src/util/thread_buffer.c
     src/util/token_to_json.c
