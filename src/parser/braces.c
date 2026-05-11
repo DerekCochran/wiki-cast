@@ -1335,17 +1335,12 @@ void parse_braces(ThreadBuf *tb, const ParserConfig *cfg, Accum *accum) {
 	char *prev_buf= NULL;
 	size_t prev_buf_len= 0;
 	int _dbg_pass= 0;
-	static int _braces_debug = -1;
-	if(_braces_debug < 0) {
-		_braces_debug = getenv("BRACES_DEBUG") ? 1 : 0;
-	}
 
 	while(1) {
 		_dbg_pass++;
-		if(_braces_debug) {
-			fprintf(stderr, "[C parseBraces] pre-pass iter %d, buf_len=%zu, buf=%.200s\n",
-							_dbg_pass, tb->len, tb->buf);
-		}
+		log_debug_env_token("WTC_DEBUG_STAGE_1", NULL,
+			"[C parseBraces] pre-pass iter %d, buf_len=%zu, buf=%.200s",
+			_dbg_pass, tb->len, tb->buf);
 		pcre2_match_data *md= pcre2_match_data_create_from_pattern(re, NULL);
 		if(!md) {
 			free(link_stack);
@@ -1389,13 +1384,12 @@ void parse_braces(ThreadBuf *tb, const ParserConfig *cfg, Accum *accum) {
 			size_t mstart= ov[0];
 			size_t mend= ov[1];
 
-			if(_braces_debug) {
-				fprintf(stderr, "[C parseBraces] pass %d match at %zu..%zu: g1=%s g2=%s match=%.80s\n",
-								_dbg_pass, mstart, mend,
-								ov[2] != PCRE2_UNSET ? "set" : "unset",
-								ov[4] != PCRE2_UNSET ? "set" : "unset",
-								subject + mstart < subject + tb->len ? subject + mstart : "(end)");
-			}
+			log_debug_env_token("WTC_DEBUG_STAGE_1", NULL,
+				"[C parseBraces] pass %d match at %zu..%zu: g1=%s g2=%s match=%.80s",
+				_dbg_pass, mstart, mend,
+				ov[2] != PCRE2_UNSET ? "set" : "unset",
+				ov[4] != PCRE2_UNSET ? "set" : "unset",
+				subject + mstart < subject + tb->len ? subject + mstart : "(end)");
 
 			/* Copy verbatim text before the match */
 			size_t before= mstart - search_at;
@@ -1520,10 +1514,9 @@ void parse_braces(ThreadBuf *tb, const ParserConfig *cfg, Accum *accum) {
 
 		/* Binary-safe convergence check on the unresolved placeholder form. */
 		if(prev_buf && prev_buf_len == out_len && memcmp(prev_buf, out_buf, out_len) == 0) {
-			if(_braces_debug) {
-				fprintf(stderr, "[C parseBraces] converged after pass %d, out=%.200s\n",
-								_dbg_pass, out_buf);
-			}
+			log_debug_env_token("WTC_DEBUG_STAGE_1", NULL,
+				"[C parseBraces] converged after pass %d, out=%.200s",
+				_dbg_pass, out_buf);
 			free(out_buf);
 			free(prev_buf);
 			free(match_subject);
@@ -1531,9 +1524,8 @@ void parse_braces(ThreadBuf *tb, const ParserConfig *cfg, Accum *accum) {
 			break;
 		}
 
-		if(_braces_debug) {
-			fprintf(stderr, "[C parseBraces] pass %d output: %.200s\n", _dbg_pass, out_buf);
-		}
+		log_debug_env_token("WTC_DEBUG_STAGE_1", NULL,
+			"[C parseBraces] pass %d output: %.200s", _dbg_pass, out_buf);
 
 		/* Keep parked placeholders for the next pass; restore only once at end. */
 		wiki_thread_buf_set(tb, out_buf, out_len);
@@ -1551,10 +1543,9 @@ void parse_braces(ThreadBuf *tb, const ParserConfig *cfg, Accum *accum) {
 
 	/* Second-pass state machine: handle nested templates/links and heading
      * closures that the simple regex replacement loop cannot resolve. */
-	if(_braces_debug) {
-		fprintf(stderr, "[C parseBraces] entering state machine: len=%zu, buf=%.200s, link_count=%zu\n",
-						tb->len, tb->buf, link_count);
-	}
+	log_debug_env_token("WTC_DEBUG_STAGE_1", NULL,
+		"[C parseBraces] entering state machine: len=%zu, buf=%.200s, link_count=%zu",
+		 tb->len, tb->buf, link_count);
 	braces_state_machine(tb, cfg, accum, link_stack, link_count, link_stack_lens);
 
 	/* Final restoration of parked [[...]] / -{...}- placeholders. */
