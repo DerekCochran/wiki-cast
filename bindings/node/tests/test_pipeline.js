@@ -8,6 +8,14 @@ const { runTests } = require('./helpers');
 // This should loop through each test and fast fail on the first mismatch.
 
 const tests = [
+  `{{Infobox country
+| religion = {{unbulleted list
+|{{Tree list}}
+** <ref>{{cite book|year=2010|quote=...&nbsp;rules.}}</ref>
+{{Tree list/end}}
+ }}
+}}
+`,
 //  '{{NS}}',
 //  `{{usurped|1=[https://web.archive.org/1021500/http://www.snagfilms.com/films/ 'Afghanistan' (2000) {{!}} SnagFilms]}}`,
 //  `{{Retracted|doi=10.1016/j.jbc.2021.100764|pmid=34237888|http://retractionwatch.com/?s=%22Xuetao+Cao%22 ''Retraction Watch''|intentional=yes}}`,
@@ -512,7 +520,7 @@ for (const configName of CONFIGS) {
     const ok = runTests([test], { name: `pipeline-${configName}` });
     if (!ok) {
       console.log(`Test failed for config ${configName}:\n${test}`);
-      //process.exit(1);
+      process.exit(1);
     }
   }
 }

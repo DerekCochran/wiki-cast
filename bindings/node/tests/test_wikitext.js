@@ -59,7 +59,8 @@ function main() {
     passCount++;
   }
   
-  console.log(`All ${passCount} samples passed`);
+  // Print the actual fail and pass counts
+  console.log(`Test completed: ${passCount} passed, ${failCount} failed`);
   process.exit(0);
 }
 

@@ -313,9 +313,10 @@ function compareSample(wikitext, { include = false, tidy = false, name = 'sample
       if( name.startsWith('wikitext')) {
         const smallestDiff = getWikiTextSmallesDiff(cmp.jsToken, cmp.ncToken, cmp.parents);
         if( smallestDiff && smallestDiff.length <= 500  ) {
-          console.log(getWikiTextSmallesDiff(cmp.jsToken, cmp.ncToken, cmp.parents));
+          console.log(smallestDiff);
         }else {
-          console.log('Smallest wikitext that produces a difference is too large to print to console, see above artifact files for details.');}
+           console.log('Smallest wikitext that produces a difference is too large to print to console, see above artifact files for details.');
+        }
       }
     }
 
