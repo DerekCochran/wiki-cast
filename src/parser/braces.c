@@ -1068,21 +1068,12 @@ static bool braces_state_machine(ThreadBuf *tb, const ParserConfig *cfg,
 											Accum *accum, char **link_stack, size_t link_count,
 											const size_t *link_stack_lens) {
 	if(!tb || !tb->buf) return false;
-	const char *pattern= "^((?:\\0\\d+[cno]\\x7F)*)={1,6}|\\[\\[|-\\{(?!\\{)|\\{{2,}|\\n(?!(?:[^\\S\\n]|\\0\\d+[cn]\\x7F)*\\n)|[|=]|\\}{2,}|\\}-|\\]\\]";
-	pcre2_code *re= pcre_cache_get(pattern, PCRE2_UTF | PCRE2_MULTILINE);
-	pcre2_match_data *md= pcre2_match_data_create_from_pattern(re, NULL);
-	if(!md) {
-		log_error("braces: pcre2_match_data_create_from_pattern failed");
-		return false;
-	}
-
-	char *match_subject= braces_make_match_subject(tb->buf, tb->len);
-	const char *subject= match_subject ? match_subject : tb->buf;
+	/* Replace the large PCRE alternation with the DFA-style brace_event_next
+	 * scanner to avoid repeated PCRE allocations and high-cost matching on
+	 * the hot path. */
 
 	BraceFrame *stack= malloc(64 * sizeof(BraceFrame));
 	if(!stack) {
-		pcre2_match_data_free(md);
-		free(match_subject);
 		return false;
 	}
 	size_t stack_cap= 64;
@@ -1107,20 +1098,14 @@ static bool braces_state_machine(ThreadBuf *tb, const ParserConfig *cfg,
 	} while(0)
 
 	while(1) {
-		int rc= pcre2_match(re, (PCRE2_SPTR)subject, tb->len, search_at, 0, md, NULL);
-		bool matched= rc > 0;
-		PCRE2_SIZE *ov= matched ? pcre2_get_ovector_pointer(md) : NULL;
-		size_t ms= 0, me= 0;
-		size_t prefix_len= 0;
-		bool has_heading_prefix= false;
-		if(matched) {
-			ms= ov[0];
-			me= ov[1];
-			if(ov[2] != PCRE2_UNSET && ov[3] != PCRE2_UNSET) {
-				prefix_len= (size_t)(ov[3] - ov[2]);
-				has_heading_prefix= true;
-			}
-		}
+		/* Scan for the next brace-related event. */
+		size_t event_pos = search_at;
+		BraceEventKind evkind = 0;
+		size_t match_len = 0, brace_count = 0, equals_count = 0, sentinel_len = 0;
+		bool matched = brace_event_next(tb->buf, tb->len, &event_pos,
+										&evkind, &match_len, &brace_count,
+										&equals_count, &sentinel_len);
+
 		if(!matched && (!has_last_index || stack_len == 0 || stack[stack_len - 1].open[0] != '=')) {
 			break;
 		}
@@ -1128,51 +1113,52 @@ static bool braces_state_machine(ThreadBuf *tb, const ParserConfig *cfg,
 		size_t cur_index;
 		size_t syntax_start;
 		size_t syntax_end;
+		size_t match_start = 0;
 		if(matched) {
+			size_t match_end = event_pos;
+			match_start = match_end - match_len;
+			bool has_heading_prefix = (evkind == BRACE_EVT_HEADING_OPEN && sentinel_len > 0);
 			if(has_heading_prefix) {
-				syntax_start= ms + prefix_len;
-				syntax_end= me;
-				cur_index= syntax_start;
+				syntax_start = match_start + sentinel_len;
+				syntax_end = match_end;
+				cur_index = syntax_start;
 			} else {
-				syntax_start= ms;
-				syntax_end= me;
-				cur_index= ms;
+				syntax_start = match_start;
+				syntax_end = match_end;
+				cur_index = match_start;
 			}
 		} else {
-			cur_index= tb->len;
-			syntax_start= cur_index;
-			syntax_end= cur_index;
+			cur_index = tb->len;
+			syntax_start = cur_index;
+			syntax_end = cur_index;
 		}
 
-		size_t syntax_len= syntax_end > syntax_start ? syntax_end - syntax_start : 0;
-		const char *syntax= tb->buf + syntax_start;
+		size_t syntax_len = syntax_end > syntax_start ? syntax_end - syntax_start : 0;
+		const char *syntax = tb->buf + syntax_start;
 		BraceFrame top;
-		bool has_top= false;
-		bool top_requeued= false;
+		bool has_top = false;
+		bool top_requeued = false;
 		if(stack_len > 0) {
-			top= stack[stack_len - 1];
-			has_top= true;
+			top = stack[stack_len - 1];
+			has_top = true;
 			stack_len--;
 		}
 
-		if(matched && syntax_len == 2 && syntax[0] == ']' && syntax[1] == ']') {
-			//last_index= cur_index + 2;
-			has_last_index= true;
+		if(matched && evkind == BRACE_EVT_WIKILINK_CLOSE) {
+			has_last_index = true;
 			/* ]] closes a [[ link frame; preserve any non-link frame below it */
 			if(has_top && !(top.open_len >= 1 && top.open[0] == '[')) {
 				stack[stack_len++]= top;
 				top_requeued= true;
 			}
-		} else if(matched && syntax_len == 2 && syntax[0] == '}' && syntax[1] == '-') {
-			//last_index= cur_index + 2;
-			has_last_index= true;
+		} else if(matched && evkind == BRACE_EVT_CONVERTER_CLOSE) {
+			has_last_index = true;
 			/* }- closes a -{ converter frame; preserve any non-converter frame below it */
 			if(has_top && !(top.open_len >= 1 && top.open[0] == '-')) {
 				stack[stack_len++]= top;
 				top_requeued= true;
 			}
-		} else if(matched && syntax_len == 1 && syntax[0] == '\n') {
-			//last_index= cur_index + 1;
+		} else if(matched && evkind == BRACE_EVT_NEWLINE) {
 			if(has_top && top.open_len == 1 && top.open[0] == '=') {
 				const char *slice= tb->buf + top.index;
 				size_t slice_len= cur_index - top.index;
@@ -1222,8 +1208,8 @@ static bool braces_state_machine(ThreadBuf *tb, const ParserConfig *cfg,
 										}
 										hexbuf[hexpos]= '\0';
 										log_debug_env_token("WTC_DEBUG_STAGE_1", NULL,
-																  "[C parseBraces] wrote sentinel idx=%zu type=%c slen=%zu hex=%s",
-																  idx, 'h', slen, hexbuf);
+															  "[C parseBraces] wrote sentinel idx=%zu type=%c slen=%zu hex=%s",
+															  idx, 'h', slen, hexbuf);
 									}
 									ENSURE_OUT_CAP((top.index > next_write ? top.index - next_write : 0) + slen);
 									if(top.index > next_write) {
@@ -1251,7 +1237,7 @@ static bool braces_state_machine(ThreadBuf *tb, const ParserConfig *cfg,
 			/* Only treat | as parameter separator; don't split on = in the state machine.
 			 * JS parity: = is preserved in parameter values, and splitting is handled
 			 * by build_from_inner which checks the RAW part (with sentinels) before restore. */
-			if(matched && syntax_len == 1 && syntax[0] == '|') {
+			if(matched && evkind == BRACE_EVT_PIPE) {
 				if(has_top && top.has_parts) {
 					if(!brace_push_part(&top, tb->buf, top.pos, cur_index, (const char **)link_stack, link_count, link_stack_lens)) {
 						;
@@ -1259,13 +1245,12 @@ static bool braces_state_machine(ThreadBuf *tb, const ParserConfig *cfg,
 					brace_frame_append_part(&top);
 					top.pos= cur_index + 1;
 				}
-			} else if(matched && syntax_len >= 2 && syntax[0] == '}' && syntax[1] == '}') {
+			} else if(matched && evkind == BRACE_EVT_BRACE_CLOSE) {
 				if(has_top && top.has_parts) {
 					if(!brace_push_part(&top, tb->buf, top.pos, cur_index, (const char **)link_stack, link_count, link_stack_lens)) {
 						;
 					}
-					size_t close_len= 0;
-					while(close_len < syntax_len && syntax[close_len] == '}') close_len++;
+					size_t close_len= brace_count;
 					size_t rest= top.open_len > close_len ? top.open_len - close_len : 0;
 					char *inner= NULL;
 					size_t inner_len= 0;
@@ -1310,7 +1295,7 @@ static bool braces_state_machine(ThreadBuf *tb, const ParserConfig *cfg,
 					free(inner);
 				}
 			}
-			if(matched && syntax_len > 0 && syntax[0] == '{') {
+			if(matched && evkind == BRACE_EVT_BRACE_OPEN) {
 				BraceFrame frame;
 				if(brace_frame_init(&frame, syntax, syntax_len, cur_index, cur_index + syntax_len, false)) {
 					if(has_top) {
@@ -1331,10 +1316,10 @@ static bool braces_state_machine(ThreadBuf *tb, const ParserConfig *cfg,
 						top_requeued= true;
 					}
 				}
-			} else if(matched && syntax_len == 2 && syntax[0] == '[' && syntax[1] == '[') {
+			} else if(matched && evkind == BRACE_EVT_WIKILINK_OPEN) {
 				/* Push a link frame so | inside [[...]] is not treated as template separator */
 				BraceFrame link_frame;
-				if(brace_frame_init(&link_frame, "[", 1, cur_index, cur_index + 2, false)) {
+				if(brace_frame_init(&link_frame, "[", 1, cur_index, cur_index + syntax_len, false)) {
 					if(has_top) {
 						stack[++stack_len - 1]= top;
 						top_requeued= true;
@@ -1353,10 +1338,10 @@ static bool braces_state_machine(ThreadBuf *tb, const ParserConfig *cfg,
 						top_requeued= true;
 					}
 				}
-			} else if(matched && syntax_len == 2 && syntax[0] == '-' && syntax[1] == '{') {
+			} else if(matched && evkind == BRACE_EVT_CONVERTER_OPEN) {
 				/* Push a converter frame so | inside -{...}- is not treated as template separator */
 				BraceFrame conv_frame;
-				if(brace_frame_init(&conv_frame, "-", 1, cur_index, cur_index + 2, false)) {
+				if(brace_frame_init(&conv_frame, "-", 1, cur_index, cur_index + syntax_len, false)) {
 					if(has_top) {
 						stack[++stack_len - 1]= top;
 						top_requeued= true;
@@ -1383,17 +1368,14 @@ static bool braces_state_machine(ThreadBuf *tb, const ParserConfig *cfg,
 			}
 		}
 
-		if(!matched) {
-			break;
-		}
-
 		/* If we popped a frame into `top` but didn't requeue it, free it
-			 * now to avoid leaking its heap allocations (open, parts). */
+		 * now to avoid leaking its heap allocations (open, parts). */
 		if(has_top && !top_requeued) {
 			brace_frame_free(&top);
 		}
+
 		search_at= syntax_end;
-		if(search_at == ms) search_at= ms + 1;
+		if(matched && search_at == match_start) search_at= match_start + 1;
 	}
 
 	if(next_write < tb->len) {
@@ -1411,8 +1393,6 @@ static bool braces_state_machine(ThreadBuf *tb, const ParserConfig *cfg,
 		brace_frame_free(&stack[si]);
 	}
 	free(stack);
-	free(match_subject);
-	pcre2_match_data_free(md);
 	return true;
 }
 
