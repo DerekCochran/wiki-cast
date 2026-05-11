@@ -101,23 +101,6 @@ const char *wiki_thread_buf_append_to_tokens(const char *s, size_t len) {
 	}
 	sz_string_view_t v = { .start = s, .length = len };
 	wiki_thread_buf_append(tb, v);
-	/* Debug: print a small hex window around the appended region so callers
-	 * can verify the tokens arena contents and pointer offsets. */
-	{
-		char hexbuf[512];
-		size_t hexpos = 0;
-		size_t win_start = off > 32 ? off - 32 : 0;
-		size_t win_end = (off + len + 32) < tb->len ? (off + len + 32) : tb->len;
-		for(size_t i = win_start; i < win_end && hexpos + 3 < sizeof(hexbuf); i++) {
-			int wn = snprintf(hexbuf + hexpos, sizeof(hexbuf) - hexpos, "%02X", (unsigned char)tb->buf[i]);
-			if(wn > 0) hexpos += (size_t)wn;
-			if(i + 1 < win_end && hexpos + 1 < sizeof(hexbuf)) hexbuf[hexpos++] = ' ';
-		}
-		hexbuf[hexpos] = '\0';
-		log_debug_env_token("WTC_DEBUG_STAGE_1", NULL,
-			"[C wiki_thread_buf_append_to_tokens] ptr=%p off=%zu new_len=%zu cap=%zu win=[%zu..%zu] hex=%s",
-			(void*)(tb->buf + off), off, tb->len, tb->cap, win_start, win_end, hexbuf);
-	}
 	return tb->buf + off;
 }
 
@@ -127,22 +110,6 @@ const char *wiki_thread_buf_append_view_to_tokens(sz_string_view_t view) {
 	ThreadBuf *tb = &tbs->tokens;
 	size_t off = tb->len;
 	wiki_thread_buf_append(tb, view);
-	/* Debug: print surrounding tokens arena bytes for the appended view. */
-	{
-		char hexbuf[512];
-		size_t hexpos = 0;
-		size_t win_start = off > 32 ? off - 32 : 0;
-		size_t win_end = (off + view.length + 32) < tb->len ? (off + view.length + 32) : tb->len;
-		for(size_t i = win_start; i < win_end && hexpos + 3 < sizeof(hexbuf); i++) {
-			int wn = snprintf(hexbuf + hexpos, sizeof(hexbuf) - hexpos, "%02X", (unsigned char)tb->buf[i]);
-			if(wn > 0) hexpos += (size_t)wn;
-			if(i + 1 < win_end && hexpos + 1 < sizeof(hexbuf)) hexbuf[hexpos++] = ' ';
-		}
-		hexbuf[hexpos] = '\0';
-		log_debug_env_token("WTC_DEBUG_STAGE_1", NULL,
-			"[C wiki_thread_buf_append_view_to_tokens] ptr=%p off=%zu new_len=%zu cap=%zu win=[%zu..%zu] hex=%s",
-			(void*)(tb->buf + off), off, tb->len, tb->cap, win_start, win_end, hexbuf);
-	}
 	return tb->buf + off;
 }
 
