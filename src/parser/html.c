@@ -18,6 +18,116 @@
 /* Regex roughly mirrors the JS: /^(\/?) ([a-z][^\s/>]*)((?:\s|\/(?!>))[^>]*?)?(\/?>)([^<]*)$/iu */
 static const char *HTML_PATTERN= "^(/?)([a-z][^\\s/>]*)((?:\\s|/(?!>))[^>]*?)?(/?>)([^<]*)$";
 
+/* Html tag parse result (allocation-free views into the provided buffer) */
+typedef struct {
+	bool        is_closing;        /* group 1: leading '/' present    */
+	const char *tag_name;          /* group 2: [a-z][^\s/>]*          */
+	size_t      tag_name_len;
+	const char *attrs;             /* group 3: may be NULL            */
+	size_t      attrs_len;
+	bool        is_self_closing;   /* group 4: ends with '/>'         */
+	const char *trailing_text;     /* group 5: [^<]* after '>'       */
+	size_t      trailing_text_len;
+} HtmlTagComponents;
+
+static inline bool is_alpha_ci_char(unsigned char c) {
+	return ((c | 0x20) - 'a') <= ('z' - 'a');
+}
+
+/**
+ * Forward-scan implementation of the HTML tag pattern described in
+ * proposals/callback_parser_regexes.md. `buf` points to the first byte
+ * after the '<'. `len` covers everything up to and including trailing
+ * text. On success, fills `out` with views into `buf` (no allocations)
+ * and returns true. Returns false on mismatch.
+ */
+bool html_tag_parse(const char        *buf,
+					size_t             len,
+					HtmlTagComponents *out) {
+	if(!buf || !out) return false;
+
+	/* init */
+	out->is_closing = false;
+	out->tag_name = NULL; out->tag_name_len = 0;
+	out->attrs = NULL; out->attrs_len = 0;
+	out->is_self_closing = false;
+	out->trailing_text = NULL; out->trailing_text_len = 0;
+
+	size_t pos = 0;
+	/* 1. optional leading '/' */
+	if(pos < len && buf[pos] == '/') { out->is_closing = true; pos++; }
+
+	/* 2. tag name: first byte must be ASCII letter */
+	if(pos >= len) return false;
+	unsigned char c0 = (unsigned char)buf[pos];
+	if(!is_alpha_ci_char(c0)) return false;
+	size_t name_start = pos;
+	pos++;
+	while(pos < len) {
+		unsigned char cc = (unsigned char)buf[pos];
+		if(cc == '>' || cc == '/' || cc == ' ' || cc == '\t' || cc == '\r' || cc == '\n' || cc == '\v' || cc == '\f') break;
+		pos++;
+	}
+	size_t name_len = pos - name_start;
+	if(name_len == 0) return false;
+	out->tag_name = buf + name_start;
+	out->tag_name_len = name_len;
+
+	/* 3. attrs: start if whitespace OR '/' not followed by '>' */
+	size_t attrs_start = pos;
+	bool has_attrs = false;
+	if(pos < len) {
+		unsigned char cc = (unsigned char)buf[pos];
+		bool start_attrs = false;
+		if(cc == ' ' || cc == '\t' || cc == '\r' || cc == '\n' || cc == '\v' || cc == '\f') start_attrs = true;
+		else if(cc == '/') {
+			if(pos + 1 < len && buf[pos + 1] != '>') start_attrs = true;
+		}
+		if(start_attrs) {
+			has_attrs = true;
+			size_t p = pos;
+			while(p < len) {
+				if(buf[p] == '>') break;
+				if(buf[p] == '/' && p + 1 < len && buf[p + 1] == '>') break;
+				p++;
+			}
+			pos = p;
+		}
+	}
+	if(has_attrs) {
+		out->attrs = buf + attrs_start;
+		out->attrs_len = pos - attrs_start;
+	} else {
+		out->attrs = NULL;
+		out->attrs_len = 0;
+	}
+
+	/* 4. closing: '/>' or '>' */
+	if(pos >= len) return false;
+	if(buf[pos] == '/' && pos + 1 < len && buf[pos + 1] == '>') {
+		out->is_self_closing = true;
+		pos += 2;
+	} else if(buf[pos] == '>') {
+		out->is_self_closing = false;
+		pos += 1;
+	} else {
+		return false;
+	}
+
+	/* 5. trailing text must not contain '<' */
+	if(pos > len) return false;
+	out->trailing_text = buf + pos;
+	out->trailing_text_len = len - pos;
+	if(out->trailing_text_len > 0) {
+		const char needle = '<';
+		const char *found = sz_find_byte(out->trailing_text, out->trailing_text_len, &needle);
+		if(found) return false;
+	}
+
+	return true;
+}
+
+
 /* Helper: whether a tag name (lowercase) is in any of cfg->html lists */
 static bool html_tag_allowed(const ParserConfig *cfg, const char *lcname) {
 	if(!cfg || !lcname) return false;
@@ -253,10 +363,7 @@ static void accum_rollback_shallow(Accum *accum, size_t saved_count) {
 void parse_html(ThreadBuf *tb, const ParserConfig *cfg, Accum *accum) {
 	if(!tb || !tb->buf) return;
 
-	/* Use process-wide cached HTML pattern */
-	pcre2_code *re= pcre_cache_get(HTML_PATTERN, PCRE2_CASELESS | PCRE2_UTF);
-	pcre2_match_data *md= pcre2_match_data_create_from_pattern(re, NULL);
-	if(!md) return;
+	/* HTML tag matching implemented via forward scan (html_tag_parse) */
 
 	ThreadBuf *out_tb = wiki_thread_buf_acquire_scratch();
 	if(!out_tb) {
@@ -297,10 +404,19 @@ void parse_html(ThreadBuf *tb, const ParserConfig *cfg, Accum *accum) {
 		const char *next_lt= sz_find_byte(seg_start, seg_rem, &needle_lt2);
 		size_t seg_len= next_lt ? (size_t)(next_lt - seg_start) : seg_rem;
 
-		/* Try to match the HTML tag pattern against the segment */
-		int rc= pcre2_match(re, (PCRE2_SPTR)seg_start, seg_len, 0, 0, md, NULL);
-			if(rc <= 0) {
-				/* No match — emit literally: '<' + segment */
+		/* Try to match the HTML tag pattern against the segment using fast scanner */
+		HtmlTagComponents htc;
+		if(!html_tag_parse(seg_start, seg_len, &htc)) {
+			/* No match — emit literally: '<' + segment */
+			ENSURE_OUT_CAP(1 + seg_len + 1);
+			out_tb->buf[out_tb->len++]= '<';
+			if(seg_len > 0) {
+				memcpy(out_tb->buf + out_tb->len, seg_start, seg_len);
+				out_tb->len+= seg_len;
+			}
+		} else {
+			/* Have a candidate tag name */
+			if(!htc.tag_name || htc.tag_name_len == 0) {
 				ENSURE_OUT_CAP(1 + seg_len + 1);
 				out_tb->buf[out_tb->len++]= '<';
 				if(seg_len > 0) {
@@ -308,23 +424,8 @@ void parse_html(ThreadBuf *tb, const ParserConfig *cfg, Accum *accum) {
 					out_tb->len+= seg_len;
 				}
 			} else {
-			PCRE2_SIZE *ov= pcre2_get_ovector_pointer(md);
-			/* ov mapping: [0]=match start, [1]=match end, [2]=g1start, [3]=g1end, [4]=g2start (name), [5]=g2end, [6]=g3start (params), [7]=g3end, [8]=g4start (brace), [9]=g4end, [10]=g5start (rest), [11]=g5end */
-
-			bool has_name= (ov[4] != PCRE2_UNSET && ov[5] != PCRE2_UNSET && ov[5] > ov[4]);
-			if(!has_name) {
-				/* fallback — emit raw */
-				ENSURE_OUT_CAP(1 + seg_len + 1);
-				out_tb->buf[out_tb->len++]= '<';
-				if(seg_len > 0) {
-					memcpy(out_tb->buf + out_tb->len, seg_start, seg_len);
-					out_tb->len+= seg_len;
-				}
-			} else {
-				const char *name_ptr= seg_start + ov[4];
-				size_t name_len= (size_t)(ov[5] - ov[4]);
-				char *lcname= str_trim_lc(name_ptr, name_len);
-				if(!lcname) { /* fallback */
+				char *lcname = str_trim_lc(htc.tag_name, htc.tag_name_len);
+				if(!lcname) {
 					ENSURE_OUT_CAP(1 + seg_len + 1);
 					out_tb->buf[out_tb->len++]= '<';
 					if(seg_len > 0) {
@@ -332,42 +433,35 @@ void parse_html(ThreadBuf *tb, const ParserConfig *cfg, Accum *accum) {
 						out_tb->len+= seg_len;
 					}
 				} else {
-						if(!html_tag_allowed(cfg, lcname)) {
-							/* unknown tag — emit raw */
-							ENSURE_OUT_CAP(1 + seg_len + 1);
-							out_tb->buf[out_tb->len++]= '<';
-							if(seg_len > 0) {
-								memcpy(out_tb->buf + out_tb->len, seg_start, seg_len);
-								out_tb->len+= seg_len;
-							}
-							free(lcname);
-						} else {
+					if(!html_tag_allowed(cfg, lcname)) {
+						/* unknown tag — emit raw */
+						ENSURE_OUT_CAP(1 + seg_len + 1);
+						out_tb->buf[out_tb->len++]= '<';
+						if(seg_len > 0) {
+							memcpy(out_tb->buf + out_tb->len, seg_start, seg_len);
+							out_tb->len+= seg_len;
+						}
+						free(lcname);
+					} else {
 						/* Allowed tag — build attrs token then html token and emit sentinel */
-						size_t saved_accum= accum->count;
+						size_t saved_accum = accum->count;
 
-						/* params group (may be unset) */
-						const char *attr_ptr= NULL;
-						size_t attr_len= 0;
-						if(ov[6] != PCRE2_UNSET && ov[7] != PCRE2_UNSET && ov[7] > ov[6]) {
-							attr_ptr= seg_start + ov[6];
-							attr_len= (size_t)(ov[7] - ov[6]);
-						}
+						const char *attr_ptr = htc.attrs;
+						size_t attr_len = htc.attrs_len;
 
-						Token *attrs= build_html_attrs(lcname, attr_ptr, attr_len, accum);
+						Token *attrs = build_html_attrs(lcname, attr_ptr, attr_len, accum);
 
-						/* Special-case: meta/link require itemprop+content/href.
-                         * Mirror JS by checking parsed attrs, not raw substring matches. */
-						bool reject= false;
+						/* Special-case: meta/link require itemprop+content/href. */
+						bool reject = false;
 						if(strcmp(lcname, "meta") == 0 || strcmp(lcname, "link") == 0) {
-							bool has_itemprop= html_attrs_has_attr(attrs, "itemprop");
-							bool has_required= strcmp(lcname, "meta") == 0
-																 ? html_attrs_has_attr(attrs, "content")
-																 : html_attrs_has_attr(attrs, "href");
-							reject= !(has_itemprop && has_required);
+							bool has_itemprop = html_attrs_has_attr(attrs, "itemprop");
+							bool has_required = strcmp(lcname, "meta") == 0
+												? html_attrs_has_attr(attrs, "content")
+												: html_attrs_has_attr(attrs, "href");
+							reject = !(has_itemprop && has_required);
 						}
 
-							if(reject) {
-							/* Revert accumulator and free dropped tokens. */
+						if(reject) {
 							accum_rollback_shallow(accum, saved_accum);
 							ENSURE_OUT_CAP(1 + seg_len + 1);
 							out_tb->buf[out_tb->len++]= '<';
@@ -377,22 +471,12 @@ void parse_html(ThreadBuf *tb, const ParserConfig *cfg, Accum *accum) {
 							}
 							free(lcname);
 						} else {
-							/* compute rest text (group 5) */
-							const char *rest_ptr= NULL;
-							size_t rest_len= 0;
-							if(ov[10] != PCRE2_UNSET && ov[11] != PCRE2_UNSET && ov[11] > ov[10]) {
-								rest_ptr= seg_start + ov[10];
-								rest_len= (size_t)(ov[11] - ov[10]);
-							}
+							const char *rest_ptr = htc.trailing_text;
+							size_t rest_len = htc.trailing_text_len;
 
-							/* Message: create sentinel that will point to the html token index (next in accum)
-                             * We must use the index that will be assigned to the HtmlToken after creation. In the JS
-                             * implementation attrs is pushed first, then sentinel using accum.length, then HtmlToken is
-                             * constructed (pushed). To match that ordering, we use accum->count as the index for the
-                             * upcoming HtmlToken. */
-							size_t html_idx= accum->count; /* HtmlToken will be at this index */
+							size_t html_idx = accum->count; /* HtmlToken will be at this index */
 							char sent_buf[64];
-							size_t sent_len= 0;
+							size_t sent_len = 0;
 							work_str_sentinel(html_idx, 'x', sent_buf, &sent_len);
 
 							ENSURE_OUT_CAP(sent_len + rest_len + 1);
@@ -404,33 +488,21 @@ void parse_html(ThreadBuf *tb, const ParserConfig *cfg, Accum *accum) {
 							}
 
 							/* Now create HtmlToken and push it (matching JS order) */
-							Token *ht= token_new(TOKEN_HTML, "html");
+							Token *ht = token_new(TOKEN_HTML, "html");
 							if(ht) {
-								ht->name= strdup(lcname); /* lowercase for JSON/type lookup */
-								/* orig_tag: original-case name for toString round-trip (mirrors JS this.tag) */
-								char *orig_tag= malloc(name_len + 1);
+								ht->name = strdup(lcname);
+								/* orig_tag: original-case name for toString round-trip */
+								char *orig_tag = malloc(htc.tag_name_len + 1);
 								if(orig_tag) {
-									memcpy(orig_tag, name_ptr, name_len);
-									orig_tag[name_len]= '\0';
+									memcpy(orig_tag, htc.tag_name, htc.tag_name_len);
+									orig_tag[htc.tag_name_len] = '\0';
 								}
-								ht->data.html.orig_tag= orig_tag;
-								/* closing flag: group1 (slash) present? */
-								if(ov[2] != PCRE2_UNSET && ov[3] != PCRE2_UNSET && ov[3] > ov[2])
-									ht->data.html.closing= true;
-								else
-									ht->data.html.closing= false;
-								/* self-closing flag: brace group contains '/>' at start */
-								if(ov[8] != PCRE2_UNSET && ov[9] != PCRE2_UNSET && ov[9] > ov[8]) {
-									const char *brace_ptr= seg_start + ov[8];
-									size_t brace_len= (size_t)(ov[9] - ov[8]);
-									if(brace_len >= 2 && brace_ptr[0] == '/' && brace_ptr[1] == '>')
-										ht->data.html.self_closing= true;
-									else
-										ht->data.html.self_closing= false;
-								} else
-									ht->data.html.self_closing= false;
+								ht->data.html.orig_tag = orig_tag;
+								/* closing flag: leading slash present? */
+								ht->data.html.closing = htc.is_closing;
+								/* self-closing flag */
+								ht->data.html.self_closing = htc.is_self_closing;
 
-								/* Attach attrs token as child (attrs is already pushed to accum) */
 								if(attrs) token_append_child(ht, attrs);
 								accum_push(accum, ht);
 							}
@@ -450,5 +522,5 @@ void parse_html(ThreadBuf *tb, const ParserConfig *cfg, Accum *accum) {
 	wiki_thread_buf_set(tb, out_tb->buf, out_tb->len);
 	wiki_thread_buf_release_scratch(out_tb);
 
-	pcre2_match_data_free(md);
+	(void)0;
 }
