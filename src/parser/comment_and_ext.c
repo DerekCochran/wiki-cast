@@ -10,6 +10,7 @@
 #include "util/string_util.h"
 #include "util/thread_buffer.h"
 #include "util/pcre_cache.h"
+#include "util/callback_parser.h"
 #include <stringzilla/stringzilla.h>
 #include <assert.h>
 #include <ctype.h>
@@ -1258,9 +1259,43 @@ static pcre2_code *compile_ext_regex(const ParserConfig *cfg, bool include_only)
 	return pcre_cache_get(*target_pat, PCRE2_CASELESS | PCRE2_UTF | PCRE2_UCP);
 }
 
-static pcre2_code *compile_nowiki_regex(void) {
-	const char *pattern= "<nowiki>[\\s\\S]*?<\\/nowiki>";
-	return pcre_cache_get(pattern, PCRE2_CASELESS | PCRE2_UTF | PCRE2_UCP);
+
+static const ParserRules rule_nowiki_paired = {
+	.open_delim       = "<nowiki>",
+	.open_len         = 8,
+	.close_delim      = "</nowiki>",
+	.close_len        = 9,
+	.match_mode       = PARSER_MATCH_FIRST_CLOSE,
+	.case_insensitive = true,
+};
+
+static const ParserRules rule_nowiki_sc = {
+	.open_delim              = "<nowiki",
+	.open_len                = 7,
+	.open_terminator         = '>',
+	.open_attr_forbidden     = "<",
+	.open_attr_forbidden_len = 1,
+	.self_closing_marker     = "/",
+	.self_closing_marker_len = 1,
+	.case_insensitive        = true,
+};
+
+typedef struct {
+	TextStack *st;
+	ThreadBuf *out;
+} NowikiScanCtx;
+
+static void nowiki_scan_cb(const char *segment, size_t len,
+						   ParserSegmentKind kind, void *user_data) {
+	NowikiScanCtx *ctx = (NowikiScanCtx *)user_data;
+	if (kind == PARSER_SEG_TEXT) {
+		wiki_thread_buf_append(ctx->out, (sz_string_view_t){ .start = segment, .length = len });
+		return;
+	}
+	/* matched inner or self-closing nowiki: stash and emit numeric placeholder */
+	text_stack_push(ctx->st, segment, len);
+	wiki_thread_buf_reserve(ctx->out, ctx->out->len + 32);
+	append_numeric_placeholder(ctx->out->buf, &ctx->out->len, ctx->st->count - 1);
 }
 
 static pcre2_code *compile_translate_regex(void) {
@@ -1269,59 +1304,47 @@ static pcre2_code *compile_translate_regex(void) {
 }
 
 static void apply_translate_prepass(ThreadBuf *tb, const ParserConfig *cfg, Accum *accum) {
-	pcre2_code *re_nowiki = compile_nowiki_regex();
-	if(!re_nowiki) return;
 	pcre2_code *re_translate = compile_translate_regex();
-	pcre2_match_data *md= pcre2_match_data_create_from_pattern(re_nowiki, NULL);
-	if(!md) return;
+	if(!re_translate) return;
 
 	TextStack st;
 	text_stack_init(&st);
 
+	/* Pass 1: handle paired <nowiki>...</nowiki> */
 	ThreadBuf *out_tb = wiki_thread_buf_acquire_scratch();
 	if(!out_tb) { log_fatal("thread_buffer: failed to acquire scratch in apply_translate_prepass (pass1)"); abort(); }
 	wiki_thread_buf_reserve(out_tb, tb->len * 2 + 64);
-	size_t search_at= 0;
+	out_tb->len = 0;
 
-#define ENSURE_PRE_CAP(tb, need) do { wiki_thread_buf_reserve((tb), (tb)->len + (need)); } while(0)
+	NowikiScanCtx ctx = { .st = &st, .out = out_tb };
+	parser_scan(tb->buf, tb->len, &rule_nowiki_paired, nowiki_scan_cb, &ctx);
 
-	while(search_at <= tb->len) {
-		int rc= pcre2_match(re_nowiki, (PCRE2_SPTR)tb->buf, tb->len, search_at, 0, md, NULL);
-		if(rc <= 0) {
-			size_t rest= tb->len - search_at;
-			ENSURE_PRE_CAP(out_tb, rest + 1);
-			memcpy(out_tb->buf + out_tb->len, tb->buf + search_at, rest);
-			out_tb->len += rest;
-			break;
-		}
-		PCRE2_SIZE *ov= pcre2_get_ovector_pointer(md);
-		size_t ms= ov[0], me= ov[1];
-		size_t before= ms - search_at;
-		ENSURE_PRE_CAP(out_tb, before + 32);
-		memcpy(out_tb->buf + out_tb->len, tb->buf + search_at, before);
-		out_tb->len += before;
-
-		text_stack_push(&st, tb->buf + ms, me - ms);
-		append_numeric_placeholder(out_tb->buf, &out_tb->len, st.count - 1);
-
-		search_at= me;
-		if(me == ms) search_at++;
-	}
 	out_tb->buf[out_tb->len]= '\0';
 	wiki_thread_buf_set(tb, out_tb->buf, out_tb->len);
 	wiki_thread_buf_release_scratch(out_tb);
 
-	pcre2_match_data_free(md);
-	md= pcre2_match_data_create_from_pattern(re_translate, NULL);
+	/* Pass 2: handle self-closing <nowiki ... /> forms */
+	out_tb = wiki_thread_buf_acquire_scratch();
+	if(!out_tb) { log_fatal("thread_buffer: failed to acquire scratch in apply_translate_prepass (pass2)"); abort(); }
+	wiki_thread_buf_reserve(out_tb, tb->len * 2 + 64);
+	out_tb->len = 0;
+
+	ctx.out = out_tb;
+	parser_scan(tb->buf, tb->len, &rule_nowiki_sc, nowiki_scan_cb, &ctx);
+
+	out_tb->buf[out_tb->len]= '\0';
+	wiki_thread_buf_set(tb, out_tb->buf, out_tb->len);
+	wiki_thread_buf_release_scratch(out_tb);
+
+	pcre2_match_data *md = pcre2_match_data_create_from_pattern(re_translate, NULL);
 	if(!md) {
 		text_stack_free(&st);
 		return;
 	}
 
-	out_tb = wiki_thread_buf_acquire_scratch();
-	if(!out_tb) { log_fatal("thread_buffer: failed to acquire scratch in apply_translate_prepass (pass2)"); abort(); }
-	wiki_thread_buf_reserve(out_tb, tb->len * 2 + 64);
-	search_at= 0;
+#define ENSURE_PRE_CAP(tb, need) do { wiki_thread_buf_reserve((tb), (tb)->len + (need)); } while(0)
+
+	size_t search_at = 0;
 
 	while(search_at <= tb->len) {
 		int rc= pcre2_match(re_translate, (PCRE2_SPTR)tb->buf, tb->len, search_at, 0, md, NULL);
