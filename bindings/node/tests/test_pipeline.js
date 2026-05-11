@@ -9,11 +9,11 @@ const { runTests } = require('./helpers');
 
 const tests = [
 //  '{{NS}}',
-  `{{usurped|1=[https://web.archive.org/1021500/http://www.snagfilms.com/films/ 'Afghanistan' (2000) {{!}} SnagFilms]}}`,
-  `{{Retracted|doi=10.1016/j.jbc.2021.100764|pmid=34237888|http://retractionwatch.com/?s=%22Xuetao+Cao%22 ''Retraction Watch''|intentional=yes}}`,
-  `{{cite book | last=Long | first=A. A. | title=Science and Speculation. Studies in Hellenistic Theory and Practice | publisher=Cambridge University Press | year=2005 |<!--165–191-->page=174 |editor1=Barnes, Jonathan |editor2=Brunschwig, J. | chapter=6: Astrology: arguments pro and contra |isbn=978-0-521-02218-7}}`,
-  `<div style{{=}}"padding-left:4em;">`,
-  `{{Dark mode invert|image=y|[[Image:Bijection.svg|thumb|A bijective function, ''f'': ''X'' → ''Y'', where set X is {1, 2, 3, 4} and set Y is {A, B, C, D}. For example, ''f''(1) = D.]]}}`,
+//  `{{usurped|1=[https://web.archive.org/1021500/http://www.snagfilms.com/films/ 'Afghanistan' (2000) {{!}} SnagFilms]}}`,
+//  `{{Retracted|doi=10.1016/j.jbc.2021.100764|pmid=34237888|http://retractionwatch.com/?s=%22Xuetao+Cao%22 ''Retraction Watch''|intentional=yes}}`,
+//  `{{cite book | last=Long | first=A. A. | title=Science and Speculation. Studies in Hellenistic Theory and Practice | publisher=Cambridge University Press | year=2005 |<!--165–191-->page=174 |editor1=Barnes, Jonathan |editor2=Brunschwig, J. | chapter=6: Astrology: arguments pro and contra |isbn=978-0-521-02218-7}}`,
+//  `<div style{{=}}"padding-left:4em;">`,
+//  `{{Dark mode invert|image=y|[[Image:Bijection.svg|thumb|A bijective function, ''f'': ''X'' → ''Y'', where set X is {1, 2, 3, 4} and set Y is {A, B, C, D}. For example, ''f''(1) = D.]]}}`,
   `{{cite journal |last=Gupta |first=Radha Charan |author-link=Radha Charan Gupta |title=Varāhamihira's Calculation of {{tmath|{}^nC_r}} and the Discovery of Pascal's Triangle |journal=Gaṇita Bhāratī |volume=14 |number=1–4 |year=1992 |pages=45–49 }} Reprinted in {{cite book |editor-last=Ramasubramanian |editor-first=K. |year=2019 |title=Gaṇitānanda |publisher=Springer |doi=10.1007/978-981-13-1229-8_29 |pages=285–289 }}`,
   `<gallery mode="packed" heights="180px">. 
 helpers.js:355

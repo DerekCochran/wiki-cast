@@ -280,14 +280,6 @@ static void stage_json_write_text_segments(const char *s, size_t len,
 			*first= false;
 			stage_json_write_text(s + start, pos - start, fp);
 		}
-
-		if(pos < len && (unsigned char)s[pos] == '\0') {
-			/* Preserve invalid or unresolved NUL bytes as text nodes. */
-			if(!*first) fputc(',', fp);
-			*first= false;
-			stage_json_write_text(s + pos, 1, fp);
-			pos++;
-		}
 	}
 }
 
