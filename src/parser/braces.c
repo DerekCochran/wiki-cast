@@ -1527,6 +1527,264 @@ static void parse_simple_args(ThreadBuf *tb, const ParserConfig *cfg, Accum *acc
 	parser_scan_until_stable(tb, braces_run_pass, &p, braces_get_buf, braces_get_len);
 }
 
+/* ── ParserRules for the outer fixpoint loop in parse_braces ─────────────── */
+
+static const char s_main_pat_dbl_bracket[]   = { '[', '[' };
+static const char s_main_pat_nl_then_nul[]   = { '\n', '\0' };
+
+static const char *const s_main_tpl_patterns[]      = { s_main_pat_dbl_bracket, s_main_pat_nl_then_nul };
+static const size_t      s_main_tpl_pattern_lens[]  = { 2, 2 };
+
+static const char *const s_main_link_patterns[]     = { s_main_pat_nl_then_nul };
+static const size_t      s_main_link_pattern_lens[] = { 2 };
+
+/*
+ * {{...}} template alternation 1 – JS parity for (?<!\{)\{\{inner\}\}:
+ * no_preceding_byte='{' implements the lookbehind; no lookahead guard.
+ * inner = [^\n{}\[]|\[(?!\[)|\n(?!\x00)
+ */
+static const ParserRules s_rule_main_template_1 = {
+.open_delim                = "{{",
+.open_len                  = 2,
+.close_delim               = "}}",
+.close_len                 = 2,
+.match_mode                = PARSER_MATCH_FIRST_CLOSE,
+.prohibited_chars          = "{}",
+.prohibited_chars_len      = 2,
+.prohibited_patterns       = s_main_tpl_patterns,
+.prohibited_pattern_lens   = s_main_tpl_pattern_lens,
+.prohibited_patterns_count = 2,
+.no_preceding_byte         = '{',
+.no_following_byte         = 0,
+};
+
+/*
+ * {{...}} template alternation 2 – JS parity for \{\{inner\}\}(?!\}):
+ * no_following_byte='}' implements the lookahead; no lookbehind guard.
+ * Catches templates preceded by '{' that alternation 1 skipped.
+ */
+static const ParserRules s_rule_main_template_2 = {
+.open_delim                = "{{",
+.open_len                  = 2,
+.close_delim               = "}}",
+.close_len                 = 2,
+.match_mode                = PARSER_MATCH_FIRST_CLOSE,
+.prohibited_chars          = "{}",
+.prohibited_chars_len      = 2,
+.prohibited_patterns       = s_main_tpl_patterns,
+.prohibited_pattern_lens   = s_main_tpl_pattern_lens,
+.prohibited_patterns_count = 2,
+.no_preceding_byte         = 0,
+.no_following_byte         = '}',
+};
+
+/*
+ * [[...]] wikilink – JS parity for alternation 3 of reReplace.
+ * Parked in link_stack; not processed at this stage.
+ * inner = [^\n\[\]\{]|\n(?!\x00)
+ */
+static const ParserRules s_rule_main_wikilink = {
+.open_delim                = "[[",
+.open_len                  = 2,
+.close_delim               = "]]",
+.close_len                 = 2,
+.match_mode                = PARSER_MATCH_FIRST_CLOSE,
+.prohibited_chars          = "[]{",
+.prohibited_chars_len      = 3,
+.prohibited_patterns       = s_main_link_patterns,
+.prohibited_pattern_lens   = s_main_link_pattern_lens,
+.prohibited_patterns_count = 1,
+};
+
+/*
+ * -{...}- converter – JS parity for alternation 4 of reReplace.
+ * Parked in link_stack; not processed at this stage.
+ * inner = [^\n{}\[]|\[(?!\[)|\n(?!\x00) – same inner as template.
+ */
+static const ParserRules s_rule_main_converter = {
+.open_delim                = "-{",
+.open_len                  = 2,
+.close_delim               = "}-",
+.close_len                 = 2,
+.match_mode                = PARSER_MATCH_FIRST_CLOSE,
+.prohibited_chars          = "{}",
+.prohibited_chars_len      = 2,
+.prohibited_patterns       = s_main_tpl_patterns,
+.prohibited_pattern_lens   = s_main_tpl_pattern_lens,
+.prohibited_patterns_count = 2,
+};
+
+/* ── Callbacks for the outer fixpoint loop ─────────────────────────────────── */
+
+typedef struct {
+const ParserConfig *cfg;
+Accum              *accum;
+ThreadBuf          *out;
+char            ***link_stack;       /* &(char **) – one extra level for realloc */
+size_t           **link_stack_lens;  /* &(size_t *) */
+size_t            *link_count;
+size_t            *link_cap;
+const ParserRules  *active_rule;
+} MainBracesCtx;
+
+/* Restore any nested link-stack placeholders in text[0..len), push to
+ * link_stack, and emit the numeric placeholder \0<N>\x7F into ctx->out. */
+static void main_braces_push_link_stack(MainBracesCtx *ctx,
+                                        const char *text, size_t text_len) {
+size_t restored_len = 0;
+char *restored = str_restore(text, text_len,
+                             (const char **)*ctx->link_stack,
+                             *ctx->link_count,
+                             *ctx->link_stack_lens,
+                             &restored_len);
+if (*ctx->link_count >= *ctx->link_cap) {
+*ctx->link_cap *= 2;
+*ctx->link_stack      = (char **)realloc(*ctx->link_stack,      *ctx->link_cap * sizeof(char *));
+*ctx->link_stack_lens = (size_t *)realloc(*ctx->link_stack_lens, *ctx->link_cap * sizeof(size_t));
+assert(*ctx->link_stack && *ctx->link_stack_lens);
+}
+(*ctx->link_stack)[*ctx->link_count]     = restored;
+(*ctx->link_stack_lens)[*ctx->link_count] = restored_len;
+size_t link_idx = (*ctx->link_count)++;
+
+char mark[64];
+int n = snprintf(mark + 1, sizeof(mark) - 2, "%zu", link_idx);
+mark[0] = '\0';
+mark[1 + n] = '\x7F';
+size_t mlen = (size_t)(n + 2);
+wiki_thread_buf_append(ctx->out, (sz_string_view_t){ .start = mark, .length = mlen });
+}
+
+/* Callback for {{...}} template matches: process inner via build_from_inner,
+ * or park in link_stack if build_from_inner rejects it. */
+static void main_braces_template_cb(const char *segment, size_t len,
+                                    ParserSegmentKind kind, void *user_data) {
+MainBracesCtx *ctx = (MainBracesCtx *)user_data;
+if (kind == PARSER_SEG_TEXT) {
+wiki_thread_buf_append(ctx->out, (sz_string_view_t){ .start = segment, .length = len });
+return;
+}
+/* PARSER_SEG_INNER: segment is the inner content of {{ ... }} */
+const char *inner     = segment;
+size_t      inner_len = len;
+
+Token *tok = build_from_inner(inner, inner_len,
+                              false,
+                              *ctx->link_stack, *ctx->link_count,
+                              *ctx->link_stack_lens,
+                              ctx->cfg, ctx->accum);
+if (tok) {
+size_t tok_idx = ctx->accum->count - 1;
+char sym = 't';
+if (inner_len > 0) {
+size_t p0_end = 0;
+while (p0_end < inner_len && inner[p0_end] != '|') p0_end++;
+sym = braces_get_symbol(inner, p0_end, ctx->cfg, NULL);
+}
+char sent[64];
+size_t slen;
+work_str_sentinel(tok_idx, sym, sent, &slen);
+log_debug_env_token("WTC_DEBUG_STAGE_1", NULL,
+"[C parseBraces] wrote sentinel idx=%zu type=%c slen=%zu",
+tok_idx, sym, slen);
+wiki_thread_buf_append(ctx->out, (sz_string_view_t){ .start = sent, .length = slen });
+} else {
+/* Park the full {{inner}} text in link_stack and emit placeholder. */
+size_t full_len = 2 + inner_len + 2;
+char *tmp = malloc(full_len + 1);
+assert(tmp);
+memcpy(tmp,                 "{{", 2);
+memcpy(tmp + 2,             inner, inner_len);
+memcpy(tmp + 2 + inner_len, "}}", 2);
+tmp[full_len] = '\0';
+main_braces_push_link_stack(ctx, tmp, full_len);
+free(tmp);
+}
+}
+
+/* Callback for [[...]] and -{...}- matches: park the full match in link_stack. */
+static void main_braces_park_cb(const char *segment, size_t len,
+                                ParserSegmentKind kind, void *user_data) {
+MainBracesCtx *ctx = (MainBracesCtx *)user_data;
+if (kind == PARSER_SEG_TEXT) {
+wiki_thread_buf_append(ctx->out, (sz_string_view_t){ .start = segment, .length = len });
+return;
+}
+/* PARSER_SEG_INNER: reconstruct open+inner+close, park, emit placeholder. */
+const ParserRules *r = ctx->active_rule;
+size_t full_len = r->open_len + len + r->close_len;
+char *tmp = malloc(full_len + 1);
+assert(tmp);
+memcpy(tmp,                       r->open_delim,  r->open_len);
+memcpy(tmp + r->open_len,         segment,        len);
+memcpy(tmp + r->open_len + len,   r->close_delim, r->close_len);
+tmp[full_len] = '\0';
+main_braces_push_link_stack(ctx, tmp, full_len);
+free(tmp);
+}
+
+typedef struct {
+ThreadBuf          *tb;
+const ParserConfig *cfg;
+Accum              *accum;
+char            ***link_stack;
+size_t           **link_stack_lens;
+size_t            *link_count;
+size_t            *link_cap;
+} MainBracesPassArgs;
+
+/*
+ * One pass of the outer fixpoint loop.
+ * Runs four sequential sub-scans (two template alternations, then wikilink,
+ * then converter parking). Called by parser_scan_until_stable until stable.
+ */
+static void main_braces_run_pass(void *user_data) {
+MainBracesPassArgs *args = (MainBracesPassArgs *)user_data;
+ThreadBuf *out = wiki_thread_buf_acquire_scratch();
+assert(out);
+
+MainBracesCtx ctx = {
+.cfg             = args->cfg,
+.accum           = args->accum,
+.out             = out,
+.link_stack      = args->link_stack,
+.link_stack_lens = args->link_stack_lens,
+.link_count      = args->link_count,
+.link_cap        = args->link_cap,
+};
+
+/* Sub-pass 1a: {{...}} not preceded by { (alternation 1). */
+out->len = 0;
+ctx.active_rule = &s_rule_main_template_1;
+parser_scan(args->tb->buf, args->tb->len, &s_rule_main_template_1,
+            main_braces_template_cb, &ctx);
+wiki_thread_buf_set(args->tb, out->buf, out->len);
+
+/* Sub-pass 1b: {{...}} not followed by } (alternation 2). */
+out->len = 0;
+ctx.active_rule = &s_rule_main_template_2;
+parser_scan(args->tb->buf, args->tb->len, &s_rule_main_template_2,
+            main_braces_template_cb, &ctx);
+wiki_thread_buf_set(args->tb, out->buf, out->len);
+
+/* Sub-pass 2: park [[...]] wikilinks. */
+out->len = 0;
+ctx.active_rule = &s_rule_main_wikilink;
+parser_scan(args->tb->buf, args->tb->len, &s_rule_main_wikilink,
+            main_braces_park_cb, &ctx);
+wiki_thread_buf_set(args->tb, out->buf, out->len);
+
+/* Sub-pass 3: park -{...}- converters. */
+out->len = 0;
+ctx.active_rule = &s_rule_main_converter;
+parser_scan(args->tb->buf, args->tb->len, &s_rule_main_converter,
+            main_braces_park_cb, &ctx);
+wiki_thread_buf_set(args->tb, out->buf, out->len);
+
+wiki_thread_buf_release_scratch(out);
+}
+
+
 /* Main parse function */
 void parse_braces(ThreadBuf *tb, const ParserConfig *cfg, Accum *accum) {
 	if(!tb || !tb->buf) return;
@@ -1534,20 +1792,6 @@ void parse_braces(ThreadBuf *tb, const ParserConfig *cfg, Accum *accum) {
 	/* First, replace simple innermost triple-brace args. */
 	parse_simple_args(tb, cfg, accum);
 
-	/*
-     * JS parity for reReplace in parser/braces.js:
-     *   /(?<!\{)\{\{((?:[^\n{}[]|\[(?!\[)|\n(?![=\0]))*)\}\}
-     *   |\{\{((?:[^\n{}[]|\[(?!\[)|\n(?![=\0]))*)\}\}(?!\})
-     *   |\[\[(?:[^\n[\]{]|\n(?![=\0]))*\]\]
-     *   |-\{(?:[^\n{}[]|\[(?!\[)|\n(?![=\0]))*\}-/gu
-     */
-	const char *pattern_with_lb=
-	"(?<!\\{)\\{\\{((?:[^\\n{}\\[]|\\[(?!\\[)|\\n(?![\\x00]))*)\\}\\}"
-	"|\\{\\{((?:[^\\n{}\\[]|\\[(?!\\[)|\\n(?![\\x00]))*)\\}\\}(?!\\})"
-	"|\\[\\[(?:[^\\n\\[\\]\\{]|\\n(?![\\x00]))*\\]\\]"
-	"|-\\{(?:[^\\n{}\\[]|\\[(?!\\[)|\\n(?![\\x00]))*\\}-";
-
-	pcre2_code *re = pcre_cache_get(pattern_with_lb, PCRE2_UTF);
 
 	/* linkStack: temporarily holds [[...]] and -{...}- text so brace matching
      * can proceed without those patterns interfering.  Stores the FULL matched
@@ -1559,226 +1803,18 @@ void parse_braces(ThreadBuf *tb, const ParserConfig *cfg, Accum *accum) {
 	size_t *link_stack_lens= malloc(link_cap * sizeof(size_t));
 	assert(link_stack && link_stack_lens);
 
-	char *prev_buf= NULL;
-	size_t prev_buf_len= 0;
-	int _dbg_pass= 0;
-
-	while(1) {
-		_dbg_pass++;
-		log_debug_env_token("WTC_DEBUG_STAGE_1", NULL,
-			"[C parseBraces] pre-pass iter %d, buf_len=%zu, buf=%.200s",
-			_dbg_pass, tb->len, tb->buf);
-		pcre2_match_data *md= pcre2_match_data_create_from_pattern(re, NULL);
-		if(!md) {
-			free(link_stack);
-			free(link_stack_lens);
-			return;
-		}
-
-		size_t out_cap= tb->len * 2 + 64;
-		char *out_buf= malloc(out_cap);
-		assert(out_buf);
-		size_t out_len= 0;
-		size_t search_at= 0;
-		char *match_subject= braces_make_match_subject(tb->buf, tb->len);
-		const char *subject= match_subject ? match_subject : tb->buf;
-
-#define ENSURE_CAP(need)                  \
-	do {                                    \
-		while(out_len + (need) >= out_cap) {  \
-			out_cap*= 2;                        \
-			out_buf= realloc(out_buf, out_cap); \
-			assert(out_buf);                    \
-		}                                     \
-	} while(0)
-
-		while(search_at <= tb->len) {
-			int rc= pcre2_match(re, (PCRE2_SPTR)subject, tb->len,
-													search_at, 0, md, NULL);
-			if(rc <= 0) {
-				if(rc < 0 && rc != PCRE2_ERROR_NOMATCH) {
-					PCRE2_UCHAR8 err_buf[256];
-					pcre2_get_error_message(rc, err_buf, sizeof(err_buf));
-				}
-				size_t rest= tb->len - search_at;
-				ENSURE_CAP(rest + 1);
-				memcpy(out_buf + out_len, tb->buf + search_at, rest);
-				out_len+= rest;
-				break;
-			}
-
-			PCRE2_SIZE *ov= pcre2_get_ovector_pointer(md);
-			size_t mstart= ov[0];
-			size_t mend= ov[1];
-
-			log_debug_env_token("WTC_DEBUG_STAGE_1", NULL,
-				"[C parseBraces] pass %d match at %zu..%zu: g1=%s g2=%s match=%.80s",
-				_dbg_pass, mstart, mend,
-				ov[2] != PCRE2_UNSET ? "set" : "unset",
-				ov[4] != PCRE2_UNSET ? "set" : "unset",
-				subject + mstart < subject + tb->len ? subject + mstart : "(end)");
-
-			/* Copy verbatim text before the match */
-			size_t before= mstart - search_at;
-			ENSURE_CAP(before + 8);
-			memcpy(out_buf + out_len, tb->buf + search_at, before);
-			out_len+= before;
-
-			/* Dispatch on which alternative matched. */
-			if(ov[2] != PCRE2_UNSET || ov[4] != PCRE2_UNSET) {
-				/* {{...}} branch matched with captured inner in group 1 or 2. */
-				PCRE2_SIZE cstart= (ov[2] != PCRE2_UNSET) ? ov[2] : ov[4];
-				PCRE2_SIZE cend= (ov[2] != PCRE2_UNSET) ? ov[3] : ov[5];
-				const char *inner= tb->buf + cstart;
-				size_t inner_len= cend - cstart;
-
-				/* Keep nested token markers intact; this parser stage does not
-                 * resolve \0N<type>\x7F inside template parts. */
-				/*
-                 * NOTE: Do NOT skip if inner contains \0 bytes -- those are
-                 * sentinel markers from prior iterations (e.g. {{Inner}} already
-                 * tokenized). The build_from_inner/str_restore pipeline handles
-                 * them correctly. Only skip if the regex pattern itself is unstable
-                 * (i.e., inner would expand infinitely), which the convergence check
-                 * handles via the prev_buf comparison.
-                 */
-
-				Token *tok= build_from_inner(inner, inner_len,
-																		 false, link_stack, link_count,
-																		 link_stack_lens,
-																		 cfg,
-																		 accum);
-				if(tok) {
-					size_t tok_idx= accum->count - 1;
-					char sent[64];
-					size_t slen;
-					char sym= 't';
-					if(inner_len > 0) {
-						size_t p0_end= 0;
-						while(p0_end < inner_len && inner[p0_end] != '|') p0_end++;
-						sym= braces_get_symbol(inner, p0_end, cfg, NULL);
-					}
-					work_str_sentinel(tok_idx, sym, sent, &slen);
-					{
-						char hexbuf[128];
-						size_t hexpos = 0;
-						for(size_t _i = 0; _i < slen && hexpos + 3 < sizeof(hexbuf); _i++) {
-							int wn = snprintf(hexbuf + hexpos, sizeof(hexbuf) - hexpos, "%02X", (unsigned char)sent[_i]);
-							if(wn > 0) hexpos += (size_t)wn;
-							if(_i + 1 < slen && hexpos + 1 < sizeof(hexbuf)) hexbuf[hexpos++] = ' ';
-						}
-						hexbuf[hexpos] = '\0';
-						log_debug_env_token("WTC_DEBUG_STAGE_1", NULL,
-							"[C parseBraces] wrote sentinel idx=%zu type=%c slen=%zu hex=%s",
-							tok_idx, sym, slen, hexbuf);
-					}
-					ENSURE_CAP(slen);
-					memcpy(out_buf + out_len, sent, slen);
-					out_len+= slen;
-				} else {
-					/* JS parity: invalid {{...}} (e.g. {{}}) is parked in linkStack
-					 * and restored at the end, rather than left inline. */
-					size_t llen= mend - mstart;
-					char *tmp= malloc(llen + 1);
-					memcpy(tmp, tb->buf + mstart, llen);
-					tmp[llen]= '\0';
-					size_t restored_llen= 0;
-					char *restored= str_restore(tmp, llen,
-																				(const char **)link_stack, link_count,
-																				link_stack_lens,
-																				&restored_llen);
-					free(tmp);
-
-					if(link_count >= link_cap) {
-						link_cap*= 2;
-						link_stack= realloc(link_stack, link_cap * sizeof(char *));
-						link_stack_lens= realloc(link_stack_lens, link_cap * sizeof(size_t));
-						assert(link_stack && link_stack_lens);
-					}
-					link_stack[link_count]= restored;
-					link_stack_lens[link_count]= restored_llen;
-					size_t link_idx= link_count++;
-
-					char mark[64];
-					int n= snprintf(mark + 1, sizeof(mark) - 2, "%zu", link_idx);
-					mark[0]= '\0';
-					mark[1 + n]= '\x7F';
-					size_t mlen= (size_t)(n + 2);
-					ENSURE_CAP(mlen);
-					memcpy(out_buf + out_len, mark, mlen);
-					out_len+= mlen;
-				}
-
-			} else {
-				/* [[...]] and -{...}- branches are parked and restored later. */
-				size_t llen= mend - mstart;
-				char *tmp= malloc(llen + 1);
-				memcpy(tmp, tb->buf + mstart, llen);
-				tmp[llen]= '\0';
-				/* Restore any nested link-stack entries embedded in this match */
-				size_t restored_llen= 0;
-				char *restored= str_restore(tmp, llen,
-																		(const char **)link_stack, link_count,
-																		link_stack_lens,
-																		&restored_llen);
-				free(tmp);
-
-				if(link_count >= link_cap) {
-					link_cap*= 2;
-					link_stack= realloc(link_stack, link_cap * sizeof(char *));
-					link_stack_lens= realloc(link_stack_lens, link_cap * sizeof(size_t));
-					assert(link_stack && link_stack_lens);
-				}
-				link_stack[link_count]= restored;
-				link_stack_lens[link_count]= restored_llen;
-				size_t link_idx= link_count++;
-
-				/* Numeric-only sentinel \0<N>\x7F — matched by str_restore */
-				char mark[64];
-				int n= snprintf(mark + 1, sizeof(mark) - 2, "%zu", link_idx);
-				mark[0]= '\0';
-				mark[1 + n]= '\x7F';
-				size_t mlen= (size_t)(n + 2);
-				ENSURE_CAP(mlen);
-				memcpy(out_buf + out_len, mark, mlen);
-				out_len+= mlen;
-			}
-
-			search_at= mend;
-			if(mend == mstart) search_at++;
-		}
-
-#undef ENSURE_CAP
-
-		out_buf[out_len]= '\0'; /* NUL-terminate for safety */
-
-		/* Binary-safe convergence check on the unresolved placeholder form. */
-		if(prev_buf && prev_buf_len == out_len && memcmp(prev_buf, out_buf, out_len) == 0) {
-			log_debug_env_token("WTC_DEBUG_STAGE_1", NULL,
-				"[C parseBraces] converged after pass %d, out=%.200s",
-				_dbg_pass, out_buf);
-			free(out_buf);
-			free(prev_buf);
-			free(match_subject);
-			pcre2_match_data_free(md);
-			break;
-		}
-
-		log_debug_env_token("WTC_DEBUG_STAGE_1", NULL,
-			"[C parseBraces] pass %d output: %.200s", _dbg_pass, out_buf);
-
-		/* Keep parked placeholders for the next pass; restore only once at end. */
-		wiki_thread_buf_set(tb, out_buf, out_len);
-
-		free(prev_buf);
-		prev_buf= malloc(out_len + 1);
-		memcpy(prev_buf, out_buf, out_len);
-		prev_buf[out_len]= '\0';
-		prev_buf_len= out_len;
-		free(out_buf);
-		free(match_subject);
-
-		pcre2_match_data_free(md);
+	{
+		MainBracesPassArgs args = {
+			.tb             = tb,
+			.cfg            = cfg,
+			.accum          = accum,
+			.link_stack     = &link_stack,
+			.link_stack_lens= &link_stack_lens,
+			.link_count     = &link_count,
+			.link_cap       = &link_cap,
+		};
+		parser_scan_until_stable(tb, main_braces_run_pass, &args,
+		                         braces_get_buf, braces_get_len);
 	}
 
 	/* Second-pass state machine: handle nested templates/links and heading
