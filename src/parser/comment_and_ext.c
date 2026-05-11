@@ -1259,7 +1259,7 @@ static pcre2_code *compile_ext_regex(const ParserConfig *cfg, bool include_only)
 	return pcre_cache_get(*target_pat, PCRE2_CASELESS | PCRE2_UTF | PCRE2_UCP);
 }
 
-
+/** JS-PARITY: <nowiki>[\s\S]*?<\/nowiki> */
 static const ParserRules rule_nowiki_paired = {
 	.open_delim       = "<nowiki>",
 	.open_len         = 8,
@@ -1298,15 +1298,108 @@ static void nowiki_scan_cb(const char *segment, size_t len,
 	append_numeric_placeholder(ctx->out->buf, &ctx->out->len, ctx->st->count - 1);
 }
 
-static pcre2_code *compile_translate_regex(void) {
-	const char *pattern= "<translate( nowrap)?>([\\s\\S]*?)<\\/translate>";
-	return pcre_cache_get(pattern, PCRE2_UTF | PCRE2_UCP);
+/* Parser rules for <translate ...> macro (variable-length opener/closer). */
+static const ParserRules rule_translate = {
+	.open_delim               = "<translate",
+	.open_len                 = 10,
+	.open_terminator          = '>',
+	.open_attr_forbidden      = "<",
+	.open_attr_forbidden_len  = 1,
+	.self_closing_marker      = "/",
+	.self_closing_marker_len  = 1,
+	.close_delim              = "</translate",
+	.close_len                = 11,
+	.close_terminator         = '>',
+	.close_attr_forbidden     = "<",
+	.close_attr_forbidden_len = 1,
+	.match_mode               = PARSER_MATCH_FIRST_CLOSE,
+	/* case_insensitive left false: MediaWiki requires exact case */
+};
+
+typedef struct {
+	Accum     *accum;
+	ThreadBuf *out;
+	TextStack *st;            /* nowiki stack to allow restoration */
+	const char *buf;          /* base buffer pointer (for rfind) */
+	const ParserRules *rules; /* pointer to rule_translate */
+} TranslateScanCtx;
+
+static void translate_scan_cb_wrap(const char *segment, size_t len,
+								   ParserSegmentKind kind, void *user_data) {
+	TranslateScanCtx *ctx = (TranslateScanCtx *)user_data;
+	const ParserRules *r = ctx->rules;
+
+	if (kind == PARSER_SEG_TEXT) {
+		wiki_thread_buf_append(ctx->out, (sz_string_view_t){ .start = segment, .length = len });
+		return;
+	}
+
+	/* Compute attribute span: bytes between end of open_delim and the '>' terminator (exclusive). */
+	const char *attr_ptr = NULL;
+	size_t attr_len = 0;
+
+	if (kind == PARSER_SEG_SELF_CLOSING) {
+		/* segment is the full opener span (open + attrs + terminator) */
+		if (len > r->open_len + 1) {
+			attr_ptr = segment + r->open_len;
+			attr_len = (size_t)(len - r->open_len - 1);
+		}
+	} else {
+		/* PARSER_SEG_INNER: segment points at first byte after '>' (inner_start).
+		 * Find the last occurrence of open_delim before segment within the
+		 * original buffer to locate the opener and its attributes. */
+		if (segment > ctx->buf && (size_t)(segment - ctx->buf) >= r->open_len) {
+			size_t hay_len = (size_t)(segment - ctx->buf);
+			const char *open = (const char *)sz_rfind(ctx->buf, hay_len, r->open_delim, r->open_len);
+			if (open) {
+				attr_ptr = open + r->open_len;
+				/* terminator is at (segment - 1) */
+				if ((const char *)segment > attr_ptr) {
+					attr_len = (size_t)((segment - 1) - attr_ptr);
+				}
+			}
+		}
+	}
+
+	/* Restore inner content (expand nowiki placeholders) into a scratch buffer. */
+	ThreadBuf *tmp_restore = wiki_thread_buf_acquire_scratch();
+	if(!tmp_restore) { log_fatal("thread_buffer: failed to acquire scratch in translate_scan_cb_wrap"); abort(); }
+	tmp_restore->len = 0;
+
+	const char *inner_ptr = NULL;
+	size_t inner_len = 0;
+	if (kind == PARSER_SEG_INNER && len > 0) {
+		str_restore_to_tb(segment, len, (const char **)ctx->st->items, ctx->st->count, ctx->st->lens, tmp_restore);
+		inner_ptr = tmp_restore->buf;
+		inner_len = tmp_restore->len;
+	}
+
+	/* Build Translate token (attr may be NULL/empty). */
+	size_t tok_idx = ctx->accum->count;
+	Token *tok = build_translate_token(attr_ptr, attr_len, inner_ptr, inner_len, ctx->accum);
+
+	if (tmp_restore) wiki_thread_buf_release_scratch(tmp_restore);
+
+	if (tok) {
+		char sent[64]; size_t slen;
+		work_str_sentinel(tok_idx, 'g', sent, &slen);
+		wiki_thread_buf_reserve(ctx->out, ctx->out->len + slen);
+		memcpy(ctx->out->buf + ctx->out->len, sent, slen);
+		ctx->out->len += slen;
+	} else {
+		/* Fallback: emit original matched bytes as-is. For self-closing the
+		 * original bytes are the segment span; for INNER the bytes include the
+		 * full matched span (open..close) but parser gives only inner. Emit
+		 * inner bytes in that case. */
+		if (kind == PARSER_SEG_SELF_CLOSING) {
+			wiki_thread_buf_append(ctx->out, (sz_string_view_t){ .start = segment, .length = len });
+		} else {
+			wiki_thread_buf_append(ctx->out, (sz_string_view_t){ .start = segment, .length = len });
+		}
+	}
 }
 
 static void apply_translate_prepass(ThreadBuf *tb, const ParserConfig *cfg, Accum *accum) {
-	pcre2_code *re_translate = compile_translate_regex();
-	if(!re_translate) return;
-
 	TextStack st;
 	text_stack_init(&st);
 
@@ -1336,70 +1429,22 @@ static void apply_translate_prepass(ThreadBuf *tb, const ParserConfig *cfg, Accu
 	wiki_thread_buf_set(tb, out_tb->buf, out_tb->len);
 	wiki_thread_buf_release_scratch(out_tb);
 
-	pcre2_match_data *md = pcre2_match_data_create_from_pattern(re_translate, NULL);
-	if(!md) {
-		text_stack_free(&st);
-		return;
-	}
+	/* Re-acquire an output scratch buffer for the translate pass. */
+	out_tb = wiki_thread_buf_acquire_scratch();
+	if(!out_tb) { log_fatal("thread_buffer: failed to acquire scratch in apply_translate_prepass (translate pass)"); abort(); }
+	wiki_thread_buf_reserve(out_tb, tb->len * 2 + 64);
+	out_tb->len = 0;
 
-#define ENSURE_PRE_CAP(tb, need) do { wiki_thread_buf_reserve((tb), (tb)->len + (need)); } while(0)
+	TranslateScanCtx tctx = {
+		.accum = accum,
+		.out   = out_tb,
+		.st    = &st,
+		.buf   = tb->buf,
+		.rules = &rule_translate,
+	};
 
-	size_t search_at = 0;
+	parser_scan(tb->buf, tb->len, &rule_translate, translate_scan_cb_wrap, &tctx);
 
-	while(search_at <= tb->len) {
-		int rc= pcre2_match(re_translate, (PCRE2_SPTR)tb->buf, tb->len, search_at, 0, md, NULL);
-		if(rc <= 0) {
-			size_t rest= tb->len - search_at;
-			ENSURE_PRE_CAP(out_tb, rest + 1);
-			memcpy(out_tb->buf + out_tb->len, tb->buf + search_at, rest);
-			out_tb->len += rest;
-			break;
-		}
-		PCRE2_SIZE *ov= pcre2_get_ovector_pointer(md);
-		size_t ms= ov[0], me= ov[1];
-		size_t before= ms - search_at;
-		ENSURE_PRE_CAP(out_tb, before + 32);
-		memcpy(out_tb->buf + out_tb->len, tb->buf + search_at, before);
-		out_tb->len += before;
-
-		const char *attr= NULL;
-		size_t attr_len= 0;
-		if(rc > 1 && ov[2] != PCRE2_UNSET) {
-			attr= tb->buf + ov[2];
-			attr_len= ov[3] - ov[2];
-		}
-		const char *inner= "";
-		size_t inner_len= 0;
-		if(rc > 2 && ov[4] != PCRE2_UNSET) {
-			inner= tb->buf + ov[4];
-			inner_len= ov[5] - ov[4];
-		}
-
-		/* Use scratch-based restore to avoid heap allocs */
-		ThreadBuf *tmp_restore = wiki_thread_buf_acquire_scratch();
-		if(!tmp_restore) { log_fatal("thread_buffer: failed to acquire scratch in apply_translate_prepass (restore)\n"); abort(); }
-		tmp_restore->len = 0;
-		str_restore_to_tb(inner, inner_len, (const char **)st.items, st.count, st.lens, tmp_restore);
-
-		size_t tok_idx= accum->count;
-		Token *tok= build_translate_token(attr, attr_len, tmp_restore->buf, tmp_restore->len, accum);
-		if(tok) {
-			char sent[64];
-			size_t slen;
-			work_str_sentinel(tok_idx, 'g', sent, &slen);
-			ENSURE_PRE_CAP(out_tb, slen + 1);
-			memcpy(out_tb->buf + out_tb->len, sent, slen);
-			out_tb->len += slen;
-		} else {
-			ENSURE_PRE_CAP(out_tb, me - ms + 1);
-			memcpy(out_tb->buf + out_tb->len, tb->buf + ms, me - ms);
-			out_tb->len += me - ms;
-		}
-		wiki_thread_buf_release_scratch(tmp_restore);
-
-		search_at= me;
-		if(me == ms) search_at++;
-	}
 	out_tb->buf[out_tb->len]= '\0';
 
 	/* Use scratch-based restore into tb directly */
@@ -1411,10 +1456,7 @@ static void apply_translate_prepass(ThreadBuf *tb, const ParserConfig *cfg, Accu
 	wiki_thread_buf_release_scratch(tmp_all);
 	wiki_thread_buf_release_scratch(out_tb);
 
-	pcre2_match_data_free(md);
 	text_stack_free(&st);
-
-#undef ENSURE_PRE_CAP
 }
 
 /* ── onlyinclude handling (includeOnly mode) ─────────────────────────────── */
