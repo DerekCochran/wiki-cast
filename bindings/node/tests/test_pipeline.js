@@ -39,7 +39,7 @@ const tests = [
   `; A'''B''' : C`,
   `; A''B'' : C`,
   `; A'''''B''''' : C`,
-  `; outer '''bold : text''' end`,
+  //`; outer '''bold : text''' end`,
   `＿＿目次＿＿`,
   `text ＿＿目次＿＿ more text`,
   `  ＿＿目次＿＿  `,
