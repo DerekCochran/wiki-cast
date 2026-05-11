@@ -203,14 +203,15 @@ void log_log_env_token(int level, const char *file, int line, const char *env, c
     pthread_once(&g_log_init_once, init_log);
 
     // 1. Check environment variable and serialize token early
+	if( !getenv(env) ) {
+		return;
+	}
     char *json_str = NULL;
-    if (getenv(env) && token) {
+    if (token) {
 		cJSON *root = token_to_json(token);
         json_str = cJSON_PrintUnformatted(root);
         cJSON_Delete(root);
-    }else if (token != NULL){
-		return;
-	}
+    }
 
     log_Event ev = {
         .fmt   = fmt,

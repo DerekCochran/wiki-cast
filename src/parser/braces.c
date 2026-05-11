@@ -2,6 +2,7 @@
 #include "util/pcre_cache.h"
 #include "util/log.h"
 #include "parser/braces.h"
+#include "util/callback_parser.h"
 #include "util/string_util.h"
 #include "title.h"
 #include "token.h"
@@ -189,11 +190,11 @@ static char braces_get_symbol(const char *name, size_t len,
 	}
 
 	if(is_magic_out) {
-		log_debug_env_token("WTC_DEBUG_STAGE_1", NULL, 
-			"Get braces symbol: out=%c lc=%s is_magic_out=%d", out, lc, *is_magic_out);
-	}else {
-		log_debug_env_token("WTC_DEBUG_STAGE_1", NULL, 
-			"Get braces symbol: out=%c lc=%s is_magic_out=NULL", out, lc);
+		log_debug_env_token("WTC_DEBUG_STAGE_1", NULL,
+			"Get braces symbol: out=%c base_lc=%s is_magic_out=%d", out, base_lc, *is_magic_out);
+	} else {
+		log_debug_env_token("WTC_DEBUG_STAGE_1", NULL,
+			"Get braces symbol: out=%c base_lc=%s is_magic_out=NULL", out, base_lc);
 	}
 	free(base_buf);
 	free(base_orig_buf);
@@ -1210,111 +1211,93 @@ static char braces_arg_symbol(const char *inner, size_t inner_len, const ParserC
 	free(base);
 	return sym;
 }
-
 /* Pre-pass for simple innermost {{{...}}} arguments.
  * Mirrors the JS reReplace behavior for non-nested triple-brace arguments. */
 // TODO:  Can this be changed to a Single-Pass Deterministic Finite Automaton (DFA) style lexer?
 // Or a State Machine Lexer
-static void parse_simple_args(ThreadBuf *tb, const ParserConfig *cfg, Accum *accum) {
-	const char *pattern_with_lb=
-	"(?<!\\{)\\{\\{\\{((?:[^\\n{}\\[]|\\[(?!\\[)|\\n(?![\\x00]))*)\\}\\}\\}(?!\\})";
 
-	pcre2_code *re = pcre_cache_get(pattern_with_lb, PCRE2_UTF);
+typedef struct {
+	const ParserConfig *cfg;
+	Accum              *accum;
+	ThreadBuf          *out_tb;
+} BracesContext;
 
-	char *prev= NULL;
-	size_t prev_len= 0;
+static void braces_append(BracesContext *ctx, const char *data, size_t len) {
+	wiki_thread_buf_append(ctx->out_tb, (sz_string_view_t){ .start = data, .length = len });
+}
 
-	while(1) {
-		pcre2_match_data *md= pcre2_match_data_create_from_pattern(re, NULL);
-		if(!md) break;
-
-		size_t out_cap= tb->len * 2 + 64;
-		char *out= malloc(out_cap);
-		assert(out);
-		size_t out_len= 0;
-		size_t search_at= 0;
-		char *match_subject= braces_make_match_subject(tb->buf, tb->len);
-		const char *subject= match_subject ? match_subject : tb->buf;
-
-#define ENSURE_ARG_CAP(need)             \
-	do {                                   \
-		while(out_len + (need) >= out_cap) { \
-			out_cap*= 2;                       \
-			out= realloc(out, out_cap);        \
-			assert(out);                       \
-		}                                    \
-	} while(0)
-
-		while(search_at <= tb->len) {
-			int rc= pcre2_match(re, (PCRE2_SPTR)subject, tb->len, search_at, 0, md, NULL);
-			if(rc <= 0) {
-				size_t rest= tb->len - search_at;
-				ENSURE_ARG_CAP(rest + 1);
-				memcpy(out + out_len, tb->buf + search_at, rest);
-				out_len+= rest;
-				break;
-			}
-
-			PCRE2_SIZE *ov= pcre2_get_ovector_pointer(md);
-			size_t ms= ov[0], me= ov[1];
-			size_t cs= (ov[2] != PCRE2_UNSET) ? ov[2] : 0;
-			size_t ce= (ov[3] != PCRE2_UNSET) ? ov[3] : 0;
-
-			size_t before= ms - search_at;
-			ENSURE_ARG_CAP(before + 32);
-			memcpy(out + out_len, tb->buf + search_at, before);
-			out_len+= before;
-
-			const char *inner= (cs < ce) ? tb->buf + cs : "";
-			size_t inner_len= (cs < ce) ? (ce - cs) : 0;
-
-			Token *tok= build_from_inner(inner, inner_len, true,
-																	 NULL, 0, NULL, cfg, accum);
-			if(tok) {
-				size_t idx= accum->count - 1;
-				char sent[64];
-				size_t slen;
-				char sym= braces_arg_symbol(inner, inner_len, cfg);
-				work_str_sentinel(idx, sym, sent, &slen);
-				ENSURE_ARG_CAP(slen);
-				memcpy(out + out_len, sent, slen);
-				out_len+= slen;
-			} else {
-				ENSURE_ARG_CAP(me - ms);
-				memcpy(out + out_len, tb->buf + ms, me - ms);
-				out_len+= me - ms;
-			}
-
-			search_at= me;
-			if(me == ms) search_at++;
-		}
-
-#undef ENSURE_ARG_CAP
-
-		out[out_len]= '\0';
-
-		if(prev && prev_len == out_len && memcmp(prev, out, out_len) == 0) {
-			free(out);
-			free(match_subject);
-			pcre2_match_data_free(md);
-			break;
-		}
-
-		wiki_thread_buf_set(tb, out, out_len);
-		free(out);
-
-		free(prev);
-		prev= malloc(out_len + 1);
-		assert(prev);
-		memcpy(prev, tb->buf, out_len);
-		prev[out_len]= '\0';
-		prev_len= out_len;
-		free(match_subject);
-
-		pcre2_match_data_free(md);
+static void braces_callback(const char *segment, size_t len,
+							ParserSegmentKind kind, void *user_data) {
+	BracesContext *ctx = (BracesContext *)user_data;
+	if (kind != PARSER_SEG_INNER) {
+		braces_append(ctx, segment, len);
+		return;
 	}
 
-	free(prev);
+	Token *tok = build_from_inner(segment, len, true, NULL, 0, NULL, ctx->cfg, ctx->accum);
+	if (tok) {
+		char sentinel[64];
+		size_t slen;
+		char sym = braces_arg_symbol(segment, len, ctx->cfg);
+		work_str_sentinel(ctx->accum->count - 1, sym, sentinel, &slen);
+		braces_append(ctx, sentinel, slen);
+	} else {
+		braces_append(ctx, "{{{", 3);
+		braces_append(ctx, segment, len);
+		braces_append(ctx, "}}}", 3);
+	}
+}
+
+typedef struct {
+	ThreadBuf          *tb;
+	const ParserConfig *cfg;
+	Accum              *accum;
+} BracesPassCtx;
+
+static void braces_run_pass(void *user_data) {
+	BracesPassCtx *p = (BracesPassCtx *)user_data;
+
+	static const char  pat_double_lbrack[]    = { '[', '[' };
+	static const char  pat_newline_then_nul[] = { '\n', '\0' };
+	static const char *prohibited_patterns[]  = {
+		pat_double_lbrack, pat_newline_then_nul,
+	};
+	static const size_t prohibited_pattern_lens[] = { 2, 2 };
+
+	ParserRules rules = {
+		.open_delim                = "{{{",
+		.open_len                  = 3,
+		.close_delim               = "}}}",
+		.close_len                 = 3,
+		.match_mode                = PARSER_MATCH_FIRST_CLOSE,
+		.prohibited_chars          = "{}",
+		.prohibited_chars_len      = 2,
+		.prohibited_patterns       = prohibited_patterns,
+		.prohibited_pattern_lens   = prohibited_pattern_lens,
+		.prohibited_patterns_count = 2,
+		.no_preceding_byte         = '{',
+		.no_following_byte         = '}',
+	};
+
+	ThreadBuf *out_tb = wiki_thread_buf_acquire_scratch();
+	assert(out_tb);
+	out_tb->len = 0;
+
+	BracesContext ctx = { .cfg = p->cfg, .accum = p->accum, .out_tb = out_tb };
+	parser_scan(p->tb->buf, p->tb->len, &rules, braces_callback, &ctx);
+
+	if (out_tb->len != p->tb->len || sz_equal(p->tb->buf, out_tb->buf, p->tb->len) != sz_true_k) {
+		wiki_thread_buf_set(p->tb, out_tb->buf, out_tb->len);
+	}
+	wiki_thread_buf_release_scratch(out_tb);
+}
+
+static const char *braces_get_buf(void *tb) { return ((ThreadBuf *)tb)->buf; }
+static size_t      braces_get_len(void *tb) { return ((ThreadBuf *)tb)->len; }
+
+static void parse_simple_args(ThreadBuf *tb, const ParserConfig *cfg, Accum *accum) {
+	BracesPassCtx p = { .tb = tb, .cfg = cfg, .accum = accum };
+	parser_scan_until_stable(tb, braces_run_pass, &p, braces_get_buf, braces_get_len);
 }
 
 /* Main parse function */
@@ -1352,9 +1335,9 @@ void parse_braces(ThreadBuf *tb, const ParserConfig *cfg, Accum *accum) {
 	char *prev_buf= NULL;
 	size_t prev_buf_len= 0;
 	int _dbg_pass= 0;
-	static int _braces_debug= -1;
+	static int _braces_debug = -1;
 	if(_braces_debug < 0) {
-		_braces_debug= getenv("BRACES_DEBUG") ? 1 : 0;
+		_braces_debug = getenv("BRACES_DEBUG") ? 1 : 0;
 	}
 
 	while(1) {
