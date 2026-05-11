@@ -12,6 +12,64 @@
 #include <stdlib.h>
 #include <string.h>
 
+/* ── List-prefix helpers (replace regex ^((?:\x00\d+[cno]\x7F)*)([;:*#]+)(\s*)) */
+typedef struct {
+	const char *sentinels;
+	size_t      sentinels_len;
+	const char *markers;
+	size_t      markers_len;
+	const char *trailing_ws;
+	size_t      trailing_ws_len;
+} ListPrefixResult;
+
+static size_t skip_cno_sentinel(const char *p, size_t remaining) {
+	if(!p || remaining < 4) return 0;
+	if((unsigned char)p[0] != '\0') return 0;
+	size_t j = 1;
+	while(j < remaining && p[j] >= '0' && p[j] <= '9') j++;
+	if(j == 1 || j + 1 >= remaining) return 0; /* need at least one digit and a type+DEL */
+	char t = p[j];
+	if(!(t == 'c' || t == 'n' || t == 'o')) return 0;
+	if((unsigned char)p[j + 1] != '\x7F') return 0;
+	return (j + 2); /* total bytes consumed: NUL + digits + type + DEL */
+}
+
+static bool list_prefix_parse(const char *line, size_t len, ListPrefixResult *out) {
+	if(!line || len == 0 || !out) return false;
+	size_t pos = 0;
+
+	/* 1) consume zero-or-more c/n/o sentinels */
+	while(pos < len) {
+		size_t s = skip_cno_sentinel(line + pos, len - pos);
+		if(s == 0) break;
+		pos += s;
+	}
+
+	/* 2) require at least one list marker */
+	if(pos >= len) return false;
+	const char *markers_start = line + pos;
+	size_t mlen = 0;
+	while(pos < len) {
+		char ch = line[pos];
+		if(!(ch == ';' || ch == ':' || ch == '*' || ch == '#')) break;
+		pos++; mlen++;
+	}
+	if(mlen == 0) return false;
+
+	/* 3) trailing whitespace (space or tab) */
+	const char *ws_start = line + pos;
+	size_t ws_len = 0;
+	while(pos < len && (line[pos] == ' ' || line[pos] == '\t')) { pos++; ws_len++; }
+
+	out->sentinels = line;
+	out->sentinels_len = (size_t)(markers_start - line);
+	out->markers = markers_start;
+	out->markers_len = mlen;
+	out->trailing_ws = ws_start;
+	out->trailing_ws_len = ws_len;
+	return true;
+}
+
 /* Helper: compute common prefix length as per JS util/html.getCommon */
 static size_t get_common_prefix_len(const char *prefix, size_t plen, const char *last) {
 	if(!last) return 0;
@@ -107,16 +165,13 @@ void parse_list(ThreadBuf *tb, const ParserConfig *cfg, Accum *accum) {
 	if(!tb || !tb->buf) return;
 	if(config_excluded(cfg, "list")) return;
 
-	/* Compile or reuse cached regexes: prefix, full, brace */
-	const char *prefix_pat= "^((?:\\x00\\d+[cno]\\x7F)*)([;:*#]+)(\\s*)";
+	/* Compile or reuse cached regexes: full, brace (prefix handled inline) */
 	const char *full_pat= ":+|\\-\\{|\\x00\\d+[xq]\\x7F";
 	const char *brace_pat= "\\-\\{|\\}-";
 
-	pcre2_code *re_prefix = pcre_cache_get(prefix_pat, PCRE2_UTF);
 	pcre2_code *re_full = pcre_cache_get(full_pat, PCRE2_UTF);
 	pcre2_code *re_brace = pcre_cache_get(brace_pat, PCRE2_UTF);
 
-	pcre2_match_data *md_pref= pcre2_match_data_create_from_pattern(re_prefix, NULL);
 	pcre2_match_data *md_full= pcre2_match_data_create_from_pattern(re_full, NULL);
 	pcre2_match_data *md_br= pcre2_match_data_create_from_pattern(re_brace, NULL);
 
@@ -160,9 +215,9 @@ void parse_list(ThreadBuf *tb, const ParserConfig *cfg, Accum *accum) {
 		char *line= lines[li];
 		size_t line_len= lines_len[li];
 
-		/* Run prefix regex anchored at start */
-		int rc= pcre2_match(re_prefix, (PCRE2_SPTR)line, line_len, 0, 0, md_pref, NULL);
-		if(rc <= 0) {
+		/* Parse list prefix (leading sentinels, marker run, trailing ws) */
+		ListPrefixResult lpr;
+		if(!list_prefix_parse(line, line_len, &lpr)) {
 			/* No match: reset lastPrefix and keep line unchanged */
 			if(lastPrefix) {
 				free(lastPrefix);
@@ -171,24 +226,13 @@ void parse_list(ThreadBuf *tb, const ParserConfig *cfg, Accum *accum) {
 			continue;
 		}
 
-		PCRE2_SIZE *ov= pcre2_get_ovector_pointer(md_pref);
-		size_t match_end= ov[1];
-
-		/* group offsets: group1=(ov[2],ov[3]) group2=(ov[4],ov[5]) group3=(ov[6],ov[7]) */
-		size_t g1s= (rc >= 2 && ov[2] != PCRE2_UNSET) ? ov[2] : 0;
-		size_t g1e= (rc >= 2 && ov[3] != PCRE2_UNSET) ? ov[3] : g1s;
-		size_t g2s= (rc >= 3 && ov[4] != PCRE2_UNSET) ? ov[4] : 0;
-		size_t g2e= (rc >= 3 && ov[5] != PCRE2_UNSET) ? ov[5] : g2s;
-		size_t g3s= (rc >= 4 && ov[6] != PCRE2_UNSET) ? ov[6] : 0;
-		size_t g3e= (rc >= 4 && ov[7] != PCRE2_UNSET) ? ov[7] : g3s;
-
-		/* Extract comment (may contain sentinels), prefix and space */
-		const char *comment= (g1e > g1s) ? line + g1s : "";
-		size_t comment_len= (g1e > g1s) ? (g1e - g1s) : 0;
-		const char *prefix= (g2e > g2s) ? line + g2s : "";
-		size_t prefix_len= (g2e > g2s) ? (g2e - g2s) : 0;
-		const char *space= (g3e > g3s) ? line + g3s : "";
-		size_t space_len= (g3e > g3s) ? (g3e - g3s) : 0;
+		const char *comment = lpr.sentinels;
+		size_t comment_len = lpr.sentinels_len;
+		const char *prefix = lpr.markers;
+		size_t prefix_len = lpr.markers_len;
+		const char *space = lpr.trailing_ws;
+		size_t space_len = lpr.trailing_ws_len;
+		size_t match_end = comment_len + prefix_len + space_len;
 
 		/* Build prefix2 = prefix with ';' -> ':' */
 		char *prefix2= malloc(prefix_len + 1);
@@ -499,7 +543,7 @@ void parse_list(ThreadBuf *tb, const ParserConfig *cfg, Accum *accum) {
 	free(lines_len);
 	if(lastPrefix) free(lastPrefix);
 
-	pcre2_match_data_free(md_pref);
+	/* md_pref was removed (prefix parsing handled inline) */
 	pcre2_match_data_free(md_full);
 	pcre2_match_data_free(md_br);
 }
