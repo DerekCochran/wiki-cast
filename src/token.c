@@ -744,6 +744,12 @@ char *token_to_string(const Token *t, ThreadBuf *tb) {
 	assert(tb);
 	tb->len= 0;
 	token_to_string_rec(t, tb);
+	/* Ensure the returned C-string is NUL-terminated for callers that use
+	 * the result as a NUL-terminated C string (tests use `strcmp`). Public
+	 * thread-buffer helpers normally maintain a terminator, but the local
+	 * append helpers used above do not — make sure we terminate here. */
+	if (tb->len >= tb->cap) wiki_thread_buf_reserve(tb, tb->len + 1);
+	tb->buf[tb->len] = '\0';
 	return tb->buf;
 }
 
