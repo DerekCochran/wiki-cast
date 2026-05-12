@@ -326,17 +326,17 @@ append_c_file() {
 }
 
 declare -A C_STAGE_FILES
-C_STAGE_FILES[0]="parse.c token.c accum.c ../include/thread_buffer.h string_util.c config.c build.c parser/redirect.c parser/comment_and_ext.c parser/braces.c parser/links.c parser/html.c parser/external_links.c parser/magic_links.c title.c"
-C_STAGE_FILES[1]="parse.c token.c accum.c ../include/thread_buffer.h string_util.c config.c build.c parser/braces.c"
-C_STAGE_FILES[2]="parse.c token.c accum.c ../include/thread_buffer.h string_util.c config.c build.c parser/html.c"
-C_STAGE_FILES[3]="parse.c token.c accum.c ../include/thread_buffer.h string_util.c config.c build.c parser/table.c td.c tr.c table_token.c"
-C_STAGE_FILES[4]="parse.c token.c accum.c ../include/thread_buffer.h string_util.c config.c build.c parser/hr_and_double_underscore.c"
-C_STAGE_FILES[5]="parse.c token.c accum.c ../include/thread_buffer.h string_util.c config.c build.c parser/links.c parser/link.c title.c parser/braces.c parser/comment_and_ext.c parser/html.c parser/quotes.c parser/external_links.c parser/magic_links.c"
-C_STAGE_FILES[6]="parse.c token.c accum.c ../include/thread_buffer.h string_util.c config.c build.c parser/quotes.c"
-C_STAGE_FILES[7]="parse.c token.c accum.c ../include/thread_buffer.h string_util.c config.c build.c parser/external_links.c"
-C_STAGE_FILES[8]="parse.c token.c accum.c ../include/thread_buffer.h string_util.c config.c build.c parser/magic_links.c"
-C_STAGE_FILES[9]="parse.c token.c accum.c ../include/thread_buffer.h string_util.c config.c build.c parser/list.c"
-C_STAGE_FILES[10]="parse.c token.c accum.c ../include/thread_buffer.h string_util.c config.c build.c parser/converter.c"
+C_STAGE_FILES[0]="parse.c token.c accum.c ../include/util/thread_buffer.h string_util.c config.c build.c parser/redirect.c parser/comment_and_ext.c parser/braces.c parser/links.c parser/html.c parser/external_links.c parser/magic_links.c title.c"
+C_STAGE_FILES[1]="parse.c token.c accum.c ../include/util/thread_buffer.h string_util.c config.c build.c parser/braces.c"
+C_STAGE_FILES[2]="parse.c token.c accum.c ../include/util/thread_buffer.h string_util.c config.c build.c parser/html.c"
+C_STAGE_FILES[3]="parse.c token.c accum.c ../include/util/thread_buffer.h string_util.c config.c build.c parser/table.c td.c tr.c table_token.c"
+C_STAGE_FILES[4]="parse.c token.c accum.c ../include/util/thread_buffer.h string_util.c config.c build.c parser/hr_and_double_underscore.c"
+C_STAGE_FILES[5]="parse.c token.c accum.c ../include/util/thread_buffer.h string_util.c config.c build.c parser/links.c parser/link.c title.c parser/braces.c parser/comment_and_ext.c parser/html.c parser/quotes.c parser/external_links.c parser/magic_links.c"
+C_STAGE_FILES[6]="parse.c token.c accum.c ../include/util/thread_buffer.h string_util.c config.c build.c parser/quotes.c"
+C_STAGE_FILES[7]="parse.c token.c accum.c ../include/util/thread_buffer.h string_util.c config.c build.c parser/external_links.c"
+C_STAGE_FILES[8]="parse.c token.c accum.c ../include/util/thread_buffer.h string_util.c config.c build.c parser/magic_links.c"
+C_STAGE_FILES[9]="parse.c token.c accum.c ../include/util/thread_buffer.h string_util.c config.c build.c parser/list.c"
+C_STAGE_FILES[10]="parse.c token.c accum.c ../include/util/thread_buffer.h string_util.c config.c build.c parser/converter.c"
 
 for stage in "${!C_STAGE_FILES[@]}"; do
   out="../data/c-stage_${stage}.txt"

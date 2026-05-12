@@ -1,5 +1,6 @@
 #include "util/callback_parser.h"
 
+#include <stdlib.h>
 #include <string.h>
 #include <stringzilla/stringzilla.h>
 
@@ -441,6 +442,77 @@ void parser_scan_until_stable(void *tb, ParserPassFn run_pass, void *user_data,
         if (prev_len == out_len && prev_hash == cur_hash) return;
 
         prev_len  = out_len;
+        prev_hash = cur_hash;
+    }
+}
+
+/* ------------------------------------------------------------------------- */
+/* Result-based (non-callback) API.                                          */
+/* ------------------------------------------------------------------------- */
+
+void parser_result_array_init(ParserResultArray *arr) {
+    if (!arr) return;
+    arr->items = NULL;
+    arr->count = 0;
+    arr->cap   = 0;
+}
+
+void parser_result_array_free(ParserResultArray *arr) {
+    if (!arr) return;
+    free(arr->items);
+    arr->items = NULL;
+    arr->count = 0;
+    arr->cap   = 0;
+}
+
+static bool result_array_push_(ParserResultArray *arr, ParserResult r) {
+    if (arr->count >= arr->cap) {
+        size_t        new_cap = arr->cap ? arr->cap * 2 : 16;
+        ParserResult *p       = realloc(arr->items,
+                                        new_cap * sizeof(ParserResult));
+        if (!p) return false;
+        arr->items = p;
+        arr->cap   = new_cap;
+    }
+    arr->items[arr->count++] = r;
+    return true;
+}
+
+static void collect_cb_(const char *segment, size_t len,
+                        ParserSegmentKind kind, void *user_data) {
+    result_array_push_((ParserResultArray *)user_data,
+                       (ParserResult){ segment, len, kind });
+}
+
+void parser_scan_collect(const char *buf, size_t len,
+                         const ParserRules *rules,
+                         ParserResultArray *out) {
+    parser_scan(buf, len, rules, collect_cb_, out);
+}
+
+void parser_collect_until_stable(void *tb,
+                                 ParserPassCollectFn run_pass,
+                                 void *user_data,
+                                 const char *(*get_buf)(void *),
+                                 size_t      (*get_len)(void *),
+                                 ParserResultArray *out) {
+    sz_u64_t prev_hash = 0;
+    size_t   prev_len  = (size_t)-1;
+
+    for (;;) {
+        parser_result_array_clear(out);
+        run_pass(user_data, out);
+
+        const char *cur_buf = get_buf(tb);
+        size_t      cur_len = get_len(tb);
+
+        sz_u64_t cur_hash = (cur_len == 0)
+            ? 0
+            : sz_hash(cur_buf, cur_len, /*seed=*/0);
+
+        if (prev_len == cur_len && prev_hash == cur_hash) return;
+
+        prev_len  = cur_len;
         prev_hash = cur_hash;
     }
 }

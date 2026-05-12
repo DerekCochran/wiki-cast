@@ -123,3 +123,68 @@ void parser_scan_until_stable(void                  *tb,
                              const char *(*get_buf)(void *tb),
                              size_t      (*get_len)(void *tb));
 
+/* ── Result-based (non-callback) API ─────────────────────────────────────── */
+
+/**
+ * One segment result — the same data that would be handed to a ParserCallback.
+ */
+typedef struct {
+    const char       *segment; /* pointer into the input buffer; not owned */
+    size_t            len;
+    ParserSegmentKind kind;
+} ParserResult;
+
+/** Growable array of ParserResult. */
+typedef struct {
+    ParserResult *items;
+    size_t        count;
+    size_t        cap;
+} ParserResultArray;
+
+/** Zero-initialise a result array before first use. */
+void parser_result_array_init(ParserResultArray *arr);
+
+/** Free the backing store.  The `segment` pointers inside are NOT freed
+ *  (they refer into the caller's input buffer). */
+void parser_result_array_free(ParserResultArray *arr);
+
+/** Reset count to 0 without freeing the backing store. */
+static inline void parser_result_array_clear(ParserResultArray *arr) {
+    if (arr) arr->count = 0;
+}
+
+/**
+ * Non-callback equivalent of parser_scan.  Appends one ParserResult per
+ * segment to `out`; existing contents are preserved (use
+ * parser_result_array_clear first if you want a fresh collection).
+ *
+ * The `segment` pointers in the results point into `buf` and are valid for
+ * as long as `buf` is not freed or reallocated.
+ */
+void parser_scan_collect(const char        *buf,
+                         size_t             len,
+                         const ParserRules *rules,
+                         ParserResultArray *out);
+
+/**
+ * Non-callback equivalent of parser_scan_until_stable.
+ *
+ * `run_pass` receives both the opaque user-data pointer and a pointer to the
+ * result array.  A typical implementation:
+ *   1. parser_result_array_clear(out)                   -- discard old results
+ *   2. parser_scan_collect(old_buf, old_len, rules, out) -- capture new ones
+ *   3. transform tb as usual (wiki_thread_buf_set / etc.)
+ *
+ * After convergence, `out` holds results from the final (stable) pass.  Their
+ * `segment` pointers remain valid because the last pass left the buffer
+ * unchanged (by definition of convergence).
+ */
+typedef void (*ParserPassCollectFn)(void *user_data, ParserResultArray *out);
+
+void parser_collect_until_stable(void                   *tb,
+                                 ParserPassCollectFn     run_pass,
+                                 void                  *user_data,
+                                 const char *(*get_buf)(void *tb),
+                                 size_t      (*get_len)(void *tb),
+                                 ParserResultArray      *out);
+
