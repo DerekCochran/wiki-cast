@@ -11,6 +11,7 @@
         "../../src/converter.c",
         "../../src/parse.c",
         "../../src/parser/braces.c",
+        "../../src/parser/brace_pat.c",
         "../../src/parser/comment_and_ext.c",
         "../../src/parser/converter.c",
         "../../src/parser/external_links.c",

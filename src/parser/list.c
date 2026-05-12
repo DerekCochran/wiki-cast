@@ -1,6 +1,7 @@
 #include "util/log.h"
 #include "parser/list.h"
 #include "util/string_util.h"
+#include "stringzilla/stringzilla.h"
 #include "token.h"
 #include "util/thread_buffer.h"
 #include <assert.h>
@@ -17,6 +18,94 @@ typedef struct {
 	const char *trailing_ws;
 	size_t      trailing_ws_len;
 } ListPrefixResult;
+
+typedef enum {
+	FULL_MATCH_COLON     = 0,
+	FULL_MATCH_CONVERTER = 1,
+	FULL_MATCH_SENTINEL  = 2,
+} FullMatchKind;
+
+typedef struct {
+	FullMatchKind kind;
+	size_t        pos;
+	size_t        len;
+	size_t        colon_count;   /* FULL_MATCH_COLON only  */
+	size_t        sentinel_n;    /* FULL_MATCH_SENTINEL    */
+	char          sentinel_type; /* 'x' or 'q'             */
+} FullMatch;
+
+/* Find the first match of  :+ | -{ | \x00\d+[xq]\x7F  starting at or after
+ * `start_pos` in `buf`. Returns true and fills *out on success. */
+static bool full_scan_first(const char *buf, size_t len, size_t start_pos, FullMatch *out) {
+	if(!buf || start_pos >= len || !out) return false;
+	size_t cur = start_pos;
+	/* candidate bytes: ':', '-', '\0' */
+	char cand[3]; cand[0]=':'; cand[1]='-'; cand[2]='\0';
+	while(cur < len) {
+		const char *found = sz_find_byte_from(buf + cur, len - cur, cand, 3);
+		if(!found) return false;
+		size_t p = (size_t)(found - buf);
+		unsigned char c = (unsigned char)buf[p];
+
+		if(c == ':') {
+			/* count run of ':' */
+			size_t i = p;
+			while(i < len && buf[i] == ':') i++;
+			out->kind = FULL_MATCH_COLON;
+			out->pos = p;
+			out->len = i - p;
+			out->colon_count = out->len;
+			out->sentinel_n = 0;
+			out->sentinel_type = '\0';
+			return true;
+		}
+
+		if(c == '-') {
+			/* check for '-{' */
+			if(p + 1 < len && buf[p + 1] == '{') {
+				out->kind = FULL_MATCH_CONVERTER;
+				out->pos = p;
+				out->len = 2;
+				out->colon_count = 0;
+				out->sentinel_n = 0;
+				out->sentinel_type = '\0';
+				return true;
+			}
+			/* not a match; continue scanning after this byte */
+			cur = p + 1;
+			continue;
+		}
+
+		if(c == '\0') {
+			/* try to parse sentinel starting at p: \0 <digits> <type> \x7F */
+			size_t j = p + 1;
+			if(j >= len) { cur = p + 1; continue; }
+			if(!(buf[j] >= '0' && buf[j] <= '9')) { cur = p + 1; continue; }
+			size_t k = j;
+			while(k < len && buf[k] >= '0' && buf[k] <= '9') k++;
+			if(k >= len) { cur = p + 1; continue; }
+			char t = buf[k];
+			if(k + 1 >= len) { cur = p + 1; continue; }
+			if((unsigned char)buf[k + 1] != (unsigned char)0x7F) { cur = p + 1; continue; }
+			/* Only accept type 'x' or 'q' for this pattern */
+			if(!(t == 'x' || t == 'q')) { cur = p + 1; continue; }
+			/* parse decimal number */
+			size_t n = 0;
+			for(size_t d = j; d < k; ++d) n = n * 10 + (size_t)(buf[d] - '0');
+			out->kind = FULL_MATCH_SENTINEL;
+			out->pos = p;
+			out->len = (k + 2) - p;
+			out->colon_count = 0;
+			out->sentinel_n = n;
+			out->sentinel_type = t;
+			return true;
+		}
+
+		/* fallback: continue scanning after this character */
+		cur = p + 1;
+	}
+	return false;
+}
 
 static size_t skip_cno_sentinel(const char *p, size_t remaining) {
 	if(!p || remaining < 4) return 0;
@@ -351,14 +440,9 @@ void parse_list(ThreadBuf *tb, const ParserConfig *cfg, Accum *accum) {
 		int li_flag = 0;
 
 		while(search_at <= out_len && dt > 0) {
-			/* find candidate positions for next specials */
-			size_t next_colon_pos = SIZE_MAX;
+			/* find candidate positions for next specials (-{ and }-) */
 			size_t next_nbrace_pos = SIZE_MAX; /* "-{" */
 			size_t next_cbrace_pos = SIZE_MAX; /* "}-" */
-			size_t next_sentinel_pos = SIZE_MAX;
-			size_t sentinel_total_len = 0;
-			size_t sentinel_idx = 0;
-			char sentinel_type = 0;
 
 			/* find next -{ sequence */
 			for(size_t p = search_at; p + 1 < out_len; ) {
@@ -377,31 +461,35 @@ void parse_list(ThreadBuf *tb, const ParserConfig *cfg, Accum *accum) {
 				p = ip + 1;
 			}
 
-			/* Only consider sentinels and colon runs when not inside a -{ ... }- block */
-			if(lc == 0) {
-				/* next colon position */
-				const char *cptr = memchr(out + search_at, ':', (out_len > search_at) ? (out_len - search_at) : 0);
-				if(cptr) next_colon_pos = (size_t)(cptr - out);
-
-				/* find next sentinel of type 'x' or 'q' */
-				size_t temp_pos = search_at;
-				while(sentinel_scan_next(out, out_len, &temp_pos, &sentinel_idx, &sentinel_type, &sentinel_total_len)) {
-					size_t pstart = temp_pos - sentinel_total_len;
-					if(sentinel_type == 'x' || sentinel_type == 'q') {
-						next_sentinel_pos = pstart;
-						break;
-					}
-					/* continue scanning from temp_pos for the next sentinel */
-				}
-			}
-
-			/* pick the earliest match according to the active mode */
 			enum { MT_NONE=0, MT_COLON, MT_NBRACE, MT_CBRACE, MT_SENTINEL } mt = MT_NONE;
 			size_t mpos = SIZE_MAX;
+			size_t sentinel_total_len = 0;
+			size_t sentinel_idx = 0;
+			char sentinel_type = 0;
+
 			if(lc == 0) {
-				if(next_colon_pos != SIZE_MAX) { mpos = next_colon_pos; mt = MT_COLON; }
-				if(next_nbrace_pos != SIZE_MAX && (mt == MT_NONE || next_nbrace_pos < mpos)) { mpos = next_nbrace_pos; mt = MT_NBRACE; }
-				if(next_sentinel_pos != SIZE_MAX && (mt == MT_NONE || next_sentinel_pos < mpos)) { mpos = next_sentinel_pos; mt = MT_SENTINEL; }
+				/* Use scanner to locate the next colon run, -{, or sentinel */
+				FullMatch fm;
+				if(!full_scan_first(out, out_len, search_at, &fm)) break;
+				switch(fm.kind) {
+					case FULL_MATCH_COLON:
+						mt = MT_COLON;
+						mpos = fm.pos;
+						break;
+					case FULL_MATCH_CONVERTER:
+						mt = MT_NBRACE;
+						mpos = fm.pos;
+						break;
+					case FULL_MATCH_SENTINEL:
+						mt = MT_SENTINEL;
+						mpos = fm.pos;
+						sentinel_total_len = fm.len;
+						sentinel_idx = fm.sentinel_n;
+						sentinel_type = fm.sentinel_type;
+						break;
+					default:
+						break;
+				}
 			} else {
 				if(next_nbrace_pos != SIZE_MAX) { mpos = next_nbrace_pos; mt = MT_NBRACE; }
 				if(next_cbrace_pos != SIZE_MAX && (mt == MT_NONE || next_cbrace_pos < mpos)) { mpos = next_cbrace_pos; mt = MT_CBRACE; }
@@ -425,7 +513,7 @@ void parse_list(ThreadBuf *tb, const ParserConfig *cfg, Accum *accum) {
 				continue;
 			}
 			if(mt == MT_SENTINEL) {
-				size_t mstart = next_sentinel_pos;
+				size_t mstart = mpos;
 				size_t mend = mstart + sentinel_total_len;
 				char typech = sentinel_type;
 				size_t idx = sentinel_idx;

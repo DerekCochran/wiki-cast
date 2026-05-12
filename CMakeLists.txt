@@ -53,6 +53,7 @@ add_library(wikitokenizer STATIC
     src/parser/redirect.c
     src/parser/comment_and_ext.c
     src/parser/braces.c
+    src/parser/brace_pat.c
     src/parser/magic_links.c
     src/parser/html.c
     src/parser/table.c

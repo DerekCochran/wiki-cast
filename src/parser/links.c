@@ -218,6 +218,201 @@ static bool img_validate_width(const char *v) {
 	return *p == '\0';
 }
 
+/* Link parse result (manual scanner replacement for the PCRE used here) */
+typedef struct {
+	const char *target;
+	size_t      target_len;
+	bool        has_delim;
+	bool        delim_is_sentinel;  /* true if delim is \x00\d+!\x7F */
+	const char *delim;
+	size_t      delim_len;
+	const char *text;               /* NULL when group 3 not present  */
+	size_t      text_len;
+	const char *after;              /* everything after ']]'          */
+	size_t      after_len;
+	bool        found_close;        /* false if no ']]' found at all  */
+} LinkParseResult;
+
+/* Parse the interior of a '[[..' bit (buf,len) and extract groups according
+ * to the regex semantics described in proposals/callback_parser_regexes.md.
+ * If `require_nonempty_target` is true, treat empty targets as non-match
+ * (the caller may still accept the match and reject later).
+ * Returns true when a close ']]' was found and group extraction completed;
+ * out->found_close is set accordingly. This function does not allocate.
+ */
+static bool link_parse(const char *buf, size_t len, bool require_nonempty_target, LinkParseResult *out) {
+	if(!buf || !out) return false;
+	/* init */
+	out->target = NULL; out->target_len = 0;
+	out->has_delim = false; out->delim_is_sentinel = false; out->delim = NULL; out->delim_len = 0;
+	out->text = NULL; out->text_len = 0;
+	out->after = NULL; out->after_len = 0;
+	out->found_close = false;
+
+	/* 1) Find first occurrence of ']]' */
+	const char *p_close = sz_find(buf, len, "]]", 2);
+	if(!p_close) return false;
+	size_t close_pos = (size_t)(p_close - buf);
+	out->found_close = true;
+
+	/* inner = buf[0 .. close_pos) */
+	const char *inner = buf;
+	size_t inner_len = close_pos;
+
+	/* 2) Scan for target: advance while byte is not \n, '[', ']', '{', '}', '|' or a '!' sentinel start */
+	size_t i = 0;
+	while(i < inner_len) {
+		unsigned char c = (unsigned char)inner[i];
+		if(c == '\n' || c == '[' || c == ']' || c == '{' || c == '}' || c == '|') break;
+		if(c == '\0') {
+			/* try to parse a sentinel at i: \0 <digits> <type> \x7F */
+			size_t j = i + 1;
+			if(j >= inner_len) break; /* incomplete */
+			/* require at least one digit */
+			if(!(inner[j] >= '0' && inner[j] <= '9')) {
+				/* not a sentinel-like sequence; treat as break */
+				break;
+			}
+			while(j < inner_len && (inner[j] >= '0' && inner[j] <= '9')) j++;
+			if(j >= inner_len) break;
+			char t = inner[j];
+			if(j + 1 >= inner_len) break;
+			if((unsigned char)inner[j + 1] != (unsigned char)0x7F) break;
+			size_t sent_len = (j + 2) - i;
+			/* If sentinel type is '!' it is forbidden in the target (negative lookahead) */
+			if(t == '!') break;
+			/* Other sentinel types are allowed inside the target: consume it as a unit */
+			i += sent_len;
+			continue;
+		}
+		i++;
+	}
+
+	out->target = inner;
+	out->target_len = i;
+
+	/* 3) At stop pos: check for delimiter '|' or sentinel '!' */
+	if(i < inner_len) {
+		unsigned char c = (unsigned char)inner[i];
+		if(c == '|') {
+			out->has_delim = true;
+			out->delim_is_sentinel = false;
+			out->delim = inner + i;
+			out->delim_len = 1;
+			out->text = inner + i + 1;
+			out->text_len = inner_len - (i + 1);
+		} else if(c == '\0') {
+			/* parse sentinel at i again */
+			size_t j = i + 1;
+			if(j < inner_len && (inner[j] >= '0' && inner[j] <= '9')) {
+				while(j < inner_len && (inner[j] >= '0' && inner[j] <= '9')) j++;
+				if(j < inner_len && j + 1 < inner_len && (unsigned char)inner[j + 1] == (unsigned char)0x7F) {
+					char t = inner[j];
+					size_t sent_len = (j + 2) - i;
+					if(t == '!') {
+						out->has_delim = true;
+						out->delim_is_sentinel = true;
+						out->delim = inner + i;
+						out->delim_len = sent_len;
+						out->text = inner + i + sent_len;
+						out->text_len = inner_len - (i + sent_len);
+					} else {
+						/* Non-! sentinel should have been consumed into target above; defensive fallback */
+						out->has_delim = false;
+					}
+				}
+			}
+		} else {
+			/* stopped on a forbidden literal like ']' or '{' etc. — no delimiter */
+			out->has_delim = false;
+		}
+	} else {
+		out->has_delim = false;
+	}
+
+	/* 4) after = buf[close_pos + 2 .. len) */
+	if(close_pos + 2 <= len) {
+		out->after = buf + close_pos + 2;
+		out->after_len = len - (close_pos + 2);
+	} else {
+		out->after = buf + len;
+		out->after_len = 0;
+	}
+
+	/* 6) require_nonempty_target handling: if required and empty target, treat as NO MATCH */
+	if(require_nonempty_target && out->target_len == 0) {
+		out->found_close = false;
+		return false;
+	}
+
+	return true;
+}
+
+/*
+ * img_link_parse — replacement for re_img_re.
+ * Matches: ^(non-empty target)(\| or !\sentinel)(rest[\s\S]*)$
+ * Unlike link_parse, there is NO ']]' search; the caller finds ']]' later.
+ */
+typedef struct {
+	const char *target;
+	size_t      target_len;
+	bool        delim_is_sentinel;
+	const char *delim;
+	size_t      delim_len;
+	const char *rest;
+	size_t      rest_len;
+} ImgParseResult;
+
+static bool img_link_parse(const char *buf, size_t len, ImgParseResult *out) {
+	if(!buf || !out) return false;
+	size_t i = 0;
+	while(i < len) {
+		unsigned char c = (unsigned char)buf[i];
+		if(c == '\n' || c == '[' || c == ']' || c == '{' || c == '}' || c == '|') break;
+		if(c == '\0') {
+			size_t j = i + 1;
+			if(j >= len) break;
+			if(!(buf[j] >= '0' && buf[j] <= '9')) break;
+			while(j < len && (buf[j] >= '0' && buf[j] <= '9')) j++;
+			if(j >= len || j + 1 >= len || (unsigned char)buf[j + 1] != 0x7F) break;
+			if(buf[j] == '!') break; /* negative lookahead: ! sentinel stops target */
+			i += (j + 2) - i;
+			continue;
+		}
+		i++;
+	}
+	/* target must be non-empty (regex uses `+`, not `*`) */
+	if(i == 0) return false;
+	out->target = buf;
+	out->target_len = i;
+
+	/* Expect delimiter at position i */
+	if(i >= len) return false;
+	unsigned char dc = (unsigned char)buf[i];
+	if(dc == '|') {
+		out->delim = buf + i;
+		out->delim_len = 1;
+		out->delim_is_sentinel = false;
+	} else if(dc == '\0') {
+		size_t j = i + 1;
+		if(j >= len || !(buf[j] >= '0' && buf[j] <= '9')) return false;
+		while(j < len && (buf[j] >= '0' && buf[j] <= '9')) j++;
+		if(j >= len || j + 1 >= len || (unsigned char)buf[j + 1] != 0x7F) return false;
+		if(buf[j] != '!') return false; /* only ! sentinel is a valid delimiter */
+		size_t sent_len = (j + 2) - i;
+		out->delim = buf + i;
+		out->delim_len = sent_len;
+		out->delim_is_sentinel = true;
+	} else {
+		return false; /* not a valid delimiter */
+	}
+
+	size_t rest_start = i + out->delim_len;
+	out->rest = buf + rest_start;
+	out->rest_len = len - rest_start;
+	return true;
+}
+
 static bool img_starts_with_magic_url_sentinel(const char *v) {
 	if(!v || (unsigned char)v[0] != 0x00) return false;
 	size_t i= 1;
@@ -476,39 +671,9 @@ static void append_file_image_params(Token *file_tok,
 	}
 }
 
-/* ---- Static compiled regexes (equivalent to JS, compiled once) ----
- *
- * JS: const regexImg = /^((?:(?!\0\d+!\x7F)[^\n[\]{}|])+)(\||\0\d+!\x7F)([\s\S]*)$/u;
- * JS (inExt=false): /^((?:(?!\0\d+!\x7F)[^\n[\]{}|])*)(?:(\||\0\d+!\x7F)([\s\S]*?[^\]])?)?\]\]([\s\S]*)$/u
- * JS: /\0\d+[exhbru]\x7F/u
+/* Note: link parsing now uses scanner-based functions (link_parse/img_link_parse)
+ * and no longer relies on precompiled PCRE patterns for the main/link-img cases.
  */
-static pcre2_code *s_re_main= NULL;		/* inExt=false link regex */
-static pcre2_code *s_re_main_ext= NULL; /* inExt=true link regex */
-static pcre2_code *s_re_img= NULL;		/* regexImg */
-
-static void ensure_link_regexes(void) {
-	if(s_re_main && s_re_main_ext && s_re_img) return;
-
-	if(!s_re_main) {
-		const char *pat=
-		"^((?:(?!\\x00\\d+!\\x7F)[^\\n[\\]{}|])*)(?:(\\||\\x00\\d+!\\x7F)([\\s\\S]*?[^\\]])?)?\\]\\]([\\s\\S]*)$";
-		s_re_main= pcre_cache_get(pat, PCRE2_UTF);
-	}
-
-	if(!s_re_main_ext) {
-		const char *pat=
-		"^((?:(?!\\x00\\d+!\\x7F)[^\\n[\\]{}|])+)(?:(\\||\\x00\\d+!\\x7F)([\\s\\S]*?[^\\]]))?\\]\\]([\\s\\S]*)$";
-		s_re_main_ext= pcre_cache_get(pat, PCRE2_UTF);
-	}
-
-	if(!s_re_img) {
-		const char *pat=
-		"^((?:(?!\\x00\\d+!\\x7F)[^\\n[\\]{}|])+)(\\||\\x00\\d+!\\x7F)([\\s\\S]*)$";
-		s_re_img= pcre_cache_get(pat, PCRE2_UTF);
-	}
-
-	/* sentinel regex replaced by sentinel_scan helpers (no-op here) */
-}
 
 /* Compile and cache a protocol-detection regex in cfg->regex_links.
  * JS: config.regexLinks ??= new RegExp(`^\s*(?:${config.protocol}|//)`, 'iu');
@@ -585,12 +750,8 @@ void parse_links(ThreadBuf *tb, const ParserConfig *cfg, Accum *accum,
 	(void)page;
 	if(!tb || !tb->buf) return;
 
-	ensure_link_regexes();
-
 	/* Use a runtime-compiled proto regex for this call (if configured). */
 	pcre2_code *re_proto= compile_links_proto(cfg);
-	pcre2_code *re_main= cfg->in_ext ? s_re_main_ext : s_re_main;
-	pcre2_code *re_img_re= s_re_img;
 
 	size_t len= tb->len;
 	const char *buf= tb->buf;
@@ -661,32 +822,24 @@ void parse_links(ThreadBuf *tb, const ParserConfig *cfg, Accum *accum,
 		size_t after_len= 0;
 		bool link_found= false;
 
-		/* Apply main regex (inExt=false) */
+		/* Apply scanner-based main parse (replaces PCRE re_main) */
 		{
-			pcre2_match_data *md= match_region(re_main, x, xlen);
-			if(md) {
-				PCRE2_SIZE *ov= pcre2_get_ovector_pointer(md);
-				link_ptr= x + ov[2];
-				link_len= ov[3] - ov[2];
-				if(ov[4] != PCRE2_UNSET) {
-					delim_ptr= x + ov[4];
-					delim_len= ov[5] - ov[4];
+			LinkParseResult lpr;
+			bool ok = link_parse(x, xlen, cfg->in_ext, &lpr);
+			if(ok && lpr.found_close) {
+				link_ptr = lpr.target;
+				link_len = lpr.target_len;
+				if(lpr.has_delim) {
+					delim_ptr = lpr.delim;
+					delim_len = lpr.delim_len;
+					text_ptr = lpr.text;
+					text_len = lpr.text_len;
 				}
-				if(ov[6] != PCRE2_UNSET) {
-					text_ptr= x + ov[6];
-					text_len= ov[7] - ov[6];
-				}
-				if(ov[8] != PCRE2_UNSET) {
-					after_ptr= x + ov[8];
-					after_len= ov[9] - ov[8];
-				} else {
-					after_ptr= x + xlen;
-					after_len= 0;
-				}
-				link_found= true;
-				pcre2_match_data_free(md);
+				after_ptr = lpr.after;
+				after_len = lpr.after_len;
+				link_found = true;
 				log_debug_env_token("WTC_DEBUG_STAGE_5", NULL,
-					"[C parse_links] regex_main matched: link_len=%zu delim_len=%zu text_len=%zu after_len=%zu",
+					"[C parse_links] scanner_main matched: link_len=%zu delim_len=%zu text_len=%zu after_len=%zu",
 					link_len, delim_len, text_len, after_len);
 
 				/* JS: if (after.startsWith(']') && text?.includes('[')) { text += ']'; after = after.slice(1); } */
@@ -701,30 +854,25 @@ void parse_links(ThreadBuf *tb, const ParserConfig *cfg, Accum *accum,
 				}
 			} else {
 				log_debug_env_token("WTC_DEBUG_STAGE_5", NULL,
-					"[C parse_links] regex_main did NOT match at bi=%zu", bi);
+					"[C parse_links] scanner_main did NOT match at bi=%zu", bi);
 			}
 		}
 
-		/* Fallback: regexImg */
+/* Fallback: image-style match (replaces PCRE re_img; no ]] required in this bit) */
 		if(!link_found) {
-			pcre2_match_data *md= match_region(re_img_re, x, xlen);
-			if(md) {
-				PCRE2_SIZE *ov= pcre2_get_ovector_pointer(md);
-				link_ptr= x + ov[2];
-				link_len= ov[3] - ov[2];
-				if(ov[4] != PCRE2_UNSET) {
-					delim_ptr= x + ov[4];
-					delim_len= ov[5] - ov[4];
-				}
-				if(ov[6] != PCRE2_UNSET) {
-					text_ptr= x + ov[6];
-					text_len= ov[7] - ov[6];
-				}
-				mightBeImg= true;
-				link_found= true;
-				pcre2_match_data_free(md);
+			ImgParseResult ipr;
+			if(img_link_parse(x, xlen, &ipr)) {
+				link_ptr = ipr.target;
+				link_len = ipr.target_len;
+				delim_ptr = ipr.delim;
+				delim_len = ipr.delim_len;
+				text_ptr = ipr.rest;
+				text_len = ipr.rest_len;
+				/* after_ptr/after_len left as-is (NULL/0); mightBeImg path doesn't use them */
+				mightBeImg = true;
+				link_found = true;
 				log_debug_env_token("WTC_DEBUG_STAGE_5", NULL,
-					"[C parse_links] regex_img matched: link_len=%zu delim_len=%zu text_len=%zu",
+					"[C parse_links] scanner_img matched: link_len=%zu delim_len=%zu text_len=%zu",
 					link_len, delim_len, text_len);
 			}
 		}
