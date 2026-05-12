@@ -1,12 +1,8 @@
-#define PCRE2_CODE_UNIT_WIDTH 8
-#include <pcre2.h>
-
 #include "util/log.h"
 #include "parser/quotes.h"
 #include "util/string_util.h"
 #include "stringzilla/stringzilla.h"
 #include "token.h"
-#include "util/pcre_cache.h"
 #include <assert.h>
 #include <stdio.h>
 #include <stdlib.h>

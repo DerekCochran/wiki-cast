@@ -1,6 +1,3 @@
-#define PCRE2_CODE_UNIT_WIDTH 8
-#include <pcre2.h>
-
 #include "parser/table.h"
 #include "parser/td.h"
 #include "parser/tr.h"
@@ -9,48 +6,10 @@
 #include "table_token.h"
 #include "token.h"
 #include "util/thread_buffer.h"
-#include "util/pcre_cache.h"
 #include <assert.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-
-static pcre2_code *s_re_table_lead= NULL;
-static pcre2_code *s_re_table_start= NULL;
-static pcre2_code *s_re_table_line= NULL;
-static pcre2_code *s_re_table_sep_th= NULL;
-static pcre2_code *s_re_table_sep_td= NULL;
-static pcre2_code *s_re_td_inner_sep= NULL;
-
-static pcre2_code *compile_table_regex(const char *pattern) {
-	pcre2_code *re = pcre_cache_get(pattern, PCRE2_UTF | PCRE2_UCP);
-	assert(re);
-	return re;
-}
-
-static void ensure_table_regexes(void) {
-	if(!s_re_table_lead) {
-		s_re_table_lead= compile_table_regex("^(?:\\s|\\x00\\d+[cno]\\x7F)*");
-		s_re_table_start= compile_table_regex("^(:*)((?:\\s|\\x00\\d+[cn]\\x7F)*)(\\{\\||\\{(?:\\x00\\d+[cn]\\x7F)*\\x00\\d+!\\x7F|\\x00\\d+\\{\\x7F)(.*)$");
-		s_re_table_line= compile_table_regex("^(?:(\\|\\}|\\x00\\d+!\\x7F\\}|\\x00\\d+\\}\\x7F)|(\\|-+|\\x00\\d+!\\x7F-+|\\x00\\d+-\\x7F-*)(?!-)|(!|(?:\\||\\x00\\d+!\\x7F)\\+?))(.*)$");
-		s_re_table_sep_th= compile_table_regex("!!|(?:\\||\\x00\\d+!\\x7F){2}|\\x00\\d+\\+\\x7F");
-		s_re_table_sep_td= compile_table_regex("(?:\\||\\x00\\d+!\\x7F){2}|\\x00\\d+\\+\\x7F");
-		s_re_td_inner_sep= compile_table_regex("\\||\\x00\\d+!\\x7F");
-	}
-}
-
-static int match_regex(pcre2_code *re, const char *s, size_t len, size_t start,
-											 pcre2_match_data **md_out) {
-	pcre2_match_data *md= pcre2_match_data_create_from_pattern(re, NULL);
-	if(!md) return -1;
-	int rc= pcre2_match(re, (PCRE2_SPTR)s, len, start, 0, md, NULL);
-	if(rc < 0) {
-		pcre2_match_data_free(md);
-		return rc;
-	}
-	*md_out= md;
-	return rc;
-}
 
 static int contains_literal_seq(const char *s, size_t len, const char *needle) {
 	size_t nlen= strlen(needle);
@@ -193,6 +152,332 @@ static bool is_valid_attr_key(const char *k, size_t klen) {
 		}
 	}
 	return true;
+}
+
+/* Returns the byte length of the sentinel starting at buf[i] if its type
+ * byte matches `type`, otherwise 0.
+ * A valid sentinel: buf[i]=='\0', one or more ASCII digits, type byte, '\x7F'.
+ * Minimum length: 4 bytes ('\0' + '0' + type + '\x7F'). */
+static size_t sentinel_at(const char *buf, size_t len, size_t i, char type) {
+	if (i >= len || (unsigned char)buf[i] != 0x00) return 0;
+	size_t j = i + 1;
+	while (j < len && (unsigned char)buf[j] >= '0' && (unsigned char)buf[j] <= '9') j++;
+	if (j == i + 1) return 0;                        /* need at least one digit */
+	if (j >= len || buf[j] != type) return 0;
+	if (j + 1 >= len || (unsigned char)buf[j + 1] != 0x7F) return 0;
+	return j + 2 - i;
+}
+
+/* Advance through leading whitespace (' ', '\t', '\r', '\n') and through
+ * \x00\d+[cno]\x7F sentinels.  Returns the number of bytes consumed. */
+size_t table_lead_skip(const char *line, size_t len) {
+	size_t i = 0;
+	while (i < len) {
+		unsigned char c = (unsigned char)line[i];
+		if (c == ' ' || c == '\t' || c == '\r' || c == '\n') { i++; continue; }
+		if (c == 0x00) {
+			size_t sl;
+			if ((sl = sentinel_at(line, len, i, 'c'))) { i += sl; continue; }
+			if ((sl = sentinel_at(line, len, i, 'n'))) { i += sl; continue; }
+			if ((sl = sentinel_at(line, len, i, 'o'))) { i += sl; continue; }
+		}
+		break;
+	}
+	return i;
+}
+
+/* Parse table-start opener like: ^(:*)((?:\s|sentinels)*)(\{\||\{(?:sent)*\x00\d+!\x7F|\x00\d+\{\x7F)(.*)$ */
+bool table_start_parse(const char *line, size_t len, TableStartResult *out) {
+	if (!line || !out) return false;
+	size_t i = 0;
+
+	/* (:*) — leading colons */
+	out->colon_count = 0;
+	while (i < len && line[i] == ':') { out->colon_count++; i++; }
+
+	/* ((?:\s|\x00\d+[cn]\x7F)*) — pre-whitespace / [cn] sentinels */
+	size_t pre_start = i;
+	while (i < len) {
+		unsigned char c = (unsigned char)line[i];
+		if (c == ' ' || c == '\t' || c == '\r' || c == '\n') { i++; continue; }
+		size_t sl;
+		if (c == 0x00) {
+			if ((sl = sentinel_at(line, len, i, 'c'))) { i += sl; continue; }
+			if ((sl = sentinel_at(line, len, i, 'n'))) { i += sl; continue; }
+		}
+		break;
+	}
+	out->pre_ws     = line + pre_start;
+	out->pre_ws_len = i - pre_start;
+
+	/* Try opener 1: literal {| */
+	if (i + 1 < len && line[i] == '{' && line[i + 1] == '|') {
+		out->opener_is_lbrace_sentinel = false;
+		out->opener_has_bang_sentinel  = false;
+		out->opener     = line + i;
+		out->opener_len = 2;
+		out->rest       = line + i + 2;
+		out->rest_len   = len  - i - 2;
+		return true;
+	}
+
+	/* Try opener 2: { + zero-or-more [cn] sentinels + \x00\d+!\x7F */
+	if (i < len && line[i] == '{') {
+		size_t j = i + 1;
+		/* consume zero or more [cn] sentinels */
+		while (j < len) {
+			size_t sl;
+			if ((unsigned char)line[j] == 0x00 &&
+				((sl = sentinel_at(line, len, j, 'c')) ||
+				 (sl = sentinel_at(line, len, j, 'n')))) {
+				j += sl;
+			} else {
+				break;
+			}
+		}
+		/* must be followed by \x00\d+!\x7F */
+		size_t sl = sentinel_at(line, len, j, '!');
+		if (sl) {
+			size_t end = j + sl;
+			out->opener_is_lbrace_sentinel = false;
+			out->opener_has_bang_sentinel  = true;
+			out->opener     = line + i;
+			out->opener_len = end - i;
+			out->rest       = line + end;
+			out->rest_len   = len  - end;
+			return true;
+		}
+	}
+
+	/* Try opener 3: \x00\d+\{\x7F sentinel */
+	{
+		size_t sl = sentinel_at(line, len, i, '{');
+		if (sl) {
+			out->opener_is_lbrace_sentinel = true;
+			out->opener_has_bang_sentinel  = false;
+			out->opener     = line + i;
+			out->opener_len = sl;
+			out->rest       = line + i + sl;
+			out->rest_len   = len  - i - sl;
+			return true;
+		}
+	}
+
+	return false;
+}
+
+bool table_line_classify(const char *line, size_t len, TableLineResult *out) {
+	if (!line || !out || len == 0) return false;
+	out->is_th    = false;
+	out->has_plus = false;
+
+	/* GROUP 1: table close — literal '|}' or sentinel+ '}' or sentinel '}' sentinel */
+	/* literal |} */
+	if (len >= 2 && line[0] == '|' && line[1] == '}') {
+		out->kind = TABLE_LINE_CLOSE;
+		out->rest = line + 2;
+		out->rest_len = len - 2;
+		return true;
+	}
+	/* sentinel '!' followed by '}' */
+	size_t sl = sentinel_at(line, len, 0, '!');
+	if (sl && sl < len && line[sl] == '}') {
+		out->kind = TABLE_LINE_CLOSE;
+		out->rest = line + sl + 1;
+		out->rest_len = len - sl - 1;
+		return true;
+	}
+	/* sentinel '}' */
+	sl = sentinel_at(line, len, 0, '}');
+	if (sl) {
+		out->kind = TABLE_LINE_CLOSE;
+		out->rest = line + sl;
+		out->rest_len = len - sl;
+		return true;
+	}
+
+	/* GROUP 2: row separator */
+	if (len >= 2 && line[0] == '|' && line[1] == '-') {
+		size_t j = 2;
+		while (j < len && line[j] == '-') j++;
+		out->kind = TABLE_LINE_ROW;
+		out->rest = line + j;
+		out->rest_len = len - j;
+		return true;
+	}
+	sl = sentinel_at(line, len, 0, '!');
+	if (sl && sl < len && line[sl] == '-') {
+		size_t j = sl + 1;
+		while (j < len && line[j] == '-') j++;
+		out->kind = TABLE_LINE_ROW;
+		out->rest = line + j;
+		out->rest_len = len - j;
+		return true;
+	}
+	sl = sentinel_at(line, len, 0, '-');
+	if (sl) {
+		size_t j = sl;
+		while (j < len && line[j] == '-') j++;
+		out->kind = TABLE_LINE_ROW;
+		out->rest = line + j;
+		out->rest_len = len - j;
+		return true;
+	}
+
+	/* GROUP 3: cell opener */
+	if (line[0] == '!') {
+		out->kind = TABLE_LINE_CELL;
+		out->is_th = true;
+		out->rest = line + 1;
+		out->rest_len = len - 1;
+		return true;
+	}
+	if (line[0] == '|') {
+		out->kind = TABLE_LINE_CELL;
+		out->has_plus = (len >= 2 && line[1] == '+');
+		size_t skip = out->has_plus ? 2 : 1;
+		out->rest = line + skip;
+		out->rest_len = len - skip;
+		return true;
+	}
+	sl = sentinel_at(line, len, 0, '!');
+	if (sl) {
+		out->kind = TABLE_LINE_CELL;
+		out->has_plus = (sl < len && line[sl] == '+');
+		size_t skip = sl + (out->has_plus ? 1 : 0);
+		out->rest = line + skip;
+		out->rest_len = len - skip;
+		return true;
+	}
+
+	return false;
+}
+
+/* Scan `buf` for cell separators.  `include_double_bang` = true for th rows. */
+void table_sep_scan(const char *buf,
+					size_t      len,
+					bool        include_double_bang,
+					TableSepCb  cb,
+					void       *user_data) {
+	if (!buf || !cb) return;
+	size_t i = 0;
+	char cand[3] = { '!', '|', '\0' };
+
+	while (i < len) {
+		const char *found = sz_find_byte_from(buf + i, len - i, cand, 3);
+		if (!found) break;
+		size_t p = (size_t)(found - buf);
+		char c = buf[p];
+
+		if (c == '!' && include_double_bang) {
+			if (p + 1 < len && buf[p + 1] == '!') {
+				cb(TABLE_SEP_DOUBLE_BANG, p, 2, user_data);
+				i = p + 2;
+				continue;
+			}
+			i = p + 1;
+			continue;
+		}
+
+		if (c == '|') {
+			/* || → double pipe */
+			if (p + 1 < len && buf[p + 1] == '|') {
+				cb(TABLE_SEP_DOUBLE_PIPE, p, 2, user_data);
+				i = p + 2;
+				continue;
+			}
+			/* | + \x00\d+!\x7F → double pipe */
+			size_t sl = sentinel_at(buf, len, p + 1, '!');
+			if (sl) {
+				cb(TABLE_SEP_DOUBLE_PIPE, p, 1 + sl, user_data);
+				i = p + 1 + sl;
+				continue;
+			}
+			i = p + 1;
+			continue;
+		}
+
+		if ((unsigned char)c == 0x00) {
+			/* \x00\d+!\x7F */
+			size_t sl = sentinel_at(buf, len, p, '!');
+			if (sl) {
+				size_t after = p + sl;
+				/* sent + | */
+				if (after < len && buf[after] == '|') {
+					cb(TABLE_SEP_DOUBLE_PIPE, p, sl + 1, user_data);
+					i = after + 1;
+					continue;
+				}
+				/* sent + sent */
+				size_t sl2 = sentinel_at(buf, len, after, '!');
+				if (sl2) {
+					cb(TABLE_SEP_DOUBLE_PIPE, p, sl + sl2, user_data);
+					i = after + sl2;
+					continue;
+				}
+				/* lone '!' sentinel — not a separator, skip */
+				i = after;
+				continue;
+			}
+			/* \x00\d+\+\x7F — the {{!!}} double-pipe sentinel */
+			sl = sentinel_at(buf, len, p, '+');
+			if (sl) {
+				cb(TABLE_SEP_PLUS_SENTINEL, p, sl, user_data);
+				i = p + sl;
+				continue;
+			}
+			/* some other sentinel — skip one byte and keep scanning */
+			i = p + 1;
+			continue;
+		}
+
+		i = p + 1;
+	}
+}
+
+/* Find the FIRST '|' or \x00\d+!\x7F in `buf`. Fires cb once and returns true.
+ * Returns false if none found. */
+bool td_inner_sep_find(const char *buf, size_t len, TdInnerSepCb cb, void *user_data) {
+	if (!buf || !cb) return false;
+	size_t i = 0;
+	char cand[2] = { '|', '\0' };
+
+	while (i < len) {
+		const char *found = sz_find_byte_from(buf + i, len - i, cand, 2);
+		if (!found) return false;
+		size_t p = (size_t)(found - buf);
+
+		if (buf[p] == '|') {
+			cb(false, p, 1, user_data);
+			return true;
+		}
+
+		/* '\x00': try \x00\d+!\x7F only */
+		size_t sl = sentinel_at(buf, len, p, '!');
+		if (sl) {
+			cb(true, p, sl, user_data);
+			return true;
+		}
+
+		/* other sentinel — skip and continue */
+		i = p + 1;
+	}
+	return false;
+}
+
+typedef struct {
+	bool found;
+	bool is_sent;
+	size_t pos;
+	size_t sep_len;
+} InnerSepCtx;
+
+static void td_inner_sep_cb_bridge(bool is_sentinel, size_t pos, size_t sep_len, void *ud) {
+	InnerSepCtx *c = (InnerSepCtx *)ud;
+	c->found = true;
+	c->is_sent = is_sentinel;
+	c->pos = pos;
+	c->sep_len = sep_len;
 }
 
 static void parse_table_attrs(Token *attrs_tok, const char *attr_str, size_t attr_len, Accum *accum) {
@@ -401,6 +686,55 @@ static void out_append(char **out_buf, size_t *out_len, size_t *out_cap,
 	*out_len+= n;
 }
 
+/* Find next separator in buf starting at `start`. Returns true and fills
+ * *pos_out/*len_out on match, false otherwise.
+ */
+static bool table_sep_find(const char *buf, size_t len, size_t start,
+						   bool include_double_bang,
+						   size_t *pos_out, size_t *len_out) {
+	if (!buf || !pos_out || !len_out) return false;
+	if (start >= len) return false;
+	size_t i = start;
+	while (i < len) {
+		const char cand[3] = { '!', '|', '\0' };
+		const char *found = sz_find_byte_from(buf + i, len - i, cand, 3);
+		if (!found) return false;
+		size_t p = (size_t)(found - buf);
+		char c = buf[p];
+
+		if (c == '!' && include_double_bang) {
+			if (p + 1 < len && buf[p + 1] == '!') {
+				*pos_out = p; *len_out = 2; return true;
+			}
+			i = p + 1; continue;
+		}
+
+		if (c == '|') {
+			if (p + 1 < len && buf[p + 1] == '|') { *pos_out = p; *len_out = 2; return true; }
+			size_t sl = sentinel_at(buf, len, p + 1, '!');
+			if (sl) { *pos_out = p; *len_out = 1 + sl; return true; }
+			i = p + 1; continue;
+		}
+
+		if ((unsigned char)c == 0x00) {
+			size_t sl = sentinel_at(buf, len, p, '!');
+			if (sl) {
+				size_t after = p + sl;
+				if (after < len && buf[after] == '|') { *pos_out = p; *len_out = sl + 1; return true; }
+				size_t sl2 = sentinel_at(buf, len, after, '!');
+				if (sl2) { *pos_out = p; *len_out = sl + sl2; return true; }
+				i = after; continue;
+			}
+			size_t slp = sentinel_at(buf, len, p, '+');
+			if (slp) { *pos_out = p; *len_out = slp; return true; }
+			i = p + 1; continue;
+		}
+
+		i = p + 1;
+	}
+	return false;
+}
+
 static void push_text_like_js(char **out_buf, size_t *out_len, size_t *out_cap,
 															const char *s, size_t n,
 															Token *top, const ParserConfig *cfg, Accum *accum) {
@@ -499,8 +833,6 @@ static Token *create_table_token(const char *syntax, size_t syntax_len,
 void parse_table(ThreadBuf *tb, const ParserConfig *cfg, Accum *accum) {
 	(void)cfg;
 	if(!tb || !tb->buf) return;
-	ensure_table_regexes();
-
 	size_t line_count= 1;
 	for(size_t i= 0; i < tb->len; i++)
 		if(tb->buf[i] == '\n') line_count++;
@@ -534,41 +866,23 @@ void parse_table(ThreadBuf *tb, const ParserConfig *cfg, Accum *accum) {
 		size_t out_line_len= lines_len[i];
 		Token *top= stack_pop(&st);
 
-		pcre2_match_data *lead_md= NULL;
-		size_t spaces_len= 0;
-		int lead_rc= match_regex(s_re_table_lead, out_line, out_line_len, 0, &lead_md);
-		if(lead_rc > 0) {
-			PCRE2_SIZE *ov= pcre2_get_ovector_pointer(lead_md);
-			spaces_len= ov[1];
-		}
-		if(lead_md) pcre2_match_data_free(lead_md);
-
+		size_t spaces_len = table_lead_skip(out_line, out_line_len);
 		const char *line= out_line + spaces_len;
 		size_t line_len= out_line_len - spaces_len;
 
-		pcre2_match_data *start_md= NULL;
-		int start_rc= match_regex(s_re_table_start, line, line_len, 0, &start_md);
-		if(start_rc > 0) {
+		TableStartResult tsr;
+		bool start_rc = table_start_parse(line, line_len, &tsr);
+		if(start_rc) {
 			while(top && top->type != TOKEN_TD) top= stack_pop(&st);
 
-			PCRE2_SIZE *ov= pcre2_get_ovector_pointer(start_md);
-			size_t indent_s= (start_rc > 1 && ov[2] != PCRE2_UNSET) ? ov[2] : 0;
-			size_t indent_e= (start_rc > 1 && ov[3] != PCRE2_UNSET) ? ov[3] : 0;
-			size_t more_s= (start_rc > 2 && ov[4] != PCRE2_UNSET) ? ov[4] : 0;
-			size_t more_e= (start_rc > 2 && ov[5] != PCRE2_UNSET) ? ov[5] : 0;
-			size_t syn_s= (start_rc > 3 && ov[6] != PCRE2_UNSET) ? ov[6] : 0;
-			size_t syn_e= (start_rc > 3 && ov[7] != PCRE2_UNSET) ? ov[7] : 0;
-			size_t attr_s= (start_rc > 4 && ov[8] != PCRE2_UNSET) ? ov[8] : 0;
-			size_t attr_e= (start_rc > 4 && ov[9] != PCRE2_UNSET) ? ov[9] : 0;
-
-			const char *indent= line + indent_s;
-			size_t indent_len= indent_e - indent_s;
-			const char *more= line + more_s;
-			size_t more_len= more_e - more_s;
-			const char *syn= line + syn_s;
-			size_t syn_len= syn_e - syn_s;
-			const char *attr= (attr_e > attr_s) ? (line + attr_s) : "";
-			size_t attr_len= (attr_e > attr_s) ? (attr_e - attr_s) : 0;
+			const char *indent = line;
+			size_t indent_len = tsr.colon_count;
+			const char *more = tsr.pre_ws;
+			size_t more_len = tsr.pre_ws_len;
+			const char *syn = tsr.opener;
+			size_t syn_len = tsr.opener_len;
+			const char *attr = tsr.rest ? tsr.rest : "";
+			size_t attr_len = tsr.rest_len;
 
 			size_t dd_idx= 0;
 			int has_dd= 0;
@@ -623,55 +937,40 @@ void parse_table(ThreadBuf *tb, const ParserConfig *cfg, Accum *accum) {
 
 			if(top) stack_push(&st, top);
 			if(table) stack_push(&st, table);
-			pcre2_match_data_free(start_md);
 			continue;
 		}
-		if(start_md) pcre2_match_data_free(start_md);
-
 		if(!top) {
 			out_append(&out_buf, &out_len, &out_cap, "\n", 1);
 			out_append(&out_buf, &out_len, &out_cap, out_line, out_line_len);
 			continue;
 		}
 
-		pcre2_match_data *line_md= NULL;
-		int line_rc= match_regex(s_re_table_line, line, line_len, 0, &line_md);
-		if(line_rc <= 0) {
-			size_t n= out_line_len + 1;
-			char *tmp= malloc(n);
-			tmp[0]= '\n';
+		TableLineResult lres;
+		if (!table_line_classify(line, line_len, &lres)) {
+			size_t n = out_line_len + 1;
+			char *tmp = malloc(n);
+			tmp[0] = '\n';
 			sz_copy(tmp + 1, out_line, out_line_len);
 			push_text_like_js(&out_buf, &out_len, &out_cap, tmp, n, top, cfg, accum);
 			free(tmp);
 			stack_push(&st, top);
-			if(line_md) pcre2_match_data_free(line_md);
 			continue;
 		}
 
-		PCRE2_SIZE *ov= pcre2_get_ovector_pointer(line_md);
-		size_t closing_s= (line_rc > 1 && ov[2] != PCRE2_UNSET) ? ov[2] : 0;
-		size_t closing_e= (line_rc > 1 && ov[3] != PCRE2_UNSET) ? ov[3] : 0;
-		size_t row_s= (line_rc > 2 && ov[4] != PCRE2_UNSET) ? ov[4] : 0;
-		size_t row_e= (line_rc > 2 && ov[5] != PCRE2_UNSET) ? ov[5] : 0;
-		size_t cell_s= (line_rc > 3 && ov[6] != PCRE2_UNSET) ? ov[6] : 0;
-		size_t cell_e= (line_rc > 3 && ov[7] != PCRE2_UNSET) ? ov[7] : 0;
-		size_t attr_s= (line_rc > 4 && ov[8] != PCRE2_UNSET) ? ov[8] : 0;
-		size_t attr_e= (line_rc > 4 && ov[9] != PCRE2_UNSET) ? ov[9] : 0;
+		const char *attr = lres.rest ? lres.rest : "";
+		size_t attr_len = lres.rest_len;
 
-		const char *attr= (attr_e > attr_s) ? (line + attr_s) : "";
-		size_t attr_len= (attr_e > attr_s) ? (attr_e - attr_s) : 0;
-
-		if(closing_e > closing_s) {
-			while(top && top->type != TOKEN_TABLE) top= stack_pop(&st);
+		if (lres.kind == TABLE_LINE_CLOSE) {
+			while(top && top->type != TOKEN_TABLE) top = stack_pop(&st);
 			if(top) {
-				size_t clos_len= closing_e - closing_s;
-				size_t syn_len= 1 + spaces_len + clos_len;
-				char *syn= malloc(syn_len);
-				syn[0]= '\n';
+				size_t clos_len = line_len - attr_len;
+				size_t syn_len = 1 + spaces_len + clos_len;
+				char *syn = malloc(syn_len);
+				syn[0] = '\n';
 				if(spaces_len > 0) sz_copy(syn + 1, out_line, spaces_len);
-				sz_copy(syn + 1 + spaces_len, line + closing_s, clos_len);
+				if(clos_len > 0) sz_copy(syn + 1 + spaces_len, line, clos_len);
 
-				Token *clos= token_new(TOKEN_SYNTAX, "table-syntax");
+				Token *clos = token_new(TOKEN_SYNTAX, "table-syntax");
 				if(clos) {
 					if(syn_len > 0) {
 						const char *clos_view = wiki_thread_buf_append_to_tokens(syn, syn_len);
@@ -685,18 +984,18 @@ void parse_table(ThreadBuf *tb, const ParserConfig *cfg, Accum *accum) {
 				free(syn);
 			}
 			push_text_like_js(&out_buf, &out_len, &out_cap, attr, attr_len, stack_peek(&st), cfg, accum);
-		} else if(row_e > row_s) {
+		} else if (lres.kind == TABLE_LINE_ROW) {
 			top= js_pop(top, &st);
 			if(top && top->type == TOKEN_TR) top= stack_pop(&st);
 
-			size_t row_len= row_e - row_s;
-			size_t syn_len= 1 + spaces_len + row_len;
-			char *syn= malloc(syn_len);
-			syn[0]= '\n';
+			size_t row_len = line_len - attr_len;
+			size_t syn_len = 1 + spaces_len + row_len;
+			char *syn = malloc(syn_len);
+			syn[0] = '\n';
 			if(spaces_len > 0) sz_copy(syn + 1, out_line, spaces_len);
-			sz_copy(syn + 1 + spaces_len, line + row_s, row_len);
+			if(row_len > 0) sz_copy(syn + 1 + spaces_len, line, row_len);
 
-			Token *tr= create_tr_token(syn, syn_len, attr, attr_len, accum);
+			Token *tr = create_tr_token(syn, syn_len, attr, attr_len, accum);
 			free(syn);
 			if(top && tr) token_append_child(top, tr);
 			if(top) stack_push(&st, top);
@@ -704,87 +1003,76 @@ void parse_table(ThreadBuf *tb, const ParserConfig *cfg, Accum *accum) {
 		} else {
 			top= js_pop(top, &st);
 
-			const char *cell= line + cell_s;
-			size_t cell_len= cell_e - cell_s;
-			pcre2_code *sep_re= (cell_len == 1 && cell[0] == '!') ? s_re_table_sep_th : s_re_table_sep_td;
+			const char *cell = line;
+			size_t cell_len = line_len - attr_len;
+			bool include_double_bang = (cell_len == 1 && cell[0] == '!');
 
-			size_t last_index= 0;
-			size_t last_syn_len= 1 + spaces_len + cell_len;
-			char *last_syn= malloc(last_syn_len);
-			last_syn[0]= '\n';
+			size_t last_index = 0;
+			size_t last_syn_len = 1 + spaces_len + cell_len;
+			char *last_syn = malloc(last_syn_len);
+			last_syn[0] = '\n';
 			if(spaces_len > 0) sz_copy(last_syn + 1, out_line, spaces_len);
-			sz_copy(last_syn + 1 + spaces_len, cell, cell_len);
+			if(cell_len > 0) sz_copy(last_syn + 1 + spaces_len, cell, cell_len);
 
-			size_t scan= 0;
-			while(1) {
-				pcre2_match_data *sep_md= NULL;
-				int sep_rc= match_regex(sep_re, attr, attr_len, scan, &sep_md);
-				size_t sep_pos= attr_len;
-				size_t sep_len= 0;
-				if(sep_rc > 0) {
-					PCRE2_SIZE *sov= pcre2_get_ovector_pointer(sep_md);
-					sep_pos= sov[0];
-					sep_len= sov[1] - sov[0];
-				}
-				if(sep_md) pcre2_match_data_free(sep_md);
+			size_t scan = 0;
+			for(;;) {
+				size_t sep_pos = attr_len;
+				size_t sep_len = 0;
+				bool found = table_sep_find(attr, attr_len, scan, include_double_bang, &sep_pos, &sep_len);
 
-				size_t seg_len= sep_pos - last_index;
-				const char *seg= attr + last_index;
+				size_t seg_len = sep_pos - last_index;
+				const char *seg = attr + last_index;
 
-				const char *cell_attrs= "";
-				size_t cell_attrs_len= 0;
-				const char *inner_syntax= "";
-				size_t inner_syntax_len= 0;
-				const char *inner= seg;
-				size_t inner_len= seg_len;
+				const char *cell_attrs = "";
+				size_t cell_attrs_len = 0;
+				const char *inner_syntax = "";
+				size_t inner_syntax_len = 0;
+				const char *inner = seg;
+				size_t inner_len = seg_len;
 
-				pcre2_match_data *inner_md= NULL;
-				int inner_rc= match_regex(s_re_td_inner_sep, seg, seg_len, 0, &inner_md);
-				if(inner_rc > 0) {
-					PCRE2_SIZE *iov= pcre2_get_ovector_pointer(inner_md);
-					cell_attrs= seg;
-					cell_attrs_len= iov[0];
-					inner_syntax= seg + iov[0];
-					inner_syntax_len= iov[1] - iov[0];
-					inner= seg + iov[1];
-					inner_len= seg_len - iov[1];
+				InnerSepCtx ic = {0};
+				td_inner_sep_find(seg, seg_len, td_inner_sep_cb_bridge, &ic);
+				if(ic.found) {
+					cell_attrs = seg;
+					cell_attrs_len = ic.pos;
+					inner_syntax = seg + ic.pos;
+					inner_syntax_len = ic.sep_len;
+					inner = seg + ic.pos + ic.sep_len;
+					inner_len = seg_len - (ic.pos + ic.sep_len);
 
 					if(contains_literal_seq(cell_attrs, cell_attrs_len, "[[") || contains_literal_seq(cell_attrs, cell_attrs_len, "-{")) {
-						cell_attrs= "";
-						cell_attrs_len= 0;
-						inner_syntax= "";
-						inner_syntax_len= 0;
-						inner= seg;
-						inner_len= seg_len;
+						cell_attrs = "";
+						cell_attrs_len = 0;
+						inner_syntax = "";
+						inner_syntax_len = 0;
+						inner = seg;
+						inner_len = seg_len;
 					}
 				}
-				if(inner_md) pcre2_match_data_free(inner_md);
 
-				Token *td= create_td_token(last_syn, last_syn_len,
-																	 cell_attrs, cell_attrs_len,
-																	 inner_syntax, inner_syntax_len,
-																	 inner, inner_len,
-																	 accum);
+				Token *td = create_td_token(last_syn, last_syn_len,
+											 cell_attrs, cell_attrs_len,
+											 inner_syntax, inner_syntax_len,
+											 inner, inner_len,
+											 accum);
 				if(top && td) token_append_child(top, td);
 
-				if(sep_len == 0) {
+				if(!found || sep_len == 0) {
 					if(top) stack_push(&st, top);
 					if(td) stack_push(&st, td);
 					break;
 				}
 
 				free(last_syn);
-				last_syn_len= sep_len;
-				last_syn= malloc(last_syn_len);
+				last_syn_len = sep_len;
+				last_syn = malloc(last_syn_len);
 				sz_copy(last_syn, attr + sep_pos, sep_len);
 
-				last_index= sep_pos + sep_len;
-				scan= last_index;
+				last_index = sep_pos + sep_len;
+				scan = last_index;
 			}
 			free(last_syn);
 		}
-
-		pcre2_match_data_free(line_md);
 	}
 
 	out_buf[out_len]= '\0';
