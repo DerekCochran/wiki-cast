@@ -17,3 +17,15 @@
  * false from wiki_parse).
  */
 void parse_quotes(ThreadBuf *tb, const ParserConfig *cfg, Accum *accum, bool tidy);
+
+/* Quote run scanner ----------------------------------------------------- */
+typedef void (*QuoteRunCb)(size_t pos, size_t run_len, void *user_data);
+
+/*
+ * Scan `line` for every maximal run of '\'' with length >= 2. Fires cb for
+ * each such run in left-to-right order. Single isolated apostrophes are skipped.
+ */
+void quote_scan(const char   *line,
+				size_t        len,
+				QuoteRunCb    cb,
+				void         *user_data);
