@@ -53,37 +53,9 @@ static const char s_ext_char[]=
  * Result is stored in cfg->regex_external_links.
  */
 static pcre2_code *compile_external_links_regex(const ParserConfig *cfg) {
-	if(!(cfg && cfg->protocol && cfg->protocol[0])) {
-		return NULL;
-	}
-
-	/* Lazily build and cache the external-links pattern string in cfg. */
-	if(!cfg->pattern_external_links || !cfg->pattern_external_links[0]) {
-		const char *proto= cfg->protocol;
-		size_t cap= 512 + strlen(proto) + strlen(s_ext_char_first) + strlen(s_ext_char) + 3 * sizeof(ZS_CLASS) + 1;
-		char *pat= malloc(cap);
-		if(!pat) return NULL;
-
-		snprintf(pat, cap,
-				 "\\["
-				 "("
-				 "(?:\\x00\\d+[cn]\\x7F)*"
-				 "(?:"
-				 "\\x00\\d+f\\x7F"
-				 "|"
-				 "(?:(?:%s|//)%s|\\x00\\d+m\\x7F)%s"
-				 "(?=[\\[\\]<>\"\\t" ZS_CLASS "]|\\x00\\d)"
-				 ")"
-				 ")"
-				 "([" ZS_CLASS "]*(?![" ZS_CLASS "]))"
-				 "([^\\]\\x01-\\x08\\x0A-\\x1F\\x{FFFD}]*)"
-				 "\\]",
-				 proto, s_ext_char_first, s_ext_char);
-
-		((ParserConfig *)cfg)->pattern_external_links = pat;
-	}
-
-	return pcre_cache_get(cfg->pattern_external_links, PCRE2_CASELESS | PCRE2_UTF | PCRE2_UCP);
+	if(!(cfg && cfg->protocol && cfg->protocol[0])) return NULL;
+	return pcre_cache_get(cfg->pattern_external_links,
+				  PCRE2_CASELESS | PCRE2_UTF | PCRE2_UCP);
 }
 
 /* Build a minimal magic-link-url token (URL child of an ext-link or in-file marker).

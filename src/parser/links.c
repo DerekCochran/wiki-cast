@@ -679,14 +679,8 @@ static void append_file_image_params(Token *file_tok,
  * JS: config.regexLinks ??= new RegExp(`^\s*(?:${config.protocol}|//)`, 'iu');
  */
 static pcre2_code *compile_links_proto(const ParserConfig *cfg) {
-	if(!cfg || !cfg->protocol) return NULL;
-	size_t cap= 64 + strlen(cfg->protocol);
-	char *pat= malloc(cap);
-	assert(pat);
-	snprintf(pat, cap, "^\\s*(?:%s|//)", cfg->protocol);
-	pcre2_code *re= pcre_cache_get(pat, PCRE2_CASELESS | PCRE2_UTF);
-	free(pat);
-	return re;
+	if(!cfg || !cfg->pattern_links_proto) return NULL;
+	return pcre_cache_get(cfg->pattern_links_proto, PCRE2_CASELESS | PCRE2_UTF);
 }
 
 /* Trim whitespace (in-place view) */

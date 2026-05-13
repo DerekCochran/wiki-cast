@@ -68,42 +68,14 @@ static const char s_magic_pat[]=
  * Falls back to simpler pattern (no \p{}) if compilation fails. */
 static pcre2_code *compile_magic_regex(const ParserConfig *cfg) {
 	if(!(cfg && cfg->protocol && cfg->protocol[0])) return NULL;
-
 	static int s_has_unicode = -1;
 	if(s_has_unicode < 0) {
 		int val = 0;
 		s_has_unicode = (pcre2_config(PCRE2_CONFIG_UNICODE, &val) == 0 && val != 0) ? 1 : 0;
 	}
-
-	/* Lazily build and cache the magic-links pattern string in ParserConfig. */
-	if(!cfg->pattern_magic_links || !cfg->pattern_magic_links[0]) {
-		const char *proto = cfg->protocol;
-		if(s_has_unicode) {
-			size_t pat_cap = 128 + strlen(proto) + strlen(s_ext_char_first) + strlen(s_ext_char) + strlen(s_magic_pat) + 3 * sizeof(ZS_CLASS) + 1;
-			char *pattern = malloc(pat_cap);
-			assert(pattern);
-			snprintf(pattern, pat_cap,
-					 "(^|[^\\p{L}\\p{N}_])(?:(?:%s)(%s%s)|%s)",
-					 proto, s_ext_char_first, s_ext_char, s_magic_pat);
-			((ParserConfig *)cfg)->pattern_magic_links = pattern;
-		} else {
-			const char *magic_ascii=
-				"(?:RFC|PMID)[\\s\\t]+\\d+\\b"
-				"|ISBN[\\s\\t]+(?:97[89][\\s\\t-]?)?(?:\\d[\\s\\t-]?){9}[\\dx]\\b";
-			const char *ext_first_ascii= "(?:\\[[\\da-f:.]+\\]|[^\\[\\]<>\"\\s])";
-			const char *ext_char_ascii= "(?:[^\\[\\]<>\"\\x00\\s]|\\x00\\d+[cn!~]\\x7F)*";
-			size_t pat_cap = 64 + strlen(proto) + strlen(ext_first_ascii) + strlen(ext_char_ascii) + strlen(magic_ascii) + 1;
-			char *pattern = malloc(pat_cap);
-			assert(pattern);
-			snprintf(pattern, pat_cap,
-					 "(^|\\W)(?:(?:%s)(%s%s)|%s)",
-					 proto, ext_first_ascii, ext_char_ascii, magic_ascii);
-			((ParserConfig *)cfg)->pattern_magic_links = pattern;
-		}
-	}
-
 	if(s_has_unicode) {
-		return pcre_cache_get(cfg->pattern_magic_links, PCRE2_CASELESS | PCRE2_UTF | PCRE2_UCP);
+		return pcre_cache_get(cfg->pattern_magic_links,
+					  PCRE2_CASELESS | PCRE2_UTF | PCRE2_UCP);
 	}
 	return pcre_cache_get(cfg->pattern_magic_links, PCRE2_CASELESS);
 }

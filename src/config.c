@@ -12,10 +12,15 @@
  *   excludes       : string[]           // absent in raw JSON; added by getConfig()
  */
 #include "config.h"
+#define PCRE2_CODE_UNIT_WIDTH 8
+#include <pcre2.h>
 #include "util/log.h"
 #include "util/thread_buffer.h"
+#include "util/pcre_cache.h"
 #include <assert.h>
+#include <ctype.h>
 #include <cjson/cJSON.h>
+#include <stdint.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -143,6 +148,50 @@ static bool ns_entry_exists_ci(const NsEntry *arr, size_t count,
 	return false;
 }
 
+static void cfg_append_regex_escaped(char **buf, size_t *cap, size_t *len,
+						 const char *s) {
+	for(const char *p= s; *p; p++) {
+		unsigned char c= (unsigned char)*p;
+		bool meta= (c < 0x80) && (c=='\\' || c=='.' || c=='^' || c=='$' ||
+						 c=='|' || c=='?' || c=='*' || c=='+' || c=='(' || c==')' ||
+						 c=='[' || c==']' || c=='{' || c=='}');
+		size_t need= meta ? 2 : 1;
+		if(*len + need + 1 > *cap) {
+			*cap= (*cap + need + 64) * 2;
+			*buf= realloc(*buf, *cap);
+			assert(*buf);
+		}
+		if(meta) (*buf)[(*len)++]= '\\';
+		(*buf)[(*len)++]= (char)c;
+	}
+	(*buf)[*len]= '\0';
+}
+
+static void build_pattern_redirect(ParserConfig *cfg) {
+	if(!cfg || cfg->redirection.count == 0) return;
+	size_t pattern_cap= 128;
+	for(size_t i= 0; i < cfg->redirection.count; i++)
+		pattern_cap += strlen(cfg->redirection.items[i]) * 2 + 4;
+	char *pattern= malloc(pattern_cap);
+	assert(pattern);
+	size_t pos= 0;
+	pos += (size_t)snprintf(pattern + pos, pattern_cap - pos, "^(\\s*)((?:");
+	for(size_t i= 0; i < cfg->redirection.count; i++) {
+		if(i > 0) pattern[pos++] = '|';
+		const char *kw = cfg->redirection.items[i];
+		while(*kw) {
+			unsigned char c = (unsigned char)*kw;
+			if(c < 0x80 && !isalnum((int)c) && c != '_' && c != '-')
+				pattern[pos++] = '\\';
+			pattern[pos++] = (char)c;
+			kw++;
+		}
+	}
+	pos += (size_t)snprintf(pattern + pos, pattern_cap - pos,
+		")\\s*(?::\\s*)?)\\[\\[([^\\n|\\]]+)(\\|.*?)?\\]\\](\\s*)");
+	cfg->pattern_redirect = pattern;
+}
+
 static void str_map_append_dup(StrMap *m, const char *key, const char *value) {
 	if(!m || !key || !value) return;
 	char **grown_keys= realloc(m->keys, (m->count + 1) * sizeof(char *));
@@ -154,6 +203,238 @@ static void str_map_append_dup(StrMap *m, const char *key, const char *value) {
 	m->values[m->count]= strdup(value);
 	assert(m->keys[m->count] && m->values[m->count]);
 	m->count++;
+}
+
+static void build_pattern_ext_one(ParserConfig *cfg, bool include_only) {
+	const char *noinclude_re = include_only ? "includeonly" : "(?:no|only)include";
+	const char *include_re   = include_only ? "noinclude"   : "includeonly";
+	char **target_pat = include_only ? &cfg->pattern_ext_includeonly
+						 : &cfg->pattern_ext;
+	bool has_translate = false;
+	for(size_t i = 0; i < cfg->ext.count; i++) {
+		if(strcmp(cfg->ext.items[i], "translate") == 0) { has_translate = true; break; }
+	}
+	size_t exts_cap = 64;
+	for(size_t i = 0; i < cfg->ext.count; i++) {
+		const char *e = cfg->ext.items[i];
+		if(has_translate && (strcmp(e,"translate")==0 || strcmp(e,"tvar")==0)) continue;
+		exts_cap += strlen(e) + 2;
+	}
+	char *exts = malloc(exts_cap); assert(exts);
+	size_t ep = 0; bool first = true;
+	for(size_t i = 0; i < cfg->ext.count; i++) {
+		const char *e = cfg->ext.items[i];
+		if(has_translate && (strcmp(e,"translate")==0 || strcmp(e,"tvar")==0)) continue;
+		if(!first) exts[ep++] = '|';
+		size_t elen = strlen(e); memcpy(exts + ep, e, elen); ep += elen; first = false;
+	}
+	exts[ep] = '\0';
+	size_t pat_cap = 256 + exts_cap + strlen(noinclude_re)*4 + strlen(include_re)*4;
+	char *pattern = malloc(pat_cap); assert(pattern);
+	size_t pos = 0;
+	pos += (size_t)snprintf(pattern + pos, pat_cap - pos,
+		"<!--[\\s\\S]*?(?:-->|$)"
+		"|<%s(?:\\s[^>]*)?\\/>|<\\/%s\\s*>"
+		"|<(%s)(\\s[^>]*?)?(?:\\/>|>([\\s\\S]*?)<\\/(\\1\\s*)>)"
+		"|<(%s)(\\s[^>]*?)?(?:\\/>|>([\\s\\S]*?)(?:<\\/(%s\\s*)>|$))",
+		noinclude_re, noinclude_re, exts, include_re, include_re);
+	free(exts);
+	*target_pat = pattern;
+}
+
+static void build_pattern_ext(ParserConfig *cfg) {
+	build_pattern_ext_one(cfg, false);
+	build_pattern_ext_one(cfg, true);
+}
+
+static void build_pattern_converter(ParserConfig *cfg) {
+	if(!cfg || cfg->variants.count == 0) return;
+	size_t cap = 256;
+	char *pat = malloc(cap); assert(pat);
+	size_t len = 0;
+	const char *prefix = ";(?=(?:[^;]*?=>)?\\s*(?:";
+	size_t prefix_len = strlen(prefix);
+	if(len + prefix_len + 1 > cap) {
+		cap = (len + prefix_len + 64) * 2; pat = realloc(pat, cap); assert(pat);
+	}
+	memcpy(pat + len, prefix, prefix_len); len += prefix_len; pat[len] = '\0';
+	for(size_t i = 0; i < cfg->variants.count; i++) {
+		if(i > 0) {
+			if(len + 2 > cap) { cap = (cap + 64) * 2; pat = realloc(pat, cap); assert(pat); }
+			pat[len++] = '|'; pat[len] = '\0';
+		}
+		cfg_append_regex_escaped(&pat, &cap, &len, cfg->variants.items[i]);
+	}
+	const char *suffix = ")\\s*:|(?:\\s|\\x00\\d+[cn]\\x7F)*$)";
+	size_t suffix_len = strlen(suffix);
+	if(len + suffix_len + 1 > cap) {
+		cap = (len + suffix_len + 64) * 2; pat = realloc(pat, cap); assert(pat);
+	}
+	memcpy(pat + len, suffix, suffix_len); len += suffix_len; pat[len] = '\0';
+	cfg->pattern_converter = pat;
+}
+
+/* Duplicated from external_links.c — keep in sync if the source changes. */
+#define EL_ZS_CLASS \
+	" \\xA0\\x{1680}\\x{2000}-\\x{200A}\\x{202F}\\x{205F}\\x{3000}"
+#define EL_COMMON_EXT \
+	"[^\\[\\]<>\"\\x00-\\x1F\\x7F" EL_ZS_CLASS "\\x{FFFD}]"
+
+static void build_pattern_external_links(ParserConfig *cfg) {
+	if(!cfg || !cfg->protocol || !cfg->protocol[0]) return;
+	static const char ext_char_first[] =
+		"(?:\\[[\\da-f:.]+\\]|" EL_COMMON_EXT ")";
+	static const char ext_char[] =
+		"(?:" EL_COMMON_EXT "|\\x00\\d+[cn!~]\\x7F)*";
+	const char *proto = cfg->protocol;
+	size_t cap = 512 + strlen(proto) + sizeof(ext_char_first)
+				 + sizeof(ext_char) + 3 * sizeof(EL_ZS_CLASS) + 1;
+	char *pat = malloc(cap);
+	if(!pat) return;
+	snprintf(pat, cap,
+		"\\["
+		"(" 
+		"(?:\\x00\\d+[cn]\\x7F)*"
+		"(?:"
+		"\\x00\\d+f\\x7F"
+		"|"
+		"(?:(?:%s|//)%s|\\x00\\d+m\\x7F)%s"
+		"(?=[\\[\\]<>\"\\t" EL_ZS_CLASS "]|\\x00\\d)"
+		")"
+		")"
+		"([" EL_ZS_CLASS "]*(?![" EL_ZS_CLASS "]))"
+		"([^\\]\\x01-\\x08\\x0A-\\x1F\\x{FFFD}]*)"
+		"\\]",
+		proto, ext_char_first, ext_char);
+	cfg->pattern_external_links = pat;
+}
+
+static int cfg_is_fullwidth_wrapped_dunder(const char *s) {
+	static const char fw[] = "\xEF\xBC\xBF"; /* U+FF3F FULLWIDTH LOW LINE */
+	size_t fwl = sizeof(fw) - 1U;
+	size_t len = s ? strlen(s) : 0;
+	if(len < 4U * fwl + 1U) return 0;
+	return memcmp(s, fw, fwl) == 0 && memcmp(s + fwl, fw, fwl) == 0
+		&& memcmp(s + len - fwl, fw, fwl) == 0
+		&& memcmp(s + len - 2U * fwl, fw, fwl) == 0;
+}
+
+static void cfg_pattern_append(char **buf, size_t *cap, size_t *len,
+					 const char *s) {
+	size_t add = strlen(s);
+	if(*len + add + 1 > *cap) {
+		while(*len + add + 1 > *cap) *cap *= 2;
+		*buf = realloc(*buf, *cap); assert(*buf);
+	}
+	memcpy(*buf + *len, s, add); *len += add; (*buf)[*len] = '\0';
+}
+
+static void cfg_pattern_append_n(char **buf, size_t *cap, size_t *len,
+					   const char *s, size_t n) {
+	if(*len + n + 1 > *cap) {
+		while(*len + n + 1 > *cap) *cap *= 2;
+		*buf = realloc(*buf, *cap); assert(*buf);
+	}
+	memcpy(*buf + *len, s, n); *len += n; (*buf)[*len] = '\0';
+}
+
+static void build_pattern_hr_and_dunder(ParserConfig *cfg) {
+	/* Mirrors build_hr_and_dunder_pattern() from hr_and_double_underscore.c */
+	static const char fw[] = "\xEF\xBC\xBF";
+	size_t cap = 256; size_t len = 0;
+	char *pattern = malloc(cap); assert(pattern); pattern[0] = '\0';
+
+	cfg_pattern_append(&pattern, &cap, &len,
+		"^((?:\\x00\\d+[cno]\\x7F)*)(-{4,})|__(");
+
+	int first = 1;
+	for(int list = 0; list < 2; list++) {
+		const StrList *sl = &cfg->double_underscore[list];
+		for(size_t i = 0; i < sl->count; i++) {
+			const char *it = sl->items[i];
+			if(!it || cfg_is_fullwidth_wrapped_dunder(it)) continue;
+			if(!first) cfg_pattern_append(&pattern, &cap, &len, "|");
+			cfg_pattern_append(&pattern, &cap, &len, it);
+			first = 0;
+		}
+	}
+	cfg_pattern_append(&pattern, &cap, &len, ")__|");
+	cfg_pattern_append(&pattern, &cap, &len, fw);
+	cfg_pattern_append(&pattern, &cap, &len, "{2}(");
+
+	first = 1;
+	for(int list = 0; list < 2; list++) {
+		const StrList *sl = &cfg->double_underscore[list];
+		for(size_t i = 0; i < sl->count; i++) {
+			const char *it = sl->items[i];
+			if(!it || !cfg_is_fullwidth_wrapped_dunder(it)) continue;
+			size_t it_len = strlen(it);
+			if(!first) cfg_pattern_append(&pattern, &cap, &len, "|");
+			cfg_pattern_append_n(&pattern, &cap, &len,
+				it + 2U * (sizeof(fw) - 1U),
+				it_len - 4U * (sizeof(fw) - 1U));
+			first = 0;
+		}
+	}
+	cfg_pattern_append(&pattern, &cap, &len, ")");
+	cfg_pattern_append(&pattern, &cap, &len, fw);
+	cfg_pattern_append(&pattern, &cap, &len, "{2}");
+
+	cfg->pattern_hr_and_dunder = pattern;
+}
+
+/* Duplicated from magic_links.c — keep in sync if the source changes. */
+#define ML_ZS_CLASS \
+	" \\xA0\\x{1680}\\x{2000}-\\x{200A}\\x{202F}\\x{205F}\\x{3000}"
+#define ML_COMMON_EXT "[^\\[\\]<>\"\\x00-\\x1F\\x7F" ML_ZS_CLASS "\\x{FFFD}]"
+#define ML_SP  "(?:[" ML_ZS_CLASS "\\t]|&nbsp;|&#0*160;|&#x0*a0;)+"
+#define ML_SPDASH "(?:[" ML_ZS_CLASS "\\t]|&nbsp;|&#0*160;|&#x0*a0;|-)"
+
+static void build_pattern_magic_links(ParserConfig *cfg) {
+	if(!cfg || !cfg->protocol || !cfg->protocol[0]) return;
+	static const char ext_char_first[] =
+		"(?:\\[[\\da-f:.]+\\]|" ML_COMMON_EXT ")";
+	static const char ext_char[] =
+		"(?:" ML_COMMON_EXT "|\\x00\\d+[cn!~]\\x7F)*";
+	static const char magic_pat[] =
+		"(?:RFC|PMID)" ML_SP "\\d+\\b"
+		"|ISBN" ML_SP "(?:97[89]" ML_SPDASH "?)?(?:\\d" ML_SPDASH "?){9}[\\dx]\\b";
+
+	int has_unicode = 0;
+	{ int val = 0; has_unicode = (pcre2_config(PCRE2_CONFIG_UNICODE, &val) == 0 && val != 0) ? 1 : 0; }
+
+	const char *proto = cfg->protocol;
+	if(has_unicode) {
+		size_t pat_cap = 128 + strlen(proto) + sizeof(ext_char_first)
+				 + sizeof(ext_char) + sizeof(magic_pat)
+				 + 3 * sizeof(ML_ZS_CLASS) + 1;
+		char *pattern = malloc(pat_cap); assert(pattern);
+		snprintf(pattern, pat_cap,
+			"(^|[^\\p{L}\\p{N}_])(?:(?:%s)(%s%s)|%s)",
+			proto, ext_char_first, ext_char, magic_pat);
+		cfg->pattern_magic_links = pattern;
+	} else {
+		const char *magic_ascii =
+			"(?:RFC|PMID)[\\s\\t]+\\d+\\b"
+			"|ISBN[\\s\\t]+(?:97[89][\\s\\t-]?)?(?:\\d[\\s\\t-]?){9}[\\dx]\\b";
+		const char *ext_first_ascii = "(?:\\[[\\da-f:.]+\\]|[^\\[\\]<>\"\\s])";
+		const char *ext_char_ascii  = "(?:[^\\[\\]<>\"\\x00\\s]|\\x00\\d+[cn!~]\\x7F)*";
+		size_t pat_cap = 64 + strlen(proto) + strlen(ext_first_ascii)
+				 + strlen(ext_char_ascii) + strlen(magic_ascii) + 1;
+		char *pattern = malloc(pat_cap); assert(pattern);
+		snprintf(pattern, pat_cap,
+			"(^|\\W)(?:(?:%s)(%s%s)|%s)",
+			proto, ext_first_ascii, ext_char_ascii, magic_ascii);
+		cfg->pattern_magic_links = pattern;
+	}
+}
+
+static void build_pattern_links_proto(ParserConfig *cfg) {
+	if(!cfg || !cfg->protocol || !cfg->protocol[0]) return;
+	size_t cap = 64 + strlen(cfg->protocol);
+	char *pat = malloc(cap); assert(pat);
+	snprintf(pat, cap, "^\\s*(?:%s|//)", cfg->protocol);
+	cfg->pattern_links_proto = pat;
 }
 
 /* ── Internal parse of the cJSON root object ─────────────────────────────── */
@@ -331,10 +612,45 @@ static ParserConfig *config_from_cjson(const cJSON *root) {
 		}
 	}
 
+	build_pattern_redirect(cfg);
+	if(cfg->pattern_redirect)
+		pcre_cache_get(cfg->pattern_redirect, PCRE2_CASELESS | PCRE2_UTF);
+
+	build_pattern_ext(cfg);
+	if(cfg->pattern_ext)
+		pcre_cache_get(cfg->pattern_ext, PCRE2_CASELESS | PCRE2_UTF | PCRE2_UCP);
+	if(cfg->pattern_ext_includeonly)
+		pcre_cache_get(cfg->pattern_ext_includeonly, PCRE2_CASELESS | PCRE2_UTF | PCRE2_UCP);
+
+	build_pattern_converter(cfg);
+	if(cfg->pattern_converter)
+		pcre_cache_get(cfg->pattern_converter, PCRE2_CASELESS | PCRE2_UTF);
+
+	build_pattern_external_links(cfg);
+	if(cfg->pattern_external_links)
+		pcre_cache_get(cfg->pattern_external_links,
+					   PCRE2_CASELESS | PCRE2_UTF | PCRE2_UCP);
+
+	build_pattern_hr_and_dunder(cfg);
+	if(cfg->pattern_hr_and_dunder)
+		pcre_cache_get(cfg->pattern_hr_and_dunder,
+					   PCRE2_UTF | PCRE2_MULTILINE | PCRE2_CASELESS);
+
+	build_pattern_magic_links(cfg);
+	if(cfg->pattern_magic_links) {
+		int val = 0;
+		uint32_t ml_flags = (pcre2_config(PCRE2_CONFIG_UNICODE, &val) == 0 && val != 0)
+			? (PCRE2_CASELESS | PCRE2_UTF | PCRE2_UCP)
+			: PCRE2_CASELESS;
+		pcre_cache_get(cfg->pattern_magic_links, ml_flags);
+	}
+
+	build_pattern_links_proto(cfg);
+	if(cfg->pattern_links_proto)
+		pcre_cache_get(cfg->pattern_links_proto, PCRE2_CASELESS | PCRE2_UTF);
+
 	return cfg;
 }
-
-/* ── Public API ─────────────────────────────────────────────────────────── */
 
 ParserConfig *config_load_file(const char *path) {
 	FILE *f= fopen(path, "rb");
@@ -421,6 +737,7 @@ void config_free(ParserConfig *cfg) {
 	if(cfg->pattern_magic_links) free(cfg->pattern_magic_links);
 	if(cfg->pattern_external_links) free(cfg->pattern_external_links);
 	if(cfg->pattern_converter) free(cfg->pattern_converter);
+	if(cfg->pattern_links_proto) free(cfg->pattern_links_proto);
 
 	free(cfg);
 }

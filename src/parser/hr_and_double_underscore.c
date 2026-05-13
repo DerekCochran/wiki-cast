@@ -68,103 +68,10 @@ static char *lower_copy(const char *s, size_t len) {
 	return out;
 }
 
-static int is_fullwidth_wrapped_dunder(const char *s) {
-	static const char fw[]= "\xEF\xBC\xBF"; /* U+FF3F FULLWIDTH LOW LINE */
-	size_t fwl= sizeof(fw) - 1U;
-	size_t len= s ? strlen(s) : 0;
-	if(len < 4U * fwl + 1U) return 0;
-	return memcmp(s, fw, fwl) == 0 &&
-			 memcmp(s + fwl, fw, fwl) == 0 &&
-			 memcmp(s + len - fwl, fw, fwl) == 0 &&
-			 memcmp(s + len - 2U * fwl, fw, fwl) == 0;
-}
-
-static void pattern_append(char **buf, size_t *cap, size_t *len, const char *s) {
-	size_t add= strlen(s);
-	if(*len + add + 1 > *cap) {
-		while(*len + add + 1 > *cap) *cap*= 2;
-		*buf= realloc(*buf, *cap);
-		assert(*buf);
-	}
-	memcpy(*buf + *len, s, add);
-	*len+= add;
-	(*buf)[*len]= '\0';
-}
-
-static void pattern_append_n(char **buf, size_t *cap, size_t *len, const char *s, size_t n) {
-	if(*len + n + 1 > *cap) {
-		while(*len + n + 1 > *cap) *cap*= 2;
-		*buf= realloc(*buf, *cap);
-		assert(*buf);
-	}
-	memcpy(*buf + *len, s, n);
-	*len+= n;
-	(*buf)[*len]= '\0';
-}
-
-
-
-
-static char *build_hr_and_dunder_pattern(const ParserConfig *cfg) {
-	static const char fw[]= "\xEF\xBC\xBF"; /* U+FF3F FULLWIDTH LOW LINE */
-	size_t cap= 256;
-	size_t len= 0;
-	char *pattern= malloc(cap);
-	assert(pattern);
-	pattern[0]= '\0';
-
-	/* Mirrors JS: ^((?:\0\d+[cno]\x7F)*)(-{4,})|__(${underscore})__|＿{2}(${fullwidth.slice(2,-2)})＿{2} */
-	pattern_append(&pattern, &cap, &len, "^((?:\\x00\\d+[cno]\\x7F)*)(-{4,})|__(");
-
-	int first= 1;
-	for(int list= 0; list < 2; list++) {
-		const StrList *sl= &cfg->double_underscore[list];
-		for(size_t i= 0; i < sl->count; i++) {
-			const char *it= sl->items[i];
-			if(!it || is_fullwidth_wrapped_dunder(it)) continue;
-			if(!first) pattern_append(&pattern, &cap, &len, "|");
-			pattern_append(&pattern, &cap, &len, it);
-			first= 0;
-		}
-	}
-
-	pattern_append(&pattern, &cap, &len, ")__|");
-	pattern_append(&pattern, &cap, &len, fw);
-	pattern_append(&pattern, &cap, &len, "{2}(");
-
-	first= 1;
-	for(int list= 0; list < 2; list++) {
-		const StrList *sl= &cfg->double_underscore[list];
-		for(size_t i= 0; i < sl->count; i++) {
-			const char *it= sl->items[i];
-			size_t it_len;
-			if(!it || !is_fullwidth_wrapped_dunder(it)) continue;
-			it_len= strlen(it);
-			if(!first) pattern_append(&pattern, &cap, &len, "|");
-			pattern_append_n(&pattern, &cap, &len,
-								 it + 2U * (sizeof(fw) - 1U),
-								 it_len - 4U * (sizeof(fw) - 1U));
-			first= 0;
-		}
-	}
-
-	pattern_append(&pattern, &cap, &len, ")");
-	pattern_append(&pattern, &cap, &len, fw);
-	pattern_append(&pattern, &cap, &len, "{2}");
-
-	return pattern;
-}
 
 static pcre2_code *compile_regex(const ParserConfig *cfg) {
-	/* Lazily build and cache the HR / double-underscore pattern string
-	 * in the ParserConfig to avoid per-parse realloc/snprintf work. */
-	const char *pattern = cfg->pattern_hr_and_dunder;
-	if(!pattern || !pattern[0]) {
-		char *pat = build_hr_and_dunder_pattern(cfg);
-		((ParserConfig *)cfg)->pattern_hr_and_dunder = pat;
-		pattern = pat;
-	}
-	return pcre_cache_get(pattern, PCRE2_UTF | PCRE2_MULTILINE | PCRE2_CASELESS);
+	return pcre_cache_get(cfg->pattern_hr_and_dunder,
+				  PCRE2_UTF | PCRE2_MULTILINE | PCRE2_CASELESS);
 }
 
 void parse_hr_and_double_underscore(ThreadBuf *tb, const ParserConfig *cfg, Accum *accum,

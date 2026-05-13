@@ -247,74 +247,13 @@ static char *unmask_entities(const char *s, size_t len) {
 	return r;
 }
 
-/* Escape a config variant value so it is safe in a regex alternation. */
-static void append_regex_escaped(char **buf, size_t *cap, size_t *len, const char *s) {
-	for(const char *p= s; *p; p++) {
-		unsigned char c= (unsigned char)*p;
-		bool meta= (c < 0x80) && (c == '\\' || c == '.' || c == '^' || c == '$' || c == '|' || c == '?' || c == '*' || c == '+' || c == '(' || c == ')' || c == '[' || c == ']' || c == '{' || c == '}');
-		size_t need= meta ? 2 : 1;
-		if(*len + need + 1 > *cap) {
-			*cap= (*cap + need + 64) * 2;
-			*buf= realloc(*buf, *cap);
-			assert(*buf);
-		}
-		if(meta) (*buf)[(*len)++]= '\\';
-		(*buf)[(*len)++]= (char)c;
-	}
-	(*buf)[*len]= '\0';
-}
+
 
 /* JS parity:
  * new RegExp(String.raw`;(?=(?:[^;]*?=>)?\s*(?:${variants.join('|')})\s*:|(?:\s|\0\d+[cn]\x7F)*$)`, 'iu')
  */
 static pcre2_code *compile_converter_split_regex(const ParserConfig *cfg) {
 	if(!cfg || cfg->variants.count == 0) return NULL;
-
-	/* Lazily build and cache converter split pattern in cfg. */
-	if(!cfg->pattern_converter || !cfg->pattern_converter[0]) {
-		size_t cap= 256;
-		char *pat= malloc(cap);
-		assert(pat);
-		size_t len= 0;
-
-		const char *prefix= ";(?=(?:[^;]*?=>)?\\s*(?:";
-		size_t prefix_len= strlen(prefix);
-		if(len + prefix_len + 1 > cap) {
-			cap= (len + prefix_len + 64) * 2;
-			pat= realloc(pat, cap);
-			assert(pat);
-		}
-		memcpy(pat + len, prefix, prefix_len);
-		len+= prefix_len;
-		pat[len]= '\0';
-
-		for(size_t i= 0; i < cfg->variants.count; i++) {
-			if(i > 0) {
-				if(len + 2 > cap) {
-					cap= (cap + 64) * 2;
-					pat= realloc(pat, cap);
-					assert(pat);
-				}
-				pat[len++]= '|';
-				pat[len]= '\0';
-			}
-			append_regex_escaped(&pat, &cap, &len, cfg->variants.items[i]);
-		}
-
-		const char *suffix= ")\\s*:|(?:\\s|\\x00\\d+[cn]\\x7F)*$)";
-		size_t suffix_len= strlen(suffix);
-		if(len + suffix_len + 1 > cap) {
-			cap= (len + suffix_len + 64) * 2;
-			pat= realloc(pat, cap);
-			assert(pat);
-		}
-		memcpy(pat + len, suffix, suffix_len);
-		len+= suffix_len;
-		pat[len]= '\0';
-
-		((ParserConfig *)cfg)->pattern_converter = pat;
-	}
-
 	return pcre_cache_get(cfg->pattern_converter, PCRE2_CASELESS | PCRE2_UTF);
 }
 

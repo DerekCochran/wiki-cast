@@ -165,6 +165,74 @@ static bool heading_line_parse_with_sentinels(const char        *line,
 }
 
 /*
+ * heading_line_parse — forward-scan replacement for:
+ *   /^(={1,6})(.+)\1((?:\s|\0\d+[cn]\x7F)*)$/
+ *
+ * Input `s[0..len]` must start with at least one '='.
+ * Returns true and populates *out on match; false otherwise.
+ * out->lead / out->lead_len are always set to NULL / 0 (no leading group).
+ */
+static bool heading_line_parse(const char *s, size_t len, HeadingLineResult *out) {
+	if(!s || len == 0 || !out) return false;
+	const char *end = s + len;
+
+	/* Group 1: opening '=' run, 1–6 chars */
+	size_t eq_count = 0;
+	while(eq_count < 6 && s + eq_count < end && s[eq_count] == '=') eq_count++;
+	if(eq_count == 0 || s + eq_count >= end) return false;
+	const char *content_start = s + eq_count;
+
+	/* Group 3: strip trailing ((\s|\0\d+[cn]\x7F)*) from the end */
+	const char *trail_end   = end;
+	const char *trail_start = end;
+	bool changed = true;
+	while(changed && trail_start > content_start) {
+		changed = false;
+		/* whitespace */
+		if(isspace((unsigned char)*(trail_start - 1))) {
+			trail_start--; changed = true; continue;
+		}
+		/* \x00\d+[cn]\x7F sentinel — scan backwards */
+		if((unsigned char)*(trail_start - 1) == (unsigned char)'\x7F'
+		   && trail_start - 1 > content_start) {
+			const char *q = trail_start - 2;
+			while(q > content_start && *q >= '0' && *q <= '9') q--;
+			if((unsigned char)*q == 0 && q + 1 < trail_start - 1) {
+				const char *digs = q + 1;
+				while(digs < trail_start - 1 && *digs >= '0' && *digs <= '9') digs++;
+				if(digs + 1 < trail_start
+				   && (*digs == 'c' || *digs == 'n')
+				   && (unsigned char)*(digs + 1) == (unsigned char)'\x7F'
+				   && digs + 2 == trail_start
+				   && q >= content_start) {
+					trail_start = q; changed = true; continue;
+				}
+			}
+		}
+	}
+
+	/* After stripping trail, remaining content must end with eq_count '=' */
+	if((size_t)(trail_start - content_start) < eq_count + 1) return false;
+	for(size_t i = 0; i < eq_count; i++) {
+		if(*(trail_start - 1 - i) != '=') return false;
+	}
+	const char *content_end = trail_start - eq_count;
+
+	/* Inner content must be non-empty (.+ needs ≥1 char) */
+	if(content_end <= content_start) return false;
+
+	out->lead        = NULL;
+	out->lead_len    = 0;
+	out->open_eq     = s;
+	out->eq_count    = eq_count;
+	out->content     = content_start;
+	out->content_len = (size_t)(content_end - content_start);
+	out->trail       = trail_start;
+	out->trail_len   = (size_t)(trail_end - trail_start);
+	return true;
+}
+
+/*
  * Advance *pos to the next brace-grammar event in buf[*pos .. len).
  * Returns true and fills the out-params on success; false when exhausted.
  *
@@ -1280,71 +1348,63 @@ static bool braces_state_machine(ThreadBuf *tb, const ParserConfig *cfg,
 			if(has_top && top.open_len == 1 && top.open[0] == '=') {
 				const char *slice= tb->buf + top.index;
 				size_t slice_len= cur_index - top.index;
-				pcre2_code *hd_re= pcre_cache_get("^(={1,6})(.+)\\1((?:\\s|\\0\\d+[cn]\\x7F)*)$", PCRE2_UTF);
-				pcre2_match_data *hd_md= pcre2_match_data_create_from_pattern(hd_re, NULL);
-				if(hd_md) {
-					int hrc= pcre2_match(hd_re, (PCRE2_SPTR)slice, slice_len, 0, 0, hd_md, NULL);
-					if(hrc > 0) {
-						PCRE2_SIZE *hov= pcre2_get_ovector_pointer(hd_md);
-						size_t title_start= hov[2];
-						size_t title_end= hov[3];
-						size_t trail_start= hov[4];
-						size_t trail_end= hov[5];
-						size_t title_len= title_end - title_start;
-						size_t trail_len= trail_end - trail_start;
-						char *title= str_restore(slice + title_start, title_len, (const char **)link_stack, link_count, link_stack_lens, &title_len);
-						if(title) {
-							Token *heading_tok= token_new(TOKEN_HEADING, "heading");
-							if(heading_tok) {
-								Token *title_tok= token_new(TOKEN_PLAIN, "heading-title");
-								if(title_tok) {
-									/* Persist heading title into tokens arena */
-									const char *title_view= wiki_thread_buf_append_to_tokens(title, title_len);
-									token_append_text_n(title_tok, title_view, title_len);
-									token_append_child(heading_tok, title_tok);
-									if(trail_len > 0) {
-										Token *trail_tok= token_new(TOKEN_SYNTAX, "heading-trail");
-										if(trail_tok) {
-											/* Persist heading trail into tokens arena */
-											const char *trail_view= wiki_thread_buf_append_to_tokens(slice + trail_start, trail_len);
-											token_append_text_n(trail_tok, trail_view, trail_len);
-											token_append_child(heading_tok, trail_tok);
-										}
+				HeadingLineResult hr;
+				if(heading_line_parse(slice, slice_len, &hr)) {
+					size_t title_start = (size_t)(hr.content - slice);
+					size_t title_len = hr.content_len;
+					size_t trail_start = (size_t)(hr.trail - slice);
+					size_t trail_len = hr.trail_len;
+					char *title = str_restore(slice + title_start, title_len, (const char **)link_stack, link_count, link_stack_lens, &title_len);
+					if(title) {
+						Token *heading_tok= token_new(TOKEN_HEADING, "heading");
+						if(heading_tok) {
+							Token *title_tok= token_new(TOKEN_PLAIN, "heading-title");
+							if(title_tok) {
+								/* Persist heading title into tokens arena */
+								const char *title_view= wiki_thread_buf_append_to_tokens(title, title_len);
+								token_append_text_n(title_tok, title_view, title_len);
+								token_append_child(heading_tok, title_tok);
+								if(trail_len > 0) {
+									Token *trail_tok= token_new(TOKEN_SYNTAX, "heading-trail");
+									if(trail_tok) {
+										/* Persist heading trail into tokens arena */
+										const char *trail_view= wiki_thread_buf_append_to_tokens(slice + trail_start, trail_len);
+										token_append_text_n(trail_tok, trail_view, trail_len);
+										token_append_child(heading_tok, trail_tok);
 									}
-									accum_push(accum, heading_tok);
-									size_t idx= accum->count - 1;
-									char sent[64];
-									size_t slen;
-									work_str_sentinel(idx, 'h', sent, &slen);
-									{
-										char hexbuf[128];
-										size_t hexpos= 0;
-										for(size_t _i= 0; _i < slen && hexpos + 3 < sizeof(hexbuf); _i++) {
-											int wn= snprintf(hexbuf + hexpos, sizeof(hexbuf) - hexpos, "%02X", (unsigned char)sent[_i]);
-											if(wn > 0) hexpos+= (size_t)wn;
-											if(_i + 1 < slen && hexpos + 1 < sizeof(hexbuf)) hexbuf[hexpos++]= ' ';
-										}
-										hexbuf[hexpos]= '\0';
-										log_debug_env_token("WTC_DEBUG_STAGE_1", NULL,
-															  "[C parseBraces] wrote sentinel idx=%zu type=%c slen=%zu hex=%s",
-															  idx, 'h', slen, hexbuf);
-									}
-									ENSURE_OUT_CAP((top.index > next_write ? top.index - next_write : 0) + slen);
-									if(top.index > next_write) {
-										memcpy(out + out_len, tb->buf + next_write, top.index - next_write);
-										out_len+= top.index - next_write;
-									}
-									memcpy(out + out_len, sent, slen);
-									out_len+= slen;
-									next_write= cur_index + 1;
-								} else {
-									token_free(heading_tok);
 								}
+								accum_push(accum, heading_tok);
+								size_t idx= accum->count - 1;
+								char sent[64];
+								size_t slen;
+								work_str_sentinel(idx, 'h', sent, &slen);
+								{
+									char hexbuf[128];
+									size_t hexpos= 0;
+									for(size_t _i= 0; _i < slen && hexpos + 3 < sizeof(hexbuf); _i++) {
+										int wn= snprintf(hexbuf + hexpos, sizeof(hexbuf) - hexpos, "%02X", (unsigned char)sent[_i]);
+										if(wn > 0) hexpos+= (size_t)wn;
+										if(_i + 1 < slen && hexpos + 1 < sizeof(hexbuf)) hexbuf[hexpos++]= ' ';
+									}
+									hexbuf[hexpos]= '\0';
+									log_debug_env_token("WTC_DEBUG_STAGE_1", NULL,
+														  "[C parseBraces] wrote sentinel idx=%zu type=%c slen=%zu hex=%s",
+														  idx, 'h', slen, hexbuf);
+								}
+								ENSURE_OUT_CAP((top.index > next_write ? top.index - next_write : 0) + slen);
+								if(top.index > next_write) {
+									memcpy(out + out_len, tb->buf + next_write, top.index - next_write);
+									out_len+= top.index - next_write;
+								}
+								memcpy(out + out_len, sent, slen);
+								out_len+= slen;
+								next_write= cur_index + 1;
+							} else {
+								token_free(heading_tok);
 							}
-							free(title);
 						}
+						free(title);
 					}
-					pcre2_match_data_free(hd_md);
 				}
 			} else if(has_top) {
 				/* \n only closes = heading frames; preserve other frames */

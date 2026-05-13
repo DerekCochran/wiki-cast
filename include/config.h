@@ -100,6 +100,7 @@ typedef struct {
     char *pattern_magic_links;
     char *pattern_external_links;
     char *pattern_converter;
+    char *pattern_links_proto;        /* ^\s*(?:<protocol>|//) */
 
 } ParserConfig;
 

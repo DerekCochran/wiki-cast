@@ -16,37 +16,6 @@
 /* ── PCRE2 compile / free wrappers ──────────────────────────────────────── */
 
 static pcre2_code *compile_redirect_regex(const ParserConfig *cfg) {
-	/* Lazily build and cache the redirect pattern string in cfg. */
-	if(!cfg->pattern_redirect || !cfg->pattern_redirect[0]) {
-		size_t pattern_cap= 128;
-		for(size_t i= 0; i < cfg->redirection.count; i++) {
-			pattern_cap+= strlen(cfg->redirection.items[i]) * 2 + 4;
-		}
-
-		char *pattern= malloc(pattern_cap);
-		assert(pattern);
-
-		size_t pos= 0;
-		pos+= (size_t)snprintf(pattern + pos, pattern_cap - pos,
-							   "^(\\s*)((?:");
-		for(size_t i= 0; i < cfg->redirection.count; i++) {
-			if(i > 0) pattern[pos++]= '|';
-			const char *kw= cfg->redirection.items[i];
-			while(*kw) {
-				unsigned char c= (unsigned char)*kw;
-				if(c < 0x80 && !isalnum((int)c) && c != '_' && c != '-') {
-					pattern[pos++]= '\\';
-				}
-				pattern[pos++]= (char)c;
-				kw++;
-			}
-		}
-		pos+= (size_t)snprintf(pattern + pos, pattern_cap - pos,
-							   ")\\s*(?::\\s*)?)\\[\\[([^\\n|\\]]+)(\\|.*?)?\\]\\](\\s*)");
-
-		((ParserConfig *)cfg)->pattern_redirect = pattern;
-	}
-
 	return pcre_cache_get(cfg->pattern_redirect, PCRE2_CASELESS | PCRE2_UTF);
 }
 
