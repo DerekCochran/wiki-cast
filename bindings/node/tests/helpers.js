@@ -221,6 +221,8 @@ function compareSample(wikitext, { include = false, tidy = false, name = 'sample
   }
 
   appendPerfLine(name, sampleIndex, jsResult.timing, nativeResult.timing);
+  // Append to a text file the JSON AST for JS and native along with the input using writeTextFile
+  // fs.appendFileSync(path.join(__dirname, name+'_ast.txt'), "'"+ wikitext + "'\t'" + JSON.stringify(nativeResult.root) + "'\n", { flag: 'a' });
 
   const textOk = jsResult.text === nativeResult.text;
   const cmp = compareAST(jsResult.root, nativeResult.root);
@@ -338,9 +340,11 @@ function runTests(samples, opts = {}) {
   const include = Boolean(opts && opts.include);
   const tidy = Boolean(opts && opts.tidy);
   const suiteName = resolveSuiteName(opts);
+  //fs.writeFileSync(path.join(__dirname, suiteName+'_ast.txt'), '', 'utf8');
   let passed = 0;
   let failed = 0;
   for (let i = 0; i < samples.length; i++) {
+    // Create/clear the file at path.join(__dirname, name+'_ast.txt')
     const ok = compareSample(samples[i], {
       include,
       tidy,
