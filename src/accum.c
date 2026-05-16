@@ -6,7 +6,7 @@
 #include <assert.h>
 #include <stdlib.h>
 
-#define ACCUM_INIT_CAP 32
+#define ACCUM_INIT_CAP 1024
 
 void accum_init(Accum *a) {
 	a->tokens= malloc(ACCUM_INIT_CAP * sizeof(Token *));
