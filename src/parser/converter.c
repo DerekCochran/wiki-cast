@@ -1,12 +1,8 @@
-#define PCRE2_CODE_UNIT_WIDTH 8
-#include <pcre2.h>
-
 #include "util/log.h"
 #include "parser/converter.h"
 #include "util/string_util.h"
 #include "token.h"
 #include "util/thread_buffer.h"
-#include "util/pcre_cache.h"
 #include <assert.h>
 #include <ctype.h>
 #include <stdio.h>
@@ -247,22 +243,67 @@ static char *unmask_entities(const char *s, size_t len) {
 	return r;
 }
 
+/* JS split lookahead also allows semicolon splits before trailing
+ * (?:\s|\0\d+[cn]\x7F)*$ . */
+static size_t skip_cn_sentinel_tail(const char *s, size_t len, size_t i) {
+	if(i + 3 >= len) return 0;
+	unsigned char c0 = (unsigned char)s[i];
+	if(c0 != 0) return 0;  /* sentinels start with NUL; CONVERTER_ESC_NUL == 0x00 by definition */
+	size_t j = i + 1;
+	if((unsigned char)s[j] < '0' || (unsigned char)s[j] > '9') return 0;
+	while(j < len && (unsigned char)s[j] >= '0' && (unsigned char)s[j] <= '9') j++;
+	if(j + 1 >= len) return 0;
+	if((s[j] != 'c' && s[j] != 'n') || (unsigned char)s[j + 1] != 0x7F) return 0;
+	return j + 2 - i;
+}
 
+static bool converter_tail_is_ws_or_cn_sentinel(const char *s, size_t len) {
+	size_t i = 0;
+	while(i < len) {
+		if(isspace((unsigned char)s[i])) { i++; continue; }
+		size_t sc = skip_cn_sentinel_tail(s, len, i);
+		if(sc > 0) { i += sc; continue; }
+		return false;
+	}
+	return true;
+}
 
-/* JS parity:
- * new RegExp(String.raw`;(?=(?:[^;]*?=>)?\s*(?:${variants.join('|')})\s*:|(?:\s|\0\d+[cn]\x7F)*$)`, 'iu')
- */
-static pcre2_code *compile_converter_split_regex(const ParserConfig *cfg) {
-	if(!cfg || cfg->variants.count == 0) return NULL;
-	return pcre_cache_get(cfg->pattern_converter, PCRE2_CASELESS | PCRE2_UTF);
+static bool converter_rule_looks_like_variant(const char *s, size_t len,
+											  const ParserConfig *cfg) {
+	size_t i = 0;
+
+	/* optional source=> prefix before variant */
+	size_t probe = i;
+	while(probe + 1 < len && s[probe] != ';') {
+		if(s[probe] == '=' && s[probe + 1] == '>') { i = probe + 2; break; }
+		probe++;
+	}
+
+	while(i < len && isspace((unsigned char)s[i])) i++;
+	if(i >= len) return false;
+
+	for(size_t vi = 0; vi < cfg->variants.count; vi++) {
+		const char *v = cfg->variants.items[vi];
+		if(!v) continue;
+		size_t vlen = strlen(v);
+		if(i + vlen >= len) continue;
+		bool ok = true;
+		for(size_t k = 0; k < vlen; k++) {
+			if(tolower((unsigned char)s[i + k]) != tolower((unsigned char)v[k])) { ok = false; break; }
+		}
+		if(ok) {
+			size_t p = i + vlen;
+			while(p < len && isspace((unsigned char)s[p])) p++;
+			if(p < len && s[p] == ':') return true;
+		}
+	}
+
+	return false;
 }
 
 void parse_converter(ThreadBuf *tb, const ParserConfig *cfg, Accum *accum) {
 	if(!tb || !tb->buf) return;
 	if(!cfg || cfg->variants.count == 0) return; /* no variants configured */
-
-	pcre2_code *re_split = compile_converter_split_regex(cfg);
-	if(!re_split) return;
 
 	size_t *stack= NULL;
 	size_t stack_cap= 0;
@@ -364,90 +405,69 @@ void parse_converter(ThreadBuf *tb, const ParserConfig *cfg, Accum *accum) {
 		size_t rule_cap= 0;
 		size_t rule_count= 0;
 
-		pcre2_match_data *split_md= pcre2_match_data_create_from_pattern(re_split, NULL);
-		assert(split_md);
-
-		size_t split_cur= 0;
-		while(split_cur <= masked_len) {
-			int rc= pcre2_match(re_split, (PCRE2_SPTR)masked, masked_len,
-													split_cur, 0, split_md, NULL);
-			if(rc <= 0) break;
-
-			PCRE2_SIZE *ov= pcre2_get_ovector_pointer(split_md);
-			size_t ms= ov[0], me= ov[1];
-			if(ms < split_cur || me < ms) break;
-
-			size_t seg_len= ms - split_cur;
-			char *seg= malloc(seg_len + 1);
-			assert(seg);
-			if(seg_len > 0) memcpy(seg, masked + split_cur, seg_len);
-			seg[seg_len]= '\0';
-
-			char *restored= unmask_entities(seg, seg_len);
+	/* Direct split scanner replacing PCRE lookahead */
+	size_t split_cur = 0;
+	for(size_t k = 0; k <= masked_len; k++) {
+		bool at_end = (k == masked_len);
+		bool cut = false;
+		if(!at_end && masked[k] == ';') {
+			const char *tail = masked + k + 1;
+			size_t tail_len = masked_len - (k + 1);
+			cut = converter_rule_looks_like_variant(tail, tail_len, cfg)
+			   || converter_tail_is_ws_or_cn_sentinel(tail, tail_len);
+		}
+		if(at_end || cut) {
+			size_t seg_len = k - split_cur;
+			char *seg = malloc(seg_len + 1);
+			if(!seg) { log_fatal("OOM in converter split"); abort(); }
+			if(seg_len) memcpy(seg, masked + split_cur, seg_len);
+			seg[seg_len] = '\0';
+			char *restored = unmask_entities(seg, seg_len);
 			free(seg);
 
 			if(rule_count >= rule_cap) {
-				rule_cap= rule_cap ? rule_cap * 2 : 8;
-				rules= realloc(rules, rule_cap * sizeof(char *));
-				assert(rules);
+				rule_cap = rule_cap ? rule_cap * 2 : 8;
+				char **_rules_tmp = realloc(rules, rule_cap * sizeof(char *));
+				if(!_rules_tmp) { free(rules); log_fatal("OOM in converter rules realloc"); abort(); }
+				rules = _rules_tmp;
 			}
-			rules[rule_count++]= restored;
-
-			split_cur= me;
-			if(me == ms) split_cur++;
+			rules[rule_count++] = restored;
+			split_cur = k + 1;
 		}
+	}
 
-		pcre2_match_data_free(split_md);
+	rules = realloc(rules, (rule_count + 1) * sizeof(char *));
+	assert(rules);
+	rules[rule_count] = NULL;
 
-		{
-			size_t seg_len= masked_len - split_cur;
-			char *seg= malloc(seg_len + 1);
-			assert(seg);
-			if(seg_len > 0) memcpy(seg, masked + split_cur, seg_len);
-			seg[seg_len]= '\0';
-			char *restored= unmask_entities(seg, seg_len);
-			free(seg);
+	build_converter_token(flags, rules, cfg, accum);
 
-			if(rule_count >= rule_cap) {
-				rule_cap= rule_cap ? rule_cap * 2 : 8;
-				rules= realloc(rules, rule_cap * sizeof(char *));
-				assert(rules);
-			}
-			rules[rule_count++]= restored;
-		}
+	char marker[64];
+	size_t marker_len= 0;
+	work_str_sentinel(tok_idx, 'v', marker, &marker_len);
 
-		rules= realloc(rules, (rule_count + 1) * sizeof(char *));
-		assert(rules);
-		rules[rule_count]= NULL;
+	size_t prefix_len= open_idx;
+	size_t suffix_start= index + 2;
+	size_t suffix_len= tb->len - suffix_start;
+	size_t new_len= prefix_len + marker_len + suffix_len;
 
-		build_converter_token(flags, rules, cfg, accum);
+	char *new_buf= malloc(new_len + 1);
+	assert(new_buf);
+	if(prefix_len > 0) memcpy(new_buf, tb->buf, prefix_len);
+	memcpy(new_buf + prefix_len, marker, marker_len);
+	if(suffix_len > 0) memcpy(new_buf + prefix_len + marker_len, tb->buf + suffix_start, suffix_len);
+	new_buf[new_len]= '\0';
 
-		char marker[64];
-		size_t marker_len= 0;
-		work_str_sentinel(tok_idx, 'v', marker, &marker_len);
+	wiki_thread_buf_set(tb, new_buf, new_len);
+	free(new_buf);
 
-		size_t prefix_len= open_idx;
-		size_t suffix_start= index + 2;
-		size_t suffix_len= tb->len - suffix_start;
-		size_t new_len= prefix_len + marker_len + suffix_len;
+	for(size_t fi= 0; fi < flags_count; fi++) free(flags[fi]);
+	free(flags);
+	for(size_t ri= 0; ri < rule_count; ri++) free(rules[ri]);
+	free(rules);
+	free(masked);
 
-		char *new_buf= malloc(new_len + 1);
-		assert(new_buf);
-		if(prefix_len > 0) memcpy(new_buf, tb->buf, prefix_len);
-		memcpy(new_buf + prefix_len, marker, marker_len);
-		if(suffix_len > 0) memcpy(new_buf + prefix_len + marker_len, tb->buf + suffix_start, suffix_len);
-		new_buf[new_len]= '\0';
-
-		wiki_thread_buf_set(tb, new_buf, new_len);
-		free(new_buf);
-
-		for(size_t fi= 0; fi < flags_count; fi++) free(flags[fi]);
-		free(flags);
-		for(size_t ri= 0; ri < rule_count; ri++) free(rules[ri]);
-		free(rules);
-		free(masked);
-
-		if(stack_len == 0) {
+	if(stack_len == 0) {
 			scan_closes= false;
 		}
 		cursor= open_idx + marker_len;

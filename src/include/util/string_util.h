@@ -111,3 +111,18 @@ void sentinel_scan(const char    *buf,
 
 bool sentinel_scan_next(const char *buf, size_t len, size_t *pos,
                         size_t *out_n, char *out_type, size_t *out_total_len);
+
+/* ── URL scanning helpers (shared with external_links.c) ─────────────────── */
+
+/**
+ * Check if a byte is valid for the URL body (extUrlChar).
+ * Mirrors JS extUrlChar: non-control, non-bracket, non-quote, non-Zs, non-FFFD.
+ */
+bool is_url_common_byte(unsigned char c);
+
+/**
+ * Match a protocol prefix from cfg->protocol_items against s.
+ * Returns the length of the matched prefix, or 0 if no match.
+ * Requires cfg->protocol_items_valid == true.
+ */
+size_t match_proto_prefix(const char *s, size_t len, const ParserConfig *cfg);

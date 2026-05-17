@@ -538,3 +538,32 @@ char *str_extract_interwiki(const char *s, size_t len, const ParserConfig *cfg, 
 	if(consumed) *consumed= 0;
 	return NULL;
 }
+
+/* ── URL scanning helpers (shared with external_links.c) ──────────────── */
+
+bool is_url_common_byte(unsigned char c) {
+	/* JS extUrlChar: non-control, non-bracket, non-quote, non-Zs, non-FFFD */
+	if(c <= 0x20 || c == 0x7F) return false;
+	if(c == '[' || c == ']' || c == '<' || c == '>' || c == '"') return false;
+	return true;
+}
+
+size_t match_proto_prefix(const char *s, size_t len, const ParserConfig *cfg) {
+	if(!cfg || !cfg->protocol_items_valid || cfg->protocol_items.count == 0) return 0;
+	for(size_t pi = 0; pi < cfg->protocol_items.count; pi++) {
+		const char *tok = cfg->protocol_items.items[pi];
+		if(!tok) continue;
+		size_t tlen = strlen(tok);
+		if(tlen > 0 && tlen <= len) {
+			bool ok = true;
+			for(size_t i = 0; i < tlen; i++) {
+				if(tolower((unsigned char)s[i]) != tolower((unsigned char)tok[i])) {
+					ok = false;
+					break;
+				}
+			}
+			if(ok) return tlen;
+		}
+	}
+	return 0;
+}

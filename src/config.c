@@ -333,68 +333,6 @@ static void build_pattern_ext(ParserConfig *cfg) {
 	build_pattern_ext_one(cfg, true);
 }
 
-static void build_pattern_converter(ParserConfig *cfg) {
-	if(!cfg || cfg->variants.count == 0) return;
-	size_t cap = 256;
-	char *pat = malloc(cap); assert(pat);
-	size_t len = 0;
-	const char *prefix = ";(?=(?:[^;]*?=>)?\\s*(?:";
-	size_t prefix_len = strlen(prefix);
-	if(len + prefix_len + 1 > cap) {
-		cap = (len + prefix_len + 64) * 2; pat = realloc(pat, cap); assert(pat);
-	}
-	memcpy(pat + len, prefix, prefix_len); len += prefix_len; pat[len] = '\0';
-	for(size_t i = 0; i < cfg->variants.count; i++) {
-		if(i > 0) {
-			if(len + 2 > cap) { cap = (cap + 64) * 2; pat = realloc(pat, cap); assert(pat); }
-			pat[len++] = '|'; pat[len] = '\0';
-		}
-		cfg_append_regex_escaped(&pat, &cap, &len, cfg->variants.items[i]);
-	}
-	const char *suffix = ")\\s*:|(?:\\s|\\x00\\d+[cn]\\x7F)*$)";
-	size_t suffix_len = strlen(suffix);
-	if(len + suffix_len + 1 > cap) {
-		cap = (len + suffix_len + 64) * 2; pat = realloc(pat, cap); assert(pat);
-	}
-	memcpy(pat + len, suffix, suffix_len); len += suffix_len; pat[len] = '\0';
-	cfg->pattern_converter = pat;
-}
-
-/* Duplicated from external_links.c — keep in sync if the source changes. */
-#define EL_ZS_CLASS \
-	" \\xA0\\x{1680}\\x{2000}-\\x{200A}\\x{202F}\\x{205F}\\x{3000}"
-#define EL_COMMON_EXT \
-	"[^\\[\\]<>\"\\x00-\\x1F\\x7F" EL_ZS_CLASS "\\x{FFFD}]"
-
-static void build_pattern_external_links(ParserConfig *cfg) {
-	if(!cfg || !cfg->protocol || !cfg->protocol[0]) return;
-	static const char ext_char_first[] =
-		"(?:\\[[\\da-f:.]+\\]|" EL_COMMON_EXT ")";
-	static const char ext_char[] =
-		"(?:" EL_COMMON_EXT "|\\x00\\d+[cn!~]\\x7F)*";
-	const char *proto = cfg->protocol;
-	size_t cap = 512 + strlen(proto) + sizeof(ext_char_first)
-				 + sizeof(ext_char) + 3 * sizeof(EL_ZS_CLASS) + 1;
-	char *pat = malloc(cap);
-	if(!pat) return;
-	snprintf(pat, cap,
-		"\\["
-		"(" 
-		"(?:\\x00\\d+[cno]\\x7F)*"
-		"(?:"
-		"\\x00\\d+f\\x7F"
-		"|"
-		"(?:(?:%s|//)%s|\\x00\\d+m\\x7F)%s"
-		"(?=[\\[\\]<>\"\\t" EL_ZS_CLASS "]|\\x00\\d)"
-		")"
-		")"
-		"([" EL_ZS_CLASS "]*(?![" EL_ZS_CLASS "]))"
-		"([^\\]\\x01-\\x08\\x0A-\\x1F\\x{FFFD}]*)"
-		"\\]",
-		proto, ext_char_first, ext_char);
-	cfg->pattern_external_links = pat;
-}
-
 static int cfg_is_fullwidth_wrapped_dunder(const char *s) {
 	static const char fw[] = "\xEF\xBC\xBF"; /* U+FF3F FULLWIDTH LOW LINE */
 	size_t fwl = sizeof(fw) - 1U;
@@ -663,14 +601,10 @@ static ParserConfig *config_from_cjson(const cJSON *root) {
 	if(cfg->pattern_ext_includeonly)
 		pcre_cache_get(cfg->pattern_ext_includeonly, PCRE2_CASELESS | PCRE2_UTF | PCRE2_UCP);
 
-	build_pattern_converter(cfg);
-	if(cfg->pattern_converter)
-		pcre_cache_get(cfg->pattern_converter, PCRE2_CASELESS | PCRE2_UTF);
-
-	build_pattern_external_links(cfg);
-	if(cfg->pattern_external_links)
-		pcre_cache_get(cfg->pattern_external_links,
-					   PCRE2_CASELESS | PCRE2_UTF | PCRE2_UCP);
+	/* Register config-external-links dynamic rule.
+     * The external_links parser now uses a callback scanner with wiki_rule_extlink_bracket,
+     * so we don't need pattern_external_links anymore. */
+	/* config-external-links is now handled by the callback scanner in external_links.c */
 
 	build_pattern_hr_and_dunder(cfg);
 	if(cfg->pattern_hr_and_dunder)
@@ -771,8 +705,7 @@ void config_free(ParserConfig *cfg) {
 	if(cfg->pattern_ext_includeonly) free(cfg->pattern_ext_includeonly);
 	if(cfg->pattern_hr_and_dunder) free(cfg->pattern_hr_and_dunder);
 	/* pattern_magic_links removed - magic_links now uses callback scanner */
-	if(cfg->pattern_external_links) free(cfg->pattern_external_links);
-	if(cfg->pattern_converter) free(cfg->pattern_converter);
+	/* pattern_external_links removed - external_links now uses callback scanner */
 
 	free(cfg);
 }

@@ -108,8 +108,7 @@ typedef struct {
     char *pattern_ext_includeonly;    /* include-only variant */
     char *pattern_hr_and_dunder;
     /* pattern_magic_links removed - magic_links now uses callback scanner */
-    char *pattern_external_links;
-    char *pattern_converter;
+    /* pattern_external_links removed - external_links now uses callback scanner */
 
 } ParserConfig;
 

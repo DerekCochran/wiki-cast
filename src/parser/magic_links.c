@@ -62,22 +62,7 @@ static bool magic_left_boundary_ok(const char *s, size_t len, size_t i) {
     return !(prev == '_' || u_isalnum(prev));
 }
 
-static size_t match_proto_prefix(const char *s, size_t len, const ParserConfig *cfg) {
-    if (!cfg || !cfg->protocol_items_valid || cfg->protocol_items.count == 0) return 0;
-    for (size_t pi = 0; pi < cfg->protocol_items.count; pi++) {
-        const char *tok = cfg->protocol_items.items[pi];
-        if (!tok) continue;
-        size_t tlen = strlen(tok);
-        if (tlen > 0 && tlen <= len) {
-            bool ok = true;
-            for (size_t i = 0; i < tlen; i++) {
-                if (tolower((unsigned char)s[i]) != tolower((unsigned char)tok[i])) { ok = false; break; }
-            }
-            if (ok) return tlen;
-        }
-    }
-    return 0;
-}
+/* match_proto_prefix() and is_url_common_byte() are now defined in string_util.c */
 
 static size_t consume_js_zs_magic(const char *s, size_t len, size_t i) {
     if (i >= len) return 0;
@@ -93,11 +78,7 @@ static size_t consume_js_zs_magic(const char *s, size_t len, size_t i) {
     return 0;
 }
 
-static bool is_url_common_byte(unsigned char c) {
-    if (c <= 0x20 || c == 0x7F) return false;
-    if (c == '[' || c == ']' || c == '<' || c == '>' || c == '"') return false;
-    return true;
-}
+/* is_url_common_byte() is now defined in string_util.c */
 
 /* JS parity: extUrlChar permits only \x00\d+[cn!~]\x7F inside URL body. */
 static size_t parse_cnht_sentinel(const char *s, size_t len, size_t i) {
