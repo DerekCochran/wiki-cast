@@ -24,6 +24,39 @@ static void ensure_tolower_lut(void) {
 	}
 }
 
+bool str_ci_eq_n(const char *a, const char *b, size_t n) {
+	if (n == 0) return true;
+	ensure_tolower_lut();
+
+	/* For small sizes, just do a loop
+	 * StringZilla does a fallback if less than 128.
+	 */
+	if (n <= 128) {
+		for (size_t i = 0; i < n; i++) {
+			if (s_tolower_lut[(unsigned char)a[i]] != s_tolower_lut[(unsigned char)b[i]])
+				return false;
+		}
+	}
+
+	/* For larger strings, use scratch buffer with sz_equal */
+	ThreadBuf *tb = wiki_thread_buf_acquire_scratch();
+	if (!tb) {
+		/* Fallback: simple byte-by-byte LUT comparison */
+		for (size_t i = 0; i < n; i++) {
+			if (s_tolower_lut[(unsigned char)a[i]] != s_tolower_lut[(unsigned char)b[i]])
+				return false;
+		}
+		return true;
+	}
+
+	wiki_thread_buf_reserve(tb, n * 2);
+	sz_lookup(tb->buf, n, a, (const char *)s_tolower_lut);
+	sz_lookup(tb->buf + n, n, b, (const char *)s_tolower_lut);
+	bool result = (sz_equal(tb->buf, tb->buf + n, n) == 0);
+	wiki_thread_buf_release_scratch(tb);
+	return result;
+}
+
 
 /* ── Sentinel marker formatting ──────────────────────────────────────────── */
 

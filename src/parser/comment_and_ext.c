@@ -54,13 +54,6 @@ static inline bool cae_tag_name_boundary(unsigned char c) {
     return c == '>' || c == '/' || isspace(c);
 }
 
-static bool cae_ci_eq_n(const char *a, const char *b, size_t n) {
-    for(size_t i = 0; i < n; i++) {
-        if(tolower((unsigned char)a[i]) != tolower((unsigned char)b[i])) return false;
-    }
-    return true;
-}
-
 static bool cae_match_open_named(const char *s, size_t len, size_t i,
                                  const char *name, size_t name_len,
                                  CaeOpenTag *out) {
@@ -69,7 +62,7 @@ static bool cae_match_open_named(const char *s, size_t len, size_t i,
 
     size_t p = i + 1;
     if(p + name_len > len) return false;
-    if(!cae_ci_eq_n(s + p, name, name_len)) return false;
+    if(!str_ci_eq_n(s + p, name, name_len)) return false;
     p += name_len;
     if(p >= len || !cae_tag_name_boundary((unsigned char)s[p])) return false;
 
@@ -121,7 +114,7 @@ static bool cae_match_close_named(const char *s, size_t len, size_t i,
 
     size_t p = i + 2;
     if(p + name_len > len) return false;
-    if(!cae_ci_eq_n(s + p, name, name_len)) return false;
+    if(!str_ci_eq_n(s + p, name, name_len)) return false;
     p += name_len;
 
     while(p < len && isspace((unsigned char)s[p])) p++;
@@ -143,7 +136,7 @@ static bool cae_find_close_named(const char *s, size_t len, size_t from,
     for(size_t q = from; q + 2 + name_len <= len; q++) {
         if(s[q] != '<' || s[q + 1] != '/') continue;
         size_t n0 = q + 2;
-        if(!cae_ci_eq_n(s + n0, name, name_len)) continue;
+        if(!str_ci_eq_n(s + n0, name, name_len)) continue;
 
         size_t r = n0 + name_len;
         while(r < len && isspace((unsigned char)s[r])) r++;

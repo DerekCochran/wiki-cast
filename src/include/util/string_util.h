@@ -86,6 +86,12 @@ const char *str_istr(const char *haystack, size_t hlen,
                      const char *needle,   size_t nlen);
 
 /**
+ * Case-insensitive compare first n bytes of a and b (ASCII-only, using precomputed LUT).
+ * Returns true if equal (ignoring case).
+ */
+bool str_ci_eq_n(const char *a, const char *b, size_t n);
+
+/**
  * Check whether the given string starts with a configured interwiki prefix.
  * If a prefix is found, returns a newly-allocated lowercased prefix string
  * and sets *consumed to the number of original bytes consumed by the full
