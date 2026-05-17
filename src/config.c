@@ -469,52 +469,6 @@ static void build_pattern_hr_and_dunder(ParserConfig *cfg) {
 	cfg->pattern_hr_and_dunder = pattern;
 }
 
-/* Duplicated from magic_links.c — keep in sync if the source changes. */
-#define ML_ZS_CLASS \
-	" \\xA0\\x{1680}\\x{2000}-\\x{200A}\\x{202F}\\x{205F}\\x{3000}"
-#define ML_COMMON_EXT "[^\\[\\]<>\"\\x00-\\x1F\\x7F" ML_ZS_CLASS "\\x{FFFD}]"
-#define ML_SP  "(?:[" ML_ZS_CLASS "\\t]|&nbsp;|&#0*160;|&#x0*a0;)+"
-#define ML_SPDASH "(?:[" ML_ZS_CLASS "\\t]|&nbsp;|&#0*160;|&#x0*a0;|-)"
-
-static void build_pattern_magic_links(ParserConfig *cfg) {
-	if(!cfg || !cfg->protocol || !cfg->protocol[0]) return;
-	static const char ext_char_first[] =
-		"(?:\\[[\\da-f:.]+\\]|" ML_COMMON_EXT ")";
-	static const char ext_char[] =
-		"(?:" ML_COMMON_EXT "|\\x00\\d+[cn!~]\\x7F)*";
-	static const char magic_pat[] =
-		"(?:RFC|PMID)" ML_SP "\\d+\\b"
-		"|ISBN" ML_SP "(?:97[89]" ML_SPDASH "?)?(?:\\d" ML_SPDASH "?){9}[\\dx]\\b";
-
-	int has_unicode = 0;
-	{ int val = 0; has_unicode = (pcre2_config(PCRE2_CONFIG_UNICODE, &val) == 0 && val != 0) ? 1 : 0; }
-
-	const char *proto = cfg->protocol;
-	if(has_unicode) {
-		size_t pat_cap = 128 + strlen(proto) + sizeof(ext_char_first)
-				 + sizeof(ext_char) + sizeof(magic_pat)
-				 + 3 * sizeof(ML_ZS_CLASS) + 1;
-		char *pattern = malloc(pat_cap); assert(pattern);
-		snprintf(pattern, pat_cap,
-			"(^|[^\\p{L}\\p{N}_])(?:(?:%s)(%s%s)|%s)",
-			proto, ext_char_first, ext_char, magic_pat);
-		cfg->pattern_magic_links = pattern;
-	} else {
-		const char *magic_ascii =
-			"(?:RFC|PMID)[\\s\\t]+\\d+\\b"
-			"|ISBN[\\s\\t]+(?:97[89][\\s\\t-]?)?(?:\\d[\\s\\t-]?){9}[\\dx]\\b";
-		const char *ext_first_ascii = "(?:\\[[\\da-f:.]+\\]|[^\\[\\]<>\"\\s])";
-		const char *ext_char_ascii  = "(?:[^\\[\\]<>\"\\x00\\s]|\\x00\\d+[cn!~]\\x7F)*";
-		size_t pat_cap = 64 + strlen(proto) + strlen(ext_first_ascii)
-				 + strlen(ext_char_ascii) + strlen(magic_ascii) + 1;
-		char *pattern = malloc(pat_cap); assert(pattern);
-		snprintf(pattern, pat_cap,
-			"(^|\\W)(?:(?:%s)(%s%s)|%s)",
-			proto, ext_first_ascii, ext_char_ascii, magic_ascii);
-		cfg->pattern_magic_links = pattern;
-	}
-}
-
 /* ── Internal parse of the cJSON root object ─────────────────────────────── */
 
 static ParserConfig *config_from_cjson(const cJSON *root) {
@@ -723,14 +677,10 @@ static ParserConfig *config_from_cjson(const cJSON *root) {
 		pcre_cache_get(cfg->pattern_hr_and_dunder,
 					   PCRE2_UTF | PCRE2_MULTILINE | PCRE2_CASELESS);
 
-	build_pattern_magic_links(cfg);
-	if(cfg->pattern_magic_links) {
-		int val = 0;
-		uint32_t ml_flags = (pcre2_config(PCRE2_CONFIG_UNICODE, &val) == 0 && val != 0)
-			? (PCRE2_CASELESS | PCRE2_UTF | PCRE2_UCP)
-			: PCRE2_CASELESS;
-		pcre_cache_get(cfg->pattern_magic_links, ml_flags);
-	}
+	/* Register config-magic-links dynamic rule.
+     * The magic_links parser now uses a callback scanner with protocol_items,
+     * so we don't need pattern_magic_links anymore. */
+	/* config-magic-links is now handled by the callback scanner in magic_links.c */
 
 	return cfg;
 }
@@ -820,7 +770,7 @@ void config_free(ParserConfig *cfg) {
 	if(cfg->pattern_ext) free(cfg->pattern_ext);
 	if(cfg->pattern_ext_includeonly) free(cfg->pattern_ext_includeonly);
 	if(cfg->pattern_hr_and_dunder) free(cfg->pattern_hr_and_dunder);
-	if(cfg->pattern_magic_links) free(cfg->pattern_magic_links);
+	/* pattern_magic_links removed - magic_links now uses callback scanner */
 	if(cfg->pattern_external_links) free(cfg->pattern_external_links);
 	if(cfg->pattern_converter) free(cfg->pattern_converter);
 

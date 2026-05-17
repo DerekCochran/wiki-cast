@@ -107,7 +107,7 @@ typedef struct {
     char *pattern_ext;                /* general ext-tags pattern */
     char *pattern_ext_includeonly;    /* include-only variant */
     char *pattern_hr_and_dunder;
-    char *pattern_magic_links;
+    /* pattern_magic_links removed - magic_links now uses callback scanner */
     char *pattern_external_links;
     char *pattern_converter;
 
