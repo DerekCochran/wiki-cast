@@ -167,31 +167,6 @@ static void cfg_append_regex_escaped(char **buf, size_t *cap, size_t *len,
 	(*buf)[*len]= '\0';
 }
 
-static void build_pattern_redirect(ParserConfig *cfg) {
-	if(!cfg || cfg->redirection.count == 0) return;
-	size_t pattern_cap= 128;
-	for(size_t i= 0; i < cfg->redirection.count; i++)
-		pattern_cap += strlen(cfg->redirection.items[i]) * 2 + 4;
-	char *pattern= malloc(pattern_cap);
-	assert(pattern);
-	size_t pos= 0;
-	pos += (size_t)snprintf(pattern + pos, pattern_cap - pos, "^(\\s*)((?:");
-	for(size_t i= 0; i < cfg->redirection.count; i++) {
-		if(i > 0) pattern[pos++] = '|';
-		const char *kw = cfg->redirection.items[i];
-		while(*kw) {
-			unsigned char c = (unsigned char)*kw;
-			if(c < 0x80 && !isalnum((int)c) && c != '_' && c != '-')
-				pattern[pos++] = '\\';
-			pattern[pos++] = (char)c;
-			kw++;
-		}
-	}
-	pos += (size_t)snprintf(pattern + pos, pattern_cap - pos,
-		")\\s*(?::\\s*)?)\\[\\[([^\\n|\\]]+)(\\|.*?)?\\]\\](\\s*)");
-	cfg->pattern_redirect = pattern;
-}
-
 static void str_map_append_dup(StrMap *m, const char *key, const char *value) {
 	if(!m || !key || !value) return;
 	char **grown_keys= realloc(m->keys, (m->count + 1) * sizeof(char *));
@@ -734,9 +709,7 @@ static ParserConfig *config_from_cjson(const cJSON *root) {
 		}
 	}
 
-	build_pattern_redirect(cfg);
-	if(cfg->pattern_redirect)
-		pcre_cache_get(cfg->pattern_redirect, PCRE2_CASELESS | PCRE2_UTF);
+	/* pattern_redirect removed - redirect now uses callback parsing */
 
 	build_pattern_ext(cfg);
 	if(cfg->pattern_ext)
@@ -855,7 +828,7 @@ void config_free(ParserConfig *cfg) {
 	str_list_free(&cfg->excludes);
 
 	/* Free lazily-built pattern strings cached in the config */
-	if(cfg->pattern_redirect) free(cfg->pattern_redirect);
+	/* pattern_redirect removed - redirect now uses callback parsing */
 	if(cfg->pattern_ext) free(cfg->pattern_ext);
 	if(cfg->pattern_ext_includeonly) free(cfg->pattern_ext_includeonly);
 	if(cfg->pattern_hr_and_dunder) free(cfg->pattern_hr_and_dunder);

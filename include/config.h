@@ -103,7 +103,7 @@ typedef struct {
     /* Prebuilt dynamic regex pattern strings (cached here to avoid
      * per-parse snprintf/realloc work). Built lazily by parsers and
      * freed in `config_free`. */
-    char *pattern_redirect;
+    /* pattern_redirect removed - redirect now uses callback parsing */
     char *pattern_ext;                /* general ext-tags pattern */
     char *pattern_ext_includeonly;    /* include-only variant */
     char *pattern_hr_and_dunder;
