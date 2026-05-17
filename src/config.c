@@ -17,6 +17,8 @@
 #include "util/log.h"
 #include "util/thread_buffer.h"
 #include "util/pcre_cache.h"
+#include "util/callback_parser.h"
+#include "util/wiki_parser_rules.h"
 #include <assert.h>
 #include <ctype.h>
 #include <cjson/cJSON.h>
@@ -146,25 +148,6 @@ static bool ns_entry_exists_ci(const NsEntry *arr, size_t count,
 		}
 	}
 	return false;
-}
-
-static void cfg_append_regex_escaped(char **buf, size_t *cap, size_t *len,
-						 const char *s) {
-	for(const char *p= s; *p; p++) {
-		unsigned char c= (unsigned char)*p;
-		bool meta= (c < 0x80) && (c=='\\' || c=='.' || c=='^' || c=='$' ||
-						 c=='|' || c=='?' || c=='*' || c=='+' || c=='(' || c==')' ||
-						 c=='[' || c==']' || c=='{' || c=='}');
-		size_t need= meta ? 2 : 1;
-		if(*len + need + 1 > *cap) {
-			*cap= (*cap + need + 64) * 2;
-			*buf= realloc(*buf, *cap);
-			assert(*buf);
-		}
-		if(meta) (*buf)[(*len)++]= '\\';
-		(*buf)[(*len)++]= (char)c;
-	}
-	(*buf)[*len]= '\0';
 }
 
 static void str_map_append_dup(StrMap *m, const char *key, const char *value) {
@@ -596,10 +579,33 @@ static ParserConfig *config_from_cjson(const cJSON *root) {
 	/* pattern_redirect removed - redirect now uses callback parsing */
 
 	build_pattern_ext(cfg);
-	if(cfg->pattern_ext)
-		pcre_cache_get(cfg->pattern_ext, PCRE2_CASELESS | PCRE2_UTF | PCRE2_UCP);
-	if(cfg->pattern_ext_includeonly)
-		pcre_cache_get(cfg->pattern_ext_includeonly, PCRE2_CASELESS | PCRE2_UTF | PCRE2_UCP);
+
+	/* Register dynamic rules for ext tags (config-ext and config-ext-includeonly).
+     * These are used by the callback scanner in comment_and_ext.c.
+     * The pattern strings are still built for potential PCRE fallback during migration. */
+	/* config-ext dynamic rule registration */
+	if(cfg->pattern_ext) {
+		ParserRules ext_rule = {
+			/* This is a placeholder - the actual matching is done by cae_match_ext()
+             * which iterates over cfg->ext items. The dynamic rule registration
+             * ensures the config-ext key exists in the registry. */
+			.match_mode = PARSER_MATCH_FIRST_CLOSE,
+			.case_insensitive = true,
+		};
+		if(!wiki_parser_rules_set_dynamic("config-ext", &ext_rule)) {
+			log_error("config_from_cjson: failed to register config-ext dynamic rule");
+		}
+	}
+	/* config-ext-includeonly dynamic rule registration */
+	if(cfg->pattern_ext_includeonly) {
+		ParserRules ext_includeonly_rule = {
+			.match_mode = PARSER_MATCH_FIRST_CLOSE,
+			.case_insensitive = true,
+		};
+		if(!wiki_parser_rules_set_dynamic("config-ext-includeonly", &ext_includeonly_rule)) {
+			log_error("config_from_cjson: failed to register config-ext-includeonly dynamic rule");
+		}
+	}
 
 	/* Register config-external-links dynamic rule.
      * The external_links parser now uses a callback scanner with wiki_rule_extlink_bracket,
@@ -674,6 +680,9 @@ ParserConfig *config_load_string(const char *json_str, size_t len) {
 
 void config_free(ParserConfig *cfg) {
 	if(!cfg) return;
+
+	/* Clear dynamic rules before freeing config */
+	wiki_parser_rules_clear_dynamic();
 
 	/* Free expanded protocol items */
 	protocol_items_free(&cfg->protocol_items);

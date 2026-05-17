@@ -687,7 +687,7 @@ static void out_append(char **out_buf, size_t *out_len, size_t *out_cap,
 }
 
 /* Find next separator in buf starting at `start`. Returns true and fills
- * *pos_out/*len_out on match, false otherwise.
+ * pos_outlen_out on match, false otherwise.
  */
 static bool table_sep_find(const char *buf, size_t len, size_t start,
 						   bool include_double_bang,

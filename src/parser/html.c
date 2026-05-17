@@ -11,9 +11,6 @@
 #include <stdlib.h>
 #include <string.h>
 
-/* Regex roughly mirrors the JS: /^(\/?) ([a-z][^\s/>]*)((?:\s|\/(?!>))[^>]*?)?(\/?>)([^<]*)$/iu */
-static const char *HTML_PATTERN= "^(/?)([a-z][^\\s/>]*)((?:\\s|/(?!>))[^>]*?)?(/?>)([^<]*)$";
-
 /* Html tag parse result (allocation-free views into the provided buffer) */
 typedef struct {
 	bool        is_closing;        /* group 1: leading '/' present    */

@@ -1,6 +1,3 @@
-#define PCRE2_CODE_UNIT_WIDTH 8
-#include <pcre2.h>
-
 #include "util/log.h"
 #include "build.h"
 #include "parser/braces.h"
@@ -9,7 +6,6 @@
 #include "parser/links.h"
 #include "util/string_util.h"
 #include "util/thread_buffer.h"
-#include "util/pcre_cache.h"
 #include "util/callback_parser.h"
 #include "util/wiki_parser_rules.h"
 #include <stringzilla/stringzilla.h>
@@ -18,6 +14,301 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+
+typedef enum {
+    CAE_MATCH_COMMENT = 1,
+    CAE_MATCH_NOINCLUDE_SINGLE = 2,
+    CAE_MATCH_EXT = 3,
+    CAE_MATCH_INCLUDE = 4,
+} CaeMatchKind;
+
+typedef struct {
+    CaeMatchKind kind;
+    size_t mstart, mend;
+
+    size_t name_s, name_e;
+    size_t attr_s, attr_e;
+    size_t inner_s, inner_e;
+    size_t close_s, close_e;
+
+    bool has_attr;
+    bool has_inner;
+    bool has_close;
+} CaeScanMatch;
+
+typedef struct {
+    size_t name_s, name_e;
+    size_t attr_s, attr_e;
+    size_t open_end;
+    bool has_attr;
+    bool self_closing;
+} CaeOpenTag;
+
+static const char *find_substr_cs(const char *hay, size_t hlen,
+								const char *needle, size_t nlen) {
+	if(!hay || !needle || nlen == 0 || nlen > hlen) return NULL;
+	return sz_find(hay, hlen, needle, nlen);
+}
+
+static inline bool cae_tag_name_boundary(unsigned char c) {
+    return c == '>' || c == '/' || isspace(c);
+}
+
+static bool cae_ci_eq_n(const char *a, const char *b, size_t n) {
+    for(size_t i = 0; i < n; i++) {
+        if(tolower((unsigned char)a[i]) != tolower((unsigned char)b[i])) return false;
+    }
+    return true;
+}
+
+static bool cae_match_open_named(const char *s, size_t len, size_t i,
+                                 const char *name, size_t name_len,
+                                 CaeOpenTag *out) {
+    if(!s || !name || !out || i + 1 >= len) return false;
+    if(s[i] != '<' || s[i + 1] == '/') return false;
+
+    size_t p = i + 1;
+    if(p + name_len > len) return false;
+    if(!cae_ci_eq_n(s + p, name, name_len)) return false;
+    p += name_len;
+    if(p >= len || !cae_tag_name_boundary((unsigned char)s[p])) return false;
+
+    out->name_s = i + 1;
+    out->name_e = i + 1 + name_len;
+    out->has_attr = false;
+    out->attr_s = out->attr_e = 0;
+    out->self_closing = false;
+    out->open_end = 0;
+
+    if(isspace((unsigned char)s[p])) {
+        out->has_attr = true;
+        out->attr_s = p;
+        for(size_t q = p + 1; q < len; q++) {
+            if(s[q] == '/' && q + 1 < len && s[q + 1] == '>') {
+                out->attr_e = q;
+                out->self_closing = true;
+                out->open_end = q + 2;
+                return true;
+            }
+            if(s[q] == '>') {
+                out->attr_e = q;
+                out->self_closing = false;
+                out->open_end = q + 1;
+                return true;
+            }
+        }
+        return false;
+    }
+
+    if(s[p] == '/' && p + 1 < len && s[p + 1] == '>') {
+        out->self_closing = true;
+        out->open_end = p + 2;
+        return true;
+    }
+    if(s[p] == '>') {
+        out->self_closing = false;
+        out->open_end = p + 1;
+        return true;
+    }
+    return false;
+}
+
+static bool cae_match_close_named(const char *s, size_t len, size_t i,
+                                  const char *name, size_t name_len,
+                                  size_t *mend) {
+    if(!s || !name || !mend || i + 2 >= len) return false;
+    if(s[i] != '<' || s[i + 1] != '/') return false;
+
+    size_t p = i + 2;
+    if(p + name_len > len) return false;
+    if(!cae_ci_eq_n(s + p, name, name_len)) return false;
+    p += name_len;
+
+    while(p < len && isspace((unsigned char)s[p])) p++;
+    if(p < len && s[p] == '>') {
+        *mend = p + 1;
+        return true;
+    }
+    return false;
+}
+
+static bool cae_find_close_named(const char *s, size_t len, size_t from,
+                                 const char *name, size_t name_len,
+                                 size_t *close_tag_s,
+                                 size_t *close_name_s, size_t *close_name_e,
+                                 size_t *close_tag_e) {
+    if(!s || !name || !close_tag_s || !close_name_s || !close_name_e || !close_tag_e)
+        return false;
+
+    for(size_t q = from; q + 2 + name_len <= len; q++) {
+        if(s[q] != '<' || s[q + 1] != '/') continue;
+        size_t n0 = q + 2;
+        if(!cae_ci_eq_n(s + n0, name, name_len)) continue;
+
+        size_t r = n0 + name_len;
+        while(r < len && isspace((unsigned char)s[r])) r++;
+        if(r < len && s[r] == '>') {
+            *close_tag_s = q;
+            *close_name_s = n0;
+            *close_name_e = r;
+            *close_tag_e = r + 1;
+            return true;
+        }
+    }
+    return false;
+}
+
+static bool cae_match_comment(const char *s, size_t len, size_t i, CaeScanMatch *m) {
+    if(!s || !m || i + 4 > len) return false;
+    if(!(s[i] == '<' && s[i + 1] == '!' && s[i + 2] == '-' && s[i + 3] == '-')) return false;
+
+    const char *tail = s + i + 4;
+    size_t rem = len - (i + 4);
+    const char *close = find_substr_cs(tail, rem, "-->", 3);
+
+    memset(m, 0, sizeof(*m));
+    m->kind = CAE_MATCH_COMMENT;
+    m->mstart = i;
+    m->mend = close ? (size_t)((close - s) + 3) : len;
+    return true;
+}
+
+static bool cae_match_noinclude_single(const char *s, size_t len, size_t i,
+                                       bool include_only, CaeScanMatch *m) {
+    const char *n1 = include_only ? "includeonly" : "noinclude";
+    const char *n2 = include_only ? NULL : "onlyinclude";
+    size_t n1_len = strlen(n1);
+    size_t n2_len = n2 ? strlen(n2) : 0;
+
+    CaeOpenTag ot;
+    size_t mend = 0;
+
+    if(cae_match_open_named(s, len, i, n1, n1_len, &ot)
+       || cae_match_close_named(s, len, i, n1, n1_len, &mend)
+       || (n2 && (cae_match_open_named(s, len, i, n2, n2_len, &ot)
+                  || cae_match_close_named(s, len, i, n2, n2_len, &mend)))) {
+        memset(m, 0, sizeof(*m));
+        m->kind = CAE_MATCH_NOINCLUDE_SINGLE;
+        m->mstart = i;
+        m->mend = (mend > 0) ? mend : ot.open_end;
+        return true;
+    }
+
+    return false;
+}
+
+static bool cae_match_ext(const char *s, size_t len, size_t i,
+                          const ParserConfig *cfg, bool has_translate,
+                          CaeScanMatch *m) {
+    if(!s || !cfg || !m || i + 1 >= len) return false;
+    if(s[i] != '<' || s[i + 1] == '/') return false;
+
+    for(size_t ei = 0; ei < cfg->ext.count; ei++) {
+        const char *ename = cfg->ext.items[ei];
+        if(!ename) continue;
+        if(has_translate && (strcmp(ename, "translate") == 0 || strcmp(ename, "tvar") == 0))
+            continue;
+
+        size_t ename_len = strlen(ename);
+        CaeOpenTag ot;
+        if(!cae_match_open_named(s, len, i, ename, ename_len, &ot)) continue;
+
+        memset(m, 0, sizeof(*m));
+        m->kind = CAE_MATCH_EXT;
+        m->mstart = i;
+        m->name_s = ot.name_s;
+        m->name_e = ot.name_e;
+        m->has_attr = ot.has_attr;
+        m->attr_s = ot.attr_s;
+        m->attr_e = ot.attr_e;
+
+        if(ot.self_closing) {
+            m->mend = ot.open_end;
+            return true;
+        }
+
+        size_t close_tag_s = 0, close_name_s = 0, close_name_e = 0, close_tag_e = 0;
+        if(!cae_find_close_named(s, len, ot.open_end, ename, ename_len,
+                                 &close_tag_s, &close_name_s, &close_name_e, &close_tag_e)) {
+            continue;
+        }
+
+        m->has_inner = true;
+        m->inner_s = ot.open_end;
+        m->inner_e = close_tag_s;
+        m->has_close = true;
+        m->close_s = close_name_s;
+        m->close_e = close_name_e;
+        m->mend = close_tag_e;
+        return true;
+    }
+
+    return false;
+}
+
+static bool cae_match_include(const char *s, size_t len, size_t i,
+                              bool include_only, CaeScanMatch *m) {
+    const char *name = include_only ? "noinclude" : "includeonly";
+    size_t name_len = strlen(name);
+
+    CaeOpenTag ot;
+    if(!cae_match_open_named(s, len, i, name, name_len, &ot)) return false;
+
+    memset(m, 0, sizeof(*m));
+    m->kind = CAE_MATCH_INCLUDE;
+    m->mstart = i;
+    m->name_s = ot.name_s;
+    m->name_e = ot.name_e;
+    m->has_attr = ot.has_attr;
+    m->attr_s = ot.attr_s;
+    m->attr_e = ot.attr_e;
+
+    if(ot.self_closing) {
+        m->mend = ot.open_end;
+        return true;
+    }
+
+    size_t close_tag_s = 0, close_name_s = 0, close_name_e = 0, close_tag_e = 0;
+    if(cae_find_close_named(s, len, ot.open_end, name, name_len,
+                            &close_tag_s, &close_name_s, &close_name_e, &close_tag_e)) {
+        m->has_inner = true;
+        m->inner_s = ot.open_end;
+        m->inner_e = close_tag_s;
+        m->has_close = true;
+        m->close_s = close_name_s;
+        m->close_e = close_name_e;
+        m->mend = close_tag_e;
+        return true;
+    }
+
+    /* JS includeRegex allows unclosed EOF via ...(?:</(name\s*)>|$). */
+    m->has_inner = true;
+    m->inner_s = ot.open_end;
+    m->inner_e = len;
+    m->has_close = false;
+    m->mend = len;
+    return true;
+}
+
+static bool cae_find_next_match(const char *s, size_t len, size_t at,
+                                const ParserConfig *cfg, bool include_only,
+                                bool has_translate, CaeScanMatch *m) {
+    if(!s || !cfg || !m) return false;
+
+    for(size_t i = at; i < len; i++) {
+        /* Keep JS alternation order exactly:
+         * 1) comment
+         * 2) noincludeRegex single-tag
+         * 3) dynamic ext
+         * 4) includeRegex
+         */
+        if(cae_match_comment(s, len, i, m)) return true;
+        if(cae_match_noinclude_single(s, len, i, include_only, m)) return true;
+        if(cae_match_ext(s, len, i, cfg, has_translate, m)) return true;
+        if(cae_match_include(s, len, i, include_only, m)) return true;
+    }
+    return false;
+}
 
 typedef struct {
 	char **items;
@@ -75,12 +366,6 @@ static void append_numeric_placeholder(char *dst, size_t *len, size_t idx) {
 		*len += n;
 	}
 	dst[(*len)++]= '\x7F';
-}
-
-static const char *find_substr_cs(const char *hay, size_t hlen,
-																	const char *needle, size_t nlen) {
-	if(!hay || !needle || nlen == 0 || nlen > hlen) return NULL;
-	return sz_find(hay, hlen, needle, nlen);
 }
 
 /* Restore a sentinel-marked string using an external stack into a ThreadBuf.
@@ -1199,14 +1484,6 @@ static Token *build_translate_token(const char *attr, size_t attr_len,
 	return t;
 }
 
-/* ── Regex compilation ───────────────────────────────────────────────────── */
-static pcre2_code *compile_ext_regex(const ParserConfig *cfg, bool include_only) {
-	if(!cfg) return NULL;
-	const char *pattern = include_only ? cfg->pattern_ext_includeonly : cfg->pattern_ext;
-	if(!pattern || !pattern[0]) return NULL;
-	return pcre_cache_get(pattern, PCRE2_CASELESS | PCRE2_UTF | PCRE2_UCP);
-}
-
 
 
 typedef struct {
@@ -1463,179 +1740,148 @@ static bool handle_onlyinclude(ThreadBuf *tb, const ParserConfig *cfg, Accum *ac
 /* ── Main parse function ─────────────────────────────────────────────────── */
 
 void parse_comment_and_ext(ThreadBuf *tb, const ParserConfig *cfg,
-													 Accum *accum, bool include_only) {
-	bool has_translate= false;
-	for(size_t i= 0; i < cfg->ext.count; i++) {
-		if(strcmp(cfg->ext.items[i], "translate") == 0) {
-			has_translate= true;
-			break;
-		}
-	}
+                           Accum *accum, bool include_only) {
+    bool has_translate = false;
+    for(size_t i = 0; i < cfg->ext.count; i++) {
+        if(strcmp(cfg->ext.items[i], "translate") == 0) {
+            has_translate = true;
+            break;
+        }
+    }
 
-	if(include_only) {
-		const char *oi_open= "<onlyinclude>";
-		if(find_substr_cs(tb->buf, tb->len, oi_open, strlen(oi_open))) {
-			if(handle_onlyinclude(tb, cfg, accum)) {
-				return;
-			}
-		}
-	}
+    if(include_only) {
+        const char *oi_open = "<onlyinclude>";
+        if(find_substr_cs(tb->buf, tb->len, oi_open, strlen(oi_open))) {
+            if(handle_onlyinclude(tb, cfg, accum)) {
+                return;
+            }
+        }
+    }
 
-	if(has_translate) {
-		apply_translate_prepass(tb, cfg, accum);
-	}
+    if(has_translate) {
+        apply_translate_prepass(tb, cfg, accum);
+    }
 
-	pcre2_code *re = compile_ext_regex(cfg, include_only);
-	if(!re) return;
-
-	pcre2_match_data *md= pcre2_match_data_create_from_pattern(re, NULL);
-	if(!md) return;
-
-	ThreadBuf *out_tb = wiki_thread_buf_acquire_scratch();
-	if(!out_tb) { log_fatal("thread_buffer: failed to acquire scratch in parse_comment_and_ext"); abort(); }
-	wiki_thread_buf_reserve(out_tb, tb->len * 2 + 64);
+    ThreadBuf *out_tb = wiki_thread_buf_acquire_scratch();
+    if(!out_tb) { log_fatal("thread_buffer: failed to acquire scratch in parse_comment_and_ext"); abort(); }
+    wiki_thread_buf_reserve(out_tb, tb->len * 2 + 64);
 
 #define ENSURE_CAP(need) do { wiki_thread_buf_reserve(out_tb, out_tb->len + (need)); } while(0)
-	out_tb->len = 0;
-	size_t search_at = 0;
+    out_tb->len = 0;
+    size_t search_at = 0;
 
-	while(search_at <= tb->len) {
-		int rc= pcre2_match(re, (PCRE2_SPTR)tb->buf, tb->len,
-												search_at, 0, md, NULL);
-		if(rc <= 0) {
-			size_t rest= tb->len - search_at;
-			ENSURE_CAP(rest + 1);
-			memcpy(out_tb->buf + out_tb->len, tb->buf + search_at, rest);
-			out_tb->len += rest;
-			break;
-		}
+    CaeScanMatch mm;
+    while(cae_find_next_match(tb->buf, tb->len, search_at, cfg, include_only, has_translate, &mm)) {
+        if(mm.mend <= mm.mstart) break;
 
-		PCRE2_SIZE *ov= pcre2_get_ovector_pointer(md);
-		size_t match_start= ov[0];
-		size_t match_end= ov[1];
+        size_t before = mm.mstart - search_at;
+        ENSURE_CAP(before + 64);
+        memcpy(out_tb->buf + out_tb->len, tb->buf + search_at, before);
+        out_tb->len += before;
 
-		size_t before= match_start - search_at;
-		ENSURE_CAP(before + 64);
-		memcpy(out_tb->buf + out_tb->len, tb->buf + search_at, before);
-		out_tb->len += before;
+        const char *substr = tb->buf + mm.mstart;
+        size_t sub_len = mm.mend - mm.mstart;
 
-		const char *substr= tb->buf + match_start;
-		size_t sub_len= match_end - match_start;
+        Token *tok = NULL;
+        char ch = 'n';
 
-		Token *tok= NULL;
-		char ch= 'n';
+        if(mm.kind == CAE_MATCH_COMMENT) {
+            ThreadBuf *tmp_c = wiki_thread_buf_acquire_scratch();
+            if(!tmp_c) { log_fatal("thread_buffer: failed to acquire scratch in parse_comment_and_ext (comment restore)"); abort(); }
+            tmp_c->len = 0;
+            restore_accum_mode_to_tb(substr, sub_len, accum, 1, tmp_c);
+            tok = build_comment_token(tmp_c->buf, tmp_c->len, accum);
+            wiki_thread_buf_release_scratch(tmp_c);
+            ch = 'c';
 
-		size_t ext_name_s= (rc > 1 && ov[2] != PCRE2_UNSET) ? ov[2] : 0;
-		size_t ext_name_e= (rc > 1 && ov[3] != PCRE2_UNSET) ? ov[3] : 0;
+        } else if(mm.kind == CAE_MATCH_EXT) {
+            const char *name = tb->buf + mm.name_s;
+            size_t name_len = mm.name_e - mm.name_s;
 
-		size_t inc_name_s= (rc > 5 && ov[10] != PCRE2_UNSET) ? ov[10] : 0;
-		size_t inc_name_e= (rc > 5 && ov[11] != PCRE2_UNSET) ? ov[11] : 0;
+            const char *attr = mm.has_attr ? tb->buf + mm.attr_s : NULL;
+            size_t alen = mm.has_attr ? (mm.attr_e - mm.attr_s) : 0;
+            const char *inner = mm.has_inner ? tb->buf + mm.inner_s : NULL;
+            size_t ilen = mm.has_inner ? (mm.inner_e - mm.inner_s) : 0;
+            bool self_closing = !mm.has_close;
 
-		   if(substr[0] == '<' && sub_len >= 4 &&
-			   substr[1] == '!' && substr[2] == '-' && substr[3] == '-') {
-			  ThreadBuf *tmp_c = wiki_thread_buf_acquire_scratch();
-			  if(!tmp_c) { log_fatal("thread_buffer: failed to acquire scratch in parse_comment_and_ext (comment restore)"); abort(); }
-			  tmp_c->len = 0;
-			  restore_accum_mode_to_tb(substr, sub_len, accum, 1, tmp_c);
-			  tok= build_comment_token(tmp_c->buf, tmp_c->len, accum);
-			  wiki_thread_buf_release_scratch(tmp_c);
-			  ch= 'c';
+            tok = build_ext_token(name, name_len, attr, alen, inner, ilen,
+                                  self_closing, cfg, accum);
+            ch = 'e';
 
-		} else if(ext_name_s < ext_name_e) {
-			const char *name= tb->buf + ext_name_s;
-			size_t name_len= ext_name_e - ext_name_s;
+        } else if(mm.kind == CAE_MATCH_INCLUDE) {
+            const char *name = tb->buf + mm.name_s;
+            size_t name_len = mm.name_e - mm.name_s;
 
-			size_t attr_s= (rc > 2 && ov[4] != PCRE2_UNSET) ? ov[4] : 0;
-			size_t attr_e= (rc > 2 && ov[5] != PCRE2_UNSET) ? ov[5] : 0;
-			size_t inner_s= (rc > 3 && ov[6] != PCRE2_UNSET) ? ov[6] : 0;
-			size_t inner_e= (rc > 3 && ov[7] != PCRE2_UNSET) ? ov[7] : 0;
-			size_t close_s= (rc > 4 && ov[8] != PCRE2_UNSET) ? ov[8] : 0;
-			size_t close_e= (rc > 4 && ov[9] != PCRE2_UNSET) ? ov[9] : 0;
+            const char *attr = mm.has_attr ? tb->buf + mm.attr_s : NULL;
+            size_t alen = mm.has_attr ? (mm.attr_e - mm.attr_s) : 0;
+            const char *inner = mm.has_inner ? tb->buf + mm.inner_s : NULL;
+            size_t ilen = mm.has_inner ? (mm.inner_e - mm.inner_s) : 0;
+            const char *closing = mm.has_close ? (tb->buf + mm.close_s) : NULL;
+            size_t clen = mm.has_close ? (mm.close_e - mm.close_s) : 0;
 
-			const char *attr= (attr_s < attr_e) ? tb->buf + attr_s : NULL;
-			size_t alen= (attr_s < attr_e) ? attr_e - attr_s : 0;
-			const char *inner= (inner_s < inner_e) ? tb->buf + inner_s : NULL;
-			size_t ilen= (inner_s < inner_e) ? inner_e - inner_s : 0;
-			bool self_closing= !(close_s < close_e);
+            size_t rattr_len = 0, rinner_len = 0;
+            ThreadBuf *tmp_attr = NULL;
+            ThreadBuf *tmp_inner = NULL;
+            const char *rattr = NULL;
+            const char *rinner = NULL;
 
-			tok= build_ext_token(name, name_len, attr, alen, inner, ilen, self_closing, cfg, accum);
-			ch= 'e';
+            if(attr && alen > 0) {
+                tmp_attr = wiki_thread_buf_acquire_scratch();
+                if(!tmp_attr) { log_fatal("thread_buffer: failed to acquire scratch in parse_comment_and_ext (include attr)"); abort(); }
+                tmp_attr->len = 0;
+                restore_accum_mode_to_tb(attr, alen, accum, 1, tmp_attr);
+                rattr = tmp_attr->buf;
+                rattr_len = tmp_attr->len;
+            }
+            if(inner && ilen > 0) {
+                tmp_inner = wiki_thread_buf_acquire_scratch();
+                if(!tmp_inner) { log_fatal("thread_buffer: failed to acquire scratch in parse_comment_and_ext (include inner)"); abort(); }
+                tmp_inner->len = 0;
+                restore_accum_mode_to_tb(inner, ilen, accum, 1, tmp_inner);
+                rinner = tmp_inner->buf;
+                rinner_len = tmp_inner->len;
+            }
 
-		} else if(inc_name_s < inc_name_e) {
-			const char *name= tb->buf + inc_name_s;
-			size_t name_len= inc_name_e - inc_name_s;
+            tok = build_include_token(name, name_len,
+                                      rattr ? rattr : attr, rattr ? rattr_len : alen,
+                                      rinner ? rinner : inner, rinner ? rinner_len : ilen,
+                                      closing, clen, accum);
+            if(tmp_attr) wiki_thread_buf_release_scratch(tmp_attr);
+            if(tmp_inner) wiki_thread_buf_release_scratch(tmp_inner);
+            ch = 'n';
 
-			size_t attr_s= (rc > 6 && ov[12] != PCRE2_UNSET) ? ov[12] : 0;
-			size_t attr_e= (rc > 6 && ov[13] != PCRE2_UNSET) ? ov[13] : 0;
-			size_t inner_s= (rc > 7 && ov[14] != PCRE2_UNSET) ? ov[14] : 0;
-			size_t inner_e= (rc > 7 && ov[15] != PCRE2_UNSET) ? ov[15] : 0;
-			size_t close_s= (rc > 8 && ov[16] != PCRE2_UNSET) ? ov[16] : 0;
-			size_t close_e= (rc > 8 && ov[17] != PCRE2_UNSET) ? ov[17] : 0;
+        } else {
+            tok = build_noinclude_token(substr, sub_len, accum);
+            ch = 'n';
+        }
 
-			const char *attr= (attr_s < attr_e) ? tb->buf + attr_s : NULL;
-			size_t alen= (attr_s < attr_e) ? attr_e - attr_s : 0;
-			const char *inner= (inner_s < inner_e) ? tb->buf + inner_s : NULL;
-			size_t ilen= (inner_s < inner_e) ? inner_e - inner_s : 0;
-			const char *closing= (close_s < close_e) ? tb->buf + close_s : NULL;
-			size_t clen= (close_s < close_e) ? close_e - close_s : 0;
+        if(tok) {
+            size_t tok_idx = accum->count - 1;
+            char sent_buf[64];
+            size_t sent_len = 0;
+            work_str_sentinel(tok_idx, ch, sent_buf, &sent_len);
+            ENSURE_CAP(sent_len);
+            memcpy(out_tb->buf + out_tb->len, sent_buf, sent_len);
+            out_tb->len += sent_len;
+        } else {
+            ENSURE_CAP(sub_len);
+            memcpy(out_tb->buf + out_tb->len, substr, sub_len);
+            out_tb->len += sub_len;
+        }
 
-			size_t rattr_len= 0, rinner_len= 0;
-			ThreadBuf *tmp_attr = NULL;
-			ThreadBuf *tmp_inner = NULL;
-			const char *rattr = NULL;
-			const char *rinner = NULL;
-			if(attr && alen > 0) {
-				tmp_attr = wiki_thread_buf_acquire_scratch();
-				if(!tmp_attr) { log_fatal("thread_buffer: failed to acquire scratch in parse_comment_and_ext (include attr)"); abort(); }
-				tmp_attr->len = 0;
-				restore_accum_mode_to_tb(attr, alen, accum, 1, tmp_attr);
-				rattr = tmp_attr->buf;
-				rattr_len = tmp_attr->len;
-			}
-			if(inner && ilen > 0) {
-				tmp_inner = wiki_thread_buf_acquire_scratch();
-				if(!tmp_inner) { log_fatal("thread_buffer: failed to acquire scratch in parse_comment_and_ext (include inner)"); abort(); }
-				tmp_inner->len = 0;
-				restore_accum_mode_to_tb(inner, ilen, accum, 1, tmp_inner);
-				rinner = tmp_inner->buf;
-				rinner_len = tmp_inner->len;
-			}
+        search_at = mm.mend;
+    }
 
-			tok= build_include_token(name, name_len,
-															 rattr ? rattr : attr, rattr ? rattr_len : alen,
-															 rinner ? rinner : inner, rinner ? rinner_len : ilen,
-															 closing, clen, accum);
-			if(tmp_attr) wiki_thread_buf_release_scratch(tmp_attr);
-			if(tmp_inner) wiki_thread_buf_release_scratch(tmp_inner);
-			ch= 'n';
+    if(search_at < tb->len) {
+        size_t rest = tb->len - search_at;
+        ENSURE_CAP(rest + 1);
+        memcpy(out_tb->buf + out_tb->len, tb->buf + search_at, rest);
+        out_tb->len += rest;
+    }
 
-		} else {
-			tok= build_noinclude_token(substr, sub_len, accum);
-			ch= 'n';
-		}
+    out_tb->buf[out_tb->len] = '\0';
+    wiki_thread_buf_set(tb, out_tb->buf, out_tb->len);
+    wiki_thread_buf_release_scratch(out_tb);
 
-			if(tok) {
-				size_t tok_idx= accum->count - 1; /* token was last pushed */
-				char sent_buf[64];
-				size_t sent_len;
-				work_str_sentinel(tok_idx, ch, sent_buf, &sent_len);
-				ENSURE_CAP(sent_len);
-				memcpy(out_tb->buf + out_tb->len, sent_buf, sent_len);
-				out_tb->len += sent_len;
-			} else {
-				ENSURE_CAP(sub_len);
-				memcpy(out_tb->buf + out_tb->len, substr, sub_len);
-				out_tb->len += sub_len;
-			}
-
-		search_at= match_end;
-		if(match_end == match_start) search_at++;
-	}
-
-	out_tb->buf[out_tb->len]= '\0';
-	wiki_thread_buf_set(tb, out_tb->buf, out_tb->len);
-	wiki_thread_buf_release_scratch(out_tb);
-
-	pcre2_match_data_free(md);
-	#undef ENSURE_CAP
+#undef ENSURE_CAP
 }
