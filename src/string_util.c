@@ -542,14 +542,7 @@ char *str_extract_interwiki(const char *s, size_t len, const ParserConfig *cfg, 
 		if(!iw) continue;
 		size_t iwlen= strlen(iw);
 		if(start + iwlen > tlen) continue;
-		bool match= true;
-		for(size_t j= 0; j < iwlen; j++) {
-			if(tolower((unsigned char)temp[start + j]) != tolower((unsigned char)iw[j])) {
-				match= false;
-				break;
-			}
-		}
-		if(!match) continue;
+		if(!str_ci_eq_n(temp + start, iw, iwlen)) continue;
 		size_t j= start + iwlen;
 		while(j < tlen && isspace((unsigned char)temp[j])) j++;
 		if(j < tlen && temp[j] == ':') {
@@ -588,14 +581,7 @@ size_t match_proto_prefix(const char *s, size_t len, const ParserConfig *cfg) {
 		if(!tok) continue;
 		size_t tlen = strlen(tok);
 		if(tlen > 0 && tlen <= len) {
-			bool ok = true;
-			for(size_t i = 0; i < tlen; i++) {
-				if(tolower((unsigned char)s[i]) != tolower((unsigned char)tok[i])) {
-					ok = false;
-					break;
-				}
-			}
-			if(ok) return tlen;
+			if(str_ci_eq_n(s, tok, tlen)) return tlen;
 		}
 	}
 	return 0;

@@ -139,7 +139,7 @@ typedef struct {
     char *original;
 } ProtocolEntry;
 
-// Build a hash table keyed by first 3-4 chars (or full lowercase string)
+// Build a hash table keyed by full lowercase string
 // Use perfect hashing or a simple hash set
 ```
 
