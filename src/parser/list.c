@@ -250,9 +250,6 @@ void parse_list(ThreadBuf *tb, const ParserConfig *cfg, Accum *accum) {
 	if(!tb || !tb->buf) return;
 	if(config_excluded(cfg, "list")) return;
 
-	/* Manual scanning for special list syntax (colon runs, -{ / }-, sentinels)
-	 * Replaces previous PCRE-based approach. */
-
 	/* Split tb->buf into lines (preserve empty final line semantics) */
 	const char *buf= tb->buf;
 	size_t blen= tb->len;
@@ -432,7 +429,7 @@ void parse_list(ThreadBuf *tb, const ParserConfig *cfg, Accum *accum) {
 		 *  - a run of ':' characters
 		 *  - the sequence '-{' or '}-'
 		 *  - a sentinel of type 'x' or 'q'
-		 * Behavior mirrors the previous PCRE-driven loop. */
+		 */
 		size_t search_at = 0;
 		int lt = 0;
 		int lc = 0;

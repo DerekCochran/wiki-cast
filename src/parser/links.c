@@ -20,8 +20,6 @@
 #include <string.h>
 #include <strings.h>
 
-/* ---- Protocol matching helpers (replaces PCRE proto regex) ---- */
-
 /* Keep this in sync with C.5 consume_js_zs(). */
 static size_t consume_js_zs_proto(const char *s, size_t len, size_t i) {
     if(i >= len) return 0;
@@ -270,7 +268,6 @@ static bool img_validate_width(const char *v) {
 	return *p == '\0';
 }
 
-/* Link parse result (manual scanner replacement for the PCRE used here) */
 typedef struct {
 	const char *target;
 	size_t      target_len;
@@ -714,10 +711,6 @@ static void append_file_image_params(Token *file_tok,
 	}
 }
 
-/* Note: link parsing now uses scanner-based functions (link_parse/img_link_parse)
- * and no longer relies on precompiled PCRE patterns for the main/link-img cases.
- */
-
 /* Trim whitespace (in-place view) */
 static void trim_view(const char **ptr, size_t *len) {
 	const char *s= *ptr;
@@ -833,7 +826,6 @@ void parse_links(ThreadBuf *tb, const ParserConfig *cfg, Accum *accum,
 		size_t after_len= 0;
 		bool link_found= false;
 
-		/* Apply scanner-based main parse (replaces PCRE re_main) */
 		{
 			LinkParseResult lpr;
 			bool ok = link_parse(x, xlen, cfg->in_ext, &lpr);
@@ -869,7 +861,6 @@ void parse_links(ThreadBuf *tb, const ParserConfig *cfg, Accum *accum,
 			}
 		}
 
-/* Fallback: image-style match (replaces PCRE re_img; no ]] required in this bit) */
 		if(!link_found) {
 			ImgParseResult ipr;
 			if(img_link_parse(x, xlen, &ipr)) {

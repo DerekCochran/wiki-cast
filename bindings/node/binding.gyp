@@ -35,8 +35,7 @@
         "../../src/util/wiki_parser_rules.c",
         "../../src/util/log.c",
         "../../src/util/thread_buffer.c",
-        "../../src/util/token_to_json.c",
-        "../../src/util/pcre_cache.c"
+        "../../src/util/token_to_json.c"
       ],
       "include_dirs": [ "../../include", "../../src/include" ],
       "libraries": [ "-lpcre2-8", "-lcjson", "-licuuc", "-licudata" ],

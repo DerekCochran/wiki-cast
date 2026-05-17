@@ -1,10 +1,8 @@
-#define PCRE2_CODE_UNIT_WIDTH 8
 #include "parser/braces.h"
 #include "title.h"
 #include "token.h"
 #include "util/callback_parser.h"
 #include "util/log.h"
-#include "util/pcre_cache.h"
 #include "util/string_util.h"
 #include "util/wiki_parser_rules.h"
 #include <assert.h>
@@ -1122,10 +1120,6 @@ static bool braces_state_machine(ThreadBuf *tb, const ParserConfig *cfg,
 											Accum *accum, char **link_stack, size_t link_count,
 											const size_t *link_stack_lens) {
 	if(!tb || !tb->buf) return false;
-	/* Replace the large PCRE alternation with the DFA-style brace_event_next
-	 * scanner to avoid repeated PCRE allocations and high-cost matching on
-	 * the hot path. */
-
 	BraceFrame *stack= malloc(64 * sizeof(BraceFrame));
 	if(!stack) {
 		return false;

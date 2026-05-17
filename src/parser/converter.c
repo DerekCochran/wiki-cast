@@ -405,7 +405,6 @@ void parse_converter(ThreadBuf *tb, const ParserConfig *cfg, Accum *accum) {
 		size_t rule_cap= 0;
 		size_t rule_count= 0;
 
-	/* Direct split scanner replacing PCRE lookahead */
 	size_t split_cur = 0;
 	for(size_t k = 0; k <= masked_len; k++) {
 		bool at_end = (k == masked_len);

@@ -12,11 +12,8 @@
  *   excludes       : string[]           // absent in raw JSON; added by getConfig()
  */
 #include "config.h"
-#define PCRE2_CODE_UNIT_WIDTH 8
-#include <pcre2.h>
 #include "util/log.h"
 #include "util/thread_buffer.h"
-#include "util/pcre_cache.h"
 #include "util/callback_parser.h"
 #include "util/wiki_parser_rules.h"
 #include <assert.h>
@@ -582,8 +579,8 @@ static ParserConfig *config_from_cjson(const cJSON *root) {
 
 	/* Register dynamic rules for ext tags (config-ext and config-ext-includeonly).
      * These are used by the callback scanner in comment_and_ext.c.
-     * The pattern strings are still built for potential PCRE fallback during migration. */
-	/* config-ext dynamic rule registration */
+	 * config-ext dynamic rule registration 
+	*/
 	if(cfg->pattern_ext) {
 		ParserRules ext_rule = {
 			/* This is a placeholder - the actual matching is done by cae_match_ext()
@@ -613,9 +610,6 @@ static ParserConfig *config_from_cjson(const cJSON *root) {
 	/* config-external-links is now handled by the callback scanner in external_links.c */
 
 	build_pattern_hr_and_dunder(cfg);
-	if(cfg->pattern_hr_and_dunder)
-		pcre_cache_get(cfg->pattern_hr_and_dunder,
-					   PCRE2_UTF | PCRE2_MULTILINE | PCRE2_CASELESS);
 
 	/* Register config-magic-links dynamic rule.
      * The magic_links parser now uses a callback scanner with protocol_items,

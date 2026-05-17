@@ -234,12 +234,6 @@ static bool parse_protocol_url(const char *s, size_t len, size_t i,
     return true;
 }
 
-/* INTEGRATION NOTE: mstart == lead_s == lead_e == i (the start of the keyword/URL).
- * Plain text is emitted from search_at..mstart before building each token, exactly
- * mirroring the old PCRE body's "emit s[search_at..ov[0])" step.  The boundary
- * non-word character at i-1 belongs to the preceding plain text segment and must
- * NOT be included in lead_s..lead_e; the Unicode-aware left-boundary guard ensures i-1
- * is never a word character, so no special lead span is needed. */
 static bool magic_find_next(const char *s, size_t len, size_t at,
                             const ParserConfig *cfg, MagicScanMatch *m) {
     if (!s || !m) return false;

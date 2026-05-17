@@ -73,7 +73,6 @@ add_library(wikitokenizer STATIC
     src/util/log.c
     src/util/thread_buffer.c
     src/util/token_to_json.c
-    src/util/pcre_cache.c
     )
 
 target_compile_options(wikitokenizer PRIVATE
