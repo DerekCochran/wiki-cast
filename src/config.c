@@ -201,8 +201,119 @@ static void str_map_append_dup(StrMap *m, const char *key, const char *value) {
 	m->values= grown_vals;
 	m->keys[m->count]= strdup(key);
 	m->values[m->count]= strdup(value);
-	assert(m->keys[m->count] && m->values[m->count]);
+	assert(m->keys[m->count]);
+	assert(m->values[m->count]);
 	m->count++;
+}
+
+static bool protocol_token_supported(const char *s, size_t len) {
+	/* Lock grammar to literal prefixes plus the single supported meta '?'.
+	 * MediaWiki's wgUrlProtocols ships entries like "https?://"; rejecting
+	 * '?' would refuse standard configs. All other regex metacharacters are
+	 * forbidden so the C scanner can treat each item as a literal string
+	 * (with optional one-char preceding-character optionality, see expand
+	 * step in build_protocol_items). */
+	for(size_t i = 0; i < len; i++) {
+		unsigned char c = (unsigned char)s[i];
+		if(c == '\\' || c == '[' || c == ']' || c == '(' || c == ')' ||
+		   c == '{' || c == '}' || c == '*' || c == '+' ||
+		   c == '^' || c == '$' || c <= 0x20 || c == 0x7F) {
+			return false;
+		}
+	}
+	return len > 0;
+}
+
+/* Free helper used on partial-failure paths to avoid leaks across config
+ * load attempts. */
+static void protocol_items_free(ProtocolList *pl) {
+	if(!pl) return;
+	for(size_t i = 0; i < pl->count; i++) free(pl->items[i]);
+	free(pl->items);
+	pl->items = NULL;
+	pl->count = 0;
+}
+
+/* Expand a raw token "foo?bar" into all literal alternatives by treating
+ * each '?' as making the immediately preceding byte optional. The number of
+ * alternatives is 2^k where k is the number of '?'. We cap k at 8 so a
+ * pathological config cannot OOM the loader (256 alts per token). */
+static bool expand_token_with_optional(const char *raw, size_t rlen,
+		                               ProtocolList *out) {
+	size_t qcount = 0;
+	for(size_t i = 0; i < rlen; i++) if(raw[i] == '?') qcount++;
+	if(qcount > 8) return false;
+
+	size_t variants = (size_t)1 << qcount;
+	for(size_t v = 0; v < variants; v++) {
+		char *buf = malloc(rlen + 1);
+		if(!buf) return false;
+		size_t out_len = 0;
+		size_t qi = 0;
+		for(size_t i = 0; i < rlen; i++) {
+			if(i + 1 < rlen && raw[i + 1] == '?') {
+				/* bit qi selects whether to keep raw[i] in this variant */
+				if((v >> qi) & 1U) buf[out_len++] = raw[i];
+				qi++;
+				i++; /* skip the '?' */
+				continue;
+			}
+			buf[out_len++] = raw[i];
+		}
+		buf[out_len] = '\0';
+		if(out_len == 0) { free(buf); continue; }
+
+		char **grown = realloc(out->items, (out->count + 1) * sizeof(char *));
+		if(!grown) { free(buf); return false; }
+		out->items = grown;
+		out->items[out->count++] = buf;
+	}
+	return true;
+}
+
+/* Order tokens longest-first so that scheme prefix matching is greedy
+ * (e.g. "https://" matches before "http://"). qsort comparator below. */
+static int protocol_cmp_desc_len(const void *a, const void *b) {
+	const char *sa = *(const char * const *)a;
+	const char *sb = *(const char * const *)b;
+	size_t la = strlen(sa), lb = strlen(sb);
+	if(la != lb) return (la < lb) ? 1 : -1;
+	return strcmp(sa, sb);
+}
+
+static bool build_protocol_items(ParserConfig *cfg) {
+	if(!cfg || !cfg->protocol || !cfg->protocol[0]) return false;
+	/* Reset before (re)building so config reload is safe. */
+	protocol_items_free(&cfg->protocol_items);
+	cfg->protocol_items_valid = false;
+
+	const char *p = cfg->protocol;
+	while(*p) {
+		const char *bar = strchr(p, '|');
+		size_t n = bar ? (size_t)(bar - p) : strlen(p);
+		if(!protocol_token_supported(p, n)) {
+			protocol_items_free(&cfg->protocol_items);
+			return false;
+		}
+		if(!expand_token_with_optional(p, n, &cfg->protocol_items)) {
+			protocol_items_free(&cfg->protocol_items);
+			return false;
+		}
+		if(!bar) break;
+		p = bar + 1;
+	}
+
+	if(cfg->protocol_items.count == 0) {
+		protocol_items_free(&cfg->protocol_items);
+		return false;
+	}
+	/* Greedy / longest-first ordering is required by C.4 match_proto_prefix
+	 * and C.2 starts_with_proto, which both return on first prefix hit. */
+	qsort(cfg->protocol_items.items, cfg->protocol_items.count,
+		  sizeof(char *), protocol_cmp_desc_len);
+
+	cfg->protocol_items_valid = true;
+	return true;
 }
 
 static void build_pattern_ext_one(ParserConfig *cfg, bool include_only) {
@@ -294,7 +405,7 @@ static void build_pattern_external_links(ParserConfig *cfg) {
 	snprintf(pat, cap,
 		"\\["
 		"(" 
-		"(?:\\x00\\d+[cn]\\x7F)*"
+		"(?:\\x00\\d+[cno]\\x7F)*"
 		"(?:"
 		"\\x00\\d+f\\x7F"
 		"|"
@@ -445,6 +556,9 @@ static ParserConfig *config_from_cjson(const cJSON *root) {
 	ParserConfig *cfg= calloc(1, sizeof(ParserConfig));
 	if(!cfg) return NULL;
 
+	/* Clear any stale dynamic rules from previous config load */
+	wiki_parser_rules_clear_dynamic();
+
 	/* ext */
 	str_list_from_json_array(&cfg->ext, cJSON_GetObjectItemCaseSensitive(root, "ext"));
 
@@ -556,6 +670,14 @@ static ParserConfig *config_from_cjson(const cJSON *root) {
 		if(proto && cJSON_IsString(proto) && proto->valuestring) {
 			cfg->protocol= strdup(proto->valuestring);
 		}
+	}
+
+	/* Build expanded protocol items (required by C.2/C.4 scanners).
+	 * Abort config load if protocol grammar is invalid. */
+	if(!build_protocol_items(cfg)) {
+		log_error("config_from_cjson: invalid protocol grammar, aborting config load");
+		config_free(cfg);
+		return NULL;
 	}
 
 	/* variants */
@@ -707,6 +829,9 @@ ParserConfig *config_load_string(const char *json_str, size_t len) {
 
 void config_free(ParserConfig *cfg) {
 	if(!cfg) return;
+
+	/* Free expanded protocol items */
+	protocol_items_free(&cfg->protocol_items);
 
 	str_list_free(&cfg->ext);
 	for(int i= 0; i < 3; i++) str_list_free(&cfg->html[i]);

@@ -35,6 +35,12 @@ typedef struct {
     char *name;
 } NsEntry;
 
+/* ── Protocol list ─────────────────────────────────────────────────────────── */
+typedef struct {
+    char  **items;
+    size_t  count;
+} ProtocolList;
+
 /* ── Parser config ──────────────────────────────────────────────────────── */
 typedef struct {
     /* extension tag names, lowercased e.g. ["ref","references","nowiki",...] */
@@ -57,6 +63,10 @@ typedef struct {
 
     /* protocol regex fragment e.g. "https?:|ftp:" */
     char *protocol;
+
+    /* expanded protocol items */
+    ProtocolList protocol_items;
+    bool protocol_items_valid;
 
     /* language variants for converter */
     StrList variants;

@@ -3,11 +3,15 @@
  *
  * Each entry is preceded by the original JavaScript regex it replaces, so
  * grepping for the pattern leads straight to the C struct.
+ *
+ * Static rules are registered with stable names ("rule-xxx").
+ * Dynamic config-derived rules are registered with names ("config-xxx").
  */
 #include "util/wiki_parser_rules.h"
 
 #include <stddef.h>
 #include <string.h>
+#include <stdlib.h>
 
 /* ── shared prohibited-pattern arrays (file-scope, never freed) ───────────── */
 
@@ -145,30 +149,172 @@ const ParserRules wiki_rule_main_converter = {
     .prohibited_pattern_lens   = s_tpl_prohibited_pattern_lens,
     .prohibited_patterns_count = 2,
 };
-/* ── lookup table ─────────────────────────────────────────────────────────── */
 
-static const struct {
-    const char      *regex;
-    const ParserRules *rule;
-} s_registry[] = {
-    /* nowiki */
-    { "<nowiki>[\\s\\S]*?<\\/nowiki>",                  &wiki_rule_nowiki_paired     },
-    { "<nowiki\\s*\\/>",                                &wiki_rule_nowiki_sc         },
-    /* translate */
-    { "<translate( nowrap)?>[\\s\\S]*?<\\/translate>",  &wiki_rule_translate         },
-    /* braces */
-    { "(?<!\\{)\\{\\{\\{(inner)\\}\\}\\}(?!\\})",       &wiki_rule_triple_brace_arg  },
-    { "(?<!\\{)\\{\\{(inner)\\}\\}",                         &wiki_rule_main_template_1 },
-    { "\\{\\{(inner)\\}\\}(?!\\})",                         &wiki_rule_main_template_2 },
-    { "\\[\\[(?:inner_link)*\\]\\]",                         &wiki_rule_main_wikilink },
-    { "-\\{(?:inner)*\\}-",                                     &wiki_rule_main_converter },
+/* ── C.0 Shared ParserRules additions ────────────────────────────────────── */
+
+/* __([\s\S]*?)__ (validated by callback against cfg->double_underscore) */
+const ParserRules wiki_rule_dunder_ascii = {
+    .open_delim          = "__",
+    .open_len            = 2,
+    .close_delim         = "__",
+    .close_len           = 2,
+    .match_mode          = PARSER_MATCH_FIRST_CLOSE,
 };
 
-const ParserRules *wiki_parser_rules_get(const char *regex) {
-    if (!regex) return NULL;
-    for (size_t i = 0; i < sizeof(s_registry) / sizeof(s_registry[0]); i++) {
-        if (strcmp(regex, s_registry[i].regex) == 0)
-            return s_registry[i].rule;
+/* FULLWIDTH LOW LINE pair: ＿＿([\s\S]*?)＿＿ */
+const ParserRules wiki_rule_dunder_fullwidth = {
+    .open_delim          = "\xEF\xBC\xBF\xEF\xBC\xBF",
+    .open_len            = 6,
+    .close_delim         = "\xEF\xBC\xBF\xEF\xBC\xBF",
+    .close_len           = 6,
+    .match_mode          = PARSER_MATCH_FIRST_CLOSE,
+};
+
+/* \[([\s\S]*?)\] — used by parse_external_links callback scanner */
+const ParserRules wiki_rule_extlink_bracket = {
+    .open_delim   = "[",
+    .open_len     = 1,
+    .close_delim  = "]",
+    .close_len    = 1,
+    .match_mode   = PARSER_MATCH_FIRST_CLOSE,
+};
+
+/* <!--([\s\S]*?)--> (closed comments only; unclosed handled in parser fallback) */
+const ParserRules wiki_rule_html_comment_closed = {
+    .open_delim       = "<!--",
+    .open_len         = 4,
+    .close_delim      = "-->",
+    .close_len        = 3,
+    .match_mode       = PARSER_MATCH_FIRST_CLOSE,
+    .case_insensitive = false,
+};
+
+/* ── Static registry (keyed by stable name "rule-xxx") ───────────────────── */
+
+static const struct {
+    const char      *name;
+    const ParserRules *rule;
+} s_static_registry[] = {
+    /* nowiki */
+    { "rule-nowiki-paired",     &wiki_rule_nowiki_paired     },
+    { "rule-nowiki-sc",         &wiki_rule_nowiki_sc         },
+    /* translate */
+    { "rule-translate",         &wiki_rule_translate         },
+    /* braces */
+    { "rule-triple-brace-arg",  &wiki_rule_triple_brace_arg  },
+    { "rule-main-template-1",   &wiki_rule_main_template_1   },
+    { "rule-main-template-2",   &wiki_rule_main_template_2   },
+    { "rule-main-wikilink",     &wiki_rule_main_wikilink     },
+    { "rule-main-converter",    &wiki_rule_main_converter    },
+    /* C.0 shared rules */
+    { "rule-dunder-ascii",      &wiki_rule_dunder_ascii      },
+    { "rule-dunder-fullwidth",  &wiki_rule_dunder_fullwidth  },
+    { "rule-extlink-bracket",   &wiki_rule_extlink_bracket   },
+    { "rule-html-comment-closed", &wiki_rule_html_comment_closed },
+};
+
+/* ── Dynamic registry (keyed by "config-xxx") ───────────────────────────── */
+/* Uses a simple dynamic array; lookup is linear (small set, infrequent access) */
+
+typedef struct {
+    char        *name;    /* dynamically allocated */
+    ParserRules  rule;    /* copied value */
+} DynamicEntry;
+
+static DynamicEntry *s_dynamic_entries = NULL;
+static size_t s_dynamic_count = 0;
+static size_t s_dynamic_capacity = 0;
+
+static void dynamic_registry_init(void) {
+    /* No-op if already initialized; called implicitly by set/add functions */
+    if (s_dynamic_entries == NULL) {
+        s_dynamic_capacity = 8;
+        s_dynamic_entries = (DynamicEntry *)calloc(s_dynamic_capacity, sizeof(DynamicEntry));
+        s_dynamic_count = 0;
     }
+}
+
+static void dynamic_registry_ensure_capacity(void) {
+    if (s_dynamic_count >= s_dynamic_capacity) {
+        size_t new_cap = s_dynamic_capacity * 2;
+        DynamicEntry *grown = (DynamicEntry *)realloc(s_dynamic_entries, new_cap * sizeof(DynamicEntry));
+        if (!grown) return; /* allocation failure */
+        s_dynamic_entries = grown;
+        /* Zero new entries */
+        memset(&s_dynamic_entries[s_dynamic_capacity], 0, (new_cap - s_dynamic_capacity) * sizeof(DynamicEntry));
+        s_dynamic_capacity = new_cap;
+    }
+}
+
+bool wiki_parser_rules_set_dynamic(const char *name, const ParserRules *rule) {
+    if (!name || !rule) return false;
+
+    dynamic_registry_init();
+
+    /* Check for duplicate */
+    for (size_t i = 0; i < s_dynamic_count; i++) {
+        if (strcmp(s_dynamic_entries[i].name, name) == 0) {
+            return false; /* duplicate key */
+        }
+    }
+
+    dynamic_registry_ensure_capacity();
+
+    /* Allocate and copy */
+    s_dynamic_entries[s_dynamic_count].name = strdup(name);
+    if (!s_dynamic_entries[s_dynamic_count].name) return false;
+
+    /* Copy the rule struct */
+    s_dynamic_entries[s_dynamic_count].rule = *rule;
+
+    s_dynamic_count++;
+    return true;
+}
+
+void wiki_parser_rules_remove_dynamic(const char *name) {
+    if (!name) return;
+
+    for (size_t i = 0; i < s_dynamic_count; i++) {
+        if (strcmp(s_dynamic_entries[i].name, name) == 0) {
+            /* Free the name */
+            free(s_dynamic_entries[i].name);
+
+            /* Shift remaining entries down */
+            for (size_t j = i; j < s_dynamic_count - 1; j++) {
+                s_dynamic_entries[j] = s_dynamic_entries[j + 1];
+            }
+            s_dynamic_count--;
+            return;
+        }
+    }
+}
+
+void wiki_parser_rules_clear_dynamic(void) {
+    for (size_t i = 0; i < s_dynamic_count; i++) {
+        free(s_dynamic_entries[i].name);
+    }
+    s_dynamic_count = 0;
+    /* Note: we keep the allocated capacity for reuse */
+}
+
+/* ── Lookup (dynamic first, then static) ─────────────────────────────────── */
+
+const ParserRules *wiki_parser_rules_get(const char *name) {
+    if (!name) return NULL;
+
+    /* Check dynamic registry first */
+    for (size_t i = 0; i < s_dynamic_count; i++) {
+        if (strcmp(s_dynamic_entries[i].name, name) == 0) {
+            return &s_dynamic_entries[i].rule;
+        }
+    }
+
+    /* Check static registry */
+    for (size_t i = 0; i < sizeof(s_static_registry) / sizeof(s_static_registry[0]); i++) {
+        if (strcmp(name, s_static_registry[i].name) == 0) {
+            return s_static_registry[i].rule;
+        }
+    }
+
     return NULL;
 }
