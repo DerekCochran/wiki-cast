@@ -1,6 +1,3 @@
-#define PCRE2_CODE_UNIT_WIDTH 8
-#include <pcre2.h>
-
 #include "accum.h"
 #include "build.h"
 #include "util/log.h"
@@ -13,7 +10,6 @@
 #include "parser/magic_links.h"
 #include "parser/quotes.h"
 #include "util/string_util.h"
-#include "util/pcre_cache.h"
 #include "stringzilla/stringzilla.h"
 #include "title.h"
 #include "token.h"
@@ -24,12 +20,68 @@
 #include <string.h>
 #include <strings.h>
 
+/* ---- Protocol matching helpers (replaces PCRE proto regex) ---- */
+
+/* Keep this in sync with C.5 consume_js_zs(). */
+static size_t consume_js_zs_proto(const char *s, size_t len, size_t i) {
+    if(i >= len) return 0;
+    unsigned char c0 = (unsigned char)s[i];
+    if(c0 == 0x20) return 1; /* U+0020 */
+    if(i + 1 < len && c0 == 0xC2 && (unsigned char)s[i + 1] == 0xA0) return 2; /* U+00A0 */
+    if(i + 2 < len && c0 == 0xE1 && (unsigned char)s[i + 1] == 0x9A && (unsigned char)s[i + 2] == 0x80) return 3; /* U+1680 */
+    if(i + 2 < len && c0 == 0xE2 && (unsigned char)s[i + 1] == 0x80 &&
+       (unsigned char)s[i + 2] >= 0x80 && (unsigned char)s[i + 2] <= 0x8A) return 3; /* U+2000..U+200A */
+    if(i + 2 < len && c0 == 0xE2 && (unsigned char)s[i + 1] == 0x80 && (unsigned char)s[i + 2] == 0xAF) return 3; /* U+202F */
+    if(i + 2 < len && c0 == 0xE2 && (unsigned char)s[i + 1] == 0x81 && (unsigned char)s[i + 2] == 0x9F) return 3; /* U+205F */
+    if(i + 2 < len && c0 == 0xE3 && (unsigned char)s[i + 1] == 0x80 && (unsigned char)s[i + 2] == 0x80) return 3; /* U+3000 */
+    return 0;
+}
+
+static size_t consume_links_space(const char *s, size_t len, size_t i) {
+    if(i >= len) return 0;
+    if(s[i] == '\t' || s[i] == '\n' || s[i] == '\r' || s[i] == '\f' || s[i] == '\v') return 1;
+    return consume_js_zs_proto(s, len, i);
+}
+
+static bool proto_token_match_ci_n(const char *s, size_t slen,
+                                   const char *tok, size_t tlen) {
+    if(tlen > slen) return false;
+    for(size_t i = 0; i < tlen; i++) {
+        unsigned char a = (unsigned char)s[i];
+        unsigned char b = (unsigned char)tok[i];
+        if(tolower(a) != tolower(b)) return false;
+    }
+    return true;
+}
+
+/* PARITY: links.js uses /^\s*(?:${config.protocol}|\/\/)/iu.
+ * Leading whitespace includes Unicode Zs + ASCII whitespace.
+ * Protocol alternatives come from cfg->protocol_items (validated in Phase A.1). */
+static bool starts_with_proto(const char *s, size_t len, const ParserConfig *cfg) {
+    if(!s || !cfg || !cfg->protocol_items_valid || cfg->protocol_items.count == 0) return false;
+
+    size_t i = 0;
+    while(i < len) {
+        size_t ws = consume_links_space(s, len, i);
+        if(ws == 0) break;
+        i += ws;
+    }
+    if(i + 2 <= len && s[i] == '/' && s[i + 1] == '/') return true;
+
+    for(size_t pi = 0; pi < cfg->protocol_items.count; pi++) {
+        const char *tok = cfg->protocol_items.items[pi];
+        if(!tok) continue;
+        size_t tlen = strlen(tok);
+        if(tlen > 0 && proto_token_match_ci_n(s + i, len - i, tok, tlen)) return true;
+    }
+    return false;
+}
+
 /* Forward declaration for helper defined later in this file. */
 static Token *parse_inner_fragment(const char *s, size_t len, const ParserConfig *cfg, Accum *accum,
 																	const char *type_name, bool tidy,
 																	bool in_file, const char *page);
 static void trim_view(const char **ptr, size_t *len);
-static pcre2_code *compile_links_proto(const ParserConfig *cfg);
 
 static int eq_n(const char *a, size_t alen, const char *b) {
 	size_t blen= strlen(b);
@@ -496,16 +548,7 @@ static bool img_param_validate(const char *name, const char *val_ptr, size_t val
 			} else if(img_starts_with_magic_url_sentinel(value)) {
 				proto_like= true;
 			} else if(cfg) {
-				pcre2_code *re_proto= compile_links_proto(cfg);
-				if(re_proto) {
-					pcre2_match_data *md= pcre2_match_data_create_from_pattern(re_proto, NULL);
-					if(md) {
-						int rc= pcre2_match(re_proto, (PCRE2_SPTR)value,
-																 (PCRE2_SIZE)strlen(value), 0, 0, md, NULL);
-						proto_like= (rc >= 0);
-						pcre2_match_data_free(md);
-					}
-				}
+				proto_like= starts_with_proto(value, strlen(value), cfg);
 			}
 
 			if(proto_like) {
@@ -675,14 +718,6 @@ static void append_file_image_params(Token *file_tok,
  * and no longer relies on precompiled PCRE patterns for the main/link-img cases.
  */
 
-/* Compile and cache a protocol-detection regex in cfg->regex_links.
- * JS: config.regexLinks ??= new RegExp(`^\s*(?:${config.protocol}|//)`, 'iu');
- */
-static pcre2_code *compile_links_proto(const ParserConfig *cfg) {
-	if(!cfg || !cfg->pattern_links_proto) return NULL;
-	return pcre_cache_get(cfg->pattern_links_proto, PCRE2_CASELESS | PCRE2_UTF);
-}
-
 /* Trim whitespace (in-place view) */
 static void trim_view(const char **ptr, size_t *len) {
 	const char *s= *ptr;
@@ -693,21 +728,6 @@ static void trim_view(const char **ptr, size_t *len) {
 	while(b > a && isspace((unsigned char)s[b - 1])) b--;
 	*ptr= s + a;
 	*len= b - a;
-}
-
-/* Run a PCRE2 regex match on a (possibly NUL-containing) region.
- * Returns the pcre2_match_data on success (caller must free), or NULL. */
-static pcre2_match_data *match_region(pcre2_code *re,
-																			const char *s, size_t len) {
-	if(!re || !s) return NULL;
-	pcre2_match_data *md= pcre2_match_data_create_from_pattern(re, NULL);
-	if(!md) return NULL;
-	int rc= pcre2_match(re, (PCRE2_SPTR)s, (PCRE2_SIZE)len, 0, 0, md, NULL);
-	if(rc < 0) {
-		pcre2_match_data_free(md);
-		return NULL;
-	}
-	return md;
 }
 
 /* ---- Bit (segment between "[[" markers) ---- */
@@ -743,9 +763,6 @@ void parse_links(ThreadBuf *tb, const ParserConfig *cfg, Accum *accum,
 								 const char *page, bool tidy) {
 	(void)page;
 	if(!tb || !tb->buf) return;
-
-	/* Use a runtime-compiled proto regex for this call (if configured). */
-	pcre2_code *re_proto= compile_links_proto(cfg);
 
 	size_t len= tb->len;
 	const char *buf= tb->buf;
@@ -881,14 +898,7 @@ void parse_links(ThreadBuf *tb, const ParserConfig *cfg, Accum *accum,
 			continue;
 		}
 
-		bool is_proto= false;
-		if(re_proto) {
-			pcre2_match_data *md= match_region(re_proto, link_ptr, link_len);
-			if(md) {
-				is_proto= true;
-				pcre2_match_data_free(md);
-			}
-		}
+		bool is_proto= starts_with_proto(link_ptr, link_len, cfg);
 		bool has_sentinel_in_link= false;
 		if(!is_proto) {
 			size_t _pos = 0;

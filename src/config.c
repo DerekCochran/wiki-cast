@@ -515,14 +515,6 @@ static void build_pattern_magic_links(ParserConfig *cfg) {
 	}
 }
 
-static void build_pattern_links_proto(ParserConfig *cfg) {
-	if(!cfg || !cfg->protocol || !cfg->protocol[0]) return;
-	size_t cap = 64 + strlen(cfg->protocol);
-	char *pat = malloc(cap); assert(pat);
-	snprintf(pat, cap, "^\\s*(?:%s|//)", cfg->protocol);
-	cfg->pattern_links_proto = pat;
-}
-
 /* ── Internal parse of the cJSON root object ─────────────────────────────── */
 
 static ParserConfig *config_from_cjson(const cJSON *root) {
@@ -740,10 +732,6 @@ static ParserConfig *config_from_cjson(const cJSON *root) {
 		pcre_cache_get(cfg->pattern_magic_links, ml_flags);
 	}
 
-	build_pattern_links_proto(cfg);
-	if(cfg->pattern_links_proto)
-		pcre_cache_get(cfg->pattern_links_proto, PCRE2_CASELESS | PCRE2_UTF);
-
 	return cfg;
 }
 
@@ -835,7 +823,6 @@ void config_free(ParserConfig *cfg) {
 	if(cfg->pattern_magic_links) free(cfg->pattern_magic_links);
 	if(cfg->pattern_external_links) free(cfg->pattern_external_links);
 	if(cfg->pattern_converter) free(cfg->pattern_converter);
-	if(cfg->pattern_links_proto) free(cfg->pattern_links_proto);
 
 	free(cfg);
 }
