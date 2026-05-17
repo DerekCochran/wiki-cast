@@ -5,6 +5,7 @@
 #include "parser/hr_and_double_underscore.h"
 #include "util/string_util.h"
 #include "util/thread_buffer.h"
+#include "util/wiki_parser_rules.h"
 #include "token.h"
 #include <assert.h>
 #include <ctype.h>
@@ -15,10 +16,195 @@
 
 /*
  * Stage 4: horizontal rules (lines with 4+ dashes) and double-underscore
- * magic words like __TOC__, __NOTOC__, etc.  This implementation uses a
- * PCRE2 regex to find candidate substrings, then validates double-underscore
- * keys against the ParserConfig lists before creating tokens.
+ * magic words like __TOC__, __NOTOC__, etc.  This implementation uses
+ * callback scanners (parser_scan) with ParserRules for HR and double-underscore
+ * detection, then validates double-underscore keys against the ParserConfig
+ * lists before creating tokens.
+ *
+ * Heading finalization still uses PCRE (to be migrated later as B.2).
  */
+
+/* Lowercase ASCII-only copy */
+static char *lower_copy(const char *s, size_t len) {
+	char *out= malloc(len + 1);
+	assert(out);
+	for(size_t i= 0; i < len; i++) out[i]= (char)tolower((unsigned char)s[i]);
+	out[len]= '\0';
+	return out;
+}
+
+/* Forward declarations for helper functions used in dunder_cb */
+static int strlist_has_exact(const StrList *sl, const char *s, size_t len);
+static int strlist_has_lower(const StrList *sl, const char *s, size_t len);
+static const char *strmap_get_exact(const StrMap *m, const char *key);
+
+/* Skip a CNO sentinel: \0\d+[cn]\x7F */
+static size_t skip_cno_sentinel(const char *p, size_t rem) {
+	if(!p || rem < 4 || (unsigned char)p[0] != 0) return 0;
+	size_t j = 1;
+	if(j >= rem || p[j] < '0' || p[j] > '9') return 0;
+	while(j < rem && p[j] >= '0' && p[j] <= '9') j++;
+	if(j + 1 >= rem) return 0;
+	if((p[j] != 'c' && p[j] != 'n' && p[j] != 'o') || (unsigned char)p[j + 1] != 0x7F) return 0;
+	return j + 2;
+}
+
+/* ── HR pass: detect lines with 4+ dashes after optional CNO sentinels ──── */
+
+static void parse_hr_pass(ThreadBuf *tb, Accum *accum) {
+	size_t out_cap = tb->len * 2 + 64;
+	char *out = malloc(out_cap);
+	if(!out) { log_fatal("OOM in parse_hr_pass"); abort(); }
+	size_t out_len = 0;
+	size_t i = 0;
+
+#define ENSURE_OUT(N) do { \
+	while(out_len + (N) + 1 >= out_cap) { \
+		if(out_cap > SIZE_MAX / 2) { log_fatal("buffer size overflow in parse_hr_pass"); abort(); } \
+		out_cap *= 2; \
+		char *_hr_tmp = realloc(out, out_cap); \
+		if(!_hr_tmp) { free(out); log_fatal("OOM in realloc"); abort(); } \
+		out = _hr_tmp; \
+	} \
+} while(0)
+
+	while(i < tb->len) {
+		size_t line_start = i;
+		size_t line_end = i;
+		while(line_end < tb->len && tb->buf[line_end] != '\n') line_end++;
+
+		size_t p = line_start;
+		while(p < line_end) {
+			size_t sc = skip_cno_sentinel(tb->buf + p, line_end - p);
+			if(sc == 0) break;
+			ENSURE_OUT(sc);
+			memcpy(out + out_len, tb->buf + p, sc);
+			out_len += sc;
+			p += sc;
+		}
+
+		size_t dash = p;
+		while(dash < line_end && tb->buf[dash] == '-') dash++;
+		if(dash - p >= 4) {
+			Token *t = token_new(TOKEN_HR, "hr");
+			if(t) {
+				const char *v = wiki_thread_buf_append_to_tokens(tb->buf + p, dash - p);
+				if(v) token_append_text_n(t, v, dash - p);
+				accum_push(accum, t);
+				char sent[64]; size_t slen = 0;
+				work_str_sentinel(accum->count - 1, 'r', sent, &slen);
+				ENSURE_OUT(slen + (line_end - dash));
+				memcpy(out + out_len, sent, slen); out_len += slen;
+				if(line_end > dash) { memcpy(out + out_len, tb->buf + dash, line_end - dash); out_len += line_end - dash; }
+			}
+		} else {
+			ENSURE_OUT(line_end - p);
+			memcpy(out + out_len, tb->buf + p, line_end - p);
+			out_len += line_end - p;
+		}
+
+		if(line_end < tb->len) { ENSURE_OUT(1); out[out_len++] = '\n'; }
+		i = (line_end < tb->len) ? (line_end + 1) : line_end;
+	}
+
+	out[out_len] = '\0';
+	wiki_thread_buf_set(tb, out, out_len);
+	free(out);
+#undef ENSURE_OUT
+}
+
+/* ── Double-underscore pass ──────────────────────────────────────────────── */
+
+typedef struct {
+	ThreadBuf *out;
+	const ParserConfig *cfg;
+	Accum *accum;
+	bool fullwidth;
+} DunderCtx;
+
+static void dunder_emit_raw(DunderCtx *ctx, const char *inner, size_t len) {
+	static const char fw[] = "\xEF\xBC\xBF\xEF\xBC\xBF"; /* ＿＿ */
+	const char *delim = ctx->fullwidth ? fw : "__";
+	size_t dlen = ctx->fullwidth ? 6 : 2;
+	wiki_thread_buf_append(ctx->out, (sz_string_view_t){ .start = delim, .length = dlen });
+	if(len) wiki_thread_buf_append(ctx->out, (sz_string_view_t){ .start = inner, .length = len });
+	wiki_thread_buf_append(ctx->out, (sz_string_view_t){ .start = delim, .length = dlen });
+}
+
+static void dunder_cb(const char *seg, size_t len, ParserSegmentKind kind, void *ud) {
+	DunderCtx *ctx = (DunderCtx *)ud;
+	if(kind == PARSER_SEG_TEXT) {
+		wiki_thread_buf_append(ctx->out, (sz_string_view_t){ .start = seg, .length = len });
+		return;
+	}
+
+	int case_sensitive = strlist_has_exact(&ctx->cfg->double_underscore[1], seg, len);
+	int case_insensitive = strlist_has_lower(&ctx->cfg->double_underscore[0], seg, len);
+	if(!(case_sensitive || case_insensitive)) {
+		dunder_emit_raw(ctx, seg, len);
+		return;
+	}
+
+	Token *t = token_new(TOKEN_DOUBLE_UNDERSCORE, "double-underscore");
+	if(!t) {
+		dunder_emit_raw(ctx, seg, len);
+		return;
+	}
+
+	t->data.dunder.case_sensitive = case_sensitive != 0;
+	t->data.dunder.fullwidth = ctx->fullwidth;
+
+	char *lc = lower_copy(seg, len);
+	const char *alias = NULL;
+	if(case_sensitive) {
+		char *raw = malloc(len + 1);
+		if(!raw) { log_fatal("OOM in dunder_cb"); abort(); }
+		memcpy(raw, seg, len);
+		raw[len] = '\0';
+		alias = strmap_get_exact(&ctx->cfg->double_underscore_alias[1], raw);
+		free(raw);
+	} else if(lc) {
+		alias = strmap_get_exact(&ctx->cfg->double_underscore_alias[0], lc);
+	}
+
+	if(alias && alias[0]) {
+		size_t alen = strlen(alias);
+		t->name = lower_copy(alias, alen);
+		free(lc);
+	} else {
+		t->name = lc;
+	}
+
+	if(len > 0) {
+		const char *view = wiki_thread_buf_append_to_tokens(seg, len);
+		if(view) token_append_text_n(t, view, len);
+	}
+
+	accum_push(ctx->accum, t);
+
+	char ch = 'n';
+	if(case_insensitive && t->name && strcmp(t->name, "toc") == 0) ch = 'u';
+
+	char sent[64]; size_t slen = 0;
+	work_str_sentinel(ctx->accum->count - 1, ch, sent, &slen);
+	wiki_thread_buf_append(ctx->out, (sz_string_view_t){ .start = sent, .length = slen });
+}
+
+static void parse_dunder_pass(ThreadBuf *tb, const ParserRules *rule,
+							  bool fullwidth, const ParserConfig *cfg, Accum *accum) {
+	ThreadBuf *out = wiki_thread_buf_acquire_scratch();
+	if(!out) { log_fatal("thread_buffer: failed to acquire scratch in parse_dunder_pass"); abort(); }
+	out->len = 0;
+
+	DunderCtx ctx = { .out = out, .cfg = cfg, .accum = accum, .fullwidth = fullwidth };
+	parser_scan(tb->buf, tb->len, rule, dunder_cb, &ctx);
+
+	out->buf[out->len] = '\0';
+	wiki_thread_buf_set(tb, out->buf, out->len);
+	wiki_thread_buf_release_scratch(out);
+}
+
+/* ── Helper functions for dunder validation ─────────────────────────────── */
 
 static int strlist_has_exact(const StrList *sl, const char *s, size_t len) {
 	if(!sl) return 0;
@@ -59,23 +245,8 @@ static const char *strmap_get_exact(const StrMap *m, const char *key) {
 	return NULL;
 }
 
-/* Lowercase ASCII-only copy */
-static char *lower_copy(const char *s, size_t len) {
-	char *out= malloc(len + 1);
-	assert(out);
-	for(size_t i= 0; i < len; i++) out[i]= (char)tolower((unsigned char)s[i]);
-	out[len]= '\0';
-	return out;
-}
-
-
-static pcre2_code *compile_regex(const ParserConfig *cfg) {
-	return pcre_cache_get(cfg->pattern_hr_and_dunder,
-				  PCRE2_UTF | PCRE2_MULTILINE | PCRE2_CASELESS);
-}
-
 void parse_hr_and_double_underscore(ThreadBuf *tb, const ParserConfig *cfg, Accum *accum,
-																		TokenType root_type, const char *root_name) {
+									TokenType root_type, const char *root_name) {
 	if(!tb || !tb->buf) return;
 
 	bool prefixed= root_type != TOKEN_ROOT && !(root_type == TOKEN_EXT_INNER && root_name && strcmp(root_name, "poem") == 0);
@@ -90,169 +261,10 @@ void parse_hr_and_double_underscore(ThreadBuf *tb, const ParserConfig *cfg, Accu
 		free(pref);
 	}
 
-	/* Use process-wide cached regex for this call */
-	pcre2_code *re = compile_regex(cfg);
-	if(!re) return;
-	pcre2_match_data *md = pcre2_match_data_create_from_pattern(re, NULL);
-	if(!md) return;
-
-	size_t out_cap= tb->len * 2 + 64;
-	char *out_buf= malloc(out_cap);
-	assert(out_buf);
-	size_t out_len= 0;
-	size_t search_at= 0;
-
-#define ENSURE_CAP(need)                  \
-	do {                                    \
-		while(out_len + (need) >= out_cap) {  \
-			out_cap*= 2;                        \
-			out_buf= realloc(out_buf, out_cap); \
-			assert(out_buf);                    \
-		}                                     \
-	} while(0)
-
-	while(search_at <= tb->len) {
-		int rc= pcre2_match(re, (PCRE2_SPTR)tb->buf, tb->len, search_at, 0, md, NULL);
-		if(rc <= 0) {
-			size_t rest= tb->len - search_at;
-			ENSURE_CAP(rest + 1);
-			memcpy(out_buf + out_len, tb->buf + search_at, rest);
-			out_len+= rest;
-			break;
-		}
-
-		PCRE2_SIZE *ov= pcre2_get_ovector_pointer(md);
-		size_t mstart= ov[0], mend= ov[1];
-
-		/* copy before match */
-		size_t before= mstart - search_at;
-		ENSURE_CAP(before + 32);
-		memcpy(out_buf + out_len, tb->buf + search_at, before);
-		out_len+= before;
-
-		/* Groups: 1 = lead sentinels, 2 = hr dashes, 3 = __...__, 4 = ＿＿...＿＿ */
-		size_t g1s= (rc > 1 && ov[2] != PCRE2_UNSET) ? ov[2] : 0;
-		size_t g1e= (rc > 1 && ov[3] != PCRE2_UNSET) ? ov[3] : 0;
-		size_t g2s= (rc > 2 && ov[4] != PCRE2_UNSET) ? ov[4] : 0;
-		size_t g2e= (rc > 2 && ov[5] != PCRE2_UNSET) ? ov[5] : 0;
-		size_t g3s= (rc > 3 && ov[6] != PCRE2_UNSET) ? ov[6] : 0;
-		size_t g3e= (rc > 3 && ov[7] != PCRE2_UNSET) ? ov[7] : 0;
-		size_t g4s= (rc > 4 && ov[8] != PCRE2_UNSET) ? ov[8] : 0;
-		size_t g4e= (rc > 4 && ov[9] != PCRE2_UNSET) ? ov[9] : 0;
-
-		if(g2e > g2s) {
-			/* HR matched (group 2) */
-			/* copy leading sentinel markers group1 (if any) */
-			if(g1e > g1s) {
-				size_t leadlen= g1e - g1s;
-				ENSURE_CAP(leadlen);
-				memcpy(out_buf + out_len, tb->buf + g1s, leadlen);
-				out_len+= leadlen;
-			}
-
-			Token *t= token_new(TOKEN_HR, "hr");
-			if(t) {
-				/* Store the dash sequence for round-trip toString */
-				size_t dashlen= g2e - g2s;
-				if(dashlen > 0) {
-					const char *dash_view = wiki_thread_buf_append_to_tokens(tb->buf + g2s, dashlen);
-					if(dash_view) token_append_text_n(t, dash_view, dashlen);
-				}
-				accum_push(accum, t);
-			}
-			size_t tok_idx= accum->count ? accum->count - 1 : 0;
-			char sent[64];
-			size_t slen;
-			work_str_sentinel(tok_idx, 'r', sent, &slen);
-			ENSURE_CAP(slen);
-			memcpy(out_buf + out_len, sent, slen);
-			out_len+= slen;
-
-		} else if(g3e > g3s || g4e > g4s) {
-			/* Double-underscore candidate: validate against config lists */
-			size_t ks= (g3e > g3s) ? g3s : g4s;
-			size_t ke= (g3e > g3s) ? g3e : g4e;
-			const char *key_ptr= tb->buf + ks;
-			size_t key_len= ke - ks;
-
-			/* Check case-sensitive list (index 1) for exact match */
-			int case_sensitive= strlist_has_exact(&cfg->double_underscore[1], key_ptr, key_len);
-			/* Check case-insensitive list (index 0) by lowercasing */
-			int case_insensitive= strlist_has_lower(&cfg->double_underscore[0], key_ptr, key_len);
-
-			if(case_sensitive || case_insensitive) {
-				/* Build DoubleUnderscore token */
-				Token *t= token_new(TOKEN_DOUBLE_UNDERSCORE, "double-underscore");
-				if(t) {
-					t->data.dunder.case_sensitive= case_sensitive != 0;
-					t->data.dunder.fullwidth= (g4e > g4s);
-					char *lc= lower_copy(key_ptr, key_len);
-					const char *alias= NULL;
-					if(case_sensitive) {
-						char *raw= malloc(key_len + 1);
-						assert(raw);
-						memcpy(raw, key_ptr, key_len);
-						raw[key_len]= '\0';
-						alias= strmap_get_exact(&cfg->double_underscore_alias[1], raw);
-						free(raw);
-					} else if(lc) {
-						alias= strmap_get_exact(&cfg->double_underscore_alias[0], lc);
-					}
-					if(alias && alias[0]) {
-						size_t alen= strlen(alias);
-						t->name= lower_copy(alias, alen);
-						free(lc);
-					} else {
-						t->name= lc;
-					}
-					/* inner text: original matched word */
-					if(key_len > 0) {
-						const char *key_view = wiki_thread_buf_append_to_tokens(key_ptr, key_len);
-						if(key_view) token_append_text_n(t, key_view, key_len);
-					}
-					accum_push(accum, t);
-					size_t tok_idx= accum->count ? accum->count - 1 : 0;
-					char sent[64];
-					size_t slen;
-					/* Special-case: __TOC__ → sentinel 'u' when insensitive and canonical == "toc" */
-					char ch= 'n';
-					if(case_insensitive) {
-						char *lcname= t->name ? t->name : NULL;
-						if(lcname && strcmp(lcname, "toc") == 0) ch= 'u';
-					}
-					work_str_sentinel(tok_idx, ch, sent, &slen);
-					ENSURE_CAP(slen);
-					memcpy(out_buf + out_len, sent, slen);
-					out_len+= slen;
-				} else {
-					/* fallback: copy original match */
-					ENSURE_CAP(mend - mstart);
-					memcpy(out_buf + out_len, tb->buf + mstart, mend - mstart);
-					out_len+= mend - mstart;
-				}
-			} else {
-				/* Not a registered magic word: copy original match */
-				ENSURE_CAP(mend - mstart);
-				memcpy(out_buf + out_len, tb->buf + mstart, mend - mstart);
-				out_len+= mend - mstart;
-			}
-
-		} else {
-			/* No recognized capture — copy raw substring */
-			ENSURE_CAP(mend - mstart);
-			memcpy(out_buf + out_len, tb->buf + mstart, mend - mstart);
-			out_len+= mend - mstart;
-		}
-
-		search_at= mend;
-		if(mend == mstart) search_at++;
-	}
-
-	out_buf[out_len]= '\0';
-	wiki_thread_buf_set(tb, out_buf, out_len);
-	free(out_buf);
-
-	pcre2_match_data_free(md);
+	/* New callback-based passes for HR and double-underscore */
+	parse_hr_pass(tb, accum);
+	parse_dunder_pass(tb, &wiki_rule_dunder_ascii, false, cfg, accum);
+	parse_dunder_pass(tb, &wiki_rule_dunder_fullwidth, true, cfg, accum);
 
 	/* Heading finalization: turn lines like "== Title ==" into heading tokens */
 	{
