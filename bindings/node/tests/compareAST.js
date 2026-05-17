@@ -89,6 +89,8 @@ function handleChildrenMismatch(jsToken, ncToken) {
             }
         }
     }
+
+    
     return false;
 }
 

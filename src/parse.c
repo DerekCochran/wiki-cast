@@ -26,6 +26,7 @@
 #include "build.h"
 #include "config.h"
 #include "util/log.h"
+#include "util/env_cache.h"
 #include "parser/braces.h"
 #include "parser/converter.h"
 #include "parser/links.h"
@@ -1605,7 +1606,7 @@ Token *wiki_parse_with_page(const char *wikitext, size_t input_len, const Parser
 	ThreadBuf *ws= &tbufs->stage;
 
 	/* Optional stage logging directory (set via env WIKI_STAGE_LOG_DIR). */
-	const char *stage_log_dir= getenv("WIKI_STAGE_LOG_DIR");
+	const char *stage_log_dir = env_get("WIKI_STAGE_LOG_DIR");
 	char runid[64]= "";
 	if(stage_log_dir) {
 		static int _run_counter= 0;

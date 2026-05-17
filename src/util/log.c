@@ -21,6 +21,7 @@
  */
 
 #include "util/log.h"
+#include "util/env_cache.h"
 
 #include <ctype.h>
 #include <pthread.h>
@@ -77,7 +78,7 @@ static int parse_log_level(const char *s) {
 }
 
 static void init_log(void) {
-	const char *env= getenv("TOKENIZER_LOG_LEVEL");
+	const char *env = env_get("TOKENIZER_LOG_LEVEL");
 	L.level= parse_log_level(env);
 }
 
@@ -203,7 +204,7 @@ void log_log_env_token(int level, const char *file, int line, const char *env, c
     pthread_once(&g_log_init_once, init_log);
 
     // 1. Check environment variable and serialize token early
-	if( !getenv(env) ) {
+	if( !env_set(env) ) {
 		return;
 	}
     char *json_str = NULL;

@@ -403,12 +403,14 @@ git clone https://github.com/brendangregg/FlameGraph FlameGraph
 
 # run perf (default — may require sudo)
 sudo ./scripts/profile_wikitext.sh --perf --config node_modules/wikiparser-node/config/enwiki.json --testsdir tests/wikitext
+sudo chown djc:djc -R bindings/node/build
 
 # run Valgrind Callgrind (very slow, detailed)
-./scripts/profile_wikitext.sh --callgrind --config node_modules/wikiparser-node/config/enwiki.json --testsdir tests/wikitext
+sudo ./scripts/profile_wikitext.sh --callgrind --config node_modules/wikiparser-node/config/enwiki.json --testsdir tests/wikitext
+callgrind_annotate /home/djc/git/wikiparser-node-c-tokenizer/build_profile/callgrind.out --auto=yes
 
 # run gprof
-./scripts/profile_wikitext.sh --gprof --config node_modules/wikiparser-node/config/enwiki.json --testsdir tests/wikitext
+sudo ./scripts/profile_wikitext.sh --gprof --config node_modules/wikiparser-node/config/enwiki.json --testsdir tests/wikitext
 ```
 
 - **Interpretation:** Start with the flamegraph to find heavy call stacks. For hotspots, run Callgrind on a smaller reproducer to inspect callers/callees in detail (open `callgrind.out` with `kcachegrind`). Use `perf report` and `perf script` for quick sampling summaries.

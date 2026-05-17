@@ -31,6 +31,7 @@
         "../../src/token.c",
         "../../src/tr.c",
         "../../src/util/callback_parser.c",
+        "../../src/util/env_cache.c",
         "../../src/util/wiki_parser_rules.c",
         "../../src/util/log.c",
         "../../src/util/thread_buffer.c",

@@ -1,6 +1,3 @@
-#define PCRE2_CODE_UNIT_WIDTH 8
-#include <pcre2.h>
-
 #include "util/log.h"
 #include "parser/hr_and_double_underscore.h"
 #include "util/string_util.h"
@@ -12,7 +9,6 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include "util/pcre_cache.h"
 
 /*
  * Stage 4: horizontal rules (lines with 4+ dashes) and double-underscore
@@ -21,7 +17,8 @@
  * detection, then validates double-underscore keys against the ParserConfig
  * lists before creating tokens.
  *
- * Heading finalization still uses PCRE (to be migrated later as B.2).
+ * Heading finalization uses a line-at-a-time forward scan
+ * (heading_line_parse_full) instead of PCRE.
  */
 
 /* Lowercase ASCII-only copy */
@@ -47,6 +44,82 @@ static size_t skip_cno_sentinel(const char *p, size_t rem) {
 	if(j + 1 >= rem) return 0;
 	if((p[j] != 'c' && p[j] != 'n' && p[j] != 'o') || (unsigned char)p[j + 1] != 0x7F) return 0;
 	return j + 2;
+}
+
+/* Returns bytes consumed if *p starts a \x00\d+[cn]\x7F sentinel, else 0. */
+static size_t skip_cn_sentinel(const char *p, size_t remaining) {
+    if(!p || remaining < 4 || (unsigned char)p[0] != 0) return 0;
+    size_t j = 1;
+    if(j >= remaining || p[j] < '0' || p[j] > '9') return 0;
+    while(j < remaining && p[j] >= '0' && p[j] <= '9') j++;
+    if(j >= remaining) return 0;
+    char t = p[j];
+    if(t != 'c' && t != 'n') return 0;
+    if(j + 1 >= remaining || (unsigned char)p[j + 1] != 0x7F) return 0;
+    return j + 2;
+}
+
+typedef struct {
+    const char *lead;    size_t lead_len;    /* group 1: \x00\d+[cn]\x7F prefix */
+    const char *eq;      size_t eq_count;    /* group 2: opening = chars (1–6)  */
+    const char *content; size_t content_len; /* group 3: inner heading text     */
+    const char *trail;   size_t trail_len;   /* group 4: trailing ws/sentinels  */
+} HdLineResult;
+
+/*
+ * heading_line_parse_full — forward-scan replacement for:
+ *   /^((?:\x00\d+[cn]\x7F)*)(={1,6})(.+)\2((?:\s|\x00\d+[cn]\x7F)*)$/
+ *
+ * Applied to a single line (no embedded \n).
+ * Returns true and populates *out on match; false otherwise.
+ */
+static bool heading_line_parse_full(const char *s, size_t len, HdLineResult *out) {
+    if(!s || len == 0 || !out) return false;
+    const char *p = s, *end = s + len;
+
+    const char *lead = p;
+    while(p < end) {
+        size_t sc = skip_cn_sentinel(p, (size_t)(end - p));
+        if(sc == 0) break;
+        p += sc;
+    }
+    size_t lead_len = (size_t)(p - lead);
+
+    const char *eq_start = p;
+    size_t eq_count = 0;
+    while(p < end && *p == '=' && eq_count < 6) { p++; eq_count++; }
+    if(eq_count == 0 || p >= end) return false;
+
+    const char *content_start = p;
+    const char *trail_end = end, *trail_start = end;
+    bool changed = true;
+    while(changed && trail_start > content_start) {
+        changed = false;
+        if(isspace((unsigned char)*(trail_start - 1))) { trail_start--; changed = true; continue; }
+        if((unsigned char)*(trail_start - 1) == 0x7F && trail_start - 2 >= content_start) {
+            const char *type_p = trail_start - 2;
+            if(*type_p == 'c' || *type_p == 'n') {
+                const char *q = type_p - 1;
+                size_t digit_count = 0;
+                while(q > content_start && *q >= '0' && *q <= '9') { q--; digit_count++; }
+                if(digit_count >= 1 && (unsigned char)*q == 0 && q >= content_start) {
+                    trail_start = q; changed = true; continue;
+                }
+            }
+        }
+    }
+
+    if((size_t)(trail_start - content_start) < eq_count + 1) return false;
+    for(size_t i = 0; i < eq_count; i++)
+        if(*(trail_start - 1 - i) != '=') return false;
+    const char *content_end = trail_start - eq_count;
+    if(content_end <= content_start) return false;
+
+    out->lead = lead;           out->lead_len    = lead_len;
+    out->eq   = eq_start;       out->eq_count    = eq_count;
+    out->content = content_start; out->content_len = (size_t)(content_end - content_start);
+    out->trail   = trail_start;   out->trail_len   = (size_t)(trail_end - trail_start);
+    return true;
 }
 
 /* ── HR pass: detect lines with 4+ dashes after optional CNO sentinels ──── */
@@ -266,145 +339,108 @@ void parse_hr_and_double_underscore(ThreadBuf *tb, const ParserConfig *cfg, Accu
 	parse_dunder_pass(tb, &wiki_rule_dunder_ascii, false, cfg, accum);
 	parse_dunder_pass(tb, &wiki_rule_dunder_fullwidth, true, cfg, accum);
 
-	/* Heading finalization: turn lines like "== Title ==" into heading tokens */
+	/* Heading finalization: line-at-a-time forward scan */
 	{
-		/* Use cached heading regex compiled once per process. */
-		const char *hpat= "^((?:\\x00\\d+[cn]\\x7F)*)(={1,6})(.+)\\2((?:\\s|\\x00\\d+[cn]\\x7F)*)$";
-			pcre2_code *hre = pcre_cache_get(hpat,
-						PCRE2_UTF | PCRE2_MULTILINE | PCRE2_UCP);
-		pcre2_match_data *hmd = pcre2_match_data_create_from_pattern(hre, NULL);
-		if(!hmd) {
-			log_error("hr_and_double_underscore: failed to create match data");
-			return;
-		}
+		size_t out_cap2 = tb->len * 2 + 64;
+		char *out2 = malloc(out_cap2);
+		if(!out2) { log_fatal("OOM in heading finalization"); abort(); }
+		size_t out2_len = 0;
+#define GROW_OUT2(need) do { \
+		while(out2_len + (need) >= out_cap2) { \
+			if(out_cap2 > SIZE_MAX / 2) { log_fatal("buffer size overflow in heading finalization"); abort(); } \
+			out_cap2 *= 2; \
+			char *_grow_tmp = realloc(out2, out_cap2); \
+			if(!_grow_tmp) { free(out2); log_fatal("OOM in realloc"); abort(); } \
+			out2 = _grow_tmp; \
+		} \
+	} while(0)
+		const char *buf2 = tb->buf;
+		size_t buf2_len  = tb->len;
+		size_t line_start = 0;
 
-		size_t out_cap2= tb->len * 2 + 64;
-		char *out2= malloc(out_cap2);
-		assert(out2);
-		size_t out2_len= 0;
-		size_t search2= 0;
+		while(line_start <= buf2_len) {
+			size_t line_end = line_start;
+			while(line_end < buf2_len && buf2[line_end] != '\n') line_end++;
+			const char *line = buf2 + line_start;
+			size_t line_len  = line_end - line_start;
 
-		while(search2 <= tb->len) {
-			int rc= pcre2_match(hre, (PCRE2_SPTR)tb->buf, tb->len, search2, 0, hmd, NULL);
-			if(rc <= 0) {
-				size_t rest= tb->len - search2;
-				if(out2_len + rest + 1 > out_cap2) {
-					out_cap2= out2_len + rest + 1;
-					out2= realloc(out2, out_cap2);
-					assert(out2);
+			HdLineResult hr;
+			if(heading_line_parse_full(line, line_len, &hr)) {
+				/* 1. Emit lead sentinels verbatim */
+				if(hr.lead_len > 0) {
+					GROW_OUT2(hr.lead_len);
+					memcpy(out2 + out2_len, hr.lead, hr.lead_len);
+					out2_len += hr.lead_len;
 				}
-				memcpy(out2 + out2_len, tb->buf + search2, rest);
-				out2_len+= rest;
-				break;
-			}
+				/* 2. Map hr.* to buf2-relative offsets (same variable names as old ov[]) */
+				size_t eq_s    = (size_t)(hr.eq      - buf2), eq_e    = eq_s + hr.eq_count;
+				size_t text_s  = (size_t)(hr.content - buf2), text_e  = text_s + hr.content_len;
+				size_t trail_s = (size_t)(hr.trail   - buf2), trail_e = trail_s + hr.trail_len;
+				/* 3. Build heading token */
+				int level = (int)(eq_e > eq_s ? eq_e - eq_s : 0);
+				const char *h_inner = (text_e > text_s) ? (buf2 + text_s) : "";
+				size_t h_inner_len = (text_e > text_s) ? (text_e - text_s) : 0;
+				const char *h_trail = (trail_e > trail_s) ? (buf2 + trail_s) : "";
+				size_t h_trail_len = (trail_e > trail_s) ? (trail_e - trail_s) : 0;
 
-			PCRE2_SIZE *ov= pcre2_get_ovector_pointer(hmd);
-			size_t ms= ov[0], me= ov[1];
-			size_t before= ms - search2;
-			if(out2_len + before + 32 > out_cap2) {
-				out_cap2= out2_len + before + 32;
-				out2= realloc(out2, out_cap2);
-				assert(out2);
-			}
-			memcpy(out2 + out2_len, tb->buf + search2, before);
-			out2_len+= before;
+				Token *t = token_new(TOKEN_HEADING, "heading");
+				if(t) {
+					t->data.heading.level = level;
 
-			size_t eq_s= (rc > 2 && ov[4] != PCRE2_UNSET) ? ov[4] : 0;
-			size_t eq_e= (rc > 2 && ov[5] != PCRE2_UNSET) ? ov[5] : 0;
-			size_t text_s= (rc > 3 && ov[6] != PCRE2_UNSET) ? ov[6] : 0;
-			size_t text_e= (rc > 3 && ov[7] != PCRE2_UNSET) ? ov[7] : 0;
-			size_t trail_s= (rc > 4 && ov[8] != PCRE2_UNSET) ? ov[8] : 0;
-			size_t trail_e= (rc > 4 && ov[9] != PCRE2_UNSET) ? ov[9] : 0;
-
-			/* Build heading token: level = length of eq (eq_e - eq_s) */
-			int level= (int)(eq_e > eq_s ? eq_e - eq_s : 0);
-			/* Extract heading inner text and trailing text */
-			const char *h_inner= (text_e > text_s) ? tb->buf + text_s : "";
-			size_t h_inner_len= (text_e > text_s) ? text_e - text_s : 0;
-			const char *h_trail= (trail_e > trail_s) ? tb->buf + trail_s : "";
-			size_t h_trail_len= (trail_e > trail_s) ? trail_e - trail_s : 0;
-			size_t post_trail_len= 0;
-			if(h_trail_len > 0) {
-				bool only_line_endings= true;
-				for(size_t ti= 0; ti < h_trail_len; ti++) {
-					if(h_trail[ti] != '\n' && h_trail[ti] != '\r') {
-						only_line_endings= false;
-						break;
+					Token *title_tok = token_new(TOKEN_PLAIN, "heading-title");
+					if(title_tok) {
+						if(h_inner_len > 0) {
+							const char *title_view = wiki_thread_buf_append_to_tokens(h_inner, h_inner_len);
+							if(title_view) token_append_text_n(title_tok, title_view, h_inner_len);
+						} else {
+							token_append_text_n(title_tok, "", 0);
+						}
+						token_append_child(t, title_tok);
 					}
-				}
-				if(only_line_endings && root_type != TOKEN_ROOT) {
-					post_trail_len= h_trail_len;
-					h_trail_len= 0;
-				}
-			}
 
-			Token *t= token_new(TOKEN_HEADING, "heading");
-			if(t) {
-				t->data.heading.level= level;
-				/* Build heading-title child token (TOKEN_PLAIN "heading-title") */
-				Token *title_tok= token_new(TOKEN_PLAIN, "heading-title");
-				if(title_tok) {
-					if(h_inner_len) {
-						const char *title_view = wiki_thread_buf_append_to_tokens(h_inner, h_inner_len);
-						if(title_view) token_append_text_n(title_tok, title_view, h_inner_len);
+					Token *trail_tok = token_new(TOKEN_SYNTAX, "heading-trail");
+					if(trail_tok) {
+						if(h_trail_len > 0) {
+							const char *trail_view = wiki_thread_buf_append_to_tokens(h_trail, h_trail_len);
+							if(trail_view) token_append_text_n(trail_tok, trail_view, h_trail_len);
+						} else {
+							token_append_text_n(trail_tok, "", 0);
+						}
+						token_append_child(t, trail_tok);
 					}
-					token_append_child(t, title_tok);
+
+					accum_push(accum, t);
+					char sent[64];
+					size_t slen = 0;
+					work_str_sentinel(accum->count - 1, 'h', sent, &slen);
+					GROW_OUT2(slen);
+					memcpy(out2 + out2_len, sent, slen);
+					out2_len += slen;
+				} else {
+					GROW_OUT2(line_len);
+					memcpy(out2 + out2_len, line, line_len);
+					out2_len += line_len;
 				}
-				/* Build heading-trail child token (TOKEN_SYNTAX "heading-trail") */
-				Token *trail_tok= token_new(TOKEN_SYNTAX, "heading-trail");
-				if(trail_tok) {
-					/* Always append a text child (even if empty), mirroring JS which
-					 * always creates an AstText("") inside heading-trail. */
-					if(h_trail_len > 0) {
-						const char *trail_view = wiki_thread_buf_append_to_tokens(h_trail, h_trail_len);
-						if(trail_view) token_append_text_n(trail_tok, trail_view, h_trail_len);
-					} else {
-						token_append_text_n(trail_tok, NULL, 0);
-					}
-					token_append_child(t, trail_tok);
-				}
-				accum_push(accum, t);
-				size_t tok_idx= accum->count ? accum->count - 1 : 0;
-				char sent[64];
-				size_t slen;
-				work_str_sentinel(tok_idx, 'h', sent, &slen);
-				if(out2_len + slen > out_cap2) {
-					out_cap2= out2_len + slen + 16;
-					out2= realloc(out2, out_cap2);
-					assert(out2);
-				}
-				memcpy(out2 + out2_len, sent, slen);
-				out2_len+= slen;
-				if(post_trail_len > 0) {
-					if(out2_len + post_trail_len + 1 > out_cap2) {
-						out_cap2= out2_len + post_trail_len + 16;
-						out2= realloc(out2, out_cap2);
-						assert(out2);
-					}
-					memcpy(out2 + out2_len, h_trail, post_trail_len);
-					out2_len+= post_trail_len;
+
+				/* 4. Emit the '\n' that terminated this line */
+				if(line_end < buf2_len) {
+					GROW_OUT2(1);
+					out2[out2_len++] = '\n';
 				}
 			} else {
-				/* fallback: copy original match */
-				if(out2_len + (me - ms) > out_cap2) {
-					out_cap2= out2_len + (me - ms) + 16;
-					out2= realloc(out2, out_cap2);
-					assert(out2);
-				}
-				memcpy(out2 + out2_len, tb->buf + ms, me - ms);
-				out2_len+= me - ms;
+				/* Not a heading: copy line + optional '\n' verbatim */
+				size_t copy_len = (line_end < buf2_len) ? line_len + 1 : line_len;
+				GROW_OUT2(copy_len);
+				memcpy(out2 + out2_len, buf2 + line_start, copy_len);
+				out2_len += copy_len;
 			}
-
-			search2= me;
-			if(me == ms) search2++;
+			if(line_end >= buf2_len) break;
+			line_start = line_end + 1;
 		}
-
-		out2[out2_len]= '\0';
+		out2[out2_len] = '\0';
 		wiki_thread_buf_set(tb, out2, out2_len);
 		free(out2);
-
-		pcre2_match_data_free(hmd);
-		/* Compiled pattern owned by pcre_cache; do NOT free `hre` */
+#undef GROW_OUT2
 	}
 
 	if(prefixed && tb->len > 0) {
