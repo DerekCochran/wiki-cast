@@ -461,7 +461,7 @@ static void parse_list_skip_first_line(ThreadBuf *scratch, const ParserConfig *c
 
 static bool should_postprocess_plain(const Token *t) {
 	if(!t || !(t->type == TOKEN_PLAIN || t->type == TOKEN_EXT_INNER) || !t->type_name) return false;
-	return strcmp(t->type_name, "td-inner") == 0 || strcmp(t->type_name, "ext-inner") == 0 || strcmp(t->type_name, "heading-title") == 0;
+	return strcmp(t->type_name, "td-inner") == 0 || strcmp(t->type_name, "table-inter") == 0 || strcmp(t->type_name, "ext-inner") == 0 || strcmp(t->type_name, "heading-title") == 0;
 }
 
 static bool ext_inner_allows_nested_parse(const char *name) {
@@ -891,7 +891,7 @@ static void postprocess_nested_plain(Token *t, const ParserConfig *cfg, Accum *a
 		return;
 	}
 
-	bool is_td_inner= strcmp(t->type_name, "td-inner") == 0;
+	bool is_td_inner= strcmp(t->type_name, "td-inner") == 0 || strcmp(t->type_name, "table-inter") == 0;
 	bool is_ext_inner= strcmp(t->type_name, "ext-inner") == 0;
 	bool is_heading_title= strcmp(t->type_name, "heading-title") == 0;
 
