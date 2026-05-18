@@ -696,8 +696,11 @@ static Token *build_template_token(const char **parts_restored, const size_t *pa
 
 			free(t->type_name);
 			t->type_name= strdup("magic-word");
-			const char *canonical= parser_function_canonical(cfg, title_part, magic_title_len);
-			char *magic_raw_name= trim_copy(title_part, magic_title_len);
+			size_t magic_clean_len= 0;
+			char *magic_clean= str_remove_comment(title_part, magic_title_len, &magic_clean_len);
+			char *magic_raw_name= magic_clean ? trim_copy(magic_clean, magic_clean_len) : NULL;
+			free(magic_clean);
+			const char *canonical= magic_raw_name ? parser_function_canonical(cfg, magic_raw_name, strlen(magic_raw_name)) : NULL;
 			if(magic_raw_name && magic_raw_name[0] == '#' && !canonical) {
 				/* JS parity: unknown hash parser-functions (for example
 				 * {{#vardefine:...}} on configs that do not define it) are
