@@ -88,17 +88,18 @@ static bool heading_line_parse(const char *s, size_t len, HeadingLineResult *out
 		/* \x00\d+[cn]\x7F sentinel — scan backwards */
 		if((unsigned char)*(trail_start - 1) == (unsigned char)'\x7F'
 		   && trail_start - 1 > s) {
-			const char *q = trail_start - 2;
-			while(q > s && *q >= '0' && *q <= '9') q--;
-			if((unsigned char)*q == 0 && q + 1 < trail_start - 1) {
-				const char *digs = q + 1;
-				while(digs < trail_start - 1 && *digs >= '0' && *digs <= '9') digs++;
-				if(digs + 1 < trail_start
-				   && (*digs == 'c' || *digs == 'n')
-				   && (unsigned char)*(digs + 1) == (unsigned char)'\x7F'
-				   && digs + 2 == trail_start
-				   && q >= s) {
-					trail_start = q; changed = true; continue;
+			const char *type_p = trail_start - 2;
+			if(*type_p == 'c' || *type_p == 'n') {
+				const char *q = type_p - 1;
+				size_t digit_count = 0;
+				while(q > s && *q >= '0' && *q <= '9') {
+					q--;
+					digit_count++;
+				}
+				if(digit_count >= 1 && (unsigned char)*q == 0) {
+					trail_start = q;
+					changed = true;
+					continue;
 				}
 			}
 		}
