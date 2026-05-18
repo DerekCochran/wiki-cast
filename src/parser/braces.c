@@ -70,17 +70,16 @@ static bool heading_line_parse(const char *s, size_t len, HeadingLineResult *out
 	if(!s || len == 0 || !out) return false;
 	const char *end = s + len;
 
-	/* Group 1: opening '=' run, 1–6 chars */
-	size_t eq_count = 0;
-	while(eq_count < 6 && s + eq_count < end && s[eq_count] == '=') eq_count++;
-	if(eq_count == 0 || s + eq_count >= end) return false;
-	const char *content_start = s + eq_count;
+	/* Group 1: opening '=' run, 1–6 chars (regex backtracks this). */
+	size_t open_run = 0;
+	while(open_run < 6 && s + open_run < end && s[open_run] == '=') open_run++;
+	if(open_run == 0 || s + open_run >= end) return false;
 
 	/* Group 3: strip trailing ((\s|\0\d+[cn]\x7F)*) from the end */
 	const char *trail_end   = end;
 	const char *trail_start = end;
 	bool changed = true;
-	while(changed && trail_start > content_start) {
+	while(changed && trail_start > s + 1) {
 		changed = false;
 		/* whitespace */
 		if(isspace((unsigned char)*(trail_start - 1))) {
@@ -88,9 +87,9 @@ static bool heading_line_parse(const char *s, size_t len, HeadingLineResult *out
 		}
 		/* \x00\d+[cn]\x7F sentinel — scan backwards */
 		if((unsigned char)*(trail_start - 1) == (unsigned char)'\x7F'
-		   && trail_start - 1 > content_start) {
+		   && trail_start - 1 > s) {
 			const char *q = trail_start - 2;
-			while(q > content_start && *q >= '0' && *q <= '9') q--;
+			while(q > s && *q >= '0' && *q <= '9') q--;
 			if((unsigned char)*q == 0 && q + 1 < trail_start - 1) {
 				const char *digs = q + 1;
 				while(digs < trail_start - 1 && *digs >= '0' && *digs <= '9') digs++;
@@ -98,32 +97,43 @@ static bool heading_line_parse(const char *s, size_t len, HeadingLineResult *out
 				   && (*digs == 'c' || *digs == 'n')
 				   && (unsigned char)*(digs + 1) == (unsigned char)'\x7F'
 				   && digs + 2 == trail_start
-				   && q >= content_start) {
+				   && q >= s) {
 					trail_start = q; changed = true; continue;
 				}
 			}
 		}
 	}
 
-	/* After stripping trail, remaining content must end with eq_count '=' */
-	if((size_t)(trail_start - content_start) < eq_count + 1) return false;
-	for(size_t i = 0; i < eq_count; i++) {
-		if(*(trail_start - 1 - i) != '=') return false;
+	/* JS/regex parity: backtrack opening run (={1,6}) from max to 1. */
+	for(size_t eq_count = open_run; eq_count > 0; eq_count--) {
+		const char *content_start = s + eq_count;
+		if(content_start >= trail_start) continue;
+		if((size_t)(trail_start - content_start) < eq_count + 1) continue;
+
+		bool close_ok = true;
+		for(size_t i = 0; i < eq_count; i++) {
+			if(*(trail_start - 1 - i) != '=') {
+				close_ok = false;
+				break;
+			}
+		}
+		if(!close_ok) continue;
+
+		const char *content_end = trail_start - eq_count;
+		if(content_end <= content_start) continue;
+
+		out->lead        = NULL;
+		out->lead_len    = 0;
+		out->open_eq     = s;
+		out->eq_count    = eq_count;
+		out->content     = content_start;
+		out->content_len = (size_t)(content_end - content_start);
+		out->trail       = trail_start;
+		out->trail_len   = (size_t)(trail_end - trail_start);
+		return true;
 	}
-	const char *content_end = trail_start - eq_count;
 
-	/* Inner content must be non-empty (.+ needs ≥1 char) */
-	if(content_end <= content_start) return false;
-
-	out->lead        = NULL;
-	out->lead_len    = 0;
-	out->open_eq     = s;
-	out->eq_count    = eq_count;
-	out->content     = content_start;
-	out->content_len = (size_t)(content_end - content_start);
-	out->trail       = trail_start;
-	out->trail_len   = (size_t)(trail_end - trail_start);
-	return true;
+	return false;
 }
 
 /*
@@ -204,7 +214,7 @@ brace_event_next(const char *buf, size_t len, size_t *pos,
 			size_t cnt= 0;
 			while(p + cnt < len && buf[p + cnt] == '{') cnt++;
 			if(cnt >= 2) {
-				size_t bc= cnt > 3 ? 3 : cnt;
+				size_t bc= cnt;
 				if(kind_out) *kind_out= BRACE_EVT_BRACE_OPEN;
 				if(match_len_out) *match_len_out= bc;
 				if(brace_count_out) *brace_count_out= bc;
@@ -297,7 +307,7 @@ brace_event_next(const char *buf, size_t len, size_t *pos,
 			size_t cnt= 0;
 			while(p + cnt < len && buf[p + cnt] == '}') cnt++;
 			if(cnt >= 2) {
-				size_t bc= cnt > 3 ? 3 : cnt;
+				size_t bc= cnt;
 				if(kind_out) *kind_out= BRACE_EVT_BRACE_CLOSE;
 				if(match_len_out) *match_len_out= bc;
 				if(brace_count_out) *brace_count_out= bc;
@@ -1380,7 +1390,9 @@ static bool braces_state_machine(ThreadBuf *tb, const ParserConfig *cfg,
 						;
 					}
 					size_t close_len= brace_count;
-					bool is_arg_close= (top.open_len == 3 && close_len >= 3);
+					size_t max_close= top.open_len < 3 ? top.open_len : 3;
+					if(close_len > max_close) close_len= max_close;
+					bool is_arg_close= (close_len == 3);
 					size_t rest= top.open_len > close_len ? top.open_len - close_len : 0;
 					char *inner= NULL;
 					size_t inner_len= 0;
@@ -1448,7 +1460,7 @@ static bool braces_state_machine(ThreadBuf *tb, const ParserConfig *cfg,
 						/* Invalid {{...}} (e.g. empty template name): keep raw text and
 						 * only consume as many closing braces as this frame owns so
 						 * adjacent outer closes are still available to parse. */
-						size_t close_consume= top.open_len < close_len ? top.open_len : close_len;
+						size_t close_consume= close_len;
 						size_t rep_end= cur_index + close_consume;
 						if(rep_end > next_write) {
 							ENSURE_OUT_CAP(rep_end - next_write);

@@ -85,41 +85,55 @@ static bool heading_line_parse_full(const char *s, size_t len, HdLineResult *out
     }
     size_t lead_len = (size_t)(p - lead);
 
-    const char *eq_start = p;
-    size_t eq_count = 0;
-    while(p < end && *p == '=' && eq_count < 6) { p++; eq_count++; }
-    if(eq_count == 0 || p >= end) return false;
+	const char *eq_start = p;
+	size_t open_run = 0;
+	while(p < end && *p == '=' && open_run < 6) { p++; open_run++; }
+	if(open_run == 0 || p >= end) return false;
 
-    const char *content_start = p;
     const char *trail_end = end, *trail_start = end;
     bool changed = true;
-    while(changed && trail_start > content_start) {
+	while(changed && trail_start > eq_start + 1) {
         changed = false;
         if(isspace((unsigned char)*(trail_start - 1))) { trail_start--; changed = true; continue; }
-        if((unsigned char)*(trail_start - 1) == 0x7F && trail_start - 2 >= content_start) {
+		if((unsigned char)*(trail_start - 1) == 0x7F && trail_start - 2 >= eq_start) {
             const char *type_p = trail_start - 2;
             if(*type_p == 'c' || *type_p == 'n') {
                 const char *q = type_p - 1;
                 size_t digit_count = 0;
-                while(q > content_start && *q >= '0' && *q <= '9') { q--; digit_count++; }
-                if(digit_count >= 1 && (unsigned char)*q == 0 && q >= content_start) {
+				while(q > eq_start && *q >= '0' && *q <= '9') { q--; digit_count++; }
+				if(digit_count >= 1 && (unsigned char)*q == 0 && q >= eq_start) {
                     trail_start = q; changed = true; continue;
                 }
             }
         }
     }
 
-    if((size_t)(trail_start - content_start) < eq_count + 1) return false;
-    for(size_t i = 0; i < eq_count; i++)
-        if(*(trail_start - 1 - i) != '=') return false;
-    const char *content_end = trail_start - eq_count;
-    if(content_end <= content_start) return false;
+	/* Regex parity: backtrack (={1,6}) from max to 1 until closing run matches. */
+	for(size_t eq_count = open_run; eq_count > 0; eq_count--) {
+		const char *content_start = eq_start + eq_count;
+		if(content_start >= trail_start) continue;
+		if((size_t)(trail_start - content_start) < eq_count + 1) continue;
 
-    out->lead = lead;           out->lead_len    = lead_len;
-    out->eq   = eq_start;       out->eq_count    = eq_count;
-    out->content = content_start; out->content_len = (size_t)(content_end - content_start);
-    out->trail   = trail_start;   out->trail_len   = (size_t)(trail_end - trail_start);
-    return true;
+		bool close_ok = true;
+		for(size_t i = 0; i < eq_count; i++) {
+			if(*(trail_start - 1 - i) != '=') {
+				close_ok = false;
+				break;
+			}
+		}
+		if(!close_ok) continue;
+
+		const char *content_end = trail_start - eq_count;
+		if(content_end <= content_start) continue;
+
+		out->lead = lead;             out->lead_len    = lead_len;
+		out->eq   = eq_start;         out->eq_count    = eq_count;
+		out->content = content_start; out->content_len = (size_t)(content_end - content_start);
+		out->trail   = trail_start;   out->trail_len   = (size_t)(trail_end - trail_start);
+		return true;
+	}
+
+	return false;
 }
 
 /* ── HR pass: detect lines with 4+ dashes after optional CNO sentinels ──── */

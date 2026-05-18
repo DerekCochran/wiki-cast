@@ -812,7 +812,9 @@ static void run_nested_plain_pipeline(ThreadBuf *scratch,
 		parse_comment_and_ext(scratch, cfg, accum, false);
 	}
 
-	parse_braces(scratch, cfg, accum);
+	if(!is_heading_title) {
+		parse_braces(scratch, cfg, accum);
+	}
 
 	if(is_td_inner || is_ext_inner) {
 		bool is_poem_ext_inner= is_ext_inner && t && t->name && strcmp(t->name, "poem") == 0;

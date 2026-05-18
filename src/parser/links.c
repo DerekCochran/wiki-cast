@@ -1261,10 +1261,11 @@ static Token *parse_inner_fragment(const char *s, size_t len, const ParserConfig
 		 * image text before creating FileToken (first pass, inFile=true).
 		 * Then stage 7 runs parseExternalLinks(captionText, ..., false) on each
 		 * ImageParameterToken(caption) (second pass, inFile=false), wrapping the
-		 * \0<N>f\x7F sentinels from the first pass into proper ExtLinkTokens. */
+		 * \0<N>f\x7F sentinels from the first pass into proper ExtLinkTokens.
+		 * Do not run parseMagicLinks here: file/image parameter text does not
+		 * tokenize bare URLs as free-ext-link in JS. */
 		parse_external_links(inner_tb, cfg, accum, true);
 		parse_external_links(inner_tb, cfg, accum, false);
-		parse_magic_links(inner_tb, cfg, accum);
 	}
 
 	Token *inner= token_new(TOKEN_PLAIN, type_name);

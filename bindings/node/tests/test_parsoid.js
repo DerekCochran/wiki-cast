@@ -10225,9 +10225,12 @@ for (const configName of CONFIGS) {
   const configPath = path.join(ROOT, `${configName}.json`);
   process.env.WIKI_CONFIG = configPath;
 
+  let testCount = 0;
   for (const test of tests) {
+    testCount++;
     const ok = runTests([test], { name: `parsoid-${configName}` });
     if (!ok) {
+      console.error(`Test ${testCount} failed for ${configName}`);
       process.exit(1);
     }
   }
