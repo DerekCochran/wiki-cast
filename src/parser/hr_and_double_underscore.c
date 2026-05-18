@@ -88,7 +88,7 @@ static bool heading_line_parse_full(const char *s, size_t len, HdLineResult *out
 	const char *eq_start = p;
 	size_t open_run = 0;
 	while(p < end && *p == '=' && open_run < 6) { p++; open_run++; }
-	if(open_run == 0 || p >= end) return false;
+	if(open_run == 0) return false;
 
     const char *trail_end = end, *trail_start = end;
     bool changed = true;
