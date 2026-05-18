@@ -379,27 +379,36 @@ void parse_external_links(ThreadBuf *tb, const ParserConfig *cfg,
 
             while(i < slen) {
                 if(src[i] == '[') {
+                    const char *inner = src + i + 1;
+                    size_t match_j = SIZE_MAX;
                     size_t j = i + 1;
-                    while(j < slen && src[j] != ']') j++;
+                    while(j < slen) {
+                        while(j < slen && src[j] != ']') j++;
+                        if(j >= slen) break;
 
-                    if(j < slen) {
                         const char *u = NULL, *sp = NULL, *txt = NULL;
                         size_t ulen = 0, splen = 0, tlen = 0;
-                        const char *inner = src + i + 1;
                         size_t inner_len = j - (i + 1);
                         if(parse_external_inner(inner, inner_len, cfg, &u, &ulen, &sp, &splen, &txt, &tlen)) {
-                            if(i > last) wiki_thread_buf_append(out2, (sz_string_view_t){ .start = src + last, .length = i - last });
-                            ExtCtx inner_ctx = {
-                                .out = out2,
-                                .cfg = cfg,
-                                .accum = accum,
-                                .in_file = false
-                            };
-                            ext_cb(inner, inner_len, PARSER_SEG_INNER, &inner_ctx);
-                            i = j + 1;
-                            last = i;
-                            continue;
+                            match_j = j;
+                            break;
                         }
+                        j++;
+                    }
+
+                    if(match_j != SIZE_MAX) {
+                        size_t inner_len = match_j - (i + 1);
+                        if(i > last) wiki_thread_buf_append(out2, (sz_string_view_t){ .start = src + last, .length = i - last });
+                        ExtCtx inner_ctx = {
+                            .out = out2,
+                            .cfg = cfg,
+                            .accum = accum,
+                            .in_file = false
+                        };
+                        ext_cb(inner, inner_len, PARSER_SEG_INNER, &inner_ctx);
+                        i = match_j + 1;
+                        last = i;
+                        continue;
                     }
                 }
                 i++;
