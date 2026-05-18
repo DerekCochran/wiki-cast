@@ -90,6 +90,28 @@ static void append_key_token_repr_tb(const Token *t, ThreadBuf *tb) {
 		return;
 	}
 
+	if(t->type == TOKEN_ARG) {
+		/* JS parity for Token.text() on ArgToken: preserve {{{...}}} syntax
+		 * when an arg token appears inside a template-name token. */
+		wiki_thread_buf_putc(tb, '{');
+		wiki_thread_buf_putc(tb, '{');
+		wiki_thread_buf_putc(tb, '{');
+		for(size_t i = 0; i < t->child_count; i++) {
+			if(i > 0) wiki_thread_buf_putc(tb, '|');
+			const Child *c = &t->children[i];
+			if(c->is_text) {
+				sz_string_view_t v = { c->text, c->text_len };
+				wiki_thread_buf_append(tb, v);
+			} else {
+				append_key_token_repr_tb(c->token, tb);
+			}
+		}
+		wiki_thread_buf_putc(tb, '}');
+		wiki_thread_buf_putc(tb, '}');
+		wiki_thread_buf_putc(tb, '}');
+		return;
+	}
+
 	for(size_t i = 0; i < t->child_count; i++) {
 		if(i > 0 && t->sep != '\0') {
 			wiki_thread_buf_putc(tb, t->sep);
