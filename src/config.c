@@ -527,20 +527,23 @@ static ParserConfig *config_from_cjson(const cJSON *root) {
 	str_list_from_json_array(&cfg->variable,
 													 cJSON_GetObjectItemCaseSensitive(root, "variable"));
 
-	/* parserFunction[3] (subst-like modifiers), mirrors JS destructuring:
-     *   [, , , subst] = config.parserFunction */
+	/* parserFunction[2]/[3] modifiers, mirrors JS destructuring:
+	 *   [, , raw, subst] = config.parserFunction */
 	{
 		const cJSON *pf= cJSON_GetObjectItemCaseSensitive(root, "parserFunction");
 		if(pf && cJSON_IsArray(pf)) {
 			const cJSON *ins= cJSON_GetArrayItem(pf, 0);
 			const cJSON *sen= cJSON_GetArrayItem(pf, 1);
+			const cJSON *raw= cJSON_GetArrayItem(pf, 2);
 			const cJSON *subst= cJSON_GetArrayItem(pf, 3);
 			str_map_from_json_object(&cfg->parser_function_insensitive, ins);
 			str_map_from_json_object(&cfg->parser_function_sensitive, sen);
+			str_list_from_json_array(&cfg->parser_function_raw, raw);
 			str_list_from_json_array(&cfg->parser_function_subst, subst);
 		} else {
 			str_map_init(&cfg->parser_function_insensitive);
 			str_map_init(&cfg->parser_function_sensitive);
+			str_list_init(&cfg->parser_function_raw);
 			str_list_init(&cfg->parser_function_subst);
 		}
 	}
@@ -695,6 +698,7 @@ void config_free(ParserConfig *cfg) {
 	free(cfg->protocol);
 	str_list_free(&cfg->variants);
 	str_list_free(&cfg->variable);
+	str_list_free(&cfg->parser_function_raw);
 	str_list_free(&cfg->parser_function_subst);
 	str_map_free(&cfg->parser_function_insensitive);
 	str_map_free(&cfg->parser_function_sensitive);

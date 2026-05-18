@@ -661,7 +661,8 @@ static Token *build_template_token(const char **parts_restored, const size_t *pa
 		if(colon) {
 			size_t prefix_len= (size_t)(colon - title_part);
 			char *prefix= trim_copy(title_part, prefix_len);
-			if(prefix && str_list_contains_ci(&cfg->parser_function_subst, prefix)) {
+			if(prefix && (str_list_contains_ci(&cfg->parser_function_subst, prefix)
+							 || str_list_contains_ci(&cfg->parser_function_raw, prefix))) {
 				size_t mod_len= prefix_len + 1;
 				while(mod_len < title_part_len && isspace((unsigned char)title_part[mod_len])) {
 					mod_len++;

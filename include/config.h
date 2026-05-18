@@ -74,6 +74,10 @@ typedef struct {
      /* magic variables list from config.variable (lowercased names) */
      StrList variable;
 
+    /* parserFunction[2] in JS config: raw-like transclusion modifiers
+     * (e.g. ["msg","raw"]) used by parseBraces TranscludeToken modifier handling. */
+    StrList parser_function_raw;
+
     /* parserFunction[3] in JS config: subst-like transclusion modifiers
      * (e.g. ["safesubst","subst"]) used by parseBraces for {{{...}}}. */
     StrList parser_function_subst;
