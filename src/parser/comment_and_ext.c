@@ -1161,6 +1161,21 @@ static Token *parse_gallery_image_line_local(const char *line, size_t line_len,
 		size_t non_ws= 0;
 		while(non_ws < line_len && isspace((unsigned char)line[non_ws])) non_ws++;
 		if(non_ws < line_len) {
+			const char lt_ch = '<';
+			const char gt_ch = '>';
+			const char *has_lt = sz_find_byte(line, line_len, &lt_ch);
+			const char *has_gt = sz_find_byte(line, line_len, &gt_ch);
+			if(has_lt || has_gt) {
+				Token *comment_line = token_new(TOKEN_NOINCLUDE, "noinclude");
+				if(comment_line) {
+					const char *line_view = wiki_thread_buf_append_to_tokens(line, line_len);
+					token_append_text_n(comment_line, line_view, line_len);
+					accum_push(accum, comment_line);
+					out = comment_line;
+				}
+			}
+
+			if(!out) {
 			bool built= false;
 			const char pipe_ch2 = '|';
 			const char *pipe_ptr2 = sz_find_byte(line, line_len, &pipe_ch2);
@@ -1206,6 +1221,7 @@ static Token *parse_gallery_image_line_local(const char *line, size_t line_len,
 					accum_push(accum, fallback);
 					out= fallback;
 				}
+			}
 			}
 		}
 	}

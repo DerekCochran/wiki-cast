@@ -626,6 +626,8 @@ static Token *parse_gallery_image_line(const char *line, size_t line_len,
 	Token *out= NULL;
 	if(tmp->child_count == 1 && !tmp->children[0].is_text && tmp->children[0].token && tmp->children[0].token->type == TOKEN_FILE) {
 		out= tmp->children[0].token;
+		log_debug_env_token("WTC_DEBUG_GALLERY", NULL,
+			"[C gallery_line] direct FILE token branch line_len=%zu", line_len);
 		tmp->children[0].token= NULL;
 		if(out->type_name) free(out->type_name);
 		out->type_name= strdup("gallery-image");
@@ -667,50 +669,82 @@ static Token *parse_gallery_image_line(const char *line, size_t line_len,
 		size_t non_ws= 0;
 		while(non_ws < line_len && isspace((unsigned char)line[non_ws])) non_ws++;
 		if(non_ws < line_len) {
-			bool built= false;
-			const char pipe_ch2 = '|';
-			const char *pipe_ptr2 = sz_find_byte(line, line_len, &pipe_ch2);
+			const char *file_ptr= line;
+			size_t file_len= line_len;
+			const char *alt_ptr= NULL;
+			size_t alt_len= 0;
+
+			const char pipe_ch2= '|';
+			const char *pipe_ptr2= sz_find_byte(line, line_len, &pipe_ch2);
 			if(pipe_ptr2) {
-				size_t lhs_len= (size_t)(pipe_ptr2 - line);
-				size_t rhs_len= line_len - lhs_len - 1;
-				if(lhs_len > 0 && sz_find(line, lhs_len, "[[", 2) == NULL) {
-					Token *fallback= token_new(TOKEN_FILE, "gallery-image");
-					if(fallback) {
-						Token *target= token_new(TOKEN_ATOM, "link-target");
-						if(target) {
-							const char *lhs_view= wiki_thread_buf_append_to_tokens(line, lhs_len);
-							token_append_text_n(target, lhs_view, lhs_len);
-							accum_push(accum, target);
-							token_append_child(fallback, target);
-						}
+				file_len= (size_t)(pipe_ptr2 - line);
+				alt_ptr= pipe_ptr2 + 1;
+				alt_len= line_len - file_len - 1;
+			}
 
-						Token *cap= token_new(TOKEN_PLAIN, "image-parameter");
-						if(cap) {
-							cap->name= strdup("caption");
-							const char *rhs_view= wiki_thread_buf_append_to_tokens(pipe_ptr2 + 1, rhs_len);
-							token_append_text_n(cap, rhs_view, rhs_len);
-							accum_push(accum, cap);
-							token_append_child(fallback, cap);
-						}
+			const char *trim_file_ptr= file_ptr;
+			size_t trim_file_len= file_len;
+			while(trim_file_len > 0 && isspace((unsigned char)trim_file_ptr[0])) {
+				trim_file_ptr++;
+				trim_file_len--;
+			}
+			while(trim_file_len > 0 && isspace((unsigned char)trim_file_ptr[trim_file_len - 1])) {
+				trim_file_len--;
+			}
 
-						accum_push(accum, fallback);
-						out= fallback;
-						built= true;
-					}
+			Title *file_title= title_parse_half_parsed(trim_file_ptr, trim_file_len, 6, cfg, true, "");
+			bool file_chars_ok= (trim_file_len > 0);
+			for(size_t fi= 0; file_chars_ok && fi < trim_file_len; fi++) {
+				unsigned char fc= (unsigned char)trim_file_ptr[fi];
+				if(fc == '<' || fc == '>' || fc == '[' || fc == ']' ||
+				   fc == '{' || fc == '}' || fc == '|' || fc == '\n' || fc == '\r') {
+					file_chars_ok= false;
 				}
 			}
-			if(!built && sz_find(line, line_len, "[[", 2) == NULL) {
+			bool file_valid= file_chars_ok && file_title && file_title->valid;
+			log_debug_env_token("WTC_DEBUG_GALLERY", NULL,
+				"[C gallery_line] fallback file_valid=%d chars_ok=%d trim_len=%zu line_len=%zu",
+				(int)file_valid, (int)file_chars_ok, trim_file_len, line_len);
+			title_free(file_title);
+
+			if(file_valid) {
+				log_debug_env_token("WTC_DEBUG_GALLERY", NULL,
+					"[C gallery_line] fallback creates gallery-image");
 				Token *fallback= token_new(TOKEN_FILE, "gallery-image");
 				if(fallback) {
 					Token *target= token_new(TOKEN_ATOM, "link-target");
 					if(target) {
-						const char *view= wiki_thread_buf_append_to_tokens(line, line_len);
-						token_append_text_n(target, view, line_len);
+						const char *file_view= wiki_thread_buf_append_to_tokens(file_ptr, file_len);
+						token_append_text_n(target, file_view, file_len);
 						accum_push(accum, target);
 						token_append_child(fallback, target);
 					}
+
+					if(alt_ptr) {
+						Token *cap= token_new(TOKEN_PLAIN, "image-parameter");
+						if(cap) {
+							cap->name= strdup("caption");
+							const char *alt_view= wiki_thread_buf_append_to_tokens(alt_ptr, alt_len);
+							token_append_text_n(cap, alt_view, alt_len);
+							accum_push(accum, cap);
+							token_append_child(fallback, cap);
+						}
+					}
+
 					accum_push(accum, fallback);
 					out= fallback;
+				}
+			} else {
+				/* JS GalleryToken parity: invalid lines become CommentLineToken,
+				 * which is modeled as a noinclude token in this C pipeline. */
+				log_debug_env_token("WTC_DEBUG_GALLERY", NULL,
+					"[C gallery_line] fallback creates noinclude");
+				Token *comment_line= token_new(TOKEN_NOINCLUDE, "noinclude");
+				if(comment_line) {
+					const char *line_view= wiki_thread_buf_append_to_tokens(line, line_len);
+					token_append_text_n(comment_line, line_view, line_len);
+					accum_push(accum, comment_line);
+					out= comment_line;
 				}
 			}
 		}
@@ -1570,7 +1604,9 @@ static void finalize_gallery_and_link_names(Token *t, const ParserConfig *cfg,
 		/* JS parity: self-closing/empty gallery inner has no children. */
 		if(t->child_count > 0) {
 			bool has_leading_empty= (t->children[0].is_text && t->children[0].text_len == 0);
-			if(!has_leading_empty) {
+			bool first_is_gallery_image= (!t->children[0].is_text && t->children[0].token &&
+				t->children[0].token->type_name && strcmp(t->children[0].token->type_name, "gallery-image") == 0);
+			if(!has_leading_empty && first_is_gallery_image) {
 			if(t->child_count >= t->child_cap) {
 				t->child_cap= t->child_cap ? t->child_cap * 2 : 4;
 				t->children= realloc(t->children, t->child_cap * sizeof(Child));
