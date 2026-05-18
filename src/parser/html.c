@@ -205,6 +205,56 @@ static Token *make_html_attr(const char *key, size_t key_len,
 	return t;
 }
 
+/* JS parity for AttributesToken key validity check:
+ * /^(?:[\w:]|\0\d+t\x7F)(?:[\w:.-]|\0\d+t\x7F)*$/u
+ * Accept t/a/s sentinels because C stage-1 can emit arg-like sentinels in
+ * places where JS carries transclusion-like ones. */
+static bool html_attr_key_valid(const char *k, size_t klen) {
+	size_t i = 0;
+	if(i >= klen) return false;
+
+	if((unsigned char)k[i] == 0x00) {
+		i++;
+		if(i >= klen) return false;
+		if(k[i] < '0' || k[i] > '9') return false;
+		while(i < klen && k[i] >= '0' && k[i] <= '9') i++;
+		if(i >= klen || (k[i] != 't' && k[i] != 'a' && k[i] != 's')) return false;
+		i++;
+		if(i >= klen || (unsigned char)k[i] != 0x7F) return false;
+		i++;
+	} else {
+		unsigned char c = (unsigned char)k[i];
+		if(!((c >= 'A' && c <= 'Z') || (c >= 'a' && c <= 'z') ||
+			 (c >= '0' && c <= '9') || c == '_' || c == ':')) {
+			return false;
+		}
+		i++;
+	}
+
+	while(i < klen) {
+		if((unsigned char)k[i] == 0x00) {
+			i++;
+			if(i >= klen) return false;
+			if(k[i] < '0' || k[i] > '9') return false;
+			while(i < klen && k[i] >= '0' && k[i] <= '9') i++;
+			if(i >= klen || (k[i] != 't' && k[i] != 'a' && k[i] != 's')) return false;
+			i++;
+			if(i >= klen || (unsigned char)k[i] != 0x7F) return false;
+			i++;
+		} else {
+			unsigned char c = (unsigned char)k[i];
+			if(!((c >= 'A' && c <= 'Z') || (c >= 'a' && c <= 'z') ||
+				 (c >= '0' && c <= '9') || c == '_' || c == ':' ||
+				 c == '.' || c == '-')) {
+				return false;
+			}
+			i++;
+		}
+	}
+
+	return true;
+}
+
 static void parse_html_attrs(Token *attrs_tok, const char *attr_str, size_t attr_len, Accum *accum) {
 	if(!attr_str || attr_len == 0) return;
 
@@ -246,16 +296,7 @@ static void parse_html_attrs(Token *attrs_tok, const char *attr_str, size_t attr
 		}
 
 		const char *key= attr_str + key_start;
-		bool valid_key= isalpha((unsigned char)key[0]) || key[0] == '_' || key[0] == ':';
-		if(valid_key) {
-			for(size_t k= 1; k < key_len; k++) {
-				unsigned char kc= (unsigned char)key[k];
-				if(!isalnum(kc) && kc != ':' && kc != '.' && kc != '_' && kc != '-') {
-					valid_key= false;
-					break;
-				}
-			}
-		}
+		bool valid_key= html_attr_key_valid(key, key_len);
 
 		if(!valid_key) {
 			for(size_t k= 0; k < key_len; k++) dirty_buf[dirty_len++]= key[k];
