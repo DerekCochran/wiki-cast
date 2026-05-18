@@ -363,8 +363,8 @@ static bool title_has_invalid_chars(const char *s, size_t len) {
 	return false;
 }
 
-/* JS parity for decode:true in Title constructor: try raw URL decode when '%' appears.
- * If decoding fails (malformed escape), JS keeps the original string. */
+/* JS parity for decode:true in Title constructor: decode valid %XX bytes but
+ * preserve malformed '%' literals. */
 /* Optimized: sz_find_byte() to locate '%' fast (SIMD), then bulk-copy clean
  * segments with sz_copy() between percent-encoded bytes. */
 static char *title_try_percent_decode(const char *s, size_t len, size_t *out_len) {
@@ -381,30 +381,8 @@ static char *title_try_percent_decode(const char *s, size_t len, size_t *out_len
 		return copy;
 	}
 
-	/* Validate all percent escapes starting from first_pct. */
-	bool malformed= false;
-	const char *vp= first_pct;
-	while(vp) {
-		size_t off= (size_t)(vp - s);
-		if(off + 2 >= len || !is_hex((unsigned char)vp[1]) || !is_hex((unsigned char)vp[2])) {
-			malformed= true;
-			break;
-		}
-		const char *next= vp + 3;
-		size_t nrem= len - (size_t)(next - s);
-		vp= nrem > 0 ? sz_find_byte(next, nrem, &pct_ch) : NULL;
-	}
-
-	if(malformed) {
-		char *copy= malloc(len + 1);
-		if(!copy) return NULL;
-		sz_copy(copy, s, len);
-		copy[len]= '\0';
-		if(out_len) *out_len= len;
-		return copy;
-	}
-
-	/* Decode: bulk-copy clean segments; decode percent-encoded bytes. */
+	/* Decode: bulk-copy clean segments; decode valid percent-encoded bytes.
+	 * Malformed '%' is preserved as a literal byte. */
 	char *out= malloc(len + 1);
 	if(!out) return NULL;
 	size_t j= 0;
@@ -422,12 +400,18 @@ static char *title_try_percent_decode(const char *s, size_t len, size_t *out_len
 			sz_copy(out + j, p, seg);
 			j+= seg;
 		}
-		unsigned char hi= (unsigned char)np[1];
-		unsigned char lo= (unsigned char)np[2];
-		unsigned char hv= (unsigned char)(hi <= '9' ? hi - '0' : (tolower(hi) - 'a' + 10));
-		unsigned char lv= (unsigned char)(lo <= '9' ? lo - '0' : (tolower(lo) - 'a' + 10));
-		out[j++]= (char)((hv << 4) | lv);
-		p= np + 3;
+		size_t off= (size_t)(np - s);
+		if(off + 2 < len && is_hex((unsigned char)np[1]) && is_hex((unsigned char)np[2])) {
+			unsigned char hi= (unsigned char)np[1];
+			unsigned char lo= (unsigned char)np[2];
+			unsigned char hv= (unsigned char)(hi <= '9' ? hi - '0' : (tolower(hi) - 'a' + 10));
+			unsigned char lv= (unsigned char)(lo <= '9' ? lo - '0' : (tolower(lo) - 'a' + 10));
+			out[j++]= (char)((hv << 4) | lv);
+			p= np + 3;
+		} else {
+			out[j++]= '%';
+			p= np + 1;
+		}
 		rem= len - (size_t)(p - s);
 	}
 	out[j]= '\0';
