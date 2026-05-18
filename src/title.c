@@ -336,6 +336,9 @@ static bool title_has_invalid_chars(const char *s, size_t len) {
 
 	/* Check for path components . and .. */
 	{
+		if(len == 1 && s[0] == '.') {
+			return true;
+		}
 		if(len >= 2 && s[0] == '.' &&
 		   (s[1] == '/' || (s[1] == '.' && (len == 2 || s[2] == '/')))) {
 			return true;

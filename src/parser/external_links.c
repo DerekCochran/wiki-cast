@@ -327,13 +327,12 @@ void parse_external_links(ThreadBuf *tb, const ParserConfig *cfg,
     /* Run callback scanner */
     parser_scan(tb->buf, tb->len, rule, ext_cb, &ctx);
 
-    /* JS parity: with /\[(...?)\]/g, input like [[http://example.com]] or
-     * [[http://example.com] can still yield an inner [http://...] ext-link
-     * (the outer leading '[' and any remaining trailing ']' stay as plain text).
-     * parser_scan can miss these overlapping-start cases, so run a focused
-     * second pass for "[[..." forms by probing from the second '[' to the
-     * first following ']'. */
-    if(!in_file && out->len >= 4) {
+    /* JS parity: parser_scan consumes generic bracket segments, while JS
+     * regex only matches brackets that start with a valid external-link URL.
+     * Run a second pass that probes every '[' position against the same
+     * parse_external_inner() grammar to recover matches that begin inside
+     * previously skipped/invalid bracket runs (for example [[foo[http://...]]). */
+    if(!in_file && out->len >= 3) {
         ThreadBuf *out2 = wiki_thread_buf_acquire_scratch();
         if(out2) {
             out2->len = 0;
@@ -342,21 +341,18 @@ void parse_external_links(ThreadBuf *tb, const ParserConfig *cfg,
             size_t last = 0;
             size_t i = 0;
 
-            while(i + 1 < slen) {
-                if(src[i] == '[' && src[i + 1] == '[') {
-                    size_t j = i + 2;
+            while(i < slen) {
+                if(src[i] == '[') {
+                    size_t j = i + 1;
                     while(j < slen && src[j] != ']') j++;
 
                     if(j < slen) {
                         const char *u = NULL, *sp = NULL, *txt = NULL;
                         size_t ulen = 0, splen = 0, tlen = 0;
-                        const char *inner = src + i + 2;
-                        size_t inner_len = j - (i + 2);
+                        const char *inner = src + i + 1;
+                        size_t inner_len = j - (i + 1);
                         if(parse_external_inner(inner, inner_len, cfg, &u, &ulen, &sp, &splen, &txt, &tlen)) {
-                            if(i > last) {
-                                wiki_thread_buf_append(out2, (sz_string_view_t){ .start = src + last, .length = i - last });
-                            }
-                            wiki_thread_buf_append(out2, (sz_string_view_t){ .start = "[", .length = 1 });
+                            if(i > last) wiki_thread_buf_append(out2, (sz_string_view_t){ .start = src + last, .length = i - last });
                             ExtCtx inner_ctx = {
                                 .out = out2,
                                 .cfg = cfg,
