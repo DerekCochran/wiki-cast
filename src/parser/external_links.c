@@ -53,6 +53,28 @@ static size_t consume_js_zs(const char *s, size_t len, size_t i) {
     return 0;
 }
 
+/* JS extUrlCharFirst parity: allow bracketed IPv6 host literals
+ * like "[2404:130:0:1000::187:2]" as the first URL unit after
+ * protocol or "//". */
+static size_t consume_ipv6_bracket_host(const char *s, size_t len, size_t i) {
+    if(i >= len || s[i] != '[') return 0;
+    size_t j = i + 1;
+    size_t body_len = 0;
+    while(j < len) {
+        unsigned char c = (unsigned char)s[j];
+        bool ok = (c >= '0' && c <= '9') ||
+                  (c >= 'a' && c <= 'f') ||
+                  (c >= 'A' && c <= 'F') ||
+                  c == ':' || c == '.';
+        if(!ok) break;
+        j++;
+        body_len++;
+    }
+    if(body_len == 0) return 0;
+    if(j >= len || s[j] != ']') return 0;
+    return (j + 1) - i;
+}
+
 static bool ext_lookahead_ok(const char *s, size_t len, size_t i) {
     if(i >= len) return true; /* closing ']' is outside parser_scan inner segment */
     unsigned char c = (unsigned char)s[i];
@@ -184,8 +206,14 @@ static bool parse_external_inner(const char *inner, size_t len,
                (unsigned char)inner[i + 1] == 0xBF && (unsigned char)inner[i + 2] == 0xBD) {
                 return false;
             }
-            if(i >= len || !is_url_common_byte((unsigned char)inner[i])) return false;
-            i++;
+            if(i >= len) return false;
+            size_t ipv6_host_len = consume_ipv6_bracket_host(inner, len, i);
+            if(ipv6_host_len > 0) {
+                i += ipv6_host_len;
+            } else {
+                if(!is_url_common_byte((unsigned char)inner[i])) return false;
+                i++;
+            }
         }
 
         while(i < len) {

@@ -75,6 +75,25 @@ static bool starts_with_proto(const char *s, size_t len, const ParserConfig *cfg
     return false;
 }
 
+/* JS Title.valid parity helper used by parseLinks normalizeTitle() path:
+ * reject targets containing \0\d+[eh!+-]\x7F. */
+static bool has_invalid_title_sentinel(const char *s, size_t len) {
+	if(!s || len == 0) return false;
+	for(size_t i = 0; i < len; i++) {
+		if((unsigned char)s[i] != 0x00) continue;
+		size_t j = i + 1;
+		if(j >= len || !(s[j] >= '0' && s[j] <= '9')) continue;
+		while(j < len && s[j] >= '0' && s[j] <= '9') j++;
+		if(j + 1 >= len) continue;
+		char t = s[j];
+		if((t == 'e' || t == 'h' || t == '!' || t == '+' || t == '-') &&
+		   (unsigned char)s[j + 1] == 0x7F) {
+			return true;
+		}
+	}
+	return false;
+}
+
 /* Forward declaration for helper defined later in this file. */
 static Token *parse_inner_fragment(const char *s, size_t len, const ParserConfig *cfg, Accum *accum,
 																	const char *type_name, bool tidy,
@@ -939,6 +958,19 @@ void parse_links(ThreadBuf *tb, const ParserConfig *cfg, Accum *accum,
 				log_debug_env_token("WTC_DEBUG_STAGE_5", NULL,
 					"[C parse_links] scanner_main matched: link_len=%zu delim_len=%zu text_len=%zu after_len=%zu",
 					link_len, delim_len, text_len, after_len);
+				if(link_len > 0) {
+					char lhex[128];
+					size_t hp = 0;
+					size_t lim = link_len < 12 ? link_len : 12;
+					for(size_t li = 0; li < lim && hp + 4 < sizeof(lhex); li++) {
+						int wn = snprintf(lhex + hp, sizeof(lhex) - hp, "%02X", (unsigned char)link_ptr[li]);
+						if(wn > 0) hp += (size_t)wn;
+						if(li + 1 < lim && hp + 1 < sizeof(lhex)) lhex[hp++] = ' ';
+					}
+					lhex[hp] = '\0';
+					log_debug_env_token("WTC_DEBUG_STAGE_5", NULL,
+						"[C parse_links] scanner_main link_hex=%s", lhex);
+				}
 
 				/* JS: if (after.startsWith(']') && text?.includes('[')) { text += ']'; after = after.slice(1); } */
 				if(after_len > 0 && after_ptr[0] == ']' && text_ptr) {
@@ -1025,6 +1057,15 @@ void parse_links(ThreadBuf *tb, const ParserConfig *cfg, Accum *accum,
 			trim_len, (int)(trim_len>200?200:trim_len), trim_ptr, (int)(trim_len>0 && trim_ptr[0]==':'));
 
 		bool force= (trim_len > 0 && trim_ptr[0] == ':');
+		if(has_invalid_title_sentinel(trim_ptr, trim_len)) {
+			free(no_comment);
+			ENSURE_OUT(2 + xlen + 1);
+			out[out_len++]= '[';
+			out[out_len++]= '[';
+			sz_copy(out + out_len, x, xlen);
+			out_len+= xlen;
+			continue;
+		}
 
 		/* JS: if (force && mightBeImg) { s += "[[" + x; continue; } */
 		if(force && mightBeImg) {

@@ -138,6 +138,41 @@ static bool mem_has(const char *s, size_t len, const char *needle) {
 	return sz_find(s, len, needle, nlen) != NULL;
 }
 
+/* Nested postprocess serialization parity: preserve special marker chars for
+ * magic-word transcludes instead of collapsing everything to 't'. */
+static char nested_token_marker_char(const Token *tok) {
+	if(!tok) return '\0';
+	char sym = token_sentinel_char(tok->type);
+	if(sym == '?') sym = '\0';
+
+	if(tok->type == TOKEN_TRANSCLUDE && tok->type_name && strcmp(tok->type_name, "magic-word") == 0 && tok->name) {
+		const char *name = tok->name;
+		if(strcmp(name, "!") == 0) return '!';
+		if(strcmp(name, "!!") == 0) return '+';
+		if(strcmp(name, "(!") == 0) return '{';
+		if(strcmp(name, "!)") == 0) return '}';
+		if(strcmp(name, "!-") == 0) return '-';
+		if(strcmp(name, "=") == 0) return '~';
+		if(strcmp(name, "server") == 0 ||
+		   strcmp(name, "filepath") == 0 ||
+		   strcmp(name, "fullurl") == 0 ||
+		   strcmp(name, "fullurle") == 0 ||
+		   strcmp(name, "canonicalurl") == 0 ||
+		   strcmp(name, "canonicalurle") == 0) {
+			return 'm';
+		}
+		if(strcmp(name, "subst") == 0 || strcmp(name, "safesubst") == 0) {
+			return 's';
+		}
+	}
+
+	if(tok->type == TOKEN_DOUBLE_UNDERSCORE && tok->name && strcasecmp(tok->name, "toc") == 0) {
+		return 'u';
+	}
+
+	return sym;
+}
+
 /* Write a JSON-escaped string of given length to fp (surrounded by quotes). */
 static void json_write_escaped_len(const char *s, size_t len, FILE *fp) {
 	if(!fp) return;
@@ -1065,7 +1100,7 @@ static void postprocess_nested_plain(Token *t, const ParserConfig *cfg, Accum *a
 								break;
 							}
 						}
-						char sym= token_sentinel_char(ctok ? ctok->type : TOKEN_TEXT);
+						char sym= nested_token_marker_char(ctok);
 						if(tok_idx == SIZE_MAX || sym == '\0') {
 							serializable= false;
 							break;
