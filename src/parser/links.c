@@ -634,8 +634,9 @@ static void append_file_image_params(Token *file_tok,
 
 		/* Note: Do NOT trim whitespace from image parameters - JavaScript preserves it */
 
-		/* JS parity: split('|') keeps empty segments (e.g. "20px|" -> ["20px", ""]). */
-		if(seg_len > 0 || seg_start == text_len) {
+		/* JS parity: split('|') keeps empty segments, including intermediate empties
+		 * (e.g. "right||Caption" -> ["right", "", "Caption"]). */
+		{
 			Token *param= NULL;
 			bool matched= false;
 

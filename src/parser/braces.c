@@ -267,6 +267,24 @@ brace_event_next(const char *buf, size_t len, size_t *pos,
 			return true;
 		}
 		if(ch == '=') {
+			/* Heading-open has priority over inner '=' splitting at line start,
+			 * mirroring the regex alternation that starts with ^...={1,6}. */
+			bool at_line= (p == 0) || (buf[p - 1] == '\n');
+			if(at_line) {
+				size_t eqcount= 0;
+				while(p + eqcount < len && buf[p + eqcount] == '=' && eqcount < 6) {
+					eqcount++;
+				}
+				if(eqcount >= 1) {
+					if(kind_out) *kind_out= BRACE_EVT_HEADING_OPEN;
+					if(match_len_out) *match_len_out= eqcount;
+					if(brace_count_out) *brace_count_out= 0;
+					if(equals_count_out) *equals_count_out= eqcount;
+					if(sentinel_len_out) *sentinel_len_out= 0;
+					*pos= p + eqcount;
+					return true;
+				}
+			}
 			if(kind_out) *kind_out= BRACE_EVT_EQUALS;
 			if(match_len_out) *match_len_out= 1;
 			if(brace_count_out) *brace_count_out= 0;
@@ -689,6 +707,29 @@ static Token *build_template_token(const char **parts_restored, const size_t *pa
 				token_append_child(t, mw_name);
 			}
 		} else {
+			/* JS parity: template names are validated with normalizeTitle(..., 10,
+			 * {halfParsed:true, temporary:true}) and throw on invalid input. */
+			if(cfg) {
+				size_t cleaned_len= 0;
+				char *cleaned= str_remove_comment(title_part, p0_len, &cleaned_len);
+				if(!cleaned) {
+					token_free(t);
+					return NULL;
+				}
+				size_t b= 0, e= cleaned_len;
+				while(b < e && isspace((unsigned char)cleaned[b])) b++;
+				while(e > b && isspace((unsigned char)cleaned[e - 1])) e--;
+				Title *parsed= NULL;
+				if(e > b) parsed= title_parse_half_parsed(cleaned + b, e - b, 10, cfg, true, "");
+				free(cleaned);
+				if(!parsed || !parsed->valid || !parsed->title || !parsed->title[0]) {
+					title_free(parsed);
+					token_free(t);
+					return NULL;
+				}
+				title_free(parsed);
+			}
+
 			Token *tpl_name= token_new(TOKEN_ATOM, "template-name");
 			if(tpl_name) {
 				/* Persist template name into tokens arena */
@@ -960,6 +1001,7 @@ static Token *build_from_inner(const char *inner, size_t inner_len,
 typedef struct {
 	char **items;
 	size_t *lens;
+	bool *named;
 	size_t count;
 	size_t cap;
 } PartList;
@@ -968,6 +1010,7 @@ static bool parts_init(PartList *parts) {
 	if(!parts) return false;
 	parts->items= NULL;
 	parts->lens= NULL;
+	parts->named= NULL;
 	parts->count= 0;
 	parts->cap= 0;
 	return true;
@@ -980,8 +1023,10 @@ static void parts_free(PartList *parts) {
 	}
 	free(parts->items);
 	free(parts->lens);
+	free(parts->named);
 	parts->items= NULL;
 	parts->lens= NULL;
+	parts->named= NULL;
 	parts->count= 0;
 	parts->cap= 0;
 }
@@ -991,9 +1036,11 @@ static bool parts_grow(PartList *parts) {
 		size_t cap= parts->cap ? parts->cap * 2 : 4;
 		char **items= realloc(parts->items, cap * sizeof(char *));
 		size_t *lens= realloc(parts->lens, cap * sizeof(size_t));
-		if(!items || !lens) return false;
+		bool *named= realloc(parts->named, cap * sizeof(bool));
+		if(!items || !lens || !named) return false;
 		parts->items= items;
 		parts->lens= lens;
+		parts->named= named;
 		parts->cap= cap;
 	}
 	return true;
@@ -1005,6 +1052,7 @@ static bool parts_add_empty(PartList *parts) {
 	if(!parts->items[parts->count]) return false;
 	parts->items[parts->count][0]= '\0';
 	parts->lens[parts->count]= 0;
+	parts->named[parts->count]= false;
 	parts->count++;
 	return true;
 }
@@ -1033,10 +1081,14 @@ typedef struct {
 	bool find_equal;
 	PartList parts;
 	bool has_parts;
+	size_t out_mark;    /* out_len corresponding to source offset `index` */
+	bool has_out_mark;
 } BraceFrame;
 
 static bool brace_frame_init(BraceFrame *frame, const char *open, size_t open_len, size_t index, size_t pos, bool find_equal) {
 	if(!frame) return false;
+	frame->out_mark= 0;
+	frame->has_out_mark= false;
 	frame->open= malloc(open_len + 1);
 	if(!frame->open) return false;
 	sz_copy(frame->open, open, open_len);
@@ -1114,6 +1166,11 @@ static bool brace_frame_append_part(BraceFrame *frame) {
 	return parts_add_empty(&frame->parts);
 }
 
+static void brace_frame_mark_named_current(BraceFrame *frame) {
+	if(!frame || !frame->has_parts || frame->parts.count == 0) return;
+	frame->parts.named[frame->parts.count - 1]= true;
+}
+
 static char braces_arg_symbol(const char *inner, size_t inner_len, const ParserConfig *cfg);
 
 static bool braces_state_machine(ThreadBuf *tb, const ParserConfig *cfg,
@@ -1186,6 +1243,7 @@ static bool braces_state_machine(ThreadBuf *tb, const ParserConfig *cfg,
 		BraceFrame top;
 		bool has_top = false;
 		bool top_requeued = false;
+		bool top_consumed = false;
 		if(stack_len > 0) {
 			top = stack[stack_len - 1];
 			has_top = true;
@@ -1208,6 +1266,9 @@ static bool braces_state_machine(ThreadBuf *tb, const ParserConfig *cfg,
 			}
 		} else if(matched && evkind == BRACE_EVT_NEWLINE) {
 			if(has_top && top.open_len == 1 && top.open[0] == '=') {
+				/* Only materialize heading tokens when no outer frame is active.
+				 * Nested template values are reparsed recursively later. */
+				if(stack_len == 0) {
 				const char *slice= tb->buf + top.index;
 				size_t slice_len= cur_index - top.index;
 				HeadingLineResult hr;
@@ -1220,20 +1281,23 @@ static bool braces_state_machine(ThreadBuf *tb, const ParserConfig *cfg,
 					if(title) {
 						Token *heading_tok= token_new(TOKEN_HEADING, "heading");
 						if(heading_tok) {
+							heading_tok->data.heading.level= (int)hr.eq_count;
 							Token *title_tok= token_new(TOKEN_PLAIN, "heading-title");
 							if(title_tok) {
 								/* Persist heading title into tokens arena */
 								const char *title_view= wiki_thread_buf_append_to_tokens(title, title_len);
 								token_append_text_n(title_tok, title_view, title_len);
 								token_append_child(heading_tok, title_tok);
-								if(trail_len > 0) {
-									Token *trail_tok= token_new(TOKEN_SYNTAX, "heading-trail");
-									if(trail_tok) {
+								Token *trail_tok= token_new(TOKEN_SYNTAX, "heading-trail");
+								if(trail_tok) {
+									if(trail_len > 0) {
 										/* Persist heading trail into tokens arena */
 										const char *trail_view= wiki_thread_buf_append_to_tokens(slice + trail_start, trail_len);
 										token_append_text_n(trail_tok, trail_view, trail_len);
-										token_append_child(heading_tok, trail_tok);
+									} else {
+										token_append_text_n(trail_tok, "", 0);
 									}
+									token_append_child(heading_tok, trail_tok);
 								}
 								accum_push(accum, heading_tok);
 								size_t idx= accum->count - 1;
@@ -1260,7 +1324,7 @@ static bool braces_state_machine(ThreadBuf *tb, const ParserConfig *cfg,
 								}
 								memcpy(out + out_len, sent, slen);
 								out_len+= slen;
-								next_write= cur_index + 1;
+								next_write= cur_index;
 							} else {
 								token_free(heading_tok);
 							}
@@ -1268,21 +1332,29 @@ static bool braces_state_machine(ThreadBuf *tb, const ParserConfig *cfg,
 						free(title);
 					}
 				}
+				}
 			} else if(has_top) {
 				/* \n only closes = heading frames; preserve other frames */
 				stack[stack_len++]= top;
 				top_requeued= true;
 			}
 		} else {
-			/* Only treat | as parameter separator; don't split on = in the state machine.
-			 * JS parity: = is preserved in parameter values, and splitting is handled
-			 * by build_from_inner which checks the RAW part (with sentinels) before restore. */
-			if(matched && evkind == BRACE_EVT_PIPE) {
+			/* JS parity: split on '|' and on a single '=' right after '|'
+			 * (tracked by frame.find_equal), unless a heading frame intercepts. */
+			bool inner_equal = matched && evkind == BRACE_EVT_EQUALS && has_top && top.find_equal;
+			if(matched && (evkind == BRACE_EVT_PIPE || inner_equal)) {
 				if(has_top && top.has_parts) {
 					if(!brace_push_part(&top, tb->buf, top.pos, cur_index, (const char **)link_stack, link_count, link_stack_lens)) {
 						;
 					}
-					brace_frame_append_part(&top);
+					if(evkind == BRACE_EVT_PIPE) {
+						brace_frame_append_part(&top);
+						top.find_equal= true;
+					} else {
+						parts_append_text(&top.parts, "=", 1);
+						brace_frame_mark_named_current(&top);
+						top.find_equal= false;
+					}
 					top.pos= cur_index + 1;
 				}
 			} else if(matched && evkind == BRACE_EVT_BRACE_CLOSE) {
@@ -1291,6 +1363,7 @@ static bool braces_state_machine(ThreadBuf *tb, const ParserConfig *cfg,
 						;
 					}
 					size_t close_len= brace_count;
+					bool is_arg_close= (close_len == 3);
 					size_t rest= top.open_len > close_len ? top.open_len - close_len : 0;
 					char *inner= NULL;
 					size_t inner_len= 0;
@@ -1298,13 +1371,13 @@ static bool braces_state_machine(ThreadBuf *tb, const ParserConfig *cfg,
 						inner= NULL;
 						inner_len= 0;
 					}
-					Token *tok= build_template_token((const char **)top.parts.items, top.parts.lens, top.parts.count, top.open_len == 3, cfg, accum, NULL);
+					Token *tok= build_template_token((const char **)top.parts.items, top.parts.lens, top.parts.count, is_arg_close, cfg, accum, top.parts.named);
 					if(tok) {
 						size_t tok_idx= accum->count - 1;
 						char sent[64];
 						size_t slen;
 						char sym= 't';
-						if(top.open_len == 3) {
+						if(is_arg_close) {
 							if(inner) sym= braces_arg_symbol(inner, inner_len, cfg);
 						} else if(top.parts.count > 0) {
 							sym= braces_get_symbol(top.parts.items[0], top.parts.lens[0], cfg, NULL);
@@ -1312,6 +1385,25 @@ static bool braces_state_machine(ThreadBuf *tb, const ParserConfig *cfg,
 						work_str_sentinel(tok_idx, sym, sent, &slen);
 						size_t rep_start= top.index + rest;
 						size_t rep_end= cur_index + close_len;
+
+						/* Nested close can overlap text already emitted by an inner close.
+						 * Roll output back to the open-frame mark so outer replacement
+						 * replaces rather than appends duplicated content. */
+						if(rep_start < next_write && top.has_out_mark) {
+							size_t rollback= top.out_mark;
+							if(rollback > out_len) rollback= out_len;
+							out_len= rollback;
+							next_write= top.index;
+							if(rep_start > next_write) {
+								ENSURE_OUT_CAP(rep_start - next_write);
+								memcpy(out + out_len, tb->buf + next_write, rep_start - next_write);
+								out_len+= rep_start - next_write;
+								next_write= rep_start;
+							} else {
+								next_write= rep_start;
+							}
+						}
+
 						ENSURE_OUT_CAP((rep_start > next_write ? rep_start - next_write : 0) + slen);
 						if(rep_start > next_write) {
 							memcpy(out + out_len, tb->buf + next_write, rep_start - next_write);
@@ -1323,6 +1415,10 @@ static bool braces_state_machine(ThreadBuf *tb, const ParserConfig *cfg,
 						if(rest > 1) {
 							BraceFrame child;
 							if(brace_frame_init(&child, top.open, rest, top.index, top.index + rest, false)) {
+								if(top.has_out_mark) {
+									child.out_mark= top.out_mark;
+									child.has_out_mark= true;
+								}
 								stack[++stack_len - 1]= child;
 							}
 						} else if(rest == 1 && top.index > 0 && tb->buf[top.index - 1] == '-') {
@@ -1333,11 +1429,21 @@ static bool braces_state_machine(ThreadBuf *tb, const ParserConfig *cfg,
 						}
 					}
 					free(inner);
+					top_consumed= true;
 				}
 			}
 			if(matched && evkind == BRACE_EVT_BRACE_OPEN) {
+				if(cur_index > next_write) {
+					ENSURE_OUT_CAP(cur_index - next_write);
+					memcpy(out + out_len, tb->buf + next_write, cur_index - next_write);
+					out_len+= cur_index - next_write;
+					next_write= cur_index;
+				}
+				size_t frame_out_mark= out_len;
 				BraceFrame frame;
 				if(brace_frame_init(&frame, syntax, syntax_len, cur_index, cur_index + syntax_len, false)) {
+					frame.out_mark= frame_out_mark;
+					frame.has_out_mark= true;
 					if(has_top) {
 						stack[++stack_len - 1]= top;
 						top_requeued= true;
@@ -1353,6 +1459,28 @@ static bool braces_state_machine(ThreadBuf *tb, const ParserConfig *cfg,
 				} else {
 					if(has_top) {
 						stack[++stack_len - 1]= top;
+						top_requeued= true;
+					}
+				}
+			} else if(matched && evkind == BRACE_EVT_HEADING_OPEN) {
+				/* Track heading lines so newline can close and tokenize them. */
+				BraceFrame heading_frame;
+				if(brace_frame_init(&heading_frame, "=", 1, cur_index, cur_index + syntax_len, false)) {
+					if(has_top) {
+						stack[++stack_len - 1]= top;
+						top_requeued= true;
+					}
+					if(stack_len + 1 > stack_cap) {
+						size_t new_cap= stack_cap * 2;
+						BraceFrame *new_stack= realloc(stack, new_cap * sizeof(BraceFrame));
+						assert(new_stack);
+						stack= new_stack;
+						stack_cap= new_cap;
+					}
+					stack[stack_len++]= heading_frame;
+				} else {
+					if(has_top) {
+						stack[stack_len++]= top;
 						top_requeued= true;
 					}
 				}
@@ -1402,8 +1530,10 @@ static bool braces_state_machine(ThreadBuf *tb, const ParserConfig *cfg,
 				}
 			} else {
 				if(has_top && !top_requeued) {
-					stack[stack_len++]= top;
-					top_requeued= true;
+					if(!top_consumed) {
+						stack[stack_len++]= top;
+						top_requeued= true;
+					}
 				}
 			}
 		}
@@ -1631,6 +1761,18 @@ static void main_braces_template_cb(const char *segment, size_t len,
 	const char *inner= segment;
 	size_t inner_len= len;
 
+	/* JS parity (reReplace): newline is allowed in {{...}} only when not
+	 * immediately followed by '=' or a placeholder-NUL. If disallowed,
+	 * leave this match untouched for the stage-1 state machine. */
+	for(size_t i= 0; i + 1 < inner_len; i++) {
+		if(inner[i] == '\n' && (inner[i + 1] == '=' || inner[i + 1] == '\0')) {
+			wiki_thread_buf_append(ctx->out, (sz_string_view_t){.start= "{{", .length= 2});
+			wiki_thread_buf_append(ctx->out, (sz_string_view_t){.start= inner, .length= inner_len});
+			wiki_thread_buf_append(ctx->out, (sz_string_view_t){.start= "}}", .length= 2});
+			return;
+		}
+	}
+
 	Token *tok= build_from_inner(inner, inner_len,
 										  false,
 										  *ctx->link_stack, *ctx->link_count,
@@ -1652,16 +1794,11 @@ static void main_braces_template_cb(const char *segment, size_t len,
 								  tok_idx, sym, slen);
 		wiki_thread_buf_append(ctx->out, (sz_string_view_t){.start= sent, .length= slen});
 	} else {
-		/* Park the full {{inner}} text in link_stack and emit placeholder. */
-		size_t full_len= 2 + inner_len + 2;
-		char *tmp= malloc(full_len + 1);
-		assert(tmp);
-		memcpy(tmp, "{{", 2);
-		memcpy(tmp + 2, inner, inner_len);
-		memcpy(tmp + 2 + inner_len, "}}", 2);
-		tmp[full_len]= '\0';
-		main_braces_push_link_stack(ctx, tmp, full_len);
-		free(tmp);
+		/* JS parity: on invalid template names, keep raw {{...}} so later
+		 * sub-passes can still tokenize nested [[...]]/ -{...}- content. */
+		wiki_thread_buf_append(ctx->out, (sz_string_view_t){.start= "{{", .length= 2});
+		wiki_thread_buf_append(ctx->out, (sz_string_view_t){.start= inner, .length= inner_len});
+		wiki_thread_buf_append(ctx->out, (sz_string_view_t){.start= "}}", .length= 2});
 	}
 }
 

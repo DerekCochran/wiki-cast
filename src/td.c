@@ -7,6 +7,16 @@
 #include <stdlib.h>
 #include <string.h>
 
+static bool is_full_bang_sentinel(const char *s, size_t len) {
+	if(!s || len < 4) return false;
+	if((unsigned char)s[0] != 0x00) return false;
+	size_t j= 1;
+	if(j >= len || s[j] < '0' || s[j] > '9') return false;
+	while(j < len && s[j] >= '0' && s[j] <= '9') j++;
+	if(j + 2 != len) return false;
+	return s[j] == '!' && (unsigned char)s[j + 1] == 0x7F;
+}
+
 static Token *make_attr_key(const char *key, size_t key_len, Accum *accum) {
 	Token *t= token_new(TOKEN_ATTR_KEY, "attr-key");
 	if(!t) return NULL;
@@ -338,10 +348,17 @@ Token *create_td_token(const char *syntax,
 	token_append_child(td, attrs);
 
 	if(inner_syntax && inner_syntax_len > 0) {
-		td->data.td.inner_syntax= malloc(inner_syntax_len + 1);
+		const char *norm_syn= inner_syntax;
+		size_t norm_len= inner_syntax_len;
+		/* Preserve {{!}} round-trip: table parser may pass a raw !-sentinel. */
+		if(is_full_bang_sentinel(inner_syntax, inner_syntax_len)) {
+			norm_syn= "{{!}}";
+			norm_len= 5;
+		}
+		td->data.td.inner_syntax= malloc(norm_len + 1);
 		assert(td->data.td.inner_syntax);
-		sz_copy(td->data.td.inner_syntax, inner_syntax, inner_syntax_len);
-		td->data.td.inner_syntax[inner_syntax_len]= '\0';
+		sz_copy(td->data.td.inner_syntax, norm_syn, norm_len);
+		td->data.td.inner_syntax[norm_len]= '\0';
 	} else {
 		td->data.td.inner_syntax= strdup("");
 		assert(td->data.td.inner_syntax);
