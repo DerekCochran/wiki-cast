@@ -639,12 +639,15 @@ static Token *build_template_token(const char **parts_restored, const size_t *pa
 			char *prefix= trim_copy(title_part, prefix_len);
 			if(prefix && str_list_contains_ci(&cfg->parser_function_subst, prefix)) {
 				size_t mod_len= prefix_len + 1;
+				while(mod_len < title_part_len && isspace((unsigned char)title_part[mod_len])) {
+					mod_len++;
+				}
 				t->data.transclude.modifier= malloc(mod_len + 1);
 				if(t->data.transclude.modifier) {
 					sz_copy(t->data.transclude.modifier, title_part, mod_len);
 					t->data.transclude.modifier[mod_len]= '\0';
 				}
-				title_part= colon + 1;
+				title_part= title_part + mod_len;
 				title_part_len-= mod_len;
 			}
 			free(prefix);
@@ -661,7 +664,14 @@ static Token *build_template_token(const char **parts_restored, const size_t *pa
 	if(title_part && title_part_len > 0) {
 		size_t p0_len= title_part_len;
 		bool magic= false;
-		(void)braces_get_symbol(title_part, p0_len, cfg, &magic);
+		bool allow_magic= (parts_count <= 1);
+		if(!allow_magic) {
+			char colon_ch= ':';
+			allow_magic= sz_find_byte(title_part, p0_len, &colon_ch) != NULL;
+		}
+		if(allow_magic) {
+			(void)braces_get_symbol(title_part, p0_len, cfg, &magic);
+		}
 		if(magic) {
 			transclude_is_magic= true;
 			magic_title_len= p0_len;

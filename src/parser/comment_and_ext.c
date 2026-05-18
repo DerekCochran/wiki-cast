@@ -1271,6 +1271,7 @@ static Token *build_comment_token(const char *substr, size_t sub_len, Accum *acc
 static Token *build_ext_token(const char *name, size_t name_len,
 															const char *attr, size_t attr_len,
 															const char *inner, size_t inner_len,
+																			const char *closing, size_t closing_len,
 															bool self_closing,
 																			const ParserConfig *cfg,
 															Accum *accum) {
@@ -1285,6 +1286,9 @@ static Token *build_ext_token(const char *name, size_t name_len,
 	t->name= strdup(lcname);
 	/* Store original-cased tag name for toString() parity with JS */
 	t->data.ext.name= strndup(name, name_len);
+	if(closing && closing_len > 0) {
+		t->data.ext.closing= strndup(closing, closing_len);
+	}
 
 	/* Build sub-tokens */
 	Token *attrs_tok= build_ext_attrs(lcname, attr, attr_len, accum);
@@ -1724,9 +1728,11 @@ void parse_comment_and_ext(ThreadBuf *tb, const ParserConfig *cfg,
             size_t alen = mm.has_attr ? (mm.attr_e - mm.attr_s) : 0;
             const char *inner = mm.has_inner ? tb->buf + mm.inner_s : NULL;
             size_t ilen = mm.has_inner ? (mm.inner_e - mm.inner_s) : 0;
+			const char *closing = mm.has_close ? (tb->buf + mm.close_s) : NULL;
+			size_t clen = mm.has_close ? (mm.close_e - mm.close_s) : 0;
             bool self_closing = !mm.has_close;
 
-            tok = build_ext_token(name, name_len, attr, alen, inner, ilen,
+			tok = build_ext_token(name, name_len, attr, alen, inner, ilen, closing, clen,
                                   self_closing, cfg, accum);
             ch = 'e';
 

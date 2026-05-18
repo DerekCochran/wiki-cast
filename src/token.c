@@ -189,6 +189,7 @@ static void token_to_string_rec(const Token *t, ThreadBuf *tb) {
 	case TOKEN_EXT: {
 		/* Use original-cased tag name for serialization (JS parity) */
 		const char *ext_tag= t->data.ext.name ? t->data.ext.name : t->name;
+		const char *ext_closing= t->data.ext.closing ? t->data.ext.closing : ext_tag;
 		thread_buf_append_char(tb, '<');
 		if(ext_tag) thread_buf_append(tb, ext_tag, strlen(ext_tag));
 		if(t->child_count > 0) {
@@ -211,7 +212,7 @@ static void token_to_string_rec(const Token *t, ThreadBuf *tb) {
 				token_to_string_rec(c->token, tb);
 		}
 		thread_buf_append(tb, "</", 2);
-		if(ext_tag) thread_buf_append(tb, ext_tag, strlen(ext_tag));
+		if(ext_closing) thread_buf_append(tb, ext_closing, strlen(ext_closing));
 		thread_buf_append_char(tb, '>');
 		return;
 	}
