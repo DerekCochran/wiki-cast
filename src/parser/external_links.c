@@ -179,6 +179,11 @@ static bool parse_external_inner(const char *inner, size_t len,
                 return false;
             }
 
+            if(consume_js_zs(inner, len, i) > 0) return false;
+            if(i + 2 < len && (unsigned char)inner[i] == 0xEF &&
+               (unsigned char)inner[i + 1] == 0xBF && (unsigned char)inner[i + 2] == 0xBD) {
+                return false;
+            }
             if(i >= len || !is_url_common_byte((unsigned char)inner[i])) return false;
             i++;
         }
@@ -186,6 +191,9 @@ static bool parse_external_inner(const char *inner, size_t len,
         while(i < len) {
             size_t sc = skip_exturl_sentinel(inner, len, i);
             if(sc > 0) { i += sc; continue; }
+            if(consume_js_zs(inner, len, i) > 0) break;
+            if(i + 2 < len && (unsigned char)inner[i] == 0xEF &&
+               (unsigned char)inner[i + 1] == 0xBF && (unsigned char)inner[i + 2] == 0xBD) break;
             if(!is_url_common_byte((unsigned char)inner[i])) break;
             i++;
         }

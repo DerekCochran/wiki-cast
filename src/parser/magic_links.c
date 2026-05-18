@@ -223,6 +223,11 @@ static bool parse_protocol_url(const char *s, size_t len, size_t i,
         if (q <= p + 1 || q >= len || s[q] != ']') return false;
         p = q + 1;
     } else {
+        if (consume_js_zs_magic(s, len, p) > 0) return false;
+        if (p + 2 < len && (unsigned char)s[p] == 0xEF &&
+            (unsigned char)s[p + 1] == 0xBF && (unsigned char)s[p + 2] == 0xBD) {
+            return false;
+        }
         if (!is_url_common_byte((unsigned char)s[p])) return false;
         p++;
     }
@@ -230,6 +235,9 @@ static bool parse_protocol_url(const char *s, size_t len, size_t i,
     while (p < len) {
         size_t sc = parse_cnht_sentinel(s, len, p);
         if (sc > 0) { p += sc; continue; }
+        if (consume_js_zs_magic(s, len, p) > 0) break;
+        if (p + 2 < len && (unsigned char)s[p] == 0xEF &&
+            (unsigned char)s[p + 1] == 0xBF && (unsigned char)s[p + 2] == 0xBD) break;
         if (!is_url_common_byte((unsigned char)s[p])) break;
         p++;
     }
