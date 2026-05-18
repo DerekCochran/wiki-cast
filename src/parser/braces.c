@@ -577,6 +577,58 @@ static const char *parser_function_canonical(const ParserConfig *cfg, const char
 	return canonical;
 }
 
+/* Build an owned, printable modifier string from title_part[0..mod_len),
+ * expanding c/n/s sentinels via accum token toString (JS afterBuild parity). */
+static char *build_transclude_modifier(const char *title_part, size_t title_part_len,
+																 size_t mod_len, const Accum *accum) {
+	if(!title_part || mod_len == 0 || mod_len > title_part_len) return NULL;
+
+	ThreadBuf *mod_tb = wiki_thread_buf_acquire_scratch();
+	if(!mod_tb) return NULL;
+	mod_tb->len = 0;
+
+	size_t i = 0;
+	while(i < mod_len) {
+		size_t sl = 0;
+		if(parse_sentinel_at_allowed(title_part, mod_len, i, "cns", &sl)) {
+			size_t j = i + 1;
+			size_t idx = 0;
+			while(j < mod_len && title_part[j] >= '0' && title_part[j] <= '9') {
+				idx = idx * 10 + (size_t)(title_part[j] - '0');
+				j++;
+			}
+
+			Token *sent_tok = accum ? accum_get(accum, idx) : NULL;
+			if(sent_tok) {
+				ThreadBuf *tok_tb = wiki_thread_buf_acquire_scratch();
+				if(tok_tb) {
+					token_to_string(sent_tok, tok_tb);
+					wiki_thread_buf_append(mod_tb, (sz_string_view_t){ .start = tok_tb->buf, .length = tok_tb->len });
+					wiki_thread_buf_release_scratch(tok_tb);
+				} else {
+					wiki_thread_buf_append(mod_tb, (sz_string_view_t){ .start = title_part + i, .length = sl });
+				}
+			} else {
+				wiki_thread_buf_append(mod_tb, (sz_string_view_t){ .start = title_part + i, .length = sl });
+			}
+			i += sl;
+			continue;
+		}
+
+		wiki_thread_buf_putc(mod_tb, title_part[i]);
+		i++;
+	}
+
+	char *modifier = malloc(mod_tb->len + 1);
+	if(modifier) {
+		sz_copy(modifier, mod_tb->buf, mod_tb->len);
+		modifier[mod_tb->len] = '\0';
+	}
+
+	wiki_thread_buf_release_scratch(mod_tb);
+	return modifier;
+}
+
 /* Build a JS-shaped transclude/arg token and push to accum. */
 /* part_is_named[k]: if non-NULL, overrides memchr-based named-param detection.
  * NULL means use memchr for all parts (state-machine call site where parts are
@@ -656,26 +708,48 @@ static Token *build_template_token(const char **parts_restored, const size_t *pa
 	size_t title_part_len= (parts_count > 0) ? parts_lens[0] : 0;
 
 	if(title_part && cfg) {
-		char colon_ch= ':';
-		const char *colon= sz_find_byte(title_part, title_part_len, &colon_ch);
-		if(colon) {
-			size_t prefix_len= (size_t)(colon - title_part);
-			char *prefix= trim_copy(title_part, prefix_len);
-			if(prefix && (str_list_contains_ci(&cfg->parser_function_subst, prefix)
-							 || str_list_contains_ci(&cfg->parser_function_raw, prefix))) {
-				size_t mod_len= prefix_len + 1;
-				while(mod_len < title_part_len && isspace((unsigned char)title_part[mod_len])) {
-					mod_len++;
-				}
-				t->data.transclude.modifier= malloc(mod_len + 1);
-				if(t->data.transclude.modifier) {
-					sz_copy(t->data.transclude.modifier, title_part, mod_len);
-					t->data.transclude.modifier[mod_len]= '\0';
-				}
-				title_part= title_part + mod_len;
-				title_part_len-= mod_len;
+		/* JS argSubst parity: /^(?:\s|\0\d+[cn]\x7F)*\0\d+s\x7F/ */
+		size_t lead = 0;
+		while(lead < title_part_len) {
+			if(isspace((unsigned char)title_part[lead])) {
+				lead++;
+				continue;
 			}
-			free(prefix);
+			size_t sl = 0;
+			if(parse_sentinel_at_allowed(title_part, title_part_len, lead, "cn", &sl)) {
+				lead += sl;
+				continue;
+			}
+			break;
+		}
+		size_t s_sl = 0;
+		if(lead < title_part_len && parse_sentinel_at_allowed(title_part, title_part_len, lead, "s", &s_sl)) {
+			size_t mod_len = lead + s_sl;
+			t->data.transclude.modifier = build_transclude_modifier(title_part, title_part_len, mod_len, accum);
+			title_part += mod_len;
+			title_part_len -= mod_len;
+		} else {
+			char colon_ch= ':';
+			const char *colon= sz_find_byte(title_part, title_part_len, &colon_ch);
+			if(colon) {
+				size_t prefix_len= (size_t)(colon - title_part);
+				char *prefix= trim_copy(title_part, prefix_len);
+				if(prefix && (str_list_contains_ci(&cfg->parser_function_subst, prefix)
+								 || str_list_contains_ci(&cfg->parser_function_raw, prefix))) {
+					size_t mod_len= prefix_len + 1;
+					while(mod_len < title_part_len && isspace((unsigned char)title_part[mod_len])) {
+						mod_len++;
+					}
+					t->data.transclude.modifier= malloc(mod_len + 1);
+					if(t->data.transclude.modifier) {
+						sz_copy(t->data.transclude.modifier, title_part, mod_len);
+						t->data.transclude.modifier[mod_len]= '\0';
+					}
+					title_part= title_part + mod_len;
+					title_part_len-= mod_len;
+				}
+				free(prefix);
+			}
 		}
 	}
 
