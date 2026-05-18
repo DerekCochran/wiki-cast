@@ -123,6 +123,10 @@ static bool heading_line_parse(const char *s, size_t len, HeadingLineResult *out
 		const char *content_end = trail_start - eq_count;
 		if(content_end <= content_start) continue;
 
+		/* JS regex parity: (.+) in /u mode does not match newlines. */
+		char nl_ch = '\n';
+		if(sz_find_byte(content_start, (size_t)(content_end - content_start), &nl_ch)) continue;
+
 		out->lead        = NULL;
 		out->lead_len    = 0;
 		out->open_eq     = s;
@@ -486,7 +490,10 @@ static char braces_get_symbol(const char *name, size_t len,
 		out= 'n';
 		if(is_magic_out) *is_magic_out= true;
 	} else if(lc[0] == '#') {
-		if(has_function_colon && is_magic_out) *is_magic_out= true;
+		if(is_magic_out) {
+			bool is_var_hash = (cfg && canonical && canonical[0] && str_list_contains_ci(&cfg->variable, canonical));
+			if(has_function_colon || is_var_hash) *is_magic_out= true;
+		}
 	} else if(cfg && canonical && canonical[0]) {
 		bool is_var= str_list_contains_ci(&cfg->variable, canonical);
 		if((has_function_colon || is_var) && is_magic_out) *is_magic_out= true;
