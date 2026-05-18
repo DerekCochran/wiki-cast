@@ -313,37 +313,7 @@ Token *create_td_token(const char *syntax,
 	Token *attrs= token_new(TOKEN_ATTRIBUTES, "table-attrs");
 	if(!attrs) return td;
 	attrs->name= strdup(cell_attr_name(syntax, syntax_len));
-
-	bool handled_dynamic_boolean_attr= false;
-	if(attr && attr_len > 0 && memchr(attr, '=', attr_len) == NULL) {
-		size_t first= 0;
-		while(first < attr_len && (attr[first] == ' ' || attr[first] == '\t' || attr[first] == '\n' || attr[first] == '\r' || attr[first] == '\f' || attr[first] == '\v')) first++;
-		size_t last= attr_len;
-		while(last > first && (attr[last - 1] == ' ' || attr[last - 1] == '\t' || attr[last - 1] == '\n' || attr[last - 1] == '\r' || attr[last - 1] == '\f' || attr[last - 1] == '\v')) last--;
-
-		if(last > first) {
-			const char *k= attr + first;
-			size_t klen= last - first;
-			bool dynamic_key= memchr(k, '\0', klen) != NULL || (klen >= 2 && k[0] == '{' && k[1] == '{') || (klen >= 2 && k[0] == '-' && k[1] == '{');
-			if(dynamic_key) {
-				if(first > 0) {
-					Token *d0= make_table_attr_dirty(attr, first, accum);
-					if(d0) token_append_child(attrs, d0);
-				}
-				Token *at= make_table_attr(k, klen, NULL, 0, NULL, 0, '\0', '\0', accum);
-				if(at) token_append_child(attrs, at);
-				if(last < attr_len) {
-					Token *d1= make_table_attr_dirty(attr + last, attr_len - last, accum);
-					if(d1) token_append_child(attrs, d1);
-				}
-				handled_dynamic_boolean_attr= true;
-			}
-		}
-	}
-
-	if(!handled_dynamic_boolean_attr) {
-		parse_table_attrs(attrs, attr, attr_len, accum);
-	}
+	parse_table_attrs(attrs, attr, attr_len, accum);
 	accum_push(accum, attrs);
 	token_append_child(td, attrs);
 
