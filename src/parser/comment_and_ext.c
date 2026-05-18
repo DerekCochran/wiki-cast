@@ -1160,18 +1160,52 @@ static Token *parse_gallery_image_line_local(const char *line, size_t line_len,
 	if(!out) {
 		size_t non_ws= 0;
 		while(non_ws < line_len && isspace((unsigned char)line[non_ws])) non_ws++;
-		if(non_ws < line_len && sz_find(line, line_len, "[[", 2) == NULL) {
-			Token *fallback= token_new(TOKEN_FILE, "gallery-image");
-			if(fallback) {
-				Token *target= token_new(TOKEN_ATOM, "link-target");
-				if(target) {
-					const char *view= wiki_thread_buf_append_to_tokens(line, line_len);
-					token_append_text_n(target, view, line_len);
-					accum_push(accum, target);
-					token_append_child(fallback, target);
+		if(non_ws < line_len) {
+			bool built= false;
+			const char pipe_ch2 = '|';
+			const char *pipe_ptr2 = sz_find_byte(line, line_len, &pipe_ch2);
+			if(pipe_ptr2) {
+				size_t lhs_len= (size_t)(pipe_ptr2 - line);
+				size_t rhs_len= line_len - lhs_len - 1;
+				if(lhs_len > 0 && sz_find(line, lhs_len, "[[", 2) == NULL) {
+					Token *fallback= token_new(TOKEN_FILE, "gallery-image");
+					if(fallback) {
+						Token *target= token_new(TOKEN_ATOM, "link-target");
+						if(target) {
+							const char *lhs_view= wiki_thread_buf_append_to_tokens(line, lhs_len);
+							token_append_text_n(target, lhs_view, lhs_len);
+							accum_push(accum, target);
+							token_append_child(fallback, target);
+						}
+
+						Token *cap= token_new(TOKEN_PLAIN, "image-parameter");
+						if(cap) {
+							cap->name= strdup("caption");
+							const char *rhs_view= wiki_thread_buf_append_to_tokens(pipe_ptr2 + 1, rhs_len);
+							token_append_text_n(cap, rhs_view, rhs_len);
+							accum_push(accum, cap);
+							token_append_child(fallback, cap);
+						}
+
+						accum_push(accum, fallback);
+						out= fallback;
+						built= true;
+					}
 				}
-				accum_push(accum, fallback);
-				out= fallback;
+			}
+			if(!built && sz_find(line, line_len, "[[", 2) == NULL) {
+				Token *fallback= token_new(TOKEN_FILE, "gallery-image");
+				if(fallback) {
+					Token *target= token_new(TOKEN_ATOM, "link-target");
+					if(target) {
+						const char *view= wiki_thread_buf_append_to_tokens(line, line_len);
+						token_append_text_n(target, view, line_len);
+						accum_push(accum, target);
+						token_append_child(fallback, target);
+					}
+					accum_push(accum, fallback);
+					out= fallback;
+				}
 			}
 		}
 	}
