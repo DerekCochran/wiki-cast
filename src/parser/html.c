@@ -24,7 +24,8 @@ typedef struct {
 } HtmlTagComponents;
 
 static inline bool is_alpha_ci_char(unsigned char c) {
-	return ((c | 0x20) - 'a') <= ('z' - 'a');
+	unsigned char lc = (unsigned char)(c | 0x20);
+	return lc >= 'a' && lc <= 'z';
 }
 
 /**
@@ -145,11 +146,13 @@ static Token *make_html_attr_key(const char *key, size_t key_len, Accum *accum) 
 static Token *make_html_attr_value(const char *val, size_t val_len, Accum *accum) {
 	Token *t= token_new(TOKEN_ATTR_VALUE, "attr-value");
 	if(!t) return NULL;
-	/* JS parity: empty attr-value tokens have no text child nodes. */
 	if(val_len > 0) {
 		/* Ensure value text is stored in the persistent tokens arena */
 		const char *val_view = wiki_thread_buf_append_to_tokens(val, val_len);
 		token_append_text_n(t, val_view, val_len);
+	} else {
+		/* Explicit empty value (`=` present) keeps an empty text child in JS. */
+		token_append_text_n(t, "", 0);
 	}
 	accum_push(accum, t);
 	return t;
@@ -190,11 +193,16 @@ static Token *make_html_attr(const char *key, size_t key_len,
 	}
 	token_append_child(t, attr_key);
 
-	/* JS parity: AttributeToken always has an attr-value child, even for
-	 * boolean attrs without '=' (value is empty, rendering still uses only key). */
-	const char *value_ptr = val ? val : "";
-	size_t value_len = val ? val_len : 0;
-	Token *attr_value= make_html_attr_value(value_ptr, value_len, accum);
+	/* JS parity: AttributeToken always has an attr-value child.
+	 * For boolean attrs without '=', value node has no text child;
+	 * for explicit empty `=`, it contains a text child "". */
+	Token *attr_value= NULL;
+	if(val) {
+		attr_value= make_html_attr_value(val, val_len, accum);
+	} else {
+		attr_value= token_new(TOKEN_ATTR_VALUE, "attr-value");
+		if(attr_value) accum_push(accum, attr_value);
+	}
 	if(!attr_value) {
 		token_free(t);
 		return NULL;
