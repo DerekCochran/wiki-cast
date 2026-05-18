@@ -16,6 +16,15 @@
 #include <stdlib.h>
 #include <string.h>
 
+static bool is_magic_pipe_delimiter(const char *delimiter) {
+	if(!delimiter) return false;
+	if((unsigned char)delimiter[0] != 0x00) return false;
+	size_t i = 1;
+	if(!(delimiter[i] >= '0' && delimiter[i] <= '9')) return false;
+	while(delimiter[i] >= '0' && delimiter[i] <= '9') i++;
+	return delimiter[i] == '!' && (unsigned char)delimiter[i + 1] == 0x7F;
+}
+
 /**
  * Create a LinkToken, FileToken, or CategoryToken.
  *
@@ -35,7 +44,7 @@
  *   link_len: byte length of link
  *   text: raw text or NULL (for informational purposes; not used by this function)
  *   text_len: byte length of text (unused)
- *   delimiter: non-NULL if a delimiter exists (for informational purposes; not used)
+ *   delimiter: non-NULL if a delimiter exists; used to preserve {{!}} delimiter parity
  *   cfg, accum: required; tidy: unused
  *
  * Returns the created token (already pushed to accum).
@@ -49,7 +58,6 @@ Token *create_link_token(TokenType type, const char *type_name,
 												 bool tidy) {
 	(void)text;
 	(void)text_len;
-	(void)delimiter;
 	(void)cfg;
 	(void)tidy;
 
@@ -58,6 +66,7 @@ Token *create_link_token(TokenType type, const char *type_name,
 	/* Create the main link token and push to accum. */
 	Token *tok= token_new(type, type_name);
 	if(!tok) return NULL;
+	tok->data.link.magic_pipe = is_magic_pipe_delimiter(delimiter);
 	accum_push(accum, tok);
 
 	/* Child 0: link-target atom containing the raw link string. */

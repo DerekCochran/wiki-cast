@@ -124,6 +124,9 @@ typedef union {
         char *space;      /* ExtLinkToken separator between URL and text (may be empty) */
     } ext_link;
     struct {
+        bool magic_pipe;  /* LinkBaseToken delimiter was \0\d+!\x7F ({{!}}) */
+    } link;
+    struct {
         char *modifier;   /* TranscludeToken modifier prefix, e.g. "subst:" */
     } transclude;
 } TokenData;
