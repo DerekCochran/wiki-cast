@@ -151,6 +151,27 @@ static bool parse_rfc_or_pmid(const char *s, size_t len, size_t i, size_t *out_e
     return true;
 }
 
+static bool parse_isbn_core_10(const char *s, size_t len, size_t p, size_t *core_end) {
+	int digits = 0;
+	while (p < len && digits < 9) {
+		if (isdigit((unsigned char)s[p])) {
+			digits++;
+			p++;
+			size_t sep = consume_magic_space(s, len, p);
+			if (sep > 0) p += sep;
+			if (p < len && s[p] == '-') p++;
+			continue;
+		}
+		break;
+	}
+	if (digits != 9 || p >= len) return false;
+	if (isdigit((unsigned char)s[p]) || s[p] == 'x' || s[p] == 'X') p++;
+	else return false;
+	if (p < len && utf8_cp_at_is_word(s, len, p)) return false;
+	*core_end = p;
+	return true;
+}
+
 static bool parse_isbn(const char *s, size_t len, size_t i, size_t *out_end) {
     size_t p = i;
     if (!ci_eq_lit(s + p, len - p, "ISBN")) return false;
@@ -165,33 +186,25 @@ static bool parse_isbn(const char *s, size_t len, size_t i, size_t *out_end) {
         p += nsp;
     }
 
+    size_t best_end = 0;
+    size_t end0 = 0;
+    if (parse_isbn_core_10(s, len, p, &end0)) {
+        best_end = end0;
+    }
+
     if (p + 2 < len && s[p] == '9' && s[p + 1] == '7' && (s[p + 2] == '8' || s[p + 2] == '9')) {
-        p += 3;
-        size_t sep = consume_magic_space(s, len, p);
-        if (sep > 0) p += sep;
-        if (p < len && s[p] == '-') p++;
-    }
-
-    int digits = 0;
-    while (p < len && digits < 9) {
-        if (isdigit((unsigned char)s[p])) {
-            digits++;
-            p++;
-            size_t sep = consume_magic_space(s, len, p);
-            if (sep > 0) p += sep;
-            if (p < len && s[p] == '-') p++;
-            continue;
+        size_t p13 = p + 3;
+        size_t sep = consume_magic_space(s, len, p13);
+        if (sep > 0) p13 += sep;
+        if (p13 < len && s[p13] == '-') p13++;
+        size_t end13 = 0;
+        if (parse_isbn_core_10(s, len, p13, &end13) && end13 > best_end) {
+            best_end = end13;
         }
-        break;
     }
-    if (digits != 9) return false;
-    if (p >= len) return false;
 
-    if (isdigit((unsigned char)s[p]) || s[p] == 'x' || s[p] == 'X') p++;
-    else return false;
-
-    if (p < len && utf8_cp_at_is_word(s, len, p)) return false;
-    *out_end = p;
+    if (best_end == 0) return false;
+    *out_end = best_end;
     return true;
 }
 
