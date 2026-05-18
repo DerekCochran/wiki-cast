@@ -825,14 +825,26 @@ static Token *build_template_token(const char **parts_restored, const size_t *pa
 		const char *part= parts_restored[k];
 		size_t part_len= parts_lens[k];
 
-		/* JS parity: for certain magic words, don't split early parameters on '='.
-                 * For #tag, only parameters at k > params_start_idx (3rd+) allow key=value splitting.
-                 * Earlier params remain positional. */
-		bool force_positional= false;
+		/* JS parity: for magic words, parameter splitting differs from templates.
+		 * In TranscludeToken constructor:
+		 *   if (!(templateLike || name==='switch' && j>0 || name==='tag' && j>1))
+		 *     part = [part.join('=')]
+		 * So non-template magic words are positional by default, except:
+		 *   - #switch: params with j>0 may be key=value
+		 *   - #tag: params with j>1 may be key=value
+		 * Here k maps to j with an offset of params_start_idx. */
+		bool allow_named_split= true;
 		if(transclude_is_magic && t->name) {
-			if(strcmp(t->name, "tag") == 0 && k == params_start_idx) {
-				/* #tag: first param after ':' is positional even if it contains '=' */
-				force_positional= true;
+			if(strcmp(t->name, "invoke") == 0) {
+				/* JS parity: #invoke behaves template-like for remaining args,
+				 * so key=value stays named (for example x=y). */
+				allow_named_split= true;
+			} else if(strcmp(t->name, "switch") == 0) {
+				allow_named_split= (k >= params_start_idx);
+			} else if(strcmp(t->name, "tag") == 0) {
+				allow_named_split= (k > params_start_idx);
+			} else {
+				allow_named_split= false;
 			}
 		}
 
@@ -840,7 +852,7 @@ static Token *build_template_token(const char **parts_restored, const size_t *pa
          * part_is_named[k]==false means the raw part had no '=', so even if
          * the restored text contains '=' (e.g. from [[=]]), it is positional. */
 		char eq_ch= '=';
-		const char *eq= (force_positional || (part_is_named && !part_is_named[k]))
+		const char *eq= (!allow_named_split || (part_is_named && !part_is_named[k]))
 							 ? NULL
 							 : sz_find_byte(part, part_len, &eq_ch);
 
