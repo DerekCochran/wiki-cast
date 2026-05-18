@@ -1,4 +1,5 @@
 #include "accum.h"
+#include "build.h"
 #include "util/log.h"
 #include "parser/html.h"
 #include "util/string_util.h"
@@ -143,6 +144,40 @@ static Token *make_html_attr_key(const char *key, size_t key_len, Accum *accum) 
 	return t;
 }
 
+static char *html_normalize_equal(const char *equal, size_t equal_len, Accum *accum) {
+	if(!equal || equal_len == 0) return NULL;
+
+	if(memchr(equal, '\0', equal_len) == NULL) {
+		char *out= malloc(equal_len + 1);
+		if(!out) return NULL;
+		memcpy(out, equal, equal_len);
+		out[equal_len]= '\0';
+		return out;
+	}
+
+	Token *tmp= token_new(TOKEN_PLAIN, "attr-equal-tmp");
+	if(!tmp) return NULL;
+	build_from_str(tmp, equal, equal_len, accum);
+
+	ThreadBuf *scratch= wiki_thread_buf_acquire_scratch();
+	if(!scratch) {
+		token_free_shallow(tmp);
+		return NULL;
+	}
+
+	const char *s= token_to_string(tmp, scratch);
+	size_t slen= scratch->len;
+	char *out= malloc(slen + 1);
+	if(out) {
+		if(slen > 0 && s) memcpy(out, s, slen);
+		out[slen]= '\0';
+	}
+
+	wiki_thread_buf_release_scratch(scratch);
+	token_free_shallow(tmp);
+	return out;
+}
+
 static Token *make_html_attr_value(const char *val, size_t val_len, Accum *accum) {
 	Token *t= token_new(TOKEN_ATTR_VALUE, "attr-value");
 	if(!t) return NULL;
@@ -178,10 +213,8 @@ static Token *make_html_attr(const char *key, size_t key_len,
 
 	t->name= str_trim_lc(key, key_len);
 	if(equal && equal_len > 0) {
-		t->data.ext_attr.equal= malloc(equal_len + 1);
+		t->data.ext_attr.equal= html_normalize_equal(equal, equal_len, accum);
 		assert(t->data.ext_attr.equal);
-		memcpy(t->data.ext_attr.equal, equal, equal_len);
-		t->data.ext_attr.equal[equal_len]= '\0';
 	}
 	t->data.ext_attr.quote_open= quote_open;
 	t->data.ext_attr.quote_close= quote_close;
@@ -263,6 +296,36 @@ static bool html_attr_key_valid(const char *k, size_t klen) {
 	return true;
 }
 
+/* Returns sentinel byte length at attr[i] when it matches type, else 0.
+ * Sentinel form: \0<digits><type>\x7F */
+static size_t html_sentinel_at(const char *attr, size_t attr_len, size_t i, char type) {
+	if(!attr || i >= attr_len || (unsigned char)attr[i] != 0x00) return 0;
+	size_t j= i + 1;
+	if(j >= attr_len || attr[j] < '0' || attr[j] > '9') return 0;
+	while(j < attr_len && attr[j] >= '0' && attr[j] <= '9') j++;
+	if(j >= attr_len || attr[j] != type) return 0;
+	if(j + 1 >= attr_len || (unsigned char)attr[j + 1] != 0x7F) return 0;
+	return (j + 2) - i;
+}
+
+/* JS parity for regex (?:\s|\0\d+[cn]\x7F)* used around equals. */
+static size_t html_skip_eq_ws(const char *attr, size_t attr_len, size_t i) {
+	while(i < attr_len) {
+		if(isspace((unsigned char)attr[i])) {
+			i++;
+			continue;
+		}
+		size_t sc= html_sentinel_at(attr, attr_len, i, 'c');
+		if(sc == 0) sc= html_sentinel_at(attr, attr_len, i, 'n');
+		if(sc > 0) {
+			i+= sc;
+			continue;
+		}
+		break;
+	}
+	return i;
+}
+
 static void parse_html_attrs(Token *attrs_tok, const char *attr_str, size_t attr_len, Accum *accum) {
 	if(!attr_str || attr_len == 0) return;
 
@@ -295,6 +358,7 @@ static void parse_html_attrs(Token *attrs_tok, const char *attr_str, size_t attr
 		size_t key_start= i;
 		while(i < attr_len && !isspace((unsigned char)attr_str[i]) &&
 					attr_str[i] != '=' && attr_str[i] != '/') {
+			if(html_sentinel_at(attr_str, attr_len, i, '~') > 0) break;
 			i++;
 		}
 		size_t key_len= i - key_start;
@@ -312,9 +376,16 @@ static void parse_html_attrs(Token *attrs_tok, const char *attr_str, size_t attr
 		}
 
 		size_t eq_start= i;
-		while(i < attr_len && isspace((unsigned char)attr_str[i])) i++;
+		i= html_skip_eq_ws(attr_str, attr_len, i);
 
-		if(i >= attr_len || attr_str[i] != '=') {
+		size_t eq_tok_len= 0;
+		if(i < attr_len && attr_str[i] == '=') {
+			eq_tok_len= 1;
+		} else {
+			eq_tok_len= html_sentinel_at(attr_str, attr_len, i, '~');
+		}
+
+		if(i >= attr_len || eq_tok_len == 0) {
 			FLUSH_HTML_DIRTY();
 			Token *at= make_html_attr(key, key_len, NULL, 0, "", 0, '\0', '\0', accum);
 			if(at) token_append_child(attrs_tok, at);
@@ -322,8 +393,8 @@ static void parse_html_attrs(Token *attrs_tok, const char *attr_str, size_t attr
 			continue;
 		}
 
-		i++;
-		while(i < attr_len && isspace((unsigned char)attr_str[i])) i++;
+		i+= eq_tok_len;
+		i= html_skip_eq_ws(attr_str, attr_len, i);
 
 		const char *equal_start= attr_str + eq_start;
 		size_t equal_len= i - eq_start;
