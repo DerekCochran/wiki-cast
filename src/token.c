@@ -482,7 +482,11 @@ static void token_to_string_rec(const Token *t, ThreadBuf *tb) {
 		if(t->data.html.closing) {
 			thread_buf_append(tb, "</", 2);
 			if(tag_str) thread_buf_append(tb, tag_str, strlen(tag_str));
-			thread_buf_append_char(tb, '>');
+			if(t->data.html.self_closing) {
+				thread_buf_append(tb, "/>", 2);
+			} else {
+				thread_buf_append_char(tb, '>');
+			}
 			return;
 		}
 		thread_buf_append_char(tb, '<');
