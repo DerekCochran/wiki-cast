@@ -402,6 +402,17 @@ static char braces_get_symbol(const char *name, size_t len,
 	size_t base_orig_len= n;
 	char colon_ch= ':';
 	const char *colon_orig= sz_find_byte(trimmed, n, &colon_ch);
+	bool has_function_colon= (colon_orig != NULL);
+	if(!has_function_colon && n >= 3) {
+		for(size_t ci= 0; ci + 2 < n; ci++) {
+			if((unsigned char)trimmed[ci] == 0xEF &&
+			   (unsigned char)trimmed[ci + 1] == 0xBC &&
+			   (unsigned char)trimmed[ci + 2] == 0x9A) {
+				has_function_colon= true;
+				break;
+			}
+		}
+	}
 	if(colon_orig && colon_orig > trimmed) {
 		base_orig_len= (size_t)(colon_orig - trimmed);
 	}
@@ -475,13 +486,15 @@ static char braces_get_symbol(const char *name, size_t len,
 		out= 'n';
 		if(is_magic_out) *is_magic_out= true;
 	} else if(lc[0] == '#') {
-		if(is_magic_out) *is_magic_out= true;
+		if(has_function_colon && is_magic_out) *is_magic_out= true;
 	} else if(cfg && canonical && canonical[0]) {
-		if(is_magic_out) *is_magic_out= true;
+		bool is_var= str_list_contains_ci(&cfg->variable, canonical);
+		if((has_function_colon || is_var) && is_magic_out) *is_magic_out= true;
 	} else if(cfg && base_lc && base_lc[0]) {
 		const char *base_canonical= str_map_get_exact(&cfg->parser_function_insensitive, base_lc);
 		if(base_canonical) {
-			if(is_magic_out) *is_magic_out= true;
+			bool is_var= str_list_contains_ci(&cfg->variable, base_canonical);
+			if((has_function_colon || is_var) && is_magic_out) *is_magic_out= true;
 		}
 	}
 
