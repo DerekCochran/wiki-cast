@@ -612,7 +612,7 @@ Title *title_parse_half_parsed(const char *raw, size_t raw_len,
 	size_t level= 0;
 	const char *sub= title;
 	if(subpage) {
-		while(title_len >= (size_t)((level + 1) * 3) && strncmp(sub, "../", 3) == 0) {
+		while(title_len >= 3 && strncmp(sub, "../", 3) == 0) {
 			level++;
 			sub+= 3;
 			title_len-= 3;

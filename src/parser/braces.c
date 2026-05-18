@@ -768,7 +768,7 @@ static Token *build_template_token(const char **parts_restored, const size_t *pa
 					}
 				}
 				Title *parsed= NULL;
-				if(e > b) parsed= title_parse_half_parsed(cleaned + b, e - b, 10, cfg, true, "");
+				if(e > b) parsed= title_parse_half_parsed(cleaned + b, e - b, 10, cfg, true, NULL);
 				free(cleaned);
 				if(!parsed || !parsed->valid || !parsed->title || !parsed->title[0]) {
 					title_free(parsed);

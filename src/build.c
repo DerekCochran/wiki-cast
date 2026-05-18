@@ -170,7 +170,7 @@ static void refresh_template_name(Token *t, const ParserConfig *cfg) {
 		return;
 	}
 
-	Title *parsed= title_parse_half_parsed(text, len, 10, cfg, true, "");
+	Title *parsed= title_parse_half_parsed(text, len, 10, cfg, true, NULL);
 	/* release scratch now that parsed has copied any needed data */
 	wiki_thread_buf_release_scratch(scratch);
 	if(!parsed || !parsed->title || !parsed->title[0]) {
