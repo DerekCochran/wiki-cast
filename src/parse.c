@@ -628,6 +628,24 @@ static Token *parse_gallery_image_line(const char *line, size_t line_len,
 			first->text_owned= false;
 		}
 	}
+	if(!out) {
+		size_t non_ws= 0;
+		while(non_ws < line_len && isspace((unsigned char)line[non_ws])) non_ws++;
+		if(non_ws < line_len && sz_find(line, line_len, "[[", 2) == NULL) {
+			Token *fallback= token_new(TOKEN_FILE, "gallery-image");
+			if(fallback) {
+				Token *target= token_new(TOKEN_ATOM, "link-target");
+				if(target) {
+					const char *view= wiki_thread_buf_append_to_tokens(line, line_len);
+					token_append_text_n(target, view, line_len);
+					accum_push(accum, target);
+					token_append_child(fallback, target);
+				}
+				accum_push(accum, fallback);
+				out= fallback;
+			}
+		}
+	}
 
 	token_free_shallow(tmp);
 	if(pre_text_tb) wiki_thread_buf_release_scratch(pre_text_tb);
