@@ -1228,9 +1228,23 @@ void parse_links(ThreadBuf *tb, const ParserConfig *cfg, Accum *accum,
 
 				/* For image files, parse the parameters via append_file_image_params */
 				if(tok_text_ptr) {
+					const char *img_text_ptr= tok_text_ptr;
+					size_t img_text_len= tok_text_len;
+					ThreadBuf *img_text_tb= NULL;
+					if(tok_text_len > 0) {
+						img_text_tb= wiki_thread_buf_acquire_scratch_from_data(tok_text_ptr, tok_text_len);
+						if(img_text_tb) {
+							/* JS parity: parseExternalLinks(text, ..., true) runs before
+							 * FileToken parameter splitting to protect '|' inside URLs. */
+							parse_external_links(img_text_tb, cfg, accum, true);
+							img_text_ptr= wiki_thread_buf_append_to_tokens(img_text_tb->buf, img_text_tb->len);
+							img_text_len= img_text_tb->len;
+						}
+					}
 					char img_ext[32];
 					img_get_extension(parsed->title ? parsed->title : link_ptr, img_ext, sizeof(img_ext));
-					append_file_image_params(tok, tok_text_ptr, tok_text_len, cfg, accum, tidy, img_ext, page);
+					append_file_image_params(tok, img_text_ptr, img_text_len, cfg, accum, tidy, img_ext, page);
+					if(img_text_tb) wiki_thread_buf_release_scratch(img_text_tb);
 				}
 
 				/* Set the normalized title as the token name */
@@ -1285,9 +1299,23 @@ void parse_links(ThreadBuf *tb, const ParserConfig *cfg, Accum *accum,
 			size_t tl= text_ptr ? text_len : 0;
 			bool in_file= (ttype == TOKEN_FILE && !interwiki && !force);
 			if(in_file) {
+				const char *img_text_ptr= tp;
+				size_t img_text_len= tl;
+				ThreadBuf *img_text_tb= NULL;
+				if(tl > 0) {
+					img_text_tb= wiki_thread_buf_acquire_scratch_from_data(tp, tl);
+					if(img_text_tb) {
+						/* JS parity: parseExternalLinks(text, ..., true) runs before
+						 * FileToken parameter splitting to protect '|' inside URLs. */
+						parse_external_links(img_text_tb, cfg, accum, true);
+						img_text_ptr= wiki_thread_buf_append_to_tokens(img_text_tb->buf, img_text_tb->len);
+						img_text_len= img_text_tb->len;
+					}
+				}
 				char img_ext[32];
 				img_get_extension(parsed->title ? parsed->title : link_ptr, img_ext, sizeof(img_ext));
-				append_file_image_params(tok, tp, tl, cfg, accum, tidy, img_ext, page);
+				append_file_image_params(tok, img_text_ptr, img_text_len, cfg, accum, tidy, img_ext, page);
+				if(img_text_tb) wiki_thread_buf_release_scratch(img_text_tb);
 			} else {
 								Token *lt= parse_inner_fragment(tp, tl, cfg, accum, "link-text", tidy, in_file, false, page);
 				if(lt) {
@@ -1332,14 +1360,10 @@ static Token *parse_inner_fragment(const char *s, size_t len, const ParserConfig
 	}
 	parse_quotes(inner_tb, cfg, accum, tidy);
 	if(in_file) {
-		/* JS parity: parseLinks calls parseExternalLinks(text, ..., true) on the file
-		 * image text before creating FileToken (first pass, inFile=true).
-		 * Then stage 7 runs parseExternalLinks(captionText, ..., false) on each
-		 * ImageParameterToken(caption) (second pass, inFile=false), wrapping the
-		 * \0<N>f\x7F sentinels from the first pass into proper ExtLinkTokens.
-		 * For caption parameters only, stage 8 then runs parseMagicLinks
-		 * (e.g. "RFC 2119" -> MagicLinkToken). */
-		parse_external_links(inner_tb, cfg, accum, true);
+		/* JS parity: parseExternalLinks(text, ..., true) is executed before
+		 * parameter splitting (see parse_links file branches). At this point we
+		 * only run the second pass (inFile=false) to wrap \0<N>f\x7F sentinels
+		 * into ExtLinkTokens, plus caption-only parseMagicLinks. */
 		parse_external_links(inner_tb, cfg, accum, false);
 		if(allow_magic_links) {
 			parse_magic_links(inner_tb, cfg, accum);
