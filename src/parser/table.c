@@ -104,22 +104,23 @@ static Token *make_table_attr(const char *key, size_t key_len,
 
 /**
  * JS parity: key validity check matching
- * /^(?:[\w:]|\0\d+t\x7F)(?:[\w:.-]|\0\d+t\x7F)*$/u
- * A template sentinel \0<digits>t\x7F is valid as key start or continuation.
+ * /^(?:[\w:]|\0\d+[tas]\x7F)(?:[\w:.-]|\0\d+[tas]\x7F)*$/u
+ * C stage-1 may emit arg-like sentinels ('a'/'s') in places where JS carries
+ * transclusion-like sentinels, so accept t/a/s here for parity.
  * Any other non-[\w:.-] character makes the key invalid.
  */
 static bool is_valid_attr_key(const char *k, size_t klen) {
 	size_t i= 0;
 	if(i >= klen) return false;
 
-	/* first character: [\w:] or \0\d+t\x7F */
+	/* first character: [\w:] or \0\d+[tas]\x7F */
 	if((unsigned char)k[i] == 0x00) {
 		/* template sentinel */
 		i++;
 		if(i >= klen) return false;
 		if(k[i] < '0' || k[i] > '9') return false;
 		while(i < klen && k[i] >= '0' && k[i] <= '9') i++;
-		if(i >= klen || k[i] != 't') return false;
+		if(i >= klen || (k[i] != 't' && k[i] != 'a' && k[i] != 's')) return false;
 		i++;
 		if(i >= klen || (unsigned char)k[i] != 0x7F) return false;
 		i++;
@@ -131,14 +132,14 @@ static bool is_valid_attr_key(const char *k, size_t klen) {
 		i++;
 	}
 
-	/* continuation: [\w:.-] or \0\d+t\x7F */
+	/* continuation: [\w:.-] or \0\d+[tas]\x7F */
 	while(i < klen) {
 		if((unsigned char)k[i] == 0x00) {
 			i++;
 			if(i >= klen) return false;
 			if(k[i] < '0' || k[i] > '9') return false;
 			while(i < klen && k[i] >= '0' && k[i] <= '9') i++;
-			if(i >= klen || k[i] != 't') return false;
+			if(i >= klen || (k[i] != 't' && k[i] != 'a' && k[i] != 's')) return false;
 			i++;
 			if(i >= klen || (unsigned char)k[i] != 0x7F) return false;
 			i++;
@@ -408,7 +409,6 @@ void table_sep_scan(const char *buf,
 					i = after + 1;
 					continue;
 				}
-				/* sent + sent */
 				size_t sl2 = sentinel_at(buf, len, after, '!');
 				if (sl2) {
 					cb(TABLE_SEP_DOUBLE_PIPE, p, sl + sl2, user_data);

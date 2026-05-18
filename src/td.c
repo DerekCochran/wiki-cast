@@ -99,7 +99,7 @@ static Token *make_table_attr(const char *key, size_t key_len,
 	return t;
 }
 
-/* JS parity: /^(?:[\w:]|\0\d+t\x7F)(?:[\w:.-]|\0\d+t\x7F)*$/u */
+/* JS parity: /^(?:[\w:]|\0\d+[tas]\x7F)(?:[\w:.-]|\0\d+[tas]\x7F)*$/u */
 static bool is_valid_attr_key(const char *k, size_t klen) {
 	size_t i= 0;
 	if(i >= klen) return false;
@@ -109,7 +109,7 @@ static bool is_valid_attr_key(const char *k, size_t klen) {
 		if(i >= klen) return false;
 		if(k[i] < '0' || k[i] > '9') return false;
 		while(i < klen && k[i] >= '0' && k[i] <= '9') i++;
-		if(i >= klen || k[i] != 't') return false;
+		if(i >= klen || (k[i] != 't' && k[i] != 'a' && k[i] != 's')) return false;
 		i++;
 		if(i >= klen || (unsigned char)k[i] != 0x7F) return false;
 		i++;
@@ -127,7 +127,7 @@ static bool is_valid_attr_key(const char *k, size_t klen) {
 			if(i >= klen) return false;
 			if(k[i] < '0' || k[i] > '9') return false;
 			while(i < klen && k[i] >= '0' && k[i] <= '9') i++;
-			if(i >= klen || k[i] != 't') return false;
+			if(i >= klen || (k[i] != 't' && k[i] != 'a' && k[i] != 's')) return false;
 			i++;
 			if(i >= klen || (unsigned char)k[i] != 0x7F) return false;
 			i++;
