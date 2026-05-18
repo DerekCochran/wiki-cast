@@ -838,6 +838,14 @@ static Token *build_template_token(const char **parts_restored, const size_t *pa
 				size_t b= 0, e= cleaned_len;
 				while(b < e && isspace((unsigned char)cleaned[b])) b++;
 				while(e > b && isspace((unsigned char)cleaned[e - 1])) e--;
+				bool leading_placeholder= false;
+				if(e > b && (unsigned char)cleaned[b] == '\0') {
+					size_t k= b + 1;
+					while(k < e && isdigit((unsigned char)cleaned[k])) k++;
+					if(k > b + 1 && k + 1 < e && (unsigned char)cleaned[k + 1] == '\x7F') {
+						leading_placeholder= true;
+					}
+				}
 				/* JS parity: TranscludeToken uses normalizeTitle without decode,
 				 * so percent-escaped bytes in template names are invalid. */
 				for(size_t p= b; p + 2 < e; p++) {
@@ -852,7 +860,16 @@ static Token *build_template_token(const char **parts_restored, const size_t *pa
 				Title *parsed= NULL;
 				if(e > b) parsed= title_parse_half_parsed(cleaned + b, e - b, 10, cfg, true, NULL);
 				free(cleaned);
-				if(!parsed || !parsed->valid || !parsed->title || !parsed->title[0]) {
+				if(!parsed || !parsed->valid || !parsed->title || (!parsed->title[0] && !leading_placeholder)) {
+					unsigned char t0= (parsed && parsed->title) ? (unsigned char)parsed->title[0] : 0;
+					log_debug_env_token("WTC_DEBUG_STAGE_1", NULL,
+						"[C build_template_token] reject template name: parsed=%p valid=%d title_ptr=%p title0=%02X leading_placeholder=%d len=%zu",
+						(void *)parsed,
+						parsed ? (int)parsed->valid : -1,
+						(void *)(parsed ? parsed->title : NULL),
+						t0,
+						(int)leading_placeholder,
+						(e > b) ? (e - b) : 0);
 					title_free(parsed);
 					token_free(t);
 					return NULL;
@@ -1520,6 +1537,9 @@ static bool braces_state_machine(ThreadBuf *tb, const ParserConfig *cfg,
 						top.find_equal= false;
 					}
 					top.pos= cur_index + 1;
+					/* Keep the updated template frame active for subsequent parts. */
+					stack[stack_len++]= top;
+					top_requeued= true;
 				} else if(has_top) {
 					/* Keep non-template frames (e.g. [[, -{, =) alive across '|'. */
 					stack[stack_len++]= top;
@@ -1542,6 +1562,15 @@ static bool braces_state_machine(ThreadBuf *tb, const ParserConfig *cfg,
 						inner_len= 0;
 					}
 					Token *tok= build_template_token((const char **)top.parts.items, top.parts.lens, top.parts.count, is_arg_close, cfg, accum, top.parts.named);
+					if(!tok) {
+						size_t p0_len= top.parts.count > 0 ? top.parts.lens[0] : 0;
+						const char *p0= top.parts.count > 0 ? top.parts.items[0] : NULL;
+						char nul= '\0';
+						bool p0_has_nul= p0 && sz_find_byte(p0, p0_len, &nul) != NULL;
+						log_debug_env_token("WTC_DEBUG_STAGE_1", NULL,
+							"[C parseBraces] close rejected: is_arg_close=%d open_len=%zu parts_count=%zu p0_len=%zu p0_has_nul=%d",
+							(int)is_arg_close, top.open_len, top.parts.count, p0_len, (int)p0_has_nul);
+					}
 					if(tok) {
 						size_t tok_idx= accum->count - 1;
 						char sent[64];
@@ -1584,12 +1613,23 @@ static bool braces_state_machine(ThreadBuf *tb, const ParserConfig *cfg,
 						next_write= rep_end;
 						if(rest > 1) {
 							BraceFrame child;
-							if(brace_frame_init(&child, top.open, rest, top.index, top.index + rest, false)) {
+							if(brace_frame_init(&child, top.open, rest, top.index, rep_end, false)) {
+								bool child_ok = true;
+								/* JS parity: when an overlong opener (for example '{{{{{') closes
+								 * as an inner token, the remaining outer frame starts with that
+								 * emitted sentinel as its first part. */
+								if(child.has_parts) {
+									child_ok = parts_append_text(&child.parts, sent, slen);
+								}
+								if(child_ok) {
 								if(top.has_out_mark) {
 									child.out_mark= top.out_mark;
 									child.has_out_mark= true;
 								}
 								stack[++stack_len - 1]= child;
+								} else {
+									brace_frame_free(&child);
+								}
 							}
 						} else if(rest == 1 && top.index > 0 && tb->buf[top.index - 1] == '-') {
 							BraceFrame child;
