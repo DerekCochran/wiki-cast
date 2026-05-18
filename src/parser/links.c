@@ -78,7 +78,8 @@ static bool starts_with_proto(const char *s, size_t len, const ParserConfig *cfg
 /* Forward declaration for helper defined later in this file. */
 static Token *parse_inner_fragment(const char *s, size_t len, const ParserConfig *cfg, Accum *accum,
 																	const char *type_name, bool tidy,
-																	bool in_file, const char *page);
+																								 bool in_file, bool allow_magic_links,
+																								 const char *page);
 static void trim_view(const char **ptr, size_t *len);
 
 static int eq_n(const char *a, size_t alen, const char *b) {
@@ -496,6 +497,55 @@ static bool img_url_chars_ok(const char *v) {
 	return true;
 }
 
+static bool img_title_chars_ok(const char *v) {
+	if(!v || !*v) return false;
+	for(const unsigned char *p= (const unsigned char *)v; *p; p++) {
+		unsigned char c= *p;
+		if(c == '<' || c == '>' || c == '[' || c == ']' || c == '{' || c == '}' || c == '|') {
+			return false;
+		}
+	}
+	return true;
+}
+
+static void img_scan_link_sentinels(const char *val, size_t val_len,
+																		 bool strip_quotes,
+																		 bool *has_magic,
+																		 bool *has_non_magic) {
+	if(has_magic) *has_magic= false;
+	if(has_non_magic) *has_non_magic= false;
+	if(!val || val_len == 0) return;
+
+	for(size_t i= 0; i < val_len;) {
+		if((unsigned char)val[i] != '\0') {
+			i++;
+			continue;
+		}
+
+		size_t j= i + 1;
+		if(j >= val_len || !(val[j] >= '0' && val[j] <= '9')) {
+			i++;
+			continue;
+		}
+		while(j < val_len && val[j] >= '0' && val[j] <= '9') j++;
+		if(j >= val_len || j + 1 >= val_len || (unsigned char)val[j + 1] != 0x7F) {
+			i++;
+			continue;
+		}
+
+		char t= val[j];
+		bool stripped= (t == 'c' || t == 't' || (strip_quotes && t == 'q'));
+		if(!stripped) {
+			if(t == 'm' || t == 'w') {
+				if(has_magic) *has_magic= true;
+			} else {
+				if(has_non_magic) *has_non_magic= true;
+			}
+		}
+		i= j + 2;
+	}
+}
+
 /* JS parity: validate() from imageParameter.js */
 static bool img_param_validate(const char *name, const char *val_ptr, size_t val_len,
 																			const ParserConfig *cfg,
@@ -510,6 +560,23 @@ static bool img_param_validate(const char *name, const char *val_ptr, size_t val
 	/* For link=, also strip quote sentinels /\0\d+[tq]\x7F/gu */
 	bool is_link= (strcmp(name, "link") == 0);
 	const char *value= img_strip_and_trim(val_ptr, val_len, tmp, is_link);
+	bool has_magic_sentinel= false;
+	bool has_non_magic_sentinel= false;
+	if(is_link) {
+		img_scan_link_sentinels(val_ptr, val_len, true, &has_magic_sentinel, &has_non_magic_sentinel);
+		char hexbuf[256];
+		size_t hp= 0;
+		size_t look= val_len > 48 ? 48 : val_len;
+		for(size_t i= 0; i < look && hp + 4 < sizeof(hexbuf); i++) {
+			int wn= snprintf(hexbuf + hp, sizeof(hexbuf) - hp, "%02X", (unsigned char)val_ptr[i]);
+			if(wn > 0) hp+= (size_t)wn;
+			if(i + 1 < look && hp + 1 < sizeof(hexbuf)) hexbuf[hp++]= ' ';
+		}
+		hexbuf[hp]= '\0';
+		log_debug_env_token("DEBUG_LINK_VALIDATE", NULL,
+			"[img_link_validate] val_len=%zu has_magic=%d has_non_magic=%d raw_hex=%s",
+			val_len, (int)has_magic_sentinel, (int)has_non_magic_sentinel, hexbuf);
+	}
 
 	bool result;
 	if(strcmp(name, "lang") == 0) {
@@ -552,12 +619,16 @@ static bool img_param_validate(const char *name, const char *val_ptr, size_t val
 		/* JS parity: link= must be URL-like or normalize to a valid title.
 		 * Only gallery-image type tolerates invalid values. */
 		bool is_gallery_image= (tok_type && strcmp(tok_type, "gallery-image") == 0);
-		if(*value == '\0') {
+		if(has_non_magic_sentinel) {
+			result= is_gallery_image;
+		} else if(*value == '\0' && !has_magic_sentinel) {
 			/* JS validate() returns empty string here, and constructor accepts !== false. */
 			result= true;
 		} else {
 			bool proto_like= false;
 			if(value[0] == '/' && value[1] == '/') {
+				proto_like= true;
+			} else if(has_magic_sentinel) {
 				proto_like= true;
 			} else if(img_starts_with_magic_url_sentinel(value)) {
 				proto_like= true;
@@ -566,7 +637,11 @@ static bool img_param_validate(const char *name, const char *val_ptr, size_t val
 			}
 
 			if(proto_like) {
-				result= img_url_chars_ok(value) || is_gallery_image;
+				if(has_magic_sentinel) {
+					result= true;
+				} else {
+					result= img_url_chars_ok(value) || is_gallery_image;
+				}
 			} else {
 				const char *vptr= value;
 				size_t vlen= strlen(value);
@@ -575,9 +650,13 @@ static bool img_param_validate(const char *name, const char *val_ptr, size_t val
 					vptr+= 2;
 					vlen-= 4;
 				}
-				Title *title= title_parse_half_parsed(vptr, vlen, 0, cfg, true, "");
-				result= (title && title->valid) || is_gallery_image;
-				title_free(title);
+				if(!img_title_chars_ok(vptr)) {
+					result= is_gallery_image;
+				} else {
+					Title *title= title_parse_half_parsed(vptr, vlen, 0, cfg, true, "");
+					result= (title && title->valid) || is_gallery_image;
+					title_free(title);
+				}
 			}
 		}
 	} else {
@@ -589,6 +668,11 @@ static bool img_param_validate(const char *name, const char *val_ptr, size_t val
 		} else {
 			result= false;
 		}
+	}
+	if(is_link) {
+		log_debug_env_token("DEBUG_LINK_VALIDATE", NULL,
+			"[img_link_result] tok_type=%s result=%d value='%s'",
+			tok_type ? tok_type : "(null)", (int)result, value ? value : "(null)");
 	}
 	free(tmp);
 	return result;
@@ -675,7 +759,9 @@ static void append_file_image_params(Token *file_tok,
 						}
 						/* Note: Do NOT trim the value - JavaScript parser preserves whitespace */
 
-						Token *val= parse_inner_fragment(vp, vl, cfg, accum, "text", tidy, true, page);
+														Token *val= parse_inner_fragment(vp, vl, cfg, accum, "text", tidy, true,
+																														 strcmp(name, "caption") == 0,
+																														 page);
 						if(val) {
 							append_fragment_children(param, val);
 							token_free(val);
@@ -707,7 +793,7 @@ static void append_file_image_params(Token *file_tok,
 			if(!matched) {
 				param= make_image_param_token("caption", accum);
 				if(param) {
-					Token *cap= parse_inner_fragment(seg_ptr, seg_len, cfg, accum, "text", tidy, true, page);
+													Token *cap= parse_inner_fragment(seg_ptr, seg_len, cfg, accum, "text", tidy, true, true, page);
 					if(cap) {
 						append_fragment_children(param, cap);
 						token_free(cap);
@@ -1215,7 +1301,7 @@ void parse_links(ThreadBuf *tb, const ParserConfig *cfg, Accum *accum,
 				img_get_extension(parsed->title ? parsed->title : link_ptr, img_ext, sizeof(img_ext));
 				append_file_image_params(tok, tp, tl, cfg, accum, tidy, img_ext, page);
 			} else {
-				Token *lt= parse_inner_fragment(tp, tl, cfg, accum, "link-text", tidy, in_file, page);
+								Token *lt= parse_inner_fragment(tp, tl, cfg, accum, "link-text", tidy, in_file, false, page);
 				if(lt) {
 					if(tl == 0 && lt->child_count == 0) {
 						token_append_text_n(lt, "", 0);
@@ -1242,7 +1328,8 @@ void parse_links(ThreadBuf *tb, const ParserConfig *cfg, Accum *accum,
 /* Static helper: parse a fragment into a TOKEN_PLAIN with given type_name. */
 static Token *parse_inner_fragment(const char *s, size_t len, const ParserConfig *cfg, Accum *accum,
 																	const char *type_name, bool tidy,
-																	bool in_file, const char *page) {
+																								 bool in_file, bool allow_magic_links,
+																								 const char *page) {
 	if(!s) return NULL;
 	ThreadBuf *inner_tb = wiki_thread_buf_acquire_scratch_from_data(s, len);
 
@@ -1262,10 +1349,13 @@ static Token *parse_inner_fragment(const char *s, size_t len, const ParserConfig
 		 * Then stage 7 runs parseExternalLinks(captionText, ..., false) on each
 		 * ImageParameterToken(caption) (second pass, inFile=false), wrapping the
 		 * \0<N>f\x7F sentinels from the first pass into proper ExtLinkTokens.
-		 * Do not run parseMagicLinks here: file/image parameter text does not
-		 * tokenize bare URLs as free-ext-link in JS. */
+		 * For caption parameters only, stage 8 then runs parseMagicLinks
+		 * (e.g. "RFC 2119" -> MagicLinkToken). */
 		parse_external_links(inner_tb, cfg, accum, true);
 		parse_external_links(inner_tb, cfg, accum, false);
+		if(allow_magic_links) {
+			parse_magic_links(inner_tb, cfg, accum);
+		}
 	}
 
 	Token *inner= token_new(TOKEN_PLAIN, type_name);

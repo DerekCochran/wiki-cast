@@ -1279,6 +1279,14 @@ static bool braces_state_machine(ThreadBuf *tb, const ParserConfig *cfg,
 			stack_len--;
 		}
 
+		/* JS parity: when a template/arg frame has findEqual=true, a line-start
+		 * single '=' token is handled as an inner named-parameter separator,
+		 * not as heading-open. Multi-'=' line-start sequences still open heading
+		 * frames. */
+		if(matched && evkind == BRACE_EVT_HEADING_OPEN && equals_count == 1 && has_top && top.find_equal) {
+			evkind= BRACE_EVT_EQUALS;
+		}
+
 		if(matched && evkind == BRACE_EVT_WIKILINK_CLOSE) {
 			/* ]] closes a [[ link frame; preserve any non-link frame below it */
 			if(has_top && !(top.open_len >= 1 && top.open[0] == '[')) {

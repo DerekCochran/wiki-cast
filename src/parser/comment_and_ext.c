@@ -2,8 +2,10 @@
 #include "build.h"
 #include "parser/braces.h"
 #include "parser/comment_and_ext.h"
+#include "parser/external_links.h"
 #include "parser/link.h"
 #include "parser/links.h"
+#include "parser/magic_links.h"
 #include "util/string_util.h"
 #include "util/thread_buffer.h"
 #include "util/callback_parser.h"
@@ -1011,23 +1013,61 @@ static Token *parse_gallery_image_line_local(const char *line, size_t line_len,
 																			Accum *accum) {
 	if(!line || line_len == 0) return NULL;
 
+	ThreadBuf *pre_text_tb= NULL;
+	const char pipe_ch = '|';
+	const char *pipe_ptr = sz_find_byte(line, line_len, &pipe_ch);
+	size_t pipe_idx= SIZE_MAX;
+	if(pipe_ptr) {
+		pipe_idx= (size_t)(pipe_ptr - line);
+		if(pipe_idx + 1 < line_len) {
+			pre_text_tb= wiki_thread_buf_acquire_scratch_from_data(line + pipe_idx + 1, line_len - (pipe_idx + 1));
+			if(!pre_text_tb) { log_fatal("thread_buffer: failed to acquire scratch in parse_gallery_image_line_local (pre_text)"); abort(); }
+			/* JS parity: GalleryImageToken pre-parses the text segment through
+			 * later inline-link stages before FileToken parameter splitting. */
+			parse_comment_and_ext(pre_text_tb, cfg, accum, false);
+			parse_braces(pre_text_tb, cfg, accum);
+			parse_links(pre_text_tb, cfg, accum, NULL, false);
+			parse_external_links(pre_text_tb, cfg, accum, false);
+			parse_magic_links(pre_text_tb, cfg, accum);
+		}
+	}
+
 	ThreadBuf *tmp_tb = wiki_thread_buf_acquire_scratch();
 	if(!tmp_tb) { log_fatal("thread_buffer: failed to acquire scratch in parse_gallery_image_line_local"); abort(); }
-	wiki_thread_buf_reserve(tmp_tb, line_len + 9);
-	tmp_tb->buf[0]= '[';
-	tmp_tb->buf[1]= '[';
-	memcpy(tmp_tb->buf + 2, "File:", 5);
-	memcpy(tmp_tb->buf + 7, line, line_len);
-	tmp_tb->buf[7 + line_len]= ']';
-	tmp_tb->buf[8 + line_len]= ']';
-	tmp_tb->buf[9 + line_len]= '\0';
-	tmp_tb->len= line_len + 9;
+	if(pre_text_tb && pipe_idx != SIZE_MAX) {
+		size_t lhs_len= pipe_idx + 1; /* include the first '|' */
+		size_t wrapped_len= 7 + lhs_len + pre_text_tb->len + 2; /* [[File: + lhs + pre + ]] */
+		wiki_thread_buf_reserve(tmp_tb, wrapped_len + 1);
+		tmp_tb->buf[0]= '[';
+		tmp_tb->buf[1]= '[';
+		memcpy(tmp_tb->buf + 2, "File:", 5);
+		memcpy(tmp_tb->buf + 7, line, lhs_len);
+		if(pre_text_tb->len > 0) {
+			memcpy(tmp_tb->buf + 7 + lhs_len, pre_text_tb->buf, pre_text_tb->len);
+		}
+		size_t tail= 7 + lhs_len + pre_text_tb->len;
+		tmp_tb->buf[tail]= ']';
+		tmp_tb->buf[tail + 1]= ']';
+		tmp_tb->buf[tail + 2]= '\0';
+		tmp_tb->len= tail + 2;
+	} else {
+		wiki_thread_buf_reserve(tmp_tb, line_len + 9);
+		tmp_tb->buf[0]= '[';
+		tmp_tb->buf[1]= '[';
+		memcpy(tmp_tb->buf + 2, "File:", 5);
+		memcpy(tmp_tb->buf + 7, line, line_len);
+		tmp_tb->buf[7 + line_len]= ']';
+		tmp_tb->buf[8 + line_len]= ']';
+		tmp_tb->buf[9 + line_len]= '\0';
+		tmp_tb->len= line_len + 9;
+	}
 
 	parse_braces(tmp_tb, cfg, accum);
 	parse_links(tmp_tb, cfg, accum, NULL, false);
 
 	Token *tmp= token_new(TOKEN_PLAIN, "gallery-line");
 	if(!tmp) {
+		if(pre_text_tb) wiki_thread_buf_release_scratch(pre_text_tb);
 		wiki_thread_buf_release_scratch(tmp_tb);
 		return NULL;
 	}
@@ -1043,6 +1083,33 @@ static Token *parse_gallery_image_line_local(const char *line, size_t line_len,
 		if(out->name) {
 			free(out->name);
 			out->name= NULL;
+		}
+		/* JS parity: gallery-image uses GalleryImageToken, where link=... always
+		 * remains an image link parameter (not caption fallback). */
+		for(size_t ci= 1; ci < out->child_count; ci++) {
+			if(out->children[ci].is_text || !out->children[ci].token) continue;
+			Token *param= out->children[ci].token;
+			if(param->type != TOKEN_PLAIN || !param->type_name || strcmp(param->type_name, "image-parameter") != 0) continue;
+			if(!param->name || strcmp(param->name, "caption") != 0 || param->child_count == 0) continue;
+			Child *first= &param->children[0];
+			if(!first->is_text || !first->text || first->text_len < 5) continue;
+
+			size_t p= 0;
+			while(p < first->text_len && (first->text[p] == ' ' || first->text[p] == '\t')) p++;
+			if(p + 5 > first->text_len || strncmp(first->text + p, "link=", 5) != 0) continue;
+
+			char *new_name= strdup("link");
+			if(!new_name) continue;
+			free(param->name);
+			param->name= new_name;
+
+			size_t prefix_len= p + 5;
+			size_t new_len= first->text_len - prefix_len;
+			const char *view= wiki_thread_buf_append_to_tokens(first->text + prefix_len, new_len);
+			if(first->text_owned && first->text) free((void *)first->text);
+			first->text= view;
+			first->text_len= new_len;
+			first->text_owned= false;
 		}
 		/* JS parity: GalleryImageToken stores raw line file text (without "File:"). */
 		if(out->child_count > 0 && !out->children[0].is_text && out->children[0].token) {
@@ -1085,6 +1152,7 @@ static Token *parse_gallery_image_line_local(const char *line, size_t line_len,
 	}
 
 	token_free_shallow(tmp);
+	if(pre_text_tb) wiki_thread_buf_release_scratch(pre_text_tb);
 	wiki_thread_buf_release_scratch(tmp_tb);
 	return out;
 }
