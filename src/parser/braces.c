@@ -743,6 +743,17 @@ static Token *build_template_token(const char **parts_restored, const size_t *pa
 				size_t b= 0, e= cleaned_len;
 				while(b < e && isspace((unsigned char)cleaned[b])) b++;
 				while(e > b && isspace((unsigned char)cleaned[e - 1])) e--;
+				/* JS parity: TranscludeToken uses normalizeTitle without decode,
+				 * so percent-escaped bytes in template names are invalid. */
+				for(size_t p= b; p + 2 < e; p++) {
+					if(cleaned[p] == '%' &&
+					   isxdigit((unsigned char)cleaned[p + 1]) &&
+					   isxdigit((unsigned char)cleaned[p + 2])) {
+						free(cleaned);
+						token_free(t);
+						return NULL;
+					}
+				}
 				Title *parsed= NULL;
 				if(e > b) parsed= title_parse_half_parsed(cleaned + b, e - b, 10, cfg, true, "");
 				free(cleaned);

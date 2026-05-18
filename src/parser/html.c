@@ -145,9 +145,12 @@ static Token *make_html_attr_key(const char *key, size_t key_len, Accum *accum) 
 static Token *make_html_attr_value(const char *val, size_t val_len, Accum *accum) {
 	Token *t= token_new(TOKEN_ATTR_VALUE, "attr-value");
 	if(!t) return NULL;
-	/* Ensure value text is stored in the persistent tokens arena */
-	const char *val_view = wiki_thread_buf_append_to_tokens(val, val_len);
-	token_append_text_n(t, val_view, val_len);
+	/* JS parity: empty attr-value tokens have no text child nodes. */
+	if(val_len > 0) {
+		/* Ensure value text is stored in the persistent tokens arena */
+		const char *val_view = wiki_thread_buf_append_to_tokens(val, val_len);
+		token_append_text_n(t, val_view, val_len);
+	}
 	accum_push(accum, t);
 	return t;
 }
@@ -187,14 +190,16 @@ static Token *make_html_attr(const char *key, size_t key_len,
 	}
 	token_append_child(t, attr_key);
 
-	if(val) {
-		Token *attr_value= make_html_attr_value(val, val_len, accum);
-		if(!attr_value) {
-			token_free(t);
-			return NULL;
-		}
-		token_append_child(t, attr_value);
+	/* JS parity: AttributeToken always has an attr-value child, even for
+	 * boolean attrs without '=' (value is empty, rendering still uses only key). */
+	const char *value_ptr = val ? val : "";
+	size_t value_len = val ? val_len : 0;
+	Token *attr_value= make_html_attr_value(value_ptr, value_len, accum);
+	if(!attr_value) {
+		token_free(t);
+		return NULL;
 	}
+	token_append_child(t, attr_value);
 
 	accum_push(accum, t);
 	return t;
@@ -313,7 +318,7 @@ static Token *build_html_attrs(const char *tag_name, const char *attr_str, size_
 	t->name= strdup(tag_name);
 	accum_push(accum, t);
 
-	if(attr_str && attr_len > 0 && !isspace((unsigned char)attr_str[0])) {
+	if(attr_str && attr_len > 0 && !isspace((unsigned char)attr_str[0]) && attr_str[0] != '/') {
 		ThreadBuf *tmp = wiki_thread_buf_acquire_scratch();
 		if(!tmp) {
 			log_fatal("build_html_attrs: failed to acquire scratch");

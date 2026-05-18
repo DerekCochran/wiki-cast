@@ -327,10 +327,12 @@ void parse_external_links(ThreadBuf *tb, const ParserConfig *cfg,
     /* Run callback scanner */
     parser_scan(tb->buf, tb->len, rule, ext_cb, &ctx);
 
-    /* JS parity: with /\[(...?)\]/g, input like [[http://example.com]]
-     * can still yield an inner [http://...] ext-link (outer '[' and ']' stay as
-     * plain text). parser_scan consumes the first matching bracket pair and can
-     * miss that inner case, so run a focused second pass for "[[...]]" forms. */
+    /* JS parity: with /\[(...?)\]/g, input like [[http://example.com]] or
+     * [[http://example.com] can still yield an inner [http://...] ext-link
+     * (the outer leading '[' and any remaining trailing ']' stay as plain text).
+     * parser_scan can miss these overlapping-start cases, so run a focused
+     * second pass for "[[..." forms by probing from the second '[' to the
+     * first following ']'. */
     if(!in_file && out->len >= 4) {
         ThreadBuf *out2 = wiki_thread_buf_acquire_scratch();
         if(out2) {
@@ -343,18 +345,17 @@ void parse_external_links(ThreadBuf *tb, const ParserConfig *cfg,
             while(i + 1 < slen) {
                 if(src[i] == '[' && src[i + 1] == '[') {
                     size_t j = i + 2;
-                    while(j + 1 < slen) {
-                        if(src[j] == ']' && src[j + 1] == ']') break;
-                        j++;
-                    }
+                    while(j < slen && src[j] != ']') j++;
 
-                    if(j + 1 < slen) {
+                    if(j < slen) {
                         const char *u = NULL, *sp = NULL, *txt = NULL;
                         size_t ulen = 0, splen = 0, tlen = 0;
                         const char *inner = src + i + 2;
                         size_t inner_len = j - (i + 2);
                         if(parse_external_inner(inner, inner_len, cfg, &u, &ulen, &sp, &splen, &txt, &tlen)) {
-                            if(i > last) wiki_thread_buf_append(out2, (sz_string_view_t){ .start = src + last, .length = i - last });
+                            if(i > last) {
+                                wiki_thread_buf_append(out2, (sz_string_view_t){ .start = src + last, .length = i - last });
+                            }
                             wiki_thread_buf_append(out2, (sz_string_view_t){ .start = "[", .length = 1 });
                             ExtCtx inner_ctx = {
                                 .out = out2,
@@ -363,8 +364,7 @@ void parse_external_links(ThreadBuf *tb, const ParserConfig *cfg,
                                 .in_file = false
                             };
                             ext_cb(inner, inner_len, PARSER_SEG_INNER, &inner_ctx);
-                            wiki_thread_buf_append(out2, (sz_string_view_t){ .start = "]", .length = 1 });
-                            i = j + 2;
+                            i = j + 1;
                             last = i;
                             continue;
                         }

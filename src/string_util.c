@@ -257,7 +257,7 @@ char *str_trim_lc(const char *s, size_t len) {
 /* Named HTML entities we handle (mirrors JS names object) */
 static const struct {
 	const char *name;
-	char ch;
+	uint32_t cp;
 } HTML_NAMES[]= {
 {"lt", '<'},
 {"gt", '>'},
@@ -265,9 +265,13 @@ static const struct {
 {"rbrack", ']'},
 {"lbrace", '{'},
 {"rbrace", '}'},
-{"nbsp", ' '}, /* narrow no-break space → space */
+{"nbsp", ' '},  /* JS title normalization later canonicalizes NBSP to space */
 {"amp", '&'},
 {"quot", '"'},
+{"apos", '\''},
+{"ndash", 0x2013},
+{"mdash", 0x2014},
+{"minus", 0x2212},
 };
 #define HTML_NAMES_COUNT ((int)(sizeof(HTML_NAMES) / sizeof(HTML_NAMES[0])))
 
@@ -372,7 +376,16 @@ char *str_decode_html_basic(const char *s, size_t len, size_t *out_len) {
 			bool found= false;
 			for(int n= 0; n < HTML_NAMES_COUNT; n++) {
 				if(strcmp(lower_ref, HTML_NAMES[n].name) == 0) {
-					result[j++]= HTML_NAMES[n].ch;
+					char tmp[4];
+					int nb= 0;
+					encode_codepoint(HTML_NAMES[n].cp, tmp, &nb);
+					while(j + (size_t)nb + 1 > cap) {
+						cap*= 2;
+						result= realloc(result, cap);
+						assert(result);
+					}
+					sz_copy(result + j, tmp, (size_t)nb);
+					j+= (size_t)nb;
 					i= k + 1;
 					found= true;
 					break;
