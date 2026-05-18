@@ -128,54 +128,62 @@ Gprof reveals this is called **1,379,322 times**, with 99% of calls coming from 
 
 **Suggestions:**
 
-### 1.1 Precompute Protocol Lookup Structure
-Instead of linear scan with `tolower()`, build a trie or hash set at config initialization:
+### 1.1 Precompute Protocol Metadata & Centralized LUT-Based Comparison
+Replace the original trie/hash set suggestion with a lower-overhead approach tailored to the small protocol list (~20 entries):
 
-```c
-// In config.c, after loading protocols:
-typedef struct {
-    char *lower;      // lowercase version
-    size_t len;
-    char *original;
-} ProtocolEntry;
+1.  **Precompute protocol metadata**: At config initialization, store the original protocol, its precomputed lowercase version, and length for each protocol, eliminating repeated `strlen()` and `tolower()` calls during parsing:
+    ```c
+    typedef struct {
+        char *protocol;         // Original protocol string (e.g., "Http://")
+        size_t protocol_len;    // Precomputed length of original protocol
+        char *protocol_lower;  // Precomputed lowercase version (e.g., "http://")
+    } ProtocolItem;
+    ```
 
-// Build a hash table keyed by full lowercase string
-// Use perfect hashing or a simple hash set
-```
+2.  **Expose existing LUT via `fast_tolower()`**: The LUT already exists in `string_util.c` (`s_tolower_lut[256]` with `ensure_tolower_lut()`). Simply add a public helper function to use it:
+    ```c
+    // In string_util.h:
+    unsigned char fast_tolower(unsigned char c);
 
-### 1.2 Use Stringzilla or SIMD-optimized Comparison
-The code already uses stringzilla. Leverage its fast prefix matching:
-
-```c
-size_t match_proto_prefix(const char *s, size_t len, const ParserConfig *cfg) {
-    if(!cfg || !cfg->protocol_items_valid) return 0;
-    
-    // Try exact match first (common cases: http, https, ftp, //)
-    // Use a small lookup table for the most common protocols
-    static const char *common[] = {"http://", "https://", "ftp://", "//", "mailto:"};
-    static const size_t common_lens[] = {7, 8, 6, 2, 7};
-    
-    for(size_t i = 0; i < sizeof(common)/sizeof(*common); i++) {
-        if(len >= common_lens[i] && strncasecmp(s, common[i], common_lens[i]) == 0)
-            return common_lens[i];
+    // In string_util.c (add after existing ensure_tolower_lut):
+    unsigned char fast_tolower(unsigned char c) {
+        ensure_tolower_lut();
+        return s_tolower_lut[c];
     }
-    
-    // Fall back to full list for uncommon protocols
-    // ...
-}
-```
+    ```
 
-### 1.3 Cache Protocol Lengths
-Store protocol lengths alongside the strings to avoid repeated `strlen()` calls:
+3.  **Early length check**: Before any comparison, skip protocols where the remaining input length is shorter than the protocol's precomputed `token_len` (O(1) check per protocol).
 
-```c
-typedef struct {
-    char *token;
-    size_t token_len;  // Precomputed!
-    char *lower;
-    size_t lower_len;
-} ProtocolItem;
-```
+4.  **Direct LUT comparison loop in `match_proto_prefix`**: Use the centralized `fast_tolower` to compare the input's lowered character against the precomputed lowercase protocol string:
+    ```c
+    size_t match_proto_prefix(const char *s, size_t len, const ParserConfig *cfg) {
+        if (!cfg || !cfg->protocol_items_valid) return 0;
+
+        for (size_t pi = 0; pi < cfg->protocol_items.count; pi++) {
+            const ProtocolItem *proto = &cfg->protocol_items.items[pi];
+            // Early skip if input is too short for this protocol
+            if (proto->protocol_len > len) continue;
+
+            // Compare input lowered vs precomputed protocol lowercase
+            bool match = true;
+            for (size_t i = 0; i < proto->protocol_len; i++) {
+                if (fast_tolower((unsigned char)s[i]) != (unsigned char)proto->protocol_lower[i]) {
+                    match = false;
+                    break;
+                }
+            }
+            if (match) return proto->protocol_len;
+        }
+        return 0;
+    }
+    ```
+
+**Why this is better than the original trie/hash approach**:
+- Linear scan over 20 small entries is faster than hash/trie overhead (no hash computation, no pointer chasing)
+- Eliminates all `strlen()` calls on protocols during parsing
+- Centralized LUT in `string_util` avoids duplicating the lookup table across functions
+- Replaces per-character `tolower()` function calls with O(1) LUT array lookups via `fast_tolower`
+- Precomputed lowercase protocol strings avoid redundant lowering during comparison
 
 **Expected Improvement:** 50-70% reduction in `match_proto_prefix` cost.
 
