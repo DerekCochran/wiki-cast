@@ -1480,8 +1480,10 @@ static void finalize_gallery_and_link_names(Token *t, const ParserConfig *cfg,
 	}
 
 	if(t->type == TOKEN_EXT_INNER && t->name && strcmp(t->name, "gallery") == 0) {
-		bool has_leading_empty= (t->child_count > 0 && t->children[0].is_text && t->children[0].text_len == 0);
-		if(!has_leading_empty) {
+		/* JS parity: self-closing/empty gallery inner has no children. */
+		if(t->child_count > 0) {
+			bool has_leading_empty= (t->children[0].is_text && t->children[0].text_len == 0);
+			if(!has_leading_empty) {
 			if(t->child_count >= t->child_cap) {
 				t->child_cap= t->child_cap ? t->child_cap * 2 : 4;
 				t->children= realloc(t->children, t->child_cap * sizeof(Child));
@@ -1494,6 +1496,7 @@ static void finalize_gallery_and_link_names(Token *t, const ParserConfig *cfg,
 			c->text= strdup("");
 			c->token= NULL;
 			t->child_count++;
+			}
 		}
 	}
 

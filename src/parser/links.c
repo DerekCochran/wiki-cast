@@ -510,10 +510,12 @@ static bool img_title_chars_ok(const char *v) {
 
 static void img_scan_link_sentinels(const char *val, size_t val_len,
 																		 bool strip_quotes,
-																		 bool *has_magic,
-																		 bool *has_non_magic) {
-	if(has_magic) *has_magic= false;
-	if(has_non_magic) *has_non_magic= false;
+																		 bool *has_magic_url,
+																		 bool *has_link,
+																		 bool *has_invalid) {
+	if(has_magic_url) *has_magic_url= false;
+	if(has_link) *has_link= false;
+	if(has_invalid) *has_invalid= false;
 	if(!val || val_len == 0) return;
 
 	for(size_t i= 0; i < val_len;) {
@@ -537,9 +539,11 @@ static void img_scan_link_sentinels(const char *val, size_t val_len,
 		bool stripped= (t == 'c' || t == 't' || (strip_quotes && t == 'q'));
 		if(!stripped) {
 			if(t == 'm' || t == 'w') {
-				if(has_magic) *has_magic= true;
+				if(has_magic_url) *has_magic_url= true;
+			} else if(t == 'l') {
+				if(has_link) *has_link= true;
 			} else {
-				if(has_non_magic) *has_non_magic= true;
+				if(has_invalid) *has_invalid= true;
 			}
 		}
 		i= j + 2;
@@ -560,10 +564,12 @@ static bool img_param_validate(const char *name, const char *val_ptr, size_t val
 	/* For link=, also strip quote sentinels /\0\d+[tq]\x7F/gu */
 	bool is_link= (strcmp(name, "link") == 0);
 	const char *value= img_strip_and_trim(val_ptr, val_len, tmp, is_link);
-	bool has_magic_sentinel= false;
-	bool has_non_magic_sentinel= false;
+	bool has_magic_url_sentinel= false;
+	bool has_link_sentinel= false;
+	bool has_invalid_sentinel= false;
 	if(is_link) {
-		img_scan_link_sentinels(val_ptr, val_len, true, &has_magic_sentinel, &has_non_magic_sentinel);
+		img_scan_link_sentinels(val_ptr, val_len, true,
+			&has_magic_url_sentinel, &has_link_sentinel, &has_invalid_sentinel);
 	}
 
 	bool result;
@@ -607,16 +613,18 @@ static bool img_param_validate(const char *name, const char *val_ptr, size_t val
 		/* JS parity: link= must be URL-like or normalize to a valid title.
 		 * Only gallery-image type tolerates invalid values. */
 		bool is_gallery_image= (tok_type && strcmp(tok_type, "gallery-image") == 0);
-		if(has_non_magic_sentinel) {
+		if(has_invalid_sentinel) {
 			result= is_gallery_image;
-		} else if(*value == '\0' && !has_magic_sentinel) {
+		} else if(has_link_sentinel) {
+			result= true;
+		} else if(*value == '\0' && !has_magic_url_sentinel) {
 			/* JS validate() returns empty string here, and constructor accepts !== false. */
 			result= true;
 		} else {
 			bool proto_like= false;
 			if(value[0] == '/' && value[1] == '/') {
 				proto_like= true;
-			} else if(has_magic_sentinel) {
+			} else if(has_magic_url_sentinel) {
 				proto_like= true;
 			} else if(img_starts_with_magic_url_sentinel(value)) {
 				proto_like= true;
@@ -625,7 +633,7 @@ static bool img_param_validate(const char *name, const char *val_ptr, size_t val
 			}
 
 			if(proto_like) {
-				if(has_magic_sentinel) {
+				if(has_magic_url_sentinel) {
 					result= true;
 				} else {
 					result= img_url_chars_ok(value) || is_gallery_image;
