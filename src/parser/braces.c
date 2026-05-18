@@ -881,7 +881,10 @@ static Token *build_template_token(const char **parts_restored, const size_t *pa
 			token_append_child(param, key_tok);
 			token_append_child(param, val_tok);
 
-			char *pname= trim_copy(part, key_len);
+			size_t key_clean_len= 0;
+			char *key_clean= str_remove_comment(part, key_len, &key_clean_len);
+			char *pname= key_clean ? trim_copy(key_clean, key_clean_len) : NULL;
+			free(key_clean);
 			if(pname) param->name= pname;
 		} else {
 			/* Persist positional parameter value into tokens arena */

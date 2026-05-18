@@ -354,7 +354,7 @@ void parse_hr_and_double_underscore(ThreadBuf *tb, const ParserConfig *cfg, Accu
 	parse_dunder_pass(tb, &wiki_rule_dunder_fullwidth, true, cfg, accum);
 
 	/* Heading finalization: line-at-a-time forward scan */
-	{
+	if(!config_excluded(cfg, "heading")) {
 		size_t out_cap2 = tb->len * 2 + 64;
 		char *out2 = malloc(out_cap2);
 		if(!out2) { log_fatal("OOM in heading finalization"); abort(); }
