@@ -1439,54 +1439,58 @@ static bool braces_state_machine(ThreadBuf *tb, const ParserConfig *cfg,
 					size_t trail_len = hr.trail_len;
 					char *title = str_restore(slice + title_start, title_len, (const char **)link_stack, link_count, link_stack_lens, &title_len);
 					if(title) {
-						Token *heading_tok= token_new(TOKEN_HEADING, "heading");
-						if(heading_tok) {
-							heading_tok->data.heading.level= (int)hr.eq_count;
-							Token *title_tok= token_new(TOKEN_PLAIN, "heading-title");
-							if(title_tok) {
-								/* Persist heading title into tokens arena */
-								const char *title_view= wiki_thread_buf_append_to_tokens(title, title_len);
-								token_append_text_n(title_tok, title_view, title_len);
-								token_append_child(heading_tok, title_tok);
-								Token *trail_tok= token_new(TOKEN_SYNTAX, "heading-trail");
-								if(trail_tok) {
-									if(trail_len > 0) {
-										/* Persist heading trail into tokens arena */
-										const char *trail_view= wiki_thread_buf_append_to_tokens(slice + trail_start, trail_len);
-										token_append_text_n(trail_tok, trail_view, trail_len);
-									} else {
-										token_append_text_n(trail_tok, "", 0);
+						char nl= '\n';
+						bool restored_has_newline= sz_find_byte(title, title_len, &nl) != NULL;
+						if(!restored_has_newline) {
+							Token *heading_tok= token_new(TOKEN_HEADING, "heading");
+							if(heading_tok) {
+								heading_tok->data.heading.level= (int)hr.eq_count;
+								Token *title_tok= token_new(TOKEN_PLAIN, "heading-title");
+								if(title_tok) {
+									/* Persist heading title into tokens arena */
+									const char *title_view= wiki_thread_buf_append_to_tokens(title, title_len);
+									token_append_text_n(title_tok, title_view, title_len);
+									token_append_child(heading_tok, title_tok);
+									Token *trail_tok= token_new(TOKEN_SYNTAX, "heading-trail");
+									if(trail_tok) {
+										if(trail_len > 0) {
+											/* Persist heading trail into tokens arena */
+											const char *trail_view= wiki_thread_buf_append_to_tokens(slice + trail_start, trail_len);
+											token_append_text_n(trail_tok, trail_view, trail_len);
+										} else {
+											token_append_text_n(trail_tok, "", 0);
+										}
+										token_append_child(heading_tok, trail_tok);
 									}
-									token_append_child(heading_tok, trail_tok);
-								}
-								accum_push(accum, heading_tok);
-								size_t idx= accum->count - 1;
-								char sent[64];
-								size_t slen;
-								work_str_sentinel(idx, 'h', sent, &slen);
-								{
-									char hexbuf[128];
-									size_t hexpos= 0;
-									for(size_t _i= 0; _i < slen && hexpos + 3 < sizeof(hexbuf); _i++) {
-										int wn= snprintf(hexbuf + hexpos, sizeof(hexbuf) - hexpos, "%02X", (unsigned char)sent[_i]);
-										if(wn > 0) hexpos+= (size_t)wn;
-										if(_i + 1 < slen && hexpos + 1 < sizeof(hexbuf)) hexbuf[hexpos++]= ' ';
-									}
-									hexbuf[hexpos]= '\0';
-									log_debug_env_token("WTC_DEBUG_STAGE_1", NULL,
+									accum_push(accum, heading_tok);
+									size_t idx= accum->count - 1;
+									char sent[64];
+									size_t slen;
+									work_str_sentinel(idx, 'h', sent, &slen);
+									{
+										char hexbuf[128];
+										size_t hexpos= 0;
+										for(size_t _i= 0; _i < slen && hexpos + 3 < sizeof(hexbuf); _i++) {
+											int wn= snprintf(hexbuf + hexpos, sizeof(hexbuf) - hexpos, "%02X", (unsigned char)sent[_i]);
+											if(wn > 0) hexpos+= (size_t)wn;
+											if(_i + 1 < slen && hexpos + 1 < sizeof(hexbuf)) hexbuf[hexpos++]= ' ';
+										}
+										hexbuf[hexpos]= '\0';
+										log_debug_env_token("WTC_DEBUG_STAGE_1", NULL,
 														  "[C parseBraces] wrote sentinel idx=%zu type=%c slen=%zu hex=%s",
 														  idx, 'h', slen, hexbuf);
+									}
+									ENSURE_OUT_CAP((top.index > next_write ? top.index - next_write : 0) + slen);
+									if(top.index > next_write) {
+										memcpy(out + out_len, tb->buf + next_write, top.index - next_write);
+										out_len+= top.index - next_write;
+									}
+									memcpy(out + out_len, sent, slen);
+									out_len+= slen;
+									next_write= cur_index;
+								} else {
+									token_free(heading_tok);
 								}
-								ENSURE_OUT_CAP((top.index > next_write ? top.index - next_write : 0) + slen);
-								if(top.index > next_write) {
-									memcpy(out + out_len, tb->buf + next_write, top.index - next_write);
-									out_len+= top.index - next_write;
-								}
-								memcpy(out + out_len, sent, slen);
-								out_len+= slen;
-								next_write= cur_index;
-							} else {
-								token_free(heading_tok);
 							}
 						}
 						free(title);
@@ -1516,6 +1520,10 @@ static bool braces_state_machine(ThreadBuf *tb, const ParserConfig *cfg,
 						top.find_equal= false;
 					}
 					top.pos= cur_index + 1;
+				} else if(has_top) {
+					/* Keep non-template frames (e.g. [[, -{, =) alive across '|'. */
+					stack[stack_len++]= top;
+					top_requeued= true;
 				}
 			} else if(matched && evkind == BRACE_EVT_BRACE_CLOSE) {
 				if(has_top && top.has_parts) {
@@ -1605,6 +1613,10 @@ static bool braces_state_machine(ThreadBuf *tb, const ParserConfig *cfg,
 					}
 					free(inner);
 					top_consumed= true;
+				} else if(has_top) {
+					/* Keep non-template frames when encountering stray '}}'. */
+					stack[stack_len++]= top;
+					top_requeued= true;
 				}
 			}
 			if(matched && evkind == BRACE_EVT_BRACE_OPEN) {
