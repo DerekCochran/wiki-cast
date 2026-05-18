@@ -1297,6 +1297,7 @@ static void postprocess_parameter_value_inline_impl(Token *t, const ParserConfig
 			parse_comment_and_ext(scratch, cfg, accum, false);
 			parse_braces(scratch, cfg, accum);
 			parse_html(scratch, cfg, accum);
+			parse_table(scratch, cfg, accum);
 			parse_hr_and_double_underscore(scratch, cfg, accum, TOKEN_PLAIN, is_attr_value ? "attr-value" : "parameter-value");
 			bool has_bang_sentinel= mem_has(scratch->buf, scratch->len, "!\x7F");
 			if(!has_bang_sentinel) {

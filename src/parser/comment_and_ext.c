@@ -14,6 +14,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <strings.h>
 
 typedef enum {
     CAE_MATCH_COMMENT = 1,
@@ -758,6 +759,156 @@ static bool is_multiline_tag(const char *tag_name) {
 	return false;
 }
 
+static bool ext_attr_is_format_wikitext(const char *attr, size_t attr_len) {
+	if(!attr || attr_len == 0) return false;
+
+	size_t i= 0;
+	while(i < attr_len) {
+		while(i < attr_len && isspace((unsigned char)attr[i])) i++;
+		if(i >= attr_len) break;
+
+		size_t key_s= i;
+		while(i < attr_len && (isalnum((unsigned char)attr[i]) || attr[i] == '_' || attr[i] == '-')) i++;
+		size_t key_e= i;
+		if(key_e == key_s) {
+			i++;
+			continue;
+		}
+
+		bool is_format= (key_e - key_s == 6 && strncasecmp(attr + key_s, "format", 6) == 0);
+		while(i < attr_len && isspace((unsigned char)attr[i])) i++;
+		if(i >= attr_len || attr[i] != '=') {
+			continue;
+		}
+		i++;
+		while(i < attr_len && isspace((unsigned char)attr[i])) i++;
+
+		char q= '\0';
+		if(i < attr_len && (attr[i] == '\'' || attr[i] == '"')) {
+			q= attr[i++];
+		}
+
+		size_t v_s= i;
+		if(q) {
+			while(i < attr_len && attr[i] != q) i++;
+		} else {
+			while(i < attr_len && !isspace((unsigned char)attr[i]) && attr[i] != '>' && attr[i] != '/') i++;
+		}
+		size_t v_e= i;
+
+		if(is_format) {
+			while(v_s < v_e && isspace((unsigned char)attr[v_s])) v_s++;
+			while(v_e > v_s && isspace((unsigned char)attr[v_e - 1])) v_e--;
+			if(v_e - v_s == 8 && strncasecmp(attr + v_s, "wikitext", 8) == 0) {
+				return true;
+			}
+		}
+
+		if(q && i < attr_len && attr[i] == q) i++;
+	}
+
+	return false;
+}
+
+static Token *build_pre_noinclude_token(const char *substr, size_t sub_len, Accum *accum) {
+	Token *t= token_new(TOKEN_NOINCLUDE, "noinclude");
+	if(!t) return NULL;
+	if(sub_len > 0) {
+		const char *view= wiki_thread_buf_append_to_tokens(substr, sub_len);
+		token_append_text_n(t, view, sub_len);
+	} else {
+		token_append_text_n(t, "", 0);
+	}
+	accum_push(accum, t);
+	return t;
+}
+
+static bool find_ci_lit(const char *s, size_t len, size_t from,
+							 const char *lit, size_t lit_len, size_t *out_pos) {
+	if(!s || !lit || lit_len == 0 || from >= len) return false;
+	for(size_t i= from; i + lit_len <= len; i++) {
+		if(strncasecmp(s + i, lit, lit_len) == 0) {
+			if(out_pos) *out_pos= i;
+			return true;
+		}
+	}
+	return false;
+}
+
+static Token *build_pre_inner_token(const char *inner_str, size_t inner_len, Accum *accum) {
+	Token *t= token_new(TOKEN_EXT_INNER, "ext-inner");
+	if(!t) return NULL;
+	t->name= strdup("pre");
+	accum_push(accum, t);
+
+	if(!inner_str || inner_len == 0) {
+		token_append_text_n(t, "", 0);
+		return t;
+	}
+
+	ThreadBuf *out_tb= wiki_thread_buf_acquire_scratch();
+	if(!out_tb) {
+		log_fatal("thread_buffer: failed to acquire scratch in build_pre_inner_token");
+		abort();
+	}
+	wiki_thread_buf_reserve(out_tb, inner_len * 2 + 64);
+
+	const char *open_pat= "<nowiki>";
+	const char *close_pat= "</nowiki>";
+	const size_t open_len= 8;
+	const size_t close_len= 9;
+
+	size_t last_index= 0;
+	size_t search_from= 0;
+	size_t open_pos= 0;
+	while(find_ci_lit(inner_str, inner_len, search_from, open_pat, open_len, &open_pos)) {
+		size_t close_pos= 0;
+		if(!find_ci_lit(inner_str, inner_len, open_pos + open_len, close_pat, close_len, &close_pos)) {
+			break;
+		}
+
+		if(open_pos > last_index) {
+			wiki_thread_buf_append(out_tb, (sz_string_view_t){.start= inner_str + last_index, .length= open_pos - last_index});
+		}
+
+		Token *open_tok= build_pre_noinclude_token(inner_str + open_pos, open_len, accum);
+		Token *close_tok= build_pre_noinclude_token(inner_str + close_pos, close_len, accum);
+		if(open_tok && close_tok) {
+			size_t open_idx= accum->count - 2;
+			size_t close_idx= accum->count - 1;
+			char open_sent[64], close_sent[64];
+			size_t open_slen= 0, close_slen= 0;
+			work_str_sentinel(open_idx, 'n', open_sent, &open_slen);
+			work_str_sentinel(close_idx, 'n', close_sent, &close_slen);
+			wiki_thread_buf_append(out_tb, (sz_string_view_t){.start= open_sent, .length= open_slen});
+			if(close_pos > open_pos + open_len) {
+				wiki_thread_buf_append(out_tb, (sz_string_view_t){.start= inner_str + open_pos + open_len, .length= close_pos - (open_pos + open_len)});
+			}
+			wiki_thread_buf_append(out_tb, (sz_string_view_t){.start= close_sent, .length= close_slen});
+		} else {
+			/* Fallback: preserve raw text if token creation fails. */
+			wiki_thread_buf_append(out_tb, (sz_string_view_t){.start= inner_str + open_pos, .length= (close_pos + close_len) - open_pos});
+		}
+
+		last_index= close_pos + close_len;
+		search_from= last_index;
+	}
+
+	if(last_index < inner_len) {
+		wiki_thread_buf_append(out_tb, (sz_string_view_t){.start= inner_str + last_index, .length= inner_len - last_index});
+	}
+
+	if(out_tb->len > 0) {
+		const char *view= wiki_thread_buf_append_to_tokens(out_tb->buf, out_tb->len);
+		token_append_text_n(t, view, out_tb->len);
+	} else {
+		token_append_text_n(t, "", 0);
+	}
+
+	wiki_thread_buf_release_scratch(out_tb);
+	return t;
+}
+
 static Token *build_ext_inner(const char *tag_name,
 															const char *inner_str, size_t inner_len,
 															bool self_closing,
@@ -1295,6 +1446,8 @@ static Token *build_ext_token(const char *name, size_t name_len,
 	Token *inner_tok= NULL;
 	if(strcmp(lcname, "references") == 0 && !self_closing) {
 		inner_tok= build_references_inner_token(inner, inner_len, cfg, accum);
+	} else if(strcmp(lcname, "pre") == 0 && !self_closing && !ext_attr_is_format_wikitext(attr, attr_len)) {
+		inner_tok= build_pre_inner_token(inner, inner_len, accum);
 	} else if(strcmp(lcname, "gallery") == 0 && !self_closing) {
 		inner_tok= build_gallery_inner_token(inner, inner_len, cfg, accum);
 	} else if(strcmp(lcname, "imagemap") == 0 && !self_closing) {

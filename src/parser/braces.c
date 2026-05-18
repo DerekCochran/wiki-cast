@@ -197,15 +197,6 @@ brace_event_next(const char *buf, size_t len, size_t *pos,
 				*pos= p + 2;
 				return true;
 			}
-			if(p + 1 < len && buf[p + 1] == '}') {
-				if(kind_out) *kind_out= BRACE_EVT_CONVERTER_CLOSE;
-				if(match_len_out) *match_len_out= 2;
-				if(brace_count_out) *brace_count_out= 0;
-				if(equals_count_out) *equals_count_out= 0;
-				if(sentinel_len_out) *sentinel_len_out= 0;
-				*pos= p + 2;
-				return true;
-			}
 			i= p + 1;
 			continue;
 		}
@@ -294,6 +285,15 @@ brace_event_next(const char *buf, size_t len, size_t *pos,
 			return true;
 		}
 		if(ch == '}') {
+			if(p + 1 < len && buf[p + 1] == '-') {
+				if(kind_out) *kind_out= BRACE_EVT_CONVERTER_CLOSE;
+				if(match_len_out) *match_len_out= 2;
+				if(brace_count_out) *brace_count_out= 0;
+				if(equals_count_out) *equals_count_out= 0;
+				if(sentinel_len_out) *sentinel_len_out= 0;
+				*pos= p + 2;
+				return true;
+			}
 			size_t cnt= 0;
 			while(p + cnt < len && buf[p + cnt] == '}') cnt++;
 			if(cnt >= 2) {
@@ -1200,8 +1200,6 @@ static bool braces_state_machine(ThreadBuf *tb, const ParserConfig *cfg,
 	char *out= malloc(out_cap);
 	assert(out);
 	size_t out_len= 0;
-	bool has_last_index= false;
-	//size_t last_index= 0;
 
 #define ENSURE_OUT_CAP(need)               \
 	do {                                    \
@@ -1221,7 +1219,18 @@ static bool braces_state_machine(ThreadBuf *tb, const ParserConfig *cfg,
 										&evkind, &match_len, &brace_count,
 										&equals_count, &sentinel_len);
 
-		if(!matched && (!has_last_index || stack_len == 0 || stack[stack_len - 1].open[0] != '=')) {
+		/* JS parity: heading frames can close at EOF without a trailing newline. */
+		if(!matched && stack_len > 0 && stack[stack_len - 1].open_len == 1 && stack[stack_len - 1].open[0] == '=') {
+			matched= true;
+			evkind= BRACE_EVT_NEWLINE;
+			event_pos= tb->len;
+			match_len= 0;
+			brace_count= 0;
+			equals_count= 0;
+			sentinel_len= 0;
+		}
+
+		if(!matched) {
 			break;
 		}
 
@@ -1261,14 +1270,12 @@ static bool braces_state_machine(ThreadBuf *tb, const ParserConfig *cfg,
 		}
 
 		if(matched && evkind == BRACE_EVT_WIKILINK_CLOSE) {
-			has_last_index = true;
 			/* ]] closes a [[ link frame; preserve any non-link frame below it */
 			if(has_top && !(top.open_len >= 1 && top.open[0] == '[')) {
 				stack[stack_len++]= top;
 				top_requeued= true;
 			}
 		} else if(matched && evkind == BRACE_EVT_CONVERTER_CLOSE) {
-			has_last_index = true;
 			/* }- closes a -{ converter frame; preserve any non-converter frame below it */
 			if(has_top && !(top.open_len >= 1 && top.open[0] == '-')) {
 				stack[stack_len++]= top;
@@ -1373,7 +1380,7 @@ static bool braces_state_machine(ThreadBuf *tb, const ParserConfig *cfg,
 						;
 					}
 					size_t close_len= brace_count;
-					bool is_arg_close= (close_len == 3);
+					bool is_arg_close= (top.open_len == 3 && close_len >= 3);
 					size_t rest= top.open_len > close_len ? top.open_len - close_len : 0;
 					char *inner= NULL;
 					size_t inner_len= 0;
@@ -1437,6 +1444,19 @@ static bool braces_state_machine(ThreadBuf *tb, const ParserConfig *cfg,
 								stack[++stack_len - 1]= child;
 							}
 						}
+					} else {
+						/* Invalid {{...}} (e.g. empty template name): keep raw text and
+						 * only consume as many closing braces as this frame owns so
+						 * adjacent outer closes are still available to parse. */
+						size_t close_consume= top.open_len < close_len ? top.open_len : close_len;
+						size_t rep_end= cur_index + close_consume;
+						if(rep_end > next_write) {
+							ENSURE_OUT_CAP(rep_end - next_write);
+							memcpy(out + out_len, tb->buf + next_write, rep_end - next_write);
+							out_len+= rep_end - next_write;
+						}
+						next_write= rep_end;
+						syntax_end= rep_end;
 					}
 					free(inner);
 					top_consumed= true;
