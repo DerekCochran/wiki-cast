@@ -1102,6 +1102,13 @@ static Token *parse_gallery_image_line_local(const char *line, size_t line_len,
 			if(!new_name) continue;
 			free(param->name);
 			param->name= new_name;
+			free(param->data.image_param.raw_syntax);
+			param->data.image_param.raw_syntax= malloc(p + 8);
+			if(param->data.image_param.raw_syntax) {
+				if(p > 0) memcpy(param->data.image_param.raw_syntax, first->text, p);
+				memcpy(param->data.image_param.raw_syntax + p, "link=$1", 7);
+				param->data.image_param.raw_syntax[p + 7]= '\0';
+			}
 
 			size_t prefix_len= p + 5;
 			size_t new_len= first->text_len - prefix_len;

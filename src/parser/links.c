@@ -564,18 +564,6 @@ static bool img_param_validate(const char *name, const char *val_ptr, size_t val
 	bool has_non_magic_sentinel= false;
 	if(is_link) {
 		img_scan_link_sentinels(val_ptr, val_len, true, &has_magic_sentinel, &has_non_magic_sentinel);
-		char hexbuf[256];
-		size_t hp= 0;
-		size_t look= val_len > 48 ? 48 : val_len;
-		for(size_t i= 0; i < look && hp + 4 < sizeof(hexbuf); i++) {
-			int wn= snprintf(hexbuf + hp, sizeof(hexbuf) - hp, "%02X", (unsigned char)val_ptr[i]);
-			if(wn > 0) hp+= (size_t)wn;
-			if(i + 1 < look && hp + 1 < sizeof(hexbuf)) hexbuf[hp++]= ' ';
-		}
-		hexbuf[hp]= '\0';
-		log_debug_env_token("DEBUG_LINK_VALIDATE", NULL,
-			"[img_link_validate] val_len=%zu has_magic=%d has_non_magic=%d raw_hex=%s",
-			val_len, (int)has_magic_sentinel, (int)has_non_magic_sentinel, hexbuf);
 	}
 
 	bool result;
@@ -668,11 +656,6 @@ static bool img_param_validate(const char *name, const char *val_ptr, size_t val
 		} else {
 			result= false;
 		}
-	}
-	if(is_link) {
-		log_debug_env_token("DEBUG_LINK_VALIDATE", NULL,
-			"[img_link_result] tok_type=%s result=%d value='%s'",
-			tok_type ? tok_type : "(null)", (int)result, value ? value : "(null)");
 	}
 	free(tmp);
 	return result;
@@ -1119,7 +1102,7 @@ void parse_links(ThreadBuf *tb, const ParserConfig *cfg, Accum *accum,
 			const char *img_after= NULL;
 			size_t img_after_l= 0;
 
-			size_t j;
+			size_t j= bi;
 			for(j= bi + 1; j <= bb_count; j++) {
 				const char *next_x= bits[j].ptr;
 				size_t next_xlen= bits[j].len;
@@ -1190,6 +1173,11 @@ void parse_links(ThreadBuf *tb, const ParserConfig *cfg, Accum *accum,
 
 			/* JS: if (!found) { s += "[[" + link + delimiter + text; continue; } */
 			if(!found_close) {
+				/* JS parity: the inner scan has already consumed bits[bi+1..j].
+				 * Advance bi so the outer loop does not process them again. */
+				size_t consumed_last= (j <= bb_count) ? j : bb_count;
+				bi= consumed_last;
+
 				ENSURE_OUT(2 + link_len + delim_len + img_len + 1);
 				out[out_len++]= '[';
 				out[out_len++]= '[';
