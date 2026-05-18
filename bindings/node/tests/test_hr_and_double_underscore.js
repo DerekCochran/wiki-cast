@@ -34,6 +34,10 @@ runTests([
   // HR inside a table is still valid
   '{|\n|-\n| before\n----\nafter\n|}',
 
+  // Heading trail must be a text node, not a bare string
+  '== Before ==\n\n',
+  '== Before ==\n\n----\n\n== After ==',
+
   // BEGIN: auto-generated parity sweep (hr_and_double_underscore)
   "== RFC 2119 ==",
   "== https://example.org/a ==",

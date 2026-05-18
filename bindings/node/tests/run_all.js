@@ -5,11 +5,11 @@ const { spawnSync } = require('child_process');
 const path = require('path');
 
 const tests = [
+  'test_hr_and_double_underscore.js',
   'test_braces.js',
   'test_comment_and_ext.js',
   'test_converter.js',
   'test_external_links.js',
-  'test_hr_and_double_underscore.js',
   'test_html.js',
   'test_image_ns.js',
   'test_links.js',

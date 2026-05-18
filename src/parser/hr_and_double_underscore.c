@@ -382,6 +382,9 @@ void parse_hr_and_double_underscore(ThreadBuf *tb, const ParserConfig *cfg, Accu
 				size_t h_inner_len = (text_e > text_s) ? (text_e - text_s) : 0;
 				const char *h_trail = (trail_e > trail_s) ? (buf2 + trail_s) : "";
 				size_t h_trail_len = (trail_e > trail_s) ? (trail_e - trail_s) : 0;
+				bool has_line_nl = (line_end < buf2_len);
+				bool absorb_line_nl = has_line_nl && root_type == TOKEN_ROOT && (line_end + 1 >= buf2_len || buf2[line_end + 1] == '\n');
+				bool consumed_line_nl_in_trail = false;
 
 				Token *t = token_new(TOKEN_HEADING, "heading");
 				if(t) {
@@ -400,9 +403,28 @@ void parse_hr_and_double_underscore(ThreadBuf *tb, const ParserConfig *cfg, Accu
 
 					Token *trail_tok = token_new(TOKEN_SYNTAX, "heading-trail");
 					if(trail_tok) {
-						if(h_trail_len > 0) {
-							const char *trail_view = wiki_thread_buf_append_to_tokens(h_trail, h_trail_len);
-							if(trail_view) token_append_text_n(trail_tok, trail_view, h_trail_len);
+						size_t trail_total_len = h_trail_len + (absorb_line_nl ? 1 : 0);
+						if(trail_total_len > 0) {
+							if(h_trail_len > 0 && absorb_line_nl) {
+								ThreadBuf *tmp_trail = wiki_thread_buf_acquire_scratch();
+								if(!tmp_trail) { log_fatal("thread_buffer: failed to acquire scratch in heading trail build"); abort(); }
+								tmp_trail->len = 0;
+								wiki_thread_buf_append(tmp_trail, (sz_string_view_t){ .start = h_trail, .length = h_trail_len });
+								wiki_thread_buf_putc(tmp_trail, '\n');
+								const char *trail_view = wiki_thread_buf_append_to_tokens(tmp_trail->buf, tmp_trail->len);
+								if(trail_view) token_append_text_n(trail_tok, trail_view, tmp_trail->len);
+								else token_append_text_n(trail_tok, "", 0);
+								wiki_thread_buf_release_scratch(tmp_trail);
+							} else if(h_trail_len > 0) {
+								const char *trail_view = wiki_thread_buf_append_to_tokens(h_trail, h_trail_len);
+								if(trail_view) token_append_text_n(trail_tok, trail_view, h_trail_len);
+								else token_append_text_n(trail_tok, "", 0);
+							} else {
+								const char *nl_view = wiki_thread_buf_append_to_tokens("\n", 1);
+								if(nl_view) token_append_text_n(trail_tok, nl_view, 1);
+								else token_append_text_n(trail_tok, "\n", 1);
+							}
+							if(absorb_line_nl) consumed_line_nl_in_trail = true;
 						} else {
 							token_append_text_n(trail_tok, "", 0);
 						}
@@ -422,8 +444,8 @@ void parse_hr_and_double_underscore(ThreadBuf *tb, const ParserConfig *cfg, Accu
 					out2_len += line_len;
 				}
 
-				/* 4. Emit the '\n' that terminated this line */
-				if(line_end < buf2_len) {
+				/* 4. Emit the '\n' that terminated this line when not consumed into heading-trail */
+				if(line_end < buf2_len && !consumed_line_nl_in_trail) {
 					GROW_OUT2(1);
 					out2[out2_len++] = '\n';
 				}

@@ -372,11 +372,18 @@ static bool link_parse(const char *buf, size_t len, bool require_nonempty_target
 				}
 			}
 		} else {
-			/* stopped on a forbidden literal like ']' or '{' etc. — no delimiter */
-			out->has_delim = false;
+			/* Non-delimiter stop byte before close means regex mismatch (JS parity). */
+			out->found_close = false;
+			return false;
 		}
 	} else {
 		out->has_delim = false;
+	}
+
+	/* JS regex parity: when no delimiter is present, target must run right up to "]]". */
+	if(!out->has_delim && i < inner_len) {
+		out->found_close = false;
+		return false;
 	}
 
 	/* 4) after = buf[close_pos + 2 .. len) */
@@ -392,6 +399,16 @@ static bool link_parse(const char *buf, size_t len, bool require_nonempty_target
 	if(require_nonempty_target && out->target_len == 0) {
 		out->found_close = false;
 		return false;
+	}
+
+	/* JS inExt regex parity:
+	 * /^((...)+)(?:(\||\0\d+!\x7F)([\s\S]*?[^\]]))?\]\]/
+	 * If delimiter exists in inExt mode, text must be non-empty and not end with ']'. */
+	if(require_nonempty_target && out->has_delim) {
+		if(!out->text || out->text_len == 0 || out->text[out->text_len - 1] == ']') {
+			out->found_close = false;
+			return false;
+		}
 	}
 
 	return true;

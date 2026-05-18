@@ -336,7 +336,6 @@ function runTests(samples, opts = {}) {
   // These are specific for debugging if a env is set
   process.env.DEBUG_PARAM_VALUES = 'true';
 
-
   const include = Boolean(opts && opts.include);
   const tidy = Boolean(opts && opts.tidy);
   const suiteName = resolveSuiteName(opts);
@@ -357,8 +356,7 @@ function runTests(samples, opts = {}) {
   const total = samples.length;
   console.log(`SUMMARY [${suiteName}] passed=${passed} failed=${failed} total=${total}`);
    if (failed > 0) {
-    return false;
-//     process.exit(2);
+    process.exit(2);
    }
 
   return true;

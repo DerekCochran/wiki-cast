@@ -36,6 +36,7 @@ bool str_ci_eq_n(const char *a, const char *b, size_t n) {
 			if (s_tolower_lut[(unsigned char)a[i]] != s_tolower_lut[(unsigned char)b[i]])
 				return false;
 		}
+		return true;
 	}
 
 	/* For larger strings, use scratch buffer with sz_equal */
@@ -52,7 +53,7 @@ bool str_ci_eq_n(const char *a, const char *b, size_t n) {
 	wiki_thread_buf_reserve(tb, n * 2);
 	sz_lookup(tb->buf, n, a, (const char *)s_tolower_lut);
 	sz_lookup(tb->buf + n, n, b, (const char *)s_tolower_lut);
-	bool result = (sz_equal(tb->buf, tb->buf + n, n) == 0);
+	bool result = (sz_equal(tb->buf, tb->buf + n, n) == sz_true_k);
 	wiki_thread_buf_release_scratch(tb);
 	return result;
 }

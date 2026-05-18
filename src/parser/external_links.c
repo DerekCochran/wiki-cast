@@ -236,6 +236,28 @@ static void ext_cb(const char *seg, size_t len, ParserSegmentKind kind, void *ud
         return;
     }
 
+    /* JS parity: split URL at first &lt; / &gt; entity and move suffix into text. */
+    ThreadBuf *entity_text = NULL;
+    for(size_t i = 0; i + 3 < ulen; i++) {
+        if(url[i] != '&') continue;
+        bool is_lt = (url[i + 1] == 'l' && url[i + 2] == 't' && url[i + 3] == ';');
+        bool is_gt = (url[i + 1] == 'g' && url[i + 2] == 't' && url[i + 3] == ';');
+        if(!is_lt && !is_gt) continue;
+
+        entity_text = wiki_thread_buf_acquire_scratch();
+        if(!entity_text) { log_fatal("thread_buffer: failed to acquire scratch in ext_cb"); abort(); }
+        entity_text->len = 0;
+        wiki_thread_buf_append(entity_text, (sz_string_view_t){ .start = url + i, .length = ulen - i });
+        if(tlen > 0) wiki_thread_buf_append(entity_text, (sz_string_view_t){ .start = txt, .length = tlen });
+
+        ulen = i;
+        sp = "";
+        splen = 0;
+        txt = entity_text->buf;
+        tlen = entity_text->len;
+        break;
+    }
+
     /* reuse existing build_magic_link_token/build_ext_link_token logic exactly */
     size_t before = c->accum->count;
     Token *url_tok = NULL;
@@ -249,6 +271,7 @@ static void ext_cb(const char *seg, size_t len, ParserSegmentKind kind, void *ud
         wiki_thread_buf_append(c->out, (sz_string_view_t){ .start = "[", .length = 1 });
         wiki_thread_buf_append(c->out, (sz_string_view_t){ .start = seg, .length = len });
         wiki_thread_buf_append(c->out, (sz_string_view_t){ .start = "]", .length = 1 });
+        if(entity_text) wiki_thread_buf_release_scratch(entity_text);
         return;
     }
 
@@ -272,6 +295,8 @@ static void ext_cb(const char *seg, size_t len, ParserSegmentKind kind, void *ud
         work_str_sentinel(c->accum->count - 1, 'w', sent, &slen);
         wiki_thread_buf_append(c->out, (sz_string_view_t){ .start = sent, .length = slen });
     }
+
+    if(entity_text) wiki_thread_buf_release_scratch(entity_text);
 }
 
 void parse_external_links(ThreadBuf *tb, const ParserConfig *cfg,
