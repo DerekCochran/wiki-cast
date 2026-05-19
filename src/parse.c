@@ -1010,48 +1010,43 @@ static void run_nested_plain_pipeline(ThreadBuf *scratch,
 
 	if(is_td_inner || is_ext_inner) {
 		bool is_poem_ext_inner= is_ext_inner && t && t->name && strcmp(t->name, "poem") == 0;
-		bool ext_inner_has_bang= is_ext_inner && sz_find(scratch->buf, scratch->len, "!\x7F", 2) != NULL;
 		bool ext_inner_has_sentinel = false;
 		if (is_ext_inner) {
 			const char _zn_run = '\0';
 			ext_inner_has_sentinel = sz_find_byte(scratch->buf, scratch->len, &_zn_run) != NULL;
 		}
 
-		if(!ext_inner_has_bang) {
-			/* JS parity: td-inner parsing starts from stage 4, so HTML (stage 2)
-             * must not run before links; otherwise links spanning inline HTML split. */
-			if(is_ext_inner) {
-				parse_html(scratch, cfg, accum);
-			}
-			TokenType hr_root_type= t->type;
-			if(ext_inner_has_sentinel) {
-				hr_root_type= TOKEN_PLAIN;
-			}
-			parse_hr_and_double_underscore(scratch, cfg, accum, hr_root_type, t->type_name);
-			const ParserConfig *links_cfg= cfg;
-			ParserConfig cfg_local;
-			if(is_ext_inner && cfg) {
-				cfg_local= *cfg;
-				cfg_local.in_ext= true;
-				links_cfg= &cfg_local;
-			}
-			parse_links(scratch, links_cfg, accum, page, false);
-			parse_quotes_stage6_per_line(scratch, cfg, accum);
-			parse_external_links(scratch, cfg, accum, false);
-			parse_magic_links(scratch, cfg, accum);
-			if(is_td_inner) {
-				parse_list_skip_first_line(scratch, cfg, accum);
-			} else if(is_ext_inner) {
-				if(is_poem_ext_inner) {
-					parse_list(scratch, cfg, accum);
-				} else {
-					parse_list_skip_first_line(scratch, cfg, accum);
-				}
-			}
-			parse_converter(scratch, cfg, accum);
-		} else {
+		/* JS parity: td-inner parsing starts from stage 4, so HTML (stage 2)
+         * must not run before links; otherwise links spanning inline HTML split. */
+		if(is_ext_inner) {
 			parse_html(scratch, cfg, accum);
 		}
+		TokenType hr_root_type= t->type;
+		if(ext_inner_has_sentinel) {
+			hr_root_type= TOKEN_PLAIN;
+		}
+		parse_hr_and_double_underscore(scratch, cfg, accum, hr_root_type, t->type_name);
+		const ParserConfig *links_cfg= cfg;
+		ParserConfig cfg_local;
+		if(is_ext_inner && cfg) {
+			cfg_local= *cfg;
+			cfg_local.in_ext= true;
+			links_cfg= &cfg_local;
+		}
+		parse_links(scratch, links_cfg, accum, page, false);
+		parse_quotes_stage6_per_line(scratch, cfg, accum);
+		parse_external_links(scratch, cfg, accum, false);
+		parse_magic_links(scratch, cfg, accum);
+		if(is_td_inner) {
+			parse_list_skip_first_line(scratch, cfg, accum);
+		} else if(is_ext_inner) {
+			if(is_poem_ext_inner) {
+				parse_list(scratch, cfg, accum);
+			} else {
+				parse_list_skip_first_line(scratch, cfg, accum);
+			}
+		}
+		parse_converter(scratch, cfg, accum);
 	} else if(is_heading_title) {
 		parse_html(scratch, cfg, accum);
 		parse_links(scratch, cfg, accum, page, false);
