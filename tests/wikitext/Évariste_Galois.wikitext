@@ -1,0 +1,370 @@
+{{Short description|French mathematician (1811–1832)}}
+{{Redirect|Galois||Gallois (disambiguation)}}
+{{Use dmy dates|date=October 2024}}
+{{Infobox scientist
+| name              = Évariste Galois
+| image             = Evariste galois.jpg
+| caption           = A portrait of Évariste Galois aged about 15
+| birth_name        = Évariste Galois
+| birth_date        = {{Birth date|1811|10|25|df=y}}
+| birth_place       = [[Bourg-la-Reine]], [[First French Empire|French Empire]]
+| death_date        = {{death date and age|1832|5|31|1811|10|25|df=y}}
+| death_place       = [[Paris]], [[July Monarchy|Kingdom of France]]
+| death_cause       = [[Gunshot wound]] to the abdomen
+| field             = Mathematics
+| work_institutions =
+| alma_mater        = [[École Normale Supérieure|École préparatoire]]<br/>(no degree)
+| academic_advisors = 
+| doctoral_advisor  = <!--no doctorate-->
+| doctoral_students = <!--no doctorate-->
+| known_for         = Work on [[theory of equations]], [[group theory]] and [[Galois theory]]
+| signature         = Galois-Signature.svg 
+}}
+
+'''Évariste Galois''' ({{IPAc-en|g|æ|l|ˈ|w|ɑː}};<ref>[http://www.dictionary.com/browse/galois-theory "Galois theory"]. ''[[Random House Webster's Unabridged Dictionary]]''.</ref> {{IPA|fr|evaʁist ɡalwa|lang}}; 25 October 1811&nbsp;– 31 May 1832) was a French [[mathematician]] and political activist. While still in his teens, he was able to determine a [[necessary and sufficient condition]] for a [[polynomial]] to be solvable by [[Nth root|radicals]], thereby solving a problem that had been open for 350 years. His work laid the foundations for [[Galois theory]] and [[group theory]],<ref name=":0">{{Cite book|title=Math and mathematicians : the history of math discoveries around the world|last=Bruno|first=Leonard C.|editor-last=Baker | editor-first=Lawrence W.|orig-year=1999|date=c. 2003|publisher=U X L|isbn=978-0787638139|location=Detroit, Mich.|page=[https://archive.org/details/mathmathematicia00brun/page/171 171]|oclc=41497065|url=https://archive.org/details/mathmathematicia00brun|url-access=registration}}</ref> two major branches of [[abstract algebra]].
+
+Galois was a staunch [[French Republicans under the Restoration|Republican]] and was heavily involved in the political turmoil that surrounded the [[French Revolution of 1830]].  As a result of his political activism, he was arrested repeatedly, serving one jail sentence of several months. For reasons that remain obscure, shortly after his release from prison, Galois fought in a [[duel]] and died of the wounds he suffered.<ref>{{Cite book|title=Math and mathematicians : the history of math discoveries around the world|last=Bruno|first=Leonard C.|editor-last=Baker | editor-first=Lawrence W.|orig-year=1999|year=2003|publisher=U X L|isbn=978-0787638139|location=Detroit, Mich.|pages=[https://archive.org/details/mathmathematicia00brun/page/171 171], 174|oclc=41497065|url=https://archive.org/details/mathmathematicia00brun|url-access=registration}}</ref>
+
+== Life ==
+
+=== Early life ===
+Galois was born on 25 October 1811 to Nicolas-Gabriel Galois and Adélaïde-Marie (née Demante).<ref name=":0" /><ref name="stewart-gt">{{cite book
+  | last = Stewart
+  | first = Ian
+  | title = Galois Theory
+  | url = https://archive.org/details/galoistheory0000stew/page/
+  | url-access = registration
+  | publisher = Chapman and Hall
+  | location = London
+  | year = 1973
+  | pages = [https://archive.org/details/galoistheory0000stew/page/ xvii–xxii]
+  | isbn = 978-0-412-10800-6
+  }}</ref> His father was a [[First French Republic|Republican]] and was head of Bourg-la-Reine's [[liberal party]]. His father became mayor of the village<ref name=":0" /> after [[Louis XVIII]] returned to the throne in 1814. His mother, the daughter of a [[jurist]], was a fluent reader of [[Latin]] and [[classical literature]] and was responsible for her son's education for his first twelve years.
+
+[[File:Louis-le-Grand--cour-honneur.jpg|thumb|right|The Cour d'honneur of the [[Lycée Louis-le-Grand]], which Galois attended as a boy.]]
+In October 1823, he entered the [[Lycée Louis-le-Grand]] where his teacher [[Louis Paul Émile Richard]] recognized his brilliance.<ref name=":1">{{Cite book|last=Bruno|first=Leonard C.|editor-last=Baker | editor-first=Lawrence W.|title=Math and mathematicians : the history of math discoveries around the world|orig-year=1999|year=2003|publisher=U X L|isbn=978-0787638139|location=Detroit, Mich.|page=[https://archive.org/details/mathmathematicia00brun/page/172 172]|oclc=41497065|url=https://archive.org/details/mathmathematicia00brun|url-access=registration}}</ref> At the age of 14, he began to take a serious interest in [[mathematics]].<ref name=":1" />
+
+Galois found a copy of [[Adrien-Marie Legendre]]'s ''[[Éléments de Géométrie]]'', which, it is said, he read "like a novel" and mastered at the first reading. At 15, he was reading the original papers of [[Joseph-Louis Lagrange]], such as the ''[[Réflexions sur la résolution algébrique des équations]]'' which likely motivated his later work on equation theory,<ref>{{cite web |title=Réflexions sur la résolution algébrique des équations |url=https://www.britannica.com/topic/Reflexions-sur-la-resolution-algebrique-des-equations |website=britannica encyclopedia}}</ref> and ''Leçons sur le calcul des fonctions'', work intended for professional mathematicians, yet his classwork remained uninspired and his teachers accused him of putting on the airs of a genius.<ref name="stewart-gt"/>
+
+=== Budding mathematician ===
+In 1828, Galois attempted the entrance examination for the [[École Polytechnique]], the most prestigious institution for mathematics in France at the time, without the usual preparation in mathematics, and failed for lack of explanations on the oral examination. In that same year, he entered the [[École Normale]] (then known as l'École préparatoire), a far inferior institution for mathematical studies at that time, where he found some professors sympathetic to him.<ref>{{Cite book |last=Galois |first=Évariste |author-link=Évariste Galois |title=The Mathematical Writings of Évariste Galois |date=2011 |publisher=[[European Mathematical Society]] |isbn=9783037191040 |editor-last=Neumann |editor-first=Peter M. |editor-link=Peter M. Neumann |pages=2}}</ref>
+
+[[File:Augustin Cauchy.jpg|thumb|right|[[Augustin-Louis Cauchy]] reviewed Galois's early mathematical papers.]]
+In the following year Galois's first paper, on [[simple continued fraction]]s,<ref name="continuedfraction">{{cite journal
+ | last = Galois
+ | first = Évariste
+ | year = 1828
+ | title = Démonstration d'un théorème sur les fractions continues périodiques
+ | url= http://www.numdam.org/item?id=AMPA_1828-1829__19__294_0
+ | journal = Annales de Mathématiques
+ | volume = XIX
+ | page = 294}}</ref> 
+was published. It was at around the same time that he began making fundamental discoveries in the theory of [[polynomial equation]]s. He submitted two papers on this topic to the [[French Academy of Sciences|Academy of Sciences]]. [[Augustin-Louis Cauchy]] refereed these papers, but refused to accept them for publication for reasons that still remain unclear. However, in spite of many claims to the contrary, it is widely held that Cauchy recognized the importance of Galois's work, and that he merely suggested combining the two papers into one in order to enter it in the competition for the academy's Grand Prize in Mathematics. Cauchy, an eminent mathematician of the time though with political views that were diametrically opposed to those of Galois, considered Galois's work to be a likely winner.<ref name="rothman">{{cite journal
+ | last = Rothman
+ | first = Tony
+ | title = Genius and Biographers: The Fictionalization of Evariste Galois
+ | journal =  The American Mathematical Monthly
+ | volume =89
+ | issue = 2
+ | year = 1982
+ | pages=84–106
+ | url = http://www.maa.org/programs/maa-awards/writing-awards/genius-and-biographers-the-fictionalization-of-evariste-galois
+ | access-date = 31 January 2015
+| doi=10.2307/2320923| jstor = 2320923
+ }}</ref>
+
+On 28 July 1829, Galois's father died by suicide after a bitter political dispute with the village priest.<ref name=":2">{{Cite book|title=Math and mathematicians : the history of math discoveries around the world|last=Bruno|first=Leonard C.|editor-last=Baker | editor-first=Lawrence W.|orig-year=1999|year=2003|publisher=U X L|isbn=978-0787638139|location=Detroit, Mich.|page=[https://archive.org/details/mathmathematicia00brun/page/173 173]|oclc=41497065|url=https://archive.org/details/mathmathematicia00brun|url-access=registration}}</ref> A couple of days later, Galois made his second and last attempt to enter the Polytechnique and failed yet again.<ref name=":2" /> It is undisputed that Galois was more than qualified; accounts differ on why he failed. More plausible accounts state that Galois made too many logical leaps and baffled the incompetent examiner, which enraged Galois. The recent death of his father may have also influenced his behavior.<ref name="stewart-gt" />
+
+Having been denied admission to the [[École Polytechnique|École polytechnique]], Galois took the Baccalaureate examinations in order to enter the [[École normale supérieure (Paris)|École normale]].<ref name=":2" /> He passed, receiving his degree on 29 December 1829.<ref name=":2" /> His examiner in mathematics reported, "This pupil is sometimes obscure in expressing his ideas, but he is intelligent and shows a remarkable spirit of research."
+
+Galois submitted his memoir on equation theory several times, but it was never published in his lifetime. Though his first attempt was refused by Cauchy, in February 1830 following Cauchy's suggestion he submitted it to the academy's secretary [[Joseph Fourier]],<ref name=":2" /> to be considered for the Grand Prix of the academy. Unfortunately, Fourier died soon after,<ref name=":2" /> and the memoir was lost.<ref name=":2" /> The prize would be awarded that year to [[Niels Henrik Abel]] posthumously and also to [[Carl Gustav Jacob Jacobi]]. Despite the lost memoir, Galois published three papers that year.  One laid the foundations for [[Galois theory]].<ref>{{cite journal
+ | last = Galois
+ | first = Évariste
+ | year = 1830
+ | title = Analyse d'un Mémoire sur la résolution algébrique des équations
+ | journal = Bulletin des Sciences Mathématiques
+ | volume = XIII
+ | page = 271}}</ref> The second was about the numerical resolution of equations ([[root finding]] in modern terminology).<ref>{{cite journal
+ | last = Galois
+ | first = Évariste
+ | year = 1830
+ | title = Note sur la résolution des équations numériques
+ | journal = Bulletin des Sciences Mathématiques
+ | volume = XIII
+ | page = 413}}</ref> The third was an important one in [[number theory]], in which the concept of a [[finite field]] was first articulated.<ref name="numtheory">{{cite journal
+ | last = Galois
+ | first = Évariste
+ | year = 1830
+ | title = Sur la théorie des nombres
+ | journal = Bulletin des Sciences Mathématiques
+ | volume = XIII
+ | page = 428}}</ref>
+
+=== Political firebrand ===
+
+[[File:Révolution de 1830 - Combat devant l'hôtel de ville - 28.07.1830.jpg|thumb|right|''Battle for the Town Hall'' by [[Jean-Victor Schnetz]]. Galois, as a staunch republican, would have wanted to participate in the [[July Revolution]] of 1830 but was prevented by the director of the École Normale.]]
+Galois lived during a time of political turmoil in France. [[Charles X of France|Charles X]] had succeeded [[Louis XVIII]] in 1824, but in 1827 [[Ultra-royalist|his faction]] suffered a [[1827 French legislative election|major electoral setback]] and by 1830 the [[Doctrinaires|opposition liberal party]] [[1830 French legislative election|became the majority]]. Charles, faced with political opposition from the chambers, staged a coup d'état, and issued his notorious [[July Ordinances]], touching off the [[July Revolution]]<ref name=":2" /> which ended with [[Louis Philippe I]] becoming king. While their counterparts at the [[École Polytechnique|Polytechnique]] were making history in the streets, Galois, at the [[École Normale]], was locked in by the school's director. Galois was incensed and wrote a blistering letter criticizing the director, which he submitted to the ''Gazette des Écoles'', signing the letter with his full name. Although the ''Gazette''{{'}}s editor omitted the signature for publication, Galois was expelled.<ref name="dupuy">{{cite journal
+  | last = Dupuy
+  | first = Paul
+  | title = La vie d'Évariste Galois
+  | journal = Annales Scientifiques de l'École Normale Supérieure
+  | volume = 13
+  | pages = 197–266
+  | url=https://fr.wikisource.org/wiki/Livre:Dupuy_-_La_vie_d'%C3%89variste_Galois.djvu
+  | year= 1896
+| doi = 10.24033/asens.427
+ | doi-access = free
+  }}</ref>
+
+Although his expulsion would have formally taken effect on 4 January 1831, Galois quit school immediately and joined the staunchly Republican artillery unit of the [[National Guard (France)|National Guard]]. He divided his time between his mathematical work and his political affiliations. Due to controversy surrounding the unit, soon after Galois became a member, on 31 December 1830, the artillery of the National Guard was disbanded out of fear that they might destabilize the government. At around the same time, nineteen officers of Galois's former unit were arrested and charged with conspiracy to overthrow the government.
+
+In April 1831, the officers were acquitted of all charges, and on 9 May 1831, a banquet was held in their honor, with many illustrious people present, such as [[Alexandre Dumas, père|Alexandre Dumas]]. The proceedings grew riotous. At some point, Galois stood and proposed a [[Toast (honor)|toast]] in which he said, "To [[Louis Philippe I|Louis Philippe]]," with a [[dagger]] above his cup. The republicans at the banquet interpreted Galois's toast as a threat against the king's life and cheered. He was arrested the following day at his mother's house and held in detention at [[Sainte-Pélagie Prison|Sainte-Pélagie prison]] until 15 June 1831, when he had his trial.<ref name="rothman" /> Galois's defense lawyer cleverly claimed that Galois actually said, "To Louis-Philippe, ''if he betrays''," but that the qualifier was drowned out in the cheers. The prosecutor asked a few more questions, and perhaps influenced by Galois's youth, the jury acquitted him that same day.<ref name="rothman" /><ref name=":2" /><ref name="dupuy" /><ref name="dumas">{{cite book
+  | last = Dumas (père)
+  | first = Alexandre
+  | title = Mes Mémoires
+  | isbn = 978-1-4371-5595-2
+  | chapter = CCIV
+  | date = October 2008
+ | publisher = Kessinger
+ | chapter-url = http://www.dumaspere.com/pages/bibliotheque/chapitre.php?lid=m3&cid=204
+  | access-date = 13 April 2010}}</ref>
+
+On the following [[Bastille Day]] (14 July 1831), Galois was at the head of a protest, wearing the uniform of the disbanded artillery, and came heavily armed with several pistols, a loaded rifle, and a dagger. He was again arrested.<ref name=":2" /> During his stay in prison, Galois at one point drank alcohol for the first time at the goading of his fellow inmates. One of these inmates, [[François-Vincent Raspail]], recorded what Galois said while drunk in a letter from 25 July. Excerpted from the letter:<ref name="rothman" />
+
+{{Blockquote|text=And I tell you, I will die in a duel on the occasion of some <em>coquette de bas étage</em>. Why? Because she will invite me to avenge her honor which another has compromised.<br>
+Do you know what I lack, my friend? I can confide it only to you: it is someone whom I can love and love only in spirit. I've lost my father and no one has ever replaced him, do you hear me...?|title=|author=|source=}}
+
+Raspail continues that Galois, still in a delirium, attempted suicide, and that he would have succeeded if his fellow inmates had not forcibly stopped him.<ref name="rothman" /> Months later, when Galois's trial occurred on 23 October, he was sentenced to six months in prison for illegally wearing a uniform.<ref name=":2" /><ref name="bell">{{cite book
+  | last = Bell
+  | first = Eric Temple
+  | title = Men of Mathematics
+  | publisher = Simon and Schuster
+  | location = New York
+  | year = 1986
+  | isbn = 978-0-671-62818-5}}</ref><ref name="escofier" /> While in prison, he continued to develop his mathematical ideas. He was released on 29 April 1832.
+
+=== Final days ===
+[[File:Simeon Poisson crop.jpg|thumb|right|[[Siméon Denis Poisson]] reviewed Galois's paper on equation theory and declared it "incomprehensible".]]
+Galois returned to mathematics after his expulsion from the [[École Normale]], although he continued to spend time in political activities. After his expulsion became official in January 1831, he attempted to start a private class in advanced algebra which attracted some interest, but this waned, as it seemed that his political activism had priority.<ref name="stewart-gt" /><ref name="rothman" /> [[Siméon Denis Poisson]] asked him to submit his work on the [[theory of equations]], which he did on 17 January 1831. Around 4 July 1831, Poisson declared Galois's work "incomprehensible", declaring that "[Galois's] argument is neither sufficiently clear nor sufficiently developed to allow us to judge its rigor"; however, the rejection report ends on an encouraging note: "We would then suggest that the author should publish the whole of his work in order to form a definitive opinion."<ref>{{cite journal
+ | last = Taton
+ | first = R.
+ | year = 1947
+ | title = Les relations d'Évariste Galois avec les mathématiciens de son temps
+ | journal = Revue d'Histoire des Sciences et de Leurs Applications
+ | volume = 1
+ | issue = 2
+ | pages = 114–130
+ | doi = 10.3406/rhs.1947.2607| url = http://www.persee.fr/doc/rhs_0048-7996_1947_num_1_2_2607
+ }}</ref> 
+While Poisson's report was made before Galois's 14 July arrest, it took until October to reach Galois in prison. It is unsurprising, in the light of his character and situation at the time, that Galois reacted violently to the rejection letter, and decided to abandon publishing his papers through the academy and instead publish them privately through his friend Auguste Chevalier. Apparently, however, Galois did not ignore Poisson's advice, as he began collecting all his mathematical manuscripts while still in prison, and continued polishing his ideas until his release on 29&nbsp;April 1832,<ref name="dupuy" /> after which he was somehow talked into a duel.<ref name=":2" />
+
+Galois's fatal duel took place on 30 May.<ref name=":3">{{Cite book|title=Math and mathematicians : the history of math discoveries around the world|last=Bruno|first=Leonard C.|orig-year=1999|year=2003|publisher=U X L|editor-last=Baker | editor-first=Lawrence W.|isbn=978-0787638139|location=Detroit, Mich.|page=[https://archive.org/details/mathmathematicia00brun/page/174 174]|oclc=41497065|url=https://archive.org/details/mathmathematicia00brun|url-access=registration}}</ref> The true motives behind the duel are obscure. There has been much speculation about them. What is known is that, five days before his death, he wrote a letter to Chevalier which clearly alludes to a broken love affair.<ref name="rothman" />
+
+Some archival investigation on the original letters suggests that the woman of romantic interest was Stéphanie-Félicie Poterin du Motel,<ref>{{cite journal
+ | last = Infantozzi
+ | first = Carlos Alberti
+ | year = 1968
+ | title = Sur la mort d'Évariste Galois
+ | journal = Revue d'Histoire des Sciences et de Leurs Applications
+ | volume = 21
+ | issue = 2
+ | page = 157
+ | doi = 10.3406/rhs.1968.2554
+}}</ref> the daughter of the physician at the hostel where Galois stayed during the last months of his life. Fragments of letters from her, copied by Galois himself (with many portions, such as her name, either obliterated or deliberately omitted), are available.<ref>{{cite book
+  | last = Bourgne
+  | first = R.
+  |author2=J.-P. Azra
+  | title = Écrits et mémoires mathématiques d'Évariste Galois
+  | publisher = Gauthier-Villars
+  | location = Paris
+  | year = 1962}}</ref> The letters hint that Poterin du Motel had confided some of her troubles to Galois, and this might have prompted him to provoke the duel himself on her behalf. This conjecture is also supported by other letters Galois later wrote to his friends the night before he died. Galois's cousin, Gabriel Demante, when asked if he knew the cause of the duel, mentioned that Galois "found himself in the presence of a supposed uncle and a supposed fiancé, each of whom provoked the duel." Galois himself exclaimed: "I am the victim of an infamous coquette and her two dupes."<ref name="dupuy" /> 
+
+As to his opponent in the duel, Alexandre Dumas names Pescheux d'Herbinville,<ref name="dumas"/> who was actually one of the nineteen artillery officers whose acquittal was celebrated at the banquet that occasioned Galois's first arrest.<ref name="blanc">
+{{cite book
+  | last = Blanc
+  | first = Louis
+  | title = The History of Ten Years, 1830–1840, Volume 1
+  | publisher = Chapman and Hall
+  | location = London
+  | year = 1844
+  | page = [https://archive.org/details/bub_gb_hH52mPMmlzcC/page/n441 431]
+  | url = https://archive.org/details/bub_gb_hH52mPMmlzcC
+}}
+</ref> However, Dumas is alone in this assertion, and if he were correct it is unclear why d'Herbinville would have been involved. It has been speculated that he was Poterin du Motel's "supposed fiancé" at the time (she ultimately married someone else), but no clear evidence has been found supporting this conjecture. On the other hand, extant newspaper clippings from only a few days after the duel give a description of his opponent (identified by the initials "L.D.") that appear to more accurately apply to one of Galois's Republican friends, most probably Ernest Duchatelet, who was imprisoned with Galois on the same charges.<ref name="dalmas">
+{{cite book
+  | last = Dalmas
+  | first = Andre
+  | title = Évariste Galois: Révolutionnaire et Géomètre
+  | publisher = Fasquelle
+  | location = Paris
+  | year = 1956 }}
+</ref> Given the conflicting information available, the true identity of his killer may well be lost to history.
+
+Whatever the reasons behind the duel, Galois was so convinced of his impending death that he stayed up all night writing letters to his Republican friends and composing what would become his mathematical testament, the famous letter to Auguste Chevalier outlining his ideas, and three attached manuscripts.<ref name="chevalier-letter">{{Cite web |title=Galois' last letter in nLab |url=https://ncatlab.org/nlab/show/Galois'+last+letter |access-date=2025-05-15 |website=ncatlab.org}}</ref> Mathematician [[Hermann Weyl]] said of this testament, "This letter, if judged by the novelty and profundity of ideas it contains, is perhaps the most substantial piece of writing in the whole literature of mankind." However, the legend of Galois pouring his mathematical thoughts onto paper the night before he died seems to have been exaggerated.<ref name="rothman" /> In these final papers, he outlined the rough edges of some work he had been doing in analysis and annotated a copy of the manuscript submitted to the academy and other papers.
+
+[[File:Tombe galois.JPG|thumb|left|The Galois memorial in the cemetery of [[Bourg-la-Reine]]. Évariste Galois was buried in a common grave and the exact location is unknown.]]
+Early in the morning of 30 May 1832, he was shot in the [[abdomen]],<ref name=":3" /> was abandoned by his opponents and his own seconds, and was found by a passing farmer. He died the following morning<ref name=":3" /> at ten o'clock in the [[Hôpital Cochin]] (probably of [[peritonitis]]), after refusing the offices of a priest. His funeral ended in riots.<ref name=":3" /> There were plans to initiate an uprising during his funeral, but during the same time the leaders heard of General [[Jean Maximilien Lamarque]]'s death and the rising was postponed without any uprising occurring until [[June Rebellion|5 June]]. Only Galois's younger brother was notified of the events prior to Galois's death.<ref>{{cite book|last=Coutinho|first=S.C.|title=The Mathematics of Ciphers|url=https://archive.org/details/mathematicsofcip0000cout|url-access=registration|year=1999|publisher=A K Peters, Ltd.|location=Natick|isbn=978-1-56881-082-9|pages=[https://archive.org/details/mathematicsofcip0000cout/page/127 127–128]}}</ref> Galois was 20 years old. His [[last words]] to his younger brother Alfred were:
+{{blockquote|"Ne pleure pas, Alfred&nbsp;! J'ai besoin de tout mon courage pour mourir à vingt ans&nbsp;!"<br />(Don't weep, Alfred! I need all my courage to die at twenty!)}}
+
+On 2 June, Évariste Galois was buried in a common grave of the [[Montparnasse Cemetery]] whose exact location is unknown.<ref name=":3"/><ref name="escofier">{{cite book
+| last = Escofier
+  | first = Jean-Pierre
+  | title = Galois Theory
+  | url = https://archive.org/details/springer_10.1007-978-1-4613-0191-2
+  | publisher = Springer
+  | year = 2001
+  | pages = [https://archive.org/details/springer_10.1007-978-1-4613-0191-2/page/n228 222]–224
+  | isbn = 978-0-387-98765-1}}</ref> In the cemetery of his native town – [[Bourg-la-Reine]] – a [[cenotaph]] in his honour was erected beside the graves of his relatives.<ref>{{cite book
+  | last = Toti Rigatelli
+  | first = Laura |author-link = Laura Toti Rigatelli
+  | title = Evariste Galois, 1811–1832 (Vita mathematica, 11)
+  | publisher = Birkhäuser
+  | year = 1996
+  | page = [https://archive.org/details/evaristegalois180000toti/page/114 114]
+  | isbn = 978-3-7643-5410-7
+  | url = https://archive.org/details/evaristegalois180000toti/page/114
+  }}</ref>
+
+In 1842, Joseph Liouville began studying Galois's unpublished papers and acknowledged their value in 1843. It is not clear what happened in the ten years between 1832 and 1842 nor what eventually inspired Liouville to begin reading Galois's papers. Jesper Lützen explores this subject at some length in Chapter XIV ''Galois Theory'' of his book about [[Joseph Liouville]] without reaching any definitive conclusions.<ref name="Lützen">{{cite book
+  | last = Lützen
+  | first = Jesper
+  | title = Joseph Liouville 1809–1882: Master of Pure and Applied Mathematics|series = Studies in the History of Mathematics and Physical Sciences
+  | year = 1990
+  | chapter = Chapter XIV: Galois Theory
+  | pages = 559–580
+  | volume = 15
+  | publisher = Springer-Verlag
+  | isbn = 3-540-97180-7
+  }}</ref>
+
+It is certainly possible that mathematicians (including Liouville) did not want to publicize Galois's papers because Galois was a republican political activist who died 5 days before the [[June Rebellion]], an unsuccessful anti-monarchist insurrection of Parisian republicans. In Galois's obituary, his friend Auguste Chevalier almost accused academicians at the École Polytechnique of having killed Galois since, if they had not rejected his work, he would have become a mathematician and would not have devoted himself to the republican political activism for which some believed he was killed. Given that France was still living in the shadow of the [[Reign of Terror]] and the [[Napoleonic era]], Liouville might have waited until the political turmoil subsided (from the failed [[June Rebellion]]  and its aftermath) before turning his attention to Galois's papers.<ref name="Lützen" />
+
+Liouville finally published Galois's manuscripts in the October–November 1846 issue of the ''[[Journal de Mathématiques Pures et Appliquées]]''.<ref>{{cite journal
+ | last = Galois
+ | first = Évariste
+ | year = 1846
+ | title = OEuvres mathématiques d'Évariste Galois.
+ | journal = Journal de Mathématiques Pures et Appliquées
+ | volume = XI
+ | pages = 381–444
+ | url = http://visualiseur.bnf.fr/ark:/12148/cb343487840/date1846
+ | access-date = 4 February 2009}}</ref><ref>{{cite journal|author=Pierpont, James|author-link=James Pierpont (mathematician)|title= Review: ''Oeuvres mathématiques d'Evariste Galois; publiées sous les auspices de la Société Mathématique de France, avec une introduction par M. EMILE PICARD''. Paris, Gauthier-Villars et Fils, 1897. 8vo, x + 63 pp.|journal=Bull. Amer. Math. Soc.|year=1899|volume=5|issue=6|pages=296–300|url=http://www.ams.org/journals/bull/1899-05-06/S0002-9904-1899-00599-8/S0002-9904-1899-00599-8.pdf|doi=10.1090/S0002-9904-1899-00599-8|doi-access=free}} In 1897 the French Mathematical Society reprinted the 1846 publication.</ref> Galois's most famous contribution was a novel proof that there is no [[Quintic equation|quintic formula]] – that is, that fifth and higher degree equations are not generally solvable by radicals. Although [[Niels Henrik Abel]] had already [[Abel–Ruffini theorem|proved the impossibility of a "quintic formula" by radicals]] in 1824 and [[Paolo Ruffini (mathematician)|Paolo Ruffini]] had published a solution in 1799 that turned out to be flawed, Galois's methods led to deeper research into what is now called [[Galois Theory]], which  can be used to determine, for ''any'' polynomial equation, whether it has a solution by radicals.
+
+== Contributions to mathematics ==
+[[File:E. Galois Letter.jpg|thumb|right|The final page of Galois's mathematical testament, in his own hand. The phrase "to decipher all this mess" ("déchiffrer tout ce gâchis") is on the second to the last line.]]
+
+From the closing lines of a letter from Galois to his friend Auguste Chevalier, dated 29 May 1832, two days before Galois's death:<ref name="chevalier-letter" />
+
+{{blockquote|''Tu prieras publiquement Jacobi ou Gauss de donner leur avis, non sur la vérité, mais sur l'importance des théorèmes.''
+
+''Après cela, il y aura, j'espère, des gens qui trouveront leur profit à déchiffrer tout ce gâchis.''
+
+(Ask [[Carl Gustav Jacob Jacobi|Jacobi]] or [[Carl Friedrich Gauss|Gauss]] publicly to give their opinion, not as to the truth, but as to the importance of these theorems. Later there will be, I hope, some people who will find it to their advantage to decipher all this mess.)}}
+
+Within the 60 or so pages of Galois's collected works are many important ideas that have had far-reaching consequences for nearly all branches of mathematics.<ref name="lie">{{cite conference
+ | last = Lie
+ | first = Sophus
+ | year = 1895
+ | title = Influence de Galois sur le Développement des Mathématiques
+ | book-title = Le centenaire de l'École Normale 1795–1895
+ | publisher = Hachette
+}}</ref><ref>See also: Sophus Lie, [http://gallica.bnf.fr/ark:/12148/bpt6k290623/f71.image "Influence de Galois sur le développement des mathématiques"] in: Évariste Galois, ''Oeuvres Mathématiques publiées en 1846 dans le'' Journal de Liouville (Sceaux, France: Éditions Jacques Gabay, 1989), appendix pages 1–9.</ref> 
+His work has been compared to that of [[Niels Henrik Abel]] (1802–1829), a contemporary mathematician who also died at a very young age, and much of their work had significant overlap.
+
+=== Algebra ===
+While many mathematicians before Galois gave consideration to what are now known as [[group (algebra)|groups]], he was the first one to use the word ''group'' (in French ''groupe'') in a sense close to the technical sense that is understood today, making him among the founders of the branch of algebra known as [[group theory]]. He called the decomposition of a group into its left and right [[coset]]s a ''proper decomposition'' if the left and right cosets coincide, which leads to the notion of what today are known as [[normal subgroup]]s.<ref name="chevalier-letter" /> He also introduced the concept of a [[finite field]] (also known as a [[Galois field]] in his honor) in essentially the same form as it is understood today.<ref name="numtheory" />
+
+In his last letter to Chevalier<ref name="chevalier-letter" /> and attached manuscripts, the second of three, he made basic studies of linear groups over finite fields:
+*He constructed the [[General linear group#Over finite fields|general linear group over a prime field]], GL(''ν'', ''p'') and computed its order, in studying the Galois group of the general equation of degree ''p<sup>ν</sup>''.<ref>Letter, p. 410</ref>
+*He constructed the [[projective special linear group]] PSL(2,''p''). Galois constructed them as fractional linear transforms, and observed that they were simple except if ''p'' was 2 or 3.<ref>Letter, p. 411</ref> These were the second family of finite [[simple group]]s, after the [[alternating group]]s.<ref name="raw">{{cite book | last1=Wilson | first1=Robert A. | author-link = Robert Arnott Wilson | title = The finite simple groups | publisher=[[Springer-Verlag]] | location=Berlin, New York | series=[[Graduate Texts in Mathematics]]|volume= 251 | isbn=978-1-84800-987-5 | doi=10.1007/978-1-84800-988-2 | zbl=1203.20012 | year=2009 |chapter = Chapter 1: Introduction |chapter-url=http://www.maths.qmul.ac.uk/~raw/fsgs_files/intro.ps}}</ref>
+*He noted the [[exceptional object|exceptional fact]] that PSL(2,''p'') is simple and [[Projective linear group#Action on p points|acts on ''p'' points]] if and only if ''p'' is 5, 7, or 11.<ref>Letter, pp. 411–412</ref><ref>{{cite web| url = http://people.math.umass.edu/~tevelev/475_2016/galois_lc.pdf| title = Galois's last letter, translated}}</ref>
+
+=== Galois theory ===
+{{Main|Galois theory}}
+Galois's most significant contribution to mathematics is his development of Galois theory. He realized that the algebraic solution to a [[polynomial]] equation is related to the structure of a group of [[permutation]]s associated with the roots of the polynomial, the [[Galois group]] of the polynomial. He found that an equation could be solved in [[nth root|radicals]] if one can find a series of subgroups of its Galois group, each one normal in its successor with [[abelian group|abelian]] quotient, that is, its Galois group is [[solvable group|solvable]]. This proved to be a fertile approach, which later mathematicians adapted to many other fields of mathematics besides the [[theory of equations]] to which Galois originally applied it.<ref name="lie" />
+
+=== Analysis ===
+Galois also made some contributions to the theory of [[Abelian integral]]s and [[continued fraction]]s.
+
+As written in his last letter,<ref name="chevalier-letter" /> Galois passed from the study of elliptic functions to consideration of the integrals of the most general algebraic differentials, today called Abelian integrals. He classified these integrals into three categories.
+
+=== Continued fractions ===
+In his first paper in 1828,<ref name="continuedfraction" /> Galois proved that the regular continued fraction which represents a quadratic [[Nth root|surd]] ''ζ'' is purely periodic if and only if ''ζ'' is a [[Periodic continued fraction#Reduced surds|reduced surd]], that is, <math>\zeta > 1</math> and its [[Conjugate (algebra)|conjugate]] <math>\eta</math>
+satisfies <math>-1 < \eta < 0</math>.
+
+In fact, Galois showed more than this. He also proved that if ''ζ'' is a reduced quadratic surd and ''η'' is its conjugate, then the continued fractions for ''ζ'' and for (−1/''η'') are both purely periodic, and the repeating block in one of those continued fractions is the mirror image of the repeating block in the other. In symbols we have
+
+:<math>
+\begin{align}
+\zeta& = [\,\overline{a_0;a_1,a_2,\dots,a_{m-1}}\,]\\[3pt]
+\frac{-1}{\eta}& = [\,\overline{a_{m-1};a_{m-2},a_{m-3},\dots,a_0}\,]\,
+\end{align}
+</math>
+
+where ''ζ'' is any reduced quadratic surd, and ''η'' is its conjugate.
+
+From these two theorems of Galois a result already known to Lagrange can be deduced. If ''r''&nbsp;>&nbsp;1 is a rational number that is not a perfect square, then
+
+:<math>
+\sqrt{r} = \left[\,a_0;\overline{a_1,a_2,\dots,a_2,a_1,2a_0}\,\right].
+</math>
+
+In particular, if ''n'' is any non-square positive integer, the regular continued fraction expansion of √''n'' contains a repeating block of length ''m'', in which the first ''m''&nbsp;−&nbsp;1 partial denominators form a [[palindrome|palindromic]] string.
+
+== See also ==
+{{ Portal|History of science}}
+* [[List of things named after Évariste Galois]]
+
+==References==
+{{Reflist}}
+
+== Further reading ==
+*{{Citation |last=Artin |first=Emil |author-link=Emil Artin |title=Galois Theory |publisher=Dover Publications, Inc. |year=1998 |isbn=978-0-486-62342-9 |url=http://projecteuclid.org/euclid.ndml/1175197041}} – Reprinting of second revised edition of 1944, The University of Notre Dame Press.
+*{{Citation|last=Astruc|first=Alexandre|author-link=Alexandre Astruc|year=1994|title=Évariste Galois|publisher=Flammarion|language=fr|series=Grandes Biographies|isbn=978-2-08-066675-8}}
+*{{Citation|last=Bell|first=E.T.|author-link=Eric Temple Bell|year=1937|title=Men of Mathematics|volume=2|chapter=Galois|title-link=Men of Mathematics}}. Still in print.
+*{{Citation|last=Désérable|first=François-Henri|author-link=François-Henri Désérable|year=2015|title=Évariste|publisher=Gallimard|language=fr|isbn=9782070147045|url-access=registration|url=https://archive.org/details/evaristeroman0000dese}}
+*{{Citation|last=Edwards|first=Harold M.|author-link=Harold Edwards (mathematician)|date=May 1984|title=Galois Theory|series=Graduate Texts in Mathematics 101|publisher=Springer-Verlag|isbn=978-0-387-90980-6|url=https://archive.org/details/galoistheory00edwa_0}} – This textbook explains Galois Theory with historical development and includes an English translation of Galois's memoir.
+*{{Citation|last=Ehrhardt|first=Caroline|author-link=Caroline Ehrhardt|year=2011|title=Évariste Galois, la fabrication d'une icône mathématique|publisher=Editions de l'Ecole Pratiques de Hautes Etudes en Sciences Sociales|language=fr|series=En temps et lieux|isbn=978-2-7132-2317-4}}
+*{{Citation|last=Infeld|first=Leopold|author-link=Leopold Infeld|year=1948|title=Whom the Gods Love: The Story of Evariste Galois|publisher=[[National Council of Teachers of Mathematics]]|location=[[Reston, Virginia|Reston, Va]]|series=Classics in Mathematics Education Series}} {{isbn|978-0-87353-125-2}} – Classic fictionalized biography by physicist Infeld.
+*{{Citation|last=Livio|first=Mario|author-link=Mario Livio|year=2006|title=The Equation That Couldn't Be Solved: How Mathematical Genius Discovered the Language of Symmetry|journal=Physics Today|volume=59|issue=7|page=50|publisher=Souvenir Press|doi=10.1063/1.2337831|bibcode=2006PhT....59g..50L|isbn=978-0-285-63743-6|doi-access=free}}
+*{{Citation|last=Toti Rigatelli|first=Laura|author-link=Laura Toti Rigatelli|year=1996|title=Évariste Galois|publisher=Birkhauser|isbn=978-3-7643-5410-7|url-access=registration|url=https://archive.org/details/evaristegalois180000toti}} – This biography challenges the common myth concerning Galois's duel and death.
+*{{Citation|last=Stewart|first=Ian|author-link=Ian Stewart (mathematician)|year=1973|title=Galois Theory|publisher=[[Chapman and Hall]]|isbn=978-0-412-10800-6|url-access=registration|url=https://archive.org/details/galoistheory0000stew}} – This comprehensive text on Galois Theory includes a brief biography of Galois himself.
+*{{Citation|last=Tignol|first=Jean-Pierre|author-link=Jean-Pierre Tignol|year=2001|title=Galois' theory of algebraic equations|publisher=World Scientific|location=Singapore|isbn=978-981-02-4541-2}} – Historical development of Galois theory.
+*{{Cite book|last=Neumann|first=Peter|year=2011|title=The mathematical writings of Evariste Galois|publisher= European Mathematical Society|location=Zürich, Switzerland|isbn=978-3-03719-104-0|url=https://uberty.org/wp-content/uploads/2015/11/Peter_M._Neumann_The_Mathematical_Writings.pdf|ref=Neumann2011}}
+
+== External links ==
+{{Commons category}}
+{{Wikiquote}}
+{{EB1911 poster|Galois, Évariste}}
+* {{Gutenberg author | id=40484| name=Évariste Galois}}
+* {{Internet Archive author |sname=Évariste Galois}}
+*{{MacTutor Biography|id=Galois}}
+*[http://www.galois-group.net/ The Galois Archive] (biography, letters and texts in various languages)
+* Two Galois articles, online and analyzed on ''BibNum'' : "Mémoire sur les conditions de résolubilité des équations par radicaux" (1830) ([https://www.bibnum.education.fr/mathematiques/algebre/memoire-sur-les-conditions-de-resolubilite-des-equations-par-radicaux link])<small>[for English analysis, click 'A télécharger']</small>; "Démonstration d'un théorème sur les fractions continues périodiques" (1829) ([https://www.bibnum.education.fr/mathematiques/algebre/demonstration-d-un-theoreme-sur-les-fractions-continues-periodiques link]) <small>[for English analysis, click 'A télécharger']</small>
+*{{cite journal | doi = 10.2307/2320923 | url = https://sites.tufts.edu/histmath/files/2015/11/rothman.pdf | volume=89 | title=Genius and Biographers: The Fictionalization of Evariste Galois | year=1982 | journal=The American Mathematical Monthly | last1 = Rothman | first1 = Tony| issue = 2 | pages = 84–106 | jstor = 2320923 }}
+*[http://www.galois-group.net/dupuy/index.php La vie d'Évariste Galois by Paul Dupuy] The first and still one of the most extensive biographies, referred to by every other serious biographer of Galois
+*[<!-- http://perso.univ-rennes1.fr/antoine.chambert-loir/DJVU/ -->https://www.irphe.fr/~clanet/otherpaperfile/articles/Galois/N0029062_PDF_1_84.pdf Œuvres Mathématiques] published in 1846 in the ''Journal de Liouville'', converted to [[Djvu]] format by Prof. Antoine Chambert-Loir at the University of Rennes.
+*[http://www.dumaspere.com/pages/bibliotheque/chapitre.php?lid=m3&cid=204 Alexandre Dumas, Mes Mémoires], the relevant chapter of Alexandre Dumas' memoires where he mentions Galois and the banquet.
+*{{MathGenealogy|55176}}
+*[http://www.phys.uu.nl/~witte/EvaristeTheatricalTrailer3.wmv Theatrical trailer of University College Utrecht's "Évariste – En Garde"]
+{{Évariste Galois}}
+{{Authority control}}
+
+{{DEFAULTSORT:Galois, Evariste}}
+[[Category:1811 births]]
+[[Category:1832 deaths]]
+
+[[Category:People murdered in 1832]]
+[[Category:People from Bourg-la-Reine]]
+[[Category:École normale supérieure (Paris) alumni]]
+[[Category:Lycée Louis-le-Grand alumni]]
+[[Category:19th-century French mathematicians]]
+[[Category:Group theorists]]
+[[Category:French murder victims]]
+[[Category:French mathematicians]]
+[[Category:People murdered in Paris]]
+[[Category:Duelling fatalities]]
+[[Category:Deaths by firearm in France]]
+[[Category:Deaths from peritonitis]]
+[[Category:Burials at Montparnasse Cemetery]]
+[[Category:French duellists]]
