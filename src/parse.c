@@ -1023,6 +1023,10 @@ static void run_nested_plain_pipeline(ThreadBuf *scratch,
          * must not run before links; otherwise links spanning inline HTML split. */
 		if(is_ext_inner) {
 			parse_html(scratch, cfg, accum);
+			/* JS parseTable only applies to ext-inner when name === 'poem'. */
+			if(is_poem_ext_inner) {
+				parse_table(scratch, cfg, accum);
+			}
 		}
 		TokenType hr_root_type= t->type;
 		if(ext_inner_has_sentinel) {
