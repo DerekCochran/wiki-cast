@@ -11159,11 +11159,48 @@ helpers.js:355
 </gallery>
   `,
 `{{Script/Hebrew|כִּֽי־אַתָּ֤ה שַׁלּ֙וֹתָ֙ גּוֹיִ֣ם רַבִּ֔ים יְשָׁלּ֖וּךָ כׇּל־יֶ֣תֶר עַמִּ֑ים מִדְּמֵ֤י אָדָם֙ וַֽחֲמַס־אֶ֔רֶץ קִרְיָ֖ה וְכׇל־יֹ֥שְׁבֵי בָֽהּ׃ {פ}}}`,
+`{{Infobox scientist
+| embed = yes
+| other_names      = Albertus Teutonicus, Albertus Coloniensis, Albert the Great, Albert of Cologne
+| fields            = {{Flatlist}}
+*[[Natural science]]
+*[[Alchemy]]
+*[[Jurisprudence]]
+*[[Diplomacy]]
+*[[Christian theology|Theology]]
+*[[Natural philosophy]]
+{{Endflatlist}}
+| known_for        = Teaching of theology<br/>Pioneering scholar of [[Aristotle]]<br/>Systematic study of [[minerals]]<br/>Discovery of the element [[arsenic]]
+| alma_mater       = [[University of Padua]]
+| doctoral_advisor = [[Jordan of Saxony]]
+| module           = {{Infobox philosopher
+| embed            = yes
+| region           = [[Western philosophy]]
+| era              = [[Medieval philosophy]]
+| name             = Albertus Magnus
+| institutions      = [[University of Paris]]
+| school_tradition = 
+{{Flatlist}}
+*[[Scholasticism]]
+*[[Aristotelianism]]
+*[[Medieval realism]]<ref>Hilde de Ridder-Symoens (ed.). ''A History of the University in Europe: Volume 1, Universities in the Middle Ages'', Cambridge University Press, 1991, p. 439.</ref>
+{{Endflatlist}}
+| main_interests   = {{hlist|[[Philosophy]]|[[physiology]]|[[mineralogy]]|[[astrology]]|[[geography]]|[[astronomy]]|[[music theory]]|[[natural science]]|[[alchemy]]|[[jurisprudence]]|[[diplomacy]]|[[Christian theology|theology]]|[[natural philosophy]]}}
+| notable_students = [[Thomas Aquinas]], [[Petrus Ferrandi Hispanus]]
+| notable_ideas    = 
+{{Flatlist}}
+*[[Natural law]]
+*[[Aevum]]<ref>Albertus Magnus, ''De IV coaequaevis'', tract. 2, qu. 3.</ref>  
+{{Endflatlist}}
+| module             = {{Infobox clergy 
+| child= yes
+| offices_held     = [[Bishop of Regensburg]]
+}}}}}}}}`,
 ];
 
 const ROOT = path.resolve(__dirname, '..', '..', '..', 'config');
-//const CONFIGS = ['enwiki', 'jawiki', 'llwiki'];
-const CONFIGS = ['enwiki'];
+const CONFIGS = ['enwiki', 'jawiki', 'llwiki'];
+//const CONFIGS = ['enwiki'];
 
 for (const configName of CONFIGS) {
   const configPath = path.join(ROOT, `${configName}.json`);

@@ -6,6 +6,7 @@
 #include "parser/link.h"
 #include "parser/links.h"
 #include "parser/magic_links.h"
+#include "title.h"
 #include "util/string_util.h"
 #include "util/thread_buffer.h"
 #include "util/callback_parser.h"
@@ -1161,6 +1162,26 @@ static Token *parse_gallery_image_line_local(const char *line, size_t line_len,
 		size_t non_ws= 0;
 		while(non_ws < line_len && isspace((unsigned char)line[non_ws])) non_ws++;
 		if(non_ws < line_len) {
+			const char pipe_ch2 = '|';
+			const char *pipe_ptr2 = sz_find_byte(line, line_len, &pipe_ch2);
+			size_t file_len= pipe_ptr2 ? (size_t)(pipe_ptr2 - line) : line_len;
+			/* JS GalleryToken parity: only construct gallery-image when
+			 * normalizeTitle(file, 6, {halfParsed:true, decode:true, page:''}).valid. */
+			Title *file_title= title_parse_half_parsed(line, file_len, 6, cfg, true, "");
+			bool file_valid= (file_title && file_title->valid);
+			title_free(file_title);
+
+			if(!file_valid) {
+				Token *comment_line = token_new(TOKEN_NOINCLUDE, "noinclude");
+				if(comment_line) {
+					const char *line_view = wiki_thread_buf_append_to_tokens(line, line_len);
+					token_append_text_n(comment_line, line_view, line_len);
+					accum_push(accum, comment_line);
+					out = comment_line;
+				}
+			}
+
+			if(!out) {
 			const char lt_ch = '<';
 			const char gt_ch = '>';
 			const char *has_lt = sz_find_byte(line, line_len, &lt_ch);
@@ -1174,11 +1195,10 @@ static Token *parse_gallery_image_line_local(const char *line, size_t line_len,
 					out = comment_line;
 				}
 			}
+			}
 
 			if(!out) {
 			bool built= false;
-			const char pipe_ch2 = '|';
-			const char *pipe_ptr2 = sz_find_byte(line, line_len, &pipe_ch2);
 			if(pipe_ptr2) {
 				size_t lhs_len= (size_t)(pipe_ptr2 - line);
 				size_t rhs_len= line_len - lhs_len - 1;
