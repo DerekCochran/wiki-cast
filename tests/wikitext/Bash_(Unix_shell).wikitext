@@ -1,0 +1,3837 @@
+{{Short description|GNU replacement for the Bourne shell}}
+{{multiple issues|
+{{how-to|date=August 2025}}
+{{More citations needed|date=August 2025}}
+{{Over-quotation|date=August 2025}}
+{{Excessive citations|date=September 2025}}
+}}
+{{Use dmy dates|date=March 2014}}
+{{Infobox software
+| author                 = [[Brian Fox (programmer)|Brian Fox]]
+| caption                = 
+| developer              = Chet Ramey
+| genre                  = [[Shell (computing)]], [[Unix shell]], [[command language]]
+| language               = Multilingual ([[gettext]])
+| latest release date    = {{Start date and age|{{Wikidata| qualifier| preferred| single| Q189248| P348| P548 = Q2804309| P577}}|df=yes}}
+| latest release version = {{Wikidata| property| preferred| references| edit| Q189248| P348| P548 = Q2804309}}
+| license                = {{Plainlist|
+*  v.4.0+: [[GNU General Public License#Version 3|GPL-3.0-or-later]]<ref>
+{{Cite web
+| access-date  = 8 August 2025
+| archive-date = 26 April 2019
+| archive-url  = https://web.archive.org/web/20190426210620/http://www.gnu.org/software/bash/
+| publisher    = [[GNU Project]]
+| quote        = Bash is free software, distributed under the terms of the [GNU] General Public License as published by the Free Software Foundation, version 3 of the License (or any later version).
+| title        = GNU Bash
+| url          = https://www.gnu.org/software/bash/
+| url-status   = live
+| website      = [[Free Software Foundation, Inc.]]
+}}
+</ref>
+*  v.1.11 – v.3.2: [[GNU General Public License#Version 2|GPL-2.0-or-later]]<ref>
+{{Cite web
+| access-date  = 8 August 2025
+| archive-date = 15 October 2021
+| archive-url  = https://web.archive.org/web/20211015233550/http://www.oldlinux.org/Linux.old/bin/old/bash-1.11/
+| quote        = See test.c for GPL-2.0-or-later
+| title        = bash-1.11
+| url          = https://www.oldlinux.org/Linux.old/bin/old/bash-1.11/
+| website      = oldlinux.org
+}}
+</ref>
+*  v.0.99 – v.1.05: [[GNU General Public License#Version 1|GPL-1.0-or-later]]<ref 
+name="bashfaq061">
+{{Cite web
+| access-date  = 8 August 2025
+| archive-date = 2 March 2021
+| archive-url  = https://web.archive.org/web/20210302212811/https://mywiki.wooledge.org/BashFAQ/061
+| title        = BashFAQ/061: Is there a list of which features were added to specific releases (versions) of Bash?
+| url          = https://mywiki.wooledge.org/BashFAQ/061
+| url-status   = live
+| website      = wooledge.org
+}}
+</ref><ref>{{Cite web
+| access-date  = 8 August 2025
+| archive-date = 6 May 2021
+| archive-url  = https://web.archive.org/web/20210506191114/http://www.oldlinux.org/Linux.old/bin/old/bash-1.05/
+| title        = bash-1.05
+| url          = https://www.oldlinux.org/Linux.old/bin/old/bash-1.05/
+| website      = oldlinux.org
+}}
+</ref><ref>{{Cite web
+| access-date = 8 August 2025
+| title       = Is there a way to download the presumably initial bash source bash-0.99?
+| url         = https://unix.stackexchange.com/questions/243375/is-there-a-way-to-download-the-presumably-initial-bash-source-bash-0-99
+| website     = unix.stackexchange.com
+}}</ref>
+}}
+| logo                   = Gnu-bash-logo.svg
+| name                   = 
+| operating system       = {{unbulleted list| [[Linux]] | [[Unix-like]] | [[macOS]] | [[Windows]] | [[Android (operating system)|Android]] | [[Oracle Solaris]] }}
+| platform               = [[GNU]]
+| programming language   = [[C (programming language)|C]]
+| released               = {{Start date and age|1989|06|08|df=yes}}
+| screenshot             = <!-- TODO -->
+| website                = {{URL|www.gnu.org/software/bash/}}
+}}
+
+'''Bash''' (short for "''Bourne Again SHell''") is an interactive [[command-line interface|command interpreter]] and [[command language]] developed for [[Unix]]-like [[operating systems]]. Created in 1989 by Brian Fox for the [[GNU Project]],<ref name="computerworld_08">
+{{Multiref2|{{Cite web
+| access-date  = 8 August 2025
+| archive-date = 11 August 2016
+| archive-url  = https://web.archive.org/web/20160811002459/http://www.computerworld.com.au/article/222764/
+| date         = 30 March 2008
+| first        = Naomi
+| last         = Hamilton
+| page         = 2
+| publisher    = [[Computerworld|Computerworld Australia]]
+| quote        = When Richard Stallman decided to create a full replacement for the then-encumbered Unix systems, he knew that he would eventually have to have replacements for all of the common utilities, especially the standard shell, and those replacements would have to have acceptable licensing.
+| title        = The A–Z of Programming Languages: BASH/Bourne-Again Shell
+| url          = https://www.computerworld.com.au/article/222764/
+| website      = computerworld.com.au
+}}|{{Cite web
+| access-date  = 8 August 2025
+| date         = 30 May 2008
+| first        = Naomi
+| last         = Hamilton
+| publisher    = [[Computerworld|Computerworld Australia]]
+| title        = The A–Z of Programming Languages: BASH/Bourne-Again Shell
+| url          = https://a-z.readthedocs.io/en/latest/bash.html
+| website      = readthedocs.io
+}}
+}}
+</ref> it is designed as a completely [[free software]] alternative for the [[Bourne shell]], {{code|sh}}, and other proprietary [[Unix shells]],<ref>{{Cite web|url=https://www.gnu.org/software/bash/bash.html|title=Bash - GNU Project - Free Software Foundation|website=www.gnu.org}}</ref> supported by the [[Free Software Foundation]].<ref name="computerworld_08" /> Having gained widespread adoption, Bash is commonly used as the default [[login]] shell for numerous [[Linux]] distributions.<ref name="goftw2015">
+{{Cite web
+| access-date  = 8 August 2025
+| archive-date = 31 July 2020
+| archive-url  = https://web.archive.org/web/20200731032216/https://www.red-gate.com/simple-talk/opinion/geek-of-the-week/chet-ramey-geek-of-the-week/
+| date         = 14 December 2015
+| first1       = Richard
+| last1        = Morris
+| title        = Chet Ramey: Geek of the Week
+| url          = https://www.red-gate.com/simple-talk/opinion/geek-of-the-week/chet-ramey-geek-of-the-week/
+| url-status   = live
+| work         = Simple Talk
+}}
+</ref> It also supports the execution of commands from files, known as [[shell script]]s, facilitating [[automation]].
+
+The Bash command [[syntax (programming languages)|syntax]] is a [[superset]] of the [[Bourne shell]]'s syntax, from which all basic features of the Bash syntax were copied. As a result, Bash can execute the vast majority of Bourne shell scripts without modification. Some other ideas were borrowed from the [[C shell]], its successor [[tcsh]], and the [[Korn Shell]]. It is available on nearly all modern operating systems, making it a versatile tool in various computing environments.
+
+== Definitions ==
+
+=== ASCII, strings and numbers ===
+
+<!-- Important concepts:
+       [x] Characters
+       [x] Human/computer communitcation
+       [x] Standardization
+       [x] Character encoding
+       [x] Control characters
+       [ ] Information
+-->
+{{Blockquote
+| The input language to the shell shall be first recognized at the character level.
+| source = 
+  {{Cite web
+  | access-date = 25 August 2025
+  | publisher   = [[The Open Group]]
+  | title       = POSIX 1003.1-2024, 2.10.1 Shell Grammar Lexical Conventions
+  | url         = https://pubs.opengroup.org/onlinepubs/9799919799/utilities/V3_chap02.html#tag_19_10_01
+  | work        = The Open Group Base Specifications Issue 8, IEEE Std 1003.1-2024
+  }}
+}}
+
+<syntaxhighlight lang="console">$ printf '<newline>:  <%b>\n' $'\n'
+<newline>:  <
+>
+$ printf '<tab>:      <%b>\n' $'\t'
+<tab>:      <	>
+$ printf '<space>:    <%s>\n' " "
+<space>:    < >
+$ printf '<NUL>:      <%b>\n' $'\0'
+<NUL>:      <>
+</syntaxhighlight>
+
+<!-- Important concepts:
+       [x] String
+       [x] Filenames
+-->
+Any series of characters is called a "string", or sometimes a "[[string literal]]". In Unix-like operating systems, all characters, printable and non-printing, except for a few such as the [[null character]] and forward slash {{char|/}}, can be used in [[filename]]s. In addition, all strings are case-sensitive.<ref>
+{{Cite book
+| access-date = 16 August 2025
+| date        = 2008
+| first       = Randal
+| isbn        = 978-0-470-18301-4
+| last        = Michael
+| page        = 3
+| publisher   = [[Wiley (publisher)|Wiley]] |location=Indianapolis, Indiana
+| quote       = UNIX is case sensitive. Because UNIX is case sensitive, our shell scripts are also case sensitive.
+| title       = Mastering Unix Shell Scripting |edition=2nd
+| url         = https://books.google.com/books?id=uI7C2BDF6F0C
+}}
+</ref>
+
+Bash, like many other programming languages, uses [[zero-based numbering]].
+
+=== Control+key combinations ===
+
+<!-- Important concepts:
+       [x] Keypress combinations
+       [x] Terminal emulator as separate from shell
+-->
+The Control+key functionality is provided by [[GNU Readline]] and is available in interactive mode only.
+Certain keypress combinations allow a user to operate Bash to use tab completion and to search the command history.
+
+* {{Keypress|Tab}} – Activate tab completion
+* {{Keypress|up}} – Scroll up (i.e. backward) in the command history
+* {{Keypress|down}} – Scroll down (i.e. forward) in the command history
+* {{Keypress|Ctrl|r}} – Search the command history
+
+Some keypress combinations also allow a user to operate the terminal emulator in order to move the cursor within the terminal window and to control the emulator program. By default, these keypress combinations in Bash mirror those of [[Emacs]].<ref>
+{{Cite web
+| access-date = 8 August 2025
+| website   = [[GNU Project]]
+| title       = GNU Bash Manual: 8.2.1 Readline Bare Essentials
+| url         = https://www.gnu.org/software/bash/manual/html_node/Readline-Bare-Essentials.html
+| publisher     = [[Free Software Foundation]]
+}}
+</ref>
+
+Default keybindings for control codes include:
+
+* {{Keypress|Ctrl|f}} – Move the cursor one character to the right 
+* {{Keypress|Ctrl|b}} – Move the cursor one character to the left
+* {{Keypress|Alt|f}} – Move the cursor one word to the right 
+* {{Keypress|Alt|b}} – Move the cursor one word to the left
+* {{Keypress|Ctrl|a}} – Move the cursor to the beginning of the current commandline
+* {{Keypress|Ctrl|c}} – Cancels the current command and presents a new prompt
+* {{Keypress|Ctrl|d}} – Closes the current Bash instance, possibly also closing the terminal-emulator
+* {{Keypress|Ctrl|e}} – Move the cursor to the end of the current commandline
+* {{Keypress|Ctrl|q}} – Wake the terminal; buffered keypresses are then processed
+* {{Keypress|Ctrl|s}} – Put the terminal to sleep
+* {{Keypress|Ctrl|w}} – Remove one word to the left of the cursor
+* {{Keypress|Ctrl|z}} – Stop a foregrounded process
+
+[[Vi (text editor)|Vi]] keybindings are also available and can be enabled by running {{Code|set -o vi|bash}}.<ref>
+{{Cite web
+| access-date = 8 August 2025
+| work   = [[GNU Project]]
+| title       = GNU Bash Manual: 8.5 Readline vi mode
+| url         = https://www.gnu.org/software/bash/manual/html_node/Readline-vi-Mode.html
+| publisher     = [[Free Software Foundation, Inc.]]
+}}</ref><ref>
+{{Cite web
+| access-date  = 8 August 2025
+| archive-date = 2 March 2021
+| archive-url  = https://web.archive.org/web/20210302213519/http://www.hypexr.org/bash_tutorial.php#emacs
+| date         = 5 October 2012
+| first        = Scott
+| last         = Rippee
+| title        = Getting started with BASH: A Bash Tutorial
+| url          = https://www.hypexr.org/bash_tutorial.php#emacs
+| website      = hypexr.org
+}}</ref>
+
+=== Syntax ===
+<!-- Important concepts:
+       [] stream of characters
+       [] delineate full commandlines (newline, semi-colon)
+       [] division into commands and parts of commands (optargs)
+         [] uses metacharacters
+-->When Bash reads a ''full command line,'' the complete string is broken down into ''tokens.''
+"Tokens" are identified using, and separated from each other using ''metacharacters''.
+
+As of Bash 5.3, the 10 metacharacters are the space, tab, and newline, as well as the following characters: {{code|{{!}}&;()<>}}
+
+''"Blanks"'' are composed entirely of unquoted metacharacters, ''"operators"'' each contain at least one unquoted metacharacter and ''"words"'' may not include any unquoted metacharacters.
+
+In practice, Bash breaks down ''full command strings'' into tokens or groups of tokens that ''do'' contain metacharacters and tokens or groups of tokens that do ''not'' contain any metacharacters—called ''"words"''.
+From there it further breaks ''words'' down into more specific, meaningful pieces like command names, variable assignment statements, etc.
+
+The two blanks are space and tab.
+
+==== Operators ====
+
+Control operators perform a ''control function''. They can be either a newline or one of the following: <code>||</code>, <code>&&</code>, <code>&</code>, <code>;</code>, <code>;;</code>, <code>;&</code>, <code>;;&</code>, <code>|</code>, <code>|&</code>, <code>(</code>, or <code>)</code>.
+
+Redirection operators redirect the input or output streams. They include <code>&lt;</code>, <code>&gt;</code>, <code>&amp;&gt;</code>, <code>&lt;&lt;</code>, and <code>&lt;&lt;&lt;</code>.
+
+==== Words ====
+A ''word'' is a sequence of (non-meta-) characters treated as a single unit by the shell. A ''reserved word'' is a kind of a ''word'' that has a special meaning to the shell.<ref>
+{{Cite web
+| access-date = 18 August 2025
+| title = Bash Reference Manual, D.2 Index of Shell Reserved Words
+| url = https://www.gnu.org/software/bash/manual/bash.html#Reserved-Word-Index
+}}
+</ref>
+A ''name'' is a kind of a word separate from ''reserved words''. Names consist solely of letters, underscores and numbers; which begins with either a letter or an underscore; which, however, may not begin with a number.
+Names also called ''identifiers,'' may be used for naming variables and functions.
+
+Sixteen of the twenty-two ''"reserved words",'' which may be characters or words are as follows:
+
+<syntaxhighlight lang="bash">
+'!' '[[' '{' ']]' '}' case in esac for do done if then elif else fi ...
+</syntaxhighlight>
+
+Names may only contain the characters <code>ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789_</code>.
+
+In the following example of a full command string, ''metacharacters'' have a comma placed above them, {{Code| ,}}, ''reserved words'' have a caret placed beneath them, {{Code| ^}}, and other ''tokens'' have a backtick placed also beneath them, {{Code| `}}.
+
+<syntaxhighlight lang="console">
+$ #,  ,    ,   ,,    ,       ,,  ,
+$   if echo foo; then bar=abc; fi
+$ # ^^ ```` ```  ^^^^ ```````  ^^
+</syntaxhighlight>
+
+=== Subshells ===
+
+<!-- Important concepts:
+       [x] Subshells
+       [x] Process and environment info, ie, parent/child, exact copy, etc
+-->
+
+A "subshell" is an additional instance of the shell which has been initialized by a current instance of the shell.
+When a "parent" shell creates a subshell, or a "child" shell, an exact copy of the parent's environment information is re-created and becomes the environment of the subshell.
+
+In Bash, in non-arithmetic contexts, one can force the use of a subshell by enclosing a full command string in ''single parentheses''.
+
+<syntaxhighlight lang="console">
+$ echo foo
+foo
+$ ( echo foo )
+foo
+$
+</syntaxhighlight>
+
+For this simple case, the preceding two commands are equivalent, however, use of subshells can have certain unexpected side effects. There are numerous different forms of syntax which can cause the initialization of a subshell. A non-comprehensive list of operators that cause the initialization of a subshell is as follows:
+
+* Subshells syntax, <code>()</code>, for example, would initialize a subshell:<syntaxhighlight lang="bash">$ ( program arga argb )</syntaxhighlight>
+
+* Piping syntax, <code>A | B</code>, for example, would also initialize a subshell:<syntaxhighlight lang="bash">
+$ program1 abc def | program2 -abc
+</syntaxhighlight>
+
+=== Expansion ===
+{{main|String interpolation}}
+
+=== Data structures ===
+
+<!-- Important concepts:
+       [x] Data structure
+       [ ] Expansion
+       [ ] Variables
+       [x] Kinds of variables
+       [x] Naming conventions
+       [?] Positional parameters
+       [?] Special parameters
+       [x] Environment variables
+       [x] Scripting variables
+       [x] Arrays
+-->
+Bash offers variables and arrays as data structures, and though there are numerous kinds of each of these available, the data structures are relatively simple compared to other languages like [[C (programming language)|C]] or [[Java (programming language)|Java]].<ref name="gnu manual" /> All data is stored in memory as a string.
+
+Beginning a word with a dollar character signifies that the word is the name of a variable or array. 
+Surrounding the dollar / variable name syntax in double quotes is always advised. This practice shields the value(s) held by the parameter(s) from unwanted side effects.{{Clarify|date=September 2025}}
+
+Wrapping the variable name in curly brackets (braces) {{code|{} }} is recommended for readability and consistency between variables and arrays. When writing variables, curly brackets are optional and square brackets would be a syntax error. The parameter names are always on the left side of the equals sign and values are always on the right.
+
+==== Variables ====
+
+A variable is assigned to using the syntax <code>name=value</code>.
+
+To use a variable, the syntax <code>$name</code> is used, or <code>${name}</code>, which expands to the value assigned to the variable.
+
+The latter syntax must be used for certain names to prevent unwanted side effects. For example, <code>$10</code> will be parsed as <code>${1}0</code>, so using <code>${10}</code> means it will be parsed as intended.
+
+Positional parameters, usually passed to a bash script, are denoted by the variables numbered starting from $0.
+Special parameters are signified by punctuation characters.<ref name="gnu manual" /> For example, {{code|$@}} expands to a list of the first through last positional parameters, "individually requoted, separated by spaces".{{attribution needed|date=November 2025}}
+
+[[Environment variables]] are signified by all capital letters. Environment variables include UNIX variables like {{code|LESS_SIGUSR1}}, and Bourne shell variables such as {{code|HOME}}.<ref name="gnu manual" /> Scripting variables are signified by all lower case letters or CamelCase. This is only convention; any variable can be passed to the {{code|export}} command to be made into an environment variable.
+
+==== Arrays ====
+Arrays are data structures which hold multiple values.<ref>{{Cite web|url=https://www.gnu.org/software/bash/manual/html_node/Arrays.html|title=Arrays (Bash Reference Manual)|website=www.gnu.org}}</ref> Arrays have a set of square brackets placed at the end of the variable name and inside the curly braces. When writing arrays, curly braces and square brackets are required.
+
+An array is assigned using the syntax <code>name=( one or more elements )</code>. It is expanded using {{Code| ${quux[@]} | bash}} or {{Code| ${quux[*]} | bash}} or {{Code| ${quux[1]} | bash}}, depending on the use case.
+<!-- TODO: clarify the above -->
+
+Each kind of parameter is distinguished by a specific [[Naming convention (programming)|naming convention]].<ref name="gnu manual">{{Cite web|url=https://www.gnu.org/software/bash/manual/bash.html|title=Bash Reference Manual|website=www.gnu.org}}</ref>
+
+Since Bash 4.0,<ref>{{Cite web|url=http://www.linux-magazine.com/Online/News/Bash-4.0-Introduces-Associative-Arrays|title=Bash 4.0 Introduces Associative Arrays » Linux Magazine|first=Mathias|last=Huber|website=Linux Magazine}}</ref> Bash also supports [[associative array]]s.
+
+In this article, examples of variables from this section include {{mono|${foo}, PID, PWD, EUID, $$}}, {{mono|${quux} }} and {{mono|${zork} }}.
+
+=== Execution ===
+
+{{Main|Execution (computing)}}
+
+<!-- Important concepts:
+       [x] Execution / to execute a command
+       [x] An executable
+       [x] Bash reads one line at a time
+       [x] Line continuation
+       [x] Command position
+       [ ] A single logical construct is parsed as a single unit       
+-->
+"Execution" of a given program occurs when a user (or some other program) asks the operating system to act upon the instructions contained in the given program.
+
+By default, Bash reads user code one line at a time, interprets any newline or semi-colon character {{code|;}} as the end of the current command, and executes commands in sequence. If an interactive command extends beyond the width of the terminal emulator, it is usually possible to keep typing and the command will wrap around. To extend a command beyond a newline onto an additional line, it is necessary that the final character of the first line be an unescaped backslash, {{code|\}}, which signals "line continuation".
+Bash always finishes parsing and executing one full commandline before moving on to and beginning with the parsing of the next commandline.
+
+<syntaxhighlight lang="console">
+$ foo=aa bar=bb quux=cc zork=dd; set -o xtrace
+$ : "${foo}"; : "${bar}"
++ : aa
++ : bb
+$ : "${quux}" \
+> : "${zork}"
++ : cc : dd
+$
+</syntaxhighlight>
+
+The first word of a command line is known as the "command position".
+Under UNIX coventionality, the first word of the command line is always some kind of command, and the rest of the words in the command line string are either options for the command, arguments for the options, or some kind of input upon which the command will operate. "Options" are also called "flags", "switches", or, more formally, "operators". When Bash attempts to locate a command for execution, the directories it searches are those listed in the {{Code|$PATH}} variable and the current working directory.<ref name="tldp_3.2.1">
+{{Cite book 
+| access-date = 13 August 2025
+| title = Introduction to Linux |section=3.2.1. The path
+| section-url = https://tldp.org/LDP/intro-linux/html/sect_03_02.html#sect_03_02_01
+| publisher= [[Linux Documentation Project]]
+}}</ref>
+
+<syntaxhighlight lang="console">
+$ # [COMMAND POSITION] [OPTION] [ARGUMENTS] 
+$ # ,--^   ,------------^   ,----^
+$ declare -p USER BASH_VERSION
+declare -x USER="liveuser"
+declare -- BASH_VERSION="5.2.37(1)-release"
+$
+</syntaxhighlight>
+
+=== Users and PS1 ===
+
+<!-- Important concepts:
+       [x] Human vs programmatic users
+       [x] Privileged vs regular users
+       [x] Root and the kernel are privileged
+       [x] PS1, re visual examples       
+-->
+A user account can be created for either a human or a programmatic user.
+In Unix-like operating systems, there are two kinds of users: "privileged" and "regular". A privileged user, such as root or the operating system kernel, is allowed to do anything whatsoever on the machine. Unprivileged users are limited in various ways.
+
+When an interactive shell session waits for user input, by default it prints a particular string of characters to the screen. In Bash, the [[Value (computer science)|value]] of this waiting-string is held in the shell [[Variable (computer science)|variable]] {{Code| $PS1}}. For regular users, a common default value for {{Code| $PS1}} is the dollar character, {{char|$}}.{{efn|not to be confused with the shell variable {{Code| $$}}}} For the [[superuser]], a common default value is hashtag ({{char|#}})
+
+<syntaxhighlight lang="console">
+$ sudo --login --user root
+[sudo] password for liveuser:
+# vim /home/liveuser/names.txt
+# exit
+$ grep -e bob ./names.txt
+grep: ./names.txt: Permission denied
+</syntaxhighlight>
+
+== Modes ==
+
+=== Programming paradigm ===
+
+<!-- Important concepts:
+       [x] Shell as a "programming language"
+       [?] Bash/shell is an imperative language
+       [ ] Bash/shell was not intended to be a functional language
+-->
+{{Blockquote
+|Although most users think of the shell as an interactive command interpreter, it is really a programming language in which each statement runs a command. Because it must satisfy both the interactive and programming aspects of command execution, it is a strange language, shaped as much by history as by design.
+|source=
+  {{Cite book
+  | author-first1 = Brian W.
+  | author-last1  = Kernighan
+  | author-link1  = Brian Kernighan
+  | author-first2 = Rob
+  | author-last2  = Pike
+  | author-link2  = Rob Pike
+  | date          = 1984
+  | isbn          = 0-13-937699-2
+  | location      = Englewood Cliffs
+  | publisher     = [[Prentice-Hall]]
+  | title         = The UNIX Programming Environment
+  | url           = https://archive.org/details/unixprogramminge0000kern
+  | url-access    = registration
+  }}
+| [[Brian W. Kernighan]] & [[Rob Pike]]
+| style =
+}}
+
+Bash is written in C. A modular style can be approximated through good style and careful design.<ref>
+{{Cite web
+| access-date = 15 August 2025
+| publisher   = [[Dartmouth University]]
+| title       = Modular data structures in C
+| url         = https://www.cs.dartmouth.edu/~cs50/Lectures/modules/
+| website     = dartmouth.edu
+}}</ref> It is often used in an [[Imperative programming|imperative]] or [[Procedural programming|procedural]] style.
+
+=== Interactive and non-interactive modes ===
+
+<!-- Important concepts:
+       [x] Terminal emulator
+       [x] Shell script
+-->
+As a [[Command-line interface|command processor]], Bash can operate in two modes: interactive or non-interactive.
+In [[Human–computer interaction|interactive]] mode, commands are usually read from a [[terminal emulator]]. In non-interactive mode, which facilitates [[automation]], commands are usually read from named files known today as [[shell script]]s. When executed as a standalone command at the [[command-line interface]] (CLI), by default Bash opens a new shell in interactive mode.
+
+=== Scripts ===
+
+<!-- Important concepts:
+       [x] Interpreter
+       [x] Computer program
+       [x] Executable
+       [x] Hash-bang
+       [x] Execute-bit
+-->
+[[Shell scripts]] are text files that contain [[Programming language|code]], often [[Command (computing)|commands]], intended to be read and acted upon by some particular [[Interpreter (computing)|interpreter]] in a [[Batch processing|batch process]] in a ''non-interactive mode'' and without any further user interaction. Interpreted scripts are [[Computer program|programs]] that do not require their [[source code]] to be [[Compiler|compiled]]: all of the relevant source code is contained within the script.
+There are many programs which can serve as a script interpreter: [[Perl]], [[AWK]], etc. Interpreted scripts are most often written for Unix shells.
+
+The first two characters of the first line of any (executable) shell script begins with a something called a [[Shebang (Unix)|shebang]]: literally the characters hashtag ({{char|#}}) and bang ({{char|!}}) side by side.
+
+<syntaxhighlight lang=console>
+$ cat ./example.sh
+#! /bin/env bash
+echo foo
+exit
+
+$
+</syntaxhighlight>
+
+If a script is intended to be run by a user as a stand-alone program on the commandline, then it is referred to as an ''"executable"''. By convention, the filenames of [[Execution (computing)|executable]] unix shell scripts are identified the suffix {{code|.sh}}. The "execute" bit can be enabled on a shell script with the utility {{code|chmod}}:
+
+<syntaxhighlight lang=console>
+$ ls -l ./example.sh
+-rw-r--r--.1 liveuser liveuser 32 Aug  3 22:33 example.sh
+$ ./example.sh
+bash: ./example.sh: Permission denied
+$ chmod 0744 ./example.sh
+$ ls -l ./example.sh
+-rwxr--r--.1 liveuser liveuser 32 Aug  3 22:33 example.sh
+$ ./example.sh
+foo
+$
+</syntaxhighlight>
+
+=== The {{code|source}} builtin ===
+
+<!-- Important concepts:
+       [x] source files vs shell scripts
+       [x] Dotfiles
+       [x] Hidden files
+       [ ] source executes the contents of a file in the current shell
+       [ ] scripts execute the contents of a file in a subshell
+-->
+With the {{code| source}}, or synonymous {{code| .}} command, Bash reads and executes shell commands from any text file by name.<ref>
+{{Cite web
+| access-date = 26 August 2025
+| publisher   = [[Free Software Foundation]]
+| title       = 4.1 Bourne Shell Builtins 
+| url         = https://www.gnu.org/software/bash/manual/html_node/Bourne-Shell-Builtins.html
+| website     = gnu.org
+}}
+</ref>
+
+=== Login and non-login shells ===
+
+{{Main|Session (computer science)}}
+
+<!-- Important concepts:
+       [x] GUI
+       [x] User login session
+       [x] Non-login shell in a terminal emulator
+       [x] How to close a terminal emulator
+-->
+Bash can be executed as a [[Login session|login shell]], or "[[session leader]]," in both interactive and non-interactive modes via the {{Code| --login}} option. "Logging in" requires user [[authentication]]. For this reason, only one login shell exists per user session. In GNU/Linux, a user's login shell is identified in the /etc/passwd file.
+
+<syntaxhighlight lang="console">
+$ awk -F ':' '$1 ~ /root/' /etc/passwd
+root:x:0:0:Super User:/root:/bin/bash
+</syntaxhighlight>
+
+When a human user initiates a login session, this procedure often occurs in a [[graphical user interface]] (GUI).
+When a user opens a [[terminal emulator]], the emulator executes a ''non-login'' instance of the user's login shell.
+
+Logging out of a shell session from within a terminal emulator can be accomplished with the {{mono| exit}} command or, by default in Bash, pressing {{Keypress| Ctrl|d}}.
+
+=== Startup {{code|source}} files ===
+
+{{Main|Unix shell|Hidden file and hidden directory}}
+
+<!-- Important concepts:
+       [x] source
+       [x] Shell startup files vs shell scripts
+           [x] Dotfiles can be executed in many different ways
+           [x] Dotfiles can influence many different things
+-->
+When Bash starts, it uses {{code|source}} to execute commands in a variety of [[Hidden file and hidden directory#Unix and Unix-like environments|dotfiles]] (see lists below).<ref name="drdobbs">
+{{Cite web
+| access-date  = 8 August 2025
+| archive-date = 2 March 2021
+| archive-url  = https://web.archive.org/web/20210302212410/https://www.drdobbs.com/i-almost-get-a-linux-editor-and-compiler/184404693
+| date         = 1 July 2021
+| first        = Al
+| last         = Stevens
+| quote        = But virtually all the configure and install scripts that come with open-source programs are written for bash, and if you want to understand those scripts, you have to know bash.
+| title        = I Almost Get a Linux Editor and Compiler
+| url          = https://www.drdobbs.com/i-almost-get-a-linux-editor-and-compiler/184404693
+| website      = Dr. Dobbs' Journal
+}}</ref>
+These dotfiles, unlike shell scripts, typically have neither the execute permission enabled nor a [[Shebang (Unix)|hash-bang]]. By default Bash will source a somewhat different set of files, and in a different sequence, depending on:<ref>
+{{Cite web
+| access-date = 12 August 2025
+| website   = [[GNU Project]]
+| title       = Bash reference manual, 6.2 Bash startup files
+| url         = https://www.gnu.org/software/bash/manual/bash.html#Bash-Startup-Files-1
+| publisher     = [[Free Software Foundation]]
+}}</ref>
+* How Bash is called: interactively, non-interactively, invoked with name {{Code| sh}}
+* Which options are used: {{Code| --login}}, {{Code| --rcfile}}, {{Code| --norc}}, {{Code| --posix}}
+* Which environment variables are defined: {{code|BASH_ENV}}, {{code|ENV}}, and
+* Which files exist:
+** {{Code| /etc/profile}} 
+** {{Code| ~/.bash_profile}}
+** {{Code| ~/.bash_login}}
+** {{Code| ~/.profile}} 
+** {{Code| ~/.bash_logout}}, and
+** {{Code| ~/.bashrc}} among others.
+
+Of course, any startup file can also execute commands from any other file. 
+Startup files can affect shell behavior, terminal emulators, the [[X window system]] and the [[window manager]].
+
+=== POSIX mode ===
+
+{{Main|POSIX|POSIX terminal interface}}
+
+<!-- Important concepts:
+       [x] Standardization
+       [x] Optional conformance
+       [x] Portability
+       [x] POSIX' functionality tradeoffs
+       [x] How to activate and disable POSIX mode
+       [x] How to detect POSIX mode
+       [x] Default mode vs POSIX mode, re features
+       [x] Different shells, different syntax requirements
+       [x] Linters
+-->
+The [[POSIX]] IEEE 1003.1 standard specifies a common set of definitions that any shell ''system application'' (bash, [[Almquist shell|dash]], [[Z shell|zsh]], etc.) may conform to.
+Any shell ''user script'' ({{Code| ./myscript.sh}}) written in conformance with POSIX guidelines should be executable by any shell ''system application'' that has [[implementation|implemented]] the POSIX specification. As a result, there can be a reasonable expectation that POSIX-compliant scripts can be executed with success on any Unix or Unix-like operating systems which implements the POSIX standard ([[Linux]], [[OpenBSD]], [[Oracle Linux]], [[HP-UX]], etc.). These scripts are considered "[[Porting|portable]]" as they are and without any further modifications. The portion of POSIX that applies to shells and command line utilities is a subset of a larger group of [[POSIX terminal interface|POSIX standards]] that further specify how terminals and terminal emulators aught to function in order to also be considered portable.
+
+When Bash is operating in POSIX mode, fewer features are available but the resulting code can be  executed on a greater variety of operating systems.
+
+To enable POSIX mode at the initialization of an interactive shell, Bash can be executed as either {{code|sh}}, {{Code|bash --posix}} or {{Code|bash -o posix}}.<ref name="tldp_psx">
+{{Cite book
+| access-date  = 8 August 2025
+| archive-date = 27 January 2012
+| archive-url  = https://web.archive.org/web/20120127105451/http://tldp.org/LDP/abs/html/portabilityissues.html
+| first        = Mendel
+| last         = Cooper
+| via    = The Public's Library and Digital Archive
+| title        = Advanced Bash Scripting Guide
+| chapter      = 36.9: Portability Issues
+| url          = https://tldp.org/LDP/abs/html/portabilityissues.html
+| url-status   = live
+| publisher      = [[Linux Documentation Project]]
+}}</ref> To cause a script to be initialized in POSIX mode, one would use the either the hashbang {{Code|#!/usr/bin/env sh}} or the less portable {{Code|#!/bin/sh}}. When an instance of Bash is operating in POSIX mode, the environment variable {{Code|$POSIXLY_CORRECT}} is defined, and the value of the environment variable {{Code|SHELLOPTS}} includes the string {{mono|posix}}.
+
+<syntaxhighlight lang="console">
+$ declare -p POSIXLY_CORRECT
+bash: declare: POSIXLY_CORRECT: not found
+$ sh
+$ declare -p POSIXLY_CORRECT
+declare -- POSIXLY_CORRECT="y"
+$
+</syntaxhighlight>
+
+The full list of features available in Bash which are not specified by POSIX is considerable.<ref>
+{{Cite web
+| access-date = 8 August 2025
+| first =  Chet | last = Ramey 
+| publisher   = [[Case Western Reserve University]]
+| title       = 6.11 Bash and POSIX
+| url         = https://tiswww.case.edu/php/chet/bash/POSIX
+}}</ref> Here is a partial list:
+* Any arrays other than the array of positional parameters, {{Code|$@}}, are not POSIX
+* The double bracket extended test construct, {{Code|[[...]]}}, is not POSIX
+** {{Code|[...]}} and {{Code|test}} are POSIX
+* One of the double-parentheses arithmetic-evaluation syntaxes, {{Code|((...))}}, is not POSIX
+** {{Code|$((...))}} is POSIX
+* Brace expansion, <code>kernel{,-headers}</code>, is not POSIX
+* Dynamic scoping of parameters and the {{Code|local}} builtin are not POSIX
+* Process substitution, {{Code|<(...)}}, is not POSIX
+* Certain string-manipulation operations in parameter expansions are not POSIX
+* Most Bash builtin commands are not POSIX
+** The command {{Code|enable -s|bash}} prints the list of Bourne special builtins, which are POSIX<syntaxhighlight lang="console">
+$ enable -s | wc --lines
+16
+$ enable | wc --lines
+61
+</syntaxhighlight>
+** The {{Code|enable}} builtin itself is not POSIX
+** In Bash, in non-POSIX mode, the {{Code|.}} and {{Code|source}} builtins are synonymous
+*** The {{Code|.}} (i.e., 'dot') builtin ''is'' POSIX, however
+*** The {{Code|source}} builtin ''is not'' POSIX
+* The {{Code|$EPOCHSECONDS}} and {{Code|$EPOCHREALTIME}} shell variables are not POSIX
+
+System commands which are available in modern Unix-like operating systems, and which are also specified by POSIX, may have fewer option flags or fewer relevant environment variables available under POSIX. Most (such as {{code|ls}}) are standalone programs in the {{code|/bin}}, {{code|/usr/bin}}, {{code|/sbin}} or {{code|/usr/sbin}} directories (in Linux, typically provided by [[GNU coreutils]] or [[BusyBox]]) rather than Bash builtins.
+
+Because of these and other differences, modern (version 5) Bash shell scripts are rarely runnable "as-is" under the Bourne or legacy Korn shell interpreters. Scripting with portability in mind is becoming less common as GNU/Linux becomes more widespread.<ref name =tldp_psx/><ref name=deb_pol>
+{{Cite book
+| access-date  = 11 May 2020
+| archive-date = 12 May 2020
+| archive-url  = https://web.archive.org/web/20200512050159/https://www.debian.org/doc/debian-policy/ch-files.html#scripts
+| title        = Debian Policy Manual v4.5.0.2 |chapter=10 – Files
+| url          = https://www.debian.org/doc/debian-policy/ch-files.html#scripts
+| url-status   = live
+| publisher      = Debian Project
+}}</ref>
+
+Code that is valid syntax in Bash but not specified by POSIX is called a "bashism". The program {{code|checkbashisms}} can be used to make sure that a script can be executed in [[Debian|Debian Linux]] without any portability errors.<ref name="checkbashisms-1">
+{{Man
+|1|checkbashisms|ManKier
+}}</ref> Vidar Holen's {{code|shellcheck}} is another static [[Lint (software)|linter]] written in [[Haskell]] which can parse script syntax for compatibility with any or all of bash, dash, ksh, and Bourne sh.<ref name="shellcheck-1">{{Man|1|shellcheck|ManKier}}</ref>
+
+The syntax requirements for each shell are each a little different. For example, Debian's policy allows some extensions in their scripts (as they are in the [[Almquist shell#Dash|dash]] shell),<ref name =deb_pol/> while a script intending to support pre-POSIX Bourne shells, like [[autoconf]]'s {{mono|configure}}, are even more limited in the features they can use.<ref>
+{{Cite book
+| access-date  = 20 January 2020
+| archive-date = 2 March 2021
+| archive-url  = https://web.archive.org/web/20210302212413/https://www.gnu.org/savannah-checkouts/gnu/autoconf/manual/autoconf-2.70/html_node/Portable-Shell.html
+| author    = [[GNU Project]]
+| title        = Autoconf |chapter=11: Portable Shell
+| url          = https://www.gnu.org/software/autoconf/manual/html_node/Portable-Shell.html
+| url-status   = live
+| publisher      = [[Free Software Foundation]]
+}}</ref>
+
+=== Other modes ===
+
+==== Restricted mode ====
+
+<!-- Note, restricted mode involves features that haven't been explained yet in the Modes section -->
+A restricted shell is used to set up an environment more controlled than the standard shell. A restricted shell behaves identically to bash with the exception that numerous actions are disallowed or not performed, including:
+
+* Changing directories with the {{code|cd}} builtin.
+* Setting or unsetting the values of the {{Code|SHELL| bash}}, {{Code|PATH|bash}}, {{Code|HISTFILE|bash}}, {{Code|ENV|bash}}, or {{Code|BASH_ENV|bash}} variables.
+* Specifying command names containing slashes on the CLI.
+* Using absolute pathnames as arguments to the {{Code|.}}, {{code|history}}, or {{Code|hash -p|bash}} commands.
+* Specifying a path search with {{Code|. -p}} or {{Code|command -p|bash}}.
+* Importing function definitions and parsing the value of {{Code|SHELLOPTS|bash}} from the shell environment at startup.
+* Redirecting output using the {{Code|>}}, {{Code|>}}, {{Code|<>}}, {{Code|>&}}, {{Code|&>}}, and {{Code|>>}} redirection operators.
+* Using the {{code|exec}} builtin to replace the shell with another command.
+* Altering shell builtins.
+
+Once restricted mode is enabled, it cannot be disabled. These restrictions are enforced after any startup files are read, and it does not apply to shell scripts. Restricted mode is rarely used.
+
+==== Privileged mode ====
+
+<!-- Important concepts:
+       Saying something about Privileged mode
+-->
+In Bash, "privileged mode" is a rarely used option inherited{{Citation needed|date=August 2025}} from the SVR4.2 [[UNIX System V]] shell (circa 1992).<ref>{{Cite book
+| access-date = 13 August 2025
+| author   = [[GNU Project]]
+| quote       = In a questionable attempt at security, the SVR4.2 shell, when invoked without the -p option, will alter its real and effective UID and GID....
+| title       = Bash Reference Manual |chapter=B.1 Implementation Differences from the SVR4.2 Shell
+| url         = https://www.gnu.org/software/bash/manual/bash.html#Implementation-Differences-From-The-SVR4_002e2-Shell
+| publisher     = [[Free Software Foundation]]
+}}</ref> It can be enabled with {{Code| set -p| bash}} and disabled with {{Code| set +p| bash}}.<ref>
+{{Cite book
+| access-date = 13 August 2025
+| author = [[GNU Project]]
+| quote =  In this mode, the $BASH_ENV and $ENV<!--sic: prefixed with $. Text is referring to the content of these variables, not the variables themselves--> files are not processed, shell functions are not inherited from the environment, and the SHELLOPTS, BASHOPTS, CDPATH and GLOBIGNORE variables, if they appear in the environment, are ignored.
+| title = Bash Reference Manual |chapter=4.3.1 The Set Builtin
+| url = https://www.gnu.org/software/bash/manual/html_node/The-Set-Builtin.html
+| publisher = [[Free Software Foundation]]
+}}</ref> When privileged mode is enabled, the {{Code|SHELLOPTS|bash}} shell variables includes the string "privileged".<!--[[MOS:LQ]]: ***NOT*** including the full stop!!!-->
+
+==== Extended debugging mode ====
+
+<!-- Important concepts:
+       [x] Saying something about Extended debugging mode
+-->
+Enabled via {{Code|bash --debugger}} at invocation or via {{Code|shopt -s extdebug|bash}} during either interactive or non-interactive modes. It uses a separate program called {{mono|bashdb}}.<ref name="ref_bashdb">
+{{Cite web
+| access-date = 18 August 2025
+| title       = BASH Debugger
+| url         = https://bashdb.sourceforge.net/
+| website     = [[SourceForge]]
+}}</ref> {{mono|extdebug}} is not available in POSIX mode. See documentation for more information. See also {{Section link||Debugging}}.
+
+==== Compatibility modes ====
+
+<!-- Important concepts:
+       [x] Saying something about Compatibility modes
+-->
+{{Blockquote
+| Bash-4.0 introduced the concept of a shell compatibility level, specified as a set of options to the shopt builtin (compat31, compat32, compat40, compat41, and so on). There is only one current compatibility level – each option is mutually exclusive. The compatibility level is intended to allow users to select behavior from previous versions that is incompatible with newer versions while they migrate scripts to use current features and behavior. It's intended to be a temporary solution.<ref>{{Cite book
+| access-date = 5 August 2025
+| author   = [[GNU Project]]
+| title       = Bash Reference Manual |chapter=6.12 Shell Compatibility Mode
+| url         = https://www.gnu.org/software/bash/manual/bash.html#Shell-Compatibility-Mode
+| publisher     = [[Free Software Foundation]]
+}}</ref>
+| source = Bash Reference Manual, 6.12 Shell Compatibility Mode
+}}
+
+== Observability ==
+
+=== The {{mono| xtrace}} option ===
+
+<!-- Important concepts:
+       [x] Description and visual example of xtrace
+       [x] How to enable and disable xtrace
+       [x] xtrace re POSIX
+-->
+When {{Mono| xtrace}} is enabled, simple debugging content is printed to the terminal.
+It can be enabled with {{Code| set -o xtrace}} or {{Code| set -x}}, and disabled with {{Code| set +o xtrace}}, {{Code| set +x}} or {{Code| set -}}.
+These options are also accepted at the commandline and at hash-bangs: {{Code| #!/bin/bash -x}}, etc.
+
+<syntaxhighlight lang="console">
+$ bash -x
+$ echo $((  2 + 2  ))
++ echo 4
+4
+$ set -- 1 2 3
+$ printf '<%s>\n' "$@"
++ printf '<%s>\n' 1 2 3
+<1>
+<2>
+<3>
+$
+</syntaxhighlight>
+
+The {{Mono| xtrace}} shell setting is specified by POSIX.
+See also {{section link||Debugging}}.
+
+=== The {{mono| verbose}} option ===
+
+<!-- Important concepts:
+       [x] Saying something about Verbose mode
+-->
+The verbose option prints strings to the terminal as they are read, and before any expansions are performed. Rarely used.<ref>See {{Code| set -v| bash}} in the documentation.</ref>
+
+=== Comments ===
+
+<!-- Important concepts:
+       [x] Comments
+       [x] Inline comments
+       [x] Observability of comments
+-->
+Comments can be a valuable way of clarifying information or explaining a script or source file to someone else who might not be familiar with the scripter's intentions or context.
+
+Standard comments in Bash are denoted with a hash character: {{char|#}}.
+Any text to the right of the hash to the end of the line will be ignored.
+Inline comments are allowed, but hash comments will not print during debugging. See also: {{section link||xtrace}}.
+
+Comments denoted with a colon character, {{char|:}}, originated with the [[Thompson shell]]. Any arguments to the right of colon {{char|:}} builtin are ignored. Inline comments are not possible, but colon comments will print during debugging and any parameters will have been expanded.<ref>
+{{Cite web
+| access-date = 8 August 2025
+| at          = Base Specifications Issue 8: IEEE Std 1003.1-2024
+| author      = The Open Group
+| title       = 2.15 Special Builtins: colon - null utility
+| url         = https://pubs.opengroup.org/onlinepubs/9799919799/utilities/V3_chap02.html#tag_19_17
+| website     = opengroup.org
+}}</ref>
+
+:<syntaxhighlight lang="console">
+$ # Define foo
+$ foo=bar # An inline hash comment occurs on the same line as a command
+$ set -x
+$ # A regular comment (no output)
+$ : "${foo}"
++ : bar
+$
+</syntaxhighlight>
+
+=== Exit codes ===
+
+<!-- Important concepts:
+       [x] What exit codes signify: success vs partial success vs failure
+       [x] The question mark '$?' special variable
+       [x] Boolean algebra
+       [x] Look for intended meaning in the man page
+       [x] Arithmetic contexts are different
+       [x] Lack of standardization
+-->
+When bash executes commands, [[exit status]] codes, also called "return codes," are produced which can offer some insight into the manner in which a program ceased running.
+The value of the most recently captured exit code is held within the shell parameter, 'question mark:' {{Code| $? }}.
+In non-arithmetic contexts, (i.e., most of the time) the numerical or "[[Boolean algebra|Boolean]]" value of "true" is zero (0), and the value of "false" is one (1).
+
+When a system command has executed, the intended meaning of its exit status can most often be found in its man page; usually a zero indicates success and a nonzero exit status indicates some kind of failure condition or partial success.
+{{Code| ping}} is a well known command with three meaningful exit codes: 0, 1, and 2.
+
+In Bash, within arithmetic contexts, the numerical truth values are reversed: "true" is one and "false" is zero.
+An arithmetic context can usually be identified by the syntax {{Code| ((...)) }} or {{Code| $((...)) }}.
+If an arithmetic statement evaluates to the integer zero, then the statement is considered "true," and the exit code is one.
+If the statement evaluates to any number other than zero the arithmetic statement is "false" and the exit code is zero.
+
+Not all Linux/UNIX commands provide meaningful exit codes beyond zero and one, and there is no standard system for definitions of exit codes in Linux.
+
+:<syntaxhighlight lang="console">
+$ true; echo "$?" # Exit code means "true"
+0
+$ false; echo "$?"; echo # Exit code means "false"
+1
+$
+$ bash -c 'exit 99'; printf 'exit-code: %d\n\n' "$?"
+exit-code: 99
+$
+$ ((  1 - 1  )); printf '%d\n' "$?" # This exit code means "true"
+1
+$ ((  1 + 1  )); printf '%d\n' "$?" # ...and this exit code means "false"
+0
+</syntaxhighlight>
+
+=== Job control ===
+
+{{Main|Job control (Unix)}}
+
+<!-- Important concepts:
+       [x] Terminal emulator
+       [x] Interactive mode
+       [x] Job = process
+       [x] Background vs foreground
+       [x] Suspending, resuming 
+       [?] Process states
+       [x] How to control jobs, incl related commands
+       [ ] disown
+-->
+The Bash shell has two modes of execution for commands: batch (asynchronous), and concurrent (synchronous).
+To execute commands in batch mode (i.e., in sequence) they must be separated by the character {{char|;}}, or on separate lines:
+
+:<syntaxhighlight lang="console">
+$ command1; command2
+$ command3
+$
+</syntaxhighlight>
+
+In this example, when {{Mono| command1}} is finished, {{Mono| command2}} is executed, and when {{Mono| command2}} has completed, {{Mono| command3}} will execute.
+A [[Background process|background execution]] of {{Mono| command1}} can occur using symbol {{char|&}} at the end of an execution command, and process will be executed in background while immediately returning control to the shell and allowing continued execution of commands.
+
+:<syntaxhighlight lang="console">
+$ command1 &
+$
+</syntaxhighlight>
+
+Or to have a concurrent execution of {{Mono| command1}} and {{Mono| command2}}, they must be executed in the Bash shell in the following way:
+
+:<syntaxhighlight lang="console">
+$ command1 & command2
+$
+</syntaxhighlight>
+
+In this case {{Mono| command1}} is executed in the background, {{char|&}} symbol, returning immediate control to the shell that executes {{Mono| command2}} in the foreground.
+A process can be stopped and control returned to bash by typing {{Key press|Ctrl|z}} while the process is running in the foreground.<ref>
+{{Cite web
+| access-date  = 8 August 2025
+| archive-date = 15 March 2018
+| archive-url  = https://web.archive.org/web/20180315115230/http://www.gnu.org/software/bash/manual/bash.html#index-background
+| publisher    = [[GNU Project]]
+| title        = Bash Reference Manual: 7.1 Job Control Basics
+| url          = https://www.gnu.org/software/bash/manual/bash.html#index-background
+| url-status   = live
+| website      = [[Free Software Foundation, Inc.]]
+}}</ref>
+A list of all processes, both in the background and stopped, can be achieved by running {{mono|jobs}}:
+
+:<syntaxhighlight lang="console">
+$ jobs
+[1]-  Running                  command1 &
+$
+</syntaxhighlight>
+ 
+In the output, the number in brackets refers to the job id.
+The plus sign signifies the default process for {{mono|bg}} and {{mono|fg}}.
+The text "Running" and "Stopped" refer to the [[process state]].
+The last string is the command that started the process.
+ 
+The state of a process can be changed using various commands.
+The {{mono|fg}} command brings a process to the foreground, while {{mono|bg}} sets a stopped process running in the background.
+{{mono|bg}} and {{mono|fg}} can take a job id as their first argument, to specify the process to act on.
+Without one, they use the default process, identified by a plus sign in the output of {{mono|jobs}}.
+The {{mono|kill}} command can be used to end a process prematurely, by sending it a [[Signal (IPC)|signal]].
+The job id must be specified after a percent sign:
+ 
+:<syntaxhighlight lang="console">
+$ sleep 100 &
+[1] 4904
+$ kill %1
+$ jobs
+[1]+  Terminated                    sleep 100
+$
+</syntaxhighlight>
+
+Job control, also known as "Monitor mode," is enabled by default in interactive shells, and can be disabled with {{Code|set +m|bash}}.
+
+=== Signals ===
+
+<!-- More citations in this section, please! -->
+<!-- Important concepts:
+       [x] Process
+       [x] Execution
+       [x] Interactive terminal
+       [x] Control keypress sequences
+       [x] Foreground vs. background processes
+       [ ] TTY's
+       [?] sleep builtin
+       [?] `ps aux`, `grep` and `awk` 
+       [ ] Variety of signals
+       [ ] Utility of certain signals: KILL, TERM, etc
+       [x] Sending signals: kill
+       [ ] Catching signals: trap
+       [x] Bash special signals
+-->
+[[Signal (IPC)|Signaling]] is a means of [[inter-process communication]] (IPC). Sometimes a commandline process may seem to freeze in the middle of execution.
+In these instances it may become necessary to identify which process may be blocked and to manually end the offending process.
+
+At an interactive terminal, it is usually sufficient to press {{key| Ctrl-c}} to end the current foreground process and return control back to the user prompt, or to press {{key| Ctrl-z}} to suspend it.
+Occasionally attempting to suspend a process will succeed when attempts to cancel a process appear unresponsive.
+In other cases it may be necessary to use the {{Mono| kill}} program to send an IPC signal.
+In this example, we use the {{Mono| kill}} command from a second terminal screen to terminate the process with PID 4331.
+
+:<syntaxhighlight lang="console">
+$ tty # Terminal one
+/dev/pts/0
+$ whoami
+liveuser
+$ sleep 1000 # Command hangs
+</syntaxhighlight>
+
+:<syntaxhighlight lang="console">
+$ tty # Terminal two
+/dev/pts/1
+$ whoami
+liveuser
+$ ps aux | grep -e sleep -e PID
+USER         PID %CPU %MEM    VSZ   RSS TTY      STAT START    TIME COMMAND       
+liveuser    4331  0.0  0.0 230336  2312 pts/1    S+   11:19    0:00 sleep 1000
+liveuser    4333  0.0  0.0 231248  2516 pts/0    S+   11:19    0:00 grep --color=auto -e sleep -e PID
+$ kill 4331
+$ ps aux | grep -e sleep -e PID # The sleep process has ended
+USER         PID %CPU %MEM    VSZ   RSS TTY      STAT START    TIME COMMAND       
+liveuser    4333  0.0  0.0 231248  2516 pts/0    S+   11:19    0:00 grep --color=auto -e sleep -e PID
+$ 
+</syntaxhighlight>
+
+:<syntaxhighlight lang="console">
+$ tty # Terminal one again
+/dev/pts/0
+$ whoami
+liveuser
+$ sleep 1000
+Terminated
+$
+</syntaxhighlight>
+
+In Unix-like operating systems, a user is allowed to instruct the kernel to send a signal to a process that is owned by the user.
+A regular user may not send a signal to a privileged process.
+Signals can be sent to a process using the {{mono| kill}} builtin or using the system binary of the same name.
+
+:<syntaxhighlight lang="console">
+$ whoami
+liveuser
+$ ps aux | awk '$2 ~ /\<1\>/' # Let\s view some info on the kernel process, process 1.
+root           1  0.0  0.2  37140 20440 ?        Ss   04:44    0:18 /usr/lib/systemd/systemd --switched-root --system --deserialize=53 rhgb
+$ kill -s SIGKILL 1
+bash: kill: (1) - Operation not permitted
+$ type -a kill
+kill is a shell builtin
+kill is /usr/bin/kill
+$ /usr/bin/kill -s SIGKILL 1
+kill: sending signal to 1 failed: Operation not permitted
+$
+</syntaxhighlight>
+
+The most commonly used signals can be viewed with <CODE>kill -L | head -n 4</CODE>.
+Each IPC signal is associated with a signal number, but exit codes and signal codes are two different things. 
+While sending a process an IPC signal of 9 (a "KILL" signal) will almost certainly terminate the process immediately, it will most likely not result in the process returning an exit code of 9.
+
+<!-- How cleanly do processes shut down on INT and QUIT? -->
+<!-- Is Ctrl-z SIGSTOP or SIGTSTP? -->
+By default in Bash, builtin kill sends a TERM ("terminate") signal.
+It's common for commandline utilities to respond to a SIGTERM by shutting down and exiting cleanly. (TERM and SIGTERM are the same, the SIG- prefix to all signal names can be omitted.)
+The Ctrl-c keypress sequence in Bash sends a SIGINT, interrupt signal, to the foreground process.
+The Ctrl-z keypress sequence sends the SIGSTOP, stop signal.<ref>
+{{Cite book
+| access-date = 16 August 2025
+| date        = 2008
+| first       = Randal
+| isbn        = 978-0-470-18301-4
+| last        = Michael
+| page        = 25
+| publisher   = Wiley Publishing, Inc., Indianapolis, Indiana
+| quote       = 19 :: SIGSTOP :: Stop, usually Ctrl + z
+| title       = Mastering Unix Shell Scripting, 2e
+| url         = https://books.google.com/books?id=uI7C2BDF6F0C
+}}</ref>
+When a process receives a SIGKILL, the process terminates immediately and messily.
+It is recommended to use SIGKILL only as a last resort.<ref>
+{{Cite book
+| access-date = 16 August 2025
+| date        = 29 March 2005
+| first       = Cameron
+| last        = Newham
+| page        = 205
+| publisher   = O'Reilly Media, Inc.
+| quote       = Use KILL only as a last resort!
+| title       = Learning the bash Shell: Unix Shell Programming
+| isbn = 978-0-596-55500-9
+| url         = https://books.google.com/books?id=dzBCH3x6fYEC
+}}</ref>
+The SIGKILL signal cannot be blocked or handled.
+
+Processes can "catch" and "handle" IPC signals they receive.
+A user can use the kill builtin to "send" an IPC signal to another process.
+That target process can set up a mechanism, some plan beforehand, for how to repsond whenever any particular signal might be received, or "caught."
+The way a target program responds is referred to as how the program "handles" receiving the signal.
+In the man pages one can see how some system commands will print out certain information to the terminal when they receive a SIGHUP: for example, the {{Code| dd| bash}} command.<ref>{{Cite web
+| access-date = 19 October 2025
+| title       = dd(1)
+| url         = https://www.man7.org/linux/man-pages/man1/dd.1.html
+| website     = www.man7.org
+}}</ref>
+
+{{Blockquote
+| When bash is interactive, in the absence of any traps, it ignores {{mono|SIGTERM}} (so that {{Code| kill 0| bash}} does not kill an interactive shell), and catches and handles {{mono|SIGINT}} (so that the {{mono| wait}} builtin is interruptible). When bash receives {{mono|SIGINT}}, it breaks out of any executing loops. In all cases, bash ignores {{mono|SIGQUIT}}. If job control is in effect, bash ignores {{mono|SIGTTIN}}, {{mono|SIGTTOU}}, and {{mono|SIGTSTP}}.<ref name="case.edu_bash(1)">
+{{Cite web
+| access-date = 8 August 2025
+| publisher   = [[Case Western Reserve University]]
+| title       = Bash(1)
+| url         = https://tiswww.case.edu/php/chet/bash/bash.html
+| website     = case.edu
+}}</ref>
+| author = {{Mono| bash(1)}}
+}}
+
+By default Bash shell scripts receive and respond to any and all IPC signals sent to them, however, Bash scripts can utilize the {{mono| trap}} builtin to catch and handle signals.<ref>
+{{Cite web
+| access-date = 5 August 2025
+| title       = Sending and Trapping Signals
+| url         = https://mywiki.wooledge.org/SignalTrap
+| website     = wooledge.org
+}}</ref>
+
+:<syntaxhighlight lang="console">
+$ cat ./trap-example.sh 
+#! /usr/bin/env bash
+trap umask EXIT
+echo bar
+exit 0
+$ chmod 0700 trap-example.sh
+$ ./trap-example.sh 
+bar
+0077
+$
+</syntaxhighlight>
+
+There are a few signals which are only available from within Bash as GNU extensions: {{mono|ERR}}, {{mono|EXIT}}, {{mono|RETURN}} and {{mono|DEBUG}}.
+These signals can be useful in debugging, and can only be sent and handled by shell builtins.
+See also {{Section link|| Debugging}}.
+
+=== Values of parameters ===
+
+<!-- Important concepts:
+       [ ] re Variables
+           [?] Accuracy in observing contents of variables
+           [x] String
+           [x] Attributes
+           [x] String values vs attributes of variables
+           [x] Special Variables
+           [x] printf
+           [x] declare -p
+           [?] Commandline parsing
+-->
+There are many different implementations of {{mono|echo}}. Some have the {{code|-e}} option, and some don't.<ref>
+{{Cite book
+| access-date = 16 August 2025
+| date        = 2008
+| first       = Randal
+| isbn        = 978-0-470-18301-4
+| last        = Michael
+| page        = 20
+| publisher   = Wiley Publishing, Inc., Indianapolis, Indiana
+| quote       = In Korn shell the {{Mono |echo}} command recognizes these command options by default. In Bash shell we must add the {{Mono |-e}} switch to the {{Mono |echo}} command, {{Code| echo -e "\n"| bash}} for one new line. 
+| title       = Mastering Unix Shell Scripting, 2e
+| url         = https://books.google.com/books?id=uI7C2BDF6F0C
+}}</ref>
+The list of options is not uniform across implementations, though {{mono|echo}} and {{mono|printf}} are both specified by POSIX.
+If a scripter wishes to know the precise value of a string contained by a variable, then the most consistent way of doing so is to use {{mono|printf}}.
+
+For any string containing any character (besides null?) including digits, the format specifier is {{mono|%s}}.{{Citation needed|date=August 2025}}
+
+:<syntaxhighlight lang="console">
+$ foo=abc bar=123
+$ printf '<%s>\n' "${foo}" "${bar}"
+<abc>
+<123>
+$
+</syntaxhighlight>
+
+For digits only, the format specifier is {{mono|%d}}.
+
+:<syntaxhighlight lang="console">
+$ printf '<%d>\n' "${foo}" "${bar}"
+bash: printf: abc: invalid number
+<0>
+<123>
+$
+</syntaxhighlight>
+
+With {{mono|printf}}, a newline is never included in the output unless the scripter includes a newline in the format string.
+In the example below, where a newline has been omitted from the format string, the value of PS1 is printed on the same line as the output of the previous command.
+
+:<syntaxhighlight lang="console">
+$ printf '<%s>' "${foo}" "${bar}"
+<abc><123>$
+</syntaxhighlight>
+
+Another very consistent method is to use {{Code|declare -p| bash}}.
+The output of {{Code|declare -p| bash}} can be reused as input.
+However, not all variables and parameters can be printed using {{Code|declare -p| bash}}, for example, the values of the Special Parameters.
+The Special Parameter hashtag, {{Code|"$#"| bash}}, reports how many Positional Parameters are currently defined.
+
+:<syntaxhighlight lang="console">
+$ declare -p foo bar
+declare -- foo="abc"
+declare -- bar="123"
+$ declare -p "$#"
+bash: declare: 0: not found
+$
+</syntaxhighlight>
+
+For a full string of input at an interactive shell...
+
+:<syntaxhighlight lang="console">
+$ declare -p #
+</syntaxhighlight>
+
+...the hashtag would be interpreted by Bash as an inline comment.
+With the comment and all text to the right of it removed, the command that Bash would execute would be {{Code|declare -p| bash}}.
+This command would, according to {{code|help declare}}, "display the values and attributes of each NAME," i.e., each variable, and, "if no NAMEs are given, display the values and attributes and values of all variables," which can be over 100 lines of output.
+
+On the other hand, {{mono|printf}} cannot display variables' attributes.
+See also {{section link||Debugging}}.
+
+:<syntaxhighlight lang="console">
+$ readonly foo
+$ declare -p foo
+declare -r foo="abc"
+$ printf '<%s>' "${foo}"
+<abc>
+$ 
+</syntaxhighlight>
+<!--=== Variables ===-->
+<!-- Important concepts:
+       [x] Character encoding
+       [x] Control characters
+       [x] String
+       [x] Attributes
+       [ ] Expansion
+       [x] Observability of comments
+       [x] Working directory (PWD) [Environment]
+       [x] PS1, re visual examples [Environment]      
+       [x] Shell startup files vs shell scripts [Environment]
+           [x] Dotfiles can be executed in many different ways
+           [x] Dotfiles can influence many different things
+       [x] How to detect POSIX mode: POSIXLY_CORRECT [Environment]
+       [ ] Dynamic scope - local vs global
+       [ ] Define PATH variable [Environment]
+           [ ] Use of PATH 
+       [ ] Command position, exception re variable assignment [Environment]
+       [ ] Subshells: Process and environment info, ie, parent/child, exact copy, etc
+       [ ] Subshells: SHLVL and PROPMT_COMMAND [Environment]
+       [ ] Subshells: export and limitations of variables
+
+       [ ] Arrays
+-->
+
+=== Environment ===
+
+{{How-to|date=January 2019}}
+<!--   This subsection has been marked as "contains instructions or advice" since 2019. -->
+<!--
+       [ ] See also 'Startup source files'
+       [x] Debugging dotfiles can be difficult
+       [?] We aught to avoid assigning blame
+-->
+Configurable execution environment(s):<ref>
+{{Cite web
+| access-date = 8 August 2025
+| publisher   = [[GNU Project]]
+| title       = Bash Reference Manual: 3.7.3: Command Execution Environment
+| url         = https://www.gnu.org/software/bash/manual/html_node/Command-Execution-Environment.html 
+| website     = [[Free Software Foundation, Inc.]]
+}}</ref>
+* Shell and [[Session (computer science)|session]] startup files such as {{Code| ~/.bashrc}} and {{Code| ~/.profile}} (i.e., [[Hidden file and hidden directory|dotfiles]]);
+* Settings ({{mono|set}} [[Shell builtin|built-in]]) and shell options ({{mono|shopt}} [[Shell builtin|built-in]]) which alter shell behavior;
+
+Shell and session startup Files (a.k.a., "dot files")
+
+When Bash starts, it executes the commands in a variety of [[Hidden file and hidden directory#Unix and Unix-like environments|dot files]].<ref name="drdobbs" />
+Unlike Bash shell scripts, dot files typically have neither the execute permission enabled nor an [[interpreter directive]] like {{Code| #!/bin/bash}}.
+
+* Legacy-compatible Bash startup example
+
+The example {{Code| ~/.bash_profile}} below is compatible with the Bourne shell and gives semantics similar to csh for the {{Code| ~/.bashrc}} and {{Code| ~/.bash_login}}.
+The <code>[ -r ''filename'' ] && cmd</code> is a [[short-circuit evaluation]] that tests if ''filename'' exists and is readable, skipping the part after the {{Code| &&}} if it is not.
+
+:<syntaxhighlight lang="bash">
+[ -r ~/.profile ] && ~/.profile             # set up environment, once, Bourne-sh syntax only
+if [ -n "$PS1" ]; then                      # are we interactive?
+   [ -r ~/.bashrc     ] && ~/.bashrc        # tty/prompt/function setup for interactive shells
+   [ -r ~/.bash_login ] && ~/.bash_login    # any at-login tasks for login shell only
+fi                                          # End of "if" block
+</syntaxhighlight>
+
+* Operating system issues in Bash startup
+
+Some versions of [[Unix]] and [[Linux]] contain Bash system startup scripts, generally under the {{Code| /etc}} directory.
+Bash executes these files as part of its standard initialization, but other startup files can read them in a different order than the documented Bash startup sequence.
+The default content of the root user's files may also have issues, as well as the skeleton files the system provides to new user accounts upon setup.
+The startup scripts that launch the [[X window system]] may also do surprising things with the user's Bash startup scripts in an attempt to set up user-environment variables before launching the [[window manager]].
+These issues can often be addressed using a {{Code| ~/.xsession}} or {{Code| ~/.xprofile}} file to read the {{Code| ~/.profile}} — which provides the environment variables that Bash shell windows spawned from the window manager need, such as [[xterm]] or [[Gnome Terminal]].
+
+=== Standard streams ===
+
+[[Standard streams]] - STDIN, STDOUT and STDERR
+
+== Commands ==
+<!-- Important concepts
+       [ ] Speed of execution
+       [ ] fork(2) / exec(2)
+       [ ? ] type -a
+-->
+
+=== System commands ===
+
+<!-- What are system commands? -->
+<!-- Why does Bash have system commands?-->
+<!-- When should system commands be used? -->
+<!-- How does one use system commands? -->
+
+=== Aliases ===
+
+<!-- Important concepts:
+       [x] Command position
+       [ ] Expansion
+       [ ] Trailing spaces in alias definitions
+       [ ] Mostly superseded by functions
+       [ ] alias names can be nearly anything
+-->
+<!-- What are aliases? -->
+<!-- Why does Bash have aliases?-->
+<!-- When should aliases be used? -->
+<!-- How are aliases and system commands different/similar? -->
+<!-- How does one use aliases? -->
+
+{{Blockquote
+| Aliases allow a string to be substituted for a word that is in a position in the input where it can be the first word of a simple command. Aliases have names and corresponding values that are set and unset using the alias and unalias builtin commands. 
+| author = GNU Bash Reference Manual, Ch 6.6 Aliases<ref>
+{{Cite web
+| access-date = 14 August 2025
+| publisher   = [[GNU Project]]
+| quote       = Aliases allow a string to be substituted for a word that is in a position in the input where it can be the first word of a simple command. Aliases have names and corresponding values that are set and unset using the alias and unalias builtin commands.
+| title       = Bash Reference Manual, 6.6 Aliases
+| url         = https://www.gnu.org/software/bash/manual/html_node/Aliases.html
+| website     = [[Free Software Foundation, Inc.]]
+}}</ref><ref>
+{{Cite web
+| access-date = 14 August 2025
+| publisher   = The Open Group
+| title       = alias - define or display aliases
+| url         = https://pubs.opengroup.org/onlinepubs/9799919799/utilities/alias.html
+| website     = opengroup.org
+}}</ref><ref>
+{{Cite web
+| access-date = 14 August 2025
+| first       = Mendel
+| last        = Cooper
+| title       = Advanced Bash Scripting Guide, Ch 25. Aliases
+| url         = https://tldp.org/LDP/abs/html/abs-guide.html#ALIASES
+| website     = [[Linux Documentation Project]]
+}}</ref><ref>
+{{Cite web
+| access-date = 14 August 2025
+| title       = Commands and Arguments: Aliases
+| url         = https://mywiki.wooledge.org/BashGuide/CommandsAndArguments?highlight=%28alias%29#Aliases
+| website     = wooledge.org
+}}</ref><ref>
+{{Cite web
+| access-date = 14 August 2025
+| title       = Compound Commands: Aliases
+| url         = https://mywiki.wooledge.org/BashGuide/CompoundCommands?highlight=%28alias%29#Aliases
+| website     = wooledge.org
+}}</ref>
+| style =
+}}
+
+=== Keywords and reversed words ===
+
+<!-- Important concepts:
+       [ ] "Reserved words" limitations
+       [ ] Compound commands
+       [ ] List
+-->
+<!-- What are Reserved Words? -->
+<!-- Why does Bash have Reserved Words?-->
+<!-- When should Reserved Words be used? -->
+<!-- How are Reserved Words and different/similar from anything else? -->
+<!-- How does one use Reserved Words? -->
+
+* {{Code| function}} 
+** Bash function declarations which include this particular keyword are not compatible with Bourne/Korn/POSIX scripts, however, Bash does accepts the function declaration syntax used by Bourne, Korn and POSIX-compliant shells.
+
+=== Functions ===
+
+<!-- Important concepts:
+       [x] Command position
+       [ ] Expansion
+       [ ] Functions superseded aliases, mostly
+       [ ] Function names can be nearly anything
+       [ ] Dynamic scope - local vs global
+       [ ] Limitations of functions
+-->
+<!-- What are functions? -->
+<!-- Why does Bash have functions?-->
+<!-- When should functions be used? -->
+<!-- How are functions and aliases different/similar? -->
+<!-- How does one use functions? -->
+
+{{Blockquote
+| Shell functions are a way to group commands for later execution using a single name for the group. They are executed just like a "regular" simple command. When the name of a shell function is used as a simple command name, the shell executes the list of commands associated with that function name. Shell functions are executed in the current shell context; there is no new process created to interpret them.
+| author =  GNU Bash Reference Manual, Ch 3.3 Shell Functions<ref>
+{{Cite web
+| access-date = 14 August 2025
+| publisher   = [[GNU Project]]
+| quote       = Shell functions are a way to group commands for later execution using a single name for the group. They are executed just like a "regular" simple command. When the name of a shell function is used as a simple command name, the shell executes the list of commands associated with that function name. Shell functions are executed in the current shell context; there is no new process created to interpret them.
+| title       = Bash Reference Manual, 3.3 Shell Functions
+| url         = https://www.gnu.org/software/bash/manual/html_node/Shell-Functions.html
+| website     = [[Free Software Foundation, Inc.]]
+}}</ref><ref>
+{{Cite web
+| access-date = 14 August 2025
+| publisher   = The Open Group
+| title       = 2.9.5 Function Definition Command
+| url         = https://pubs.opengroup.org/onlinepubs/9799919799/utilities/V3_chap02.html#tag_19_09_05
+| website     = opengroup.org
+}}</ref><ref>
+{{Cite web
+| access-date = 14 August 2025
+| first       = Mendel
+| last        = Cooper
+| title       = Advanced Bash Scripting Guide, Ch 24. Functions
+| url         = https://tldp.org/LDP/abs/html/abs-guide.html#FUNCTIONS
+| website     = [[Linux Documentation Project]]
+}}</ref><ref>
+{{Cite web
+| access-date = 14 August 2025
+| title       = Compound Commands, 4. Functions
+| url         = https://mywiki.wooledge.org/BashGuide/CompoundCommands?highlight=%28functions%29#Functions
+| website     = wooledge.org
+}}</ref><ref>
+{{Cite web
+| access-date = 14 August 2025
+| title       = Bash Programming, 2. Basic Concepts, 7. Functions
+| url         = https://mywiki.wooledge.org/BashProgramming?highlight=%28functions%29#Functions
+| website     = wooledge.org
+}}</ref><ref>
+{{Cite web
+| access-date = 14 August 2025
+| title       = Bash Weaknesses, 13. Functions
+| url         = https://mywiki.wooledge.org/BashWeaknesses?highlight=%28functions%29
+| website     = wooledge.org
+}}</ref>
+| style =
+}}
+
+=== Builtin commands ===
+
+<!-- Important concepts:
+       [ ] Varying options, builtins vs binaries
+       [ ] POSIX / Bourne Special builtins
+       [ ] enabling / disabling builtins
+       [ ] loading custom builtins
+       [ ] Partial list of builtins
+-->
+<!-- What are builtin commands? -->
+<!-- Why does Bash have builtin commands?-->
+<!-- When should builtin commands be used? -->
+<!-- How are builtin and system commands different/similar? -->
+<!-- How does one use builtin commands? -->
+
+* Various Built-In Commands:
+** POSIX Special builtins:<ref>
+{{Cite web
+| access-date = 8 August 2025
+| publisher   = [[GNU Project]]
+| title       = Bash Reference Manual: 4.1: Bourne Shell Builtins
+| url         = https://www.gnu.org/software/bash/manual/html_node/Bourne-Shell-Builtins.html
+| website     = [[Free Software Foundation, Inc.]]
+}}</ref>
+*** {{mono|cd}}, {{mono|pwd}}, etc.
+** {{mono|set}}<ref>
+{{Cite web
+| access-date = 8 August 2025
+| publisher   = [[GNU Project]]
+| title       = Bash Reference Manual: 4.3.1: The Set Builtin
+| url         = https://www.gnu.org/software/bash/manual/html_node/The-Set-Builtin.html
+| website     = [[Free Software Foundation, Inc.]]
+}}</ref>
+*** Xtrace: [ {{Code| set -x| bash}} | {{Code| set -o xtrace| bash}} ].   The shell's primary means of debugging.   Both xtrace and verbose can be turned off at the same time with the command {{Code| set -| bash}}.
+*** Verbose: [ {{Code| set -v| bash}} | {{Code| set -o verbose| bash}} ].   Prints a command to the terminal as Bash reads it.   Bash reads constructs all at once, such as compound commands which include if-fi and case-esac blocks.   If a {{Code| set -v| bash}} is included within a compound command, then "verbose" will be enabled the next time Bash reads code as input, i.e., after the end of the currently executing construct.<ref>
+{{Cite mailing list
+| access-date  = 8 August 2025
+| date         = 20 April 2021
+| publisher    = [[GNU Project]]
+| mailing-list = bug-bash
+| title        = bug-bash archives, Re: Document that set -v inside case statements is special 
+| url          = https://lists.gnu.org/archive/html/bug-bash/2021-04/msg00172.html
+}}</ref>
+*** Both xtrace and verbose can be turned off at the same time with the command {{Code| set -| bash}}.
+** {{mono|shopt}}<ref name="bash-hackers.org_changes">
+{{Cite web
+| access-date  = 8 August 2025
+| archive-date = 23 September 2019
+| archive-url  = https://web.archive.org/web/20190923203509/https://wiki-dev.bash-hackers.org/scripting/bashchanges
+| title        = Bash changes
+| url          = https://wiki-dev.bash-hackers.org/scripting/bashchanges
+| website      = bash-hackers.org
+}}</ref>
+*** expand-aliases: On by default in interactive shells.   Some developers discourage its use in scripts.
+
+=== PATH and system commands ===
+
+<!-- Prose is messy -->
+<!-- Important concepts:
+       [x] Bourne shell variables
+       [x] Define PATH
+       [x] Common practices, mutability
+       [ ] Internal commands
+       [ ? ] How Bash performs a PATH search
+       [x] Multiple commands with the same name
+       [ ? ] Speed considerations
+       [ ? ] How to force a PATH search - extra?
+       [ ? ] security considerations
+-->
+When the shell looks for external commands, it relies on the Bourne shell variable {{Code| $PATH| bash}}. {{Code| $PATH| bash}} contains a list of directories separated by colons, {{Code| :| bash}}.
+Beginning with the leftmost directory and selecting directories in a left to right pattern, each directory is searched until a match is found.
+In Linux, so that a user can locate additional commands, it's common practice for distribution administrators and package developers to alter the value of an end user's {{Code| $PATH| bash}} by including source files in {{Code| /etc/profile.d| bash}} and other locations.
+
+When looking for the command, {{Code| chmod| bash}}, for instance, after considering internal commands and finding nothing, Bash will search the directories in {{Code| $PATH| bash}} and will select the absolute path of the first executable found that has a basename which matches the search string.<ref name="tldp_3.2.1"/>
+
+If there is more than one command {{Code| echo| bash}} available in the directories listed in {{Code| $PATH| bash}}, during the process of parsing and executing a commandline, by default only the first command found will be selected.
+{{Code| $PATH| bash}} lookups are slow.
+The shell speeds up the commandline execution process by remembering command locations in a hash table.
+To perform a full {{Code| $PATH| bash}} search without any interference from the hash table, remove the current table with {{Code| hash -r| bash}} and search for all kinds of commands with {{Code| type -a| bash}}.
+
+:<syntaxhighlight lang="console">
+$ # Force a full path search
+$ PATH=${PATH}:${HOME}
+$ printf 'echo script_file: "$@"\n' > ./echo
+$ chmod 0700 ./echo
+$ hash -r; type -a echo
+echo is a shell builtin
+echo is /usr/bin/echo
+echo is /home/liveuser/echo
+$ 
+</syntaxhighlight>
+
+In order to execute a commandline with a command found later in the {{Code| $PATH| bash}} string, you can specify an absolute path or you can anchor path resolution relative to the current working directory.
+
+:<syntaxhighlight lang="console">
+$ /home/liveuser/echo foo
+script_file: foo
+$ ./echo bar
+script_file: bar
+$
+</syntaxhighlight>
+
+For security reasons it is advisable to make sure the directories in PATH are not world-writeable, or are writeable only by root and trusted users.
+
+=== Command lookup ===
+
+<!-- Important concepts:
+       [x] Command position
+       [?] Parsing full commandline
+       [ ] Order of name lookup
+       [ ] Use of PATH
+       [ ] Last step of command execution
+-->
+* Command position: after expansions, the first word of the full text of the command line.
+* Command name lookup is performed, in the following order:
+** [[Command (computing)|Commands]] internal to the [[Shell (computing)|shell]]:
+*** [[Alias (command)|Shell aliases]],
+*** Shell reserved words,
+*** [[Function (computer programming)|Shell functions]], and
+*** [[Shell builtin|Shell built-in commands]];
+** Commands external to the shell, using the PATH shell variable:
+*** Separate [[Unix|UNIX]]-style programs such as [[ls|{{mono|ls}}]] or [[Ln (Unix)|{{mono|ln}}]], and
+*** [[Shell script]]s, which are [[File system|files]] containing executable commands.{{efn|name=script|Shell scripts do not require compilation before execution and, when certain requirements are met, can be invoked as commands by using their filename.}}
+* The resulting string is executed as a command.
+
+== Control structures ==
+
+{{See also-text|[[Control flow|Control structures]] for [[Conditional (computer programming)|Condition testing]] and [[short-circuit evaluation]]
+}}
+
+=== Subshells ===
+
+<!-- Important concepts:
+       [ ] Subshells
+       [ ] Process and environment info, ie, parent/child, exact copy, etc
+       [ ] As each pertains to subshells:
+           [ ] Interactive invocation
+           [ ] `bash -c`, SHLVL and PROPMT_COMMAND
+           [ ] Scripts vs source files
+           [ ] Logging in as another user
+           [ ] Job control
+           [ ] export and limitations of variables
+           [ ] Functions -- https://www.oilshell.org/blog/2017/01/15.html
+           [ ] eval builtin
+           [ ] exec builtin
+-->
+[[Child process|Subshells]]: {{Code| (...)}};
+
+=== Pipelines ===
+
+<!-- Important concepts:
+       [ ] Input / output
+       [ ] STDIN, STDOUT, STDERR
+       [ ] File descriptors
+       [ ] Redirection
+       [ ] Subshell
+-->
+However, by using a pipeline, they can engage in multiple cycles of computation at the same time, substantially increasing their speed. In a pipelined control unit, different instructions simultaneously go through the process but at different points. While one instruction is being fetched, a second is being decoded, and so forth.
+Unix-style [[Pipeline (Unix)|pipelines]]: <code>|</code>.
+
+=== Logical operators ===
+
+<!-- Important concepts:
+       [x] Exit codes
+       [x] Pipelines
+       [ ] Conditional logic
+       [ ] Pitfall: not the same as if...fi
+-->
+* AND ({{Code|&&}})
+* OR ({{code|{{!}}{{!}}}})
+* NOT ({{Code|!}})
+
+Bash supplies "conditional execution" command separators that make execution of a command contingent on the [[Exit status|exit code]] set by a precedent command.
+For example:
+
+<syntaxhighlight lang="console">
+$ cd "$SOMEWHERE" && ./do_something || echo "An error occurred" >&2
+</syntaxhighlight>
+
+Where {{code|./do_something}} is only executed if the {{mono|cd}} (change directory) command was "successful" (returned an exit status of zero) and the {{mono|echo}} command would only be executed if either the {{mono|cd}} or the {{code|./do_something}} command return an "error" (non-zero exit status).
+
+=== Iteration ===
+
+{{Main|Iteration#Computing}}
+
+<!-- Important concepts:
+       [x] Exit codes
+       [ ] Conditional logic
+       [ ] Counting / index variables
+           [?] Positional Parameters
+           [ ] Arrays
+           [?] Namerefs
+       [ ] List
+           [ ] section links, per syntax type
+               [ ] for
+               [ ] until
+               [ ] while
+               [ ] for ((...))
+       [ ] continue and break
+-->
+{{Blockquote
+| ITERATION: Sometimes programs are repeated indefinitely or until a specific outcome is reached. Each execution of the instructions is an "iteration."<ref>
+{{Cite web
+| access-date = 15 August 2025
+| publisher   = [[Syracuse University]]
+| title       = Glossary of Coding Terms for Beginners: iteration
+| url         = https://onlinegrad.syracuse.edu/blog/coding-terms-for-beginners/
+| website     = syracuse.edu
+| date = 13 January 2020
+}}</ref>
+| author = 
+| style = 
+}}
+* {{mono|while}}, {{mono|until}}, and {{mono|select}} loop compound commands;
+* Arithmetic C-style and list-enumerating {{mono|for}} loop compound commands; and
+* {{mono|continue}}, {{mono|break}}, {{mono|return}}, and {{mono|exit}} flow control commands;
+
+=== Compound commands ===
+
+<!-- Important concepts:
+       [ ] Simple commands vs compound commands
+       [ ] List
+           [ ] section links, per syntax type
+           [ ] Grouping constructs
+               [ ] Functions
+               [ ] {...;}
+               [ ] (...)
+           [ ] Conditional constructs
+               [ ] Conditional logic
+               [ ] if
+               [ ] case
+               [ ] select
+               [ ] ((...))
+               [ ] [[...]]
+           [ ] Looping constructs
+               [ ] for
+               [ ] until
+               [ ] while
+               [ ] for ((...))
+-->
+{{Blockquote
+| compound: something formed by a union of elements or parts.<ref>
+{{Cite web
+| access-date = 15 August 2025
+| publisher   = [[Merriam-Webster's Collegiate Dictionary]]
+| title       = compound - noun (1)
+| url         = https://www.merriam-webster.com/dictionary/compound
+| website     = merriam-webster.com
+}}</ref>
+
+| author = Merriam-Webster's Collegiate Dictionary
+| style = 
+}}
+Bash also supports {{Code| if ... fi| bash}} and {{Code| case ... esac| bash}} forms of conditional command evaluation.{{efn|concept drawn from [[ALGOL 68]];<ref name="SRB_15">
+{{Cite web
+| access-date = 8 August 2025
+| author      = Stephen R Bourne
+| date        = 12 June 2015
+| publisher   = BSDcan 2015: The Technical BSD Conference
+| title       = Early days of Unix and design of sh
+| url         = https://www.bsdcan.org/2015/schedule/attachments/306_srbBSDCan2015.pdf
+| website     = bsdcan.org
+}}
+</ref>}}
+
+=== Testing ===
+
+Built in commands for testing file attributes, comparing string and integer values, etc.:
+* Traditional {{mono|test}} command,
+* Traditional single bracket test: {{Code| [}},
+* Modern double bracket test: <CODE>&#91;&#91;...&#93;&#93;</CODE>, which includes advanced features:
+** Extended [[regular expression]] and extglob matching
+** Lexicographic comparisons with {{Code| <}} and {{Code| >}};
+* {{Code| ((...))}} numeric evaluation and testing; this includes almost all "C" language operators for arithmetic and numeric comparison;
+
+For all commands the exit status is stored in the special variable {{Code| $?| bash}}.
+
+=== Regular Expressions ===
+
+Bash 3.0 supports in-process [[regular expression]] matching using a syntax reminiscent of [[Perl]].<ref>
+{{Cite web
+| access-date  = 5 March 2017 
+| archive-date = 5 May 2017
+| archive-url  = https://web.archive.org/web/20170505161903/http://tldp.org/LDP/abs/html/bashver3.html#BASH3REF
+| at           = Section 37.2 (Bash, version 3)
+| title        = Advanced Bash Scripting Guide: 37.2: Bash, version 3
+| url          = https://www.tldp.org/LDP/abs/html/bashver3.html#BASH3REF
+| url-status   = live
+| website      = [[Linux Documentation Project]]
+}}</ref>
+Regexp matching is limited to strings on the right side of the <CODE>=~</CODE> operator in the {{Code| [[..]]}} extended test construct.<ref>
+{{Cite web
+| access-date = 8 August 2025
+| publisher   = [[GNU Project]]
+| title       = GNU Bash Manual: 3.2.5.2: Conditional Constructs
+| url         = https://www.gnu.org/software/bash/manual/bash.html#index-_005b_005b
+| website     = [[Free Software Foundation, Inc.]] 
+}}</ref>
+
+<syntaxhighlight lang="bash" inline>[[ $line =~ [[:space:]]*(a)?b ]]</syntaxhighlight> means values for line like 'aab', ' aaaaaab', 'xaby', and ' ab' will all match, as will a line containing a 'b' anywhere in its value.
+
+=== Coprocesses ===
+
+<!-- Important concepts:
+       [ ] Job control
+       [ ] Keywords (ie, Reserved words)
+       [ ] Pipelines
+       [ ] Subshell
+-->
+{{Blockquote
+| A coprocess is a shell command preceded by the coproc reserved word. A coprocess is executed asynchronously in a subshell, as if the command had been terminated with the '&' control operator, with a two-way pipe established between the executing shell and the coprocess.<ref>
+{{Cite web
+| access-date = 15 August 2025
+| publisher   = [[GNU Project]]
+| title       = Bash Reference Manual, 3.2.6 Coprocesses
+| url         = https://www.gnu.org/software/bash/manual/bash.html#Coprocesses
+| website     = [[Free Software Foundation, Inc.]]
+}}</ref>
+| author = Bash Reference Manual, 3.2.6 Coprocesses
+| style =
+}}
+
+== Data manipulation ==
+
+=== Word Splitting ===
+
+Split into words (i.e., [[Text segmentation|word splitting]])
+
+=== Quoting ===
+
+{{Blockquote
+| When in doubt -- Quote!<ref>
+{{Cite book
+| access-date = 16 August 2025
+| date = 24 December 2015
+| first = Andrew
+| last = Mallett
+| page = 56
+| publisher = Packt Publishing, Ltd.
+| quote = Learning this now can save us a lot of pain and heartache later, especially....
+| title = Mastering Linux Shell Scripting
+| isbn = 978-1-78439-759-3
+| url = https://books.google.com/books?id=ITjlCwAAQBAJ
+}}</ref>
+| author = Mastering Linux Shell Scripting, by Andrew Mallett
+}}
+
+Bash has certain [[String literal|quoting]] rules: uses of
+
+* single quotes {{Code|'...'| bash}}
+* double quotes {{Code|"..."| bash}}
+* backslashes {{Code|\| bash}}, and
+* ANSI-C quoting {{Code| $'...'}}.
+
+See also {{section link|| Locales}}, {{Code| $"..."}}
+
+See also backticks {{Code| `...`}}: {{section link|| Deprecated syntax}}.
+
+=== Unicode ===
+
+Support for [[Unicode]] in {{Code| echo -e| bash}} and ANSI-C quoting.
+
+=== Brace Expansion ===
+
+:<syntaxhighlight lang="console">
+$ echo kernel{,-headers}
+kernel kernel-headers
+</syntaxhighlight>
+
+Brace expansion, also called alternation, is a feature copied from the [[C shell]].
+It generates a set of alternative combinations.<ref>
+{{Cite web
+| access-date  = 8 August 2025
+| archive-date = 15 March 2018
+| archive-url  = https://web.archive.org/web/20180315115230/http://www.gnu.org/software/bash/manual/bash.html#Programmable-Completion
+| publisher    = [[GNU Project]]
+| title        = Bash Reference Manual: 5.3.1 Brace Expansion
+| url          = https://www.gnu.org/software/bash/manual/html_node/Brace-Expansion.html
+| url-status   = live
+| website      = [[Free Software Foundation, Inc.]]
+}}</ref>
+Generated results need not exist as files.
+The results of each expanded string are not sorted and left to right order is preserved:
+
+:<syntaxhighlight lang="console">
+$ echo a{p,c,d,b}e
+ape ace ade abe
+$ echo {a,b,c}{d,e,f}
+ad ae af bd be bf cd ce cf
+</syntaxhighlight>
+
+Users should not use brace expansions in portable shell scripts, because the [[Bourne shell]] does not produce the same output.
+
+:<syntaxhighlight lang="console">
+$ # bash shell
+$/bin/bash -c 'echo a{p,c,d,b}e'
+ape ace ade abe
+$ # A traditional shell does not produce the same output
+$ /bin/sh -c 'echo a{p,c,d,b}e'
+a{p,c,d,b}e
+</syntaxhighlight>
+
+When brace expansion is combined with wildcards, the braces are expanded first, and then the resulting wildcards are substituted normally.
+Hence, a listing of JPEG and PNG images in the current directory could be obtained using:
+
+:<syntaxhighlight lang="bash">
+ls *.{jpg,jpeg,png}    # expands to *.jpg *.jpeg *.png – after which,
+                       # the wildcards are processed
+echo *.{png,jp{e,}g}   # echo just shows the expansions –
+                       # and braces in braces are possible.
+</syntaxhighlight>
+
+In addition to alternation, brace expansion can be used for sequential ranges between two integers or characters separated by double dots.
+Newer versions of Bash allow a third integer to specify the increment.
+
+:<syntaxhighlight lang="console">
+$ echo {1..10}
+1 2 3 4 5 6 7 8 9 10
+$ echo {01..10}
+01 02 03 04 05 06 07 08 09 10
+$ echo file{1..4}.txt
+file1.txt file2.txt file3.txt file4.txt
+$ echo {a..e}
+a b c d e
+$ echo {1..10..3}
+1 4 7 10
+$ echo {a..j..3}
+a d g j
+</syntaxhighlight>
+
+When brace expansion is combined with variable expansion (a.k.a., ''parameter expansion'' and ''parameter substitution'') the variable expansion is performed ''after'' the brace expansion, which in some cases may necessitate the use of the {{mono|eval}} built-in, thus:
+
+:<syntaxhighlight lang="console">
+$ start=1; end=10
+$ echo {$start..$end} # fails to expand due to the evaluation order
+{1..10}
+$ eval echo {$start..$end} # variable expansion occurs then resulting string is evaluated
+1 2 3 4 5 6 7 8 9 10
+</syntaxhighlight>
+
+=== Tilde Expansion ===
+{{Empty section|date=August 2025}}
+
+=== Parameter and variable expansion ===
+
+* Type
+* Shell parameters
+* Environment variables
+* User variables
+* Scope
+* Arrays
+** Indexed [[Array (data type)|arrays]]: size is unlimited.
+** [[Associative array]]s: via {{Code| declare -A| bash}}{{efn|In February 2009,<ref>
+{{Cite web
+| access-date  = 8 August 2025
+| archive-date = 1 July 2018
+| archive-url  = https://web.archive.org/web/20180701001653/http://www.tldp.org/LDP/abs/html/bashver4.html
+| title        = Advanced Bash Scripting Guide: 37.3: Bash, version 4
+| url          = https://tldp.org/LDP/abs/html/bashver4.html
+| url-status   = live
+| website      = [[Linux Documentation Project]]
+}}</ref>
+Bash 4.0{{efn|Bash 4 also switches its license to [[GNU General Public License#Version 3|GPL-3.0-or-later]].
+}}<ref>
+{{Cite web
+| access-date  = 8 August 2025
+| archive-date = 25 June 2018
+| archive-url  = https://web.archive.org/web/20180625213216/https://apple.stackexchange.com/questions/193411/update-bash-to-version-4-0-on-osx
+| title        = Update bash to version 4.0 on OSX 
+| url          = https://apple.stackexchange.com/questions/193411/update-bash-to-version-4-0-on-osx
+| url-status   = live
+| website      = apple.stackexchange.com
+}}</ref>
+
+introduced support for [[associative arrays]].<ref name =bashfaq061/> Associative array indices are strings, in a manner similar to [[AWK]] or [[Tcl (programming language)|Tcl]].<ref>
+{{Cite web
+| access-date  = 8 August 2025
+| archive-date = 11 July 2018
+| archive-url  = https://web.archive.org/web/20180711142941/http://www.gnu.org/software/bash/manual/html_node/Arrays.html
+| publisher    = [[GNU Project]]
+| title        = Bash Reference Manual: 6.7: Arrays 
+| url          = https://www.gnu.org/software/bash/manual/html_node/Arrays.html
+| url-status   = live
+| website      = [[Free Software Foundation, Inc.]]
+}}</ref> They can be used to emulate multidimensional arrays.}}
+* Parameter Expansion
+*:Expansion syntaxes which can perform some tasks more quickly than external utilities, including, among others:
+** Pattern Substitution
+*** {{Code| ${foo//x/y}| bash}} for <code>sed '{{codett|s/x/y/g|sed}}'</code>,
+** Remove Matching Prefix or Suffix Pattern
+*** {{Code| ${bar##[a-zA-Z0-9]*}| bash}} for {{Code| cut -c8-}},
+** Enumerate Array Keys
+*** {{Code| ${!array[@]}| bash}}, and
+** Display Error if Null or Unset
+*** {{Code| ${var:?error message}| bash}},
+
+=== Pathname expansion ===
+
+Pathname expansion, i.e., shell-style [[Glob (programming)|globbing]] and [[pattern matching]] using {{Code| *}}, {{Code| ?}}, {{Code| [...]}}.{{efn|name=brackets}}
+
+=== Locales ===
+
+Locale-specific translation via {{Code| $"..."| bash}} quoting syntax.<ref>
+{{Cite web
+| access-date = 16 August 2025
+| publisher   = [[Free Software Foundation]]
+| quote       = Prefixing a double-quoted string with a dollar sign {{Char|$}}, such as <CODE>$"hello, world"</CODE>, causes the string to be translated according to the current locale. The {{Mono| gettext}} infrastructure performs the lookup and translation, using the {{Code| $LC_MESSAGES| bash}}, {{Code| $TEXTDOMAINDIR| bash}}, and {{Code| $TEXTDOMAIN| bash}} shell variables.
+| title       = Bash Reference Manual, 3.1.2.5 Locale-Specific Translation
+| url         = https://www.gnu.org/software/bash/manual/bash.html#Locale-Translation
+| website     = [[Free Software Foundation, Inc.]]
+}}</ref>
+
+== Process redirections and parsing ==
+
+=== Command substitution ===
+
+[[Command substitution]]: {{Code| $(...)| bash}},
+
+=== Process substitution ===
+
+[[Process substitution]], {{Code| <()| bash}} or {{Code| >()| bash}}, when a system supports it:
+
+Bash supports [[process substitution]] using the {{Code| <(command)| bash}} and {{Code| >(command)| bash}} syntax, which substitutes the output of (or input to) a command where a filename is normally used.
+(This is implemented through ''/proc/fd/'' unnamed pipes on systems that support that, or via temporary [[named pipe]]s where necessary).
+
+=== Arithmetic expansion ===
+
+Arithmetic expansion, {{Code| ((...))}} or {{Code| $((...))| bash}}, including
+* Integer [[arithmetic]] in any [[Radix|base]] from two to sixty-four, although
+* [[Floating-point arithmetic]] is not available from within the shell itself (for this functionality, see current versions of [[Bc (programming language)|{{mono|bc}}]] and [[AWK|{{mono|awk}}]], among others),
+
+Bash can perform integer calculations ("arithmetic evaluation") without spawning external processes.
+It uses the {{Code| ((...))}} command and the {{Code| $((...))| bash}} variable syntax for this purpose.
+
+=== Redirection ===
+
+[[Redirection (computing)|Redirections]] of Standard Input, Standard Output and Standard Error [[Standard streams|data streams]] are performed, including
+* File writing, {{Code| >}}, and appending, {{Code|>>}},
+* [[Here document]]s, {{Code| <<}},
+* Here strings, {{Code| <<<}}, which allow parameters to be used as input, and
+* A redirection operator, {{Code|>{{!}}}}, which can force overwriting of a file when a shell's {{mono|noclobber}} setting is enabled;
+
+Its syntax simplifies [[redirection (computing)|I/O redirection]].
+For example, it can redirect [[standard out]]put (stdout) and [[Standard error stream|standard error]] (stderr) at the same time using the {{Code| &>| bash}} operator.
+This is simpler to type than the Bourne shell equivalent '{{Code| command > file 2>&1| bash}}'.
+Bash supports [[here document]]s.
+Since version 2.05b Bash can redirect [[Stdin|standard input]] (stdin) from a "here string" using the {{Code| <<<}} operator.
+
+=== Command parsing ===
+
+*(A) Comments are ignored, from an unquoted {{Code|#}} (hash) to the end of the same line;<ref>
+{{Cite web
+| access-date = 15 August 2025
+| title       = The Bash Parser
+| url         = https://mywiki.wooledge.org/BashParser
+| website     = wooledge.org
+}}</ref><ref>
+{{Cite web
+| access-date = 15 August 2025
+| first       = Chet
+| last        = Ramey
+| title       = The Architecture of Open Source Applications (Volume 1): The Bourne-Again Shell
+| url         = https://aosabook.org/en/v1/bash.html
+| website     = aosabook.org
+}}</ref>
+
+*(B) Commands are parsed one line at a time:
+** Control structures are honored, and
+** Backslash {{Code|\}} escapes are also honored at the ends of lines;
+*(C) Split into words (i.e., [[Text segmentation|word splitting]]) according to [[String literal|quoting]] rules,
+** Including ANSI-C quoting {{Code|$'...'}};
+*(D) Seven ''types'' of expansions are performed in the following order on the resulting string:
+*# ''(Type 1)'' Brace expansion <code>kernel{-headers}</code>,
+*# ''(Type 2)'' Tilde expansion {{Code|~}},
+*# In a left-to-right fashion:
+*#* ''(Type 3)'' [[Parameter (computer programming)|Parameter]] and [[Variable (computer science)|variable]] expansion {{Code|$foo}} or {{Code|${bar}|bash}}, including
+*#* ''(Type 4)'' [[Command substitution]]: {{Code|$(...)|bash}},
+*#* ''(Type 5)'' [[Process substitution]], {{Code|<()|bash}} or {{Code|>()|bash}}, when a system supports it:
+*#* ''(Type 6)'' Arithmetic expansion, {{Code|((...))}} or {{Code|$((...))|bash}}, including
+*#** Integer [[arithmetic]] in any [[Radix|base]] from two to sixty-four, although
+*#** [[Floating-point arithmetic]] is not available from within the shell itself.{{efn|for this functionality, see current versions of [[Bc (programming language)|{{Code|bc}}]] and [[AWK|{{Code|awk}}]], among others.}}
+*# [[Text segmentation|Word splitting]] (again),
+*# ''(Type 7)'' Pathname expansion, i.e., shell-style [[Glob (programming)|globbing]] and [[pattern matching]] using {{Code|*}}, {{Code|?}}, {{Code|[...]|bash}},{{Efn
+| name = brackets
+| Although they can be used in conjunction, the use of brackets in pattern matching, {{Code|[...]|bash}}, and the use of brackets in the testing commands, {{Code|[|bash}} and <CODE>&#91;&#91; ... &#93;&#93;</CODE>, are each one different things.
+}}
+*# [[String literal|Quote]] removal;
+*(E) [[Redirection (computing)|Redirections]] of Standard Input, Standard Output and Standard Error [[Standard streams|data streams]] are performed, including
+** File writing, {{Code|>}}, and appending, {{Code|>>}},
+** [[Here document]]s, {{Code|<<}},
+** Here strings, {{Code|<<<}}, which allow parameters to be used as input, and
+** A redirection operator, {{Code|>{{!}}}}, which can force overwriting of a file when a shell's {{Code|noclobber}} setting is enabled;
+*(F) Command name lookup is performed, in the following order:
+*# [[Command (computing)|Commands]] internal to the [[Shell (computing)|shell]]:
+*#* [[Alias (command)|Shell aliases]],
+*#* Shell reserved words,
+*#* [[Function (computer programming)|Shell functions]], and
+*#* [[Shell builtin|Shell built-in commands]];
+*# Commands external to the shell:
+*#* Separate [[Unix|UNIX]]-style programs such as [[ls|{{Code|ls}}]] or [[Ln (Unix)|{{Code|ln}}]], and
+*#* [[Shell script]]s, which are [[File system|files]] containing executable commands.{{efn|name=script}}
+*(G) The resulting string is executed as a command.
+
+== Interactive-only features ==
+
+=== Command History ===
+
+Unlimited size [[command history]].<ref>
+{{Cite web
+| access-date  = 8 August 2025
+| archive-date = 15 September 2019
+| archive-url  = https://web.archive.org/web/20190915123105/http://www.gnu.org/savannah-checkouts/gnu/bash/manual/bash.html#Bash-History-Builtins
+| publisher    = [[GNU Project]]
+| title        = Bash Reference Manual: 9.2: Bash History Builtins
+| url          = https://www.gnu.org/savannah-checkouts/gnu/bash/manual/bash.html#Bash-History-Builtins
+| url-status   = live
+| website      = [[Free Software Foundation, Inc.]]
+}}</ref>
+This feature is available in interactive mode only.
+
+=== Directory stack ===
+
+A directory stack ([[pushd and popd|{{Code|pushd}} and {{Code|popd}}]] built-ins) feature is available in interactive mode only.
+
+=== Programmable completion ===
+
+Also known as "tab completion" or "[[command-line completion]]", when a user presses the {{Keypress|[[tab key|Tab]]}}, within an interactive command-shell Bash automatically uses any available  completion scripts to suggest partly typed program names, filenames and variable names.<ref>
+{{Cite web
+| access-date = 8 August 2025
+| publisher   = [[GNU Project]]
+| title       = Bash Reference Manual: 8.6: Programmable Completion
+| url         = https://www.gnu.org/software/bash/manual/bash.html#Programmable-Completion
+| website     = [[Free Software Foundation, Inc.]]
+}}</ref><ref name =bashfaq061/> The Bash command-line completion system is very flexible and customizable, and is often packaged with functions that complete arguments and filenames for specific programs and tasks.
+
+Bash supports programmable [[Command-line completion|completion]] via built-in {{Code| complete}}, {{Code| compopt}}, and {{Code| compgen}} commands.<ref>
+{{Cite web
+| access-date = 8 August 2025
+| publisher   = [[Case Western Reserve University]]
+| title       = Bash Reference Manual: 8.6 Programmable completion
+| url         = https://tiswww.case.edu/php/chet/bash/bashref.html#Programmable-Completion
+| website     = case.edu
+}}</ref>
+The feature has been available since the beta version of 2.04 released in 2000.<ref>
+{{Cite web
+| access-date  = 8 August 2025
+| archive-date = 8 March 2020
+| archive-url  = https://web.archive.org/web/20200308104032/http://ftp.swin.edu.au/gnu/bash/ 
+| publisher    = Swinburne University of Technology
+| title        = Index of /gnu/bash
+| url          = https://ftp.swin.edu.au/gnu/bash/
+| url-status   = live
+| website      = swin.edu.au
+}}</ref>
+These commands enable complex and intelligent completion specification for commands (i.e., installed programs), functions, variables, and filenames.<ref name="tldp_pc">
+{{Cite web
+| access-date = 21 January 2022
+| title       = Advanced Bash Scripting Guide: Appendix J: An Introduction to Programmable Completion 
+| url         = https://tldp.org/LDP/abs/html/tabexpansion.html
+| website     = [[Linux Documentation Project]]
+}}</ref>
+
+The {{Code| complete}} and {{Code| compopt}} two commands specify how arguments of some available commands or options are going to be listed in the [[readline]] input.As of version 5.1 completion of the command or the option is usually activated by the {{Keypress| Tab}} keystroke after typing its name.<ref name =tldp_pc/>
+This feature is available in interactive mode only.
+
+=== Prompts ===
+
+Configurable [[Command-line interface#Command prompt|prompts]].
+This feature is available in interactive mode only.
+
+== Documentation  ==
+
+=== User Manual ===
+
+A [https://www.gnu.org/software/bash/manual/index.html user manual] for Bash is provided by the GNU Project.
+It is sometimes considered to be a more user-friendly document than the man page.
+"You may also find information about Bash ...by looking at {{Code| /usr/share/doc/bash}}, {{Code| /usr/local/share/doc/bash}}, or similar directories on your system."<ref name =gnu.org_bash-hm>
+{{Cite web
+| access-date = 8 August 2025
+| publisher   = [[GNU Project]]
+| title       = Bash
+| url         = https://www.gnu.org/savannah-checkouts/gnu/bash/bash.html
+| website     = [[Free Software Foundation, Inc.]]
+}}
+</ref>
+On GNU/Linux systems, if the {{mono|info}} program is available then the GNU Manual version relevant for your installation should also be available at {{Code| info bash}}.<ref name="gnu.org_info">
+{{Cite web
+| access-date = 8 August 2025
+| author      = [[Free Software Foundation]]
+| publisher   = [[GNU Project]]
+| title       = GNU Bash manual
+| url         = https://www.gnu.org/software/bash/manual/index.html
+| website     = [[Free Software Foundation, Inc.]]
+}}
+</ref><ref>
+{{Cite web
+| access-date = 8 August 2025
+| publisher   = [[Case Western Reserve University]]
+| title       = Bash Reference Manual
+| url         = https://tiswww.case.edu/php/chet/bash/bashref.html
+| website     = case.edu
+}}</ref>
+
+=== Man page ===
+
+The most recent technical manual, or [https://tiswww.case.edu/php/chet/bash/bash.html 'man page'], is intended to be the authoritative explanatory technical document for the understanding of how bash operates.
+On GNU/Linux systems, the version relevant for your installation is usually available through the {{mono|man}} program at {{Code| man bash| bash}}.<ref name =gnu.org_info/><ref name =case.edu_bash(1)/><ref>
+{{Cite web
+| access-date = 8 August 2025
+| publisher   = [[GNU Project]]
+| title       = git: index: bash.git
+| url         = https://git.savannah.gnu.org/cgit/bash.git/tree/doc/bash.0
+| website     = [[Free Software Foundation, Inc.]]
+}}
+</ref>
+
+=== help builtin ===
+
+With recent versions of Bash, information on shell built-in commands can be found by executing {{Code| help|bash}}, {{Code| help [name of builtin]| bash}} or {{Code| man builtins}} at a terminal prompt where bash is installed.
+
+The {{mono|printf}} command can be invoked via {{mono|env}} to ensure that you run the program found via your shell's search path, and not a shell alias or built-in function: {{Code| env printf --help| bash}}.<ref>
+{{cite web
+| access-date = 11 August 2025
+| publisher   = [[GNU Project]]
+| title       = GNU Coreutils manual v.9.7, 15.2 printf: Format and print data
+| url         = https://www.gnu.org/software/coreutils/manual/coreutils.html#printf_003a-Format-and-print-data
+| website     = [[Free Software Foundation, Inc.]]
+}}</ref>
+
+=== POSIX Specification ===
+
+For the purpose of allowing inter-operability among different shell programs running on different operating systems, the [https://pubs.opengroup.org/onlinepubs/9799919799/ POSIX Specification] influences how modern UNIX-like shells are written.
+Bash "is intended to be a conformant implementation of the IEEE POSIX ''"Shell and Utilities"'' portion of the IEEE POSIX specification (IEEE Standard 1003.1)."<ref>
+{{Cite web
+| access-date = 8 August 2025
+| publisher   = [[GNU Project]]
+| title       = GNU Bash Manual: 1.1: What is Bash?
+| url         = https://www.gnu.org/software/bash/manual/bash.html#What-is-Bash_003f
+| website     = [[Free Software Foundation, Inc.]]
+}}
+</ref>
+The most recent publication of the standard (2024) is available online.<ref>
+{{Cite web
+| access-date = 30 July 2025
+| author      = Open Group
+| title       = POSIX 2024
+| url         = https://pubs.opengroup.org/onlinepubs/9799919799/
+| website     = [[Free Software Foundation, Inc.]]
+}}
+</ref>
+
+As the standard upon which bash is based, the POSIX Standard, or IEEE Std 1003.1,<ref>
+{{Cite web
+| title   = The Open Group Base Specifications Issue 7, 2018 edition     
+| url     = https://pubs.opengroup.org/onlinepubs/9699919799/
+| website = opengroup.org
+}}</ref>
+et seq, is especially informative.
+
+=== Further resources ===
+
+"The project maintainer also has a Bash page which includes Frequently Asked Questions",<ref name="gnu.org_bash-hm"/><ref name="bash-top">
+{{Cite web
+| access-date = 8 August 2025
+| publisher   = [[Case Western Reserve University]]
+| title       = The GNU Bourne-Again Shell, Top Page
+| url         = https://tiswww.case.edu/php/chet/bash/bashtop.html
+| website     = case.edu
+}}</ref><ref>
+{{Cite web
+| access-date = 8 August 2025
+| publisher   = [[Case Western Reserve University]]
+| title       = Frequently Asked Questions
+| url         = https://tiswww.case.edu/php/chet/bash/FAQ
+| website     = case.edu
+}}</ref>
+this FAQ is current as of bash version 5.1 and is no longer updated.
+
+Informal avenues of support are available via IRC at libera.chat, in the #bash channel, and mailing lists are available at [https://www.gnu.org/software/bash/ Bash] - GNU Project - Free Software Foundation.
+
+== Security and vulnerabilities   ==
+
+=== Root scripts ===
+
+Running any shell scripts as the root user has, for years, been widely criticized as poor security practice.
+One commonly given reason is that, when a script is executed as root, the negative effects of any bugs in a script would be magnified by root's elevated privileges.
+
+One common example: a script contains the command, {{Code| rm -rf ${dir}/| bash}}, but the variable {{Code| $dir}} is left undefined.
+In Linux, if the script was executed by a regular user, the shell would attempt to execute the command {{Code| rm -rf /}} as a regular user, and the command would fail.
+However, if the script was executed by the root user, then the command would likely succeed and the filesystem would be erased.
+
+It is recommended to use {{mono|sudo}} on a per-command basis instead.
+
+=== CGI scripts ===
+
+CGI scripts are a significant source of vulnerability.<ref>
+{{Cite web
+| access-date = 17 August 2025
+| date        = 23 April 2024
+| publisher   = Rhino Security Labs, Inc
+| title       = CVE-2024-2448: Authenticated Command Injection In Progress Kemp LoadMaster
+| url         = https://rhinosecuritylabs.com/research/cve-2024-2448-kemp-loadmaster/
+| website     = rhinosecuritylabs.com
+}}</ref><ref>
+{{Cite web
+| access-date = 17 August 2025
+| date        = January 1999
+| publisher   = [[University of California, Davis]]
+| title       = CGI-BIN Specific Vulnerabilities
+| url         = https://seclab.cs.ucdavis.edu/projects/testing/papers/cgi.html
+| website     = ucdavis.edu
+}}</ref><ref>
+{{Cite web
+| access-date  = 17 August 2025
+| archive-date = 16 April 2000
+| archive-url  = https://web.archive.org/web/20000416053740/http://www.lanl.gov/projects/ia/library/bits/bits0396.html
+| date         = March 1996
+| publisher    = Los Alamos National Laboratory
+| title        = CGI Security
+| url          = https://www.lanl.gov/projects/ia/library/bits/bits0396.html
+| work         = BITS: computing and communications news
+}}</ref>
+{{Clarify|date=September 2025}}
+
+=== builtin {{Mono |eval}} ===
+
+"The eval command is extremely powerful and extremely easy to abuse."<ref>
+{{Cite web
+| access-date  = 17 August 2025
+| archive-date = 21 July 2025
+| archive-url  = https://web.archive.org/web/20250721233452/http://mywiki.wooledge.org/BashFAQ/048
+| title        = Eval command and security issues
+| url          = https://mywiki.wooledge.org/BashFAQ/048
+| url-status   = live
+| website      = wooledge.org
+}}</ref>
+
+=== Input validation ===
+
+"[[Data validation|Input validation]] is the process of ensuring data has undergone data cleansing to confirm it has data quality, that is, that it is both correct and useful."
+
+{{Blockquote
+| Input validation is performed to ensure only properly formed data is entering the workflow in an information system, preventing malformed data from persisting in the database and triggering malfunction of various downstream components. Input validation should happen as early as possible in the data flow, preferably as soon as the data is received from the external party.<ref>
+{{Cite web
+| access-date = 17 August 2025
+| publisher   = [[OWASP]]
+| title       = Input Validation Cheat Sheet
+| url         = https://cheatsheetseries.owasp.org/cheatsheets/Input_Validation_Cheat_Sheet.html
+| website     = owasp.org
+}}</ref>
+| author = OWASP Input Validation Cheat Sheet
+}}
+
+=== Shellshock ===
+
+In September 2014, a [[security bug]] was discovered<ref>
+{{Cite news
+| access-date  = 21 June 2019
+| archive-date = 21 June 2019
+| archive-url  = https://web.archive.org/web/20190621183753/https://www.techolac.com/linux/linux-bash-exit-status-and-how-to-set-exit-status-in-bash/
+| date         = 10 June 2017
+| first        = Cino
+| last         = Juliana
+| title        = Linux bash exit status and how to set exit status in bash - Techolac     
+| url          = https://www.techolac.com/linux/linux-bash-exit-status-and-how-to-set-exit-status-in-bash/     
+| url-status   = live
+| website      = techolac.com
+}}</ref>
+in the program.
+It was dubbed "[[Shellshock (software bug)|Shellshock]]." Public disclosure quickly led to a range of [[Attack (computing)|attacks]] across the [[Internet]].<ref>
+{{Cite web
+| access-date  = 25 September 2014
+| archive-date = 16 October 2014
+| archive-url  = https://web.archive.org/web/20141016214010/http://www.theregister.co.uk/2014/09/24/bash_shell_vuln     
+| date         = 24 September 2014
+| first        = John
+| last         = Leyden
+| publisher    = [[The Register]]
+| title        = Patch Bash NOW: 'Shell Shock' bug blasts OS X, Linux systems wide open     
+| url          = https://www.theregister.co.uk/2014/09/24/bash_shell_vuln/
+| url-status   = live
+| website      = theregister.co.uk
+}}
+</ref><ref>
+{{Cite news
+| access-date  = 25 September 2014
+| archive-date = 5 April 2019
+| archive-url  = https://web.archive.org/web/20190405000511/https://www.nytimes.com/2014/09/26/technology/security-experts-expect-shellshock-software-bug-to-be-significant.html
+| date         = 25 September 2014
+| first        = Nicole
+| last         = Perlroth
+| title        = Security Experts Expect 'Shellshock' Software Bug in Bash to Be Significant     
+| url          = https://www.nytimes.com/2014/09/26/technology/security-experts-expect-shellshock-software-bug-to-be-significant.html
+| url-status   = live
+| work         = [[The New York Times]]
+}}</ref><ref>
+{{Cite web
+| archive-date = 14 May 2016
+| archive-url  = https://web.archive.org/web/20160514191755/http://www.zdnet.com/article/hackers-jump-on-the-shellshock-bash-bandwagon/
+| date         = 29 September 2014
+| first        = Larry
+| last         = Seltzer
+| publisher    = [[ZDNet]]
+| title        = Shellshock makes Heartbleed look insignificant     
+| url          = https://www.zdnet.com/article/shellshock-makes-heartbleed-look-insignificant/
+| url-status   = live
+| website      = zdnet.com
+}}</ref>
+
+Exploitation of the vulnerability could enable [[arbitrary code execution]] in [[Common Gateway Interface|CGI]] scripts executable by certain versions of Bash.
+The bug involved how Bash passed function definitions to subshells through [[environment variable]]s.<ref>
+{{Cite web
+| access-date  = 25 September 2014
+| archive-date = 25 September 2014
+| archive-url  = https://web.archive.org/web/20140925035842/https://securityblog.redhat.com/2014/09/24/bash-specially-crafted-environment-variables-code-injection-attack/
+| date         = 24 September 2014
+| first        = Huzaifa
+| last         = Sidhpurwala
+| publisher    = [[Red Hat]]
+| title        = Bash specially-crafted environment variables code injection attack     
+| url          = https://securityblog.redhat.com/2014/09/24/bash-specially-crafted-environment-variables-code-injection-attack/
+| url-status   = live
+| website      = redhat.com
+}}</ref>
+The bug had been present in the [[source code]] since August 1989 (version 1.03)<ref>
+{{Cite web
+| access-date  = 4 October 2014
+| archive-date = 6 October 2014
+| archive-url  = https://web.archive.org/web/20141006093452/http://seclists.org/oss-sec/2014/q4/102     
+| date         = 4 October 2014
+| first        = Stephane
+| last         = Chazelas
+| title        = oss-sec mailing list archives
+| url          = https://seclists.org/oss-sec/2014/q4/102
+| url-status   = live
+| website      = seclists.org
+}}</ref> and was patched in September 2014 (version 4.3).
+
+Patches to fix the bugs were made available soon after the bugs were identified.
+Upgrading to a current version is strongly advised.
+
+It was assigned the [[Common Vulnerabilities and Exposures|Common Vulnerability]] identifiers {{CVE
+| 2014-6271
+| 2014-6277
+| 2014-7169
+| leadout=and
+| link=no
+}}, among others.
+Under CVSS Metrics 2.x and 3.x, the bug is regarded as "high" and "critical", respectively.
+
+== Deprecated syntax  ==
+{{Unreferenced section|date=August 2025}}
+
+* [[Backtick]] style command substitutions: {{Code| `...`| bash}} is deprecated<ref>{{Cite web |title=Command Substitution (Bash Reference Manual) |url=https://www.gnu.org/software/bash/manual/html_node/Command-Substitution.html#Command-Substitution-1 |access-date=2026-01-14 |website=www.gnu.org}}</ref> in favor of
+** {{Code| $(...)| bash}};
+* Use of {{Code| -a}} or {{Code| -o}} in {{code|test}}/{{Code| [}}/<code>[[</code> commands,
+** for example, {{Code| [ -r ./file -a ! -l ./file ]|bash}} is deprecated in favor of
+*** {{Code| [ -r ./file ] && ! [ -l ./file ]|bash}};
+* Use of the arithmetic syntax {{Code| $[...]|bash}} is deprecated in favor of
+** {{Code| $((...))| bash}} or
+**{{Code| ((...))}}, as appropriate;
+* Use of {{Code| ^}} as a pipeline is deprecated in favor of <CODE>|</CODE>;
+* Any uses of {{mono|expr}} or {{mono|let}}.
+
+== Debugging  ==
+
+=== Table of Features ===
+{{sort-under}}
+{| class="wikitable sortable sort-under"
+|+ Bash features which can be useful during debugging.<ref name =bashfaq061/><ref name =bash-hackers.org_changes/><ref>
+{{Cite web
+| access-date  = 8 August 2025
+| archive-date = 4 November 2018
+| archive-url  = https://web.archive.org/web/20181104185300/http://tldp.org/LDP/Bash-Beginners-Guide/html/sect_02_03.html
+| title        = Advanced Bash Scripting Guide: 2.3: Debugging Bash scripts
+| url          = https://tldp.org/LDP/Bash-Beginners-Guide/html/sect_02_03.html
+| url-status   = live
+| website      = [[Linux Documentation Project]]
+}}</ref>
+
+|-
+      ! colspan = 3  rowspan = 1                          | Feature
+      ! colspan = 1  rowspan = 2                          | POSIX 2024
+      ! colspan = 1  rowspan = 2                          | Description
+      ! colspan = 1  rowspan = 2                          | Bash ver.
+
+|-
+      ! colspan = 1  rowspan = 1                          | Grammar type
+      ! colspan = 1  rowspan = 1                          | Formal name
+      ! colspan = 1  rowspan = 1                          | Syntax
+
+|-
+       | style="text-align:left"    | Special Built-In Utility || set / xtrace
+       | style="text-align:left"    | {{Code| set -x| bash}}
+       | {{yes}}
+       | style="text-align:left"    | The shell's '''primary means of debugging'''.
+It "writes to standard error a trace for each command after it expands the command and before it executes it."
+       | {{dunno}}
+
+|-
+       | style="text-align:left"    | Special Parameters || Exit Status
+       | style="text-align:left"    | {{Code| "$?"| bash}}
+       | {{yes}}
+       | style="text-align:left"    | "Expands to the shortest representation of the decimal exit status."
+       | {{dunno}}
+
+|-
+       | style="text-align:left"    | Parameter Expansions || Indicate Null or Unset
+       | style="text-align:left"    | {{Code| "${parameter:?[word]}"| bash}}
+       | {{yes}}
+       | style="text-align:left"    | "Where the expansion of {{Code| [word]}}, perhaps an error message or a line number, is written to standard error and the shell exits with a non-zero exit code."
+       | {{dunno}}
+
+|-
+       | style="text-align:left"    | Special Parameters || PID of Invoked Shell
+       | style="text-align:left"    | {{Code| "$$"}}
+       | {{yes}}
+       | style="text-align:left"    | "Expands to the shortest representation of the decimal process ID of the invoked shell."
+       | {{dunno}}
+
+|-
+       | style="text-align:left"    | Special Built-In Utility || set / verbose
+       | style="text-align:left"    | {{Code| set -v| bash}}
+       | {{yes}}
+       | style="text-align:left"    | "Writes its input to standard error as it is read."
+       | {{dunno}}
+
+|-
+       | style="text-align:left"    | Special Built-In Utility || set / pipefail
+       | style="text-align:left"    | {{Code| set -o pipefail| bash}}
+       | {{yes}}
+       | style="text-align:left"    | "Derive the exit status of a pipeline from the exit statuses of all of the commands in the pipeline, not just the last (rightmost) command."
+       | {{dunno}}
+
+|-
+       | style="text-align:left"    | Special Built-In Utility || set / nounset
+       | style="text-align:left"    | {{Code| set -u| bash}}
+       | {{yes}}
+       | style="text-align:left"    | When enabled, will cause the shell to exit with an error message when it encounters an unset variable expansion.
+Its use has a number of counter-intuitive pitfalls.
+       | {{dunno}}
+
+|-
+       | style="text-align:left"    | Special Built-In Utility || set / errexit
+       | style="text-align:left"    | {{Code| set -e| bash}}
+       | {{yes}}
+       | style="text-align:left"    | Errexit is a setting that, when enabled, will, under certain very specific conditions, cause the shell to exit without an error message whenever the shell receives a non-zero exit code.
+Its use is somewhat controversial, to the extent that any somewhat obscure computer program can be controversial.
+Adherents claim that Errexit provides an assurance of verifiability in situations where shell scripts "must not fail." However, opponents claim that its use is unreliable, deceptively simple, highly counter-intuitive, rife with gotchas and pitfalls, and in essence "security theater." Numerous developers of Bash have strongly discouraged the use of this particular setting.
+       | {{dunno}}
+
+|-
+       | style="text-align:left"    | Special Built-In Utility || trap / EXIT
+       | style="text-align:left"    | {{Code| trap '[arg]' EXIT| bash}}
+       | {{yes}}
+       | style="text-align:left"    | "If a signal specifier is {{Code| 0}} or {{Code| EXIT}}, {{Code| [arg]}} is executed when the shell exits." If {{Code| [arg]}} contains expansions, then {{Code| [arg]}} should be in single quotes.
+       | {{dunno}}
+
+|-
+       | style="text-align:left"    | Utility || printf
+       | style="text-align:left"    | {{Code| printf '<%s>\n' "${var}"| bash}}
+       | {{yes}}
+       | style="text-align:left"    | A means of reliably printing the contents of a variable.
+       | {{dunno}}
+
+|-
+       | style="text-align:left"    | Bash Variables || BASHPID
+       | style="text-align:left"    | {{Code| "${BASHPID}"| bash}}
+       | {{no}}
+       | style="text-align:left"    | "Expands to the process ID of the current bash process."<ref>
+{{Cite web
+| access-date = 8 August 2025
+| id          = BASHPID
+| publisher   = [[GNU Project]]
+| title       = Bash Reference Manual: 5.2: Bash Variables
+| url         = https://www.gnu.org/software/bash/manual/html_node/Bash-Variables.html#index-BASHPID
+| website     = [[Free Software Foundation, Inc.]]
+}}</ref>
+       | {{dunno}}
+
+|-
+       | style="text-align:left"    | Bash Variables || BASH_ARGC
+       | style="text-align:left"    | {{Code| "${BASH_ARGC[@]}"| bash}}
+       | {{no}}
+       | style="text-align:left"    | "An array variable whose values are the number of parameters in each frame of the current bash execution call stack."<ref>
+{{Cite web
+| access-date = 8 August 2025
+| id          = BASH_ARGC
+| publisher   = [[GNU Project]]
+| title       = Bash Reference Manual: 5.2: Bash Variables
+| url         = https://www.gnu.org/software/bash/manual/html_node/Bash-Variables.html#index-BASH_005fARGC 
+| website     = [[Free Software Foundation, Inc.]]
+}}</ref>
+       | {{dunno}}
+
+|-
+       | style="text-align:left"    | Bash Variables || BASH_ARGV
+       | style="text-align:left"    | {{Code| "${BASH_ARGV[@]}"| bash}}
+       | {{no}}
+       | style="text-align:left"    | "An array variable containing all of the parameters in the current bash execution call stack."<ref>
+{{Cite web
+| access-date = 8 August 2025
+| id          = BASH_ARGV
+| publisher   = [[GNU Project]]
+| title       = Bash Reference Manual: 5.2: Bash Variables
+| url         = https://www.gnu.org/software/bash/manual/html_node/Bash-Variables.html#index-BASH_005fARGV 
+| website     = [[Free Software Foundation, Inc.]]
+}}</ref>
+       | {{dunno}}
+
+|-
+       | style="text-align:left"    | Bash Variables || BASH_LINENO
+       | style="text-align:left"    | {{Code| "${BASH_LINENO[@]}"| bash}}
+       | {{no}}
+       | style="text-align:left"    | "An array variable whose members are the line numbers in source files where each corresponding member of {{Code| "${FUNCNAME[@]}"| bash}} was invoked."<ref>
+{{Cite web
+| access-date = 8 August 2025
+| id          = BASH_LINENO
+| publisher   = [[GNU Project]]
+| title       = Bash Reference Manual: 5.2: Bash Variables
+| url         = https://www.gnu.org/software/bash/manual/html_node/Bash-Variables.html#index-BASH_005fLINENO 
+| website     = [[Free Software Foundation, Inc.]]
+}}</ref>
+       | {{dunno}}
+
+|-
+       | style="text-align:left"    | Bash Variables || BASH_REMATCH
+       | style="text-align:left"    | {{Code| "${BASH_REMATCH[@]}"| bash}}
+       | {{no}}
+       | style="text-align:left"    | "An array variable whose members are assigned by the <CODE>=~</CODE> binary operator to the <CODE>[[</CODE> conditional command."<ref>
+{{Cite web
+| access-date = 8 August 2025
+| id          = BASH_REMATCH
+| publisher   = [[GNU Project]]
+| title       = Bash Reference Manual: 5.2: Bash Variables
+| url         = https://www.gnu.org/software/bash/manual/html_node/Bash-Variables.html#index-BASH_005fREMATCH 
+| website     = [[Free Software Foundation, Inc.]]
+}}</ref>
+       | {{dunno}}
+
+|-
+       | style="text-align:left"    | Bash Variables || BASH_SOURCE
+       | style="text-align:left"    | {{Code| "${BASH_SOURCE[@]}"| bash}}
+       | {{no}}
+       | style="text-align:left"    | "An array variable whose members are the source filenames where the corresponding shell function names in the {{Code| "${FUNCNAME[@]}"| bash}} array variable are defined."<ref>
+{{Cite web
+| access-date = 8 August 2025
+| id          = BASH_SOURCE
+| publisher   = [[GNU Project]]
+| title       = Bash Reference Manual: 5.2: Bash Variables
+| url         = https://www.gnu.org/software/bash/manual/html_node/Bash-Variables.html#index-BASH_005fSOURCE 
+| website     = [[Free Software Foundation, Inc.]]
+}}</ref>
+       | {{dunno}}
+
+|-
+       | style="text-align:left"    | Bash Variables || BASH_XTRACEFD
+       | style="text-align:left"    | {{Code| "${BASH_XTRACEFD}"| bash}}
+       | {{no}}
+       | style="text-align:left"    | "If set to an integer corresponding to a valid file descriptor, Bash will write the trace output generated when {{Code| set -x| bash}} is enabled to that file descriptor."<ref>
+{{Cite web
+| access-date = 8 August 2025
+| id          = BASH_XTRACEFD
+| publisher   = [[GNU Project]]
+| title       = Bash Reference Manual: 5.2: Bash Variables
+| url         = https://www.gnu.org/software/bash/manual/html_node/Bash-Variables.html#index-BASH_005fXTRACEFD 
+| website     = [[Free Software Foundation, Inc.]]
+}}</ref>
+       | {{dunno}}
+
+|-
+       | style="text-align:left"    | Bash Variables || EPOCHREALTIME
+       | style="text-align:left"    | {{Code| "${EPOCHREALTIME}"| bash}}
+       | {{no}}
+       | style="text-align:left"    | "Each time this parameter is referenced, it expands to the number of seconds since the Unix Epoch (see {{Code| time(3)| bash}}) as a floating point value with micro-second granularity."<ref>
+{{Cite web
+| access-date = 8 August 2025
+| id          = EPOCHREALTIME
+| publisher   = [[GNU Project]]
+| title       = Bash Reference Manual: 5.2: Bash Variables
+| url         = https://www.gnu.org/software/bash/manual/html_node/Bash-Variables.html#index-EPOCHREALTIME 
+| website     = [[Free Software Foundation, Inc.]]
+}}</ref>
+       | {{dunno}}
+
+|-
+       | style="text-align:left"    | Bash Variables || FUNCNAME
+       | style="text-align:left"    | {{Code| "${FUNCNAME[@]}"| bash}}
+       | {{no}}
+       | style="text-align:left"    | "An array variable containing the names of all shell functions currently in the execution call stack."<ref>
+{{Cite web
+| access-date = 8 August 2025
+| id          = FUNCNAME
+| publisher   = [[GNU Project]]
+| title       = Bash Reference Manual: 5.2: Bash Variables
+| url         = https://www.gnu.org/software/bash/manual/html_node/Bash-Variables.html#index-FUNCNAME 
+| website     = [[Free Software Foundation, Inc.]]
+}}</ref>
+       | {{dunno}}
+
+|-
+       | style="text-align:left"    | Bash Variables || LINENO
+       | style="text-align:left"    | {{Code| "${LINENO}"| bash}}
+       | {{no}}
+       | style="text-align:left"    | "Each time this parameter is referenced, the shell substitutes a decimal number representing the current sequential line number (starting with 1) within a script or function."<ref>
+{{Cite web
+| access-date = 8 August 2025
+| id          = LINENO
+| publisher   = [[GNU Project]]
+| title       = Bash Reference Manual: 5.2: Bash Variables
+| url         = https://www.gnu.org/software/bash/manual/html_node/Bash-Variables.html#index-LINENO
+| website     = [[Free Software Foundation, Inc.]]
+}}</ref>
+       | {{dunno}}
+
+|-
+       | style="text-align:left"    | Bash Variables || PIPESTATUS
+       | style="text-align:left"    | {{Code| "${PIPESTATUS[@]}"| bash}}
+       | {{no}}
+       | style="text-align:left"    | "An array variable containing a list of exit status values from the processes in the most-recently-executed foreground pipeline (which may contain only a single command)."<ref>
+{{Cite web
+| access-date = 8 August 2025
+| id          = PIPESTATUS
+| publisher   = [[GNU Project]]
+| title       = Bash Reference Manual: 5.2: Bash Variables
+| url         = https://www.gnu.org/software/bash/manual/html_node/Bash-Variables.html#index-PIPESTATUS 
+| website     = [[Free Software Foundation, Inc.]]
+}}</ref>
+       | {{dunno}}
+
+|-
+       | style="text-align:left"    | Bash Variables || PPID
+       | style="text-align:left"    | {{Code| "${PPID}"| bash}}
+       | {{no}}
+       | style="text-align:left"    | "The process ID of the shell's parent."<ref>
+{{Cite web
+| access-date = 8 August 2025
+| id          = PPID
+| publisher   = [[GNU Project]]
+| title       = Bash Reference Manual: 5.2: Bash Variables
+| url         = https://www.gnu.org/software/bash/manual/html_node/Bash-Variables.html#index-PPID
+| website     = [[Free Software Foundation, Inc.]]
+}}</ref>
+       | {{dunno}}
+
+|-
+       | style="text-align:left"    | Bash Variables || PS4
+       | style="text-align:left"    | {{Code| "${PS4}"| bash}}
+       | {{no}}
+       | style="text-align:left"    | "The value of this parameter is expanded as with PS1 and the value is printed before each command bash displays during an execution trace."<ref>
+{{Cite web
+| access-date = 8 August 2025
+| id          = PS4
+| publisher   = [[GNU Project]]
+| title       = Bash Reference Manual: 5.2: Bash Variables
+| url         = https://www.gnu.org/software/bash/manual/html_node/Bash-Variables.html#index-PS4
+| website     = [[Free Software Foundation, Inc.]]
+}}</ref>
+       | {{dunno}}
+
+|-
+       | style="text-align:left"    | Shell Builtin || set / restricted
+       | style="text-align:left"    | {{Code| set -r| bash}}
+       | {{no}}
+       | style="text-align:left"    | Restricted mode is intended to improve the security of an individual shell instance from a malicious human with physical access to a machine.
+As threat models have changed, it has become less commonly used now than it once was.
+       | {{dunno}}
+
+|-
+       | style="text-align:left"    | Shell Builtin || shopt / extdebug
+       | style="text-align:left"    | {{Code| shopt -s extdebug| bash}}
+       | {{no}}
+       | style="text-align:left"    | "Behavior intended for use by debuggers."
+       | {{dunno}}
+
+|-
+       | style="text-align:left"    | Shell Builtin || trap / DEBUG
+       | style="text-align:left"    | {{Code| trap '[arg]' DEBUG| bash}}
+       | {{no}}
+       | style="text-align:left"    | "If a sigspec is DEBUG, the command arg is executed before" certain kinds of commands.
+       | {{dunno}}
+
+|-
+       | style="text-align:left"    | Shell Builtin || trap / ERR
+       | style="text-align:left"    | {{Code| trap '[arg]' ERR| bash}}
+       | {{no}}
+       | style="text-align:left"    | "If a sigspec is ERR, the command arg is executed whenever..." certain kinds of commands "return a non-zero exit status", subject to similar restrictions as with ErrExit.
+       | {{dunno}}
+
+|-
+       | style="text-align:left"    | Shell Builtin || trap / RETURN
+       | style="text-align:left"    | {{Code|trap '[arg]' RETURN|bash}}
+       | {{no}}
+       | style="text-align:left"    | "If a sigspec is RETURN, the command arg is executed each time a shell function or a script executed with the {{Code| .| bash}} or {{mono|source}} builtins finishes executing."
+       | {{dunno}}
+|}
+
+* Shell features specified by [[POSIX]]:
+** Parameter Expansions:<ref>
+{{Multiref2
+|
+{{Cite web
+| access-date = 8 August 2025
+| publisher   = [[GNU Project]]
+| title       = GNU Bash Manual, 3.5.3: Shell Parameter Expansion
+| url         = https://www.gnu.org/software/bash/manual/html_node/Shell-Parameter-Expansion.html
+| website     = [[Free Software Foundation, Inc.]]
+}}
+|
+{{Cite web
+| access-date = 8 August 2025
+| publisher   = [[Case Western Reserve University]]
+| title       = Bash(1), Parameter Expansion
+| url         = https://tiswww.case.edu/php/chet/bash/bash.html#lbBB
+| website     = case.edu
+}}
+|
+{{Cite web
+| access-date = 18 August 2025
+| publisher   = [[The Open Group]]
+| title       = POSIX 2024, 2.6.2 Parameter Expansion
+| url         = https://pubs.opengroup.org/onlinepubs/9799919799/utilities/V3_chap02.html#tag_19_06_02
+| website     = opengroup.org
+}}
+}}</ref>
+** Special Parameters:<ref>
+{{Cite web
+| access-date = 8 August 2025
+| publisher   = [[GNU Project]]
+| title       = Bash Reference Manual: 3.4.2: Special Parameters 
+| url         = https://www.gnu.org/software/bash/manual/html_node/Special-Parameters.html
+| website     = [[Free Software Foundation, Inc.]]
+}}</ref><ref>
+{{Cite web
+| title   = Shell Command Language 
+| url     = https://pubs.opengroup.org/onlinepubs/9799919799/utilities/V3_chap02.html#tag_19_05_02 
+| website = opengroup.org
+}}</ref>
+** Special Built-In Utility {{mono|set}}:<ref name="infoandposixset">
+{{Multiref2
+|
+{{Cite web
+| access-date = 8 August 2025
+| title       = GNU Bash Manual, 4.3.1: The Set Builtin
+| url         = https://www.gnu.org/software/bash/manual/html_node/The-Set-Builtin.html
+| website     = [[Free Software Foundation, Inc.]]
+}}
+|
+{{Cite web
+| title   = POSIX 2024, set
+| url     = https://pubs.opengroup.org/onlinepubs/9799919799/utilities/V3_chap02.html#tag_19_26
+| website = opengroup.org
+}}
+}}</ref><ref name="case.edu_bash1">
+{{Cite web
+| access-date = 8 August 2025
+| publisher   = [[Case Western Reserve University]]
+| title       = Bash(1), Shell builtin commands
+| url         = https://tiswww.case.edu/php/chet/bash/bash.html#lbDB
+| website     = case.edu
+}}</ref>
+** Special Built-In Utility {{mono|trap}}:<ref name =case.edu_bash1/><ref name="gnu.org_trap">
+{{Cite web
+| access-date = 8 August 2025
+| publisher = [[GNU Project]]
+| title     = Bourne Shell Builtins (Bash Reference Manual) 
+| url       = https://www.gnu.org/software/bash/manual/html_node/Bourne-Shell-Builtins.html#index-trap 
+| website     = [[Free Software Foundation, Inc.]]
+}}</ref>
+*** POSIX does specify certain uses of the {{mono|trap}} builtin: ...
+** Utility {{mono|printf}}: a means of reliably printing the contents of a variable:
+* Bash features not specified by POSIX:
+** Bash Variables:<ref>
+{{Cite web
+| access-date = 8 August 2025
+| publisher   = [[GNU Project]]
+| title       = Bash Reference Manual: 5.2: Bash Variables 
+| url         = https://www.gnu.org/software/bash/manual/html_node/Bash-Variables.html
+| website     = [[Free Software Foundation, Inc.]]
+}}</ref><ref>
+{{Cite web
+| access-date = 8 August 2025
+| publisher   = [[Case Western Reserve University]]
+| title       = Bash(1), Special parameters
+| url         = https://tiswww.case.edu/php/chet/bash/bash.html#lbAW
+| website     = case.edu
+}}</ref>
+** Shell Builtin {{mono|set}}:<ref name =infoandposixset/><ref name =case.edu_bash1/>
+** Shell Builtin {{mono|shopt}}:<ref>
+{{Cite web
+| access-date = 8 August 2025
+| publisher   = [[GNU Project]]
+| title       = The Shopt Builtin (Bash Reference Manual) 
+| url         = https://www.gnu.org/software/bash/manual/html_node/The-Shopt-Builtin.html
+| website     = [[Free Software Foundation, Inc.]]
+}}</ref><ref name =case.edu_bash1/>
+** Shell Builtin {{mono|trap}}:<ref name =gnu.org_trap/><ref name =case.edu_bash1/>
+*** While POSIX does specify certain uses of the {{mono|trap}} builtin, the following signal specs are Bash extensions: ...
+* Third party debugging utilities:
+** ShellCheck: Shell script analysis tool;<ref>
+{{Multiref2
+|
+{{Cite web
+| title   = ShellCheck: Shell script analysis tool
+| url     = https://shellcheck.net
+| website = shellcheck.net
+}}
+|
+{{GitHub
+| koalaman/shellcheck
+| Github: shellcheck
+| link = hidden
+}}
+}}</ref><ref name =shellcheck-1/>
+** devscripts-checkbashisms: Check whether a /bin/sh script contains any common bash-specific constructs;<ref>
+{{Cite web
+| title   = Debian -- Details of package devscripts in sid 
+| url     = https://packages.debian.org/sid/devscripts
+| website = debian.org
+}}</ref><ref name =checkbashisms-1/>
+** kcov: Code coverage tool without special compilation options;<ref>
+{{Cite web
+| title   = Kcov - code coverage
+| url     = https://simonkagstrom.github.io/kcov
+| website = github.io
+}}</ref>
+** Bashdb: The Bash symbolic debugger.<ref name =ref_bashdb/><ref>
+{{Cite mailing list
+| access-date = 8 August 2025
+| publisher    = [[GNU Project]]
+| mailing-list = bug-bash
+| title        = [Bashdb-devel] Re: [PATCH] fix bashdb script handling of tmp directory 
+| url          = https://lists.gnu.org/archive/html/bug-bash/2005-09/msg00038.html
+}}</ref>
+<!--
+            Other possibly relevant packages:
+                shfmt
+                libatf-sh
+                pcp-pmda-bash
+                pcp-pmda-shping
+-->
+
+==== Examples ====
+
+With the {{Code| "${var:?}"| bash}} parameter expansion, an unset or null variable can halt a script.
+
+:<syntaxhighlight lang="console">
+$ cat ex.sh
+#!/bin/bash
+bar="foo is not defined"
+echo "${foo:?$bar}"
+echo this message doesn't print
+
+$ ./ex.sh
+./ex.sh: line 3: foo: foo is not defined
+$
+</syntaxhighlight>
+
+Reliably printing the contents of an array that contains spaces and newlines first in a portable syntax, and then the same thing in Bash.
+Note that POSIX doesn't have named array, only the list of arguments, {{Code| "$@"| bash}}, which can be re-set by the {{mono|set}} builtin.
+
+:<syntaxhighlight lang="console">
+$ # In POSIX shell:
+$ set -- "a" " b" " 
+>  c "
+$ printf ',%s,\n' "$@"
+,a,
+, b,
+,
+ c,
+</syntaxhighlight>
+
+Note that in Bash, the number of spaces before the newline is made clear.
+
+:<syntaxhighlight lang="console">
+$ # In Bash:
+$ array=( "a" " b" " 
+>  c " )
+$ declare -p array
+declare -a array=([0]="a" [1]=" b" [2]=$' \n c ')
+</syntaxhighlight>
+
+Printing an error message when there's a problem.
+
+:<syntaxhighlight lang="console">
+$ cat error.sh
+#!/bin/env bash
+if ! lsblk | grep sdb
+then
+  echo Error, line "${LINENO}"
+fi
+$ ./error.sh
+Error, line 130
+</syntaxhighlight>
+
+Using [[xtrace]].
+If errexit had been enabled, then {{Code| echo quux| bash}} would not have been executed.
+
+:<syntaxhighlight lang="console">
+$ cat test.sh
+#!/bin/env bash
+set -x
+foo=bar; echo "${foo}"
+false
+echo quux
+$ ./test.sh
++ foo=bar
++ echo bar
+bar
++ false
++ echo quux
+quux
+</syntaxhighlight>
+
+<!-- This example from https://ru.wikipedia.org/wiki/Bash on 6 August 2025 -->
+Note: {{Code| $BASHPID| bash}} differs from {{Code| $$| bash}} in certain circumstances, such as subshells that do not require bash to be reinitialized.
+
+:<syntaxhighlight lang="console">
+$ echo $(echo $BASHPID $$)   $$    $BASHPID
+              25680    16920 16920 16920
+#             |        |     |     |
+#             |        |     |     \-- $BASHPID outside of the subshell
+#             |        |     \-- $$ outside of the subshell
+#             |        \-- $$ inside of the subshell
+#             \-- $BASHPID inside of the subshell
+</syntaxhighlight>
+
+=== Bug reporting ===
+
+{{Redirect|bashbug|The widely reported September 2014 bug found in Bash|Shellshock (software bug)}}
+
+An external command called ''bashbug'' reports Bash shell bugs.
+When the command is invoked, it brings up the user's default editor with a form to fill in.
+The form is mailed to the Bash maintainers (or optionally to other email addresses).<ref>
+{{Cite web
+| archive-date = 2 October 2018
+| archive-url  = https://web.archive.org/web/20181002232146/https://linux.die.net/man/1/bashbug
+| date         = 21 October 2017
+| title        = bashbug(1)
+| url          = https://linux.die.net/man/1/bashbug
+| website      = die.net
+}}</ref><ref>
+{{Cite web
+| archive-date = 6 October 2014
+| archive-url  = https://web.archive.org/web/20141006131347/https://developer.apple.com/library/prerelease/mac/documentation/Darwin/Reference/ManPages/man1/bashbug.1.html
+| date         = 4 June 2014
+| title        = bashbug(1) Mac OS X Manual Page
+| url          = https://developer.apple.com/library/prerelease/mac/documentation/Darwin/Reference/ManPages/man1/bashbug.1.html
+| website      = apple.com
+}}</ref>
+
+== History  ==
+
+Shell script functionality originated with files called "[[RUNCOM|runcoms]]" in reference to the 1963 [[Macro (computer science)|macro]] processor of the same name.
+The suffix "rc" is short for "runcom."<ref>
+{{Cite web
+| access-date  = 8 August 2025
+| archive-date = 10 June 2010
+| archive-url  = https://web.archive.org/web/20100610011504/http://kb.iu.edu/data/abnd.html
+| date         = 5 February 2009
+| publisher    = Indiana University
+| title        = In Unix, what do some obscurely named commands stand for?
+| url          = https://kb.iu.edu/data/abnd.htmliu.edu_09
+| website      = iu.edu
+}}</ref>
+The term [[Shell (computing)|"shell"]] was coined by Louis Pouzin in 1964 or 1965,
+and appeared in his 1965 paper, "The SHELL, A Global Tool for Calling and Chaining Procedures in the System," which describes many features later found in many UNIX shells.<ref>
+{{Cite web
+| author  = Louis Pouzin
+| date    = 25 November 2000
+| title   = The Origin of the Shell
+| url     = https://multicians.org/shell.html
+| website = multicians.org
+}}
+</ref><ref>
+{{Cite web
+| title   = The SHELL, A Global Tool for Calling and Chaining Procedures in the System
+| url     = https://people.csail.mit.edu/saltzer/Multics/Multics-Documents/MDN/MDN-4.pdf
+| website = mit.edu
+}}
+</ref>
+The [[ASCII]] standard for [[character encoding]] was defined in 1969 in a document called [[Request for Comments]] (RFC) 20.<ref>
+{{Cite web
+| access-date = 8 August 2025
+| date        = 16 October 1969
+| first       = Vint
+| last        = Cerf
+| publisher   = UCLA, Network Working Group
+| title       = ASCII Format for Network Interchange
+| url         = https://datatracker.ietf.org/doc/html/rfc20
+| website     = ietf.org
+}}</ref>
+
+=== Timeline ===
+
+<!-- consider moving to dedicated 'Timeline of Bash' article -->
+Significant events in Bash history are listed below:
+
+{| class = "wikitable sortable collapsible collapsed"
+! Date
+! Event
+
+|-
+! 1988-01-10
+|
+[[Brian Fox (computer programmer)|Brian Fox]] began [[Computer programming|coding]] Bash after [[Richard Stallman]] became dissatisfied with the lack of progress being made by a prior developer.<ref name="comp.unix_88">
+{{Cite newsgroup
+| access-date  = 28 December 2021
+| archive-date = 28 December 2021
+| archive-url  = https://web.archive.org/web/20211228023030/https://groups.google.com/g/comp.unix.questions/c/iNjWwkyroR8/m/yedr9yDWSuQJ
+| date         = 10 February 1988
+| last1        = Stallman
+| first1       = Richard
+| last2        = Ramey
+| first2       = Chet
+| message-id   = 2362@mandrill.CWRU.Edu
+| newsgroup    = comp.unix.questions
+| quote        = For a year and a half, the GNU shell was "just about done". The author made repeated promises to deliver what he had done, and never kept them. Finally I could no longer believe he would ever deliver anything. So Foundation staff member Brian Fox is now implementing an imitation of the Bourne shell.
+| title        = GNU + BSD = ?
+| url          = https://groups.google.com/g/comp.unix.questions/c/iNjWwkyroR8/m/yedr9yDWSuQJ
+| url-status   = live
+| website      = google.com
+}}
+</ref>
+Stallman and the [[Free Software Foundation|FSF]] considered a free shell that could run existing shell scripts so strategic to a completely free system built from BSD and GNU code that this was one of the few projects they funded themselves.
+Fox undertook the work as an employee of FSF.<ref name =comp.unix_88/><ref>
+{{Cite web
+| access-date  = 8 August 2025
+| archive-date = 24 April 2011
+| archive-url  = https://web.archive.org/web/20110424064815/https://www.gnu.org/gnu/thegnuproject.html
+| date         = 3 October 2010
+| first        = Richard
+| last         = Stallman
+| publisher    = [[GNU Project]]
+| quote        = Free Software Foundation employees have written and maintained a number of GNU software packages. Two notable ones are the C library and the shell. ... We funded development of these programs because the GNU Project was not just about tools or a development environment. Our goal was a complete operating system, and these programs were needed for that goal.
+| title        = About the GNU Project 
+| url          = https://www.gnu.org/gnu/thegnuproject.html
+| url-status   = live
+| website      = [[Free Software Foundation, Inc.]]
+
+}}
+</ref>
+
+|-
+! 1989-06-08
+|
+Fox released Bash as a beta, version 0.99.<ref>
+{{Cite newsgroup 
+| access-date  = 28 October 2010
+| archive-date = 4 May 2013
+| archive-url  = https://web.archive.org/web/20130504075535/http://groups.google.com/group/gnu.announce/msg/a509f48ffb298c35?hl=en
+| date         = 8 June 1989
+| first1       = Brian
+| first2       = Leonard H.
+| last1        = Fox
+| last2        = Tower Jr.
+| newsgroup    = gnu.announce
+| title        = Bash is in beta release!
+| url          = https://groups.google.com/group/gnu.announce/msg/a509f48ffb298c35?hl=en
+| url-status   = live
+| website      = google.com
+}}</ref>
+The license was GPL-1.0-or-later.
+"In addition to supporting backward-compatibility for scripting, Bash has incorporated features from the Korn and C shells.
+You'll find command history, command-line editing, a directory stack (pushd and popd), many useful environment variables, command completion, and more."<ref>
+{{Cite web
+| date      = 9 December 2011
+| publisher = IBM
+| title     = Evolution of shells in Linux
+| url       = https://developer.ibm.com/tutorials/l-linux-shells/
+| website   = ibm.com
+}}
+</ref>
+Eventually it supported "regular expressions (similar to Perl), and associative arrays".
+
+|-
+! 1991
+|
+Bash holds historical significance as one of the earliest programs ported to Linux by [[Linus Torvalds]], alongside the GNU Compiler ([[GNU Compiler Collection|GCC]]).<ref>
+{{Cite newsgroup
+| access-date  = 8 August 2025
+| date         = 26 August 1991
+| first        = Linus
+| last         = Torvalds
+| newsgroup    = comp.os.minix
+| quote        = To make things really clear - yes I can run gcc on it, and bash, and most of the gnu [bin/file]utilities
+| title        = What would you like to see most in Minix?
+| url          = https://groups.google.com/group/comp.os.minix/msg/b813d52cbc5a044b
+| website      = google.com
+}}</ref>
+
+|-
+! 1992 ~ 1994
+|
+Brian Fox retired as the primary maintainer sometime between mid-1992<ref>
+{{Cite newsgroup
+| access-date  = 28 October 2010
+| archive-date = 2 March 2021
+| archive-url  = https://web.archive.org/web/20210302213455/https://groups.google.com/forum/
+| date         = 20 April 1993
+| message-id   = gnusenet930421bulletin@prep.ai.mit.edu
+| newsgroup    = gnu.announce
+| title        = January 1993 GNU's Bulletin
+| url          = https://groups.google.com/group/gnu.misc.discuss/msg/4f42c739cd7e8bd8
+| url-status   = live
+| website      = google.com
+}}
+</ref>
+and mid-1994.<ref>
+{{Cite web
+| access-date  = 13 November 2008
+| archive-date = 5 December 2008
+| archive-url  = https://web.archive.org/web/20081205082152/http://www.linuxjournal.com/article/2800
+| date         = 1 August 1994
+| first        = Chet
+| last         = Ramey
+| publisher    = [[Linux Journal]]
+| title        = Bash – the GNU shell (Reflections and Lessons Learned)
+| url          = https://www.linuxjournal.com/article/2800#N0xa50890.0xb46380
+| url-status   = live
+| website      = linuxjournal.com
+}}
+</ref><ref>
+{{Citation
+| access-date  = 31 October 2010
+| archive-date = 20 July 2012
+| archive-url  = https://web.archive.org/web/20120720124341/http://www.scribd.com/doc/40556434/2010-10-31-Chet-Ramey-Early-Bash-Dates
+| date         = 31 October 2010
+| first        = Chet
+| last         = Ramey
+| title        = Dates in your Computerworld interview
+| url          = https://www.scribd.com/doc/40556434/2010-10-31-Chet-Ramey-Early-Bash-Dates
+| url-status   = live
+| website      = scribd.com
+}}
+</ref>
+His responsibility was transitioned to another early contributor, Chet Ramey.<ref name =bash-top/><ref>
+{{Multiref2
+|
+{{Cite newsgroup
+| access-date  = 1 November 2010
+| archive-date = 10 November 2012
+| archive-url  = https://web.archive.org/web/20121110194014/http://groups.google.com/group/gnu.bash.bug/msg/1fc7b688f5d44438?hl=en
+| date         = 12 June 1989
+| last         = Ramey
+| first        = Chet
+| newsgroup    = gnu.bash.bug
+| title        = Bash 0.99 fixes & improvements
+| url          = https://groups.google.com/group/gnu.bash.bug/msg/1fc7b688f5d44438?hl=en
+| url-status   = live
+| website      = google.com
+}}
+|
+{{Cite newsgroup
+| access-date  = 30 October 2010
+| archive-date = 10 November 2012
+| archive-url  = https://web.archive.org/web/20121110194034/http://groups.google.com/group/gnu.bash.bug/msg/072a03645663caea?hl=en
+| date         = 24 July 1989
+| last         = Ramey
+| first        = Chet
+| newsgroup    = gnu.bash.bug
+| title        = Some bash-1.02 fixes
+| url          = https://groups.google.com/group/gnu.bash.bug/msg/072a03645663caea?hl=en
+| url-status   = live
+| website      = google.com
+}}
+|
+{{Cite newsgroup
+| access-date  = 30 October 2010
+| archive-date = 10 November 2012
+| archive-url  = https://web.archive.org/web/20121110194052/http://groups.google.com/group/gnu.bash.bug/msg/e6112ccc8866e2f4?hl=en
+| date         = 2 March 1990
+| last         = Fox
+| first        = Brian
+| newsgroup    = gnu.bash.bug
+| title        = Availability of bash 1.05
+| url          = https://groups.google.com/group/gnu.bash.bug/msg/e6112ccc8866e2f4?hl=en
+| url-status   = live
+| website      = google.com
+}}
+}}</ref><ref name="computerworld_08"/><ref name="goftw2015"/>
+Since then, Bash has become the most popular default interactive shell among the major GNU/Linux distributions, such as [[Fedora Linux|Fedora]], [[Debian]], and [[openSUSE]], as well as among their derivatives and competitors.<ref>
+{{Cite book
+| access-date  = 6 June 2016
+| archive-date = 2 March 2021
+| archive-url  = https://web.archive.org/web/20210302212409/https://books.google.com/books?id=2P3zBgAAQBAJ&q=%22most+popular%22+linux+shell&pg=PA5
+| date         = April 2015
+| edition      = 3rd
+| first1       = Christine
+| first2       = Richard
+| isbn         = 978-1-119-02122-3
+| last1        = Bresnahan
+| last2        = Blum
+| page         = 5
+| publisher    = John Wiley & Sons, Inc.
+| quote        = In Linux, most users run bash because it is the most popular shell.
+| title        = CompTIA Linux+ Powered by Linux Professional Institute Study Guide: Exam LX0-103 and Exam LX0-104
+| url          = https://books.google.com/books?id=2P3zBgAAQBAJ&q=%22most+popular%22+linux+shell&pg=PA5
+| url-status   = live
+}}
+</ref><ref>
+{{Cite book
+| access-date  = 6 June 2016
+| archive-date = 2 March 2021
+| archive-url  = https://web.archive.org/web/20210302212410/https://books.google.com/books?id=tIjrVYbZmUAC&q=bash+most+popular+unix+shell&pg=PA363
+| date         = February 2006
+| first1       = Arman
+| first2       = Michael
+| isbn         = 978-0-7821-5277-7
+| last1        = Danesh
+| last2        = Jang
+| page         = 363
+| publisher    = John Wiley & Sons, Inc.
+| quote        = The Bourne Again Shell (bash) is the most common shell installed with Linux distributions.
+| title        = Mastering Linux
+| url          = https://books.google.com/books?id=tIjrVYbZmUAC&q=bash+most+popular+unix+shell&pg=PA363
+| url-status   = live
+}}
+</ref>
+
+|-
+! 1994-01-26
+|
+Debian – initial release.
+Bash is the default interactive and non-interactive shell.<ref name="debian.org_shell">
+{{Cite web
+| title   = Debian Wiki: Shell
+| url     = https://wiki.debian.org/Shell
+| website = debian.org
+}}</ref>
+
+|-
+! 1996-12-31
+|
+Chet Ramey released bash 2.0.
+The license was GPL-2.0-or-later
+
+|-
+! 1997-06-05
+|
+Bash 2.01 released.
+
+|-
+! 1998-04-18
+|
+Bash 2.02 released.
+
+|-
+! 1999-02-19
+|
+Bash 2.03 released.
+
+|-
+! 2000-03-21
+|
+Bash 2.04 released.
+
+|-
+! 2000-09-14
+|
+Bug-bash mailing list exists.<ref>
+{{Cite mailing list
+| access-date  = 8 August 2025
+| date         = 14 September 2000
+| first        = Chet
+| last         = Ramey
+| mailing-list = bug-bash
+| publisher    = [[GNU Project]]
+| title        = Re: Line-Edit mode is lost if "set -o vi" is in any files sourced on login.
+| url          = https://lists.gnu.org/archive/html/bug-bash/2000-09/msg00000.html
+}}
+</ref>
+
+|-
+! 2001-04-09
+|
+Bash 2.05 released.<ref>
+{{Cite mailing list
+| access-date  = 8 August 2025
+| date         = 9 April 2001
+| first        = Chet
+| last         = Ramey
+| mailing-list = bug-bash
+| publisher    = [[GNU Project]]
+| title        = Bash-2.05 available for FTP
+| url          = https://lists.gnu.org/archive/html/bug-bash/2001-04/msg00047.html
+}}
+</ref>
+
+|-
+! 2003
+|
+<!--- To do: unformatted citation: "Essential_Mac_OS_X_Panther" --->
+Bash became the default shell on Apple's operating systems (i.e., MacOS) starting with OS X 10.3 Panther.<ref>[https://www.google.com/books/edition/Essential_Mac_OS_X_Panther_Server_Admini/zrI-U0KWj3cC?hl=en&gbpv=1&dq=bash&pg=PA189&printsec=frontcover Essential Mac OS S Panther Server Administration, pg 189]
+</ref><ref>
+{{Cite book
+| access-date  = 8 August 2025
+| archive-date = 2 March 2021
+| archive-url  = https://web.archive.org/web/20210302212410/https://books.google.com/books?id=dwIRERUpQPEC&q=bash+most+popular+unix+shell&pg=PA6
+| date         = April 2005
+| first1       = Eric
+| first2       = John C.
+| first3       = Micah
+| isbn         = 978-0-7645-9791-6
+| last1        = Foster-Johnson
+| last2        = Welch
+| last3        = Anderson
+| page         = 6
+| publisher    = John Wiley & Sons, Inc.
+| quote        = Bash is by far the most popular shell and forms the default shell on Linux and Mac OSX systems.
+| title        = Beginning Shell Scripting
+| url          = https://books.google.com/books?id=dwIRERUpQPEC&q=bash+most+popular+unix+shell&pg=PA6
+| url-status   = live
+}}
+</ref>
+It was available on OS X 10.2 Jaguar as well where the default shell was tcsh.
+
+|-
+! 2004-07-27
+|
+Bash 3.0 released.<ref>
+{{Cite mailing list
+| access-date  = 8 August 2025
+| mailing-list = bug-bash
+| publisher    = [[GNU Project]]
+| title        = Bash-3.0 available for FTP
+| url          = https://lists.gnu.org/archive/html/bug-bash/2004-07/msg00255.html
+}}
+</ref>
+
+|-
+! 2005-12-09
+|
+Bash 3.1 released.<ref>
+{{Cite mailing list
+| access-date  = 8 August 2025
+| mailing-list = bug-bash
+| publisher    = [[GNU Project]]
+| title        = Bash-3.1 released
+| url          = https://lists.gnu.org/archive/html/bug-bash/2005-12/msg00018.html
+}}
+</ref>
+
+|-
+! 2006-10-12
+|
+Bash 3.2 released.<ref>
+{{Cite mailing list
+| access-date  = 8 August 2025
+| mailing-list = bug-bash
+| publisher    = [[GNU Project]]
+| title        = Bash-3.2 available for FTP
+| url          = https://lists.gnu.org/archive/html/bug-bash/2006-10/msg00057.html
+}}
+</ref>
+The license was GPL-2.0-or-later.
+
+|-
+! 2006
+|
+[[Ubuntu]] replace bash with dash as its default shell.
+
+|-
+! 2009-02-20
+|
+Bash 4.0 released<ref>
+{{Cite mailing list
+| access-date  = 8 August 2025
+| mailing-list = bug-bash
+| publisher    = [[GNU Project]]
+| title        = Bash-4.0 available for FTP
+| url          = https://lists.gnu.org/archive/html/bug-bash/2009-02/msg00164.html
+}}
+</ref>
+Its license is GPL-3.0-or-later.
+
+|-
+! 2010-01-02
+|
+Bash 4.1 released.<ref>
+{{Cite mailing list
+| access-date  = 8 August 2025
+| mailing-list = bug-bash
+| publisher    = [[GNU Project]]
+| title        = Bash-4.1 available for FTP
+| url          = https://lists.gnu.org/archive/html/bug-bash/2010-01/msg00000.html
+}}
+</ref>
+
+|-
+!  2011-02-14
+|
+Bash 4.2 released.<ref>
+{{Cite mailing list
+| access-date  = 8 August 2025
+| mailing-list = bug-bash
+| publisher    = [[GNU Project]]
+| title        = Bash-4.2 available for FTP
+| url          = https://lists.gnu.org/archive/html/bug-bash/2011-02/msg00134.html
+}}
+</ref>
+
+|-
+! 2012
+|
+On [[Oracle Solaris|Solaris]] 11, "the default user shell is the Bourne-again (bash) shell."<ref>
+{{Cite web
+| access-date  = 8 August 2025
+| archive-date = 12 June 2018
+| archive-url  = https://web.archive.org/web/20180612144748/https://docs.oracle.com/cd/E23824_01/html/E24456/userenv-1.html
+| publisher    = [[Oracle Corporation]]
+| title        = User Environment Feature Changes
+| url          = https://docs.oracle.com/cd/E23824_01/html/E24456/userenv-1.html
+| url-status   = live
+| website      = oracle.com
+}}
+</ref>
+
+|-
+! 2014-02-27
+|
+Bash 4.3 released.<ref>
+{{Cite mailing list
+| access-date  = 8 August 2025
+| mailing-list = bug-bash
+| publisher    = [[GNU Project]]
+| title        = Bash-4.3 available for FTP
+| url          = https://lists.gnu.org/archive/html/bug-bash/2014-02/msg00081.html
+}}
+</ref>
+
+|-
+!2014-09-08
+|
+[[Shellshock (software bug)]].<ref>
+{{Cite web
+| access-date = 8 August 2025
+| quote       = GNU Bash through 4.3 processes trailing strings after function definitions in the values of environment variables, which allows remote attackers to execute arbitrary code via a crafted environment, as demonstrated by vectors involving the ForceCommand feature in OpenSSH sshd, the mod_cgi and mod_cgid modules in the Apache HTTP Server, scripts executed by unspecified DHCP clients, and other situations in which setting the environment occurs across a privilege boundary from Bash execution, aka "ShellShock."
+| title       = CVE-2014-6271
+| url         = https://www.cve.org/CVERecord?id=CVE-2014-6271
+| website     = cve.org
+}}
+</ref><ref>
+{{Cite web
+| access-date = 8 August 2025
+| title       = CVE-2014-7169
+| url         = https://www.cve.org/CVERecord?id=CVE-2014-7169
+| website     = cve.org
+}}
+</ref>
+Patches to fix the bugs were made available soon after the bugs were identified.<ref>
+{{Cite mailing list
+| access-date  = 8 August 2025
+| mailing-list = bug-bash
+| publisher    = [[GNU Project]]
+| title        = Bash 3.0 Official Patch 1
+| url          = https://lists.gnu.org/archive/html/bug-bash/2004-09/msg00083.html
+}}
+</ref>
+
+|-
+! 2015
+|
+[[Termux]] and other terminal emulation applications provide availability of Bash on [[Android (operating system)|Android]].
+
+|-
+! 2016-09-15
+|
+Bash 4.4 released.
+
+|-
+! 2009 ~ 2018
+|
+Apple declines to accept version 4 of Bash being licensed under version 3 of the [[GNU GPL]], and ceases to supply upgrades to Bash beyond version 3.2 (as supplied in [[MacOS Mojave]]).
+
+|-
+! 2019-06-05
+|
+Apple declares [[Z Shell|zsh]] its default shell<ref>
+{{Cite web
+| access-date = 8 August 2025
+| date        = 5 June 2019
+| first       = Armin
+| last        = Briegel
+| title       = Moving to zsh
+| url         = https://scriptingosx.com/2019/06/moving-to-zsh/?form=MG0AV3
+| website     = scriptingosx.com
+}}
+</ref>
+and supplies version 5.7 in its [[MacOS Catalina|Catalina]] release of MacOS.<ref>
+{{Cite web
+| access-date  = 8 August 2025
+| archive-date = 2 December 2019
+| archive-url  = https://web.archive.org/web/20191202143802/https://support.apple.com/en-us/HT208050
+| title        = Apple Support – Use zsh as the default shell on your Mac
+| url          = https://support.apple.com/en-us/HT208050
+| url-status   = live
+| website      = apple.com
+}}
+</ref><ref>
+{{Cite web
+| access-date  = 8 August 2025
+| archive-date = 10 June 2019
+| archive-url  = https://web.archive.org/web/20190610051842/https://www.theverge.com/2019/6/4/18651872/apple-macos-catalina-zsh-bash-shell-replacement-features
+| date         = 4 June 2019
+| first        = Tom
+| last         = Warren
+| publisher    = [[The Verge]]
+| quote        = The bash binary bundled with macOS has been stuck on version 3.2 for a long time now. Bash v4 was released in 2009 and bash v5 in January 2019. The reason Apple has not switched to these newer versions is that they are licensed with GPL v3. Bash v3 is still GPL v2.
+| title        = Apple replaces bash with zsh as the default shell in macOS Catalina
+| url          = https://www.theverge.com/2019/6/4/18651872/apple-macos-catalina-zsh-bash-shell-replacement-features
+| url-status   = live
+| website      = theverge.com
+}} 
+</ref><ref>
+{{Cite web
+| access-date  = 8 August 2025
+| archive-date = 31 December 2020
+| archive-url  = https://web.archive.org/web/20201231231721/https://thenextweb.com/dd/2019/06/04/why-does-macos-catalina-use-zsh-instead-of-bash-licensing/
+| date         = 4 June 2019
+| first        = Matthew
+| language     = en-us
+| last         = Hughes
+| website      = [[TNW (website)|The Next Web]]
+| title        = Why does macOS Catalina use Zsh instead of Bash? Licensing
+| url          = https://thenextweb.com/dd/2019/06/04/why-does-macos-catalina-use-zsh-instead-of-bash-licensing/
+| url-status   = live
+}}
+</ref>
+
+|-
+! 2019-01-07
+|
+Bash 5.0 released.<ref>
+{{Cite mailing list
+| access-date  = 8 August 2025
+| mailing-list = bug-bash
+| publisher    = [[GNU Project]]
+| title        = Bash-5.0 release available
+| url          = https://lists.gnu.org/archive/html/bug-bash/2019-01/msg00063.html
+}}
+</ref>
+
+|-
+! 2020-12-07
+|
+Bash 5.1 released.<ref>
+{{Cite mailing list
+| access-date  = 8 August 2025
+| mailing-list = bug-bash
+| publisher    = [[GNU Project]]
+| title        = Bash-5.1 release available
+| url          = https://lists.gnu.org/archive/html/bug-bash/2020-12/msg00002.html
+}}
+</ref>
+
+|-
+! 2022-09-26
+|
+Bash 5.2 released.
+
+|-
+! 2025
+|
+Bash 5.3 released.
+
+|}
+
+== See also ==
+
+{{Portal| Free and open-source software}}
+*[[Comparison of command shells]]
+*{{Section link| Multics#Commands}}, exec_com: the first command processor.
+* FTP download from GNU Project of Bash versions 1.14.0 to current.<ref>
+{{Citation
+| access-date  = 8 August 2025
+| archive-date = 28 September 2018
+| archive-url  = https://web.archive.org/web/20180928193215/http://ftp.gnu.org/gnu/bash
+| date         = 29 August 1996
+| publisher    = [[GNU Project]]
+| title        = shell.c
+| url          = https://ftp.gnu.org/gnu/bash
+| url-status   = live
+| website      = [[Free Software Foundation, Inc.]]
+}}
+</ref>
+
+=== Unix shells ===
+<!-- This subsection added from https://ru.wikipedia.org/wiki/Bash on 6 Aug 2025 -->
+* [[Almquist shell]] (ash)
+** [[Almquist shell#Dash|Debian-Almquist shell]] (dash)
+* [[Bourne shell]] (sh)
+* [[BusyBox]]
+* [[C shell]] (csh)
+* [[Fish (Unix shell)|Fish]] (Friendly Interactive Shell)
+** nsh – command-line shell like fish, but POSIX compatible<ref>
+{{Cite web
+| access-date = 8 August 2025
+| date        = 5 February 2025
+| title       = Command-line shell
+| url         = https://wiki.archlinux.org/title/Command-line_shell
+| website     = archlinux.org
+}}</ref>
+* [[Google Shell]] (goosh) – UNIX-like front-end for Google Search
+* [[KornShell]] (ksh) – has many variants
+* osh (Oil Shell) – Bash-compatible UNIX command-line shell; available on [[Arch Linux]]
+* [[PWB shell]] (Mashey or Programmer's Workbench shell)
+* [[Qshell]] – for IBM i
+* [[rc (Unix shell)|rc]] – from [[Plan 9 from Bell Labs|Plan 9]]
+* [[RUNCOM]]
+* rush (Restricted User Shell) – available on [[Debian]]<ref name =debian.org_shell/>
+* [[Stand-alone shell]] (sash)
+* scsh (The Scheme Shell)
+* [[tcsh]] (TENEX C shell)
+* [[Thompson shell]] (tsh)
+* [[Toybox]]
+* yash (Yet Another Shell) – aims "to be the most POSIX-compliant shell in the world"; available on [[Arch Linux]]
+* [[Z shell]] (zsh)
+
+=== Graphical interface to scripts ===
+
+There are many programs that allow you to create a graphical interface for shell scripts.
+
+* [[curses (programming library)|curses]] - curses is a terminal control library for Unix-like systems, enabling the construction of [[Text-based user interface|text user interfaces]] (TUI) applications.
+* [[Dialog (software)|dialog]] - is a utility that allows you to create dialog boxes in the console, using the [[curses]] and [[ncurses]] libraries.
+* gtkdialog - is the most functional utility for creating graphical applications on bash scripts.<ref>
+{{Cite web
+| access-date = 18 August 2025
+| author      = Hanny Helal
+| date        = 7 January 2015
+| publisher   = Tecmint
+| title       = Gtkdialog – Create Graphical (GTK+) Interfaces and Dialog Boxes Using Shell Scripts in Linux
+| url         = https://www.tecmint.com/gtkdialog-create-graphical-interfaces-and-dialog-boxes/
+| website     = tecmint.com
+}}</ref>
+
+* kdialog - is a KDE  equivalent of zenity.<ref name="linux-mag_sh-click">
+{{Cite web
+| access-date = 18 August 2025
+| at          = Issue 99
+| author      = Kristian Kißling
+| date        = 2009
+| publisher   = Linux Magazine
+| title       = Adding graphic elements to your scripts with Zenity and KDialog
+| url         = https://www.linux-magazine.com/Issues/2009/99/Zenity-and-KDialog
+| website     = linux-magazine.com
+}}</ref>
+
+* [[ncurses]] - a programming library for creating [[Text-based user interface|textual user interfaces]] (TUI's) that work across a wide variety of terminals.
+* whiptail - is an analogue of the dialog utility, it uses the [[Newt (programming library)|newt]] library.<ref>
+{{Cite web
+| access-date = 18 August 2025
+| publisher   = WikiMedia
+| title       = Bash Shell Scripting/Whiptail
+| url         = https://en.wikibooks.org/wiki/Bash_Shell_Scripting/Whiptail
+| website     = wikibooks.org
+}}</ref>
+
+* xdialog - is a replacement for [[Dialog (software)|dialog]] that is designed to give programs launched from the terminal an [[X Window System]] interface.
+* yad - is a fork of zenity, with more features.<ref>
+{{Cite web
+| access-date = 18 August 2025
+| author      = Dmitri Popov
+| date        = 12 March 2012
+| publisher   = Linux Magazine
+| title       = Dress Up Bash Scripts with YAD
+| url         = https://www.linux-magazine.com/Online/Blogs/Productivity-Sauce/Dress-Up-Bash-Scripts-with-YAD
+| website     = linux-magazine.com
+}}</ref>
+
+* [[zenity]] - is the most popular application for creating a graphical interface for scripts.<ref name =linux-mag_sh-click/><ref>
+{{Cite web
+| access-date = 18 August 2025
+| at          = Issue 247
+| author      = Pete Metcalfe
+| date        = 2021
+| publisher   = Linux Magazine
+| title       = Create GUI dialogs in one line of code
+| url         = https://www.linux-magazine.com/Issues/2021/247/Zenity-Dialogs
+| website     = linux-magazine.com
+}}</ref>
+
+== Further reading ==
+
+*[A]
+**{{Cite web
+| access-date = 8 August 2025
+| publisher   = Apple
+| quote       = Copyright © 2003, 2014 Apple Inc All Rights Reserved. ... Updated: 2014-03-10
+| title       = Shell Scripting Primer
+| url         = https://developer.apple.com/library/archive/documentation/OpenSource/Conceptual/ShellScripting/Introduction/Introduction.html
+| website     = apple.com
+}}
+
+*[G]
+**{{Cite web
+| access-date = 8 August 2025
+| publisher   = Google
+| title       = Shell Style Guide
+| url         = https://google.github.io/styleguide/shellguide.html
+| website     = github.io
+}}
+
+*[H]
+**{{Cite book
+| date      = 2003
+| first     = Neal
+| isbn      = 978-0-380-81593-7
+| last      = Stephenson
+| publisher = HarperCollins
+| title     = [[In the Beginning... Was the Command Line]]
+}}
+
+*[I]
+**{{Cite web
+| access-date = 8 August 2025
+| author      = M. Jones
+| date        = 9 December 2011
+| publisher   = [[IBM]]
+| title       = Evolution of shells in Linux: From Bourne to Bash and beyond
+| url         = https://developer.ibm.com/tutorials/l-linux-shells/
+| website     = ibm.com
+}}
+
+*[M]
+**{{Cite web
+| access-date = 8 August 2025
+| date        = 2 April 1965
+| first       = Louis
+| last        = Pouzin
+| publisher   = [[Massachusetts Institute of Technology]]
+| title       = The SHELL: A Global Tool for Calling and Chaining Procedures in the System     
+| url         = https://people.csail.mit.edu/saltzer/Multics/Multics-Documents/MDN/MDN-4.pdf
+| website     = mit.edu
+}}
+
+*[O]
+**{{Cite web
+| access-date = 8 August 2025
+| first1      = Cameron
+| first2      = Bill
+| last1       = Newham
+| last2       = Rosenblatt
+| publisher   = O'Reilly Media, Inc.
+| quote       = Content preview
+| title       = Learning the Bash Shell, 2e
+| url         = https://www.oreilly.com/library/view/learning-the-bash/1565923472/ch01s03.html
+| website     = oreilly.com
+}}
+
+*[U]
+**{{Cite web
+| access-date = 19 May 2024
+| publisher   = [[University of California, Berkeley]]
+| title       = Scripting Reference :: Scripting with the Bourne-Again Shell (Bash)     
+| url         = https://decal.ocf.berkeley.edu/labs/scripting/
+| website     = berkeley.edu
+}}
+**{{Cite web
+| access-date = 8 August 2025
+| publisher   = [[University of California, Berkeley]]
+| title       = IRIS :: Instructional & Research Information Systems :: FAQ: Unix :: About UNIX Shells     
+| url         = https://iris.eecs.berkeley.edu/faq/unix/
+| website     = berkeley.edu
+}}
+
+== Notes ==
+{{Notelist}}
+
+== References ==
+{{Reflist}}
+
+{{GNU}}
+{{Unix shells}}
+{{Programming languages}}
+{{Authority control}}
+
+[[Category:1989 software]]
+[[Category:Cross-platform free software]]
+[[Category:Domain-specific programming languages]]
+[[Category:Dynamically scoped programming languages]]
+[[Category:Free software programmed in C]]
+[[Category:GNU Project software]]
+[[Category:Scripting languages]]
+[[Category:Software using the GNU General Public License]]
+[[Category:Text-oriented programming languages]]
+[[Category:Unix shells]]
+<!-- Hidden categories below -->
+[[Category:Articles with example code]]

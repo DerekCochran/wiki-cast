@@ -764,8 +764,20 @@ static void append_file_image_params(Token *file_tok,
 						const char *vp= cap_ptr;
 						size_t vl= cap_len;
 						bool slot_at_end= syntax_ends_with_slot(syntax);
+						bool trail_has_line_break= false;
 						if(slot_at_end) {
-							vl+= trail_ws_len;
+							/* JS parity: trailing same-line spaces belong to a $1-at-end value,
+							 * but newline indentation before the next pipe does not. */
+							for(size_t tw= 0; tw < trail_ws_len; tw++) {
+								char ch= seg_ptr[seg_len - trail_ws_len + tw];
+								if(ch == '\n' || ch == '\r') {
+									trail_has_line_break= true;
+									break;
+								}
+							}
+							if(!trail_has_line_break) {
+								vl+= trail_ws_len;
+							}
 						}
 						/* Note: Do NOT trim the value - JavaScript parser preserves whitespace */
 
@@ -786,7 +798,7 @@ static void append_file_image_params(Token *file_tok,
 
 						char *syn= build_img_syntax_template(seg_ptr, seg_len,
 																								 lead_ws_len, trail_ws_len,
-																								 syntax, slot_at_end);
+																										 syntax, slot_at_end && !trail_has_line_break);
 						if(syn) {
 							set_image_param_syntax(param, syn);
 							free(syn);

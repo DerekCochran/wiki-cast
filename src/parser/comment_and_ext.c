@@ -1014,9 +1014,36 @@ static Token *parse_gallery_image_line_local(const char *line, size_t line_len,
 																			Accum *accum) {
 	if(!line || line_len == 0) return NULL;
 
-	ThreadBuf *pre_text_tb= NULL;
 	const char pipe_ch = '|';
 	const char *pipe_ptr = sz_find_byte(line, line_len, &pipe_ch);
+	size_t file_len= pipe_ptr ? (size_t)(pipe_ptr - line) : line_len;
+
+	const char *trim_file_ptr= line;
+	size_t trim_file_len= file_len;
+	while(trim_file_len > 0 && isspace((unsigned char)trim_file_ptr[0])) {
+		trim_file_ptr++;
+		trim_file_len--;
+	}
+	while(trim_file_len > 0 && isspace((unsigned char)trim_file_ptr[trim_file_len - 1])) {
+		trim_file_len--;
+	}
+
+	Title *file_title= title_parse_half_parsed(trim_file_ptr, trim_file_len, 6, cfg, true, "");
+	bool file_valid= (file_title && file_title->valid);
+	title_free(file_title);
+
+	/* JS GalleryToken parity: invalid file titles produce CommentLineToken. */
+	if(!file_valid) {
+		Token *comment_line = token_new(TOKEN_NOINCLUDE, "noinclude");
+		if(comment_line) {
+			const char *line_view = wiki_thread_buf_append_to_tokens(line, line_len);
+			token_append_text_n(comment_line, line_view, line_len);
+			accum_push(accum, comment_line);
+		}
+		return comment_line;
+	}
+
+	ThreadBuf *pre_text_tb= NULL;
 	size_t pipe_idx= SIZE_MAX;
 	if(pipe_ptr) {
 		pipe_idx= (size_t)(pipe_ptr - line);

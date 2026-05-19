@@ -1445,6 +1445,127 @@ static void postprocess_parameter_value_inline_impl(Token *t, const ParserConfig
 		}
 	}
 
+	/* Handle brace spans split across mixed text/token children (for example
+	 * parameter values containing nested templates that were already expanded).
+	 * Serialize token children back to sentinels so parse_braces can see one
+	 * contiguous stream without losing structure delimiters. */
+	if(!is_attr_value && !is_parameter_key && t->child_count > 1) {
+		bool has_text= false;
+		bool has_token= false;
+		bool has_open_braces= false;
+		bool has_close_braces= false;
+
+		for(size_t i= 0; i < t->child_count; i++) {
+			Child cur= t->children[i];
+			if(cur.is_text) {
+				has_text= true;
+				if(cur.text && cur.text_len >= 2) {
+					if(sz_find(cur.text, cur.text_len, "{{", 2)) has_open_braces= true;
+					if(sz_find(cur.text, cur.text_len, "}}", 2)) has_close_braces= true;
+				}
+			} else if(cur.token) {
+				has_token= true;
+			}
+		}
+
+		if(has_text && has_token && has_open_braces && has_close_braces) {
+			ThreadBuf *tmp_ser = wiki_thread_buf_acquire_scratch();
+			if(tmp_ser) {
+				tmp_ser->len= 0;
+				bool serializable= true;
+
+				for(size_t i= 0; i < t->child_count; i++) {
+					Child cur= t->children[i];
+					if(cur.is_text) {
+						wiki_thread_buf_reserve(tmp_ser, tmp_ser->len + cur.text_len + 1);
+						sz_copy(tmp_ser->buf + tmp_ser->len, cur.text, cur.text_len);
+						tmp_ser->len += cur.text_len;
+						continue;
+					}
+
+					Token *ctok= cur.token;
+					size_t tok_idx= SIZE_MAX;
+					for(size_t ai= 0; ai < accum->count; ai++) {
+						if(accum->tokens[ai] == ctok) {
+							tok_idx= ai;
+							break;
+						}
+					}
+
+					char sym= nested_token_marker_char(ctok);
+					if(tok_idx == SIZE_MAX || sym == '\0') {
+						serializable= false;
+						break;
+					}
+
+					char marker[64];
+					size_t mlen= 0;
+					work_str_sentinel(tok_idx, sym, marker, &mlen);
+					wiki_thread_buf_reserve(tmp_ser, tmp_ser->len + mlen + 1);
+					sz_copy(tmp_ser->buf + tmp_ser->len, marker, mlen);
+					tmp_ser->len += mlen;
+				}
+
+				if(serializable) {
+					tmp_ser->buf[tmp_ser->len]= '\0';
+
+					parse_comment_and_ext(tmp_ser, cfg, accum, false);
+					parse_braces(tmp_ser, cfg, accum);
+					parse_html(tmp_ser, cfg, accum);
+					parse_table(tmp_ser, cfg, accum);
+					parse_hr_and_double_underscore(tmp_ser, cfg, accum, TOKEN_PLAIN, "parameter-value");
+					parse_links(tmp_ser, cfg, accum, page, false);
+					parse_quotes_stage6_per_line(tmp_ser, cfg, accum);
+					parse_external_links(tmp_ser, cfg, accum, false);
+					parse_magic_links(tmp_ser, cfg, accum);
+					parse_list_skip_first_line(tmp_ser, cfg, accum);
+					parse_converter(tmp_ser, cfg, accum);
+
+					Token *tmp= token_new(TOKEN_PLAIN, t->type_name);
+					if(tmp) {
+						build_from_str(tmp, tmp_ser->buf, tmp_ser->len, accum);
+						build_token_recursive(tmp, accum, cfg);
+
+						for(size_t i= 0; i < t->child_count; i++) {
+							if(t->children[i].is_text && t->children[i].text_owned && t->children[i].text) {
+								free((void*)t->children[i].text);
+							}
+						}
+						free(t->children);
+
+						t->children= tmp->children;
+						t->child_count= tmp->child_count;
+						t->child_cap= tmp->child_cap;
+
+						tmp->children= NULL;
+						tmp->child_count= 0;
+						tmp->child_cap= 0;
+						token_free_shallow(tmp);
+
+						wiki_thread_buf_release_scratch(tmp_ser);
+
+						for(size_t i= 0; i < t->child_count; i++) {
+							if(!t->children[i].is_text && t->children[i].token) {
+								postprocess_parameter_value_inline_impl(t->children[i].token, cfg, accum, page, t, parent);
+							}
+						}
+
+						for(size_t i= 0; i < t->child_count; i++) {
+							if(!t->children[i].is_text && t->children[i].token) {
+								postprocess_nested_plain(t->children[i].token, cfg, accum, page);
+							}
+						}
+
+						log_debug_env_token("DEBUG_PARAM_VALUE", t, "postprocess_parameter_value_inline_impl end");
+						return;
+					}
+				}
+
+				wiki_thread_buf_release_scratch(tmp_ser);
+			}
+		}
+	}
+
 	ThreadBuf *scratch= wiki_thread_buf_acquire_scratch();
 
 	Child *old_children= t->children;
@@ -1592,26 +1713,7 @@ static void finalize_gallery_and_link_names(Token *t, const ParserConfig *cfg,
 	}
 
 	if(t->type == TOKEN_EXT_INNER && t->name && strcmp(t->name, "gallery") == 0) {
-		/* JS parity: self-closing/empty gallery inner has no children. */
-		if(t->child_count > 0) {
-			bool has_leading_empty= (t->children[0].is_text && t->children[0].text_len == 0);
-			bool first_is_gallery_image= (!t->children[0].is_text && t->children[0].token &&
-				t->children[0].token->type_name && strcmp(t->children[0].token->type_name, "gallery-image") == 0);
-			if(!has_leading_empty && first_is_gallery_image) {
-			if(t->child_count >= t->child_cap) {
-				t->child_cap= t->child_cap ? t->child_cap * 2 : 4;
-				t->children= realloc(t->children, t->child_cap * sizeof(Child));
-				assert(t->children);
-			}
-			memmove(t->children + 1, t->children, t->child_count * sizeof(Child));
-			Child *c= &t->children[0];
-			c->is_text= true;
-			c->text_len= 0;
-			c->text= strdup("");
-			c->token= NULL;
-			t->child_count++;
-			}
-		}
+		/* Preserve gallery children as parsed; do not synthesize a leading empty line. */
 	}
 
 	if((t->type == TOKEN_LINK || t->type == TOKEN_FILE || t->type == TOKEN_CATEGORY) && (!t->name || t->name[0] == '\0')) {
