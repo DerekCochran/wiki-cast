@@ -494,6 +494,42 @@ static void parse_list_skip_first_line(ThreadBuf *scratch, const ParserConfig *c
 	return;
 }
 
+static void parse_table_skip_first_line(ThreadBuf *scratch, const ParserConfig *cfg, Accum *accum) {
+	if(!scratch || !scratch->buf || scratch->len == 0) return;
+
+	const char nl= '\n';
+	const char *nl_pos= sz_find_byte(scratch->buf, scratch->len, &nl);
+	if(!nl_pos || nl_pos + 1 >= scratch->buf + scratch->len) return;
+	size_t newline_index= (size_t)(nl_pos - scratch->buf);
+
+	size_t prefix_len= newline_index + 1;
+	size_t rest_len= scratch->len - prefix_len;
+	const char *orig_buf = scratch->buf;
+	const char *rest = orig_buf + prefix_len;
+
+	ThreadBuf *tmp = wiki_thread_buf_acquire_scratch();
+	if(!tmp) {
+		log_fatal("parse_table_skip_first_line: failed to acquire scratch");
+		abort();
+	}
+
+	/* Keep the first line literal, then run parse_table on the remaining lines. */
+	wiki_thread_buf_reserve(tmp, prefix_len + rest_len + 1);
+	sz_copy(tmp->buf, orig_buf, prefix_len);
+	tmp->len = prefix_len;
+
+	wiki_thread_buf_set(scratch, rest, rest_len);
+	parse_table(scratch, cfg, accum);
+
+	wiki_thread_buf_reserve(tmp, prefix_len + scratch->len + 1);
+	sz_copy(tmp->buf + prefix_len, scratch->buf, scratch->len);
+	tmp->len = prefix_len + scratch->len;
+	tmp->buf[tmp->len] = '\0';
+
+	wiki_thread_buf_set(scratch, tmp->buf, tmp->len);
+	wiki_thread_buf_release_scratch(tmp);
+}
+
 static bool should_postprocess_plain(const Token *t) {
 	if(!t || !(t->type == TOKEN_PLAIN || t->type == TOKEN_EXT_INNER) || !t->type_name) return false;
 	return strcmp(t->type_name, "td-inner") == 0 || strcmp(t->type_name, "table-inter") == 0 || strcmp(t->type_name, "ext-inner") == 0 || strcmp(t->type_name, "heading-title") == 0;
@@ -1023,10 +1059,10 @@ static void run_nested_plain_pipeline(ThreadBuf *scratch,
          * must not run before links; otherwise links spanning inline HTML split. */
 		if(is_ext_inner) {
 			parse_html(scratch, cfg, accum);
-			/* JS parseTable only applies to ext-inner when name === 'poem'. */
-			if(is_poem_ext_inner) {
-				parse_table(scratch, cfg, accum);
-			}
+			/* JS parseTable runs for ext-inner, but non-poem content keeps the
+			 * first line literal before table detection. */
+			if(is_poem_ext_inner) parse_table(scratch, cfg, accum);
+			else parse_table_skip_first_line(scratch, cfg, accum);
 		}
 		TokenType hr_root_type= t->type;
 		if(ext_inner_has_sentinel) {
@@ -1526,7 +1562,8 @@ static void postprocess_parameter_value_inline_impl(Token *t, const ParserConfig
 					parse_comment_and_ext(tmp_ser, cfg, accum, false);
 					parse_braces(tmp_ser, cfg, accum);
 					parse_html(tmp_ser, cfg, accum);
-					parse_table(tmp_ser, cfg, accum);
+					if(is_parameter_value) parse_table(tmp_ser, cfg, accum);
+					else parse_table_skip_first_line(tmp_ser, cfg, accum);
 					parse_hr_and_double_underscore(tmp_ser, cfg, accum, TOKEN_PLAIN, "parameter-value");
 					parse_links(tmp_ser, cfg, accum, page, false);
 					parse_quotes_stage6_per_line(tmp_ser, cfg, accum);
@@ -1626,7 +1663,7 @@ static void postprocess_parameter_value_inline_impl(Token *t, const ParserConfig
 				/* JS ParameterToken keyToken parity: stage starts at 2 and excludes
 				 * heading + converter; quotes must still run (stage 6). */
 				parse_html(scratch, cfg, accum);
-				parse_table(scratch, cfg, accum);
+				parse_table_skip_first_line(scratch, cfg, accum);
 				parse_hr_and_double_underscore(scratch, cfg, accum, TOKEN_PLAIN, "parameter-key");
 				parse_links(scratch, cfg, accum, page, false);
 				parse_quotes_stage6_per_line(scratch, cfg, accum);
@@ -1637,7 +1674,8 @@ static void postprocess_parameter_value_inline_impl(Token *t, const ParserConfig
 				parse_comment_and_ext(scratch, cfg, accum, false);
 				parse_braces(scratch, cfg, accum);
 				parse_html(scratch, cfg, accum);
-				parse_table(scratch, cfg, accum);
+				if(is_parameter_value) parse_table(scratch, cfg, accum);
+				else parse_table_skip_first_line(scratch, cfg, accum);
 				parse_hr_and_double_underscore(scratch, cfg, accum, TOKEN_PLAIN, is_attr_value ? "attr-value" : "parameter-value");
 				parse_links(scratch, cfg, accum, page, false);
 				parse_quotes_stage6_per_line(scratch, cfg, accum);
