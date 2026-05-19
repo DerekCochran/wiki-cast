@@ -912,6 +912,34 @@ static Token *build_pre_inner_token(const char *inner_str, size_t inner_len, Acc
 	return t;
 }
 
+static bool ext_self_closing_inner_has_no_children(const char *tag_name) {
+	if(!tag_name) return false;
+
+	/* JS ExtToken parity: these tags use Token/Nested/Param/Pre-like constructors,
+	 * which receive `inner=undefined` for self-closing tags and therefore keep an
+	 * empty ext-inner with no text child.
+	 */
+	return strcmp(tag_name, "pre") == 0
+		|| strcmp(tag_name, "indicator") == 0
+		|| strcmp(tag_name, "poem") == 0
+		|| strcmp(tag_name, "ref") == 0
+		|| strcmp(tag_name, "option") == 0
+		|| strcmp(tag_name, "combooption") == 0
+		|| strcmp(tag_name, "tab") == 0
+		|| strcmp(tag_name, "tabs") == 0
+		|| strcmp(tag_name, "poll") == 0
+		|| strcmp(tag_name, "seo") == 0
+		|| strcmp(tag_name, "langconvert") == 0
+		|| strcmp(tag_name, "phonos") == 0
+		|| strcmp(tag_name, "references") == 0
+		|| strcmp(tag_name, "choose") == 0
+		|| strcmp(tag_name, "combobox") == 0
+		|| strcmp(tag_name, "dynamicpagelist") == 0
+		|| strcmp(tag_name, "inputbox") == 0
+		|| strcmp(tag_name, "gallery") == 0
+		|| strcmp(tag_name, "imagemap") == 0;
+}
+
 static Token *build_ext_inner(const char *tag_name,
 															const char *inner_str, size_t inner_len,
 															bool self_closing,
@@ -922,7 +950,7 @@ static Token *build_ext_inner(const char *tag_name,
 	if(is_multiline_tag(tag_name)) {
 		t->sep= '\n';
 	}
-	if(self_closing && strcmp(tag_name, "nowiki") != 0) {
+	if(self_closing && ext_self_closing_inner_has_no_children(tag_name)) {
 		accum_push(accum, t);
 		return t;
 	}
