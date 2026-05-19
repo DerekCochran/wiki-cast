@@ -950,6 +950,7 @@ static Token *build_references_inner_token(const char *inner_str, size_t inner_l
 	accum_push(accum, t);
 
 	if(!inner_str || inner_len == 0) {
+		token_append_text_n(t, "", 0);
 		return t;
 	}
 

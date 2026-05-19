@@ -1862,8 +1862,13 @@ Token *wiki_parse_with_page(const char *wikitext, size_t input_len, const Parser
 												 bool include, int max_stage,
 												 const char *page) {
 	if(!wikitext) {
-		log_error("Wikitext is null");
-		return NULL;
+		if(input_len == 0) {
+			/* JS parity: empty input parses as an empty root token. */
+			wikitext= "";
+		} else {
+			log_error("Wikitext is null");
+			return NULL;
+		}
 	}
 	if(!cfg) {
 		log_error("cfg is null");
