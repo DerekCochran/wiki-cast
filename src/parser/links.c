@@ -1414,9 +1414,9 @@ static Token *parse_inner_fragment(const char *s, size_t len, const ParserConfig
 		parse_comment_and_ext(inner_tb, cfg, accum, false);
 	}
 	parse_braces(inner_tb, cfg, accum);
+	parse_html(inner_tb, cfg, accum);
 	if(in_file) {
 		/* JS parity: file/gallery parameter text supports internal links. */
-		parse_html(inner_tb, cfg, accum);
 		parse_links(inner_tb, cfg, accum, page, tidy);
 	}
 	parse_quotes(inner_tb, cfg, accum, tidy);
