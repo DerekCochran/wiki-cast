@@ -1501,23 +1501,28 @@ static Token *build_imagemap_inner_token(const char *inner_str, size_t inner_len
 			if(tok) {
 				token_append_child(t, tok);
 			} else {
-				Token *n= token_new(TOKEN_NOINCLUDE, "noinclude");
-				if(n) {
-					if(line_len > 0) {
+				bool ws_only = true;
+				for(size_t wi = 0; wi < line_len; wi++) {
+					if(!isspace((unsigned char)line_ptr[wi])) {
+						ws_only = false;
+						break;
+					}
+				}
+
+				if(ws_only) {
+					Token *n= token_new(TOKEN_NOINCLUDE, "noinclude");
+					if(n) {
 						const char *ln_view = wiki_thread_buf_append_to_tokens(line_ptr, line_len);
 						token_append_text_n(n, ln_view, line_len);
+						accum_push(accum, n);
+						token_append_child(t, n);
 					} else {
-						token_append_text_n(n, "", 0);
-					}
-					accum_push(accum, n);
-					token_append_child(t, n);
-				} else {
-					if(line_len > 0) {
 						const char *ln_view = wiki_thread_buf_append_to_tokens(line_ptr, line_len);
 						token_append_text_n(t, ln_view, line_len);
-					} else {
-						token_append_text_n(t, "", 0);
 					}
+				} else {
+					const char *ln_view = wiki_thread_buf_append_to_tokens(line_ptr, line_len);
+					token_append_text_n(t, ln_view, line_len);
 				}
 			}
 		}
