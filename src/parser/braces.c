@@ -1553,6 +1553,10 @@ static bool braces_state_machine(ThreadBuf *tb, const ParserConfig *cfg,
 					size_t close_len= brace_count;
 					size_t max_close= top.open_len < 3 ? top.open_len : 3;
 					if(close_len > max_close) close_len= max_close;
+					/* JS parity: close.length is min(open.length, 3), and regex.lastIndex
+					 * advances by that consumed length only. This lets any remaining '}'
+					 * in an overlong run close outer frames in subsequent iterations. */
+					syntax_end= cur_index + close_len;
 					bool is_arg_close= (close_len == 3);
 					size_t rest= top.open_len > close_len ? top.open_len - close_len : 0;
 					char *inner= NULL;
