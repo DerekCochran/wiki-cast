@@ -141,7 +141,7 @@ async function main(argv) {
       console.info(`The files have been copied.  Please run the below commands
 cd ${path.dirname(__filename)}
 node test_wikitext.js\n\n`);
-      //process.exit(2);
+      process.exit(2);
     }
 
     if (processed % 10 === 0) {
