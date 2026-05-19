@@ -138,10 +138,10 @@ async function main(argv) {
       const savePath2 = path.join(scriptDir, '..', '..', '..', 'tests', 'wikitext', `${title.replace(/\s+/g, '_')}.wikitext`);
       fs.writeFileSync(savePath2, text, 'utf8');
       console.info(`Saved failing sample to ${savePath2}`);
-      console.info(`The files have been copied.  Please run the below commands
-cd ${path.dirname(__filename)}
-node test_wikitext.js\n\n`);
-      process.exit(2);
+//       console.info(`The files have been copied.  Please run the below commands
+// cd ${path.dirname(__filename)}
+// node test_wikitext.js\n\n`);
+//       process.exit(2);
     }
 
     if (processed % 10 === 0) {

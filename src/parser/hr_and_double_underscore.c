@@ -370,9 +370,10 @@ void parse_hr_and_double_underscore(ThreadBuf *tb, const ParserConfig *cfg, Accu
 	} while(0)
 		const char *buf2 = tb->buf;
 		size_t buf2_len  = tb->len;
-		size_t line_start = 0;
+		size_t cursor = 0;
 
-		while(line_start <= buf2_len) {
+		while(cursor < buf2_len) {
+			size_t line_start = cursor;
 			size_t line_end = line_start;
 			while(line_end < buf2_len && buf2[line_end] != '\n') line_end++;
 			const char *line = buf2 + line_start;
@@ -380,25 +381,47 @@ void parse_hr_and_double_underscore(ThreadBuf *tb, const ParserConfig *cfg, Accu
 
 			HdLineResult hr;
 			if(heading_line_parse_full(line, line_len, &hr)) {
+				/* JS parity for /...((?:\s|\0\d+[cn]\x7F)*)$/gmu:
+				 * consume maximal whitespace/cn-sentinel run after the heading,
+				 * but end match at a line boundary (before '\n' or EOS). */
+				size_t match_end = line_end;
+				size_t scan = line_end;
+				size_t last_boundary = line_end;
+				while(scan < buf2_len) {
+					size_t sc = skip_cn_sentinel(buf2 + scan, buf2_len - scan);
+					if(sc > 0) {
+						scan += sc;
+						if(scan == buf2_len || buf2[scan] == '\n') last_boundary = scan;
+						continue;
+					}
+					if(isspace((unsigned char)buf2[scan])) {
+						scan++;
+						if(scan == buf2_len || buf2[scan] == '\n') last_boundary = scan;
+						continue;
+					}
+					break;
+				}
+				match_end = last_boundary;
+
 				/* 1. Emit lead sentinels verbatim */
 				if(hr.lead_len > 0) {
 					GROW_OUT2(hr.lead_len);
 					memcpy(out2 + out2_len, hr.lead, hr.lead_len);
 					out2_len += hr.lead_len;
 				}
+
 				/* 2. Map hr.* to buf2-relative offsets (same variable names as old ov[]) */
 				size_t eq_s    = (size_t)(hr.eq      - buf2), eq_e    = eq_s + hr.eq_count;
 				size_t text_s  = (size_t)(hr.content - buf2), text_e  = text_s + hr.content_len;
 				size_t trail_s = (size_t)(hr.trail   - buf2), trail_e = trail_s + hr.trail_len;
+				size_t extra_trail_len = match_end > line_end ? (match_end - line_end) : 0;
+
 				/* 3. Build heading token */
 				int level = (int)(eq_e > eq_s ? eq_e - eq_s : 0);
 				const char *h_inner = (text_e > text_s) ? (buf2 + text_s) : "";
 				size_t h_inner_len = (text_e > text_s) ? (text_e - text_s) : 0;
 				const char *h_trail = (trail_e > trail_s) ? (buf2 + trail_s) : "";
 				size_t h_trail_len = (trail_e > trail_s) ? (trail_e - trail_s) : 0;
-				bool has_line_nl = (line_end < buf2_len);
-				bool absorb_line_nl = has_line_nl && root_type == TOKEN_ROOT && (line_end + 1 >= buf2_len || buf2[line_end + 1] == '\n');
-				bool consumed_line_nl_in_trail = false;
 
 				Token *t = token_new(TOKEN_HEADING, "heading");
 				if(t) {
@@ -417,14 +440,14 @@ void parse_hr_and_double_underscore(ThreadBuf *tb, const ParserConfig *cfg, Accu
 
 					Token *trail_tok = token_new(TOKEN_SYNTAX, "heading-trail");
 					if(trail_tok) {
-						size_t trail_total_len = h_trail_len + (absorb_line_nl ? 1 : 0);
+						size_t trail_total_len = h_trail_len + extra_trail_len;
 						if(trail_total_len > 0) {
-							if(h_trail_len > 0 && absorb_line_nl) {
+							if(h_trail_len > 0 && extra_trail_len > 0) {
 								ThreadBuf *tmp_trail = wiki_thread_buf_acquire_scratch();
 								if(!tmp_trail) { log_fatal("thread_buffer: failed to acquire scratch in heading trail build"); abort(); }
 								tmp_trail->len = 0;
 								wiki_thread_buf_append(tmp_trail, (sz_string_view_t){ .start = h_trail, .length = h_trail_len });
-								wiki_thread_buf_putc(tmp_trail, '\n');
+								wiki_thread_buf_append(tmp_trail, (sz_string_view_t){ .start = buf2 + line_end, .length = extra_trail_len });
 								const char *trail_view = wiki_thread_buf_append_to_tokens(tmp_trail->buf, tmp_trail->len);
 								if(trail_view) token_append_text_n(trail_tok, trail_view, tmp_trail->len);
 								else token_append_text_n(trail_tok, "", 0);
@@ -434,11 +457,10 @@ void parse_hr_and_double_underscore(ThreadBuf *tb, const ParserConfig *cfg, Accu
 								if(trail_view) token_append_text_n(trail_tok, trail_view, h_trail_len);
 								else token_append_text_n(trail_tok, "", 0);
 							} else {
-								const char *nl_view = wiki_thread_buf_append_to_tokens("\n", 1);
-								if(nl_view) token_append_text_n(trail_tok, nl_view, 1);
-								else token_append_text_n(trail_tok, "\n", 1);
+								const char *trail_view = wiki_thread_buf_append_to_tokens(buf2 + line_end, extra_trail_len);
+								if(trail_view) token_append_text_n(trail_tok, trail_view, extra_trail_len);
+								else token_append_text_n(trail_tok, "", 0);
 							}
-							if(absorb_line_nl) consumed_line_nl_in_trail = true;
 						} else {
 							token_append_text_n(trail_tok, "", 0);
 						}
@@ -452,26 +474,27 @@ void parse_hr_and_double_underscore(ThreadBuf *tb, const ParserConfig *cfg, Accu
 					GROW_OUT2(slen);
 					memcpy(out2 + out2_len, sent, slen);
 					out2_len += slen;
-				} else {
-					GROW_OUT2(line_len);
-					memcpy(out2 + out2_len, line, line_len);
-					out2_len += line_len;
+
+					/* Continue from match end (newline boundary char is not consumed). */
+					cursor = match_end;
+					continue;
 				}
 
-				/* 4. Emit the '\n' that terminated this line when not consumed into heading-trail */
-				if(line_end < buf2_len && !consumed_line_nl_in_trail) {
-					GROW_OUT2(1);
-					out2[out2_len++] = '\n';
-				}
-			} else {
-				/* Not a heading: copy line + optional '\n' verbatim */
+				/* OOM fallback: leave current line unchanged */
 				size_t copy_len = (line_end < buf2_len) ? line_len + 1 : line_len;
 				GROW_OUT2(copy_len);
 				memcpy(out2 + out2_len, buf2 + line_start, copy_len);
 				out2_len += copy_len;
+				cursor = (line_end < buf2_len) ? (line_end + 1) : line_end;
+				continue;
 			}
-			if(line_end >= buf2_len) break;
-			line_start = line_end + 1;
+
+			/* Not a heading: copy line + optional '\n' verbatim */
+			size_t copy_len = (line_end < buf2_len) ? line_len + 1 : line_len;
+			GROW_OUT2(copy_len);
+			memcpy(out2 + out2_len, buf2 + line_start, copy_len);
+			out2_len += copy_len;
+			cursor = (line_end < buf2_len) ? (line_end + 1) : line_end;
 		}
 		out2[out2_len] = '\0';
 		wiki_thread_buf_set(tb, out2, out2_len);
