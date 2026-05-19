@@ -155,6 +155,22 @@ static bool is_valid_attr_key(const char *k, size_t klen) {
 	return true;
 }
 
+static bool is_valid_attr_key_after_comment_trim(const char *k, size_t klen) {
+	if(!k || klen == 0) return false;
+	size_t clean_len= 0;
+	char *clean= str_remove_comment(k, klen, &clean_len);
+	if(!clean) return false;
+
+	size_t start= 0;
+	while(start < clean_len && (clean[start] == ' ' || clean[start] == '\t' || clean[start] == '\n' || clean[start] == '\r' || clean[start] == '\f' || clean[start] == '\v')) start++;
+	size_t end= clean_len;
+	while(end > start && (clean[end - 1] == ' ' || clean[end - 1] == '\t' || clean[end - 1] == '\n' || clean[end - 1] == '\r' || clean[end - 1] == '\f' || clean[end - 1] == '\v')) end--;
+
+	bool ok= (end > start) && is_valid_attr_key(clean + start, end - start);
+	free(clean);
+	return ok;
+}
+
 /* Returns the byte length of the sentinel starting at buf[i] if its type
  * byte matches `type`, otherwise 0.
  * A valid sentinel: buf[i]=='\0', one or more ASCII digits, type byte, '\x7F'.
@@ -506,7 +522,7 @@ static void parse_table_attrs(Token *attrs_tok, const char *attr_str, size_t att
 				/* JS parity: only create table-attr for keys that pass the JS
                  * validity test /^(?:[\w:]|\0\d+t\x7F)(?:[\w:.-]|\0\d+t\x7F)*$/u.
                  * Anything else (e.g. "\01t\x7F|}") becomes table-attr-dirty. */
-				if(!is_valid_attr_key(k, klen)) {
+				if(!is_valid_attr_key_after_comment_trim(k, klen)) {
 					Token *d= make_table_attr_dirty(attr_str, attr_len, accum);
 					if(d) token_append_child(attrs_tok, d);
 					return;
@@ -565,7 +581,7 @@ static void parse_table_attrs(Token *attrs_tok, const char *attr_str, size_t att
 		}
 		if(!valid_key) {
 			bool dynamic_key= memchr(key, '\0', key_len) != NULL || (key_len >= 2 && key[0] == '{' && key[1] == '{') || (key_len >= 2 && key[0] == '-' && key[1] == '{');
-			if(!dynamic_key || !is_valid_attr_key(key, key_len)) {
+			if(!dynamic_key || !is_valid_attr_key_after_comment_trim(key, key_len)) {
 				for(size_t k= 0; k < key_len; k++) dirty_buf[dirty_len++]= key[k];
 				continue;
 			}
