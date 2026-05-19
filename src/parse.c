@@ -1004,7 +1004,10 @@ static void run_nested_plain_pipeline(ThreadBuf *scratch,
 		parse_comment_and_ext(scratch, cfg, accum, false);
 	}
 
-	if(!is_heading_title) {
+	/* JS parity: td-inner nested parsing starts at stage 4; stage 1 braces
+	 * should not run here (templates inside table cells are already handled
+	 * before table tokenization on the root stream). */
+	if(!is_heading_title && !is_td_inner) {
 		parse_braces(scratch, cfg, accum);
 	}
 

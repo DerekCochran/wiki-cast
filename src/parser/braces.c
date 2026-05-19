@@ -467,16 +467,12 @@ static char braces_get_symbol(const char *name, size_t len,
 		if(is_magic_out) *is_magic_out= true;
 	} else if(strcmp(lc, "!!") == 0) {
 		out= '+';
-		if(is_magic_out) *is_magic_out= true;
 	} else if(strcmp(lc, "(!") == 0) {
 		out= '{';
-		if(is_magic_out) *is_magic_out= true;
 	} else if(strcmp(lc, "!)") == 0) {
 		out= '}';
-		if(is_magic_out) *is_magic_out= true;
 	} else if(strcmp(lc, "!-") == 0) {
 		out= '-';
-		if(is_magic_out) *is_magic_out= true;
 	} else if(strcmp(lc, "=") == 0) {
 		out= '~';
 		if(is_magic_out) *is_magic_out= true;
