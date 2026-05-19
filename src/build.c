@@ -207,6 +207,48 @@ static void refresh_attribute_name(Token *t) {
 	}
 }
 
+/* JS parity: ParameterToken.afterBuild() recomputes named-parameter keys from
+ * the built parameter-key token (so embedded tokens like {{LASTYEAR}} are
+ * reflected in param->name). Anonymous parameters keep their numeric names. */
+static void refresh_parameter_name(Token *t) {
+	if(!t || t->type != TOKEN_PARAMETER || t->child_count == 0) return;
+
+	Child *key= &t->children[0];
+	ThreadBuf *scratch = wiki_thread_buf_acquire_scratch();
+	if(!scratch) return;
+
+	if(key->is_text) {
+		sz_string_view_t vk = { key->text, key->text_len };
+		wiki_thread_buf_append(scratch, vk);
+	} else if(key->token) {
+		append_key_token_repr_tb(key->token, scratch);
+	}
+
+	/* JS trimName regex trims only [ \t\n\0\v] at both ends. */
+	size_t i= 0;
+	size_t j= scratch->len;
+	const char *buf= scratch->buf;
+	while(i < j && (buf[i] == ' ' || buf[i] == '\t' || buf[i] == '\n' || buf[i] == '\0' || buf[i] == '\v')) i++;
+	while(j > i && (buf[j - 1] == ' ' || buf[j - 1] == '\t' || buf[j - 1] == '\n' || buf[j - 1] == '\0' || buf[j - 1] == '\v')) j--;
+
+	/* Empty key means anonymous parameter; keep existing numeric name. */
+	if(j == i) {
+		wiki_thread_buf_release_scratch(scratch);
+		return;
+	}
+
+	size_t n= j - i;
+	char *new_name= malloc(n + 1);
+	if(new_name) {
+		sz_copy(new_name, buf + i, n);
+		new_name[n]= '\0';
+		free(t->name);
+		t->name= new_name;
+	}
+
+	wiki_thread_buf_release_scratch(scratch);
+}
+
 void build_from_str(Token *parent, const char *str, size_t str_len,
 										Accum *accum) {
 	/* Operate directly on the provided buffer `str` (binary-safe, may contain NULs).
@@ -380,6 +422,10 @@ void build_token_recursive(Token *t, Accum *accum,
      * so keys that were sentinel-expanded (for example {{green}}) get the
      * correct final attribute name. */
 	refresh_attribute_name(t);
+
+	/* JS ParameterToken.afterBuild parity: update parameter name from the
+	 * expanded parameter-key token after build recursion completes. */
+	refresh_parameter_name(t);
 
 	/* JS TranscludeToken.afterBuild parity: template name is set after build,
      * not during parseBraces, so it is absent from stage-log snapshots. */
