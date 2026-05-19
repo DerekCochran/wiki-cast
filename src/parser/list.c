@@ -34,6 +34,28 @@ typedef struct {
 	char          sentinel_type; /* 'x' or 'q'             */
 } FullMatch;
 
+/* JS parity helper for Unicode Zs consumed by the JS list-prefix whitespace regex. */
+static size_t consume_js_zs_list(const char *s, size_t len, size_t i) {
+	if(i >= len) return 0;
+	unsigned char c0 = (unsigned char)s[i];
+	if(c0 == 0x20) return 1; /* U+0020 */
+	if(i + 1 < len && c0 == 0xC2 && (unsigned char)s[i + 1] == 0xA0) return 2; /* U+00A0 */
+	if(i + 2 < len && c0 == 0xE1 && (unsigned char)s[i + 1] == 0x9A && (unsigned char)s[i + 2] == 0x80) return 3; /* U+1680 */
+	if(i + 2 < len && c0 == 0xE2 && (unsigned char)s[i + 1] == 0x80 &&
+	   (unsigned char)s[i + 2] >= 0x80 && (unsigned char)s[i + 2] <= 0x8A) return 3; /* U+2000..U+200A */
+	if(i + 2 < len && c0 == 0xE2 && (unsigned char)s[i + 1] == 0x80 && (unsigned char)s[i + 2] == 0xAF) return 3; /* U+202F */
+	if(i + 2 < len && c0 == 0xE2 && (unsigned char)s[i + 1] == 0x81 && (unsigned char)s[i + 2] == 0x9F) return 3; /* U+205F */
+	if(i + 2 < len && c0 == 0xE3 && (unsigned char)s[i + 1] == 0x80 && (unsigned char)s[i + 2] == 0x80) return 3; /* U+3000 */
+	return 0;
+}
+
+static size_t consume_list_space(const char *s, size_t len, size_t i) {
+	if(i >= len) return 0;
+	unsigned char c = (unsigned char)s[i];
+	if(c == '\t' || c == '\n' || c == '\r' || c == '\f' || c == '\v') return 1;
+	return consume_js_zs_list(s, len, i);
+}
+
 /* Find the first match of  :+ | -{ | \x00\d+[xq]\x7F  starting at or after
  * `start_pos` in `buf`. Returns true and fills *out on success. */
 static bool full_scan_first(const char *buf, size_t len, size_t start_pos, FullMatch *out) {
@@ -141,10 +163,15 @@ static bool list_prefix_parse(const char *line, size_t len, ListPrefixResult *ou
 	}
 	if(mlen == 0) return false;
 
-	/* 3) trailing whitespace (space or tab) */
+	/* 3) trailing whitespace with JS \s* semantics. */
 	const char *ws_start = line + pos;
 	size_t ws_len = 0;
-	while(pos < len && (line[pos] == ' ' || line[pos] == '\t')) { pos++; ws_len++; }
+	while(pos < len) {
+		size_t ws = consume_list_space(line, len, pos);
+		if(ws == 0) break;
+		pos += ws;
+		ws_len += ws;
+	}
 
 	out->sentinels = line;
 	out->sentinels_len = (size_t)(markers_start - line);

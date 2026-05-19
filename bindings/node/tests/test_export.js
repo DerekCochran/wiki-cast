@@ -58,7 +58,7 @@ async function main(argv) {
   const args = argv.slice(2);
   const options = {
     input: null,
-    start: 3450,
+    start: 1,
     end: 0, // 0 means no limit
   };
 
