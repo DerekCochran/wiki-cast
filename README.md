@@ -338,6 +338,8 @@ C_STAGE_FILES[8]="parse.c token.c accum.c ../include/util/thread_buffer.h string
 C_STAGE_FILES[9]="parse.c token.c accum.c ../include/util/thread_buffer.h string_util.c config.c build.c parser/list.c"
 C_STAGE_FILES[10]="parse.c token.c accum.c ../include/util/thread_buffer.h string_util.c config.c build.c parser/converter.c"
 
+C_STAGE_FILES[0]="parse.c build.c parser/braces.c parser/comment_and_ext.c parser/converter.c parser/external_links.c parser/hr_and_double_underscore.c parser/html.c parser/link.c parser/links.c parser/list.c parser/magic_links.c parser/quotes.c parser/redirect.c parser/table.c string_util.c table_token.c td.c title.c token.c tr.c"
+
 for stage in "${!C_STAGE_FILES[@]}"; do
   out="../data/c-stage_${stage}.txt"
   rm -f "$out"

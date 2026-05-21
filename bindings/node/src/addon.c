@@ -11,6 +11,10 @@
 
 static napi_ref token_prototype_ref; // Use a reference to keep it alive
 
+// Cache for config
+static char* cached_config_path = NULL;
+static ParserConfig* cached_config = NULL;
+
 static void token_finalizer(napi_env env, void *finalize_data, void *finalize_context) {
     Token *token = (Token *)finalize_data;
     token_free(token);
@@ -73,11 +77,42 @@ static ParserConfig* get_token_config_json(napi_env env, napi_value token) {
     napi_get_value_string_utf8(env, config_val, NULL, 0, &path_len);
     
     char *path = malloc(path_len + 1);
+    if (!path) {
+        napi_throw_error(env, NULL, "Memory allocation failed");
+        return NULL;
+    }
     napi_get_value_string_utf8(env, config_val, path, path_len + 1, &path_len);
 
+    // Check if the path matches the cached path
+    if (cached_config_path && strcmp(path, cached_config_path) == 0) {
+        // Path matches, return cached config
+        free(path);
+        return cached_config;
+    }
     
+    // Path doesn't match or no cached config, load new config
     ParserConfig* cfg = config_load_file(path);
-    free(path); 
+    if (cfg) {
+        // Free old cached config if exists
+        if (cached_config) {
+            config_free(cached_config);
+            free(cached_config_path);
+        }
+        cached_config = cfg;
+        cached_config_path = strdup(path);
+        free(path);
+        if (!cached_config_path) {
+            // strdup failed
+            config_free(cfg);
+            cached_config = NULL;
+            napi_throw_error(env, NULL, "Memory allocation failed");
+            return NULL;
+        }
+    } else {
+        napi_throw_error(env, NULL, "Failed to load config file");
+        free(path);
+        return NULL;
+    }
     
     return cfg;
 }
@@ -177,11 +212,14 @@ static napi_value parse(napi_env env, napi_callback_info info) {
 
     /* Load parser config from the calling JS Token instance. */
     ParserConfig* cfg = get_token_config_json(env, this_arg);
+    if (!cfg) {
+        // Error already thrown by get_token_config_json
+        return NULL;
+    }
 
     // 3. Call the C parser
     Token *root = wiki_parse(wikitext, byte_length, cfg, false, 10);
-    config_free(cfg);
-
+    
     if (root == NULL) {
         napi_throw_error(env, NULL, "Wiki parse failed.");
         return NULL;
