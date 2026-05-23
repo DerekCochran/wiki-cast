@@ -141,7 +141,6 @@ static napi_value token_to_js(napi_env env, const Token *token, bool wrap_root) 
     if (token->name) {
         napi_value name_val;
         napi_create_string_utf8(env, token->name, NAPI_AUTO_LENGTH, &name_val);
-        // Correct function: napi_set_named_property
         napi_set_named_property(env, js_token, "name", name_val);
     }
 
@@ -161,6 +160,189 @@ static napi_value token_to_js(napi_env env, const Token *token, bool wrap_root) 
             }
         }
         napi_set_named_property(env, js_token, "childNodes", children_array);
+    }
+
+    // Type-specific properties
+    switch (token->type) {
+        case TOKEN_HEADING: {
+            napi_value level_val;
+            napi_create_int32(env, token->data.heading.level, &level_val);
+            napi_set_named_property(env, js_token, "level", level_val);
+            break;
+        }
+        case TOKEN_COMMENT: {
+            napi_value closed_val;
+            napi_get_boolean(env, token->data.comment.closed, &closed_val);
+            napi_set_named_property(env, js_token, "closed", closed_val);
+            break;
+        }
+        case TOKEN_HTML: {
+            napi_value self_closing_val;
+            napi_get_boolean(env, token->data.html.self_closing, &self_closing_val);
+            napi_set_named_property(env, js_token, "selfClosing", self_closing_val);
+            napi_value closing_val;
+            napi_get_boolean(env, token->data.html.closing, &closing_val);
+            napi_set_named_property(env, js_token, "closing", closing_val);
+            if (token->data.html.orig_tag) {
+                napi_value orig_tag_val;
+                napi_create_string_utf8(env, token->data.html.orig_tag, NAPI_AUTO_LENGTH, &orig_tag_val);
+                napi_set_named_property(env, js_token, "origTag", orig_tag_val);
+            }
+            break;
+        }
+        case TOKEN_TD: {
+            if (token->data.td.inner_syntax) {
+                napi_value inner_syntax_val;
+                napi_create_string_utf8(env, token->data.td.inner_syntax, NAPI_AUTO_LENGTH, &inner_syntax_val);
+                napi_set_named_property(env, js_token, "innerSyntax", inner_syntax_val);
+            }
+            break;
+        }
+        case TOKEN_DOUBLE_UNDERSCORE: {
+            napi_value case_sensitive_val;
+            napi_get_boolean(env, token->data.dunder.case_sensitive, &case_sensitive_val);
+            napi_set_named_property(env, js_token, "caseSensitive", case_sensitive_val);
+            napi_value fullwidth_val;
+            napi_get_boolean(env, token->data.dunder.fullwidth, &fullwidth_val);
+            napi_set_named_property(env, js_token, "fullwidth", fullwidth_val);
+            break;
+        }
+        case TOKEN_QUOTE: {
+            napi_value bold_val;
+            napi_get_boolean(env, token->data.quote.bold, &bold_val);
+            napi_set_named_property(env, js_token, "bold", bold_val);
+            napi_value italic_val;
+            napi_get_boolean(env, token->data.quote.italic, &italic_val);
+            napi_set_named_property(env, js_token, "italic", italic_val);
+            break;
+        }
+        case TOKEN_REDIRECT: {
+            // if (token->data.redirect.pre) {
+            //     napi_value pre_val;
+            //     napi_create_string_utf8(env, token->data.redirect.pre, NAPI_AUTO_LENGTH, &pre_val);
+            //     napi_set_named_property(env, js_token, "pre", pre_val);
+            // }
+            // if (token->data.redirect.post) {
+            //     napi_value post_val;
+            //     napi_create_string_utf8(env, token->data.redirect.post, NAPI_AUTO_LENGTH, &post_val);
+            //     napi_set_named_property(env, js_token, "post", post_val);
+            // }
+            // if (token->data.redirect.link) {
+            //     napi_value link_val;
+            //     napi_create_string_utf8(env, token->data.redirect.link, NAPI_AUTO_LENGTH, &link_val);
+            //     napi_set_named_property(env, js_token, "link", link_val);
+            // }
+            if (token->data.redirect.display) {
+                napi_value display_val;
+                napi_create_string_utf8(env, token->data.redirect.display, NAPI_AUTO_LENGTH, &display_val);
+                napi_set_named_property(env, js_token, "display", display_val);
+            }
+            break;
+        }
+        case TOKEN_EXT: {
+            if (token->data.ext.name) {
+                napi_value name_val;
+                napi_create_string_utf8(env, token->data.ext.name, NAPI_AUTO_LENGTH, &name_val);
+                napi_set_named_property(env, js_token, "extName", name_val);
+            }
+            if (token->data.ext.attr) {
+                napi_value attr_val;
+                napi_create_string_utf8(env, token->data.ext.attr, NAPI_AUTO_LENGTH, &attr_val);
+                napi_set_named_property(env, js_token, "extAttr", attr_val);
+            }
+            if (token->data.ext.inner) {
+                napi_value inner_val;
+                napi_create_string_utf8(env, token->data.ext.inner, NAPI_AUTO_LENGTH, &inner_val);
+                napi_set_named_property(env, js_token, "extInner", inner_val);
+            }
+            if (token->data.ext.closing) {
+                napi_value closing_val;
+                napi_create_string_utf8(env, token->data.ext.closing, NAPI_AUTO_LENGTH, &closing_val);
+                napi_set_named_property(env, js_token, "extClosing", closing_val);
+            }
+            napi_value self_closing_val;
+            napi_get_boolean(env, token->data.ext.self_closing, &self_closing_val);
+            napi_set_named_property(env, js_token, "extSelfClosing", self_closing_val);
+            break;
+        }
+        case TOKEN_NOINCLUDE:
+        case TOKEN_INCLUDE:
+        case TOKEN_ONLYINCLUDE:
+        case TOKEN_TRANSLATE: {
+            if (token->data.include.tag) {
+                napi_value tag_val;
+                napi_create_string_utf8(env, token->data.include.tag, NAPI_AUTO_LENGTH, &tag_val);
+                napi_set_named_property(env, js_token, "tag", tag_val);
+            }
+            if (token->data.include.attr) {
+                napi_value attr_val;
+                napi_create_string_utf8(env, token->data.include.attr, NAPI_AUTO_LENGTH, &attr_val);
+                napi_set_named_property(env, js_token, "includeAttr", attr_val);
+            }
+            if (token->data.include.inner) {
+                napi_value inner_val;
+                napi_create_string_utf8(env, token->data.include.inner, NAPI_AUTO_LENGTH, &inner_val);
+                napi_set_named_property(env, js_token, "includeInner", inner_val);
+            }
+            if (token->data.include.closing) {
+                napi_value closing_val;
+                napi_create_string_utf8(env, token->data.include.closing, NAPI_AUTO_LENGTH, &closing_val);
+                napi_set_named_property(env, js_token, "includeClosing", closing_val);
+            }
+            break;
+        }
+        case TOKEN_EXT_ATTR: {
+            if (token->data.ext_attr.equal) {
+                napi_value equal_val;
+                napi_create_string_utf8(env, token->data.ext_attr.equal, NAPI_AUTO_LENGTH, &equal_val);
+                napi_set_named_property(env, js_token, "equal", equal_val);
+            }
+            napi_value quote_open_val;
+            char quote_open_str[2] = {token->data.ext_attr.quote_open, '\0'};
+            napi_create_string_utf8(env, quote_open_str, NAPI_AUTO_LENGTH, &quote_open_val);
+            napi_set_named_property(env, js_token, "quoteOpen", quote_open_val);
+            napi_value quote_close_val;
+            char quote_close_str[2] = {token->data.ext_attr.quote_close, '\0'};
+            napi_create_string_utf8(env, quote_close_str, NAPI_AUTO_LENGTH, &quote_close_val);
+            napi_set_named_property(env, js_token, "quoteClose", quote_close_val);
+            break;
+        }
+        case TOKEN_PARAMETER: {
+            if (token->data.image_param.raw_syntax) {
+                napi_value raw_syntax_val;
+                napi_create_string_utf8(env, token->data.image_param.raw_syntax, NAPI_AUTO_LENGTH, &raw_syntax_val);
+                napi_set_named_property(env, js_token, "rawSyntax", raw_syntax_val);
+            }
+            break;
+        }
+        case TOKEN_EXT_LINK:
+        case TOKEN_MAGIC_LINK: {
+            if (token->data.ext_link.space) {
+                napi_value space_val;
+                napi_create_string_utf8(env, token->data.ext_link.space, NAPI_AUTO_LENGTH, &space_val);
+                napi_set_named_property(env, js_token, "space", space_val);
+            }
+            break;
+        }
+        case TOKEN_LINK:
+        case TOKEN_FILE:
+        case TOKEN_CATEGORY: {
+            napi_value magic_pipe_val;
+            napi_get_boolean(env, token->data.link.magic_pipe, &magic_pipe_val);
+            napi_set_named_property(env, js_token, "magicPipe", magic_pipe_val);
+            break;
+        }
+        case TOKEN_TRANSCLUDE:
+        case TOKEN_ARG: {
+            if (token->data.transclude.modifier) {
+                napi_value modifier_val;
+                napi_create_string_utf8(env, token->data.transclude.modifier, NAPI_AUTO_LENGTH, &modifier_val);
+                napi_set_named_property(env, js_token, "modifier", modifier_val);
+            }
+            break;
+        }
+        default:
+            break;
     }
 
     return js_token;
