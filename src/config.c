@@ -24,6 +24,20 @@
 #include <stdlib.h>
 #include <string.h>
 
+/* Default allocator for sz_string_t operations */
+sz_memory_allocator_t allocator_default;
+
+/* Initialize the default allocator - can be called explicitly */
+void config_init_allocator(void) {
+    sz_memory_allocator_init_default(&allocator_default);
+}
+
+/* Auto-initialize at startup */
+__attribute__((constructor))
+static void init_allocator_default(void) {
+    config_init_allocator();
+}
+
 /* ── StrList helpers ─────────────────────────────────────────────────────── */
 
 static void str_list_init(StrList *sl) {
@@ -32,7 +46,9 @@ static void str_list_init(StrList *sl) {
 }
 
 static void str_list_free(StrList *sl) {
-	for(size_t i= 0; i < sl->count; i++) free(sl->items[i]);
+	for(size_t i= 0; i < sl->count; i++) {
+		sz_string_free(&sl->items[i], &allocator_default);
+	}
 	free(sl->items);
 	sl->items= NULL;
 	sl->count= 0;
@@ -43,13 +59,16 @@ static void str_list_from_json_array(StrList *sl, const cJSON *arr) {
 	str_list_init(sl);
 	if(!arr || !cJSON_IsArray(arr)) return;
 	int n= cJSON_GetArraySize(arr);
-	sl->items= malloc((size_t)n * sizeof(char *));
+	sl->items= malloc((size_t)n * sizeof(sz_string_t));
 	assert(sl->items);
 	int k= 0;
 	const cJSON *item;
 	cJSON_ArrayForEach(item, arr) {
 		if(cJSON_IsString(item) && item->valuestring) {
-			sl->items[k++]= strdup(item->valuestring);
+
+			sz_ptr_t ptr = sz_string_init_length(&sl->items[k], strlen(item->valuestring), &allocator_default);
+			sz_copy(ptr, (sz_ptr_t)item->valuestring, strlen(item->valuestring));
+			k++;
 		}
 	}
 	sl->count= (size_t)k;
@@ -60,12 +79,18 @@ static void str_list_from_json_object_keys(StrList *sl, const cJSON *obj) {
 	str_list_init(sl);
 	if(!obj || !cJSON_IsObject(obj)) return;
 	int n= cJSON_GetArraySize(obj);
-	sl->items= malloc((size_t)n * sizeof(char *));
+	sl->items= malloc((size_t)n * sizeof(sz_string_t));
 	assert(sl->items);
 	int k= 0;
 	const cJSON *item;
+
 	cJSON_ArrayForEach(item, obj) {
-		if(item->string) sl->items[k++]= strdup(item->string);
+		if(item->string) {
+
+			sz_ptr_t ptr = sz_string_init_length(&sl->items[k], strlen(item->string), &allocator_default);
+			sz_copy(ptr, (sz_ptr_t)item->string, strlen(item->string));
+			k++;
+		}
 	}
 	sl->count= (size_t)k;
 }
@@ -77,9 +102,10 @@ static void str_map_init(StrMap *m) {
 }
 
 static void str_map_free(StrMap *m) {
+
 	for(size_t i= 0; i < m->count; i++) {
-		free(m->keys[i]);
-		free(m->values[i]);
+		sz_string_free(&m->keys[i], &allocator_default);
+		sz_string_free(&m->values[i], &allocator_default);
 	}
 	free(m->keys);
 	free(m->values);
@@ -94,16 +120,19 @@ static void str_map_from_json_object(StrMap *m, const cJSON *obj) {
 	if(!obj || !cJSON_IsObject(obj)) return;
 
 	int n= cJSON_GetArraySize(obj);
-	m->keys= malloc((size_t)n * sizeof(char *));
-	m->values= malloc((size_t)n * sizeof(char *));
+	m->keys= malloc((size_t)n * sizeof(sz_string_t));
+	m->values= malloc((size_t)n * sizeof(sz_string_t));
 	assert(m->keys && m->values);
 
 	int k= 0;
 	const cJSON *item;
+
 	cJSON_ArrayForEach(item, obj) {
 		if(item->string && cJSON_IsString(item) && item->valuestring) {
-			m->keys[k]= strdup(item->string);
-			m->values[k]= strdup(item->valuestring);
+		sz_ptr_t key_ptr = sz_string_init_length(&m->keys[k], strlen(item->string), &allocator_default);
+		sz_copy(key_ptr, (sz_ptr_t)item->string, strlen(item->string));
+			sz_ptr_t val_ptr = sz_string_init_length(&m->values[k], strlen(item->valuestring), &allocator_default);
+			sz_copy(val_ptr, (sz_ptr_t)item->valuestring, strlen(item->valuestring));
 			k++;
 		}
 	}
@@ -112,26 +141,35 @@ static void str_map_from_json_object(StrMap *m, const cJSON *obj) {
 
 static bool str_list_contains_exact(const StrList *sl, const char *needle) {
 	if(!sl || !needle) return false;
+
+
 	for(size_t i= 0; i < sl->count; i++) {
-		if(sl->items[i] && strcmp(sl->items[i], needle) == 0) return true;
+		sz_ptr_t start;
+		sz_size_t len;
+		sz_string_range(&sl->items[i], &start, &len);
+		if(start && len == strlen(needle) && memcmp(start, needle, len) == 0) return true;
 	}
 	return false;
 }
 
 static void str_list_append_dup(StrList *sl, const char *s) {
+
 	if(!sl || !s) return;
-	char **grown= realloc(sl->items, (sl->count + 1) * sizeof(char *));
+	sz_string_t *grown= realloc(sl->items, (sl->count + 1) * sizeof(sz_string_t));
 	assert(grown);
 	sl->items= grown;
-	sl->items[sl->count]= strdup(s);
-	assert(sl->items[sl->count]);
+	sz_ptr_t ptr = sz_string_init_length(&sl->items[sl->count], strlen(s), &allocator_default);
+	sz_copy(ptr, (sz_ptr_t)s, strlen(s));
 	sl->count++;
 }
 
 static bool str_map_contains_key(const StrMap *m, const char *key) {
 	if(!m || !key) return false;
 	for(size_t i= 0; i < m->count; i++) {
-		if(m->keys[i] && strcmp(m->keys[i], key) == 0) return true;
+		sz_ptr_t start;
+		sz_size_t len;
+		sz_string_range(&m->keys[i], &start, &len);
+		if(start && len == strlen(key) && memcmp(start, key, len) == 0) return true;
 	}
 	return false;
 }
@@ -140,7 +178,10 @@ static bool ns_entry_exists_ci(const NsEntry *arr, size_t count,
 															 const char *name, int num) {
 	if(!arr || !name) return false;
 	for(size_t i= 0; i < count; i++) {
-		if(arr[i].num == num && arr[i].name && strcasecmp(arr[i].name, name) == 0) {
+		sz_ptr_t entry_name;
+		sz_size_t entry_len;
+		sz_string_range(&arr[i].name, &entry_name, &entry_len);
+		if(arr[i].num == num && entry_name && entry_len == strlen(name) && strncasecmp(entry_name, name, entry_len) == 0) {
 			return true;
 		}
 	}
@@ -149,15 +190,15 @@ static bool ns_entry_exists_ci(const NsEntry *arr, size_t count,
 
 static void str_map_append_dup(StrMap *m, const char *key, const char *value) {
 	if(!m || !key || !value) return;
-	char **grown_keys= realloc(m->keys, (m->count + 1) * sizeof(char *));
-	char **grown_vals= realloc(m->values, (m->count + 1) * sizeof(char *));
+	sz_string_t *grown_keys= realloc(m->keys, (m->count + 1) * sizeof(sz_string_t));
+	sz_string_t *grown_vals= realloc(m->values, (m->count + 1) * sizeof(sz_string_t));
 	assert(grown_keys && grown_vals);
 	m->keys= grown_keys;
 	m->values= grown_vals;
-	m->keys[m->count]= strdup(key);
-	m->values[m->count]= strdup(value);
-	assert(m->keys[m->count]);
-	assert(m->values[m->count]);
+	sz_ptr_t key_ptr = sz_string_init_length(&m->keys[m->count], strlen(key), &allocator_default);
+	sz_copy(key_ptr, (sz_ptr_t)key, strlen(key));
+	sz_ptr_t val_ptr = sz_string_init_length(&m->values[m->count], strlen(value), &allocator_default);
+	sz_copy(val_ptr, (sz_ptr_t)value, strlen(value));
 	m->count++;
 }
 
@@ -183,10 +224,22 @@ static bool protocol_token_supported(const char *s, size_t len) {
  * load attempts. */
 static void protocol_items_free(ProtocolList *pl) {
 	if(!pl) return;
-	for(size_t i = 0; i < pl->count; i++) free(pl->items[i]);
+	for(size_t i = 0; i < pl->count; i++) {
+		sz_string_free(&pl->items[i].protocol_lower, &allocator_default);
+	}
 	free(pl->items);
 	pl->items = NULL;
 	pl->count = 0;
+}
+
+/* Free protocol buffer from ParserConfig */
+static void protocol_buffer_free(ParserConfig *cfg) {
+	if(cfg && cfg->protocol_buffer) {
+		free(cfg->protocol_buffer);
+		cfg->protocol_buffer = NULL;
+		cfg->protocol_buffer_cap = 0;
+		cfg->protocol_buffer_len = 0;
+	}
 }
 
 /* Expand a raw token "foo?bar" into all literal alternatives by treating
@@ -194,53 +247,84 @@ static void protocol_items_free(ProtocolList *pl) {
  * alternatives is 2^k where k is the number of '?'. We cap k at 8 so a
  * pathological config cannot OOM the loader (256 alts per token). */
 static bool expand_token_with_optional(const char *raw, size_t rlen,
-		                               ProtocolList *out) {
+		                               ParserConfig *cfg) {
 	size_t qcount = 0;
 	for(size_t i = 0; i < rlen; i++) if(raw[i] == '?') qcount++;
 	if(qcount > 8) return false;
 
 	size_t variants = (size_t)1 << qcount;
 	for(size_t v = 0; v < variants; v++) {
-		char *buf = malloc(rlen + 1);
-		if(!buf) return false;
+		/* Build protocol string in a temporary buffer */
+		char proto[64]; /* max protocol length is small */
 		size_t out_len = 0;
 		size_t qi = 0;
 		for(size_t i = 0; i < rlen; i++) {
 			if(i + 1 < rlen && raw[i + 1] == '?') {
 				/* bit qi selects whether to keep raw[i] in this variant */
-				if((v >> qi) & 1U) buf[out_len++] = raw[i];
+				if((v >> qi) & 1U) proto[out_len++] = raw[i];
 				qi++;
 				i++; /* skip the '?' */
 				continue;
 			}
-			buf[out_len++] = raw[i];
+			proto[out_len++] = raw[i];
 		}
-		buf[out_len] = '\0';
-		if(out_len == 0) { free(buf); continue; }
+		if(out_len == 0) continue;
 
-		char **grown = realloc(out->items, (out->count + 1) * sizeof(char *));
-		if(!grown) { free(buf); return false; }
-		out->items = grown;
-		out->items[out->count++] = buf;
+		/* Ensure protocol buffer has space */
+		if(cfg->protocol_buffer_len + out_len + 1 > cfg->protocol_buffer_cap) {
+			size_t new_cap = cfg->protocol_buffer_cap * 2 + out_len + 1;
+			char *new_buf = realloc(cfg->protocol_buffer, new_cap);
+			if(!new_buf) return false;
+			cfg->protocol_buffer = new_buf;
+			cfg->protocol_buffer_cap = new_cap;
+		}
+
+		/* Grow the items array */
+		ProtocolItem *grown = realloc(cfg->protocol_items.items,
+				(cfg->protocol_items.count + 1) * sizeof(ProtocolItem));
+		if(!grown) return false;
+		cfg->protocol_items.items = grown;
+
+		/* Set up the string view to point into the buffer */
+		char *dest = cfg->protocol_buffer + cfg->protocol_buffer_len;
+		sz_copy((sz_ptr_t)dest, (sz_ptr_t)proto, out_len);
+		dest[out_len] = '\0';
+
+		cfg->protocol_items.items[cfg->protocol_items.count].protocol.start = (sz_cptr_t)dest;
+		cfg->protocol_items.items[cfg->protocol_items.count].protocol.length = out_len;
+		cfg->protocol_buffer_len += out_len + 1;
+
+		cfg->protocol_items.count++;
 	}
+
 	return true;
 }
 
-/* Order tokens longest-first so that scheme prefix matching is greedy
- * (e.g. "https://" matches before "http://"). qsort comparator below. */
+/* Compare ProtocolItems by protocol length (descending) for greedy matching.
+ * Since we use sz_string_view_t, we just compare the lengths. */
 static int protocol_cmp_desc_len(const void *a, const void *b) {
-	const char *sa = *(const char * const *)a;
-	const char *sb = *(const char * const *)b;
-	size_t la = strlen(sa), lb = strlen(sb);
-	if(la != lb) return (la < lb) ? 1 : -1;
-	return strcmp(sa, sb);
+	const ProtocolItem *pa = (const ProtocolItem *)a;
+	const ProtocolItem *pb = (const ProtocolItem *)b;
+	/* Sort by length descending (longest first) */
+	if(pa->protocol.length != pb->protocol.length) {
+		return (pa->protocol.length < pb->protocol.length) ? 1 : -1;
+	}
+	/* Equal length - compare content */
+	return memcmp(pa->protocol.start, pb->protocol.start, pa->protocol.length);
 }
 
 static bool build_protocol_items(ParserConfig *cfg) {
 	if(!cfg || !cfg->protocol || !cfg->protocol[0]) return false;
 	/* Reset before (re)building so config reload is safe. */
 	protocol_items_free(&cfg->protocol_items);
+	protocol_buffer_free(cfg);
 	cfg->protocol_items_valid = false;
+
+	/* Initialize protocol buffer */
+	cfg->protocol_buffer_cap = 256;
+	cfg->protocol_buffer = malloc(cfg->protocol_buffer_cap);
+	if(!cfg->protocol_buffer) return false;
+	cfg->protocol_buffer_len = 0;
 
 	const char *p = cfg->protocol;
 	while(*p) {
@@ -248,143 +332,54 @@ static bool build_protocol_items(ParserConfig *cfg) {
 		size_t n = bar ? (size_t)(bar - p) : strlen(p);
 		if(!protocol_token_supported(p, n)) {
 			protocol_items_free(&cfg->protocol_items);
+			protocol_buffer_free(cfg);
 			return false;
 		}
-		if(!expand_token_with_optional(p, n, &cfg->protocol_items)) {
+		if(!expand_token_with_optional(p, n, cfg)) {
 			protocol_items_free(&cfg->protocol_items);
+			protocol_buffer_free(cfg);
 			return false;
 		}
 		if(!bar) break;
 		p = bar + 1;
 	}
-
 	if(cfg->protocol_items.count == 0) {
 		protocol_items_free(&cfg->protocol_items);
+		protocol_buffer_free(cfg);
 		return false;
 	}
-	/* Greedy / longest-first ordering is required by C.4 match_proto_prefix
-	 * and C.2 starts_with_proto, which both return on first prefix hit. */
-	qsort(cfg->protocol_items.items, cfg->protocol_items.count,
-		  sizeof(char *), protocol_cmp_desc_len);
 
+	/* Sort by length descending (longest first) using a simple manual sort.
+	 * We can't use qsort because it corrupts SSO strings by byte-swapping. */
+	for(size_t i = 0; i < cfg->protocol_items.count - 1; i++) {
+		for(size_t j = i + 1; j < cfg->protocol_items.count; j++) {
+			if(protocol_cmp_desc_len(&cfg->protocol_items.items[i],
+								  &cfg->protocol_items.items[j]) > 0) {
+				/* Swap items properly (no byte-copy that breaks SSO) */
+				ProtocolItem tmp = cfg->protocol_items.items[i];
+				cfg->protocol_items.items[i] = cfg->protocol_items.items[j];
+				cfg->protocol_items.items[j] = tmp;
+			}
+		}
+	}
+
+	/* Now build the protocol_lower strings for each item */
+	for(size_t i = 0; i < cfg->protocol_items.count; i++) {
+		size_t len = cfg->protocol_items.items[i].protocol.length;
+		sz_ptr_t lower_ptr = sz_string_init_length(
+			&cfg->protocol_items.items[i].protocol_lower, len, &allocator_default);
+		if(!lower_ptr) {
+			protocol_items_free(&cfg->protocol_items);
+			protocol_buffer_free(cfg);
+			return false;
+		}
+		const char *proto_start = (const char *)cfg->protocol_items.items[i].protocol.start;
+		for(size_t j = 0; j < len; j++) {
+			lower_ptr[j] = (char)tolower((unsigned char)proto_start[j]);
+		}
+	}
 	cfg->protocol_items_valid = true;
 	return true;
-}
-
-static void build_pattern_ext_one(ParserConfig *cfg, bool include_only) {
-	const char *noinclude_re = include_only ? "includeonly" : "(?:no|only)include";
-	const char *include_re   = include_only ? "noinclude"   : "includeonly";
-	char **target_pat = include_only ? &cfg->pattern_ext_includeonly
-						 : &cfg->pattern_ext;
-	bool has_translate = false;
-	for(size_t i = 0; i < cfg->ext.count; i++) {
-		if(strcmp(cfg->ext.items[i], "translate") == 0) { has_translate = true; break; }
-	}
-	size_t exts_cap = 64;
-	for(size_t i = 0; i < cfg->ext.count; i++) {
-		const char *e = cfg->ext.items[i];
-		if(has_translate && (strcmp(e,"translate")==0 || strcmp(e,"tvar")==0)) continue;
-		exts_cap += strlen(e) + 2;
-	}
-	char *exts = malloc(exts_cap); assert(exts);
-	size_t ep = 0; bool first = true;
-	for(size_t i = 0; i < cfg->ext.count; i++) {
-		const char *e = cfg->ext.items[i];
-		if(has_translate && (strcmp(e,"translate")==0 || strcmp(e,"tvar")==0)) continue;
-		if(!first) exts[ep++] = '|';
-		size_t elen = strlen(e); memcpy(exts + ep, e, elen); ep += elen; first = false;
-	}
-	exts[ep] = '\0';
-	size_t pat_cap = 256 + exts_cap + strlen(noinclude_re)*4 + strlen(include_re)*4;
-	char *pattern = malloc(pat_cap); assert(pattern);
-	size_t pos = 0;
-	pos += (size_t)snprintf(pattern + pos, pat_cap - pos,
-		"<!--[\\s\\S]*?(?:-->|$)"
-		"|<%s(?:\\s[^>]*)?\\/>|<\\/%s\\s*>"
-		"|<(%s)(\\s[^>]*?)?(?:\\/>|>([\\s\\S]*?)<\\/(\\1\\s*)>)"
-		"|<(%s)(\\s[^>]*?)?(?:\\/>|>([\\s\\S]*?)(?:<\\/(%s\\s*)>|$))",
-		noinclude_re, noinclude_re, exts, include_re, include_re);
-	free(exts);
-	*target_pat = pattern;
-}
-
-static void build_pattern_ext(ParserConfig *cfg) {
-	build_pattern_ext_one(cfg, false);
-	build_pattern_ext_one(cfg, true);
-}
-
-static int cfg_is_fullwidth_wrapped_dunder(const char *s) {
-	static const char fw[] = "\xEF\xBC\xBF"; /* U+FF3F FULLWIDTH LOW LINE */
-	size_t fwl = sizeof(fw) - 1U;
-	size_t len = s ? strlen(s) : 0;
-	if(len < 4U * fwl + 1U) return 0;
-	return memcmp(s, fw, fwl) == 0 && memcmp(s + fwl, fw, fwl) == 0
-		&& memcmp(s + len - fwl, fw, fwl) == 0
-		&& memcmp(s + len - 2U * fwl, fw, fwl) == 0;
-}
-
-static void cfg_pattern_append(char **buf, size_t *cap, size_t *len,
-					 const char *s) {
-	size_t add = strlen(s);
-	if(*len + add + 1 > *cap) {
-		while(*len + add + 1 > *cap) *cap *= 2;
-		*buf = realloc(*buf, *cap); assert(*buf);
-	}
-	memcpy(*buf + *len, s, add); *len += add; (*buf)[*len] = '\0';
-}
-
-static void cfg_pattern_append_n(char **buf, size_t *cap, size_t *len,
-					   const char *s, size_t n) {
-	if(*len + n + 1 > *cap) {
-		while(*len + n + 1 > *cap) *cap *= 2;
-		*buf = realloc(*buf, *cap); assert(*buf);
-	}
-	memcpy(*buf + *len, s, n); *len += n; (*buf)[*len] = '\0';
-}
-
-static void build_pattern_hr_and_dunder(ParserConfig *cfg) {
-	/* Mirrors build_hr_and_dunder_pattern() from hr_and_double_underscore.c */
-	static const char fw[] = "\xEF\xBC\xBF";
-	size_t cap = 256; size_t len = 0;
-	char *pattern = malloc(cap); assert(pattern); pattern[0] = '\0';
-
-	cfg_pattern_append(&pattern, &cap, &len,
-		"^((?:\\x00\\d+[cno]\\x7F)*)(-{4,})|__(");
-
-	int first = 1;
-	for(int list = 0; list < 2; list++) {
-		const StrList *sl = &cfg->double_underscore[list];
-		for(size_t i = 0; i < sl->count; i++) {
-			const char *it = sl->items[i];
-			if(!it || cfg_is_fullwidth_wrapped_dunder(it)) continue;
-			if(!first) cfg_pattern_append(&pattern, &cap, &len, "|");
-			cfg_pattern_append(&pattern, &cap, &len, it);
-			first = 0;
-		}
-	}
-	cfg_pattern_append(&pattern, &cap, &len, ")__|");
-	cfg_pattern_append(&pattern, &cap, &len, fw);
-	cfg_pattern_append(&pattern, &cap, &len, "{2}(");
-
-	first = 1;
-	for(int list = 0; list < 2; list++) {
-		const StrList *sl = &cfg->double_underscore[list];
-		for(size_t i = 0; i < sl->count; i++) {
-			const char *it = sl->items[i];
-			if(!it || !cfg_is_fullwidth_wrapped_dunder(it)) continue;
-			size_t it_len = strlen(it);
-			if(!first) cfg_pattern_append(&pattern, &cap, &len, "|");
-			cfg_pattern_append_n(&pattern, &cap, &len,
-				it + 2U * (sizeof(fw) - 1U),
-				it_len - 4U * (sizeof(fw) - 1U));
-			first = 0;
-		}
-	}
-	cfg_pattern_append(&pattern, &cap, &len, ")");
-	cfg_pattern_append(&pattern, &cap, &len, fw);
-	cfg_pattern_append(&pattern, &cap, &len, "{2}");
-
-	cfg->pattern_hr_and_dunder = pattern;
 }
 
 /* ── Internal parse of the cJSON root object ─────────────────────────────── */
@@ -427,14 +422,18 @@ static ParserConfig *config_from_cjson(const cJSON *root) {
 			const cJSON *item;
 			cJSON_ArrayForEach(item, ns) {
 				if(item->string && cJSON_IsNumber(item)) {
-					cfg->namespaces[k].name= strdup(item->string);
+
+				sz_ptr_t name_ptr = sz_string_init_length(&cfg->namespaces[k].name, strlen(item->string), &allocator_default);
+				sz_copy(name_ptr, (sz_ptr_t)item->string, strlen(item->string));
 					cfg->namespaces[k].num= (int)item->valuedouble;
 					k++;
 				} else if(item->string && cJSON_IsString(item) && item->valuestring) {
 					char *endp= NULL;
 					long nsnum= strtol(item->string, &endp, 10);
 					if(endp && *endp == '\0') {
-						cfg->namespaces[k].name= strdup(item->valuestring);
+
+						sz_ptr_t name_ptr = sz_string_init_length(&cfg->namespaces[k].name, strlen(item->valuestring), &allocator_default);
+						sz_copy(name_ptr, (sz_ptr_t)item->valuestring, strlen(item->valuestring));
 						cfg->namespaces[k].num= (int)nsnum;
 						k++;
 					}
@@ -460,7 +459,8 @@ static ParserConfig *config_from_cjson(const cJSON *root) {
 				NsEntry *grown= realloc(cfg->namespaces, (cfg->ns_count + 1) * sizeof(NsEntry));
 				assert(grown);
 				cfg->namespaces= grown;
-				cfg->namespaces[cfg->ns_count].name= strdup(item->string);
+			sz_ptr_t ptr = sz_string_init_length(&cfg->namespaces[cfg->ns_count].name, strlen(item->string), &allocator_default);
+			sz_copy(ptr, (sz_ptr_t)item->string, strlen(item->string));
 				cfg->namespaces[cfg->ns_count].num= nsnum;
 				cfg->ns_count++;
 			}
@@ -469,7 +469,7 @@ static ParserConfig *config_from_cjson(const cJSON *root) {
 
 	/* redirection */
 	str_list_from_json_array(&cfg->redirection,
-													 cJSON_GetObjectItemCaseSensitive(root, "redirection"));
+			 cJSON_GetObjectItemCaseSensitive(root, "redirection"));
 
 	/* doubleUnderscore: [insensitive_list, sensitive_list, ins_map, sen_map]
      * Indices 0 and 1 are arrays; indices 2 and 3 are objects (key→canonical).
@@ -510,7 +510,6 @@ static ParserConfig *config_from_cjson(const cJSON *root) {
 			cfg->protocol= strdup(proto->valuestring);
 		}
 	}
-
 	/* Build expanded protocol items (required by C.2/C.4 scanners).
 	 * Abort config load if protocol grammar is invalid. */
 	if(!build_protocol_items(cfg)) {
@@ -521,11 +520,11 @@ static ParserConfig *config_from_cjson(const cJSON *root) {
 
 	/* variants */
 	str_list_from_json_array(&cfg->variants,
-													 cJSON_GetObjectItemCaseSensitive(root, "variants"));
+			 cJSON_GetObjectItemCaseSensitive(root, "variants"));
 
 	/* variable: magic variables (e.g. pagename, currentyear, ...) */
 	str_list_from_json_array(&cfg->variable,
-													 cJSON_GetObjectItemCaseSensitive(root, "variable"));
+			 cJSON_GetObjectItemCaseSensitive(root, "variable"));
 
 	/* parserFunction[2]/[3] modifiers, mirrors JS destructuring:
 	 *   [, , raw, subst] = config.parserFunction */
@@ -550,7 +549,8 @@ static ParserConfig *config_from_cjson(const cJSON *root) {
 
 	/* interwiki prefixes */
 	str_list_from_json_array(&cfg->interwiki,
-													 cJSON_GetObjectItemCaseSensitive(root, "interwiki"));
+					 cJSON_GetObjectItemCaseSensitive(root, "interwiki"));
+					 
 
 	/* image parameter map */
 	{
@@ -576,48 +576,6 @@ static ParserConfig *config_from_cjson(const cJSON *root) {
 		}
 	}
 
-	/* pattern_redirect removed - redirect now uses callback parsing */
-
-	build_pattern_ext(cfg);
-
-	/* Register dynamic rules for ext tags (config-ext and config-ext-includeonly).
-     * These are used by the callback scanner in comment_and_ext.c.
-	 * config-ext dynamic rule registration 
-	*/
-	if(cfg->pattern_ext) {
-		ParserRules ext_rule = {
-			/* This is a placeholder - the actual matching is done by cae_match_ext()
-             * which iterates over cfg->ext items. The dynamic rule registration
-             * ensures the config-ext key exists in the registry. */
-			.match_mode = PARSER_MATCH_FIRST_CLOSE,
-			.case_insensitive = true,
-		};
-		if(!wiki_parser_rules_set_dynamic("config-ext", &ext_rule)) {
-			log_error("config_from_cjson: failed to register config-ext dynamic rule");
-		}
-	}
-	/* config-ext-includeonly dynamic rule registration */
-	if(cfg->pattern_ext_includeonly) {
-		ParserRules ext_includeonly_rule = {
-			.match_mode = PARSER_MATCH_FIRST_CLOSE,
-			.case_insensitive = true,
-		};
-		if(!wiki_parser_rules_set_dynamic("config-ext-includeonly", &ext_includeonly_rule)) {
-			log_error("config_from_cjson: failed to register config-ext-includeonly dynamic rule");
-		}
-	}
-
-	/* Register config-external-links dynamic rule.
-     * The external_links parser now uses a callback scanner with wiki_rule_extlink_bracket,
-     * so we don't need pattern_external_links anymore. */
-	/* config-external-links is now handled by the callback scanner in external_links.c */
-
-	build_pattern_hr_and_dunder(cfg);
-
-	/* Register config-magic-links dynamic rule.
-     * The magic_links parser now uses a callback scanner with protocol_items,
-     * so we don't need pattern_magic_links anymore. */
-	/* config-magic-links is now handled by the callback scanner in magic_links.c */
 
 	return cfg;
 }
@@ -683,11 +641,12 @@ void config_free(ParserConfig *cfg) {
 
 	/* Free expanded protocol items */
 	protocol_items_free(&cfg->protocol_items);
+	protocol_buffer_free(cfg);
 
 	str_list_free(&cfg->ext);
 	for(int i= 0; i < 3; i++) str_list_free(&cfg->html[i]);
 
-	for(size_t i= 0; i < cfg->ns_count; i++) free(cfg->namespaces[i].name);
+	for(size_t i= 0; i < cfg->ns_count; i++) sz_string_free(&cfg->namespaces[i].name, &allocator_default);
 	free(cfg->namespaces);
 
 	str_list_free(&cfg->redirection);
@@ -706,29 +665,28 @@ void config_free(ParserConfig *cfg) {
 	str_map_free(&cfg->img);
 	str_list_free(&cfg->excludes);
 
-	/* Free lazily-built pattern strings cached in the config */
-	/* pattern_redirect removed - redirect now uses callback parsing */
-	if(cfg->pattern_ext) free(cfg->pattern_ext);
-	if(cfg->pattern_ext_includeonly) free(cfg->pattern_ext_includeonly);
-	if(cfg->pattern_hr_and_dunder) free(cfg->pattern_hr_and_dunder);
-	/* pattern_magic_links removed - magic_links now uses callback scanner */
-	/* pattern_external_links removed - external_links now uses callback scanner */
-
 	free(cfg);
 }
 
 bool config_excluded(const ParserConfig *cfg, const char *name) {
 	if(!cfg || !name) return false;
 	for(size_t i= 0; i < cfg->excludes.count; i++) {
-		if(strcmp(cfg->excludes.items[i], name) == 0) return true;
+		sz_ptr_t start;
+		sz_size_t len;
+		sz_string_range(&cfg->excludes.items[i], &start, &len);
+		if(start && len == strlen(name) && memcmp(start, name, len) == 0) return true;
 	}
 	return false;
 }
 
 bool config_has_ext(const ParserConfig *cfg, const char *name) {
 	if(!cfg || !name) return false;
+
 	for(size_t i= 0; i < cfg->ext.count; i++) {
-		if(strcasecmp(cfg->ext.items[i], name) == 0) return true;
+		sz_ptr_t start;
+		sz_size_t len;
+		sz_string_range(&cfg->ext.items[i], &start, &len);
+		if(start && len == strlen(name) && strncasecmp(start, name, len) == 0) return true;
 	}
 	return false;
 }

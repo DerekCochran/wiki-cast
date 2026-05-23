@@ -296,9 +296,11 @@ static void parse_dunder_pass(ThreadBuf *tb, const ParserRules *rule,
 static int strlist_has_exact(const StrList *sl, const char *s, size_t len) {
 	if(!sl) return 0;
 	for(size_t i= 0; i < sl->count; i++) {
-		const char *it= sl->items[i];
+		sz_ptr_t it;
+		sz_size_t it_len;
+		sz_string_range(&sl->items[i], &it, &it_len);
 		if(!it) continue;
-		if(strlen(it) == len && strncmp(it, s, len) == 0) return 1;
+		if(it_len == len && memcmp(it, s, len) == 0) return 1;
 	}
 	return 0;
 }
@@ -306,13 +308,14 @@ static int strlist_has_exact(const StrList *sl, const char *s, size_t len) {
 static int strlist_has_lower(const StrList *sl, const char *s, size_t len) {
 	if(!sl) return 0;
 	for(size_t i= 0; i < sl->count; i++) {
-		const char *it= sl->items[i];
+		sz_ptr_t it;
+		sz_size_t it_len;
+		sz_string_range(&sl->items[i], &it, &it_len);
 		if(!it) continue;
-		size_t il= strlen(it);
-		if(il != len) continue;
+		if(it_len != len) continue;
 		int ok= 1;
 		for(size_t k= 0; k < len; k++) {
-			if(tolower((unsigned char)it[k]) != tolower((unsigned char)s[k])) {
+			if(tolower((unsigned char)((const char *)it)[k]) != tolower((unsigned char)s[k])) {
 				ok= 0;
 				break;
 			}
@@ -325,8 +328,14 @@ static int strlist_has_lower(const StrList *sl, const char *s, size_t len) {
 static const char *strmap_get_exact(const StrMap *m, const char *key) {
 	if(!m || !key) return NULL;
 	for(size_t i= 0; i < m->count; i++) {
-		if(m->keys[i] && m->values[i] && strcmp(m->keys[i], key) == 0) {
-			return m->values[i];
+		sz_ptr_t key_start;
+		sz_size_t key_len;
+		sz_string_range(&m->keys[i], &key_start, &key_len);
+		if(key_start && key_len == strlen(key) && memcmp(key_start, key, key_len) == 0) {
+			sz_ptr_t val_start;
+			sz_size_t val_len;
+			sz_string_range(&m->values[i], &val_start, &val_len);
+			return (const char *)val_start;
 		}
 	}
 	return NULL;

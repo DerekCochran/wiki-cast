@@ -40,10 +40,11 @@ static bool parse_redirect_prefix(const char *s, size_t len, const ParserConfig 
     size_t kw_len = 0;
     bool matched_kw = false;
     for(size_t i = 0; i < cfg->redirection.count; i++) {
-        const char *kw = cfg->redirection.items[i];
+        sz_ptr_t kw;
+        sz_size_t klen;
+        sz_string_range(&cfg->redirection.items[i], &kw, &klen);
         if(!kw) continue;
-        size_t klen = strlen(kw);
-        if(ci_starts_with_n(s + p, len - p, kw, klen)) {
+        if(ci_starts_with_n(s + p, len - p, (const char *)kw, klen)) {
             kw_len = klen;
             matched_kw = true;
             break; /* left-to-right alternation parity */

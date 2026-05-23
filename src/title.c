@@ -49,8 +49,11 @@ static char *strndup0(const char *s, size_t len) {
 static const char *title_namespace_name(const ParserConfig *cfg, int ns) {
 	if(!cfg) return "";
 	for(size_t i= 0; i < cfg->ns_count; i++) {
-		if(cfg->namespaces[i].num == ns && cfg->namespaces[i].name) {
-			return cfg->namespaces[i].name;
+		sz_ptr_t name_start;
+		sz_size_t name_len;
+		sz_string_range(&cfg->namespaces[i].name, &name_start, &name_len);
+		if(cfg->namespaces[i].num == ns && name_start) {
+			return (const char *)name_start;
 		}
 	}
 	return "";
@@ -66,9 +69,11 @@ static int title_lookup_namespace(const ParserConfig *cfg, const char *s, size_t
 	while(end > start && isspace((unsigned char)s[end - 1])) end--;
 	size_t trimmed_len= end - start;
 	for(size_t i= 0; i < cfg->ns_count; i++) {
-		const char *name= cfg->namespaces[i].name;
-		if(!name || strlen(name) != trimmed_len) continue;
-		if(strncasecmp(s + start, name, trimmed_len) == 0) {
+		sz_ptr_t name_start;
+		sz_size_t name_len;
+		sz_string_range(&cfg->namespaces[i].name, &name_start, &name_len);
+		if(!name_start || name_len != trimmed_len) continue;
+		if(strncasecmp(s + start, (const char *)name_start, trimmed_len) == 0) {
 			return cfg->namespaces[i].num;
 		}
 	}

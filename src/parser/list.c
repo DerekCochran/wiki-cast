@@ -547,11 +547,19 @@ void parse_list(ThreadBuf *tb, const ParserConfig *cfg, Accum *accum) {
 					bool closing = ht ? ht->data.html.closing : false;
 					bool selfClosing = ht ? ht->data.html.self_closing : false;
 					bool is_normal = false;
-					for(size_t ni = 0; ni < cfg->html[0].count; ni++)
-						if(cfg->html[0].items[ni] && name && strcmp(cfg->html[0].items[ni], name) == 0) { is_normal = true; break; }
-					bool is_void = false;
-					for(size_t vi = 0; vi < cfg->html[2].count; vi++)
-						if(cfg->html[2].items[vi] && name && strcmp(cfg->html[2].items[vi], name) == 0) { is_void = true; break; }
+				for(size_t ni =0; ni < cfg->html[0].count; ni++) {
+					sz_ptr_t html_name;
+					sz_size_t html_len;
+					sz_string_range(&cfg->html[0].items[ni], &html_name, &html_len);
+					if(html_name && name && html_len == strlen(name) && memcmp(html_name, name, html_len) == 0) { is_normal = true; break; }
+				}
+				bool is_void = false;
+				for(size_t vi =0; vi < cfg->html[2].count; vi++) {
+					sz_ptr_t html_name2;
+					sz_size_t html_len2;
+					sz_string_range(&cfg->html[2].items[vi], &html_name2, &html_len2);
+					if(html_name2 && name && html_len2 == strlen(name) && memcmp(html_name2, name, html_len2) == 0) { is_void = true; break; }
+				}
 					if(is_normal || (!selfClosing && !is_void)) {
 						if(!closing) lt++; else if(lt) lt--;
 					}

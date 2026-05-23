@@ -201,12 +201,14 @@ static bool cae_match_ext(const char *s, size_t len, size_t i,
     if(s[i] != '<' || s[i + 1] == '/') return false;
 
     for(size_t ei = 0; ei < cfg->ext.count; ei++) {
-        const char *ename = cfg->ext.items[ei];
+        sz_ptr_t ename;
+        sz_size_t ename_len;
+        sz_string_range(&cfg->ext.items[ei], &ename, &ename_len);
         if(!ename) continue;
-        if(has_translate && (strcmp(ename, "translate") == 0 || strcmp(ename, "tvar") == 0))
+        if(has_translate && ((ename_len == strlen("translate") && memcmp(ename, "translate", ename_len) == 0) ||
+                           (ename_len == strlen("tvar") && memcmp(ename, "tvar", ename_len) == 0)))
             continue;
 
-        size_t ename_len = strlen(ename);
         CaeOpenTag ot;
         if(!cae_match_open_named(s, len, i, ename, ename_len, &ot)) continue;
 
@@ -2046,7 +2048,10 @@ void parse_comment_and_ext(ThreadBuf *tb, const ParserConfig *cfg,
                            Accum *accum, bool include_only) {
     bool has_translate = false;
     for(size_t i = 0; i < cfg->ext.count; i++) {
-        if(strcmp(cfg->ext.items[i], "translate") == 0) {
+        sz_ptr_t ext_name;
+        sz_size_t ext_len;
+        sz_string_range(&cfg->ext.items[i], &ext_name, &ext_len);
+        if(ext_len == strlen("translate") && memcmp(ext_name, "translate", ext_len) == 0) {
             has_translate = true;
             break;
         }

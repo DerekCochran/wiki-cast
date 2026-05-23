@@ -41,7 +41,10 @@ static bool variant_in_config(const ParserConfig *cfg, const char *s, size_t len
 	if(!trimmed) return false;
 
 	for(size_t i= 0; i < cfg->variants.count; i++) {
-		if(strcasecmp(trimmed, cfg->variants.items[i]) == 0) {
+		sz_ptr_t start;
+		sz_size_t len;
+		sz_string_range(&cfg->variants.items[i], &start, &len);
+		if(start && len == strlen(trimmed) && strncasecmp(trimmed, (const char *)start, len) == 0) {
 			free(trimmed);
 			return true;
 		}
@@ -283,13 +286,14 @@ static bool converter_rule_looks_like_variant(const char *s, size_t len,
 	if(i >= len) return false;
 
 	for(size_t vi = 0; vi < cfg->variants.count; vi++) {
-		const char *v = cfg->variants.items[vi];
+		sz_ptr_t v;
+		sz_size_t vlen;
+		sz_string_range(&cfg->variants.items[vi], &v, &vlen);
 		if(!v) continue;
-		size_t vlen = strlen(v);
 		if(i + vlen >= len) continue;
 		bool ok = true;
 		for(size_t k = 0; k < vlen; k++) {
-			if(tolower((unsigned char)s[i + k]) != tolower((unsigned char)v[k])) { ok = false; break; }
+			if(tolower((unsigned char)s[i + k]) != tolower((unsigned char)((const char *)v)[k])) { ok = false; break; }
 		}
 		if(ok) {
 			size_t p = i + vlen;

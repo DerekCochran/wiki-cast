@@ -345,7 +345,10 @@ brace_event_next(const char *buf, size_t len, size_t *pos,
 static bool str_list_contains_ci(const StrList *sl, const char *needle) {
 	if(!sl || !needle) return false;
 	for(size_t i= 0; i < sl->count; i++) {
-		if(sl->items[i] && strcasecmp(sl->items[i], needle) == 0) return true;
+		sz_ptr_t start;
+		sz_size_t len;
+		sz_string_range(&sl->items[i], &start, &len);
+		if(start && len == strlen(needle) && strncasecmp(start, needle, len) == 0) return true;
 	}
 	return false;
 }
@@ -353,8 +356,12 @@ static bool str_list_contains_ci(const StrList *sl, const char *needle) {
 static const char *str_map_get_exact(const StrMap *m, const char *key) {
 	if(!m || !key) return NULL;
 	for(size_t i= 0; i < m->count; i++) {
-		if(m->keys[i] && m->values[i] && strcmp(m->keys[i], key) == 0) {
-			return m->values[i];
+		sz_ptr_t key_start, val_start;
+		sz_size_t key_len, val_len;
+		sz_string_range(&m->keys[i], &key_start, &key_len);
+		if(key_start && key_len == strlen(key) && memcmp(key_start, key, key_len) == 0) {
+			sz_string_range(&m->values[i], &val_start, &val_len);
+			return (const char *)val_start;
 		}
 	}
 	return NULL;
@@ -1842,9 +1849,11 @@ static char braces_arg_symbol(const char *inner, size_t inner_len, const ParserC
 
 	char sym= 'a';
 	for(size_t n= 0; n < cfg->parser_function_subst.count; n++) {
-		const char *s= cfg->parser_function_subst.items[n];
+		sz_ptr_t s;
+		sz_size_t s_len;
+		sz_string_range(&cfg->parser_function_subst.items[n], &s, &s_len);
 		if(!s) continue;
-		if(strcmp(base, s) == 0) {
+		if(s_len == strlen(base) && memcmp(s, base, s_len) == 0) {
 			sym= 's';
 			break;
 		}

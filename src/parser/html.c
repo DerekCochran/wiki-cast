@@ -128,7 +128,10 @@ static bool html_tag_allowed(const ParserConfig *cfg, const char *lcname) {
 	if(!cfg || !lcname) return false;
 	for(int grp= 0; grp < 3; grp++) {
 		for(size_t i= 0; i < cfg->html[grp].count; i++) {
-			if(strcasecmp(cfg->html[grp].items[i], lcname) == 0) return true;
+			sz_ptr_t html_name;
+			sz_size_t html_len;
+			sz_string_range(&cfg->html[grp].items[i], &html_name, &html_len);
+			if(html_name && html_len == strlen(lcname) && strncasecmp(html_name, lcname, html_len) == 0) return true;
 		}
 	}
 	return false;

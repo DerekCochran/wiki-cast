@@ -12,33 +12,29 @@
 #pragma once
 #include <stddef.h>
 #include <stdbool.h>
+#include "types.h"
 
-/* Forward declaration for PCRE2 types (avoid pulling in pcre2.h in every TU) */
-typedef void ParserConfigRegex; /* actual type: pcre2_code_8 * */
+/* Global default allocator for sz_string_t operations */
+extern sz_memory_allocator_t allocator_default;
 
-/* ── String list ─────────────────────────────────────────────────────────── */
-typedef struct {
-    char  **items;
-    size_t  count;
-} StrList;
-
-/* ── String map (key->value pairs) ─────────────────────────────────────── */
-typedef struct {
-    char  **keys;
-    char  **values;
-    size_t  count;
-} StrMap;
+/* Initialize the default allocator */
+void config_init_allocator(void);
 
 /* ── Namespace map entry ───────────────────────────────────────────────────── */
 typedef struct {
-    int   num;
-    char *name;
+    int         num;
+    sz_string_t name;
 } NsEntry;
 
-/* ── Protocol list ─────────────────────────────────────────────────────────── */
+/* ── Protocol item & list ─────────────────────────────────────────────────── */
 typedef struct {
-    char  **items;
-    size_t  count;
+    sz_string_view_t protocol;   /* View into protocol buffer (no ownership) */
+    sz_string_t protocol_lower; /* Precomputed lowercase version */
+} ProtocolItem;
+
+typedef struct {
+    ProtocolItem *items;
+    size_t         count;
 } ProtocolList;
 
 /* ── Parser config ──────────────────────────────────────────────────────── */
@@ -67,6 +63,9 @@ typedef struct {
     /* expanded protocol items */
     ProtocolList protocol_items;
     bool protocol_items_valid;
+    char *protocol_buffer;       /* Storage for expanded protocol strings */
+    size_t protocol_buffer_cap;   /* Capacity of protocol buffer */
+    size_t protocol_buffer_len;   /* Used length of protocol buffer */
 
     /* language variants for converter */
     StrList variants;
@@ -99,20 +98,6 @@ typedef struct {
 
     /* JS parseLinks toggles regex shape with config.inExt. */
     bool in_ext;
-
-    /* Note: compiled PCRE2 patterns are now owned by the process-wide
-     * `pcre_cache` utility. Parsers should call pcre_cache_get(pattern, flags)
-     * to obtain a shared compiled `pcre2_code *` rather than storing them
-     * in the ParserConfig. */
-    /* Prebuilt dynamic regex pattern strings (cached here to avoid
-     * per-parse snprintf/realloc work). Built lazily by parsers and
-     * freed in `config_free`. */
-    /* pattern_redirect removed - redirect now uses callback parsing */
-    char *pattern_ext;                /* general ext-tags pattern */
-    char *pattern_ext_includeonly;    /* include-only variant */
-    char *pattern_hr_and_dunder;
-    /* pattern_magic_links removed - magic_links now uses callback scanner */
-    /* pattern_external_links removed - external_links now uses callback scanner */
 
 } ParserConfig;
 

@@ -24,6 +24,11 @@ static void ensure_tolower_lut(void) {
 	}
 }
 
+unsigned char fast_tolower(unsigned char c) {
+    ensure_tolower_lut();
+    return s_tolower_lut[c];
+}
+
 bool str_ci_eq_n(const char *a, const char *b, size_t n) {
 	if (n == 0) return true;
 	ensure_tolower_lut();
@@ -552,18 +557,21 @@ char *str_extract_interwiki(const char *s, size_t len, const ParserConfig *cfg, 
 	}
 
 	for(size_t k= 0; k < cfg->interwiki.count; k++) {
-		const char *iw= cfg->interwiki.items[k];
+		sz_ptr_t iw;
+		sz_size_t iwlen;
+		sz_string_range(&cfg->interwiki.items[k], &iw, &iwlen);
 		if(!iw) continue;
-		size_t iwlen= strlen(iw);
 		if(start + iwlen > tlen) continue;
-		if(!str_ci_eq_n(temp + start, iw, iwlen)) continue;
+		if(!str_ci_eq_n(temp + start, (const char *)iw, iwlen)) continue;
 		size_t j= start + iwlen;
 		while(j < tlen && isspace((unsigned char)temp[j])) j++;
 		if(j < tlen && temp[j] == ':') {
 			/* matched prefix + optional spaces + ':'; consumed bytes end at raw index of ':' + 1 */
 			size_t raw_consumed= pos_map[j] + 1;
-			char *out= strdup(iw);
+			char *out= malloc(iwlen + 1);
 			if(out) {
+				sz_copy(out, iw, iwlen);
+				out[iwlen]= '\0';
 				for(char *p= out; *p; ++p) *p= (char)tolower((unsigned char)*p);
 			}
 			free(temp);
@@ -589,13 +597,38 @@ bool is_url_common_byte(unsigned char c) {
 }
 
 size_t match_proto_prefix(const char *s, size_t len, const ParserConfig *cfg) {
-	if(!cfg || !cfg->protocol_items_valid || cfg->protocol_items.count == 0) return 0;
+	if(!cfg || !cfg->protocol_items_valid || cfg->protocol_items.count == 0) {
+	    return 0;
+	}
+
 	for(size_t pi = 0; pi < cfg->protocol_items.count; pi++) {
-		const char *tok = cfg->protocol_items.items[pi];
-		if(!tok) continue;
-		size_t tlen = strlen(tok);
-		if(tlen > 0 && tlen <= len) {
-			if(str_ci_eq_n(s, tok, tlen)) return tlen;
+		const ProtocolItem *proto = &cfg->protocol_items.items[pi];
+		/* Early skip if input is too short for this protocol */
+		if(proto->protocol.length > len) {
+		    continue;
+		}
+		if(proto->protocol.length == 0) {
+		    continue;
+		}
+
+		/* Get the lowercase protocol string */
+		sz_ptr_t lower_start;
+		sz_size_t lower_len;
+		sz_string_range(&proto->protocol_lower, &lower_start, &lower_len);
+		if(!lower_start || lower_len != proto->protocol.length) {
+		    continue;
+		}
+
+		/* Compare input lowered vs precomputed protocol lowercase */
+		bool match = true;
+		for(size_t i =0; i < proto->protocol.length; i++) {
+			if(fast_tolower((unsigned char)s[i]) != (unsigned char)((const char *)lower_start)[i]) {
+				match = false;
+				break;
+			}
+		}
+		if(match) {
+		    return proto->protocol.length;
 		}
 	}
 	return 0;

@@ -74,6 +74,13 @@ int utf8_char_len(unsigned char c);
 /* ── Case-fold a single UTF-8 codepoint to lowercase (ASCII-only fast path) ─ */
 uint32_t utf8_tolower_codepoint(uint32_t cp);
 
+/* ── Fast ASCII lowercase using precomputed LUT ─────────────────────────── */
+/**
+ * Fast ASCII lowercase using the precomputed LUT.
+ * Ensures the LUT is initialized and returns the lowercase version of c.
+ */
+unsigned char fast_tolower(unsigned char c);
+
 /* ── Uppercase a single UTF-8 codepoint (ASCII + Latin-1 support) ─────────── */
 uint32_t utf8_toupper_codepoint(uint32_t cp);
 
@@ -130,5 +137,6 @@ bool is_url_common_byte(unsigned char c);
  * Match a protocol prefix from cfg->protocol_items against s.
  * Returns the length of the matched prefix, or 0 if no match.
  * Requires cfg->protocol_items_valid == true.
+ * Uses precomputed protocol_lower and protocol_len for fast comparison.
  */
 size_t match_proto_prefix(const char *s, size_t len, const ParserConfig *cfg);

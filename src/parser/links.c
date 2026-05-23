@@ -56,7 +56,9 @@ static bool proto_token_match_ci_n(const char *s, size_t slen,
  * Leading whitespace includes Unicode Zs + ASCII whitespace.
  * Protocol alternatives come from cfg->protocol_items (validated in Phase A.1). */
 static bool starts_with_proto(const char *s, size_t len, const ParserConfig *cfg) {
-    if(!s || !cfg || !cfg->protocol_items_valid || cfg->protocol_items.count == 0) return false;
+    if(!s || !cfg || !cfg->protocol_items_valid || cfg->protocol_items.count == 0) {
+        return false;
+    }
 
     size_t i = 0;
     while(i < len) {
@@ -64,13 +66,21 @@ static bool starts_with_proto(const char *s, size_t len, const ParserConfig *cfg
         if(ws == 0) break;
         i += ws;
     }
-    if(i + 2 <= len && s[i] == '/' && s[i + 1] == '/') return true;
+    if(i + 2 <= len && s[i] == '/' && s[i + 1] == '/') {
+        return true;
+    }
 
     for(size_t pi = 0; pi < cfg->protocol_items.count; pi++) {
-        const char *tok = cfg->protocol_items.items[pi];
-        if(!tok) continue;
-        size_t tlen = strlen(tok);
-        if(tlen > 0 && proto_token_match_ci_n(s + i, len - i, tok, tlen)) return true;
+        const ProtocolItem *proto = &cfg->protocol_items.items[pi];
+        if(proto->protocol.length == 0) {
+            continue;
+        }
+        if(proto->protocol.length > len - i) {
+            continue;
+        }
+        if(proto->protocol.start && proto_token_match_ci_n(s + i, len - i, (const char *)proto->protocol.start, proto->protocol.length)) {
+            return true;
+        }
     }
     return false;
 }
@@ -649,6 +659,8 @@ static bool img_param_validate(const char *name, const char *val_ptr, size_t val
 				proto_like= true;
 			} else if(cfg) {
 				proto_like= starts_with_proto(value, strlen(value), cfg);
+			}else {
+				fprintf(stderr,"No Config");
 			}
 
 			if(proto_like) {
@@ -736,8 +748,12 @@ static void append_file_image_params(Token *file_tok,
 
 			if(cfg && cfg->img.count > 0) {
 				for(size_t i= 0; i < cfg->img.count; i++) {
-					const char *syntax= cfg->img.keys[i];
-					const char *name= cfg->img.values[i];
+					sz_ptr_t syntax_start, name_start;
+					sz_size_t syntax_len, name_len;
+					sz_string_range(&cfg->img.keys[i], &syntax_start, &syntax_len);
+					sz_string_range(&cfg->img.values[i], &name_start, &name_len);
+					const char *syntax = (const char *)syntax_start;
+					const char *name = (const char *)name_start;
 					const char *cap_ptr= NULL;
 					size_t cap_len= 0;
 					bool has_cap= false;

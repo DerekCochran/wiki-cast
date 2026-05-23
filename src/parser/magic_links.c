@@ -211,6 +211,10 @@ static bool parse_isbn(const char *s, size_t len, size_t i, size_t *out_end) {
 static bool parse_protocol_url(const char *s, size_t len, size_t i,
                                const ParserConfig *cfg,
                                size_t *body_s, size_t *body_e, size_t *out_end) {
+    if (i >= len) {
+        return false;
+    }
+    
     size_t pfx = match_proto_prefix(s + i, len - i, cfg);
     if (pfx == 0) return false;
     size_t p = i + pfx;
