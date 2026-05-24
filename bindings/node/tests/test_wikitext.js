@@ -31,7 +31,7 @@ function loadWikitextSamples(dir) {
 /**
  * Main test runner: loads files from wikitext directory and stops on first failure.
  */
-function main() {
+function testWikitext() {
   const testDir = path.dirname(__filename);
   const wikitextDir = path.join(testDir, 'wikitext');
   
@@ -64,4 +64,9 @@ function main() {
   process.exit(0);
 }
 
-main();
+if (process.argv[1] === __filename) {
+  testWikitext();
+}
+
+module.exports = { testWikitext };
+

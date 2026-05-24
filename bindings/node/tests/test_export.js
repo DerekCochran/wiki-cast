@@ -54,11 +54,11 @@ function resolveDefaultInputPath(scriptDir) {
   return candidates[0];
 }
 
-async function main(argv) {
+async function testExport(argv) {
   const args = argv.slice(2);
   const options = {
     input: null,
-    start: 5000,
+    start: 0,
     end: 0, // 0 means no limit
   };
 
@@ -162,7 +162,11 @@ async function main(argv) {
   process.exit(0);
 }
 
-main(process.argv).catch((err) => {
-  console.error(err instanceof Error ? err.message : String(err));
-  process.exit(1);
-});
+if (process.argv[1] === __filename) {
+  testExport(process.argv).catch((err) => {
+    console.error(err instanceof Error ? err.message : String(err));
+    process.exit(1);
+  });
+}
+
+module.exports = { testExport };

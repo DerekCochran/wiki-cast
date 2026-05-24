@@ -3,7 +3,7 @@
 // Parity test: templates, arguments, section headings (stage 1 – parseBraces).
 const { runTests } = require('./helpers');
 
-runTests([
+const castTests = [
   // Basic template
   '{{Template|}}',
   // Template with one positional argument
@@ -986,4 +986,10 @@ helpers.js:355
   '-{|zh-hans:简体;zh-hant:繁體}-',
   // Unidirectional rule form
   '-{a=>zh-hans:简;zh-hant:繁}-',  
-], { name: 'wiki-cast' });
+];
+
+if (process.argv[1] === __filename) {
+    runTests(castTests, { name: 'wiki-cast' });
+}
+
+module.exports = { castTests };
