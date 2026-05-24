@@ -1,13 +1,364 @@
 #!/usr/bin/env node
 'use strict';
-// Parity test: full 11-stage parse pipeline on combined samples.
-// These exercises multiple stages interacting at once.
-const path = require('path');
+// Parity test: templates, arguments, section headings (stage 1 – parseBraces).
 const { runTests } = require('./helpers');
 
-// This should loop through each test and fast fail on the first mismatch.
+runTests([
+  // Basic template
+  '{{Template|}}',
+  // Template with one positional argument
+  '{{Template|arg}}',
+  // Template with named argument
+  '{{Template|key=value}}',
+  // Template with multiple arguments
+  '{{Template|a|b|c}}',
+  // Nested templates
+  '{{Outer|{{Inner}}}}',
+  // Triple-brace argument
+  '{{{arg}}}',
+  // Triple-brace argument with default
+  '{{{arg|default}}}',
+  // {{!}} pipe placeholder
+  '{{!}}',
+  // {{=}} equals placeholder
+  '{{=}}',
+  // Mixed text and template
+  'before {{Template}} after',
+  // Multiple templates on one line
+  '{{A}} and {{B}} end',
+  // Template name with spaces (trimmed)
+  '{{ Template }}',
+  // Template with empty argument
+  '{{Template|}}',
+  // ISBN should be a template in this config, not a magic word
+  '{{ISBN|9781583228947}}',
+  // Section heading level 1
+  '= Heading =',
+  // Section heading level 2
+  '== Section ==',
+  // Section heading level 6
+  '====== Deep ======',
+  // Heading with trailing space in marker
+  '== Section ==   ',
+  // Heading with template inside
+  '== {{Template}} ==',
+  // Internal link (parsed in stage 5 but brace stage still sees [[)
+  '[[Main Page]]',
+  // Language converter (parsed at stage 10)
+  '-{zh:漢字;zh-hans:汉字}-',
+  // Multiline template with newline before first parameter
+  '{{Navboxes\n|list=\n{{Libertarian socialism}}\n{{Libertarianism}}\n}}',
+  // Subst/safesubst modifier should keep magic-word structure
+  '{{subst:CURRENTYEAR}}',
+  '{{safesubst:CURRENTYEAR}}',
+  // #invoke should emit invoke-module/invoke-function children
+  '{{#invoke:Foo|bar}}',
+  '{{#invoke:Foo|bar|x=y}}',
+  // Namespaced transclusion titles should not be forced into Template: namespace
+  '{{Module:Foo}}',
+  '{{Template:Bar}}',
+  '{{User:Example}}',
+  '{{:File:Example.jpg}}',
+  // Multiline parameter values containing heading syntax should remain inside template
+  '{{T|x=\n==H==\n}}',
+  '{{A|\n=H=\n}}',
+  // Arg default should be parsed through stages 0-2 in JS
+  '{{{a|<b>x</b>}}}',
+  '{{{a|{{T}}}}}',
 
-const tests = [
+  // BEGIN: auto-generated parity sweep (braces)
+  "{{T|v=RFC 2119}}",
+  "{{T|v=__NOTOC__}}",
+  "{{T|v=-{zh-hans:简;zh-hant:繁;}-}}",
+  // END: auto-generated parity sweep (braces)
+  // Simple comment
+  'before <!--comment--> after',
+  // Multi-line comment
+  'a <!--\n  multi-line\n  comment\n--> b',
+  // Unclosed comment
+  'start <!-- unclosed',
+  // Nested comment-like (MediaWiki does not nest comments)
+  '<!-- outer <!-- inner --> still outer -->',
+  // nowiki tag – prevents parsing of contained markup
+  'literal <nowiki>[[notalink]]</nowiki> tail',
+  // nowiki self-closing
+  '<nowiki/>',
+  // ref tag
+  'text<ref>Citation here.</ref> end',
+  // ref with attributes
+  'text<ref name="foo">Named ref.</ref> end',
+  // boolean attribute should still produce empty attr-value child
+  '<ref a=b c="d" e>z</ref>',
+  // ref inner content should still parse quotes/template in later stages
+  "text<ref>John M. (2009). ''How a ''. {{ISBN|9780300158864}}</ref> end",
+  // inExt=true behavior: [[A|]] should remain literal inside ref
+  '<ref>[[A|]]</ref>',
+  // ref with nested template using {{!}} in parameter value
+  'text<ref>{{Cite web |title=Foo {{!}} Bar |url=https://example.com}}</ref> end',
+  // ref self-closing
+  'text<ref name="bar"/> end',
+  // references tag
+  '<references/>',
+  // pre tag (extension, not HTML)
+  '<pre>preformatted content</pre>',
+  // Double comment
+  '<!-- a --> middle <!-- b -->',
+  // Comment with wikitext inside is suppressed
+  '<!-- [[NotALink]] -->',
+  // includeonly tag – only rendered when transcluded
+  'before <includeonly>only when included</includeonly> after',
+  // noinclude tag
+  '<noinclude>only on the template page</noinclude>',
+  // Plain text – no-op
+  'just plain text',
+
+  // BEGIN: auto-generated parity sweep (comment_and_ext)
+  "<ref>RFC 2119</ref>",
+  "<ref>https://example.org/a</ref>",
+  "<ref>-{zh-hans:简;zh-hant:繁;}-</ref>",
+  "<ref>----</ref>",
+  "<ref>{{T|v=RFC 2119}}</ref>",
+  // Simple converter with no flags
+  '-{text}-',
+  // Converter with a single rule
+  '-{zh-hans:简体;zh-hant:繁體}-',
+  // Converter with multiple rules
+  '-{zh:漢字;zh-hans:汉字;zh-hant:漢字}-',
+  // Converter with flags
+  '-{A|zh-hans:简体;zh-hant:繁體}-',
+  // Converter with raw flag (output as-is in all variants)
+  '-{R|raw text}-',
+  // Nested converters
+  '-{zh-hans:-{inner}-;zh-hant:outer}-',
+  // Converter inside a template argument
+  '{{Template|-{zh-hans:简;zh-hant:繁}-}}',
+  // Plain text – no converter (no-op)
+  'plain text without converter',
+  // Converter adjacent to other markup
+  "''italic'' -{ zh-hans:汉字 }- text",
+  // Empty converter body
+  '-{}-',
+  // Converter with a pipe but no flags
+  '-{|zh-hans:简体;zh-hant:繁體}-',
+  // URL-only external link
+  '[http://example.com]',
+  // External link with label
+  '[http://example.com Example site]',
+  // https
+  '[https://secure.example.org/path Secure site]',
+  // ftp
+  '[ftp://files.example.com FTP link]',
+  // Protocol-relative
+  '[//example.com Protocol-relative]',
+  // Multiple external links on one line
+  '[http://a.org A] and [http://b.org B]',
+  // External link inside running text
+  'Visit [http://example.com this site] for more.',
+  // Link with no label and query string
+  '[http://example.com?q=foo&bar=baz]',
+  // Link target with fragment
+  '[http://example.com#anchor Anchor link]',
+  // Link with special characters in URL
+  '[http://example.com/path/(parens)/here Label]',
+  // URL not inside brackets – handled by magicLinks stage, not this one
+  'bare http://example.com in text',
+  // Malformed bracket (no closing) – left as-is
+  '[http://example.com unclosed',
+  // Bracket with &lt; in URL – truncated at entity
+  '[http://example.com/a&lt;b Label]',
+  // Preserve exact separator whitespace between URL and label
+  '[https://example.com\tlabel]',
+  // Horizontal rule (4 dashes minimum)
+  'Line above\n----\nLine below',
+  // More than 4 dashes
+  'Line above\n-----------\nLine below',
+  // Fewer than 4 dashes – not an HR
+  'Line above\n---\nLine below',
+  // __NOTOC__ keyword
+  '__NOTOC__ in text',
+  // __TOC__ keyword
+  '==Section==\n__TOC__\nContent',
+  // __FORCETOC__ keyword
+  'Start\n__FORCETOC__\nEnd',
+  // __NOEDITSECTION__ keyword
+  '__NOEDITSECTION__\n== Section ==',
+  // __NEWSECTIONLINK__ keyword
+  '__NEWSECTIONLINK__',
+  // Alias keywords should canonicalize token name via config maps
+  '__NOTC__',
+  '__nOtC__',
+  '__NOCC__',
+  '__DISAMBIG__',
+  '__EXPECTED_UNCONNECTED_PAGE__',
+  // Double underscore that is NOT a keyword – left as-is
+  '__NOTAKEYWORD__',
+  // Section heading finalization (detected in stage 1, finalized in stage 4)
+  '== Section Title ==\nContent here.',
+  '=== Level 3 ===',
+  // HR inside a table is still valid
+  '{|\n|-\n| before\n----\nafter\n|}',
+
+  // Heading trail must be a text node, not a bare string
+  '== Before ==\n\n',
+  '== Before ==\n\n----\n\n== After ==',
+
+  // BEGIN: auto-generated parity sweep (hr_and_double_underscore)
+  "== RFC 2119 ==",
+  "== https://example.org/a ==",
+  "== -{zh-hans:简;zh-hant:繁;}- ==",
+  // END: auto-generated parity sweep (hr_and_double_underscore)        
+  // Simple inline element
+  'plain <b>bold</b> text',
+  // Span with attribute
+  '<span class="highlight">inside</span> end',
+  // Self-closing void element
+  'line break<br/>here',
+  // Nested inline elements
+  '<b><i>bold italic</i></b>',
+  // Unknown tag – not in allowed list, left as-is
+  '<foo>not a real tag</foo>',
+  // Heading with HTML inside
+  '== Heading with <span>span</span> ==',
+  // Table element tags
+  '<table><tr><td>cell</td></tr></table>',
+  // Attributes: multiple
+  '<span id="x" class="y">text</span>',
+  // Uppercase tag name – should be lowercased and treated as the same tag
+  '<B>upper bold</B>',
+  // code and pre inline
+  '<code>inline code</code> and <pre>block</pre>',
+  // Unclosed tag
+  '<b>unclosed bold',
+  // nowiki prevents HTML parsing inside
+  '<nowiki><b>not bold</b></nowiki>',
+  // Nested but mismatched tags
+  '<b><i>bold italic</b></i>',
+  // abbr with title attribute
+  '<abbr title="HyperText Markup Language">HTML</abbr>',
+  // Empty element
+  '<span></span>',
+  // wbr void element
+  'word<wbr/>break',
+  // meta/link require real itemprop+content/href attrs, not substring matches in values
+  '<meta data="itemprop" content="x">',
+  '<link data="itemprop" href="/x">',
+  // Test Image: vs File: namespace for nested link in caption
+  '[[Image:Foo.jpg|caption [[Link]] text]]',
+  '[[File:Foo.jpg|caption [[Link]] text]]',
+  '[[File:Foo.jpg|upright|caption [[Link]] text]]',
+  '[[Image:Foo.jpg|upright|caption [[Link]] text]]',
+  // Simple internal link
+  'See [[Main Page]] for details.',
+  // Link with display text
+  '[[Page|display text]]',
+  // Delimiter with empty display text should keep empty text child
+  '[[Page|]]',
+  // Link with colon prefix (forces link, not category/file)
+  '[[:Category:Foo|label]]',
+  // Namespace-prefixed link
+  '[[Help:Contents]]',
+  // Link with anchor
+  '[[Page#Section|section link]]',
+  // File / image embed (namespace 6)
+  '[[File:Image.jpg]]',
+  // File with options
+  '[[File:Image.jpg|thumb|right|Caption text]]',
+  '[[File:Image.jpg| thumb | upright=0.8 | Caption text]]',
+  // File target should preserve/canonicalize first-letter case like JS parser
+  '[[File:water_reflectivity.jpg]]',
+  // File caption that is only a nested wikilink after thumb
+  '[[File:Image.jpg|thumb|[[Pierre-Joseph Proudhon]]]]',
+  // Category link
+  '[[Category:Example]]',
+  // Category link with sort key
+  '[[Category:Example|sort key]]',
+  // Self-link (anchor only)
+  '[[#Section]]',
+  // Interwiki-like (invalid, treated as plain text in standard config)
+  '[[en:English article]]',
+  // Link with template inside display text
+  '[[Page|{{Template}}]]',
+  // Multiple links in one sentence
+  '[[Page A]] and [[Page B]] go here.',
+  // Link immediately followed by letters (no space)
+  '[[Page]]s',
+  // Nested brackets that are NOT a link
+  '[[invalid link]]s or just [[valid]]',
+
+  // BEGIN: auto-generated parity sweep (links)
+  "[[A|-{zh-hans:简;zh-hant:繁;}-]]",
+  "[[File:water_reflectivity.jpg|thumb|RFC 2119]]",
+  "[[File:water_reflectivity.jpg|thumb|https://example.org/a]]",
+  "[[File:Mardi&nbsp;Gras&nbsp;Mobile&nbsp;Order of Inca.jpg|thumb|left|upright|Mobile is the birthplace of Mardi Gras in the U.S.]]",
+  // END: auto-generated parity sweep (links)
+  // Unordered list
+  '* Item 1\n* Item 2\n* Item 3',
+  // Ordered list
+  '# One\n# Two\n# Three',
+  // Description list – term
+  '; Term : Definition',
+  // Description list – definition only
+  ': just a definition',
+  // Mixed list types
+  '* Bullet\n# Number\n* Bullet again',
+  // Nested unordered
+  '* Level 1\n** Level 2\n** Level 2 again\n* Level 1 again',
+  // Nested ordered
+  '# First\n## Sub-first\n## Sub-second\n# Second',
+  // Mixed nesting
+  '* Bullet\n*# Numbered sub-item\n* Bullet again',
+  // List item with inline markup
+  "* ''italic'' item",
+  // List item with a link
+  '* [[Main Page|home page]] item',
+  // Indented block (: prefix) that is NOT a definition list term
+  ': indented paragraph',
+  // Deep nesting
+  '**** fourth level',
+  // List after a blank line (new list context)
+  '* First list\n\n* Second list',
+  // Plain text line between list items
+  '* item 1\nplain text\n* item 2',
+
+  // BEGIN: auto-generated parity sweep (list)
+  "* -{zh-hans:简;zh-hant:繁;}-",
+  "* {{T|v=RFC 2119}}",
+  // END: auto-generated parity sweep (list)  
+  // Free HTTP URL
+  'An autolink: http://example.com in text.',
+  // Free HTTPS URL
+  'Secure: https://secure.example.org/path here.',
+  // URL with path and query
+  'See http://example.com/path?q=1&r=2 for details.',
+  // URL followed by punctuation (punctuation stripped from URL)
+  'Visit http://example.com. End.',
+  // URL with parentheses – trailing ) stripped unless ( appears in URL
+  'See http://example.com/foo(bar) here.',
+  // Free FTP URL
+  'Download at ftp://files.example.com/file.tar.gz end.',
+  // RFC magic link
+  'See RFC 2119 for definitions.',
+  // RFC lowercase
+  'see rfc 2119 here.',
+  // PMID magic link
+  'Reference PMID 12345678 here.',
+  // ISBN magic link (10-digit)
+  'Book ISBN 0-306-40615-2 here.',
+  // ISBN magic link (13-digit)
+  'Book ISBN 978-3-16-148410-0 here.',
+  // ISBN not preceded by a word character
+  '(ISBN 0-306-40615-2)',
+  // URL preceded by word character – should NOT autolink
+  'wordhttps://example.com not linked.',
+  // URL with &lt; entity in it – truncated at entity
+  'http://example.com/a&lt;b here.',
+
+  // BEGIN: auto-generated parity sweep (magic_links)
+  "<ref>RFC 2119</ref>",
+  "<ref>https://example.org/a</ref>",
+  "{{T|v=RFC 2119}}",
+  "{|\n| RFC 2119\n|}",
+  // END: auto-generated parity sweep (magic_links)
   `{{Infobox country
 | religion = {{unbulleted list
 |{{Tree list}}
@@ -504,23 +855,135 @@ helpers.js:355
   '<hiero>{{T|x=[[L|t]]}}</hiero>',
   '<categorytree>Category:Physics</categorytree>',
   '<categorytree>[[Category:Physics|Physics]]</categorytree>',
-  '<categorytree>{{T|x=[[L|t]]}}</categorytree>',
-];
+  '<categorytree>{{T|x=[[L|t]]}}</categorytree>',    
+  // Simple italic
+  "This is ''italic'' text.",
+  // Simple bold
+  "This is '''bold''' text.",
+  // Bold and italic combined
+  "This is '''''bold italic''''' text.",
+  // Italic then bold on the same line
+  "''italic'' and '''bold''' on one line.",
+  // Unbalanced italic (odd count) – MediaWiki balancing rules apply
+  "''unbalanced italic",
+  // Four apostrophes – treated as one leading apostrophe + bold
+  "''''four apostrophes''''",
+  // Six apostrophes – five active + one leading
+  "''''''six apostrophes''''''",
+  // Bold spanning across italic
+  "'''bold ''both''' italic''",
+  // Multiple quote runs on one line
+  "''a'' '''b''' ''c'''",
+  // First bold-start after a space (affects balancing heuristic)
+  "text '''bold with space before''' text",
+  // Line with only apostrophes and no other text
+  "'' '''",
+  // Quotes inside a template argument (handled by quotes parser per line)
+  "{{Template|''arg''}}",
+  // Nested link with italic display text
+  "[[Page|''italic display'']]",  
+  // Standard ASCII keyword, plain title
+  '#REDIRECT [[Target Page]]',
+  // Lowercase
+  '#redirect [[Main Page]]',
+  // Mixed case
+  '#Redirect [[Article]]',
+  // Explicit colon separator
+  '#REDIRECT: [[Target Page]]',
+  // Leading whitespace
+  '   #REDIRECT [[Target]]',
+  // Trailing whitespace after ]]
+  '#REDIRECT [[Target]]   ',
+  // Trailing content is preserved
+  '#REDIRECT [[Target]]\nSome trailing text',
+  // CJK redirection keyword
+  '#重定向 [[中文页面]]',
+  // Not a redirect – plain text (no-op)
+  'This is not a redirect',
+  // Newline inside title – invalid, should not redirect
+  '#REDIRECT [[Target\nBroken]]',
+  // Empty target
+  '#REDIRECT [[]]',
+  // Pipe variant – extra display text after target
+  '#REDIRECT [[Target|ignored display]]',
+  // Namespace-prefixed target
+  '#REDIRECT [[Help:Contents]]',
+  // Anchor in target
+  '#REDIRECT [[Page#Section]]',
+  // No space before [[
+  '#REDIRECT[[Target]]',
 
-const ROOT = path.resolve(__dirname, '..', '..', '..', 'config');
-//const CONFIGS = ['enwiki', 'jawiki', 'llwiki'];
-const CONFIGS = ['enwiki'];
+  // BEGIN: auto-generated parity sweep (redirect)
+  "#REDIRECT [[Target<!--c-->]]",
+  // END: auto-generated parity sweep (redirect)  
+  '{|\n| alias = ISO-IR-006,<ref>reftext</ref> ANSI_X3.4-1968\n|}',
+  `{|\n|- 1 CAR\n|}`,
+  `{|\n|- 1 car\n|}`,
+  `{|\n|- A1 CAR\n|}`,
+  `{|\n|- _x :y\n|}`,
+  `{|\n|- data-x foo\n|}`,
+  `{|\n|- 1=2 CAR\n|}`,
+  `{|\n|- "1" CAR\n|}`,
+  `{|\n|- '1' CAR\n|}`,
+  `{|\n|- {{T}} CAR\n|}`,
+  `{|\n|- -{zh-hans:a;zh-hant:b;}- CAR\n|}`,
+  `{|\n|- / CAR\n|}`,
+  `{|\n|- 123 456\n|}`,
+  `{|\n|- a.b c-d e:f\n|}`,
+  `{|\n|- \0 1\n|}`,
+  `{|\n|- \x7F 1\n|}`,
+  `{|\n|- rowspan=4 1 CAR\n|}`,
+  `{|\n|- 1   CAR\n|}`,
+  `{|\n|- 1\tCAR\n|}`,
+  `{|\n|- <!--c--> 1 CAR\n|}`,
+  `{|\n|- \0 12t\x7F CAR\n|}`,
+  // Minimal table
+  '{|\n|-\n| cell\n|}',
+  // Table with caption
+  '{| class="wikitable"\n|+ Caption\n|-\n| A || B\n|-\n| C || D\n|}',
+  // Multiple cells on one row (|| separator)
+  '{|\n| R1C1 || R1C2 || R1C3\n|-\n| R2C1 || R2C2 || R2C3\n|}',
+  // Header cells (! syntax)
+  '{|\n! Header1 !! Header2\n|-\n| data1 || data2\n|}',
+  // Table with row attributes
+  '{|\n|- class="odd"\n| cell\n|}',
+  // Nested table
+  '{|\n| outer || {|\n| inner\n|}\n|}',
+  // Text before and after table
+  'prefix\n{|\n| cell\n|}\nsuffix',
+  // Cell with attributes
+  '{|\n| style="color:red" | red text\n|}',
+  // Template-like boolean table attribute in a cell
+  '{|\n| {{green}} | x\n|}',
+  // Empty table
+  '{|\n|}',
+  // Table with indented start (dd prefix)
+  ':{|\n| cell\n|}',
+  // Closing delimiter followed by more text on same line
+  '{|\n| cell\n|} trailing text',
+  // Table caption with attributes
+  '{|\n|+ style="font-weight:bold" | Important\n|-\n| data\n|}',
 
-for (const configName of CONFIGS) {
-  const configPath = path.join(ROOT, `${configName}.json`);
-  process.env.WIKI_CONFIG = configPath;
+  // Wikitext repro: continuation line after <br /> inside a table cell must stay in the same td-inner
+  "{| class=\"wikitable\"\n|-\n|Μῆνιν ἄειδε θεὰ Πηληιάδεω Ἀχιλῆος<br />\nοὐλομένην, ἣ μυρί' Ἀχαιοῖς ἄλγε' ἔθηκε, [...]\n|Sing, Goddess, of the rage of Peleus' son Achilles,<br />\nthe accursed rage that brought great suffering to the Achaeans, [...]\n|}",
 
-  for (const test of tests) {
-    const ok = runTests([test], { name: `pipeline-${configName}` });
-    if (!ok) {
-      console.log(`Test failed for config ${configName}:\n${test}`);
-      process.exit(1);
-    }
-  }
-}
-
+  // BEGIN: auto-generated parity sweep (table)
+  "{|\n| RFC 2119\n|}",
+  "{|\n| https://example.org/a\n|}",
+  "{|\n| -{zh-hans:简;zh-hant:繁;}-\n|}",
+  "{|\n| {{T|v=RFC 2119}}\n|}",
+  // END: auto-generated parity sweep (table)
+  // Baseline converter samples under a variant-enabled config
+  '-{text}-',
+  '-{zh-hans:简体;zh-hant:繁體}-',
+  '-{zh:漢字;zh-hans:汉字;zh-hant:漢字}-',
+  '-{A|zh-hans:简体;zh-hant:繁體}-',
+  '-{R|raw text}-',
+  '-{zh-hans:-{inner}-;zh-hant:outer}-',
+  '{{Template|-{zh-hans:简;zh-hant:繁}-}}',
+  "''italic'' -{ zh-hans:汉字 }- text",
+  '-{}-',
+  '-{|zh-hans:简体;zh-hant:繁體}-',
+  // Unidirectional rule form
+  '-{a=>zh-hans:简;zh-hant:繁}-',  
+], { name: 'wiki-cast' });

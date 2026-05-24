@@ -2,7 +2,7 @@ function buildJsAst(jsToken, parentToken) {
     const curToken = {};
     curToken.type = jsToken.type;
     if( jsToken.type === 'heading' ) {
-        // curToken.level = jsToken.level;
+        curToken.level = jsToken.level;
         // curToken.id = jsToken.id;
     } else if( jsToken.type === 'text' ) {
         curToken.data = jsToken.data;
