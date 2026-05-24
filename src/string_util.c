@@ -389,7 +389,7 @@ char *str_decode_html_basic(const char *s, size_t len, size_t *out_len) {
 						result= realloc(result, cap);
 						assert(result);
 					}
-					sz_copy(result + j, tmp, (size_t)nb);
+					memcpy(result + j, tmp, (size_t)nb);
 					j+= (size_t)nb;
 					i= k + 1;
 					found= true;

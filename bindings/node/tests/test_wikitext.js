@@ -61,7 +61,6 @@ function testWikitext() {
   
   // Print the actual fail and pass counts
   console.log(`Test completed: ${passCount} passed, ${failCount} failed`);
-  process.exit(0);
 }
 
 if (process.argv[1] === __filename) {

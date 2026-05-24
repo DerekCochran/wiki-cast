@@ -142,7 +142,7 @@ sudo chown djc:djc -R bindings/node/build
 
 # run Valgrind Callgrind (very slow, detailed)
 sudo ./scripts/profile_wikitext.sh --callgrind --config node_modules/wikiparser-node/config/enwiki.json --testsdir tests/wikitext
-callgrind_annotate /home/djc/git/wikiparser-node-c-tokenizer/build_profile/callgrind.out --auto=yes
+callgrind_annotate /home/djc/git/wiki-cast/build_profile/callgrind.out --auto=yes
 
 # run gprof
 sudo ./scripts/profile_wikitext.sh --gprof --config node_modules/wikiparser-node/config/enwiki.json --testsdir tests/wikitext

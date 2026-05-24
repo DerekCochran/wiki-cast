@@ -11,9 +11,9 @@ const wikiparser = require(path.join(__dirname, '..', '..', '..', 'new-js', 'dis
 // Get the native parser by looking in the Release directory fist, then Debug if not found.  This allows running tests in both dev and prod builds without changing the test code.
 let nativeParser;
 try {  
-  nativeParser = require(path.join(__dirname, '..', 'build', 'Release', 'wikiparser-node-c-tokenizer.node'));
+  nativeParser = require(path.join(__dirname, '..', 'build', 'Release', 'wiki-cast.node'));
 }catch(e) {
-   nativeParser = require(path.join(__dirname, '..', 'build', 'Debug', 'wikiparser-node-c-tokenizer.node'));
+   nativeParser = require(path.join(__dirname, '..', 'build', 'Debug', 'wiki-cast.node'));
 }
 
 const MAX_STAGE = 10;
@@ -271,7 +271,7 @@ function compareSample(wikitext, { include = false, tidy = false, name = 'sample
         console.log('  JSON diff    :', jsonDiffPath);
         const astAnalysis = analyzeAstDiff(cmp, name, wikitext);
         // If wikitext is under 50 characters, print the AST analysis to the console as well for easier debugging of small samples.
-        if( wikitext.length <= 100) {
+        if( wikitext.length <= 100 || JSON.stringify(buildJsAst(cmp.jsToken)).length <= 1000 ) {
           console.log(astAnalysis);
         }else {
           writeTextFile(astAnalysisPath, astAnalysis);
@@ -314,8 +314,8 @@ function compareSample(wikitext, { include = false, tidy = false, name = 'sample
 
       if( name.startsWith('wikitext')) {
         const smallestDiff = getWikiTextSmallesDiff(cmp.jsToken, cmp.ncToken, cmp.parents);
-        if( smallestDiff && smallestDiff.length <= 500  ) {
-          console.log(smallestDiff);
+        if( smallestDiff && smallestDiff.length <= 1500  ) {
+          console.log('\n`' + smallestDiff + '`,\n');
         }else {
            console.log('Smallest wikitext that produces a difference is too large to print to console, see above artifact files for details.');
         }
