@@ -10233,7 +10233,7 @@ if (process.argv[1] === __filename) {
       const ok = runTests([test], { name: `parsoid-${configName}` });
       if (!ok) {
         console.error(`Test ${testCount} failed for ${configName}`);
-        process.exit(1);
+        return !ok;
       }
     }
   }

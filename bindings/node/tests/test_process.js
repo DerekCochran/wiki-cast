@@ -5,12 +5,22 @@
  */
 const { runTests } = require('./helpers');
 const castTests = require("./test_cast").castTests;
+const tempTests = require("./test_temp").tempTests;
 const parsoidTests = require("./test_parsoid").parsoidTests;
 const testWikitext = require("./test_wikitext").testWikitext;
 const testExport = require("./test_export").testExport;
 
 async function testAll() {
-  console.log("Running cast tests...");
+  console.log("Running current failure...");
+  for (const test of tempTests) {
+    const ok = runTests([test], { name: "wiki-cast" });
+    if (!ok) {
+      console.error(`FAILED: The current failure is still failing.`);
+      process.exit(1);
+    }
+  }
+  console.log("Awesome, the current failure is no longer failing!  Lets check the regression tests...");
+
   for (const test of castTests) {
     const ok = runTests([test], { name: "wiki-cast" });
     if (!ok) {
@@ -18,32 +28,45 @@ async function testAll() {
       process.exit(2);
     }
   }
-  console.log("Regression Cast tests passed");
+  console.log("Regression CAST tests passed");
 
-  console.log("Running parsoid tests...");
   for (const test of parsoidTests) {
     const ok = runTests([test], { name: "parsoid" });
     if (!ok) {
       console.error(`FAILED: stopping on first failure in parsoid tests`);
-      process.exit(2);
+      process.exit(3);
     }
   }
   console.log("Regression Parsoid tests passed");
 
-  console.log("Running wikitext tests...");
-  testWikitext();
+  let ok = testWikitext();
+  if (!ok) {
+    console.error(`FAILED: stopping on first failure in wikitext tests`);
+    process.exit(4);
+  }
   console.log("Regression Wikitext tests passed");
 
   console.log("Running export tests...");
-  await testExport(process.argv);
-
-  console.log("Getting latest failing wikitext samples");
-  testWikitext();
+  ok = await testExport(process.argv);
+  if (!ok) {
+    console.error(`FAILED: Getting failure point in export tests`);
+    // VBerify that the copied wikitext fails and have it output the smallest diff for analysis
+    ok = testWikitext();
+    if (!ok) {
+      console.error(`FAILED: wikitests also failed.`);
+      process.exit(6);
+    }else {
+      console.error(`FAILED: wikitests passed, but export tests failed.  This is unexpected and should be investigated.`);
+      process.exit(5);
+    }
+  }
 
   console.log("All tests passed");
   process.exit(0);
 }
 
 if (process.argv[1] === __filename) {
-  testAll();
+  (async () => {
+    await testAll();
+  })();
 }

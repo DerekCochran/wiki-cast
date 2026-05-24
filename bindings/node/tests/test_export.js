@@ -54,11 +54,11 @@ function resolveDefaultInputPath(scriptDir) {
   return candidates[0];
 }
 
-async function testExport(argv) {
+function testExport(argv) {
   const args = argv.slice(2);
   const options = {
     input: null,
-    start: 0,
+    start: 4573,
     end: 0, // 0 means no limit
   };
 
@@ -93,79 +93,94 @@ async function testExport(argv) {
   const reader = readline.createInterface({ input: inputStream, crlfDelay: Infinity });
   let lineNumber = 0;
   let processed = 0;
+  let ok = true;
 
-  for await (const line of reader) {
-    lineNumber += 1;
-    if (lineNumber < options.start) {
-      continue;
-    }
-    if (options.end !== 0 && lineNumber > options.end) {
-      break;
-    }
+  return new Promise((resolve, reject) => {
+    reader.on('line', (line) => {
+      lineNumber += 1;
+      if (lineNumber < options.start) {
+        return;
+      }
+      if (options.end !== 0 && lineNumber > options.end) {
+        reader.close();
+        return;
+      }
 
-    const trimmed = line.trim();
-    if (!trimmed) {
-      continue;
-    }
+      const trimmed = line.trim();
+      if (!trimmed) {
+        return;
+      }
 
-    let entry;
-    try {
-      entry = JSON.parse(trimmed);
-    } catch (err) {
-      console.error(`Skipping invalid line ${lineNumber}: ${err.message}`);
-      continue;
-    }
+      let entry;
+      try {
+        entry = JSON.parse(trimmed);
+      } catch (err) {
+        console.error(`Skipping invalid line ${lineNumber}: ${err.message}`);
+        return;
+      }
 
-    const [pageId, title, revId, text] = entry;
+      const [pageId, title, revId, text] = entry;
 
-    if (pageId === undefined || title === undefined || revId === undefined || text === undefined) {
-      console.error(`Skipping invalid record on line ${lineNumber}: expected [id, title, rev_id, text]`);
-      continue;
-    }
+      if (pageId === undefined || title === undefined || revId === undefined || text === undefined) {
+        console.error(`Skipping invalid record on line ${lineNumber}: expected [id, title, rev_id, text]`);
+        return;
+      }
 
-    //console.info(`[full_wikitext] START line ${lineNumber} page ${pageId} title '${String(title).replace(/\n/g, ' ')}' rev ${revId} textBytes=${Buffer.byteLength(text, 'utf8')}`);
-    const ok = compareSample(text, {
-      name: 'export',
-      sampleIndex: lineNumber,
-      sampleLabel: `${String(title).replace(/\s+/g, '_')}.wikitext`,
+      const result = compareSample(text, {
+        name: 'export',
+        sampleIndex: lineNumber,
+        sampleLabel: `${String(title).replace(/\s+/g, '_')}.wikitext`,
+      });
+
+      if (!result) {
+        console.error(`\nFAIL line ${lineNumber} page ${pageId} title '${title}' rev ${revId}, processed ${processed + 1}`);
+        const savePath1 = path.join(scriptDir, 'wikitext', `${title.replace(/\s+/g, '_')}.wikitext`);
+        fs.writeFileSync(savePath1, text, 'utf8');
+        console.info(`Saved failing sample to ${savePath1}`);
+        const savePath2 = path.join(scriptDir, '..', '..', '..', 'tests', 'wikitext', `${title.replace(/\s+/g, '_')}.wikitext`);
+        fs.writeFileSync(savePath2, text, 'utf8');
+        console.info(`Saved failing sample to ${savePath2}`);
+        ok = false;
+        reader.close();
+        return;
+      }
+
+      if (processed % 10 === 0) {
+        process.stderr.write(`\rProcessed ${processed + 1} lines from ${path.basename(inputPath)}`);
+      }
+
+      processed += 1;
     });
 
-    if (!ok) {
-      console.error(`\nFAIL line ${lineNumber} page ${pageId} title '${title}' rev ${revId}, processed ${processed + 1}`);
-      const savePath1 = path.join(scriptDir, 'wikitext', `${title.replace(/\s+/g, '_')}.wikitext`);
-      fs.writeFileSync(savePath1, text, 'utf8');
-      console.info(`Saved failing sample to ${savePath1}`);
-      const savePath2 = path.join(scriptDir, '..', '..', '..', 'tests', 'wikitext', `${title.replace(/\s+/g, '_')}.wikitext`);
-      fs.writeFileSync(savePath2, text, 'utf8');
-      console.info(`Saved failing sample to ${savePath2}`);
-//       console.info(`The files have been copied.  Please run the below commands
-// cd ${path.dirname(__filename)}
-// node test_wikitext.js\n\n`);
-    }
+    reader.on('close', () => {
+      if (processed > 0) {
+        process.stderr.write('\n');
+        process.stderr.write('\n');
+      }
+      resolve(ok);
+    });
 
-    if (processed % 10 === 0) {
-      process.stderr.write(`\rProcessed ${processed + 1} lines from ${path.basename(inputPath)}`);
-    }
-
-    processed += 1;
-  }
-
-  if (processed > 0) {
-    process.stderr.write('\n');
-  }
-  if (processed > 0) {
-    process.stderr.write('\n');
-  }
-
-  console.log(`All ${processed} samples passed`);
-  process.exit(0);
+    reader.on('error', (err) => {
+      reject(err);
+    });
+  });
 }
 
 if (process.argv[1] === __filename) {
-  testExport(process.argv).catch((err) => {
-    console.error(err instanceof Error ? err.message : String(err));
-    process.exit(1);
-  });
+  testExport(process.argv)
+    .then((ok) => {
+      if (ok) {
+        console.log("Export test completed successfully");
+      } else {
+        console.error("Export test failed");
+        process.exit(1);
+      }
+    })
+    .catch((err) => {
+      console.error(err instanceof Error ? err.message : String(err));
+      process.exit(1);
+    });
 }
+
 
 module.exports = { testExport };

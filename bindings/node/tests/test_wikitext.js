@@ -5,6 +5,7 @@
 const path = require('path');
 const fs = require('fs');
 const { compareSample } = require('./helpers');
+const { ok } = require('assert');
 
 /**
  * Load all files from a directory, sorted lexicographically.
@@ -54,13 +55,14 @@ function testWikitext() {
     if (!compareSample(sample.content, { name: `wikitext`, sampleLabel: sample.file })) {
       failCount++;
       console.error(`FAILED: stopping on first failure, ${passCount} samples passed`);
-      process.exit(2);
+      return !ok;
     }
     passCount++;
   }
   
   // Print the actual fail and pass counts
   console.log(`Test completed: ${passCount} passed, ${failCount} failed`);
+  return ok;
 }
 
 if (process.argv[1] === __filename) {

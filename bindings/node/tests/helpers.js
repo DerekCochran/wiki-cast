@@ -19,6 +19,7 @@ try {
 const MAX_STAGE = 10;
 const LAST_SAMPLE_PATH = '/tmp/wiki_latest_test_input.txt';
 const PERF_LOG_PATH = '/tmp/wikitext_perf.txt';
+const LATEST_FAILED_PATH = '/tmp/wiki_latest_failed.txt';
 const DEFAULT_WIKI_CONFIG = path.join(__dirname, '..', '..', '..', 'config', 'enwiki.json');
 
 wikiparser.config = String(DEFAULT_WIKI_CONFIG);
@@ -231,89 +232,90 @@ function compareSample(wikitext, { include = false, tidy = false, name = 'sample
   if (!ok) {
     console.error('FAIL', label);
 
-    if( name != 'export') {
+    if( name != 'export' ) {
       if (!compareSample._artifactDir) {
         compareSample._artifactDir = artifactRootDir();
       }
 
-      const suiteDir = path.join(compareSample._artifactDir, sanitizeName(name));
-      ensureDir(suiteDir);
+      if( name != 'wikitext' ) {
+        const suiteDir = path.join(compareSample._artifactDir, sanitizeName(name));
+        ensureDir(suiteDir);
 
-      const n = String(sampleIndex).padStart(4, '0');
-      const expectedStringPath = path.join(suiteDir, `expected.string.${n}.txt`);
-      const gotStringPath = path.join(suiteDir, `got.string.${n}.txt`);
-      const stringDiffPath = path.join(suiteDir, `string.diff.${n}.txt`);
-      const expectedJsonPath = path.join(suiteDir, `expected.tree.${n}.json`);
-      const gotJsonPath = path.join(suiteDir, `got.tree.${n}.json`);
-      const jsonDiffPath = path.join(suiteDir, `tree.diff.${n}.txt`);
-      const astAnalysisPath = path.join(suiteDir, `ast.analysis.${n}.txt`);
-      const inputPath = path.join(suiteDir, `input.wikitext.${n}.txt`);
-      console.log('  input string:', inputPath);
-      writeTextFile(inputPath, wikitext);
-      if(!textOk) {
-        writeTextFile(expectedStringPath, jsResult.text);
-        writeTextFile(gotStringPath, nativeResult.text);
-        writeUnifiedDiff(expectedStringPath, gotStringPath, stringDiffPath);
-        console.log('  expected string:', expectedStringPath);
-        console.log('  got string     :', gotStringPath);
-        console.log('  string diff    :', stringDiffPath);
-        console.log(`There was a difference in the string output.  ${jsResult.text.length} vs ${nativeResult.text.length} characters.`);
-      }else {
-        console.log('  string output matches');
-      }
-
-      if(!cmp.success) {
-        writeTextFile(expectedJsonPath, JSON.stringify(buildJsAst(jsResult.root), null, 2) + '\n');
-        writeTextFile(gotJsonPath, JSON.stringify(nativeResult.root, null, 2) + '\n');
-        writeUnifiedDiff(expectedJsonPath, gotJsonPath, jsonDiffPath);
-        console.log('  expected JSON:', expectedJsonPath);
-        console.log('  got JSON     :', gotJsonPath);
-        console.log('  JSON diff    :', jsonDiffPath);
-        const astAnalysis = analyzeAstDiff(cmp, name, wikitext);
-        // If wikitext is under 50 characters, print the AST analysis to the console as well for easier debugging of small samples.
-        if( wikitext.length <= 100 || JSON.stringify(buildJsAst(cmp.jsToken)).length <= 1000 ) {
-          console.log(astAnalysis);
+        const n = String(sampleIndex).padStart(4, '0');
+        const expectedStringPath = path.join(suiteDir, `expected.string.${n}.txt`);
+        const gotStringPath = path.join(suiteDir, `got.string.${n}.txt`);
+        const stringDiffPath = path.join(suiteDir, `string.diff.${n}.txt`);
+        const expectedJsonPath = path.join(suiteDir, `expected.tree.${n}.json`);
+        const gotJsonPath = path.join(suiteDir, `got.tree.${n}.json`);
+        const jsonDiffPath = path.join(suiteDir, `tree.diff.${n}.txt`);
+        const astAnalysisPath = path.join(suiteDir, `ast.analysis.${n}.txt`);
+        const inputPath = path.join(suiteDir, `input.wikitext.${n}.txt`);
+        console.log('  input string:', inputPath);
+        writeTextFile(inputPath, wikitext);
+        if(!textOk) {
+          writeTextFile(expectedStringPath, jsResult.text);
+          writeTextFile(gotStringPath, nativeResult.text);
+          writeUnifiedDiff(expectedStringPath, gotStringPath, stringDiffPath);
+          console.log('  expected string:', expectedStringPath);
+          console.log('  got string     :', gotStringPath);
+          console.log('  string diff    :', stringDiffPath);
+          console.log(`There was a difference in the string output.  ${jsResult.text.length} vs ${nativeResult.text.length} characters.`);
         }else {
-          writeTextFile(astAnalysisPath, astAnalysis);
-          console.log('  ast analysis :', astAnalysisPath);
+          console.log('  string output matches');
         }
-      }else if(!cmp.success) {
-        console.log('  JSON output does not match');
-      }else {
-        console.log('  JSON output matches');
-      }
 
-      // Copy any stage logs collected into the suite artifact directory
-      ensureDir(suiteDir);
-      const files = fs.readdirSync(stageDir || os.tmpdir());
-      for (const f of files) {
-        const src = path.join(stageDir, f);
-        const dst = path.join(suiteDir, f);
-        console.log(`  stage log    : ${dst}`);
-        try { fs.copyFileSync(src, dst); } catch (e) { /* ignore */ }
-      }
-      // Read the js-stage.log and native-stage.log.  Match each on stage names and print which stage they do not match on.
-      if( ! name.startsWith('export') && ! name.startsWith('wikitext')) {
-        const jsStageLogPath = path.join(stageDir, 'js-stage.log');
-        const nativeStageLogPath = path.join(stageDir, 'native-stage.log');
-        if (fs.existsSync(jsStageLogPath) && fs.existsSync(nativeStageLogPath)) {
-          // Filter both files where the lines start with Stage #
-          const jsStageLog = fs.readFileSync(jsStageLogPath, 'utf8').split('\n').filter(line => line.trim() && line.startsWith('Stage '));
-          const nativeStageLog = fs.readFileSync(nativeStageLogPath, 'utf8').split('\n').filter(line => line.trim() && line.startsWith('Stage '));
-          const minLength = Math.min(jsStageLog.length, nativeStageLog.length);
-          for (let i = 0; i < minLength; i++) {
-            if (jsStageLog[i] !== nativeStageLog[i]) {
-              console.log(`  stage mismatch:`);
-              console.log(`    JS   : ${jsStageLog[i]}`);
-              console.log(`    NAT  : ${nativeStageLog[i]}`);
-              break;
+        if(!cmp.success) {
+          writeTextFile(expectedJsonPath, JSON.stringify(buildJsAst(jsResult.root), null, 2) + '\n');
+          writeTextFile(gotJsonPath, JSON.stringify(nativeResult.root, null, 2) + '\n');
+          writeUnifiedDiff(expectedJsonPath, gotJsonPath, jsonDiffPath);
+          console.log('  expected JSON:', expectedJsonPath);
+          console.log('  got JSON     :', gotJsonPath);
+          console.log('  JSON diff    :', jsonDiffPath);
+          const astAnalysis = analyzeAstDiff(cmp, name, wikitext);
+          // If wikitext is under 50 characters, print the AST analysis to the console as well for easier debugging of small samples.
+          if( wikitext.length <= 100 || JSON.stringify(buildJsAst(cmp.jsToken)).length <= 1000 ) {
+            console.log(astAnalysis);
+          }else {
+            writeTextFile(astAnalysisPath, astAnalysis);
+            console.log('  ast analysis :', astAnalysisPath);
+          }
+        }else if(!cmp.success) {
+          console.log('  JSON output does not match');
+        }else {
+          console.log('  JSON output matches');
+        }
+
+        // Copy any stage logs collected into the suite artifact directory
+        ensureDir(suiteDir);
+        const files = fs.readdirSync(stageDir || os.tmpdir());
+        for (const f of files) {
+          const src = path.join(stageDir, f);
+          const dst = path.join(suiteDir, f);
+          console.log(`  stage log    : ${dst}`);
+          try { fs.copyFileSync(src, dst); } catch (e) { /* ignore */ }
+        }
+        // Read the js-stage.log and native-stage.log.  Match each on stage names and print which stage they do not match on.
+        if( ! name.startsWith('export') && ! name.startsWith('wikitext')) {
+          const jsStageLogPath = path.join(stageDir, 'js-stage.log');
+          const nativeStageLogPath = path.join(stageDir, 'native-stage.log');
+          if (fs.existsSync(jsStageLogPath) && fs.existsSync(nativeStageLogPath)) {
+            // Filter both files where the lines start with Stage #
+            const jsStageLog = fs.readFileSync(jsStageLogPath, 'utf8').split('\n').filter(line => line.trim() && line.startsWith('Stage '));
+            const nativeStageLog = fs.readFileSync(nativeStageLogPath, 'utf8').split('\n').filter(line => line.trim() && line.startsWith('Stage '));
+            const minLength = Math.min(jsStageLog.length, nativeStageLog.length);
+            for (let i = 0; i < minLength; i++) {
+              if (jsStageLog[i] !== nativeStageLog[i]) {
+                console.log(`  stage mismatch:`);
+                console.log(`    JS   : ${jsStageLog[i]}`);
+                console.log(`    NAT  : ${nativeStageLog[i]}`);
+                break;
+              }
             }
           }
         }
-      }
-
-      if( name.startsWith('wikitext')) {
+      }else {
         const smallestDiff = getWikiTextSmallesDiff(cmp.jsToken, cmp.ncToken, cmp.parents);
+        fs.writeFileSync(LATEST_FAILED_PATH, smallestDiff || '', 'utf8');
         if( smallestDiff && smallestDiff.length <= 1500  ) {
           console.log('\n`' + smallestDiff + '`,\n');
         }else {
