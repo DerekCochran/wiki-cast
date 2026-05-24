@@ -1,284 +1,451 @@
 #include <node_api.h>
-#include <assert.h>
 #include <stdlib.h>
-#include <string.h>
 #include <stdio.h>
+#include <string.h>
+#include <assert.h>
 
 /* extern_tokenizer headers */
 #include "parse.h"
 #include "token.h"
 #include "config.h"
 
-/* Callback closure holding a copy of the serialized text string */
-typedef struct {
-  char *text;   /* owned copy of the reconstructed wikitext */
-} tostr_closure;
+static napi_ref token_prototype_ref; // Use a reference to keep it alive
 
-static void tostr_finalize(napi_env env, void* finalize_data, void* finalize_hint) {
-  tostr_closure *c = (tostr_closure *)finalize_data;
-  if (!c) return;
-  free(c->text);
-  free(c);
+// Cache for config
+static char* cached_config_path = NULL;
+static ParserConfig* cached_config = NULL;
+
+static void token_finalizer(napi_env env, void *finalize_data, void *finalize_context) {
+    Token *token = (Token *)finalize_data;
+    token_free(token);
+    return;
 }
 
-static napi_value tostr_callback(napi_env env, napi_callback_info info) {
-  napi_status status;
-  void *data = NULL;
-  status = napi_get_cb_info(env, info, NULL, NULL, NULL, &data);
-  if (status != napi_ok || !data) return NULL;
-  tostr_closure *c = (tostr_closure *)data;
-  napi_value text_val;
-  napi_status rs = napi_create_string_utf8(env, c->text ? c->text : "", NAPI_AUTO_LENGTH, &text_val);
-  (void)rs;
-  return text_val;
+static napi_value toString_wrapper(napi_env env, napi_callback_info info) {
+    size_t argc = 1;
+    napi_value args[1];
+    napi_value this_arg;
+    // We usually unwrap 'this' if these are methods on the prototype
+    napi_status status = napi_get_cb_info(env, info, &argc, args, &this_arg, NULL);
+    
+    // If no argument was passed, we might be calling this as a method: obj.toString()
+    napi_value target = (argc > 0) ? args[0] : this_arg;
+
+    Token *token;
+    status = napi_unwrap(env, target, (void **)&token);
+    if (status != napi_ok) {
+        napi_throw_error(env, NULL, "Failed to unwrap Token object");
+        return NULL;
+    }
+
+    ThreadBuf *scratch = wiki_thread_buf_acquire_scratch();
+    char *str = token_to_string(token, scratch);
+    
+    if (!str) {
+        wiki_thread_buf_release_scratch(scratch);
+        napi_throw_error(env, NULL, "Internal conversion to string failed");
+        return NULL;
+    }
+
+    napi_value result;
+    status = napi_create_string_utf8(env, str, scratch->len, &result);
+    
+    wiki_thread_buf_release_scratch(scratch);
+    
+    if (status != napi_ok) return NULL;
+    return result; 
 }
 
-static bool get_token_config_json(napi_env env, napi_value token, char **json_out, size_t *json_len_out) {
-  napi_value get_attr_fn;
-  napi_status status = napi_get_named_property(env, token, "getAttribute", &get_attr_fn);
-  if (status != napi_ok) return false;
+static ParserConfig* get_token_config_json(napi_env env, napi_value token) {
+    napi_value config_val;
+    napi_status status;
 
-  napi_value key;
-  status = napi_create_string_utf8(env, "config", NAPI_AUTO_LENGTH, &key);
-  if (status != napi_ok) return false;
+    // Directly get the .config property from the object
+    status = napi_get_named_property(env, token, "config", &config_val);
+    if (status != napi_ok) return NULL;
 
-  napi_value argv[1] = { key };
-  napi_value config_val;
-  status = napi_call_function(env, token, get_attr_fn, 1, argv, &config_val);
-  if (status != napi_ok) return false;
+    // Check if it's actually a string
+    napi_valuetype type;
+    napi_typeof(env, config_val, &type);
+    if (type != napi_string) {
+        napi_throw_error(env, NULL, "Property 'config' must be a string");
+        return NULL;
+    }
 
-  napi_value global;
-  napi_value json_obj;
-  napi_value stringify_fn;
-  napi_value json_str;
-  status = napi_get_global(env, &global);
-  if (status != napi_ok) return false;
-  status = napi_get_named_property(env, global, "JSON", &json_obj);
-  if (status != napi_ok) return false;
-  status = napi_get_named_property(env, json_obj, "stringify", &stringify_fn);
-  if (status != napi_ok) return false;
+    // Extract the string content
+    size_t path_len;
+    napi_get_value_string_utf8(env, config_val, NULL, 0, &path_len);
+    
+    char *path = malloc(path_len + 1);
+    if (!path) {
+        napi_throw_error(env, NULL, "Memory allocation failed");
+        return NULL;
+    }
+    napi_get_value_string_utf8(env, config_val, path, path_len + 1, &path_len);
 
-  napi_value stringify_argv[1] = { config_val };
-  status = napi_call_function(env, json_obj, stringify_fn, 1, stringify_argv, &json_str);
-  if (status != napi_ok) return false;
-
-  size_t json_len = 0;
-  status = napi_get_value_string_utf8(env, json_str, NULL, 0, &json_len);
-  if (status != napi_ok) return false;
-
-  char *json_buf = malloc(json_len + 1);
-  assert(json_buf);
-  status = napi_get_value_string_utf8(env, json_str, json_buf, json_len + 1, &json_len);
-  if (status != napi_ok) {
-    free(json_buf);
-    return false;
-  }
-
-  *json_out = json_buf;
-  if (json_len_out) *json_len_out = json_len;
-  return true;
+    // Check if the path matches the cached path
+    if (cached_config_path && strcmp(path, cached_config_path) == 0) {
+        // Path matches, return cached config
+        free(path);
+        return cached_config;
+    }
+    
+    // Path doesn't match or no cached config, load new config
+    ParserConfig* cfg = config_load_file(path);
+    if (cfg) {
+        // Free old cached config if exists
+        if (cached_config) {
+            config_free(cached_config);
+            free(cached_config_path);
+        }
+        cached_config = cfg;
+        cached_config_path = strdup(path);
+        free(path);
+        if (!cached_config_path) {
+            // strdup failed
+            config_free(cfg);
+            cached_config = NULL;
+            napi_throw_error(env, NULL, "Memory allocation failed");
+            return NULL;
+        }
+    } else {
+        napi_throw_error(env, NULL, "Failed to load config file");
+        free(path);
+        return NULL;
+    }
+    
+    return cfg;
 }
 
-/* Recursively concatenate token tree text (matches JS token.toString()).
- * This is replaced by token_to_string() in the shared library and uses the
- * thread-local scratch buffer to avoid a separate heap allocation. */
+/**
+ * Recursively converts a Token tree into a JavaScript object.
+ * This mirrors the structure of the JS Token class.
+ */
+static napi_value token_to_js(napi_env env, const Token *token, bool wrap_root) {
+    napi_value js_token;
+    napi_create_object(env, &js_token);
 
-static napi_value parse_wrapped(napi_env env, napi_callback_info info) {
-  napi_status status;
-  size_t argc = 16;
-  napi_value argv[16];
-  napi_value this_arg;
-  status = napi_get_cb_info(env, info, &argc, argv, &this_arg, NULL);
-  if (status != napi_ok) {
-    napi_throw_error(env, NULL, "Failed to get callback info");
-    return NULL;
-  }
-
-  /* Obtain the original wikitext from `this.firstChild.toString()` if present,
-   * otherwise fall back to this.toString(). */
-  napi_value firstChild;
-  napi_value js_wikitext_val = NULL;
-  if (napi_get_named_property(env, this_arg, "firstChild", &firstChild) == napi_ok && firstChild != NULL) {
-    napi_value tostr_fn;
-    if (napi_get_named_property(env, firstChild, "toString", &tostr_fn) == napi_ok && tostr_fn != NULL) {
-      status = napi_call_function(env, firstChild, tostr_fn, 0, NULL, &js_wikitext_val);
+    if (wrap_root) {
+        napi_value proto;
+        napi_get_reference_value(env, token_prototype_ref, &proto);
+        napi_set_named_property(env, js_token, "__proto__", proto);
+        napi_wrap(env, js_token, (void *)token, token_finalizer, NULL, NULL);
     }
-  }
-  if (js_wikitext_val == NULL) {
-    napi_value tostr_fn;
-    if (napi_get_named_property(env, this_arg, "toString", &tostr_fn) == napi_ok && tostr_fn != NULL) {
-      status = napi_call_function(env, this_arg, tostr_fn, 0, NULL, &js_wikitext_val);
+
+    // type
+    napi_value type_val;
+    napi_create_string_utf8(env, token->type_name, NAPI_AUTO_LENGTH, &type_val);
+    napi_set_named_property(env, js_token, "type", type_val);
+
+    // name (optional)
+    if (token->name) {
+        napi_value name_val;
+        napi_create_string_utf8(env, token->name, NAPI_AUTO_LENGTH, &name_val);
+        napi_set_named_property(env, js_token, "name", name_val);
     }
-  }
-  if (js_wikitext_val == NULL) {
-    napi_throw_error(env, NULL, "Unable to obtain wikitext string from Token instance");
-    return NULL;
-  }
 
-  /* Convert JS string to UTF-8 C string */
-  size_t wlen = 0;
-  status = napi_get_value_string_utf8(env, js_wikitext_val, NULL, 0, &wlen);
-  if (status != napi_ok) {
-    napi_throw_error(env, NULL, "Failed to measure wikitext length");
-    return NULL;
-  }
-  char *wtext = malloc(wlen + 1);
-  assert(wtext);
-  status = napi_get_value_string_utf8(env, js_wikitext_val, wtext, wlen + 1, &wlen);
-  if (status != napi_ok) {
-    free(wtext);
-    napi_throw_error(env, NULL, "Failed to copy wikitext string");
-    return NULL;
-  }
-
-  /* Parse args: argv[0] => max_stage (number), argv[1] => include (boolean) */
-  int max_stage = 11; /* default used by tests */
-  bool include = false;
-  if (argc >= 1) {
-    napi_valuetype vt;
-    if (napi_typeof(env, argv[0], &vt) == napi_ok && vt == napi_number) {
-      int64_t v = 0;
-      napi_get_value_int64(env, argv[0], &v);
-      max_stage = (int)v;
+    // children
+    if (token->child_count > 0) {
+        napi_value children_array;
+        napi_create_array(env, &children_array);
+        for (size_t i = 0; i < token->child_count; i++) {
+            Child *child = &token->children[i];
+            if (child->is_text) {
+                napi_value text_val;
+                napi_create_string_utf8(env, child->text, child->text_len, &text_val);
+                napi_set_element(env, children_array, i, text_val);
+            } else {
+                napi_value child_js = token_to_js(env, child->token, false);
+                napi_set_element(env, children_array, i, child_js);
+            }
+        }
+        napi_set_named_property(env, js_token, "childNodes", children_array);
     }
-  }
-  if (argc >= 2) {
-    napi_valuetype vt;
-    if (napi_typeof(env, argv[1], &vt) == napi_ok && vt == napi_boolean) {
-      bool b = false;
-      napi_get_value_bool(env, argv[1], &b);
-      include = b;
+
+    // Type-specific properties
+    switch (token->type) {
+        case TOKEN_HEADING: {
+            napi_value level_val;
+            napi_create_int32(env, token->data.heading.level, &level_val);
+            napi_set_named_property(env, js_token, "level", level_val);
+            break;
+        }
+        case TOKEN_COMMENT: {
+            napi_value closed_val;
+            napi_get_boolean(env, token->data.comment.closed, &closed_val);
+            napi_set_named_property(env, js_token, "closed", closed_val);
+            break;
+        }
+        case TOKEN_HTML: {
+            napi_value self_closing_val;
+            napi_get_boolean(env, token->data.html.self_closing, &self_closing_val);
+            napi_set_named_property(env, js_token, "selfClosing", self_closing_val);
+            napi_value closing_val;
+            napi_get_boolean(env, token->data.html.closing, &closing_val);
+            napi_set_named_property(env, js_token, "closing", closing_val);
+            if (token->data.html.orig_tag) {
+                napi_value orig_tag_val;
+                napi_create_string_utf8(env, token->data.html.orig_tag, NAPI_AUTO_LENGTH, &orig_tag_val);
+                napi_set_named_property(env, js_token, "origTag", orig_tag_val);
+            }
+            break;
+        }
+        case TOKEN_TD: {
+            if (token->data.td.inner_syntax) {
+                napi_value inner_syntax_val;
+                napi_create_string_utf8(env, token->data.td.inner_syntax, NAPI_AUTO_LENGTH, &inner_syntax_val);
+                napi_set_named_property(env, js_token, "innerSyntax", inner_syntax_val);
+            }
+            break;
+        }
+        case TOKEN_DOUBLE_UNDERSCORE: {
+            napi_value case_sensitive_val;
+            napi_get_boolean(env, token->data.dunder.case_sensitive, &case_sensitive_val);
+            napi_set_named_property(env, js_token, "caseSensitive", case_sensitive_val);
+            napi_value fullwidth_val;
+            napi_get_boolean(env, token->data.dunder.fullwidth, &fullwidth_val);
+            napi_set_named_property(env, js_token, "fullwidth", fullwidth_val);
+            break;
+        }
+        case TOKEN_QUOTE: {
+            napi_value bold_val;
+            napi_get_boolean(env, token->data.quote.bold, &bold_val);
+            napi_set_named_property(env, js_token, "bold", bold_val);
+            napi_value italic_val;
+            napi_get_boolean(env, token->data.quote.italic, &italic_val);
+            napi_set_named_property(env, js_token, "italic", italic_val);
+            break;
+        }
+        case TOKEN_REDIRECT: {
+            // if (token->data.redirect.pre) {
+            //     napi_value pre_val;
+            //     napi_create_string_utf8(env, token->data.redirect.pre, NAPI_AUTO_LENGTH, &pre_val);
+            //     napi_set_named_property(env, js_token, "pre", pre_val);
+            // }
+            // if (token->data.redirect.post) {
+            //     napi_value post_val;
+            //     napi_create_string_utf8(env, token->data.redirect.post, NAPI_AUTO_LENGTH, &post_val);
+            //     napi_set_named_property(env, js_token, "post", post_val);
+            // }
+            // if (token->data.redirect.link) {
+            //     napi_value link_val;
+            //     napi_create_string_utf8(env, token->data.redirect.link, NAPI_AUTO_LENGTH, &link_val);
+            //     napi_set_named_property(env, js_token, "link", link_val);
+            // }
+            if (token->data.redirect.display) {
+                napi_value display_val;
+                napi_create_string_utf8(env, token->data.redirect.display, NAPI_AUTO_LENGTH, &display_val);
+                napi_set_named_property(env, js_token, "display", display_val);
+            }
+            break;
+        }
+        case TOKEN_EXT: {
+            if (token->data.ext.name) {
+                napi_value name_val;
+                napi_create_string_utf8(env, token->data.ext.name, NAPI_AUTO_LENGTH, &name_val);
+                napi_set_named_property(env, js_token, "extName", name_val);
+            }
+            if (token->data.ext.attr) {
+                napi_value attr_val;
+                napi_create_string_utf8(env, token->data.ext.attr, NAPI_AUTO_LENGTH, &attr_val);
+                napi_set_named_property(env, js_token, "extAttr", attr_val);
+            }
+            if (token->data.ext.inner) {
+                napi_value inner_val;
+                napi_create_string_utf8(env, token->data.ext.inner, NAPI_AUTO_LENGTH, &inner_val);
+                napi_set_named_property(env, js_token, "extInner", inner_val);
+            }
+            if (token->data.ext.closing) {
+                napi_value closing_val;
+                napi_create_string_utf8(env, token->data.ext.closing, NAPI_AUTO_LENGTH, &closing_val);
+                napi_set_named_property(env, js_token, "extClosing", closing_val);
+            }
+            napi_value self_closing_val;
+            napi_get_boolean(env, token->data.ext.self_closing, &self_closing_val);
+            napi_set_named_property(env, js_token, "extSelfClosing", self_closing_val);
+            break;
+        }
+        case TOKEN_NOINCLUDE:
+        case TOKEN_INCLUDE:
+        case TOKEN_ONLYINCLUDE:
+        case TOKEN_TRANSLATE: {
+            if (token->data.include.tag) {
+                napi_value tag_val;
+                napi_create_string_utf8(env, token->data.include.tag, NAPI_AUTO_LENGTH, &tag_val);
+                napi_set_named_property(env, js_token, "tag", tag_val);
+            }
+            if (token->data.include.attr) {
+                napi_value attr_val;
+                napi_create_string_utf8(env, token->data.include.attr, NAPI_AUTO_LENGTH, &attr_val);
+                napi_set_named_property(env, js_token, "includeAttr", attr_val);
+            }
+            if (token->data.include.inner) {
+                napi_value inner_val;
+                napi_create_string_utf8(env, token->data.include.inner, NAPI_AUTO_LENGTH, &inner_val);
+                napi_set_named_property(env, js_token, "includeInner", inner_val);
+            }
+            if (token->data.include.closing) {
+                napi_value closing_val;
+                napi_create_string_utf8(env, token->data.include.closing, NAPI_AUTO_LENGTH, &closing_val);
+                napi_set_named_property(env, js_token, "includeClosing", closing_val);
+            }
+            break;
+        }
+        case TOKEN_EXT_ATTR: {
+            if (token->data.ext_attr.equal) {
+                napi_value equal_val;
+                napi_create_string_utf8(env, token->data.ext_attr.equal, NAPI_AUTO_LENGTH, &equal_val);
+                napi_set_named_property(env, js_token, "equal", equal_val);
+            }
+            napi_value quote_open_val;
+            char quote_open_str[2] = {token->data.ext_attr.quote_open, '\0'};
+            napi_create_string_utf8(env, quote_open_str, NAPI_AUTO_LENGTH, &quote_open_val);
+            napi_set_named_property(env, js_token, "quoteOpen", quote_open_val);
+            napi_value quote_close_val;
+            char quote_close_str[2] = {token->data.ext_attr.quote_close, '\0'};
+            napi_create_string_utf8(env, quote_close_str, NAPI_AUTO_LENGTH, &quote_close_val);
+            napi_set_named_property(env, js_token, "quoteClose", quote_close_val);
+            break;
+        }
+        case TOKEN_PARAMETER: {
+            if (token->data.image_param.raw_syntax) {
+                napi_value raw_syntax_val;
+                napi_create_string_utf8(env, token->data.image_param.raw_syntax, NAPI_AUTO_LENGTH, &raw_syntax_val);
+                napi_set_named_property(env, js_token, "rawSyntax", raw_syntax_val);
+            }
+            break;
+        }
+        case TOKEN_EXT_LINK:
+        case TOKEN_MAGIC_LINK: {
+            if (token->data.ext_link.space) {
+                napi_value space_val;
+                napi_create_string_utf8(env, token->data.ext_link.space, NAPI_AUTO_LENGTH, &space_val);
+                napi_set_named_property(env, js_token, "space", space_val);
+            }
+            break;
+        }
+        case TOKEN_LINK:
+        case TOKEN_FILE:
+        case TOKEN_CATEGORY: {
+            napi_value magic_pipe_val;
+            napi_get_boolean(env, token->data.link.magic_pipe, &magic_pipe_val);
+            napi_set_named_property(env, js_token, "magicPipe", magic_pipe_val);
+            break;
+        }
+        case TOKEN_TRANSCLUDE:
+        case TOKEN_ARG: {
+            if (token->data.transclude.modifier) {
+                napi_value modifier_val;
+                napi_create_string_utf8(env, token->data.transclude.modifier, NAPI_AUTO_LENGTH, &modifier_val);
+                napi_set_named_property(env, js_token, "modifier", modifier_val);
+            }
+            break;
+        }
+        default:
+            break;
     }
-  }
 
-  /* Load parser config from the calling JS Token instance. */
-  char *cfg_json = NULL;
-  size_t cfg_json_len = 0;
-  if (!get_token_config_json(env, this_arg, &cfg_json, &cfg_json_len)) {
-    free(wtext);
-    napi_throw_error(env, NULL, "Failed to read parser config from Token instance");
-    return NULL;
-  }
-
-  ParserConfig *cfg = config_load_string(cfg_json, cfg_json_len);
-  free(cfg_json);
-  if (!cfg) {
-    free(wtext);
-    napi_throw_error(env, NULL, "Failed to load parser config from Token instance");
-    return NULL;
-  }
-
-  /* Call the C parser */
-  Token *root = wiki_parse(wtext, cfg, include, max_stage);
-  if (!root) {
-    config_free(cfg);
-    free(wtext);
-    napi_throw_error(env, NULL, "C parser returned NULL");
-    return NULL;
-  }
-
-  /* Serialize token tree to JSON in-memory */
-  char *json_buf = NULL;
-  size_t json_len = 0;
-  FILE *jf = open_memstream(&json_buf, &json_len);
-  if (!jf) {
-    token_free(root);
-    config_free(cfg);
-    free(wtext);
-    napi_throw_error(env, NULL, "open_memstream failed");
-    return NULL;
-  }
-  token_to_json(root, jf);
-  fclose(jf);
-
-  /* Build the reconstructed string from token tree */
-  ThreadBuffers *tbufs = wiki_thread_buf_get();
-  char *text_buf = token_to_string(root, &tbufs->scratch);
-
-  /* Parse JSON into a JS object: JSON.parse(json_buf) */
-  napi_value global, json_obj, parse_fn, js_json_str, root_obj;
-  status = napi_get_global(env, &global);
-  status = napi_get_named_property(env, global, "JSON", &json_obj);
-  status = napi_get_named_property(env, json_obj, "parse", &parse_fn);
-  status = napi_create_string_utf8(env, json_buf, (size_t)json_len, &js_json_str);
-  napi_value parse_args[1] = { js_json_str };
-  status = napi_call_function(env, json_obj, parse_fn, 1, parse_args, &root_obj);
-
-  if (status != napi_ok) {
-    token_free(root);
-    config_free(cfg);
-    free(wtext);
-    free(json_buf);
-    if (status == napi_pending_exception) {
-      /* JSON.parse threw — re-throw the pending exception as-is */
-      return NULL;
-    }
-    napi_throw_error(env, NULL, "JSON.parse call failed");
-    return NULL;
-  }
-
-  /* Verify root_obj is actually an object before setting properties */
-  napi_valuetype root_vt = napi_undefined;
-  napi_typeof(env, root_obj, &root_vt);
-  if (root_vt != napi_object) {
-    token_free(root);
-    config_free(cfg);
-    free(wtext);
-    free(json_buf);
-    napi_throw_error(env, NULL, "JSON.parse did not return an object");
-    return NULL;
-  }
-
-  /* Create a toString() function backed by a C string copy.
-   * Storing text as plain char* avoids the napi_create_reference restriction
-   * on primitive values in Node.js >=12.  The closure is attached to
-   * root_obj (a real JS object) via napi_wrap so it's freed on GC. */
-  tostr_closure *closure = malloc(sizeof(tostr_closure));
-  assert(closure);
-  closure->text = strdup(text_buf);
-  assert(closure->text);
-
-  napi_value tostr_fn;
-  status = napi_create_function(env, "toString", NAPI_AUTO_LENGTH, tostr_callback, closure, &tostr_fn);
-  if (status != napi_ok) {
-    tostr_finalize(NULL, closure, NULL);
-    token_free(root);
-    config_free(cfg);
-    free(wtext);
-    free(json_buf);
-    napi_throw_error(env, NULL, "Failed to create toString function");
-    return NULL;
-  }
-
-  /* Attach closure lifetime to root_obj (a plain JS object — safe for napi_wrap). */
-  napi_wrap(env, root_obj, closure, tostr_finalize, NULL, NULL);
-
-  /* Set the toString property on the parsed root object */
-  status = napi_set_named_property(env, root_obj, "toString", tostr_fn);
-
-  /* Cleanup C-side (we already copied necessary JS strings) */
-  token_free(root);
-  config_free(cfg);
-  free(wtext);
-  free(json_buf);
-
-  return root_obj;
+    return js_token;
 }
 
-static napi_value Init(napi_env env, napi_value exports) {
-  napi_status status;
-  napi_value parse_fn;
-  status = napi_create_function(env, "parse", NAPI_AUTO_LENGTH, parse_wrapped, NULL, &parse_fn);
-  if (status != napi_ok) {
-    napi_throw_error(env, NULL, "Failed to create parse function");
-    return NULL;
-  }
-  status = napi_set_named_property(env, exports, "parse", parse_fn);
-  if (status != napi_ok) {
-    napi_throw_error(env, NULL, "Failed to export parse function");
-    return NULL;
-  }
-  return exports;
+/**
+ * The main N-API entry point for the `parse` function.
+ * @param args[0] Uint8Array (the buffer)
+ * @param args[1] Object { config: ... }
+ */
+static napi_value parse(napi_env env, napi_callback_info info) {
+    size_t argc = 2;
+    napi_value args[2];
+    napi_value this_arg;
+    napi_status status = napi_get_cb_info(env, info, &argc, args, &this_arg, NULL);
+    if (status != napi_ok || argc < 1) {
+        napi_throw_error(env, NULL, "Invalid arguments. Expected (Buffer, {config: ...})");
+        return NULL;
+    }
+
+    napi_value buffer_typedarray = args[0];
+    
+    // 1. Declare the correct enum type for TypedArrays
+    napi_typedarray_type ta_type;
+    napi_value buffer;
+    size_t byte_length;
+    size_t byte_offset;
+    void* data;
+
+    // 2. Get info. Note: We use &ta_type, NOT a napi_valuetype.
+    status = napi_get_typedarray_info(
+        env, 
+        buffer_typedarray, 
+        &ta_type, 
+        &byte_length, 
+        &data, 
+        &buffer, 
+        &byte_offset
+    );
+
+    // 3. Check if the call succeeded and if it's the right kind of array
+    if (status != napi_ok || ta_type != napi_uint8_array) {
+        napi_throw_error(env, NULL, "Expected Uint8Array (Buffer)");
+        return NULL;
+    }
+
+    // The wikitext is a view into the buffer starting at the offset
+    const char *wikitext = (const char *)data;
+
+    /* Load parser config from the calling JS Token instance. */
+    ParserConfig* cfg = get_token_config_json(env, this_arg);
+    if (!cfg) {
+        // Error already thrown by get_token_config_json
+        return NULL;
+    }
+
+    // 3. Call the C parser
+    Token *root = wiki_parse(wikitext, byte_length, cfg, false, 10);
+    
+    if (root == NULL) {
+        napi_throw_error(env, NULL, "Wiki parse failed.");
+        return NULL;
+    }
+
+    // 4. Convert the Token tree to a JS object
+    napi_value js_root = token_to_js(env, root, true);
+
+    return js_root;
 }
 
+/**
+ * N-API Module Initialization
+ */
+napi_value Init(napi_env env, napi_value exports) {
+    napi_value initial_config_val;
+    napi_status status = napi_create_string_utf8(env, "", 0, &initial_config_val);
+    if (status != napi_ok) return NULL;
+
+    napi_property_descriptor desc[] = {
+        {
+            .utf8name = "parse",
+            .method = parse,
+            .attributes = napi_default
+        },
+        {
+            .utf8name = "config",
+            .value = initial_config_val,
+            .attributes = (napi_property_attributes)(napi_writable | napi_enumerable | napi_configurable)
+        }
+    };
+    napi_define_properties(env, exports, 2, desc);
+
+    napi_value proto;
+    napi_create_object(env, &proto);
+    
+    napi_property_descriptor proto_descs[] = {
+        { "toString", 0, toString_wrapper, 0, 0, 0, napi_default, 0 }
+    };
+    napi_define_properties(env, proto, 1, proto_descs);
+
+    // Create a persistent reference so the prototype lives forever
+    napi_create_reference(env, proto, 1, &token_prototype_ref);
+
+    return exports;
+}
 NAPI_MODULE(NODE_GYP_MODULE_NAME, Init)

@@ -39,11 +39,26 @@ function usage() {
   process.exit(1);
 }
 
+function resolveDefaultInputPath(scriptDir) {
+  const candidates = [
+    path.join(scriptDir, '..', '..', 'data', 'enwiki.jsonl.bz2'),
+    path.join(scriptDir, '..', '..', '..', 'data', 'enwiki.jsonl.bz2'),
+  ];
+
+  for (const candidate of candidates) {
+    if (fs.existsSync(candidate)) {
+      return candidate;
+    }
+  }
+
+  return candidates[0];
+}
+
 async function main(argv) {
   const args = argv.slice(2);
   const options = {
     input: null,
-    start: 1,
+    start: 5000,
     end: 0, // 0 means no limit
   };
 
@@ -73,8 +88,7 @@ async function main(argv) {
   }
 
   const scriptDir = path.dirname(__filename);
-  const dataDir = path.join(scriptDir, '..', '..', 'data');
-  const inputPath = options.input ?? path.join(dataDir, 'enwiki.jsonl.bz2');
+  const inputPath = options.input ?? resolveDefaultInputPath(scriptDir);
   const inputStream = openInputStream(inputPath);
   const reader = readline.createInterface({ input: inputStream, crlfDelay: Infinity });
   let lineNumber = 0;
@@ -109,15 +123,25 @@ async function main(argv) {
       continue;
     }
 
-    console.error(`[full_wikitext] START line ${lineNumber} page ${pageId} title '${String(title).replace(/\n/g, ' ')}' rev ${revId} textBytes=${Buffer.byteLength(text, 'utf8')}`);
+    //console.info(`[full_wikitext] START line ${lineNumber} page ${pageId} title '${String(title).replace(/\n/g, ' ')}' rev ${revId} textBytes=${Buffer.byteLength(text, 'utf8')}`);
     const ok = compareSample(text, {
       name: 'export',
       sampleIndex: lineNumber,
+      sampleLabel: `${String(title).replace(/\s+/g, '_')}.wikitext`,
     });
 
     if (!ok) {
-      console.log(`FAIL line ${lineNumber} page ${pageId} title '${title}' rev ${revId}, processed ${processed + 1}`);
-      process.exit(2);
+      console.error(`\nFAIL line ${lineNumber} page ${pageId} title '${title}' rev ${revId}, processed ${processed + 1}`);
+      const savePath1 = path.join(scriptDir, 'wikitext', `${title.replace(/\s+/g, '_')}.wikitext`);
+      fs.writeFileSync(savePath1, text, 'utf8');
+      console.info(`Saved failing sample to ${savePath1}`);
+      const savePath2 = path.join(scriptDir, '..', '..', '..', 'tests', 'wikitext', `${title.replace(/\s+/g, '_')}.wikitext`);
+      fs.writeFileSync(savePath2, text, 'utf8');
+      console.info(`Saved failing sample to ${savePath2}`);
+//       console.info(`The files have been copied.  Please run the below commands
+// cd ${path.dirname(__filename)}
+// node test_wikitext.js\n\n`);
+       process.exit(2);
     }
 
     if (processed % 10 === 0) {

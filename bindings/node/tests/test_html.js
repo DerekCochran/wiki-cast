@@ -36,4 +36,7 @@ runTests([
   '<span></span>',
   // wbr void element
   'word<wbr/>break',
+  // meta/link require real itemprop+content/href attrs, not substring matches in values
+  '<meta data="itemprop" content="x">',
+  '<link data="itemprop" href="/x">',
 ], { name: 'html' });

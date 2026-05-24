@@ -9,7 +9,7 @@
 #include <stdbool.h>
 #include <stddef.h>
 #include <stdio.h>
-#include "thread_buffer.h"
+#include "util/thread_buffer.h"
 
 /* ── Token type enum ──────────────────────────────────────────────────────── */
 typedef enum {
@@ -63,9 +63,10 @@ typedef struct {
     bool   is_text;       /* true → text node; false → token node */
     size_t text_len;      /* byte length of text (valid when is_text; may contain NUL sentinels) */
     union {
-        char  *text;      /* owned UTF-8 string for text children */
+        const char  *text;      /* non-owning view into a ThreadBuf (or owned if text_owned) */
         struct Token *token; /* owned token pointer for token children */
     };
+    bool   text_owned;    /* true if u.text was heap-allocated and must be freed */
 } Child;
 
 /* ── Per-type payload (union to save memory) ─────────────────────────────── */
@@ -86,6 +87,7 @@ typedef union {
     } td;
     struct {
         bool case_sensitive;           /* DoubleUnderscoreToken */
+        bool fullwidth;                /* preserve ＿＿...＿＿ vs __...__ */
     } dunder;
     struct {
         bool bold;                     /* QuoteToken */
@@ -118,6 +120,15 @@ typedef union {
     struct {
         char *raw_syntax; /* canonical syntax string for image-parameter toString */
     } image_param;
+    struct {
+        char *space;      /* ExtLinkToken separator between URL and text (may be empty) */
+    } ext_link;
+    struct {
+        bool magic_pipe;  /* LinkBaseToken delimiter was \0\d+!\x7F ({{!}}) */
+    } link;
+    struct {
+        char *modifier;   /* TranscludeToken modifier prefix, e.g. "subst:" */
+    } transclude;
 } TokenData;
 
 /* ── Token struct ─────────────────────────────────────────────────────────── */
@@ -134,6 +145,7 @@ typedef struct Token {
     TokenData  data;        /* per-type payload */
 
     /* parsing state */
+    unsigned   seen_epoch; /* scratch mark for graph freeing (updated by token_free) */
     int        stage;       /* last parseOnce stage executed */
     bool       include;     /* includeOnly mode */
     bool       built;       /* build() has been called */
@@ -159,12 +171,13 @@ void token_free(Token *t);
  */
 void token_free_shallow(Token *t);
 
-/** Serialize a token tree to JSON, writing to fp. */
-void token_to_json(const Token *t, FILE *fp);
-void token_log_json(const Token *t);
+/** Serialize a token tree to JSON, writing to fp. 
+ * This is used ONLY to test between teh wikiparser-node and this tokenizer
+*/
+void json_stringify_wikiparser_node(const Token *t, ThreadBuf *tb);
 
 /**
- * Recursively serialise a token tree into a thread-local scratch buffer,
+ * Recursively serialise a token tree into a caller-provided buffer,
  * mirroring JS Token.prototype.toString().
  *
  * Children of a token are joined with the token's `sep` character (if

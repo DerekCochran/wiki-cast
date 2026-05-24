@@ -9,7 +9,7 @@ const { compareSample } = require('./helpers');
 /**
  * Load all files from a directory, sorted lexicographically.
  * @param {string} dir
- * @returns {string[]}
+ * @returns {{ file: string, content: string }[]}
  */
 function loadWikitextSamples(dir) {
   const files = fs.readdirSync(dir).filter(f => !f.startsWith('.'));
@@ -21,7 +21,7 @@ function loadWikitextSamples(dir) {
     const stat = fs.statSync(filePath);
     if (stat.isFile()) {
       const content = fs.readFileSync(filePath, 'utf8');
-      samples.push(content);
+      samples.push({ file, content });
     }
   }
   
@@ -51,15 +51,16 @@ function main() {
   let failCount = 0;
   
   for (const sample of samples) {
-    if (!compareSample(sample, { name: `wikitext` })) {
+    if (!compareSample(sample.content, { name: `wikitext`, sampleLabel: sample.file })) {
       failCount++;
-      console.error('FAILED: stopping on first failure,  ${passCount} samples passed');
+      console.error(`FAILED: stopping on first failure, ${passCount} samples passed`);
       process.exit(2);
     }
     passCount++;
   }
   
-  console.log(`All ${passCount} samples passed`);
+  // Print the actual fail and pass counts
+  console.log(`Test completed: ${passCount} passed, ${failCount} failed`);
   process.exit(0);
 }
 

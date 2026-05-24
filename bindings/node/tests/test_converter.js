@@ -2,7 +2,6 @@
 'use strict';
 // Parity test: language-variant converter (stage 10 – parseConverter).
 // The converter only activates when config.variants is non-empty.
-// The default config includes variants so these should produce ConverterTokens.
 const { runTests } = require('./helpers');
 
 runTests([

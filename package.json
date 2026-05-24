@@ -7,9 +7,19 @@
   "author": "",
   "license": "ISC",
   "type": "commonjs",
+  "scripts": {
+    "coverage:origjs:clean": "rm -rf .artifacts/v8cov-origjs .artifacts/origjs-usage && mkdir -p .artifacts/v8cov-origjs .artifacts/origjs-usage",
+    "coverage:origjs:collect:core": "NODE_V8_COVERAGE=.artifacts/v8cov-origjs npm run -s run:all && NODE_V8_COVERAGE=.artifacts/v8cov-origjs npm run -s run:wikitext",
+    "coverage:origjs:collect:export": "NODE_V8_COVERAGE=.artifacts/v8cov-origjs npm run -s run:export",
+    "coverage:origjs:analyze": "node scripts/analyze_origjs_coverage.js",
+    "coverage:origjs:report": "npm run -s coverage:origjs:clean && npm run -s coverage:origjs:collect:core && npm run -s coverage:origjs:analyze"
+  },
   "dependencies": {
     "compressjs": "^1.0.3",
+    "knip": "^6.7.0",
+    "minify": "^15.3.1",
     "unbzip2-stream": "^1.4.3",
-    "wikiparser-node": "^1.38.1"
+    "wikiparser-node": "^1.38.1",
+    "simple-zstd": "^2.1.0"
   }
 }

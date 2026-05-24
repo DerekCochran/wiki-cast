@@ -17,6 +17,7 @@ static const char *samples[] = {
     "[[Page#Section|section link]]",
     "[[File:Image.jpg]]",
     "[[File:Image.jpg|thumb|right|Caption text]]",
+    "[[File:Image.jpg| thumb | upright=0.8 | Caption text]]",
     "[[File:water_reflectivity.jpg]]",
     "[[File:Image.jpg|thumbnail|right|Caption text]]",
     "[[File:Image.jpg|frameless|upright|center]]",
@@ -43,6 +44,11 @@ static const char *samples[] = {
     "[[Category:Test#section|key]]",
     "[[en:Wikipedia#History]] with anchor",
     "[[File:Mardi&nbsp;Gras&nbsp;Mobile&nbsp;Order of Inca.jpg|thumb|left|upright|Mobile is the birthplace of Mardi Gras in the U.S.]]",
+    /* Image (legacy) syntax tests */
+    "[[Image:Justus Sustermans - Portrait of Galileo Galilei (Uffizi).jpg|left|thumb|upright|[[Galileo Galilei]] is often referred to as the father of [[modern astronomy]]. Portrait by [[Justus Sustermans]].]]",
+    "[[Image:JKepler.jpg|right|thumb|upright|[[Johannes Kepler]], one of the fathers of [[modern astronomy]]]]",
+    "[[Image:Foo.jpg|caption [[Link]] text]]",
+    "[[Image:Foo.jpg|upright|caption [[Link]] text]]",
 };
 
 int main(void)

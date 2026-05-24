@@ -4,53 +4,28 @@ const path = require('path');
 const fs = require('fs');
 const os = require('os');
 const { spawnSync } = require('child_process');
-const Module = require('module');
+const { compareAST } = require('./compareAST');
+const { buildJsAst } = require('./buildJsAst');
 
-// Resolve wikiparser-node from this package's node_modules so tests run
-// against the local `extern_tokenizer` copy of `wikiparser-node`.
-const wikiNmDir = path.resolve(__dirname, '..', 'node_modules');
-const _origPaths = Module._nodeModulePaths;
-Module._nodeModulePaths = function(from) {
-  return [wikiNmDir, ...(_origPaths.call(this, from) || [])];
-};
-
-// Load the native patch exactly once from the local tests directory.
-const patchPath = path.resolve(__dirname, 'native_token_patch.js');
-const patch = require(patchPath);
-
-const { Token } = require(path.join(wikiNmDir, 'wikiparser-node', 'dist', 'src', 'index.js'));
-const proto = Token.prototype;
-const Parser = require(path.join(wikiNmDir, 'wikiparser-node', 'dist', 'index.js'));
-
-if (!proto || !proto.__orig_parse) {
-  console.error('Original JS parse() not saved on prototype; aborting');
-  process.exit(0);
+const wikiparser = require(path.join(__dirname, '..', '..', '..', 'new-js', 'dist', 'index.js'));
+// Get the native parser by looking in the Release directory fist, then Debug if not found.  This allows running tests in both dev and prod builds without changing the test code.
+let nativeParser;
+try {  
+  nativeParser = require(path.join(__dirname, '..', 'build', 'Release', 'wikiparser-node-c-tokenizer.node'));
+}catch(e) {
+   nativeParser = require(path.join(__dirname, '..', 'build', 'Debug', 'wikiparser-node-c-tokenizer.node'));
 }
 
-const MAX_STAGE = 11;
+const MAX_STAGE = 10;
 const LAST_SAMPLE_PATH = '/tmp/wiki_latest_test_input.txt';
 const PERF_LOG_PATH = '/tmp/wikitext_perf.txt';
-const DEFAULT_WIKI_CONFIG = path.resolve(__dirname, '..', '..', 'node_modules', 'wikiparser-node', 'config', 'enwiki.json');
+const DEFAULT_WIKI_CONFIG = path.join(__dirname, '..', '..', '..', 'config', 'enwiki.json');
 
-if (!process.env.WIKI_CONFIG) {
-  process.env.WIKI_CONFIG = DEFAULT_WIKI_CONFIG;
-}
-
-Parser.config = process.env.WIKI_CONFIG;
+wikiparser.config = String(DEFAULT_WIKI_CONFIG);
+nativeParser.config = String(DEFAULT_WIKI_CONFIG);
 
 function writeLatestSampleCheckpoint(wikitext, opts) {
-  const payload = [
-    '# latest native_binding parity input',
-    `# timestamp: ${new Date().toISOString()}`,
-    `# include: ${Boolean(opts && opts.include)}`,
-    `# tidy: ${Boolean(opts && opts.tidy)}`,
-    '',
-    String(wikitext),
-    '',
-  ].join('\n');
-
-  /* Overwrite on every sample so the file always contains the latest attempted input. */
-  fs.writeFileSync(LAST_SAMPLE_PATH, payload, 'utf8');
+  fs.writeFileSync(LAST_SAMPLE_PATH, wikitext, 'utf8');
 }
 
 function ensureDir(dir) {
@@ -80,10 +55,6 @@ function writeTextFile(filePath, content) {
 
 function appendTextFile(filePath, content) {
   fs.appendFileSync(filePath, String(content), 'utf8');
-}
-
-function nowNs() {
-  return process.hrtime.bigint();
 }
 
 function nsToMsRounded(ns) {
@@ -124,89 +95,60 @@ function writeUnifiedDiff(expectedPath, gotPath, diffPath) {
   }
 }
 
-function astNodeSummary(node) {
-  if (!node) return 'null';
-  if (node.type === 'text') return `text(${JSON.stringify(node.data).slice(0, 40)})`;
-  return `${node.type}${node.name != null ? `:${node.name}` : ''}`;
+// Parent is an array of { js: jsToken, c: ncToken }
+function getCmpPath(parents) {
+  return parents.map(p => `${p.js.type}(${p.js.name || ''})`).join(' > ');
 }
 
-function analyzeAstDiff(expected, got) {
+function analyzeAstDiff(cmp, name = 'sample', wikitext = '') {
   const lines = [];
-  const queue = [{ path: 'root', a: expected, b: got }];
-  let found = null;
-
-  while (queue.length > 0) {
-    const cur = queue.shift();
-    const { path: p, a, b } = cur;
-    if (a == null || b == null) {
-      found = { kind: 'null-mismatch', path: p, a, b };
-      break;
-    }
-
-    const ta = a.type == null ? 'undefined' : String(a.type);
-    const tb = b.type == null ? 'undefined' : String(b.type);
-    if (ta !== tb) {
-      found = { kind: 'type', path: p, ta, tb, a, b };
-      break;
-    }
-
-    const na = a.name == null ? null : String(a.name);
-    const nb = b.name == null ? null : String(b.name);
-    if (na !== nb) {
-      found = { kind: 'name', path: p, na, nb, a, b };
-      break;
-    }
-
-    if (ta === 'text') {
-      const da = a.data == null ? '' : String(a.data);
-      const db = b.data == null ? '' : String(b.data);
-      if (da !== db) {
-        found = { kind: 'text-data', path: p, da, db, a, b };
-        break;
-      }
-      continue;
-    }
-
-    const ach = Array.isArray(a.childNodes) ? a.childNodes : [];
-    const bch = Array.isArray(b.childNodes) ? b.childNodes : [];
-    if (ach.length !== bch.length) {
-      found = { kind: 'child-count', path: p, aCount: ach.length, bCount: bch.length, a, b };
-      break;
-    }
-
-    for (let i = 0; i < ach.length; i++) {
-      queue.push({ path: `${p}.childNodes[${i}]`, a: ach[i], b: bch[i] });
-    }
-  }
 
   lines.push('AST analysis report');
-  if (!found) {
+  if (cmp && cmp.success) {
     lines.push('No structural differences found by analyzer.');
     return lines.join('\n') + '\n';
   }
 
-  lines.push(`first_mismatch.kind: ${found.kind}`);
-  lines.push(`first_mismatch.path: ${found.path}`);
-  if (found.kind === 'type') {
-    lines.push(`expected.type: ${found.ta}`);
-    lines.push(`got.type: ${found.tb}`);
-  } else if (found.kind === 'name') {
-    lines.push(`expected.name: ${found.na}`);
-    lines.push(`got.name: ${found.nb}`);
-  } else if (found.kind === 'text-data') {
-    lines.push(`expected.text.hex: ${Buffer.from(found.da).toString('hex')}`);
-    lines.push(`got.text.hex: ${Buffer.from(found.db).toString('hex')}`);
-  } else if (found.kind === 'child-count') {
-    lines.push(`expected.childCount: ${found.aCount}`);
-    lines.push(`got.childCount: ${found.bCount}`);
-  } else if (found.kind === 'null-mismatch') {
-    lines.push(`expected.node: ${astNodeSummary(found.a)}`);
-    lines.push(`got.node: ${astNodeSummary(found.b)}`);
+  lines.push(`first_mismatch.kind: ${cmp.kind}`);
+  lines.push(`first_mismatch.path: ${getCmpPath(cmp.parents)}`);
+  lines.push(`first_mismatch.reason: ${cmp.reason}`);
+  lines.push(`expected.String: ${cmp.jsToken.toString()}`);
+  lines.push(`expected.Json: ${JSON.stringify(buildJsAst(cmp.jsToken))}`);
+  lines.push(`actual.String: ${cmp.ncToken.toString()}`);
+  lines.push(`actual.Json: ${JSON.stringify(cmp.ncToken, Object.getOwnPropertyNames(cmp.ncToken))}`);
+  return lines.join('\n') + '\n';
+}
+
+function getWikiTextSmallesDiff(jsToken, ncToken, parents) {
+  const testStr = String(jsToken.toString());
+  if( jsToken.type === 'root' ) {
+    return testStr;
   }
 
-  lines.push(`expected.node.summary: ${astNodeSummary(found.a)}`);
-  lines.push(`got.node.summary: ${astNodeSummary(found.b)}`);
-  return lines.join('\n') + '\n';
+  let ok = true;
+  let jsResult, nativeResult;
+  try {
+    jsResult = runParse(testStr, wikiparser, false, false, 'js');
+  } catch (e) {
+    console.log('ERROR (JS)  ', e && e.message, e && e.stack);
+    return undefined;
+  }
+
+  try {
+    nativeResult = runParse(Buffer.from(testStr, 'utf-8'), nativeParser, false, false, 'native');
+  } catch (e) {
+    console.log('ERROR (NAT) ', e && e.message, e && e.stack);
+    return undefined;
+  }
+
+  const textOk = jsResult.text === nativeResult.text;
+  const cmp = compareAST(jsResult.root, nativeResult.root);
+  ok = textOk && cmp.success;
+  if( !ok ) {
+    return testStr;
+  }
+  const parent = parents[parents.length - 1];
+  return getWikiTextSmallesDiff(parent.js, parent.nc, parents.slice(0, -1));
 }
 
 function artifactRootDir() {
@@ -217,23 +159,6 @@ function artifactRootDir() {
 }
 
 /**
- * Recursively serialise a Token/AstText node to a plain object for comparison.
- * We capture type, name (where present), and childNodes recursively.
- * Text nodes expose their raw data string.
- */
-function nodeToJSON(node) {
-  if (!node) return null;
-  if (node.type === 'text') {
-    return { type: 'text', data: String(node.data) };
-  }
-  return {
-    type: String(node.type),
-    name: node.name != null ? String(node.name) : undefined,
-    childNodes: Array.from(node.childNodes || []).map(nodeToJSON),
-  };
-}
-
-/**
  * Run the full parse pipeline on a fresh Token and return
  * { text: string, tree: object }.
  * @param {string} wikitext
@@ -241,32 +166,21 @@ function nodeToJSON(node) {
  * @param {boolean} include
  * @param {boolean} tidy
  */
-function runParse(wikitext, parseFn, include = false, tidy = false) {
-  // Call the high-level Parser.parse exactly like production. When the
-  // caller wants the original JS baseline (proto.__orig_parse), temporarily
-  // restore proto.parse to the original implementation so Parser.parse
-  // exercises the JS codepath.
-  const saved = proto.parse;
-  const needRestore = parseFn === proto.__orig_parse;
-  if (needRestore) proto.parse = proto.__orig_parse;
-  try {
-    const parseStart = nowNs();
-    const root = Parser.parse(wikitext, include, MAX_STAGE);
-    const parseEnd = nowNs();
-    const toStringStart = nowNs();
-    const text = String(root.toString());
-    const toStringEnd = nowNs();
-    return {
-      text,
-      tree: nodeToJSON(root),
-      timing: {
-        parseMs: nsToMsRounded(parseEnd - parseStart),
-        toStringMs: nsToMsRounded(toStringEnd - toStringStart),
-      },
-    };
-  } finally {
-    if (needRestore) proto.parse = saved;
-  }
+function runParse(wikitext, parser, include = false, tidy = false, runLabel = 'parse') {
+  const parseStart = process.hrtime.bigint();
+  const root = parser.parse(wikitext, include, MAX_STAGE);
+  const parseEnd = process.hrtime.bigint();
+  const toStringStart = process.hrtime.bigint();
+  const text = String(root.toString());
+  const toStringEnd = process.hrtime.bigint();
+  return {
+    root,
+    text,
+    timing: {
+      parseMs: nsToMsRounded(parseEnd - parseStart),
+      toStringMs: nsToMsRounded(toStringEnd - toStringStart),
+    },
+  };
 }
 
 /**
@@ -274,77 +188,140 @@ function runParse(wikitext, parseFn, include = false, tidy = false) {
  * Returns true if both match.
  * Prints OK / FAIL to stdout with diagnostics on failure.
  */
-function compareSample(wikitext, { include = false, tidy = false, name = 'samples', sampleIndex = 1 } = {}) {
+function compareSample(wikitext, { include = false, tidy = false, name = 'samples', sampleIndex = 1, sampleLabel = null } = {}) {
   writeLatestSampleCheckpoint(wikitext, { include, tidy });
 
-  const label = JSON.stringify(wikitext.slice(0, 70));
+  const label = sampleLabel == null ? JSON.stringify(wikitext.slice(0, 70)) : String(sampleLabel);
 
   let jsResult, nativeResult;
+  const stageDir = path.join(os.tmpdir(), `wiki_stage_${Date.now()}_${process.pid}_${Math.random().toString(36).slice(2,8)}`);
+  ensureDir(stageDir);
+  const prevStageDir = process.env.WIKI_STAGE_LOG_DIR;
+  const prevStageFlag = process.env.WIKI_STAGE_LOG;
+  process.env.WIKI_STAGE_LOG_DIR = stageDir;
 
   try {
-    jsResult = runParse(wikitext, proto.__orig_parse, include, tidy);
-  } catch (e) {
-    console.log('ERROR (JS)  ', label, e && e.message);
-    return false;
-  }
+    try {
+      jsResult = runParse(wikitext, wikiparser, include, tidy, 'js');
+    } catch (e) {
+      console.log('ERROR (JS)  ', label, e && e.message, e && e.stack);
+      return false;
+    }
 
-  try {
-    nativeResult = runParse(wikitext, proto.parse, include, tidy);
-  } catch (e) {
-    console.log('ERROR (NAT) ', label, e && e.message);
-    return false;
+    try {
+      nativeResult = runParse(Buffer.from(wikitext, 'utf-8'), nativeParser, include, tidy, 'native');
+    } catch (e) {
+      console.log('ERROR (NAT) ', label, e && e.message, e && e.stack);
+      return false;
+    }
+  } finally {
+    /* restore any previous env */
+    if (prevStageDir === undefined) delete process.env.WIKI_STAGE_LOG_DIR; else process.env.WIKI_STAGE_LOG_DIR = prevStageDir;
+    if (prevStageFlag === undefined) delete process.env.WIKI_STAGE_LOG; else process.env.WIKI_STAGE_LOG = prevStageFlag;
   }
 
   appendPerfLine(name, sampleIndex, jsResult.timing, nativeResult.timing);
+  // Append to a text file the JSON AST for JS and native along with the input using writeTextFile
+  // fs.appendFileSync(path.join(__dirname, name+'_ast.txt'), "'"+ wikitext + "'\t'" + JSON.stringify(nativeResult.root) + "'\n", { flag: 'a' });
 
   const textOk = jsResult.text === nativeResult.text;
-  const treeJs = JSON.stringify(jsResult.tree);
-  const treeNat = JSON.stringify(nativeResult.tree);
-  const treeOk = treeJs === treeNat;
-
-  const ok = textOk && treeOk;
-  if (!ok) {
-    console.log('FAIL', label);
-  }
+  const cmp = compareAST(jsResult.root, nativeResult.root);
+  const ok = textOk && cmp.success;
 
   if (!ok) {
-    if (!compareSample._artifactDir) {
-      compareSample._artifactDir = artifactRootDir();
-      console.log('  artifacts root:', compareSample._artifactDir);
+    console.error('FAIL', label);
+
+    if( name != 'export') {
+      if (!compareSample._artifactDir) {
+        compareSample._artifactDir = artifactRootDir();
+      }
+
+      const suiteDir = path.join(compareSample._artifactDir, sanitizeName(name));
+      ensureDir(suiteDir);
+
+      const n = String(sampleIndex).padStart(4, '0');
+      const expectedStringPath = path.join(suiteDir, `expected.string.${n}.txt`);
+      const gotStringPath = path.join(suiteDir, `got.string.${n}.txt`);
+      const stringDiffPath = path.join(suiteDir, `string.diff.${n}.txt`);
+      const expectedJsonPath = path.join(suiteDir, `expected.tree.${n}.json`);
+      const gotJsonPath = path.join(suiteDir, `got.tree.${n}.json`);
+      const jsonDiffPath = path.join(suiteDir, `tree.diff.${n}.txt`);
+      const astAnalysisPath = path.join(suiteDir, `ast.analysis.${n}.txt`);
+      const inputPath = path.join(suiteDir, `input.wikitext.${n}.txt`);
+      console.log('  input string:', inputPath);
+      writeTextFile(inputPath, wikitext);
+      if(!textOk) {
+        writeTextFile(expectedStringPath, jsResult.text);
+        writeTextFile(gotStringPath, nativeResult.text);
+        writeUnifiedDiff(expectedStringPath, gotStringPath, stringDiffPath);
+        console.log('  expected string:', expectedStringPath);
+        console.log('  got string     :', gotStringPath);
+        console.log('  string diff    :', stringDiffPath);
+        console.log(`There was a difference in the string output.  ${jsResult.text.length} vs ${nativeResult.text.length} characters.`);
+      }else {
+        console.log('  string output matches');
+      }
+
+      if(!cmp.success) {
+        writeTextFile(expectedJsonPath, JSON.stringify(buildJsAst(jsResult.root), null, 2) + '\n');
+        writeTextFile(gotJsonPath, JSON.stringify(nativeResult.root, null, 2) + '\n');
+        writeUnifiedDiff(expectedJsonPath, gotJsonPath, jsonDiffPath);
+        console.log('  expected JSON:', expectedJsonPath);
+        console.log('  got JSON     :', gotJsonPath);
+        console.log('  JSON diff    :', jsonDiffPath);
+        const astAnalysis = analyzeAstDiff(cmp, name, wikitext);
+        // If wikitext is under 50 characters, print the AST analysis to the console as well for easier debugging of small samples.
+        if( wikitext.length <= 100) {
+          console.log(astAnalysis);
+        }else {
+          writeTextFile(astAnalysisPath, astAnalysis);
+          console.log('  ast analysis :', astAnalysisPath);
+        }
+      }else if(!cmp.success) {
+        console.log('  JSON output does not match');
+      }else {
+        console.log('  JSON output matches');
+      }
+
+      // Copy any stage logs collected into the suite artifact directory
+      ensureDir(suiteDir);
+      const files = fs.readdirSync(stageDir || os.tmpdir());
+      for (const f of files) {
+        const src = path.join(stageDir, f);
+        const dst = path.join(suiteDir, f);
+        console.log(`  stage log    : ${dst}`);
+        try { fs.copyFileSync(src, dst); } catch (e) { /* ignore */ }
+      }
+      // Read the js-stage.log and native-stage.log.  Match each on stage names and print which stage they do not match on.
+      if( ! name.startsWith('export') && ! name.startsWith('wikitext')) {
+        const jsStageLogPath = path.join(stageDir, 'js-stage.log');
+        const nativeStageLogPath = path.join(stageDir, 'native-stage.log');
+        if (fs.existsSync(jsStageLogPath) && fs.existsSync(nativeStageLogPath)) {
+          // Filter both files where the lines start with Stage #
+          const jsStageLog = fs.readFileSync(jsStageLogPath, 'utf8').split('\n').filter(line => line.trim() && line.startsWith('Stage '));
+          const nativeStageLog = fs.readFileSync(nativeStageLogPath, 'utf8').split('\n').filter(line => line.trim() && line.startsWith('Stage '));
+          const minLength = Math.min(jsStageLog.length, nativeStageLog.length);
+          for (let i = 0; i < minLength; i++) {
+            if (jsStageLog[i] !== nativeStageLog[i]) {
+              console.log(`  stage mismatch:`);
+              console.log(`    JS   : ${jsStageLog[i]}`);
+              console.log(`    NAT  : ${nativeStageLog[i]}`);
+              break;
+            }
+          }
+        }
+      }
+
+      if( name.startsWith('wikitext')) {
+        const smallestDiff = getWikiTextSmallesDiff(cmp.jsToken, cmp.ncToken, cmp.parents);
+        if( smallestDiff && smallestDiff.length <= 500  ) {
+          console.log(smallestDiff);
+        }else {
+           console.log('Smallest wikitext that produces a difference is too large to print to console, see above artifact files for details.');
+        }
+      }
     }
 
-    const suiteDir = path.join(compareSample._artifactDir, sanitizeName(name));
-    ensureDir(suiteDir);
-
-    const n = String(sampleIndex).padStart(4, '0');
-    const expectedStringPath = path.join(suiteDir, `expected.string.${n}.txt`);
-    const gotStringPath = path.join(suiteDir, `got.string.${n}.txt`);
-    const stringDiffPath = path.join(suiteDir, `string.diff.${n}.txt`);
-    const expectedJsonPath = path.join(suiteDir, `expected.tree.${n}.json`);
-    const gotJsonPath = path.join(suiteDir, `got.tree.${n}.json`);
-    const jsonDiffPath = path.join(suiteDir, `tree.diff.${n}.txt`);
-    const astAnalysisPath = path.join(suiteDir, `ast.analysis.${n}.txt`);
-    const inputPath = path.join(suiteDir, `input.wikitext.${n}.txt`);
-
-    writeTextFile(inputPath, wikitext);
-    writeTextFile(expectedStringPath, jsResult.text);
-    writeTextFile(gotStringPath, nativeResult.text);
-    writeUnifiedDiff(expectedStringPath, gotStringPath, stringDiffPath);
-
-    writeTextFile(expectedJsonPath, JSON.stringify(jsResult.tree, null, 2) + '\n');
-    writeTextFile(gotJsonPath, JSON.stringify(nativeResult.tree, null, 2) + '\n');
-    writeUnifiedDiff(expectedJsonPath, gotJsonPath, jsonDiffPath);
-
-    const astAnalysis = analyzeAstDiff(jsResult.tree, nativeResult.tree);
-    writeTextFile(astAnalysisPath, astAnalysis);
-
-    console.log('  expected string:', expectedStringPath);
-    console.log('  got string     :', gotStringPath);
-    console.log('  string diff    :', stringDiffPath);
-    console.log('  expected json  :', expectedJsonPath);
-    console.log('  got json       :', gotJsonPath);
-    console.log('  tree diff      :', jsonDiffPath);
-    console.log('  ast analysis   :', astAnalysisPath);
   }
 
   return ok;
@@ -356,12 +333,17 @@ function compareSample(wikitext, { include = false, tidy = false, name = 'sample
  * @param {object}   [opts]
  */
 function runTests(samples, opts = {}) {
+  // These are specific for debugging if a env is set
+  process.env.DEBUG_PARAM_VALUES = 'true';
+
   const include = Boolean(opts && opts.include);
   const tidy = Boolean(opts && opts.tidy);
   const suiteName = resolveSuiteName(opts);
+  //fs.writeFileSync(path.join(__dirname, suiteName+'_ast.txt'), '', 'utf8');
   let passed = 0;
   let failed = 0;
   for (let i = 0; i < samples.length; i++) {
+    // Create/clear the file at path.join(__dirname, name+'_ast.txt')
     const ok = compareSample(samples[i], {
       include,
       tidy,
@@ -371,12 +353,14 @@ function runTests(samples, opts = {}) {
     if (ok) passed++;
     else failed++;
   }
-  const total = samples.length;
-  console.log(`SUMMARY [${suiteName}] passed=${passed} failed=${failed} total=${total}`);
+  // const total = samples.length;
+  // console.log(`SUMMARY [${suiteName}] passed=${passed} failed=${failed} total=${total}`);
   if (failed > 0) {
-    process.exit(2);
+    //process.exit(failed);
+    return false;
   }
-  process.exit(0);
+
+  return true;
 }
 
-module.exports = { runTests, compareSample, nodeToJSON, Token, proto, patch, MAX_STAGE };
+module.exports = { runTests, compareSample };

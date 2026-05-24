@@ -12,28 +12,30 @@
 #pragma once
 #include <stddef.h>
 #include <stdbool.h>
+#include "types.h"
 
-/* Forward declaration for PCRE2 types (avoid pulling in pcre2.h in every TU) */
-typedef void ParserConfigRegex; /* actual type: pcre2_code_8 * */
+/* Global default allocator for sz_string_t operations */
+extern sz_memory_allocator_t allocator_default;
 
-/* ── String list ─────────────────────────────────────────────────────────── */
-typedef struct {
-    char  **items;
-    size_t  count;
-} StrList;
-
-/* ── String map (key->value pairs) ─────────────────────────────────────── */
-typedef struct {
-    char  **keys;
-    char  **values;
-    size_t  count;
-} StrMap;
+/* Initialize the default allocator */
+void config_init_allocator(void);
 
 /* ── Namespace map entry ───────────────────────────────────────────────────── */
 typedef struct {
-    int   num;
-    char *name;
+    int         num;
+    sz_string_t name;
 } NsEntry;
+
+/* ── Protocol item & list ─────────────────────────────────────────────────── */
+typedef struct {
+    sz_string_view_t protocol;   /* View into protocol buffer (no ownership) */
+    sz_string_t protocol_lower; /* Precomputed lowercase version */
+} ProtocolItem;
+
+typedef struct {
+    ProtocolItem *items;
+    size_t         count;
+} ProtocolList;
 
 /* ── Parser config ──────────────────────────────────────────────────────── */
 typedef struct {
@@ -53,15 +55,27 @@ typedef struct {
     /* doubleUnderscore[0]=case-insensitive, [1]=case-sensitive,
        [2]=insensitive→canonical map (keys), [3]=sensitive→canonical map (keys) */
     StrList double_underscore[4];
+     StrMap  double_underscore_alias[2]; /* [0]=insensitive alias map, [1]=sensitive alias map */
 
     /* protocol regex fragment e.g. "https?:|ftp:" */
     char *protocol;
+
+    /* expanded protocol items */
+    ProtocolList protocol_items;
+    bool protocol_items_valid;
+    char *protocol_buffer;       /* Storage for expanded protocol strings */
+    size_t protocol_buffer_cap;   /* Capacity of protocol buffer */
+    size_t protocol_buffer_len;   /* Used length of protocol buffer */
 
     /* language variants for converter */
     StrList variants;
     
      /* magic variables list from config.variable (lowercased names) */
      StrList variable;
+
+    /* parserFunction[2] in JS config: raw-like transclusion modifiers
+     * (e.g. ["msg","raw"]) used by parseBraces TranscludeToken modifier handling. */
+    StrList parser_function_raw;
 
     /* parserFunction[3] in JS config: subst-like transclusion modifiers
      * (e.g. ["safesubst","subst"]) used by parseBraces for {{{...}}}. */
@@ -82,25 +96,8 @@ typedef struct {
     /* token types to exclude from parsing (e.g. ["html","table"]) */
     StrList excludes;
 
-    /* ── Lazily-compiled PCRE2 patterns ─── */
-    ParserConfigRegex *regex_redirect;       /* used in parse_redirect */
-    ParserConfigRegex *regex_ext[2];         /* [0]=!includeOnly, [1]=includeOnly */
-    ParserConfigRegex *regex_ext_translate;  /* nowiki inside translate pass */
-    ParserConfigRegex *regex_translate;      /* <translate> tags */
-    ParserConfigRegex *regex_magic_links;    /* stage 8: free URLs / magic links */
-    /* Stage 4: HR and double-underscore cached regex */
-    ParserConfigRegex *regex_hr_and_dunder;
-    /* compiled regex used by parseLinks to detect protocol prefixes (lazy) */
-    ParserConfigRegex *regex_links;
-    /* Additional cached regexes for heavy/recurring patterns */
-    ParserConfigRegex *regex_html;           /* parse_html */
-    ParserConfigRegex *regex_braces;         /* parse_braces */
-    ParserConfigRegex *regex_quotes;         /* parse_quotes */
-    ParserConfigRegex *regex_list_prefix;    /* parse_list prefix */
-    ParserConfigRegex *regex_list_full;      /* parse_list full */
-    ParserConfigRegex *regex_list_brace;     /* parse_list brace */
-    ParserConfigRegex *regex_external_links; /* parse_external_links */
-    ParserConfigRegex *regex_converter;      /* parse_converter split regex */
+    /* JS parseLinks toggles regex shape with config.inExt. */
+    bool in_ext;
 
 } ParserConfig;
 

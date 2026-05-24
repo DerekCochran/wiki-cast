@@ -1,0 +1,138 @@
+from langchain_core.messages import HumanMessage, AIMessage, ToolMessage, SystemMessage
+from langchain_openai import ChatOpenAI
+
+def compress_history(messages: list, llm: ChatOpenAI) -> list:
+    """
+    Looks at the message history. If it's getting too long, it asks the LLM 
+    to summarize the changes made so far, removes old tool details, 
+    and keeps only the most recent conversation turns intact.
+    """
+    # Only compress if history is getting long (e.g., more than 8 messages)
+    if len(messages) <= 8:
+        return messages
+
+    print("--- Compressing message history to save context window ---")
+    
+    # Separate the system prompt from the active history
+    system_prompt = messages[0] if isinstance(messages[0], SystemMessage) else None
+    active_history = messages[1:] if system_prompt else messages
+
+    # Split into what we want to summarize (older turns) vs what we keep exact (last 2 turns)
+    # We want to keep the most recent AI decision and its direct tool result fresh.
+    to_summarize = active_history[:-2]
+    keep_intact = active_history[-2:]
+
+    # Ask the LLM to write a concise summary of what it has done so far
+    summary_prompt = [
+        SystemMessage(content="You are a context-management utility. Summarize the debugging actions taken so far."),
+        HumanMessage(content=(
+            "Review these past agent steps and summarize: \n"
+            "1. What errors were encountered.\n"
+            "2. What files were edited or viewed.\n"
+            "Keep it incredibly brief (under 3 sentences). Do not include raw code blocks.\n\n"
+            f"History to summarize:\n{to_summarize}"
+        ))
+    ]
+    
+    summary_response = llm.invoke(summary_prompt)
+    summary_text = f"Summary of previous attempts: {summary_response.content}"
+    print(f"Compressed history into: '{summary_text}'")
+
+    # Reconstruct a lean, clean history array
+    new_messages = []
+    if system_prompt:
+        new_messages.append(system_prompt)
+        
+    # Inject the summary as a single human message guiding the next steps
+    new_messages.append(HumanMessage(content=summary_text))
+    
+    # Append the last couple of turns so the AI remembers its immediate context
+    new_messages.extend(keep_intact)
+    
+    return new_messages
+
+
+def run_self_healing_loop():
+    llm = ChatOpenAI(model="qwen2.5-coder", base_url="http://localhost:11434/v1", api_key="ollama", temperature=0)
+    llm_with_tools = llm.bind_tools([edit_file_replace, view_file_lines])
+    
+    message_history = [
+        SystemMessage(content="You are a C/Node.js debugging agent. Fix the test failures.")
+    ]
+    
+    for iteration in range(1, 10):
+        print(f"\n=== Iteration {iteration} ===")
+        
+        # 1. Run your tests and get the failure message
+        test_output = run_tests.invoke({})
+        if "FAIL" not in test_output:
+            print("All tests passed!")
+            break
+            
+        message_history.append(HumanMessage(content=f"Tests failed:\n{test_output}"))
+        
+        # 2. CRITICAL STEP: Compress the history before passing it to the model
+        message_history = compress_history(message_history, llm)
+        
+        # 3. Call the model with the pruned history
+        ai_response = llm_with_tools.invoke(message_history)
+        message_history.append(ai_response)
+        
+        # 4. Handle tool calls execution...
+        if ai_response.tool_calls:
+            for tool_call in ai_response.tool_calls:
+                # Run tool, get output, append ToolMessage...
+                pass
+
+
+from langchain_core.messages import trim_messages
+
+# This configures an automatic trimmer that drops old messages 
+# when the conversation exceeds a certain token threshold
+trimmer = trim_messages(
+    max_tokens=4000,
+    strategy="last",
+    token_counter=llm,
+    start_on="human", # Avoid breaking tool/ai pairs
+    include_system=True
+)
+
+# Inside your loop, you just wrap your history right before invoking:
+pruned_history = trimmer.invoke(message_history)
+response = llm_with_tools.invoke(pruned_history)
+
+
+from langchain_core.messages import HumanMessage, AIMessage, ToolMessage
+from langchain_openai import ChatOpenAI
+
+llm = ChatOpenAI(model="qwen2.5-coder", base_url="http://localhost:11434/v1", api_key="ollama")
+llm_with_tools = llm.bind_tools([edit_file_replace, view_file_lines])
+
+# 1. Start your history list
+message_history = []
+
+# Turn 1: Initial Prompt (e.g., passing a compiler error)
+prompt = "The file src/parser.c failed to compile. Line 42 has a syntax error."
+message_history.append(HumanMessage(content=prompt))
+
+# First invoke -> Model figures out it needs to see the code
+ai_response = llm_with_tools.invoke(message_history) 
+message_history.append(ai_response) # Save the AI's intent to memory
+
+# Turn 2: Process the tool call if the AI requested one
+if ai_response.tool_calls:
+    for tool_call in ai_response.tool_calls:
+        if tool_call["name"] == "view_file_lines":
+            # Execute your python function using the arguments the AI generated
+            tool_output = view_file_lines.invoke(tool_call["args"])
+            
+            # CRITICAL: Append a ToolMessage containing the output, 
+            # linking it back to the tool_call ID so the LLM matches them up
+            message_history.append(ToolMessage(
+                content=str(tool_output), 
+                tool_call_id=tool_call["id"]
+            ))
+
+# Turn 3: Invoke again, now passing the whole history (Prompt + AI Intent + Tool Result)
+next_ai_response = llm_with_tools.invoke(message_history)
+message_history.append(next_ai_response)

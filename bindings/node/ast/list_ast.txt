@@ -1,0 +1,34 @@
+'* Item 1
+* Item 2
+* Item 3'	'{"type":"root","childNodes":[{"type":"list","childNodes":["* "]},"Item 1\n",{"type":"list","childNodes":["* "]},"Item 2\n",{"type":"list","childNodes":["* "]},"Item 3"]}'
+'# One
+# Two
+# Three'	'{"type":"root","childNodes":[{"type":"list","childNodes":["# "]},"One\n",{"type":"list","childNodes":["# "]},"Two\n",{"type":"list","childNodes":["# "]},"Three"]}'
+'; Term : Definition'	'{"type":"root","childNodes":[{"type":"list","childNodes":["; "]},"Term ",{"type":"dd","childNodes":[":"]}," Definition"]}'
+': just a definition'	'{"type":"root","childNodes":[{"type":"list","childNodes":[": "]},"just a definition"]}'
+'* Bullet
+# Number
+* Bullet again'	'{"type":"root","childNodes":[{"type":"list","childNodes":["* "]},"Bullet\n",{"type":"list","childNodes":["# "]},"Number\n",{"type":"list","childNodes":["* "]},"Bullet again"]}'
+'* Level 1
+** Level 2
+** Level 2 again
+* Level 1 again'	'{"type":"root","childNodes":[{"type":"list","childNodes":["* "]},"Level 1\n",{"type":"list","childNodes":["** "]},"Level 2\n",{"type":"list","childNodes":["** "]},"Level 2 again\n",{"type":"list","childNodes":["* "]},"Level 1 again"]}'
+'# First
+## Sub-first
+## Sub-second
+# Second'	'{"type":"root","childNodes":[{"type":"list","childNodes":["# "]},"First\n",{"type":"list","childNodes":["## "]},"Sub-first\n",{"type":"list","childNodes":["## "]},"Sub-second\n",{"type":"list","childNodes":["# "]},"Second"]}'
+'* Bullet
+*# Numbered sub-item
+* Bullet again'	'{"type":"root","childNodes":[{"type":"list","childNodes":["* "]},"Bullet\n",{"type":"list","childNodes":["*# "]},"Numbered sub-item\n",{"type":"list","childNodes":["* "]},"Bullet again"]}'
+'* ''italic'' item'	'{"type":"root","childNodes":[{"type":"list","childNodes":["* "]},{"type":"quote","childNodes":["''"]},"italic",{"type":"quote","childNodes":["''"]}," item"]}'
+'* [[Main Page|home page]] item'	'{"type":"root","childNodes":[{"type":"list","childNodes":["* "]},{"type":"link","name":"Main_Page","childNodes":[{"type":"link-target","childNodes":["Main Page"]},{"type":"link-text","childNodes":["home page"]}]}," item"]}'
+': indented paragraph'	'{"type":"root","childNodes":[{"type":"list","childNodes":[": "]},"indented paragraph"]}'
+'**** fourth level'	'{"type":"root","childNodes":[{"type":"list","childNodes":["**** "]},"fourth level"]}'
+'* First list
+
+* Second list'	'{"type":"root","childNodes":[{"type":"list","childNodes":["* "]},"First list\n\n",{"type":"list","childNodes":["* "]},"Second list"]}'
+'* item 1
+plain text
+* item 2'	'{"type":"root","childNodes":[{"type":"list","childNodes":["* "]},"item 1\nplain text\n",{"type":"list","childNodes":["* "]},"item 2"]}'
+'* -{zh-hans:简;zh-hant:繁;}-'	'{"type":"root","childNodes":[{"type":"list","childNodes":["* "]},"-{zh-hans:简;zh-hant:繁;}-"]}'
+'* {{T|v=RFC 2119}}'	'{"type":"root","childNodes":[{"type":"list","childNodes":["* "]},{"type":"template","name":"Template:T","childNodes":[{"type":"template-name","childNodes":["T"]},{"type":"parameter","name":"v","childNodes":[{"type":"parameter-key","childNodes":["v"]},{"type":"parameter-value","childNodes":[{"type":"magic-link","childNodes":["RFC 2119"]}]}]}]}]}'

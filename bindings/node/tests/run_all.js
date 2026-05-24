@@ -5,18 +5,22 @@ const { spawnSync } = require('child_process');
 const path = require('path');
 
 const tests = [
-  'test_redirect.js',
-  'test_braces.js',
-  'test_html.js',
-  'test_table.js',
   'test_hr_and_double_underscore.js',
+  'test_braces.js',
   'test_comment_and_ext.js',
-  'test_links.js',
-  'test_quotes.js',
-  'test_external_links.js',
-  'test_magic_links.js',
-  'test_list.js',
   'test_converter.js',
+  'test_external_links.js',
+  'test_html.js',
+  'test_image_ns.js',
+  'test_links.js',
+  'test_list.js',
+  'test_magic_links.js',
+  'test_quotes.js',
+  'test_redirect.js',
+  'test_table_attrs_ref.js',
+  'test_table_sweep.js',
+  'test_table.js',
+  //'test_zhwiki.js',
   'test_pipeline.js',
 ];
 

@@ -1,11 +1,38 @@
 'use strict';
 const path = require('path');
-const wikiNmDir = path.resolve(__dirname, '..', 'node_modules');
+const fs = require('fs');
+
+function resolveWikiNodeModulesDir() {
+  const candidates = [
+    path.resolve(__dirname, '..', 'node_modules'),
+    path.resolve(__dirname, '..', '..', '..', 'node_modules'),
+  ];
+  for (const dir of candidates) {
+    const entry = path.join(dir, 'wikiparser-node', 'dist', 'src', 'index.js');
+    if (fs.existsSync(entry)) return dir;
+  }
+  throw new Error('Unable to locate wikiparser-node in expected node_modules locations');
+}
+
+const wikiNmDir = resolveWikiNodeModulesDir();
 const { Token } = require(wikiNmDir + '/wikiparser-node/dist/src/index');
 const { Shadow } = require(wikiNmDir + '/wikiparser-node/dist/util/debug');
 const Parser = require(wikiNmDir + '/wikiparser-node/dist/index');
-const native = require(path.resolve(__dirname, '..', 'build', 'Release', 'native_binding.node'));
-const DEFAULT_WIKI_CONFIG = path.resolve(__dirname, '..', '..', 'node_modules', 'wikiparser-node', 'config', 'enwiki.json');
+function loadNative() {
+  const candidates = [
+    path.resolve(__dirname, '..', 'build', 'Release', 'wikiparser-node-c-tokenizer.node'),
+    path.resolve(__dirname, '..', 'build', 'Debug', 'wikiparser-node-c-tokenizer.node'),
+  ];
+  for (const candidate of candidates) {
+    if (fs.existsSync(candidate)) {
+      return require(candidate);
+    }
+  }
+  throw new Error('Unable to locate native addon build artifact');
+}
+
+const native = loadNative();
+const DEFAULT_WIKI_CONFIG = path.join(wikiNmDir, 'wikiparser-node', 'config', 'enwiki.json');
 const proto = Token.prototype;
 
 if (!process.env.WIKI_CONFIG) {

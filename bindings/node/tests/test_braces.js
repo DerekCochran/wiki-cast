@@ -5,7 +5,7 @@ const { runTests } = require('./helpers');
 
 runTests([
   // Basic template
-  '{{Template}}',
+  '{{Template|}}',
   // Template with one positional argument
   '{{Template|arg}}',
   // Template with named argument
@@ -48,6 +48,23 @@ runTests([
   '-{zh:漢字;zh-hans:汉字}-',
   // Multiline template with newline before first parameter
   '{{Navboxes\n|list=\n{{Libertarian socialism}}\n{{Libertarianism}}\n}}',
+  // Subst/safesubst modifier should keep magic-word structure
+  '{{subst:CURRENTYEAR}}',
+  '{{safesubst:CURRENTYEAR}}',
+  // #invoke should emit invoke-module/invoke-function children
+  '{{#invoke:Foo|bar}}',
+  '{{#invoke:Foo|bar|x=y}}',
+  // Namespaced transclusion titles should not be forced into Template: namespace
+  '{{Module:Foo}}',
+  '{{Template:Bar}}',
+  '{{User:Example}}',
+  '{{:File:Example.jpg}}',
+  // Multiline parameter values containing heading syntax should remain inside template
+  '{{T|x=\n==H==\n}}',
+  '{{A|\n=H=\n}}',
+  // Arg default should be parsed through stages 0-2 in JS
+  '{{{a|<b>x</b>}}}',
+  '{{{a|{{T}}}}}',
 
   // BEGIN: auto-generated parity sweep (braces)
   "{{T|v=RFC 2119}}",

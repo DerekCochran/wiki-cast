@@ -16,10 +16,14 @@ static const char *samples[] = {
     "{|\n| outer || {|\n| inner\n|}\n|}",
     "prefix\n{|\n| cell\n|}\nsuffix",
     "{|\n| style=\"color:red\" | red text\n|}",
+    "{|\n| {{green}} | x\n|}",
+    "| {{chset-cell1 | 123 U+007B: LEFT CURLY BRACKET | [[Left curly bracket|{]] | style=background:#ffffb2}}",
+    "{|\n| {{chset-cell1 | 123 U+007B: LEFT CURLY BRACKET | [[Left curly bracket|{]] | style=background:#ffffb2}}\n|}",
     "{|\n|}",
     ":{|\n| cell\n|}",
     "{|\n| cell\n|} trailing text",
     "{|\n|+ style=\"font-weight:bold\" | Important\n|-\n| data\n|}",
+    "{| class=\"wikitable\"\n|-\n|Μῆνιν ἄειδε θεὰ Πηληιάδεω Ἀχιλῆος<br />\nοὐλομένην, ἣ μυρί' Ἀχαιοῖς ἄλγε' ἔθηκε, [...]\n|Sing, Goddess, of the rage of Peleus' son Achilles,<br />\nthe accursed rage that brought great suffering to the Achaeans, [...]\n|}",
     /* regression: template nested in table caption was dropped */
     "{|class=\"wikitable\" style=\"border: none; float: right;\"\n|+ Anarchist vs. statist perspectives on education<br/>{{Small|Ruth Kinna (2019){{Sfn|Kinna|2019|p=97}}}}\n|-\n!scope=\"col\"|\n!scope=\"col\"|Anarchist education\n!scope=\"col\"|State education\n|}",
 };

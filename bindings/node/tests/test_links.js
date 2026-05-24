@@ -8,6 +8,8 @@ runTests([
   'See [[Main Page]] for details.',
   // Link with display text
   '[[Page|display text]]',
+  // Delimiter with empty display text should keep empty text child
+  '[[Page|]]',
   // Link with colon prefix (forces link, not category/file)
   '[[:Category:Foo|label]]',
   // Namespace-prefixed link
@@ -18,6 +20,7 @@ runTests([
   '[[File:Image.jpg]]',
   // File with options
   '[[File:Image.jpg|thumb|right|Caption text]]',
+  '[[File:Image.jpg| thumb | upright=0.8 | Caption text]]',
   // File target should preserve/canonicalize first-letter case like JS parser
   '[[File:water_reflectivity.jpg]]',
   // File caption that is only a nested wikilink after thumb

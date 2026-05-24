@@ -1,0 +1,18 @@
+'#REDIRECT [[Target Page]]'	'{"type":"root","childNodes":[{"type":"redirect","childNodes":[{"type":"redirect-syntax","childNodes":["#REDIRECT "]},{"type":"redirect-target","name":"Target_Page","childNodes":[{"type":"link-target","childNodes":["Target Page"]}]}]}]}'
+'#redirect [[Main Page]]'	'{"type":"root","childNodes":[{"type":"redirect","childNodes":[{"type":"redirect-syntax","childNodes":["#redirect "]},{"type":"redirect-target","name":"Main_Page","childNodes":[{"type":"link-target","childNodes":["Main Page"]}]}]}]}'
+'#Redirect [[Article]]'	'{"type":"root","childNodes":[{"type":"redirect","childNodes":[{"type":"redirect-syntax","childNodes":["#Redirect "]},{"type":"redirect-target","name":"Article","childNodes":[{"type":"link-target","childNodes":["Article"]}]}]}]}'
+'#REDIRECT: [[Target Page]]'	'{"type":"root","childNodes":[{"type":"redirect","childNodes":[{"type":"redirect-syntax","childNodes":["#REDIRECT: "]},{"type":"redirect-target","name":"Target_Page","childNodes":[{"type":"link-target","childNodes":["Target Page"]}]}]}]}'
+'   #REDIRECT [[Target]]'	'{"type":"root","childNodes":[{"type":"redirect","childNodes":[{"type":"redirect-syntax","childNodes":["#REDIRECT "]},{"type":"redirect-target","name":"Target","childNodes":[{"type":"link-target","childNodes":["Target"]}]}]}]}'
+'#REDIRECT [[Target]]   '	'{"type":"root","childNodes":[{"type":"redirect","childNodes":[{"type":"redirect-syntax","childNodes":["#REDIRECT "]},{"type":"redirect-target","name":"Target","childNodes":[{"type":"link-target","childNodes":["Target"]}]}]}]}'
+'#REDIRECT [[Target]]
+Some trailing text'	'{"type":"root","childNodes":[{"type":"redirect","childNodes":[{"type":"redirect-syntax","childNodes":["#REDIRECT "]},{"type":"redirect-target","name":"Target","childNodes":[{"type":"link-target","childNodes":["Target"]}]}]},"Some trailing text"]}'
+'#重定向 [[中文页面]]'	'{"type":"root","childNodes":[{"type":"list","childNodes":["#"]},"重定向 ",{"type":"link","name":"中文页面","childNodes":[{"type":"link-target","childNodes":["中文页面"]}]}]}'
+'This is not a redirect'	'{"type":"root","childNodes":["This is not a redirect"]}'
+'#REDIRECT [[Target
+Broken]]'	'{"type":"root","childNodes":[{"type":"list","childNodes":["#"]},"REDIRECT ",{"type":"link","name":"Target","childNodes":[{"type":"link-target","childNodes":["Target"]}]}]}'
+'#REDIRECT [[]]'	'{"type":"root","childNodes":[{"type":"list","childNodes":["#"]},"REDIRECT [[]]"]}'
+'#REDIRECT [[Target|ignored display]]'	'{"type":"root","childNodes":[{"type":"redirect","childNodes":[{"type":"redirect-syntax","childNodes":["#REDIRECT "]},{"type":"redirect-target","name":"Target","childNodes":[{"type":"link-target","childNodes":["Target"]},{"type":"noinclude","childNodes":["ignored display"]}]}]}]}'
+'#REDIRECT [[Help:Contents]]'	'{"type":"root","childNodes":[{"type":"redirect","childNodes":[{"type":"redirect-syntax","childNodes":["#REDIRECT "]},{"type":"redirect-target","name":"Help:Contents","childNodes":[{"type":"link-target","childNodes":["Help:Contents"]}]}]}]}'
+'#REDIRECT [[Page#Section]]'	'{"type":"root","childNodes":[{"type":"redirect","childNodes":[{"type":"redirect-syntax","childNodes":["#REDIRECT "]},{"type":"redirect-target","name":"Page","childNodes":[{"type":"link-target","childNodes":["Page#Section"]}]}]}]}'
+'#REDIRECT[[Target]]'	'{"type":"root","childNodes":[{"type":"redirect","childNodes":[{"type":"redirect-syntax","childNodes":["#REDIRECT"]},{"type":"redirect-target","name":"Target","childNodes":[{"type":"link-target","childNodes":["Target"]}]}]}]}'
+'#REDIRECT [[Target<!--c-->]]'	'{"type":"root","childNodes":[{"type":"list","childNodes":["#"]},"REDIRECT ",{"type":"link","name":"Target","childNodes":[{"type":"link-target","childNodes":["Target",{"type":"comment","childNodes":["c"]}]}]}]}'

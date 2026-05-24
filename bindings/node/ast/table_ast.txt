@@ -1,0 +1,73 @@
+'{|
+|-
+| cell
+|}'	'{"type":"root","childNodes":[{"type":"table","childNodes":[{"type":"table-syntax","childNodes":["{|"]},{"type":"table-attrs","name":"table"},{"type":"tr","childNodes":[{"type":"table-syntax","childNodes":["\n|-"]},{"type":"table-attrs","name":"tr"},{"type":"td","childNodes":[{"type":"table-syntax","childNodes":["\n|"]},{"type":"table-attrs","name":"td"},{"type":"td-inner","childNodes":[" cell"]}]}]},{"type":"table-syntax","childNodes":["\n|}"]}]}]}'
+'{| class="wikitable"
+|+ Caption
+|-
+| A || B
+|-
+| C || D
+|}'	'{"type":"root","childNodes":[{"type":"table","childNodes":[{"type":"table-syntax","childNodes":["{|"]},{"type":"table-attrs","name":"table","childNodes":[{"type":"table-attr-dirty","childNodes":[" "]},{"type":"table-attr","name":"class","childNodes":[{"type":"attr-key","childNodes":["class"]},{"type":"attr-value","childNodes":["wikitable"]}]}]},{"type":"td","childNodes":[{"type":"table-syntax","childNodes":["\n|+"]},{"type":"table-attrs","name":"caption"},{"type":"td-inner","childNodes":[" Caption"]}]},{"type":"tr","childNodes":[{"type":"table-syntax","childNodes":["\n|-"]},{"type":"table-attrs","name":"tr"},{"type":"td","childNodes":[{"type":"table-syntax","childNodes":["\n|"]},{"type":"table-attrs","name":"td"},{"type":"td-inner","childNodes":[" A "]}]},{"type":"td","childNodes":[{"type":"table-syntax","childNodes":["||"]},{"type":"table-attrs","name":"td"},{"type":"td-inner","childNodes":[" B"]}]}]},{"type":"tr","childNodes":[{"type":"table-syntax","childNodes":["\n|-"]},{"type":"table-attrs","name":"tr"},{"type":"td","childNodes":[{"type":"table-syntax","childNodes":["\n|"]},{"type":"table-attrs","name":"td"},{"type":"td-inner","childNodes":[" C "]}]},{"type":"td","childNodes":[{"type":"table-syntax","childNodes":["||"]},{"type":"table-attrs","name":"td"},{"type":"td-inner","childNodes":[" D"]}]}]},{"type":"table-syntax","childNodes":["\n|}"]}]}]}'
+'{|
+| R1C1 || R1C2 || R1C3
+|-
+| R2C1 || R2C2 || R2C3
+|}'	'{"type":"root","childNodes":[{"type":"table","childNodes":[{"type":"table-syntax","childNodes":["{|"]},{"type":"table-attrs","name":"table"},{"type":"td","childNodes":[{"type":"table-syntax","childNodes":["\n|"]},{"type":"table-attrs","name":"td"},{"type":"td-inner","childNodes":[" R1C1 "]}]},{"type":"td","childNodes":[{"type":"table-syntax","childNodes":["||"]},{"type":"table-attrs","name":"td"},{"type":"td-inner","childNodes":[" R1C2 "]}]},{"type":"td","childNodes":[{"type":"table-syntax","childNodes":["||"]},{"type":"table-attrs","name":"td"},{"type":"td-inner","childNodes":[" R1C3"]}]},{"type":"tr","childNodes":[{"type":"table-syntax","childNodes":["\n|-"]},{"type":"table-attrs","name":"tr"},{"type":"td","childNodes":[{"type":"table-syntax","childNodes":["\n|"]},{"type":"table-attrs","name":"td"},{"type":"td-inner","childNodes":[" R2C1 "]}]},{"type":"td","childNodes":[{"type":"table-syntax","childNodes":["||"]},{"type":"table-attrs","name":"td"},{"type":"td-inner","childNodes":[" R2C2 "]}]},{"type":"td","childNodes":[{"type":"table-syntax","childNodes":["||"]},{"type":"table-attrs","name":"td"},{"type":"td-inner","childNodes":[" R2C3"]}]}]},{"type":"table-syntax","childNodes":["\n|}"]}]}]}'
+'{|
+! Header1 !! Header2
+|-
+| data1 || data2
+|}'	'{"type":"root","childNodes":[{"type":"table","childNodes":[{"type":"table-syntax","childNodes":["{|"]},{"type":"table-attrs","name":"table"},{"type":"td","childNodes":[{"type":"table-syntax","childNodes":["\n!"]},{"type":"table-attrs","name":"th"},{"type":"td-inner","childNodes":[" Header1 "]}]},{"type":"td","childNodes":[{"type":"table-syntax","childNodes":["!!"]},{"type":"table-attrs","name":"th"},{"type":"td-inner","childNodes":[" Header2"]}]},{"type":"tr","childNodes":[{"type":"table-syntax","childNodes":["\n|-"]},{"type":"table-attrs","name":"tr"},{"type":"td","childNodes":[{"type":"table-syntax","childNodes":["\n|"]},{"type":"table-attrs","name":"td"},{"type":"td-inner","childNodes":[" data1 "]}]},{"type":"td","childNodes":[{"type":"table-syntax","childNodes":["||"]},{"type":"table-attrs","name":"td"},{"type":"td-inner","childNodes":[" data2"]}]}]},{"type":"table-syntax","childNodes":["\n|}"]}]}]}'
+'{|
+|- class="odd"
+| cell
+|}'	'{"type":"root","childNodes":[{"type":"table","childNodes":[{"type":"table-syntax","childNodes":["{|"]},{"type":"table-attrs","name":"table"},{"type":"tr","childNodes":[{"type":"table-syntax","childNodes":["\n|-"]},{"type":"table-attrs","name":"tr","childNodes":[{"type":"table-attr-dirty","childNodes":[" "]},{"type":"table-attr","name":"class","childNodes":[{"type":"attr-key","childNodes":["class"]},{"type":"attr-value","childNodes":["odd"]}]}]},{"type":"td","childNodes":[{"type":"table-syntax","childNodes":["\n|"]},{"type":"table-attrs","name":"td"},{"type":"td-inner","childNodes":[" cell"]}]}]},{"type":"table-syntax","childNodes":["\n|}"]}]}]}'
+'{|
+| outer || {|
+| inner
+|}
+|}'	'{"type":"root","childNodes":[{"type":"table","childNodes":[{"type":"table-syntax","childNodes":["{|"]},{"type":"table-attrs","name":"table"},{"type":"td","childNodes":[{"type":"table-syntax","childNodes":["\n|"]},{"type":"table-attrs","name":"td"},{"type":"td-inner","childNodes":[" outer "]}]},{"type":"td","childNodes":[{"type":"table-syntax","childNodes":["||"]},{"type":"table-attrs","name":"td","childNodes":[{"type":"table-attr-dirty","childNodes":[" {"]}]},{"type":"td-inner","childNodes":[""]}]},{"type":"td","childNodes":[{"type":"table-syntax","childNodes":["\n|"]},{"type":"table-attrs","name":"td"},{"type":"td-inner","childNodes":[" inner"]}]},{"type":"table-syntax","childNodes":["\n|}"]}]},"\n|}"]}'
+'prefix
+{|
+| cell
+|}
+suffix'	'{"type":"root","childNodes":["prefix\n",{"type":"table","childNodes":[{"type":"table-syntax","childNodes":["{|"]},{"type":"table-attrs","name":"table"},{"type":"td","childNodes":[{"type":"table-syntax","childNodes":["\n|"]},{"type":"table-attrs","name":"td"},{"type":"td-inner","childNodes":[" cell"]}]},{"type":"table-syntax","childNodes":["\n|}"]}]},"\nsuffix"]}'
+'{|
+| style="color:red" | red text
+|}'	'{"type":"root","childNodes":[{"type":"table","childNodes":[{"type":"table-syntax","childNodes":["{|"]},{"type":"table-attrs","name":"table"},{"type":"td","childNodes":[{"type":"table-syntax","childNodes":["\n|"]},{"type":"table-attrs","name":"td","childNodes":[{"type":"table-attr-dirty","childNodes":[" "]},{"type":"table-attr","name":"style","childNodes":[{"type":"attr-key","childNodes":["style"]},{"type":"attr-value","childNodes":["color:red"]}]},{"type":"table-attr-dirty","childNodes":[" "]}]},{"type":"td-inner","childNodes":[" red text"]}]},{"type":"table-syntax","childNodes":["\n|}"]}]}]}'
+'{|
+| {{green}} | x
+|}'	'{"type":"root","childNodes":[{"type":"table","childNodes":[{"type":"table-syntax","childNodes":["{|"]},{"type":"table-attrs","name":"table"},{"type":"td","childNodes":[{"type":"table-syntax","childNodes":["\n|"]},{"type":"table-attrs","name":"td","childNodes":[{"type":"table-attr-dirty","childNodes":[" "]},{"type":"table-attr","name":"{{green}}","childNodes":[{"type":"attr-key","childNodes":[{"type":"template","name":"Template:Green","childNodes":[{"type":"template-name","childNodes":["green"]}]}]},{"type":"attr-value"}]},{"type":"table-attr-dirty","childNodes":[" "]}]},{"type":"td-inner","childNodes":[" x"]}]},{"type":"table-syntax","childNodes":["\n|}"]}]}]}'
+'{|
+|}'	'{"type":"root","childNodes":[{"type":"table","childNodes":[{"type":"table-syntax","childNodes":["{|"]},{"type":"table-attrs","name":"table"},{"type":"table-syntax","childNodes":["\n|}"]}]}]}'
+':{|
+| cell
+|}'	'{"type":"root","childNodes":[{"type":"dd","childNodes":[":"]},{"type":"table","childNodes":[{"type":"table-syntax","childNodes":["{|"]},{"type":"table-attrs","name":"table"},{"type":"td","childNodes":[{"type":"table-syntax","childNodes":["\n|"]},{"type":"table-attrs","name":"td"},{"type":"td-inner","childNodes":[" cell"]}]},{"type":"table-syntax","childNodes":["\n|}"]}]}]}'
+'{|
+| cell
+|} trailing text'	'{"type":"root","childNodes":[{"type":"table","childNodes":[{"type":"table-syntax","childNodes":["{|"]},{"type":"table-attrs","name":"table"},{"type":"td","childNodes":[{"type":"table-syntax","childNodes":["\n|"]},{"type":"table-attrs","name":"td"},{"type":"td-inner","childNodes":[" cell"]}]},{"type":"table-syntax","childNodes":["\n|}"]}]}," trailing text"]}'
+'{|
+|+ style="font-weight:bold" | Important
+|-
+| data
+|}'	'{"type":"root","childNodes":[{"type":"table","childNodes":[{"type":"table-syntax","childNodes":["{|"]},{"type":"table-attrs","name":"table"},{"type":"td","childNodes":[{"type":"table-syntax","childNodes":["\n|+"]},{"type":"table-attrs","name":"caption","childNodes":[{"type":"table-attr-dirty","childNodes":[" "]},{"type":"table-attr","name":"style","childNodes":[{"type":"attr-key","childNodes":["style"]},{"type":"attr-value","childNodes":["font-weight:bold"]}]},{"type":"table-attr-dirty","childNodes":[" "]}]},{"type":"td-inner","childNodes":[" Important"]}]},{"type":"tr","childNodes":[{"type":"table-syntax","childNodes":["\n|-"]},{"type":"table-attrs","name":"tr"},{"type":"td","childNodes":[{"type":"table-syntax","childNodes":["\n|"]},{"type":"table-attrs","name":"td"},{"type":"td-inner","childNodes":[" data"]}]}]},{"type":"table-syntax","childNodes":["\n|}"]}]}]}'
+'{| class="wikitable"
+|-
+|Μῆνιν ἄειδε θεὰ Πηληιάδεω Ἀχιλῆος<br />
+οὐλομένην, ἣ μυρί' Ἀχαιοῖς ἄλγε' ἔθηκε, [...]
+|Sing, Goddess, of the rage of Peleus' son Achilles,<br />
+the accursed rage that brought great suffering to the Achaeans, [...]
+|}'	'{"type":"root","childNodes":[{"type":"table","childNodes":[{"type":"table-syntax","childNodes":["{|"]},{"type":"table-attrs","name":"table","childNodes":[{"type":"table-attr-dirty","childNodes":[" "]},{"type":"table-attr","name":"class","childNodes":[{"type":"attr-key","childNodes":["class"]},{"type":"attr-value","childNodes":["wikitable"]}]}]},{"type":"tr","childNodes":[{"type":"table-syntax","childNodes":["\n|-"]},{"type":"table-attrs","name":"tr"},{"type":"td","childNodes":[{"type":"table-syntax","childNodes":["\n|"]},{"type":"table-attrs","name":"td"},{"type":"td-inner","childNodes":["Μῆνιν ἄειδε θεὰ Πηληιάδεω Ἀχιλῆος",{"type":"html","name":"br","childNodes":[{"type":"html-attrs","name":"br","childNodes":[{"type":"html-attr-dirty","childNodes":[" "]}]}]},"\nοὐλομένην, ἣ μυρί' Ἀχαιοῖς ἄλγε' ἔθηκε, [...]"]}]},{"type":"td","childNodes":[{"type":"table-syntax","childNodes":["\n|"]},{"type":"table-attrs","name":"td"},{"type":"td-inner","childNodes":["Sing, Goddess, of the rage of Peleus' son Achilles,",{"type":"html","name":"br","childNodes":[{"type":"html-attrs","name":"br","childNodes":[{"type":"html-attr-dirty","childNodes":[" "]}]}]},"\nthe accursed rage that brought great suffering to the Achaeans, [...]"]}]}]},{"type":"table-syntax","childNodes":["\n|}"]}]}]}'
+'{|
+| RFC 2119
+|}'	'{"type":"root","childNodes":[{"type":"table","childNodes":[{"type":"table-syntax","childNodes":["{|"]},{"type":"table-attrs","name":"table"},{"type":"td","childNodes":[{"type":"table-syntax","childNodes":["\n|"]},{"type":"table-attrs","name":"td"},{"type":"td-inner","childNodes":[" ",{"type":"magic-link","childNodes":["RFC 2119"]}]}]},{"type":"table-syntax","childNodes":["\n|}"]}]}]}'
+'{|
+| https://example.org/a
+|}'	'{"type":"root","childNodes":[{"type":"table","childNodes":[{"type":"table-syntax","childNodes":["{|"]},{"type":"table-attrs","name":"table"},{"type":"td","childNodes":[{"type":"table-syntax","childNodes":["\n|"]},{"type":"table-attrs","name":"td"},{"type":"td-inner","childNodes":[" ",{"type":"free-ext-link","childNodes":["https://example.org/a"]}]}]},{"type":"table-syntax","childNodes":["\n|}"]}]}]}'
+'{|
+| -{zh-hans:简;zh-hant:繁;}-
+|}'	'{"type":"root","childNodes":[{"type":"table","childNodes":[{"type":"table-syntax","childNodes":["{|"]},{"type":"table-attrs","name":"table"},{"type":"td","childNodes":[{"type":"table-syntax","childNodes":["\n|"]},{"type":"table-attrs","name":"td"},{"type":"td-inner","childNodes":[" -{zh-hans:简;zh-hant:繁;}-"]}]},{"type":"table-syntax","childNodes":["\n|}"]}]}]}'
+'{|
+| {{T|v=RFC 2119}}
+|}'	'{"type":"root","childNodes":[{"type":"table","childNodes":[{"type":"table-syntax","childNodes":["{|"]},{"type":"table-attrs","name":"table"},{"type":"td","childNodes":[{"type":"table-syntax","childNodes":["\n|"]},{"type":"table-attrs","name":"td"},{"type":"td-inner","childNodes":[" ",{"type":"template","name":"Template:T","childNodes":[{"type":"template-name","childNodes":["T"]},{"type":"parameter","name":"v","childNodes":[{"type":"parameter-key","childNodes":["v"]},{"type":"parameter-value","childNodes":[{"type":"magic-link","childNodes":["RFC 2119"]}]}]}]}]}]},{"type":"table-syntax","childNodes":["\n|}"]}]}]}'

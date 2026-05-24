@@ -1,0 +1,37 @@
+'Line above
+----
+Line below'	'{"type":"root","childNodes":["Line above\n",{"type":"hr","childNodes":["----"]},"\nLine below"]}'
+'Line above
+-----------
+Line below'	'{"type":"root","childNodes":["Line above\n",{"type":"hr","childNodes":["-----------"]},"\nLine below"]}'
+'Line above
+---
+Line below'	'{"type":"root","childNodes":["Line above\n---\nLine below"]}'
+'__NOTOC__ in text'	'{"type":"root","childNodes":[{"type":"double-underscore","name":"notoc","childNodes":["NOTOC"]}," in text"]}'
+'==Section==
+__TOC__
+Content'	'{"type":"root","childNodes":[{"type":"heading","childNodes":[{"type":"heading-title","childNodes":["Section"]},{"type":"heading-trail","childNodes":[""]}]},"\n",{"type":"double-underscore","name":"toc","childNodes":["TOC"]},"\nContent"]}'
+'Start
+__FORCETOC__
+End'	'{"type":"root","childNodes":["Start\n",{"type":"double-underscore","name":"forcetoc","childNodes":["FORCETOC"]},"\nEnd"]}'
+'__NOEDITSECTION__
+== Section =='	'{"type":"root","childNodes":[{"type":"double-underscore","name":"noeditsection","childNodes":["NOEDITSECTION"]},"\n",{"type":"heading","childNodes":[{"type":"heading-title","childNodes":[" Section "]},{"type":"heading-trail","childNodes":[""]}]}]}'
+'__NEWSECTIONLINK__'	'{"type":"root","childNodes":[{"type":"double-underscore","name":"newsectionlink","childNodes":["NEWSECTIONLINK"]}]}'
+'__NOTC__'	'{"type":"root","childNodes":[{"type":"double-underscore","name":"notitleconvert","childNodes":["NOTC"]}]}'
+'__nOtC__'	'{"type":"root","childNodes":[{"type":"double-underscore","name":"notitleconvert","childNodes":["nOtC"]}]}'
+'__NOCC__'	'{"type":"root","childNodes":[{"type":"double-underscore","name":"nocontentconvert","childNodes":["NOCC"]}]}'
+'__DISAMBIG__'	'{"type":"root","childNodes":[{"type":"double-underscore","name":"disambiguation","childNodes":["DISAMBIG"]}]}'
+'__EXPECTED_UNCONNECTED_PAGE__'	'{"type":"root","childNodes":[{"type":"double-underscore","name":"expectedunconnectedpage","childNodes":["EXPECTED_UNCONNECTED_PAGE"]}]}'
+'__NOTAKEYWORD__'	'{"type":"root","childNodes":["__NOTAKEYWORD__"]}'
+'== Section Title ==
+Content here.'	'{"type":"root","childNodes":[{"type":"heading","childNodes":[{"type":"heading-title","childNodes":[" Section Title "]},{"type":"heading-trail","childNodes":[""]}]},"\nContent here."]}'
+'=== Level 3 ==='	'{"type":"root","childNodes":[{"type":"heading","childNodes":[{"type":"heading-title","childNodes":[" Level 3 "]},{"type":"heading-trail","childNodes":[""]}]}]}'
+'{|
+|-
+| before
+----
+after
+|}'	'{"type":"root","childNodes":[{"type":"table","childNodes":[{"type":"table-syntax","childNodes":["{|"]},{"type":"table-attrs","name":"table"},{"type":"tr","childNodes":[{"type":"table-syntax","childNodes":["\n|-"]},{"type":"table-attrs","name":"tr"},{"type":"td","childNodes":[{"type":"table-syntax","childNodes":["\n|"]},{"type":"table-attrs","name":"td"},{"type":"td-inner","childNodes":[" before\n",{"type":"hr","childNodes":["----"]},"\nafter"]}]}]},{"type":"table-syntax","childNodes":["\n|}"]}]}]}'
+'== RFC 2119 =='	'{"type":"root","childNodes":[{"type":"heading","childNodes":[{"type":"heading-title","childNodes":[" ",{"type":"magic-link","childNodes":["RFC 2119"]}," "]},{"type":"heading-trail","childNodes":[""]}]}]}'
+'== https://example.org/a =='	'{"type":"root","childNodes":[{"type":"heading","childNodes":[{"type":"heading-title","childNodes":[" ",{"type":"free-ext-link","childNodes":["https://example.org/a"]}," "]},{"type":"heading-trail","childNodes":[""]}]}]}'
+'== -{zh-hans:简;zh-hant:繁;}- =='	'{"type":"root","childNodes":[{"type":"heading","childNodes":[{"type":"heading-title","childNodes":[" -{zh-hans:简;zh-hant:繁;}- "]},{"type":"heading-trail","childNodes":[""]}]}]}'

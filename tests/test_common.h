@@ -12,7 +12,7 @@
 #include <time.h>
 #include "parse.h"
 #include "token.h"
-#include "thread_buffer.h"
+#include "util/thread_buffer.h"
 
 /* Print a unified diff between expected and got using the system diff command. */
 static bool ensure_dir(const char *path)
@@ -72,7 +72,7 @@ static void get_artifact_root_dir(char *out, size_t out_cap)
     snprintf(out, out_cap, "%s", cached);
 }
 
-/* Write a token's JSON tree to a file using the library's token_to_json(). */
+/* Write a token's JSON tree to a file using the library's json_stringify_wikiparser_node(). */
 static void write_pretty_json(FILE *fp, const char *json)
 {
     if (!fp || !json) return;
@@ -132,18 +132,11 @@ static void write_token_json(const Token *t, const char *path)
     FILE *fp = fopen(path, "w");
     if (!fp) return;
     if (t) {
-        char *json = NULL;
-        size_t json_len = 0;
-        FILE *tmp = open_memstream(&json, &json_len);
-        if (tmp) {
-            token_to_json(t, tmp);
-            fclose(tmp);
-            write_pretty_json(fp, json);
-            free(json);
-        } else {
-            token_to_json(t, fp);
-            fputc('\n', fp);
-        }
+        ThreadBuf *tb = wiki_thread_buf_acquire_scratch();
+        json_stringify_wikiparser_node(t, tb);
+        write_pretty_json(fp, tb->buf);
+        fputc('\n', fp);
+        wiki_thread_buf_release_scratch(tb);
     } else {
         fputs("null\n", fp);
     }
@@ -238,7 +231,7 @@ static size_t run_parser_samples(const char *parser_name,
     size_t failed = 0;
     for (size_t i = 0; i < sample_count; i++) {
         const char *wikitext = samples[i];
-        Token *root = wiki_parse(wikitext, cfg, include, max_stage);
+        Token *root = wiki_parse(wikitext, strlen(wikitext), cfg, include, max_stage);
         if (!root) {
             printf("FAIL [%s][%zu] parse returned NULL: %s\n",
                    parser_name, i + 1, wikitext);
@@ -246,16 +239,18 @@ static size_t run_parser_samples(const char *parser_name,
             continue;
         }
 
-        ThreadBuffers *tbufs = wiki_thread_buf_get();
-        char *roundtrip = token_to_string(root, &tbufs->scratch);
+        ThreadBuf *scratch = wiki_thread_buf_acquire_scratch();
+        char *roundtrip = token_to_string(root, scratch);
         if (strcmp(roundtrip, wikitext) != 0) {
             printf("FAIL [%s][%zu] round-trip toString mismatch\n", parser_name, i + 1);
             print_diff_with_tree(wikitext, roundtrip, root, parser_name, i + 1);
             failed++;
+            wiki_thread_buf_release_scratch(scratch);
             token_free(root);
             continue;
         }
 
+        wiki_thread_buf_release_scratch(scratch);
         passed++;
         token_free(root);
     }

@@ -20,6 +20,8 @@ runTests([
   'prefix\n{|\n| cell\n|}\nsuffix',
   // Cell with attributes
   '{|\n| style="color:red" | red text\n|}',
+  // Template-like boolean table attribute in a cell
+  '{|\n| {{green}} | x\n|}',
   // Empty table
   '{|\n|}',
   // Table with indented start (dd prefix)
@@ -28,6 +30,9 @@ runTests([
   '{|\n| cell\n|} trailing text',
   // Table caption with attributes
   '{|\n|+ style="font-weight:bold" | Important\n|-\n| data\n|}',
+
+  // Wikitext repro: continuation line after <br /> inside a table cell must stay in the same td-inner
+  "{| class=\"wikitable\"\n|-\n|Μῆνιν ἄειδε θεὰ Πηληιάδεω Ἀχιλῆος<br />\nοὐλομένην, ἣ μυρί' Ἀχαιοῖς ἄλγε' ἔθηκε, [...]\n|Sing, Goddess, of the rage of Peleus' son Achilles,<br />\nthe accursed rage that brought great suffering to the Achaeans, [...]\n|}",
 
   // BEGIN: auto-generated parity sweep (table)
   "{|\n| RFC 2119\n|}",
