@@ -1,1 +1,0 @@
-'<categorytree>{{T|x=[[L|t]]}}</categorytree>'	'{"type":"root","childNodes":[{"type":"ext","name":"categorytree","childNodes":[{"type":"ext-attrs","name":"categorytree"},{"type":"ext-inner","name":"categorytree","childNodes":[{"type":"link-target","childNodes":["{{T|x=[[L|t]]}}"]}]}]}]}'

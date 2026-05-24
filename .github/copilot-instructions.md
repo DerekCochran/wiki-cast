@@ -1,1 +1,0 @@
-Call the tool directly. Do not wrap the tool call in markdown code blocks.

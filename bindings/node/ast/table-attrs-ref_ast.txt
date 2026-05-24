@@ -1,3 +1,0 @@
-'{|
-| alias = ISO-IR-006,<ref>reftext</ref> ANSI_X3.4-1968
-|}'	'{"type":"root","childNodes":[{"type":"table","childNodes":[{"type":"table-syntax","childNodes":["{|"]},{"type":"table-attrs","name":"table"},{"type":"td","childNodes":[{"type":"table-syntax","childNodes":["\n|"]},{"type":"table-attrs","name":"td"},{"type":"td-inner","childNodes":[" alias = ISO-IR-006,",{"type":"ext","name":"ref","childNodes":[{"type":"ext-attrs","name":"ref"},{"type":"ext-inner","name":"ref","childNodes":["reftext"]}]}," ANSI_X3.4-1968"]}]},{"type":"table-syntax","childNodes":["\n|}"]}]}]}'
