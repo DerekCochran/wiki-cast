@@ -58,7 +58,7 @@ async function testExport(argv) {
   const args = argv.slice(2);
   const options = {
     input: null,
-    start: 5246,
+    start: 0,
     end: 0, // 0 means no limit
   };
 
@@ -141,7 +141,6 @@ async function testExport(argv) {
 //       console.info(`The files have been copied.  Please run the below commands
 // cd ${path.dirname(__filename)}
 // node test_wikitext.js\n\n`);
-       process.exit(2);
     }
 
     if (processed % 10 === 0) {

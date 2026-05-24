@@ -35,7 +35,7 @@ async function testAll() {
   console.log("Regression Wikitext tests passed");
 
   console.log("Running export tests...");
-  await testExport();
+  await testExport(process.argv);
 
   console.log("Getting latest failing wikitext samples");
   testWikitext();
