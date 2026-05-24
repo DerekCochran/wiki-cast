@@ -4,6 +4,12 @@
 const { runTests } = require('./helpers');
 
 const castTests = [
+  // Failures from export of wikitexts
+  `<gallery mode="packed">
+  File:Collins class submarine with the aircraft carrier Charles de Gaulle in May 2019.jpg|[[French aircraft carrier Charles de Gaulle|[[French aircraft carrier Charles de Gaulle|''Charles de Gaulle'' (R91)]] nuclear-powered aircraft carrier
+  File:Temeraire1048.jpg|[[Triomphant-class submarine|[[Triomphant-class submarine|''Triomphant'']]-class nuclear ballistic missile submarine
+  </gallery>`,  
+  `[<!-- http://perso.univ-rennes1.fr/antoine.chambert-loir/DJVU/ -->https://www.irphe.fr/~clanet/otherpaperfile/articles/Galois/N0029062_PDF_1_84.pdf Œuvres Mathématiques]`,
   // Basic template
   '{{Template|}}',
   // Template with one positional argument
@@ -986,27 +992,6 @@ helpers.js:355
   '-{|zh-hans:简体;zh-hant:繁體}-',
   // Unidirectional rule form
   '-{a=>zh-hans:简;zh-hant:繁}-',  
-
-// `<gallery mode="packed">
-// helpers.js:350
-// File:Collins class submarine with the aircraft carrier Charles de Gaulle in May 2019.jpg|[[French aircraft carrier Charles de Gaulle|[[French aircraft carrier Charles de Gaulle|''Charles de Gaulle'' (R91)]] nuclear-powered aircraft carrier
-// helpers.js:350
-// File:Temeraire1048.jpg|[[Triomphant-class submarine|[[Triomphant-class submarine|''Triomphant'']]-class nuclear ballistic missile submarine
-// helpers.js:350
-// File:French amphibious assault ship Mistral (L9013) underway in the Mediterranean Sea on 24 June 2020 (200624-M-IR130-1284).JPG|[[Mistral-class landing helicopter dock|''Mistral'']]-class amphibious assault helicopter carrier
-// helpers.js:350
-// File:Rafales aboard USS Harry Truman.jpg|[[Dassault Rafale|Rafale]] multirole fighter of the [[French Naval Aviation]]
-// helpers.js:350
-// File:Decollage caracal 1.JPG|[[Eurocopter EC725|Caracal]] military transport helicopter
-// helpers.js:350
-// File:French Frigate Forbin participates in Formidable Shield 2021 - 6665647.jpg|[[Horizon-class frigate|''Horizon'']]-class [[French frigate Forbin|''Forbin'' (D620)]] frigate
-// helpers.js:350
-// File:Flickr - Official U.S. Navy Imagery - A French landing craft comes ashore during the amphibious assault phase of Bold Alligator 2012..jpg|[[Engin de débarquement amphibie rapide|EDA-R]], high-speed amphibious landing craft
-// helpers.js:350
-// </gallery>`,  
-
-// `[<!-- http://perso.univ-rennes1.fr/antoine.chambert-loir/DJVU/ -->https://www.irphe.fr/~clanet/otherpaperfile/articles/Galois/N0029062_PDF_1_84.pdf Œuvres Mathématiques]`,
-
 ];
 
 if (process.argv[1] === __filename) {
