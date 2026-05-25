@@ -324,6 +324,15 @@ function compareSample(wikitext, { include = false, tidy = false, name = 'sample
       }
     }
 
+  }else {
+    // Cleanup the stage logs at stageDir
+    if (stageDir) {
+      const files = fs.readdirSync(stageDir);
+      for (const f of files) {
+        try { fs.unlinkSync(path.join(stageDir, f)); } catch (e) { /* ignore */ }
+      }
+      try { fs.rmdirSync(stageDir); } catch (e) { /* ignore */ }
+    }
   }
 
   return ok;
