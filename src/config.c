@@ -139,6 +139,11 @@ static void str_map_from_json_object(StrMap *m, const cJSON *obj) {
 	m->count= (size_t)k;
 }
 
+static sz_string_t *realloc_sz_string_array_preserve_small(
+		sz_string_t *arr, size_t old_count, size_t new_count);
+static NsEntry *realloc_ns_entry_array_preserve_small(
+		NsEntry *arr, size_t old_count, size_t new_count);
+
 static bool str_list_contains_exact(const StrList *sl, const char *needle) {
 	if(!sl || !needle) return false;
 
@@ -155,7 +160,8 @@ static bool str_list_contains_exact(const StrList *sl, const char *needle) {
 static void str_list_append_dup(StrList *sl, const char *s) {
 
 	if(!sl || !s) return;
-	sz_string_t *grown= realloc(sl->items, (sl->count + 1) * sizeof(sz_string_t));
+	sz_string_t *grown= realloc_sz_string_array_preserve_small(
+		sl->items, sl->count, sl->count + 1);
 	assert(grown);
 	sl->items= grown;
 	sz_ptr_t ptr = sz_string_init_length(&sl->items[sl->count], strlen(s), &allocator_default);
@@ -188,10 +194,65 @@ static bool ns_entry_exists_ci(const NsEntry *arr, size_t count,
 	return false;
 }
 
+/* Preserve small-string self-pointers when realloc moves backing arrays. */
+static sz_string_t *realloc_sz_string_array_preserve_small(
+		sz_string_t *arr, size_t old_count, size_t new_count) {
+	bool *was_small= NULL;
+	if(arr && old_count > 0) {
+		was_small= malloc(old_count * sizeof(bool));
+		assert(was_small);
+		for(size_t i= 0; i < old_count; i++) {
+			was_small[i]= sz_string_is_on_stack(&arr[i]);
+		}
+	}
+
+	sz_string_t *grown= realloc(arr, new_count * sizeof(sz_string_t));
+	assert(grown);
+
+	if(grown != arr && was_small) {
+		for(size_t i= 0; i < old_count; i++) {
+			if(was_small[i]) {
+				grown[i].internal.start= &grown[i].internal.chars[0];
+			}
+		}
+	}
+
+	free(was_small);
+	return grown;
+}
+
+static NsEntry *realloc_ns_entry_array_preserve_small(
+		NsEntry *arr, size_t old_count, size_t new_count) {
+	bool *was_small= NULL;
+	if(arr && old_count > 0) {
+		was_small= malloc(old_count * sizeof(bool));
+		assert(was_small);
+		for(size_t i= 0; i < old_count; i++) {
+			was_small[i]= sz_string_is_on_stack(&arr[i].name);
+		}
+	}
+
+	NsEntry *grown= realloc(arr, new_count * sizeof(NsEntry));
+	assert(grown);
+
+	if(grown != arr && was_small) {
+		for(size_t i= 0; i < old_count; i++) {
+			if(was_small[i]) {
+				grown[i].name.internal.start= &grown[i].name.internal.chars[0];
+			}
+		}
+	}
+
+	free(was_small);
+	return grown;
+}
+
 static void str_map_append_dup(StrMap *m, const char *key, const char *value) {
 	if(!m || !key || !value) return;
-	sz_string_t *grown_keys= realloc(m->keys, (m->count + 1) * sizeof(sz_string_t));
-	sz_string_t *grown_vals= realloc(m->values, (m->count + 1) * sizeof(sz_string_t));
+	sz_string_t *grown_keys= realloc_sz_string_array_preserve_small(
+		m->keys, m->count, m->count + 1);
+	sz_string_t *grown_vals= realloc_sz_string_array_preserve_small(
+		m->values, m->count, m->count + 1);
 	assert(grown_keys && grown_vals);
 	m->keys= grown_keys;
 	m->values= grown_vals;
@@ -456,7 +517,8 @@ static ParserConfig *config_from_cjson(const cJSON *root) {
 				if(ns_entry_exists_ci(cfg->namespaces, cfg->ns_count, item->string, nsnum)) {
 					continue;
 				}
-				NsEntry *grown= realloc(cfg->namespaces, (cfg->ns_count + 1) * sizeof(NsEntry));
+				NsEntry *grown= realloc_ns_entry_array_preserve_small(
+					cfg->namespaces, cfg->ns_count, cfg->ns_count + 1);
 				assert(grown);
 				cfg->namespaces= grown;
 			sz_ptr_t ptr = sz_string_init_length(&cfg->namespaces[cfg->ns_count].name, strlen(item->string), &allocator_default);
@@ -567,7 +629,8 @@ static ParserConfig *config_from_cjson(const cJSON *root) {
      *   parserFunction[1]["TRANSLATIONLANGUAGE"] = "translationlanguage";
      * }
      */
-	if(str_list_contains_exact(&cfg->ext, "translate") && !str_list_contains_exact(&cfg->variable, "translationlanguage")) {
+	if(str_list_contains_exact(&cfg->ext, "translate") &&
+		 !str_list_contains_exact(&cfg->variable, "translationlanguage")) {
 		str_list_append_dup(&cfg->variable, "translationlanguage");
 		if(!str_map_contains_key(&cfg->parser_function_sensitive, "TRANSLATIONLANGUAGE")) {
 			str_map_append_dup(&cfg->parser_function_sensitive,

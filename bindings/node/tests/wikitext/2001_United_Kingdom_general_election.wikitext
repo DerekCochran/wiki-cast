@@ -1,0 +1,1920 @@
+{{Short description|none}}
+{{row hover highlight}}
+{{Use British English|date=May 2014}}
+{{Use dmy dates|date=September 2020}}
+{{Infobox election
+| election_name = 2001 United Kingdom general election
+| country = United Kingdom
+| type = parliamentary
+| ongoing = no
+| previous_election = 1997 United Kingdom general election
+| previous_year = 1997
+| outgoing_members = List of MPs elected in the 1997 United Kingdom general election
+| next_election = 2005 United Kingdom general election
+| next_year = 2005
+| elected_members = List of MPs elected in the 2001 United Kingdom general election
+| seats_for_election = All 659 seats to the [[House of Commons of the United Kingdom|House of Commons]]
+| majority_seats = 330
+| elected_mps = [[List of MPs elected in the 2001 United Kingdom general election|Members elected]]
+| election_date = 7 June 2001
+| turnout = 26,367,383<br>59.4% ({{decrease}}11.9 [[Percentage point|pp]])
+| registered = 44,403,238
+| opinion_polls = Opinion polling for the United Kingdom general election, 2001
+<!--      Labour      -->| image1 = {{CSS image crop|Image=Tony Blair in 2002.jpg|bSize = 120|cWidth = 120|cHeight = 160|oTop = 0|oLeft = 0}}
+| leader1 = [[Tony Blair]]
+| leader_since1 = [[1994 Labour Party leadership election|21 July 1994]]
+| party1 = Labour Party (UK)
+| leaders_seat1 = [[Sedgefield (UK Parliament constituency)|Sedgefield]]
+| last_election1 = 418 seats, 43.2%
+| seats1 = '''412'''{{efn|Does not include the Speaker, [[Michael Martin, Baron Martin of Springburn|Michael Martin]], who was included in the Labour totals by some media outlets}}
+| seat_change1 = {{decrease}}6
+| popular_vote1 = '''10,724,953'''
+| percentage1 = '''40.7%'''
+| swing1 = {{decrease}}2.5 [[Percentage point|pp]]
+<!--      Conservative     -->| image2 = {{CSS image crop|Image=William Hague MP (3156637603) (cropped).jpg|bSize = 120|cWidth = 120|cHeight = 160|oTop = 0|oLeft = 0}}
+| leader2 = [[William Hague]]
+| leader_since2 = [[1997 Conservative Party leadership election|19 June 1997]]
+| party2 = Conservative Party (UK)
+| leaders_seat2 = [[Richmond (Yorks)]]
+| last_election2 = 165 seats, 30.7%
+| seats2 = 166
+| seat_change2 = {{increase}}1
+| popular_vote2 = 8,357,615
+| percentage2 = 31.7%
+| swing2 = {{increase}}1.0 [[Percentage point|pp]]
+<!--      Liberal Democrats      -->| image3 = {{CSS image crop|Image=Charles Kennedy MP (cropped).jpg|bSize = 120|cWidth = 120|cHeight = 160|oTop = 0|oLeft = 0}}
+| leader3 = [[Charles Kennedy]]
+| leader_since3 = [[1999 Liberal Democrats leadership election|9 August 1999]]
+| party3 = Liberal Democrats (UK)
+| leaders_seat3 = [[Ross, Skye and Inverness West (UK Parliament constituency)|Ross,&nbsp;Skye&nbsp;and<br />Inverness West]]
+| last_election3 = 46 seats, 16.8%
+| seats3 = 52
+| seat_change3 = {{increase}}6
+| popular_vote3 = 4,814,321
+| percentage3 = 18.3%
+| swing3 = {{increase}}1.5 [[Percentage point|pp]]
+<!--      Map      -->| map_image = UK General Election, 2001.svg
+| map_size = 200px
+| map_caption = Colours denote the winning party, as shown in the main table of results.
+| map2_image = File:House of Commons elected members, 2001.svg
+| map2_size = 360px
+| map2_caption = Composition of the [[House of Commons of the United Kingdom|House of Commons]] after the election
+<!--      Post election      -->| title = [[Prime Minister of the United Kingdom|Prime Minister]]
+| posttitle = Prime Minister after election
+| before_election = [[Tony Blair]]
+| before_party = Labour Party (UK)
+| after_election = [[Tony Blair]]
+| after_party = Labour Party (UK)
+}}
+A [[general elections in the United Kingdom|general election]] was held in the United Kingdom on 7 June 2001, four years after [[1997 United Kingdom general election|the previous election on 1 May 1997]], to elect [[List of MPs elected in the 2001 United Kingdom general election|659 members]] to the [[House of Commons of the United Kingdom|House of Commons]]. The governing [[Labour Party (UK)|Labour Party]] led by [[Prime Minister of the United Kingdom|Prime Minister]] [[Tony Blair]] was re-elected to serve a second term in government with another [[landslide victory]] with a 166-seat majority, returning 412 members of Parliament versus 418 from the previous election, a net loss of six seats, although with a significantly lower turnout than before—59.4%, compared to 71.6% at the previous election.<ref>{{Cite news |date=2001-06-08 |title=Turnout 'at 80-year low' |language=en-GB |work=[[BBC]] |url=https://news.bbc.co.uk/news/vote2001/hi/english/newsid_1376000/1376575.stm |access-date=2022-12-07}}</ref> 
+
+The number of votes Labour received fell by nearly three million. Blair went on to become the only Labour prime minister to serve two consecutive full terms in office. As Labour retained almost all of their seats won in the 1997 landslide victory, the media dubbed the 2001 election "the quiet landslide".<ref>{{cite news|last1=Parkinson|first1=Justin|title=The rise and fall of New Labour|url=https://www.bbc.com/news/uk-politics-10518842|work=BBC News|access-date=12 May 2015|date=3 August 2010}}</ref> There was little change outside [[Northern Ireland]], with 620 out of the 641 seats in [[Great Britain]] electing candidates from the same party as they did in 1997. A strong economy contributed to the Labour victory.
+
+The opposition [[Conservative Party (UK)|Conservative Party]] under [[William Hague]]'s leadership was still deeply divided on the issue of [[European Union|Europe]] and the party's policy platform had drifted considerably to the [[right-wing politics|right]]. The party put the issue of [[European monetary union]], in particular the prospect of the UK joining the [[Eurozone]], at the centre of its campaign but failed to resonate with the electorate. The Conservatives briefly had a narrow lead in the polls during the 2000 fuel strikes but Labour successfully resolved them by year end. Furthermore, a series of publicity stunts that backfired also harmed Hague, and he immediately announced his resignation as party leader when the election result was clear, formally stepping down three months later, therefore becoming the first leader of the Conservative Party in the House of Commons since [[Austen Chamberlain]] nearly eighty years prior not to serve as prime minister.
+
+The election was largely a repeat of the 1997 general election, with Labour losing only six seats overall and the Conservatives making a net gain of one seat (gaining nine seats but losing eight). The Conservatives gained [[Galloway and Upper Nithsdale (UK Parliament constituency)|a seat]] in [[Scotland]], which ended the party's status as an "[[England]]-only" party in the prior parliament, but failed again to win any seats in [[Wales]]. Although they did not gain many seats, three of the few new MPs elected were future Conservative Prime Ministers [[David Cameron]] and [[Boris Johnson]] and future Conservative [[Chancellor of the Exchequer]] [[George Osborne]]; Osborne would serve in the same Cabinet as Cameron from 2010 to 2016. The [[Liberal Democrats (UK)|Liberal Democrats]] led by [[Charles Kennedy]] made a net gain of six seats.
+
+Change was seen in Northern Ireland, with the moderate [[Unionism in Ireland|unionist]] [[Ulster Unionist Party]] (UUP) losing four seats to the more hardline [[Democratic Unionist Party]] (DUP). A similar transition appeared in the [[Irish nationalism|nationalist]] community, with the moderate [[Social Democratic and Labour Party]] (SDLP) losing votes to the more staunchly [[Irish republicanism|republican]] and [[abstentionist]] [[Sinn Féin]].
+
+Exceptionally low voter turnout, which fell below 60% for the first time since [[1918 United Kingdom general election|1918]], also marked this election.<ref>{{cite web |last1=Audickas |first1=Lukas |last2=Cracknell |first2=Richard |title=UK Election Statistics: 1918–2018: 100 Years of Elections |url=https://researchbriefings.files.parliament.uk/documents/CBP-7529/CBP-7529.pdf |archive-url=https://ghostarchive.org/archive/20221009/https://researchbriefings.files.parliament.uk/documents/CBP-7529/CBP-7529.pdf |archive-date=2022-10-09 |url-status=live |page=25 |date=13 December 2018 |publisher=[[House of Commons Library]] |department=Briefing Paper Number CBP7529 |access-date=1 April 2019}}</ref> The election was broadcast live on [[BBC One]] and presented by [[David Dimbleby]], [[Jeremy Paxman]], [[Andrew Marr]], [[Peter Snow]], and [[Anthony King (political scientist)|Tony King]].<ref>{{Cite web|url=https://www.youtube.com/watch?v=-HGDplurdMQ| archive-url=https://ghostarchive.org/varchive/youtube/20211123/-HGDplurdMQ| archive-date=2021-11-23 | url-status=live|title=BBC Vote 2001 Coverage| website=[[YouTube]]| date=16 March 2019}}{{cbignore}}</ref> The 2001 general election was notable for being the first in which pictures of the party logos appeared on the ballot paper. Prior to this, the ballot paper had only displayed the candidate's name, address, and party name.<ref>{{cite web |url=https://www.gettyimages.co.uk/detail/news-photo/ballot-paper-vote-voting-slip-for-post-posting-postal-vote-news-photo/466659381 |title=General Election 2001 postal vote ballot paper voting slip |last=Overs |first=Jeff |date=1 June 2001 |publisher=BBC News & Current Affairs |via=Getty Images |id=466659381 |access-date=1 April 2019}}</ref>{{failed verification|date = May 2025|reason = Source only shows that party logos were on the ballot paper. It does not verify that this was the first election which featured them.}}
+
+Notable departing MPs included former Prime Ministers [[Edward Heath]] (also [[Father of the House (United Kingdom)|Father of the House]]) and [[John Major]], former Deputy Prime Minister [[Michael Heseltine]], former Liberal Democrat leader [[Paddy Ashdown]], former Cabinet ministers [[Tony Benn]], [[Tom King, Baron King of Bridgwater|Tom King]], [[John Morris, Baron Morris of Aberavon|John Morris]], [[Mo Mowlam]], [[John MacGregor, Baron MacGregor of Pulham Market|John MacGregor]] and [[Peter Brooke, Baron Brooke of Sutton Mandeville|Peter Brooke]], [[Teresa Gorman]], and then [[Mayor of London]] [[Ken Livingstone]].
+
+==Background==
+The elections were marked by voter apathy, with turnout falling to 59.4%, the lowest (and first under 70%) since the [[Coupon Election]] of 1918. Throughout the election the [[Labour Party (UK)|Labour Party]] had maintained a significant lead in the opinion polls and the result was deemed to be so certain that some [[bookmaker]]s paid out for a Labour majority before election day. However, the opinion polls the previous autumn had shown the first Tory lead (though only by a narrow margin) in the opinion polls for eight years as they benefited from the public anger towards the government over the [[Fuel protests in the United Kingdom|fuel protests]] which had led to a severe shortage of motor fuel.
+
+By the end of 2000, however, the dispute had been resolved and Labour were firmly back in the lead of the opinion polls.<ref>{{cite news |url=https://news.bbc.co.uk/news/vote2001/hi/english/newsid_1322000/1322211.stm |work=BBC News |title=Tories 'to cut fuel duty' |date=10 May 2001 |access-date=26 October 2015}}</ref> In total, a mere 29 parliamentary seats changed hands at the 2001 Election.<ref>{{cite news| url=http://news.bbc.co.uk/2/hi/uk_news/politics/vote_2005/basics/4393329.stm | work=BBC News | title=2001: Labour claims second term | date=5 April 2005 | access-date=26 May 2010}}</ref>
+
+2001 also saw the rare election of an independent. [[Richard Taylor (British politician)|Richard Taylor]] of [[Independent Kidderminster Hospital and Health Concern]] (usually now known simply as "Health Concern") unseated a government MP, [[David Lock]], in [[Wyre Forest (UK Parliament constituency)|Wyre Forest]]. There was also a high vote for [[British National Party]] leader [[Nick Griffin]] in [[Oldham West and Royton]], in the wake of recent [[2001 Oldham riots|race riots]] in the town of [[Oldham]].
+
+In [[Northern Ireland]], the election was far more dramatic and marked a move by [[Unionism in Ireland|unionists]] away from support for the [[Good Friday Agreement]], with the moderate unionist [[Ulster Unionist Party]] (UUP) losing to the more hardline [[Democratic Unionist Party]] (DUP). This polarisation was also seen in the nationalist community, with the [[Social Democratic and Labour Party]] (SDLP) vote losing out to more left-wing and republican [[Sinn Féin]]. It also saw a tightening of the parties as the small [[UK Unionist Party]] lost its only seat.
+
+==Campaign==
+The election had been expected on 3 May, to coincide with [[2001 United Kingdom local elections|local elections]], but on 2 April 2001, the local elections were postponed to 7 June because of rural movement restrictions imposed in response to the [[2001 United Kingdom foot-and-mouth outbreak|foot-and-mouth outbreak]] that had started in February.<ref>{{Cite news |date=2001-04-02 |title=Blair confirms election delay |url=http://news.bbc.co.uk/2/hi/uk_news/politics/1255703.stm |access-date=2024-12-02 |work=BBC News |language=en-GB}}</ref>
+
+On 8 May, Prime Minister [[Tony Blair]] announced that the general election would be held on the 7 June as expected, on the same day as the local elections.<ref name=":0">{{Cite news |date=2001-05-08 |title=June election called |url=https://news.bbc.co.uk/news/vote2001/hi/english/newsid_1319000/1319644.stm |access-date=2024-12-02 |work=BBC News |language=en-GB}}</ref> Blair made the announcement in a speech at [[St Saviour's and St Olave's Church of England School]] in [[Bermondsey|Bermondsey, London]] rather than on the steps of Downing Street.<ref name=":0" />
+
+For Labour, the last four years had run relatively smoothly.<ref>{{cite journal |last1=Harrop |first1=Martin |title=An Apathetic Landslide: The British Election of 2001 |journal=Government and Opposition |date=2001 |volume=36 |issue=3 |publisher=Cambridge University Press |pages=295–313 |doi=10.1111/1477-7053.00067 |jstor=44484398 |url=https://www.jstor.org/stable/44484398|url-access=subscription }}</ref> The party had successfully defended all their [[Lists of United Kingdom by-elections|by election]] seats, and many suspected a Labour win was inevitable from the start.
+
+Many in the party, however, were afraid of voter apathy, which was epitomised in a poster of "Hague with [[Margaret Thatcher]]'s hair", captioned "Get out and vote. Or they get in."<ref>{{cite news |url=https://www.theguardian.com/politics/election2001/poster/0,,498578,00.html |archive-url=https://web.archive.org/web/20170420050156/https://www.theguardian.com/politics/election2001/poster/0,,498578,00.html |archive-date=20 April 2017 |location=London |work=The Guardian|title='Get out and vote. Or they get in.' – Election 2001}}</ref> Despite recessions in mainland Europe and the [[United States]], due to the bursting of global tech bubbles, Britain was notably unaffected and Labour however could rely on a strong economy as unemployment continued to decline toward election day, putting to rest any fears of a Labour government putting the economic situation at risk.
+
+For [[William Hague]], however, the Conservative Party had still not fully recovered from the loss in 1997. The party was still divided over Europe, and talk of a referendum on [[United Kingdom and the euro|joining the Eurozone]] was rife, and as a result "Save The Pound" was one of the key slogans deployed in the Conservatives' campaign.  As Labour remained at the political centre, the Conservatives moved to the right. A policy gaffe by [[Oliver Letwin]] over public spending cuts left the party with an own goal that Labour soon exploited.
+
+Thatcher gave a speech to the Conservative Election Rally in Plymouth on 22 May 2001, calling [[New Labour]] "rootless, empty, and artificial." She also added to Hague's troubles when speaking out strongly against the Euro to applause. Hague himself, although a witty performer at [[Prime Minister's Questions]], was dogged in the press and reminded of his speech, given at the age of 16, at the 1977 [[Conservative Party Conference (UK)|Conservative Conference]]. ''[[The Sun (United Kingdom)|The Sun]]'' newspaper only added to the Conservatives' woes by backing Labour for a second consecutive election, calling Hague a "[[dead parrot]]" during the Conservative Party's conference in October 1998.<ref>{{cite web |url=https://4.bp.blogspot.com/_ThhguC97EdA/STaU-tJdVzI/AAAAAAAAASA/GVBGsJaLKAI/s400/PARROT-HAGUE.jpg |title=Sun newspaper front page |url-status=live |archive-url=https://web.archive.org/web/20210603054401/https://4.bp.blogspot.com/_ThhguC97EdA/STaU-tJdVzI/AAAAAAAAASA/GVBGsJaLKAI/s400/PARROT-HAGUE.jpg |archive-date=3 June 2021}}</ref><ref>{{cite news |author=<!--Staff writer(s); no by-line.--> |title=Sun prints Tories' obituary |url=http://news.bbc.co.uk/1/hi/uk_politics/187130.stm |work=BBC News Online |location=London |date=7 October 1998 |access-date=1 April 2019}}</ref><ref>{{cite news |last=McElvoy |first=Anne |author-link=Anne McElvoy |date=7 October 1998 |title=Hague's parrot is not dead, he's just resting – with the odd squawk |url=https://www.independent.co.uk/arts-entertainment/hagues-parrot-is-not-dead-hes-just-resting-with-the-odd-squawk-1176592.html |archive-url=https://ghostarchive.org/archive/20220501/https://www.independent.co.uk/arts-entertainment/hagues-parrot-is-not-dead-hes-just-resting-with-the-odd-squawk-1176592.html |archive-date=1 May 2022 |url-access=subscription |url-status=live |work=[[The Independent]] |location=London |access-date=1 April 2019}}{{cbignore}}</ref>
+
+The Conservatives campaigned on a strongly right-wing platform, emphasising the issues of Europe, immigration and tax, the fabled [[Norman Tebbit|"Tebbit Trinity"]]. They also released a poster showing a heavily pregnant [[Tony Blair]], stating "Four years of Labour and he still hasn't delivered".<ref>{{Cite web|url=https://www.telegraph.co.uk/news/picturegalleries/uknews/7582239/Memorable-Conservative-Labour-and-Liberal-Democrat-posters-from-previous-election-campaigns.html?image=14|title=Memorable Conservative, Labour and Liberal Democrat posters from previous election campaigns|date=12 April 2010|work=The Daily Telegraph}}</ref> However, Labour countered by asking where the proposed tax cuts were going to come from, and decried the Tory policy as "cut here, cut there, cut everywhere", in reference to the widespread belief that the Conservatives would make major cuts to public services in order to fund tax cuts.  Labour also capitalised on the strong economic conditions of the time, and another major line of attack (primarily directed towards [[Michael Portillo]], now Shadow Chancellor after returning to Parliament via a [[1999 Kensington and Chelsea by-election|by-election]]) was to warn of a return to "Tory Boom and Bust" under a Conservative administration.
+
+[[Charles Kennedy]] contested his first election as leader of the Liberal Democrats.<ref>{{cite news| url=http://news.bbc.co.uk/1/hi/uk_politics/vote_2005/basics/4393329.stm | work=BBC News | title=2001: Labour claims second term | date=5 April 2005}}</ref>
+
+During the election Sharron Storer, a resident of [[Birmingham]], criticised Prime Minister [[Tony Blair]] in front of television cameras about conditions in the [[National Health Service]]. The widely televised incident happened on 16 May during a campaign visit by Blair to the [[Queen Elizabeth Hospital Birmingham|Queen Elizabeth Hospital]] in Birmingham. Sharron Storer's [[domestic partner|partner]], Keith Sedgewick, a cancer patient with [[non-Hodgkin lymphoma]] and therefore highly susceptible to infection, was being treated at the time in the [[bone marrow]] unit, but no bed could be found for him and he was transferred to the casualty unit for his first 24 hours.<ref>{{Cite book|title=British Government and Politics: A Comparative Guide |author=Duncan Watts|year=2006|publisher=Edinburgh University|url=https://books.google.com/books?id=MiTDykvtbEkC&pg=PA320|isbn=978-0-7486-2323-5}}</ref><ref>{{cite news|url=http://news.bbc.co.uk/vote2001/hi/english/newsid_1334000/1334131.stm|title=BBC NEWS – VOTE2001 – Ambush upset Blair's day|date=16 May 2001}}</ref><ref>{{cite news|url=http://news.bbc.co.uk/vote2001/hi/english/newsid_1334000/1334903.stm|title=BBC NEWS – VOTE2001 – Cancer patient's partner confronts Blair|date=17 May 2001}}</ref>  On the evening of the same day Deputy Prime Minister [[John Prescott]] [[Prescott punch|punched a protestor]] after being hit by an egg on his way to an election rally in [[Rhyl]], North Wales.<ref>{{cite news |title=2001: Prescott punches protester |url=http://news.bbc.co.uk/onthisday/hi/dates/stories/may/16/newsid_4098000/4098929.stm |access-date=6 May 2021 |work=BBC On This Day |date=16 May 2001}}</ref>
+
+==Endorsements==
+* Labour received endorsements from ''[[The Sun (United Kingdom)|The Sun]]'', ''[[The Times]],'' and ''[[The Daily Express]]'' (The Express for the first time in its history),<ref>{{Cite news|url=http://news.bbc.co.uk/2/hi/uk_news/politics/8282189.stm|title=The politics of UK newspapers|date=30 September 2009|via=news.bbc.co.uk}}</ref> ''The [[Daily Mirror]]'', ''The [[Financial Times]]'', ''[[The Economist]]'', and ''[[The Guardian]]''.<ref name = Chu>{{cite news|title = Final verdicts of the editorials|date = 7 June 2001|newspaper = [[The Independent]]|last = Chu|first = Ben|page = 19}}</ref><ref name = "databacking">{{Cite web|url=http://www.theguardian.com/news/datablog/2010/may/04/general-election-newspaper-support|title=Newspaper support in UK general elections|first=Katy|last=Stoddard|date=4 May 2010|website=The Guardian |archive-date=12 November 2023 |archive-url=https://web.archive.org/web/20231112104816/https://www.theguardian.com/news/datablog/2010/may/04/general-election-newspaper-support |url-status=live}}</ref>
+* ''[[The Independent]]'' endorsed Labour and the Liberal Democrats.<ref name = "databacking" />
+* The Conservatives were endorsed by the ''[[Daily Mail]]'' and ''[[The Daily Telegraph]]''.<ref name = Chu/>
+
+==Opinion polling==
+{{Main|Opinion polling for the 2001 United Kingdom general election}}
+{{UK general election opinion polling|1992|1997|2001|2005|2010|2015}}
+[[File:Opinion polls United Kingdom 2001.svg|thumb|1000px|centre|{{columns-list|colwidth=18em|
+ {{Legend-line|#E4003B solid 5px|Labour}}
+ {{Legend-line|#0087DC solid 5px|Conservatives}}
+ {{Legend-line|#FAA61A solid 5px|Liberal Democrats}}
+}}]]
+
+==Results==
+{{multiple image
+<!-- Essential parameters -->| align             = right
+| direction         = horizontal
+| image1            = 2001 UK General Election Constituencies.svg
+| caption1          = Equal-area projection of constituency results
+| image2            = 2001 UK General Election Constituencies Gains.svg
+| width2            = 
+| alt2              = 
+| caption2          = Equal-area projection of constituency gains
+| header            = Constituency results by party
+}}
+[[File:2001 UK general election, countries and regions.svg|thumb|400px|Result by countries and English regions]]
+The election result was effectively a repeat of 1997, as the Labour Party retained an overwhelming majority, with the BBC announcing the victory at 02:58 on the early morning of 8 June. Having presided over relatively serene political, economic and social conditions, the feeling of prosperity in the United Kingdom had been maintained into the new millennium, and Labour would have a free hand to assert its ideals in the subsequent parliament. Despite the victory, voter apathy was a major issue, as turnout fell below 60%, 12 percentage points down on 1997. All three of the main parties saw their total votes fall, with Labour's total vote dropping by 2.8 million on 1997, the Conservatives 1.3 million, and the Liberal Democrats 428,000. Some suggested this dramatic fall was a sign of the general acceptance of the status quo and the likelihood of Labour's majority remaining unassailable.<ref>{{cite news| url=https://news.bbc.co.uk/news/vote2001/hi/english/newsid_1383000/1383403.stm | work=BBC News | title=The poll that never was | date=11 June 2001}}</ref>
+
+For the Conservatives, the huge loss they had sustained in 1997 was repeated. Despite gaining nine seats, they lost seven to the Liberal Democrats, and one even to Labour ([[South Dorset]]). [[William Hague]] was quick to announce his resignation, doing so at 07:44 outside the Conservative Party headquarters. Some believed that Hague had been unlucky; although most considered him to be a talented orator and an intelligent statesman, he had come up against the charismatic [[Tony Blair]] in the peak of his political career, and it was no surprise that little progress was made in reducing Labour's majority after a relatively smooth parliament.
+
+Staying at what they considered rock bottom, however, showed that the Conservatives had failed to improve their negative public image, had remained somewhat disunited over Europe, and had not regained the trust that they had lost in the 1990s.  Hague's focus on the "Save The Pound" campaign narrative had failed to gain any traction; Labour's successful countertactic was to be repeatedly vague over the issue of future monetary union – and said that the UK would only consider joining the Eurozone "when conditions were right". But in [[2001 United Kingdom general election in Scotland|Scotland]], despite flipping one seat from the [[Scottish National Party]], their vote collapse continued. They failed to retake former strongholds in Scotland as the Nationalists consolidated their grip on the Northeastern portion of the country.<ref>{{cite news| url=https://news.bbc.co.uk/news/vote2001/hi/english/newsid_1377000/1377378.stm | work=BBC News | title=Labour romps home again | date=8 June 2001}}</ref>
+
+The Liberal Democrats could point to steady progress under their new leader, [[Charles Kennedy]], gaining more seats than the main two parties—albeit only six overall—and maintaining the performance of a pleasing 1997 election, where the party had doubled its number of seats from 20 to 46. While they had yet to become electable as a government, they underlined their growing reputation as a worthwhile alternative to Labour and Conservative, offering plenty of debate in Parliament and representing more than a mere protest vote.{{Citation needed|date=February 2011}}
+
+The SNP failed to gain any new seats and lost a seat to the Conservatives by just 79 votes. In [[2001 United Kingdom general election in Wales|Wales]], [[Plaid Cymru]] both gained [[Carmarthen East and Dinefwr (UK Parliament constituency)|a seat]] from Labour and lost [[Ynys Môn (UK Parliament constituency)|one]] to them.
+
+In [[2001 United Kingdom general election in Northern Ireland|Northern Ireland]] the Ulster Unionists, despite gaining [[North Down (UK Parliament constituency)|North Down]], lost five other seats.
+
+[[File:2001 UK parliament.svg|left|300px]]
+{{clear left}}
+<!-- this section is transcluded on Electoral history of Tony Blair -->:
+<section begin="UK General Election 2001"/>
+{{Election summary begin with leaders |title=UK General Election 2001<ref>{{cite web |url=https://researchbriefings.files.parliament.uk/documents/RP01-54/RP01-54.pdf |title=General Election Results, 7 June 2001 [Revised Edition] |department=Research Paper 01/54 |last=Morgan |first=Bryn |date=18 June 2001 |publisher=[[House of Commons Library]] |access-date=1 April 2019 |page=11}}</ref>}}
+{{Election summary party with leaders
+  |party      = Labour Party (UK)
+  |leader     = [[Tony Blair]]
+  |candidates = 640{{efn| Includes 30 [[Co-operative Party]] candidates, as part of the [[Labour and Co-operative Party|Labour-Co-op]] alliance |name=|group=}}
+  |seats      = 412{{efn| Includes 30 [[Co-operative Party]] MPs, as part of the [[Labour and Co-operative Party|Labour-Co-op]] alliance |name=|group=}}
+  |gain       = 2
+  |loss       = 8
+  |net        = −6{{efn| Includes +2 [[Co-operative Party]] MPs, as part of the [[Labour and Co-operative Party|Labour-Co-op]] alliance |name=|group=}}
+  |votes      = 10,724,953{{efn| Includes 601,197 for the [[Co-operative Party]], as part of the [[Labour and Co-operative Party|Labour-Co-op]] alliance |name=|group=}}
+  |votes %    = 40.7{{efn| Includes 2.3% for the [[Co-operative Party]], as part of the [[Labour and Co-operative Party|Labour-Co-op]] alliance |name=|group=}}
+  |seats %    = 62.5{{efn| Includes 4.6% for the [[Co-operative Party]], as part of the [[Labour and Co-operative Party|Labour-Co-op]] alliance |name=|group=}}
+  |plus/minus = −2.5{{efn| Includes +0.2% for the [[Co-operative Party]], as part of the [[Labour and Co-operative Party|Labour-Co-op]] alliance |name=|group=}}
+  |government = yes
+}}
+{{Election summary party with leaders
+  |party      = Conservative Party (UK)
+  |leader     = [[William Hague]]
+  |candidates = 643
+  |seats      = 166
+  |gain       = 9
+  |loss       = 8
+  |net        = +1
+  |votes      = 8,357,615
+  |votes %    = 31.6
+  |seats %    = 25.2
+  |plus/minus = +1.0
+}}
+{{Election summary party with leaders
+  |party      = Liberal Democrats (UK)
+  |leader     = [[Charles Kennedy]]
+  |candidates = 639
+  |seats      = 52
+  |gain       = 8
+  |loss       = 2
+  |net        = +6
+  |votes      = 4,814,321
+  |votes %    = 18.3
+  |seats %    = 7.9
+  |plus/minus = +1.5
+}}
+{{Election summary party with leaders
+  |party      = Scottish National Party
+  |leader     = [[John Swinney]]
+  |candidates = 72
+  |seats      = 5
+  |gain       = 0
+  |loss       = [[Galloway and Upper Nithsdale (UK Parliament constituency)|1]]
+  |net        = −1
+  |votes      = 464,314
+  |votes %    = 1.8
+  |seats %    = 0.8
+  |plus/minus = −0.2
+}}
+{{Election summary party with leaders
+  |party      = UK Independence Party
+  |leader     = [[Jeffrey Titford]]
+  |candidates = 428
+  |seats      = 0
+  |gain       = 0
+  |loss       = 0
+  |net        = 0
+  |votes      = 390,563
+  |votes %    = 1.5
+  |seats %    = 0.0
+  |plus/minus = +1.2
+}}
+{{Election summary party with leaders
+  |party      = Ulster Unionist Party
+  |leader     = [[David Trimble]]
+  |candidates = 17
+  |seats      = 6
+  |gain       = [[North Down (UK Parliament constituency)|1]]
+  |loss       = 5
+  |net        = −4
+  |votes      = 216,839
+  |votes %    = 0.8
+  |seats %    = 0.9
+  |plus/minus = 0.0
+}}
+{{Election summary party with leaders
+  |party      = Plaid Cymru
+  |leader     = [[Ieuan Wyn Jones]]
+  |candidates = 40
+  |seats      = 4
+  |gain       = [[Carmarthen East and Dinefwr (UK Parliament constituency)|1]]
+  |loss       = [[Ynys Môn (UK Parliament constituency)|1]]
+  |net        = 0
+  |votes      = 195,893
+  |votes %    = 0.7
+  |seats %    = 0.6
+  |plus/minus = +0.2
+}}
+{{Election summary party with leaders
+  |party      = Democratic Unionist Party
+  |leader     = [[Ian Paisley]]
+  |candidates = 14
+  |seats      = 5
+  |gain       = 3
+  |loss       = 0
+  |net        = +3
+  |votes      = 181,999
+  |votes %    = 0.7
+  |seats %    = 0.8
+  |plus/minus = +0.4
+}}
+{{Election summary party with leaders
+  |party      = Sinn Féin
+  |leader     = [[Gerry Adams]]
+  |candidates = 18
+  |seats      = 4
+  |gain       = 2
+  |loss       = 0
+  |net        = +2
+  |votes      = 175,933
+  |votes %    = 0.7
+  |seats %    = 0.6
+  |plus/minus = +0.3
+}}
+{{Election summary party with leaders
+  |party      = Social Democratic and Labour Party
+  |leader     = [[John Hume]]
+  |candidates = 18
+  |seats      = 3
+  |gain       = 0
+  |loss       = 0
+  |net        = 0
+  |votes      = 169,865
+  |votes %    = 0.6
+  |seats %    = 0.5
+  |plus/minus = 0.0
+}}
+{{Election summary party with leaders
+  |party      = Green Party of England and Wales
+  |leader     = [[Margaret Wright (British politician)|Margaret Wright]] and [[Mike Woodin]]
+  |candidates = 145
+  |seats      = 0
+  |gain       = 0
+  |loss       = 0
+  |net        = 0
+  |votes      = 166,477
+  |votes %    = 0.6
+  |seats %    = 0.0
+  |plus/minus = +0.3
+}}
+{{Election summary party with leaders
+  |party      = Independent politician
+  |leader     = ''N/A''
+  |candidates = 137
+  |seats      = 0
+  |gain       = 0
+  |loss       = [[Tatton (UK Parliament constituency)|1]]
+  |net        = −1
+  |votes      = 98,917
+  |votes %    = 0.4
+  |seats %    = 0.0
+  |plus/minus = +0.3
+}}
+{{Election summary party with leaders
+  |party      = Scottish Socialist Party
+  |leader     = [[Tommy Sheridan]]
+  |candidates = 72
+  |seats      = 0
+  |gain       = 0
+  |loss       = 0
+  |net        = 0
+  |votes      = 72,516
+  |votes %    = 0.3
+  |seats %    = 0.0
+  |plus/minus = ''N/A''
+}}
+{{Election summary party with leaders
+  |party      = Socialist Alliance (England)
+  |leader     = ''N/A''
+  |candidates = 98
+  |seats      = 0
+  |gain       = 0
+  |loss       = 0
+  |net        = 0
+  |votes      = 57,553
+  |votes %    = 0.2
+  |seats %    = 0.0
+  |plus/minus = ''N/A''
+}}
+{{Election summary party with leaders
+  |party      = Socialist Labour Party (UK)
+  |leader     = [[Arthur Scargill]]
+  |candidates = 114
+  |seats      = 0
+  |gain       = 0
+  |loss       = 0
+  |net        = 0
+  |votes      = 57,288
+  |votes %    = 0.2
+  |seats %    = 0.0
+  |plus/minus = 0.0
+}}
+{{Election summary party with leaders
+  |party      = British National Party
+  |leader     = [[Nick Griffin]]
+  |candidates = 33
+  |seats      = 0
+  |gain       = 0
+  |loss       = 0
+  |net        = 0
+  |votes      = 47,129
+  |votes %    = 0.2
+  |seats %    = 0.0
+  |plus/minus = +0.1
+}}
+{{Election summary party with leaders
+  |party      = Alliance Party of Northern Ireland
+  |leader     = [[Seán Neeson]]
+  |candidates = 10
+  |seats      = 0
+  |gain       = 0
+  |loss       = 0
+  |net        = 0
+  |votes      = 28,999
+  |votes %    = 0.1
+  |seats %    = 0.0
+  |plus/minus = −0.1
+}}
+{{Election summary party with leaders
+  |party      = Independent Kidderminster Hospital and Health Concern
+  |leader     = [[Richard Taylor (British politician)|Richard Taylor]]
+  |candidates = [[Wyre Forest (UK Parliament constituency)|1]]
+  |seats      = [[Wyre Forest (UK Parliament constituency)|1]]
+  |gain       = [[Wyre Forest (UK Parliament constituency)|1]]
+  |loss       = 0
+  |net        = +1
+  |votes      = 28,487
+  |votes %    = 0.1
+  |seats %    = 0.2
+  |plus/minus = ''N/A''
+}}
+{{Election summary party with leaders
+  |party      = Speaker of the House of Commons (United Kingdom)
+  |leader     = ''N/A''
+  |candidates = [[Glasgow Springburn (UK Parliament constituency)|1]]
+  |seats      = [[Glasgow Springburn (UK Parliament constituency)|1]]
+  |gain       = [[Glasgow Springburn (UK Parliament constituency)|1]]
+  |loss       = 0
+  |net        = +1
+  |votes      = 16,053
+  |votes %    = 0.1
+  |seats %    = 0.2
+  |plus/minus = ''N/A''
+}}
+{{Election summary party with leaders
+  |party      = Liberal Party (UK, 1989)
+  |leader     = [[Michael Meadowcroft]]
+  |candidates = 13
+  |seats      = 0
+  |gain       = 0
+  |loss       = 0
+  |net        = 0
+  |votes      = 13,685
+  |votes %    = 0.1
+  |seats %    = 0.0
+  |plus/minus = 0.0
+}}
+{{Election summary party with leaders
+  |party      = UK Unionist Party
+  |leader     = [[Robert McCartney (Northern Irish politician)|Robert McCartney]]
+  |candidates = [[North Down (UK Parliament constituency)|1]]
+  |seats      = 0
+  |gain       = 0
+  |loss       = [[North Down (UK Parliament constituency)|1]]
+  |net        = −1
+  |votes      = 13,509
+  |votes %    = 0.1
+  |seats %    = 0.0
+  |plus/minus = +0.1
+}}
+{{Election summary party with leaders
+  |party      = ProLife Alliance
+  |leader     = Bruno Quintavalle
+  |candidates = 37
+  |seats      = 0
+  |gain       = 0
+  |loss       = 0
+  |net        = 0
+  |votes      = 9,453
+  |votes %    = 0.0
+  |seats %    = 0.0
+  |plus/minus = −0.1
+}}
+{{Election summary party with leaders
+  |party      = Legalise Cannabis Alliance
+  |leader     = Alun Buffry
+  |candidates = 13
+  |seats      = 0
+  |gain       = 0
+  |loss       = 0
+  |net        = 0
+  |votes      = 8,677
+  |votes %    = 0.0
+  |seats %    = 0.0
+  |plus/minus = ''N/A''
+}}
+{{Election summary party with leaders
+  |party      = People's Justice Party (UK)
+  |leader     = Shaukat Ali Khan
+  |candidates = 3
+  |seats      = 0
+  |gain       = 0
+  |loss       = 0
+  |net        = 0
+  |votes      = 7,443
+  |votes %    = 0.0
+  |seats %    = 0.0
+  |plus/minus = ''N/A''
+}}
+{{Election summary party with leaders
+  |party      = Official Monster Raving Loony Party
+  |leader     = [[Howling Laud Hope]] and [[Catmando]]
+  |candidates = 15
+  |seats      = 0
+  |gain       = 0
+  |loss       = 0
+  |net        = 0
+  |votes      = 6,655
+  |votes %    = 0.0
+  |seats %    = 0.0
+  |plus/minus = 0.0
+}}
+{{Election summary party with leaders
+  |party      = Progressive Unionist Party
+  |leader     = [[Hugh Smyth]]
+  |candidates = 2
+  |seats      = 0
+  |gain       = 0
+  |loss       = 0
+  |net        = 0
+  |votes      = 4,781
+  |votes %    = 0.0
+  |seats %    = 0.0
+  |plus/minus = 0.0
+}}
+{{Election summary party with leaders
+  |party      = Mebyon Kernow
+  |leader     = [[Dick Cole (politician)|Dick Cole]]
+  |candidates = 3
+  |seats      = 0
+  |gain       = 0
+  |loss       = 0
+  |net        = 0
+  |votes      = 3,199
+  |votes %    = 0.0
+  |seats %    = 0.0
+  |plus/minus = 0.0
+}}
+{{Election summary party with leaders
+  |party      = Northern Ireland Women's Coalition
+  |leader     = [[Monica McWilliams]] and [[Pearl Sagar]]
+  |candidates = [[Belfast South (UK Parliament constituency)|1]]
+  |seats      = 0
+  |gain       = 0
+  |loss       = 0
+  |net        = 0
+  |votes      = 2,968
+  |votes %    = 0.0
+  |seats %    = 0.0
+  |plus/minus = 0.0
+}}
+{{Election summary party with leaders
+  |party      = Scottish Unionist Party (1986)
+  |leader     = Danny Houston
+  |candidates = 2
+  |seats      = 0
+  |gain       = 0
+  |loss       = 0
+  |net        = 0
+  |votes      = 2,728
+  |votes %    = 0.0
+  |seats %    = 0.0
+  |plus/minus = ''N/A''
+}}
+{{Election summary party with leaders
+  |party      = Rock 'n' Roll Loony Party
+  |leader     = Chris Driver
+  |candidates = 7
+  |seats      = 0
+  |gain       = 0
+  |loss       = 0
+  |net        = 0
+  |votes      = 2,634
+  |votes %    = 0.0
+  |seats %    = 0.0
+  |plus/minus = ''N/A''
+}}
+{{Election summary party with leaders
+  |party      = National Front (UK)
+  |leader     = [[Tom Holmes (British politician)|Tom Holmes]]
+  |candidates = 5
+  |seats      = 0
+  |gain       = 0
+  |loss       = 0
+  |net        = 0
+  |votes      = 2,484
+  |votes %    = 0.0
+  |seats %    = 0.0
+  |plus/minus = 0.0
+}}
+{{Election summary party with leaders
+  |party      = Workers' Party (Ireland)
+  |leader     = [[Seán Garland]]
+  |candidates = 6
+  |seats      = 0
+  |gain       = 0
+  |loss       = 0
+  |net        = 0
+  |votes      = 2,352
+  |votes %    = 0.0
+  |seats %    = 0.0
+  |plus/minus = 0.0
+}}
+{{Election summary with leaders
+  |party      = [[Neath Port Talbot Ratepayers Association|Neath Port Talbot Ratepayers]]
+  |leader     = Paul Evans
+  |candidates = [[Aberavon (UK Parliament constituency)|1]]
+  |seats      = 0
+  |gain       = 0
+  |loss       = 0
+  |net        = 0
+  |votes      = 1,960
+  |votes %    = 0.0
+  |seats %    = 0.0
+  |plus/minus = ''N/A''
+}}
+{{Election summary party with leaders
+  |party      = Northern Ireland Unionist Party
+  |leader     = [[Cedric Wilson]]
+  |candidates = 6
+  |seats      = 0
+  |gain       = 0
+  |loss       = 0
+  |net        = 0
+  |votes      = 1,794
+  |votes %    = 0.0
+  |seats %    = 0.0
+  |plus/minus = ''N/A''
+}}
+{{Election summary party with leaders
+  |party      = Socialist Party (England and Wales)
+  |leader     = [[Peter Taaffe]]
+  |candidates = 2
+  |seats      = 0
+  |gain       = 0
+  |loss       = 0
+  |net        = 0
+  |votes      = 1,454
+  |votes %    = 0.0
+  |seats %    = 0.0
+  |plus/minus = 0.0
+}}
+{{Election summary with leaders
+  |party      = [[Reform 2000 Party|Reform 2000]]
+  |leader     = Erol Basarik
+  |candidates = 5
+  |seats      = 0
+  |gain       = 0
+  |loss       = 0
+  |net        = 0
+  |votes      = 1,418
+  |votes %    = 0.0
+  |seats %    = 0.0
+  |plus/minus = ''N/A''
+}}
+{{Election summary with leaders
+  |party      = [[Isle of Wight Party|Isle of Wight]]
+  |leader     = Philip Murray
+  |candidates = [[Isle of Wight (UK Parliament constituency)|1]]
+  |seats      = 0
+  |gain       = 0
+  |loss       = 0
+  |net        = 0
+  |votes      = 1,164
+  |votes %    = 0.0
+  |seats %    = 0.0
+  |plus/minus = ''N/A''
+}}
+{{Election summary with leaders
+  |party      = [[Muslim Party|Muslim]]
+  |leader     =
+  |candidates = 4
+  |seats      = 0
+  |gain       = 0
+  |loss       = 0
+  |net        = 0
+  |votes      = 1,150
+  |votes %    = 0.0
+  |seats %    = 0.0
+  |plus/minus = ''N/A''
+}}
+{{Election summary party with leaders
+  |party      = Communist Party of Britain
+  |leader     = [[Robert Griffiths (politician)|Robert Griffiths]]
+  |candidates = 6
+  |seats      = 0
+  |gain       = 0
+  |loss       = 0
+  |net        = 0
+  |votes      = 1,003
+  |votes %    = 0.0
+  |seats %    = 0.0
+  |plus/minus = 0.0
+}}
+{{Election summary party with leaders
+  |party      = New Britain Party
+  |leader     = Dennis Delderfield
+  |candidates = [[Bethnal Green and Bow (UK Parliament constituency)|1]]
+  |seats      = 0
+  |gain       = 0
+  |loss       = 0
+  |net        = 0
+  |votes      = 888
+  |votes %    = 0.0
+  |seats %    = 0.0
+  |plus/minus = 0.0
+}}
+{{Election summary with leaders
+  |party      = [[Free Party (UK)|Free Party]]
+  |leader     = Bob Dobbs
+  |candidates = 3
+  |seats      = 0
+  |gain       = 0
+  |loss       = 0
+  |net        = 0
+  |votes      = 832
+  |votes %    = 0.0
+  |seats %    = 0.0
+  |plus/minus = ''N/A''
+}}
+{{Election summary party with leaders
+  |party      = Leeds Left Alliance
+  |leader     = Mike Davies
+  |candidates = [[Leeds North East (UK Parliament constituency)|1]]
+  |seats      = 0
+  |gain       = 0
+  |loss       = 0
+  |net        = 0
+  |votes      = 770
+  |votes %    = 0.0
+  |seats %    = 0.0
+  |plus/minus = ''N/A''
+}}
+{{Election summary with leaders
+  |party      = [[New Millennium Bean Party]]
+  |leader     = [[Captain Beany]]
+  |candidates = [[Aberavon (UK Parliament constituency)|1]]
+  |seats      = 0
+  |gain       = 0
+  |loss       = 0
+  |net        = 0
+  |votes      = 727
+  |votes %    = 0.0
+  |seats %    = 0.0
+  |plus/minus = ''N/A''
+}}
+{{Election summary party with leaders
+  |party      = Workers Revolutionary Party (UK)
+  |leader     = Sheila Torrance
+  |candidates = 6
+  |seats      = 0
+  |gain       = 0
+  |loss       = 0
+  |net        = 0
+  |votes      = 607
+  |votes %    = 0.0
+  |seats %    = 0.0
+  |plus/minus = 0.0
+}}
+{{Election summary with leaders
+  |party      = [[Tatton Group|Tatton]]
+  |leader     = Paul Williams
+  |candidates = [[Tatton (UK Parliament constituency)|1]]
+  |seats      = 0
+  |gain       = 0
+  |loss       = 0
+  |net        = 0
+  |votes      = 505
+  |votes %    = 0.0
+  |seats %    = 0.0
+  |plus/minus = ''N/A''
+}}
+{{Election summary end}}
+{| class="wikitable" style="width:630px"
+|-
+|'''Government's new majority'''
+|'''165'''
+|-
+|Total votes cast
+|26,367,383
+|-
+|Turnout
+|59.4%
+|}
+<section end="UK General Election 2001"/>
+''All parties with more than 500 votes shown.''
+
+''The seat gains reflect changes on the [[1997 United Kingdom general election|1997 general election]] result. Two seats had changed hands in by-elections in the intervening period. These were as follows:''
+* ''[[Romsey (UK Parliament constituency)|Romsey]] from [[Conservative Party (UK)|Conservative]] to [[Liberal Democrats (UK)|Liberal Democrats]]. The Liberal Democrats held this seat in 2001.''
+* ''[[South Antrim (UK Parliament constituency)|South Antrim]] from [[Ulster Unionists]] to [[Democratic Unionist Party|Democratic Unionists]]. The Ulster Unionists won this seat back in 2001.''
+
+[[File:Results of the UK General Election, 2001.svg|thumb|right|200px|alt=Ring charts of the election results showing popular vote against seats won, coloured in party colours|Seats won in the election (outer ring) against number of votes (inner ring).]]
+
+The results of the election give a [[Gallagher Index|Gallagher index of dis-proportionality]] of 17.74.
+{{bar box
+|title=Popular vote
+|titlebar=#ddd
+|width=600px
+|barwidth=410px
+|bars=
+{{bar percent|'''Labour'''|{{party color|Labour Party (UK)}}|40.7}}
+{{bar percent|Conservative|{{party color|Conservative Party (UK)}}|31.7}}
+{{bar percent|Liberal Democrat|{{party color|Liberal Democrats (UK)}}|18.3}}
+{{bar percent|Scottish National|{{party color|Scottish National Party}}|1.8}}
+{{bar percent|UK Independence|{{party color|UKIP}}|1.5}}
+{{bar percent|Others|#777777|6.1}}
+}}
+{{bar box
+|title=Parliamentary seats
+|titlebar=#ddd
+|width=600px
+|barwidth=410px
+|bars=
+{{bar percent|'''Labour'''|{{party color|Labour Party (UK)}}|62.7}}
+{{bar percent|Conservative|{{party color|Conservative Party (UK)}}|25.2}}
+{{bar percent|Liberal Democrat|{{party color|Liberal Democrats (UK)}}|7.9}}
+{{bar percent|Ulster Unionist|{{party color|Ulster Unionist Party}}|0.9}}
+{{bar percent|Scottish National|{{party color|Scottish National Party}}|0.8}}
+{{bar percent|Democratic Unionist|{{party color|Democratic Unionist Party}}|0.8}}
+{{bar percent|Others|#777777|1.8}}
+}}
+
+===Results by constituent country===
+{| class="wikitable"
+!
+!LAB
+!CON
+!LD
+!SNP
+!PC
+!NI parties
+!Others
+!Total
+|-
+|England
+|323
+|165
+|40
+| –
+| –
+| –
+|1
+|529
+|-
+|Wales
+|34
+| –
+|2
+| –
+|4
+| –
+| –
+|40
+|-
+|Scotland
+|56
+|1
+|10
+|5
+| –
+| –
+| –
+|72
+|-
+|Northern Ireland
+| –
+| –
+| –
+| –
+| –
+|18
+| –
+|18
+|-
+|Total
+|413
+|166
+|52
+|5
+|4
+|18
+|1
+|659
+|}
+
+=== Seats changing hands ===
+
+{| class="wikitable plainrowheaders"
+|-
+! rowspan=2 | Seat
+! colspan=2 rowspan=2| [[1997 United Kingdom general election|1997 election]]
+! colspan="6"|Constituency result 2001 by party
+! colspan=2 rowspan=2| 2001 election
+|-
+!Con
+!Lab
+!Lib
+!PC
+!SNP
+!Others
+|-
+! scope="row" style="text-align: left;" | [[Belfast North (UK Parliament constituency)|Belfast North]]
+| {{Party name with color|Ulster Unionist Party}}
+|
+|
+|
+|
+|
+|
+| {{Party name with color|Democratic Unionist Party}}
+|-
+! scope="row" style="text-align: left;" | [[Carmarthen East and Dinefwr (UK Parliament constituency)|Carmarthen East and Dinefwr]]
+| {{Party name with color|Labour Party (UK)}}
+|4,912
+|13,540
+|2,815
+|'''16,130'''
+|
+|656
+| {{Party name with color|Plaid Cymru}}
+|-
+! scope="row" style="text-align: left;" | [[Castle Point (UK Parliament constituency)|Castle Point]]
+| {{Party name with color|Labour Party (UK)}}
+|'''17,738'''
+|16,753
+|3,116
+|
+|
+|1273
+| {{Party name with color|Conservative Party (UK)}}
+|-
+! scope="row" style="text-align: left;" | [[Cheadle (UK Parliament constituency)|Cheadle]]
+| {{Party name with color|Conservative Party (UK)}}
+|18,444
+|6,086
+|'''18,477'''
+|
+|
+|599
+| {{Party name with color|Liberal Democrats (UK)}}
+|-
+! scope="row" style="text-align: left;" | [[Chesterfield (UK Parliament constituency)|Chesterfield]]
+| {{Party name with color|Labour Party (UK)}}
+|3,613
+|18,663
+|'''21,249'''
+|
+|
+|437
+| {{Party name with color|Liberal Democrats (UK)}}
+|-
+! scope="row" style="text-align: left;" | [[Dorset Mid and Poole North]]
+| {{Party name with color|Conservative Party (UK)}}
+|17,974
+|6,765
+|'''18,358'''
+|
+|
+|621
+| {{Party name with color|Liberal Democrats (UK)}}
+|-
+! scope="row" style="text-align: left;" | [[South Dorset]]
+| {{Party name with color|Conservative Party (UK)}}
+|18,874
+|'''19,027'''
+|6,531
+|
+|
+|913
+| {{Party name with color|Labour Party (UK)}}
+|-
+! scope="row" style="text-align: left;" | [[Fermanagh and South Tyrone (UK Parliament constituency)|Fermanagh and South Tyrone]]
+| {{Party name with color|Ulster Unionist Party}}
+|
+|
+|
+|
+|
+|
+| {{Party name with color|Sinn Féin}}
+|-
+! scope="row" style="text-align: left;" | [[Galloway and Upper Nithsdale (UK Parliament constituency)|Galloway and Upper Nithsdale]]
+| {{Party name with color|Scottish National Party}}
+|'''12,222'''
+|7,258
+|3,698
+|
+|12,148
+|588
+| {{Party name with color|Conservative Party (UK)}}
+|-
+! scope="row" style="text-align: left;" | [[Guildford (UK Parliament constituency)|Guildford]]
+| {{Party name with color|Conservative Party (UK)}}
+|19,820
+|6,558
+|'''20,358'''
+|
+|
+|736
+| {{Party name with color|Liberal Democrats (UK)}}
+|-
+! scope="row" style="text-align: left;" | [[Isle of Wight (UK Parliament constituency)|Isle of Wight]]
+| {{Party name with color|Liberal Democrats (UK)}}
+|'''25,223'''
+|9,676
+|22,397
+|
+|
+|2,106
+| {{Party name with color|Conservative Party (UK)}}
+|-
+! scope="row" style="text-align: left;" | [[East Londonderry (UK Parliament constituency)|Londonderry East]]
+| {{Party name with color|Ulster Unionist Party}}
+|
+|
+|
+|
+|
+|
+| {{Party name with color|Democratic Unionist Party}}
+|-
+! scope="row" style="text-align: left;" | [[Ludlow (UK Parliament constituency)|Ludlow]]
+| {{Party name with color|Conservative Party (UK)}}
+|16,990
+|5,785
+|'''18,620'''
+|
+|
+|871
+| {{Party name with color|Liberal Democrats (UK)}}
+|-
+! scope="row" style="text-align: left;" | [[Newark (UK Parliament constituency)|Newark]]
+| {{Party name with color|Labour Party (UK)}}
+|'''20,983'''
+|16,910
+|5,970
+|
+|
+|
+| {{Party name with color|Conservative Party (UK)}}
+|-
+! scope="row" style="text-align: left;" | [[North Norfolk (UK Parliament constituency)|Norfolk North]]
+| {{Party name with color|Conservative Party (UK)}}
+|23,495
+|7,490
+|'''23,978'''
+|
+|
+|649
+| {{Party name with color|Liberal Democrats (UK)}}
+|-
+! scope="row" style="text-align: left;" | [[North West Norfolk|Norfolk North West]]
+| {{Party name with color|Labour Party (UK)}}
+|'''24,846'''
+|21,361
+|4,292
+|
+|
+|704
+| {{Party name with color|Conservative Party (UK)}}
+|-
+! scope="row" style="text-align: left;" | [[North Down (UK Parliament constituency)|North Down]]
+| {{Party name with color|UK Unionist Party}}
+|
+|
+|
+|
+|
+|
+| {{Party name with color|Ulster Unionist Party}}
+|-
+! scope="row" style="text-align: left;" | [[Romford (UK Parliament constituency)|Romford]]
+| {{Party name with color|Labour Party (UK)}}
+|'''18,931'''
+|12,954
+|2,869
+|
+|
+|
+| {{Party name with color|Conservative Party (UK)}}
+|-
+! scope="row" style="text-align: left;" | [[Romsey (UK Parliament constituency)|Romsey]]
+| {{Party name with color|Conservative Party (UK)}}
+|20,386
+|3,986
+|'''22,756'''
+|
+|
+|
+| {{Party name with color|Liberal Democrats (UK)}}
+|-
+! scope="row" style="text-align: left;" | [[Strangford (UK Parliament constituency)|Strangford]]
+| {{Party name with color|Ulster Unionist Party}}
+|
+|
+|
+|
+|
+|
+| {{Party name with color|Democratic Unionist Party}}
+|-
+! scope="row" style="text-align: left;" | [[Tatton (UK Parliament constituency)|Tatton]]
+| {{Party name with color|Independent politician}}
+|'''19,860'''
+|11,249
+|7,685
+|
+|
+|
+| {{Party name with color|Conservative Party (UK)}}
+|-
+! scope="row" style="text-align: left;" | [[Taunton (UK Parliament constituency)|Taunton]]
+| {{Party name with color|Liberal Democrats (UK)}}
+|'''23,033'''
+|8,254
+|22,798
+|
+|
+|1,140
+| {{Party name with color|Conservative Party (UK)}}
+|-
+! scope="row" style="text-align: left;" | [[Teignbridge (UK Parliament constituency)|Teignbridge]]
+| {{Party name with color|Conservative Party (UK)}}
+|23,332
+|7,366
+|'''26,343'''
+|
+|
+|
+| {{Party name with color|Liberal Democrats (UK)}}
+|-
+! scope="row" style="text-align: left;" | [[West Tyrone (UK Parliament constituency)|Tyrone West]]
+| {{Party name with color|Ulster Unionist Party}}
+|
+|
+|
+|
+|
+|
+| {{Party name with color|Sinn Féin}}
+|-
+! scope="row" style="text-align: left;" | [[Upminster (UK Parliament constituency)|Upminster]]
+| {{Party name with color|Labour Party (UK)}}
+|'''15,410'''
+|14,169
+|3,183
+|
+|
+|1,089
+| {{Party name with color|Conservative Party (UK)}}
+|-
+! scope="row" style="text-align: left;" | [[Wyre Forest (UK Parliament constituency)|Wyre Forest]]
+| {{Party name with color|Labour Party (UK)}}
+|9,350
+|10,857
+|
+|
+|
+|'''28,487'''
+| {{Party name with color|Independent Kidderminster Hospital and Health Concern}}
+|-
+! scope="row" style="text-align: left;" | [[Ynys Mon (UK Parliament constituency)|Ynys Mon]]
+| {{Party name with color|Plaid Cymru}}
+|7,653
+|'''11,906'''
+|2,772
+|11,106
+|
+|
+| {{Party name with color|Labour Party (UK)}}
+|}
+
+=== MPs who lost their seats ===
+{| class="wikitable sortable" style="font-size: 95%;"
+|-
+!colspan=2|Party
+!Name
+!Constituency
+!Office held whilst in power
+!Year elected
+!Defeated by
+!colspan=2|Party
+|-
+! rowspan=7 style="background-color: {{party color|Labour Party (UK)}}" |
+| rowspan=7|[[Labour Party (UK)|Labour Party]]
+|[[Alan Williams (Carmarthen MP)|Alan Williams]]
+|[[Carmarthen East and Dinefwr (UK Parliament constituency)|Carmarthen East and Dinefwr]]
+|
+|1987
+|[[Adam Price]]
+! rowspan=1 style="background-color: {{party color|Plaid Cymru}}" |
+||[[Plaid Cymru]]
+|-
+|[[Christine Butler]]
+|[[Castle Point (UK Parliament constituency)|Castle Point]]
+|
+|1997
+|[[Bob Spink|Dr. Bob Spink]]
+! rowspan=1 style="background-color: {{party color|Conservative Party (UK)}}" |
+||[[Conservative Party (UK)|Conservative Party]]
+|-
+|[[Fiona Jones]]
+|[[Newark (UK Parliament constituency)|Newark]]
+|
+|1997
+|<small>[[Colonel (United Kingdom)|Colonel]]</small><br /> [[Patrick Mercer]]
+! rowspan=1 style="background-color: {{party color|Conservative Party (UK)}}" |
+||[[Conservative Party (UK)|Conservative Party]]
+|-
+|[[George Turner (British politician)|George Turner]]
+|[[North West Norfolk|Norfolk North West]]
+|
+|1997
+|[[Henry Bellingham, Baron Bellingham|Henry Bellingham]]
+! rowspan=1 style="background-color: {{party color|Conservative Party (UK)}}" |
+||[[Conservative Party (UK)|Conservative Party]]
+|-
+|[[Eileen Gordon]]
+|[[Romford (UK Parliament constituency)|Romford]]
+|
+|1997
+|[[Andrew Rosindell]]
+! rowspan=1 style="background-color: {{party color|Conservative Party (UK)}}" |
+||[[Conservative Party (UK)|Conservative Party]]
+|-
+|[[Keith Darvill]]
+|[[Upminster (UK Parliament constituency)|Upminster]]
+|
+|1997
+|[[Angela Watkinson]]
+! rowspan=1 style="background-color: {{party color|Conservative Party (UK)}}" |
+||[[Conservative Party (UK)|Conservative Party]]
+|-
+|[[David Lock]]
+|[[Wyre Forest (UK Parliament constituency)|Wyre Forest]]
+|
+|1997
+|[[Richard Taylor (British politician)|Dr. Richard Taylor]]
+! rowspan=1 style="background-color: {{party color|Independent Kidderminster Hospital and Health Concern}}" |
+||[[Independent Kidderminster Hospital and Health Concern]]
+|-
+! rowspan=6 style="background-color: {{party color|Conservative Party (UK)}}" |
+| rowspan=6|[[Conservative Party (UK)|Conservative Party]]
+|[[Stephen Day (British politician)|Stephen Day]]
+|[[Cheadle (UK Parliament constituency)|Cheadle]]
+|
+|1987
+|[[Patsy Calton]]
+! rowspan=1 style="background-color: {{party color|Liberal Democrats (UK)}}" |
+||[[Liberal Democrats (UK)|Liberal Democrats]]
+|-
+|[[Christopher Fraser]]
+|[[Mid Dorset and North Poole]]
+|
+|1997
+|[[Annette Brooke]]
+! rowspan=1 style="background-color: {{party color|Liberal Democrats (UK)}}" |
+||[[Liberal Democrats (UK)|Liberal Democrats]]
+|-
+|[[Ian Bruce (politician)|Ian Bruce]]
+|[[South Dorset]]
+|
+|1987
+|[[Jim Knight]]
+! rowspan=1 style="background-color: {{party color|Labour Party (UK)}}" |
+||[[Labour Party (UK)|Labour Party]]
+|-
+|[[Nick St Aubyn]]
+|[[Guildford (UK Parliament constituency)|Guildford]]
+|
+|1997
+|[[Sue Doughty]]
+! rowspan=1 style="background-color: {{party color|Liberal Democrats (UK)}}" |
+||[[Liberal Democrats (UK)|Liberal Democrats]]
+|-
+|<small>[[The Hon.]]</small><br /> [[David Prior, Baron Prior of Brampton|David Prior]]
+|[[Norfolk North (UK Parliament constituency)|Norfolk North]]
+|
+|1997
+|[[Norman Lamb]]
+! rowspan=1 style="background-color: {{party color|Liberal Democrats (UK)}}" |
+||[[Liberal Democrats (UK)|Liberal Democrats]]
+|-
+|[[Patrick Nicholls]]
+|[[Teignbridge (UK Parliament constituency)|Teignbridge]]
+|
+|1983
+|[[Richard Younger-Ross]]
+! rowspan=1 style="background-color: {{party color|Liberal Democrats (UK)}}" |
+||[[Liberal Democrats (UK)|Liberal Democrats]]
+|-
+! rowspan=2 style="background-color: {{party color|Liberal Democrats (UK)}}" |
+| rowspan=2|[[Liberal Democrats (UK)|Liberal Democrats]]
+|[[Peter Brand (British politician)|Dr. Peter Brand]]
+|[[Isle of Wight (UK Parliament constituency)|Isle of Wight]]
+|
+|1997
+|[[Andrew Turner (politician)|Andrew Turner]]
+! rowspan=1 style="background-color: {{party color|Conservative Party (UK)}}" |
+||[[Conservative Party (UK)|Conservative Party]]
+|-
+|[[Jackie Ballard]]
+|[[Taunton (UK Parliament constituency)|Taunton]]
+|
+|1997
+|[[Adrian Flook]]
+! rowspan=1 style="background-color: {{party color|Conservative Party (UK)}}" |
+||[[Conservative Party (UK)|Conservative Party]]
+|-
+! rowspan=3 style="background-color: {{party color|Ulster Unionist Party}}" |
+| rowspan=3|[[Ulster Unionist Party]]
+|[[William Ross (Unionist politician)|Willie Ross]]
+|[[East Londonderry (UK Parliament constituency)|East Londonderry]]
+|
+|1974
+|[[Gregory Campbell (politician)|Gregory Campbell]]
+! rowspan=1 style="background-color: {{party color|Democratic Unionist Party}}" |
+||[[Democratic Unionist Party]]
+|-
+|[[Cecil Walker]]
+|[[Belfast North (UK Parliament constituency)|North Belfast]]
+|
+|1983
+|[[Nigel Dodds]]
+! rowspan=1 style="background-color: {{party color|Democratic Unionist Party}}" |
+||[[Democratic Unionist Party]]
+|-
+|[[William Thompson (Ulster Unionist politician)|William Thompson]]
+|[[West Tyrone (UK Parliament constituency)|West Tyrone]]
+|
+|1997
+|[[Pat Doherty (Northern Ireland politician)|Pat Doherty]]
+! rowspan=1 style="background-color: {{party color|Sinn Féin}}" |
+||[[Sinn Féin]]
+|-
+! rowspan=1 style="background-color: {{party color|Democratic Unionist Party}}" |
+||[[Democratic Unionist Party]]
+|[[William McCrea, Baron McCrea of Magherafelt and Cookstown|William McCrea]]
+|[[South Antrim (UK Parliament constituency)|Antrim South]]
+|
+|2000
+|[[David Burnside]]
+! rowspan=1 style="background-color: {{party color|Ulster Unionist Party}}" |
+||[[Ulster Unionist Party]]
+|-
+! rowspan=1 style="background-color: {{party color|UK Unionist Party}}" |
+||[[UK Unionist Party]]
+|[[Robert McCartney (Northern Irish politician)|Robert McCartney]]
+|[[North Down (UK Parliament constituency)|North Down]]
+|
+|1995
+|[[Sylvia Hermon]]
+! rowspan=1 style="background-color: {{party color|Ulster Unionist Party}}" |
+||[[Ulster Unionist Party]]
+|-
+! rowspan=1 style="background-color: {{party color|Independent politician}}" |
+||[[Independent politician|Independent]]
+|[[Martin Bell]]
+|[[Tatton (UK Parliament constituency)|Tatton]] contesting [[Brentwood and Ongar]]
+|
+|1997
+|[[Eric Pickles]]
+! rowspan=1 style="background-color: {{party color|Conservative Party (UK)}}" |
+||[[Conservative Party (UK)|Conservative Party]]
+|}
+
+=== Voter demographics ===
+[[Ipsos MORI|MORI]] interviewed 18,657 adults in Great Britain after the election which suggested the following demographic breakdown:<ref>{{Cite web |date=20 July 2001 |title=How Britain Voted in 2001 |url=https://www.ipsos.com/en-uk/how-britain-voted-2001 |website=Ipsos}}</ref>
+{| class="wikitable sortable mw-datatable" style="text-align:center;font-size:90%;line-height:14px;"
+!colspan=7|The 2001 UK general election vote in Great Britain (in per cent)
+|-
+!rowspan=2|Social Group
+!class="unsortable" style="width:50px;"|Lab
+!class="unsortable" style="width:50px;"|Con
+!class="unsortable" style="width:50px;"|Lib Dem
+!rowspan=2|Others
+!rowspan=2|Lead
+!rowspan=2|Turnout
+|-
+!data-sort-type="number" style="background:{{party color|Labour Party (UK)}};"|
+!data-sort-type="number" style="background:{{party color|Conservative Party (UK)}};"|
+!data-sort-type="number" style="background:{{party color|Liberal Democrats (UK)}};"|
+|-
+|Total
+|style="background:#FFCCD9;color:black"|'''42'''
+|33
+|19
+|6
+|style="background:{{party color|Labour Party (UK)}};color:#FFFFFF;"|9
+|59
+|-
+!colspan=7|Gender
+|-
+|Men
+|style="background:#FFCCD9;color:black"|'''42'''
+|32
+|18
+|8
+|style="background:{{party color|Labour Party (UK)}};color:#FFFFFF;"|10
+|61
+|-
+|Women
+|style="background:#FFCCD9;color:black"|'''42'''
+|33
+|19
+|6
+|style="background:{{party color|Labour Party (UK)}};color:#FFFFFF;"|9
+|58
+|-
+!colspan=7|Age
+|-
+|18–24
+|style="background:#FFCCD9;color:black"|'''41'''
+|27
+|24
+|8
+|style="background:{{party color|Labour Party (UK)}};color:#FFFFFF;"|14
+|39
+|-
+|25–34
+|style="background:#FF668C;color:black"|'''51'''
+|24
+|19
+|6
+|style="background:{{party color|Labour Party (UK)}};color:#FFFFFF;"|27
+|46
+|-
+|35–44
+|style="background:#FFCCD9;color:black"|'''45'''
+|28
+|19
+|8
+|style="background:{{party color|Labour Party (UK)}};color:#FFFFFF;"|17
+|59
+|-
+|45–54
+|style="background:#FFCCD9;color:black"|'''41'''
+|32
+|20
+|7
+|style="background:{{party color|Labour Party (UK)}};color:#FFFFFF;"|9
+|65
+|-
+|55–64
+|37
+|style="background:#CCEBFF;color:black"|'''39'''
+|17
+|7
+|style="background:{{party color|Conservative Party (UK)}};color:#FFFFFF;"|2
+|69
+|-
+|65+
+|39
+|style="background:#CCEBFF;color:black"|'''40'''
+|17
+|4
+|style="background:{{party color|Conservative Party (UK)}};color:#FFFFFF;"|1
+|70
+|-
+!colspan=7|Social class
+|-
+|AB
+|30
+|style="background:#CCEBFF;color:black"|'''39'''
+|25
+|6
+|style="background:{{party color|Conservative Party (UK)}};color:#FFFFFF;"|9
+|68
+|-
+|C1
+|style="background:#FFCCD9;color:black"|'''38'''
+|36
+|20
+|6
+|style="background:{{party color|Labour Party (UK)}};color:#FFFFFF;"|2
+|60
+|-
+|C2
+|style="background:#FFCCD9;color:black"|'''49'''
+|29
+|15
+|7
+|style="background:{{party color|Labour Party (UK)}};color:#FFFFFF;"|20
+|56
+|-
+|DE
+|style="background:#FF668C;color:black"|'''55'''
+|24
+|13
+|8
+|style="background:{{party color|Labour Party (UK)}};color:#FFFFFF;"|31
+|53
+|-
+!colspan=7|Work status
+|-
+|Full time
+|style="background:#FFCCD9;color:black"|'''43'''
+|30
+|20
+|7
+|style="background:{{party color|Labour Party (UK)}};color:#FFFFFF;"|13
+|57
+|-
+|Part time
+|style="background:#FFCCD9;color:black"|'''43'''
+|29
+|21
+|7
+|style="background:{{party color|Labour Party (UK)}};color:#FFFFFF;"|14
+|56
+|-
+|Not working
+|style="background:#FFCCD9;color:black"|'''41'''
+|36
+|18
+|5
+|style="background:{{party color|Labour Party (UK)}};color:#FFFFFF;"|5
+|63
+|-
+|Unemployed
+|style="background:#FF668C;color:black"|'''54'''
+|23
+|11
+|12
+|style="background:{{party color|Labour Party (UK)}};color:#FFFFFF;"|31
+|44
+|-
+|Self-employed
+|32
+|style="background:#CCEBFF;color:black"|'''39'''
+|18
+|11
+|style="background:{{party color|Conservative Party (UK)}};color:#FFFFFF;"|7
+|60
+|-
+!colspan=7|Housing tenure
+|-
+|Owner
+|32
+|style="background:#CCEBFF;color:black"|'''43'''
+|19
+|6
+|style="background:{{party color|Conservative Party (UK)}};color:#FFFFFF;"|11
+|68
+|-
+|Mortgage
+|style="background:#FFCCD9;color:black"|'''42'''
+|31
+|20
+|7
+|style="background:{{party color|Labour Party (UK)}};color:#FFFFFF;"|11
+|59
+|-
+|Council/HA
+|style="background:#FF668C;color:black"|'''60'''
+|18
+|14
+|8
+|style="background:{{party color|Labour Party (UK)}};color:#FFFFFF;"|42
+|52
+|-
+|Private rent
+|style="background:#FFCCD9;color:black"|'''40'''
+|28
+|25
+|7
+|style="background:{{party color|Labour Party (UK)}};color:#FFFFFF;"|12
+|46
+|-
+!colspan=7|Men by age
+|-
+|18–24
+|style="background:#FFCCD9;color:black"|'''38'''
+|29
+|26
+|7
+|style="background:{{party color|Labour Party (UK)}};color:#FFFFFF;"|9
+|43
+|-
+|25–34
+|style="background:#FF668C;color:black"|'''52'''
+|24
+|19
+|5
+|style="background:{{party color|Labour Party (UK)}};color:#FFFFFF;"|28
+|47
+|-
+|35–54
+|style="background:#FFCCD9;color:black"|'''43'''
+|29
+|19
+|9
+|style="background:{{party color|Labour Party (UK)}};color:#FFFFFF;"|14
+|64
+|-
+|55+
+|'''39'''
+|'''39'''
+|16
+|6
+|'''Tie'''
+|73
+|-
+!colspan=7|Men by social class
+|-
+|AB
+|31
+|style="background:#CCEBFF;color:black"|'''38'''
+|25
+|6
+|style="background:{{party color|Conservative Party (UK)}};color:#FFFFFF;"|7
+|68
+|-
+|C1
+|style="background:#FFCCD9;color:black"|'''39'''
+|36
+|14
+|11
+|style="background:{{party color|Labour Party (UK)}};color:#FFFFFF;"|3
+|62
+|-
+|C2
+|style="background:#FFCCD9;color:black"|'''49'''
+|28
+|14
+|9
+|style="background:{{party color|Labour Party (UK)}};color:#FFFFFF;"|21
+|56
+|-
+|DE
+|style="background:#FF668C;color:black"|'''55'''
+|23
+|14
+|8
+|style="background:{{party color|Labour Party (UK)}};color:#FFFFFF;"|32
+|56
+|-
+!colspan=7|Women by age
+|-
+|18–24
+|style="background:#FFCCD9;color:black"|'''45'''
+|24
+|23
+|8
+|style="background:{{party color|Labour Party (UK)}};color:#FFFFFF;"|21
+|36
+|-
+|25–34
+|style="background:#FFCCD9;color:black"|'''49'''
+|25
+|19
+|7
+|style="background:{{party color|Labour Party (UK)}};color:#FFFFFF;"|24
+|46
+|-
+|35–54
+|style="background:#FFCCD9;color:black"|'''43'''
+|31
+|20
+|6
+|style="background:{{party color|Labour Party (UK)}};color:#FFFFFF;"|12
+|60
+|-
+|55+
+|38
+|style="background:#CCEBFF;color:black"|'''40'''
+|18
+|4
+|style="background:{{party color|Conservative Party (UK)}};color:#FFFFFF;"|2
+|67
+|-
+!colspan=7|Women by social class
+|-
+|AB
+|28
+|style="background:#CCEBFF;color:black"|'''41'''
+|26
+|5
+|style="background:{{party color|Conservative Party (UK)}};color:#FFFFFF;"|13
+|68
+|-
+|C1
+|'''37'''
+|'''37'''
+|20
+|6
+|'''Tie'''
+|59
+|-
+|C2
+|style="background:#FFCCD9;color:black"|'''48'''
+|30
+|17
+|5
+|style="background:{{party color|Labour Party (UK)}};color:#FFFFFF;"|18
+|56
+|-
+|DE
+|style="background:#FF668C;color:black"|'''56'''
+|25
+|13
+|6
+|style="background:{{party color|Labour Party (UK)}};color:#FFFFFF;"|31
+|50
+|-
+!colspan=7|Readership
+|-
+|''[[Daily Express]]''
+|33
+|style="background:#CCEBFF;color:black"|'''43'''
+|19
+|5
+|style="background:{{party color|Conservative Party (UK)}};color:#FFFFFF;"|10
+|63
+|-
+|''[[Daily Mail]]''
+|24
+|style="background:#66C2FF;color:black"|'''55'''
+|17
+|4
+|style="background:{{party color|Conservative Party (UK)}};color:#FFFFFF;"|31
+|65
+|-
+|''[[Daily Mirror]]''
+|style="background:#FF668C;color:black"|'''71'''
+|11
+|13
+|5
+|style="background:{{party color|Labour Party (UK)}};color:#FFFFFF;"|58
+|62
+|-
+|[[Daily Record (Scotland)|''Daily Record'']]
+|style="background:#FFCCD9;color:black"|'''59'''
+|8
+|10
+|23
+|style="background:{{party color|Labour Party (UK)}};color:#FFFFFF;"|36
+|57
+|-
+|[[The Daily Telegraph|''The'' ''Daily Telegraph'']]
+|16
+|style="background:#66C2FF;color:black"|'''65'''
+|14
+|5
+|style="background:{{party color|Conservative Party (UK)}};color:#FFFFFF;"|49
+|71
+|-
+|''[[Financial Times]]''
+|30
+|style="background:#CCEBFF;color:black"|'''48'''
+|21
+|1
+|style="background:{{party color|Conservative Party (UK)}};color:#FFFFFF;"|18
+|64
+|-
+|''[[The Guardian]]''
+|style="background:#FF668C;color:black"|'''52'''
+|6
+|34
+|8
+|style="background:{{party color|Labour Party (UK)}};color:#FFFFFF;"|18
+|68
+|-
+|''[[The Independent]]''
+|38
+|12
+|style="background:#FEECCD;color:black"|'''44'''
+|6
+|style="background:{{party color|Liberal Democrats (UK)}};"|6
+|69
+|-
+|[[Daily Star (United Kingdom)|''Daily Star'']]
+|style="background:#FF668C;color:black"|'''56'''
+|21
+|17
+|6
+|style="background:{{party color|Labour Party (UK)}};color:#FFFFFF;"|35
+|48
+|-
+|[[The Sun (United Kingdom)|''The Sun'']]
+|style="background:#FF668C;color:black"|'''52'''
+|29
+|11
+|8
+|style="background:{{party color|Labour Party (UK)}};color:#FFFFFF;"|23
+|50
+|-
+|''[[The Times]]''
+|28
+|style="background:#CCEBFF;color:black"|'''40'''
+|26
+|6
+|style="background:{{party color|Conservative Party (UK)}};color:#FFFFFF;"|12
+|66
+|-
+|No daily paper
+|style="background:#FFCCD9;color:black"|'''45'''
+|27
+|22
+|6
+|style="background:{{party color|Labour Party (UK)}};color:#FFFFFF;"|18
+|56
+|-
+|''[[Evening Standard]]''
+|style="background:#FFCCD9;color:black"|'''42'''
+|29
+|21
+|8
+|style="background:{{party color|Labour Party (UK)}};color:#FFFFFF;"|13
+|51
+|-
+!colspan=7|Sunday Readership
+|-
+|''[[News of the World]]''
+|style="background:#FF668C;color:black"|'''55'''
+|27
+|12
+|6
+|style="background:{{party color|Labour Party (UK)}};color:#FFFFFF;"|28
+|52
+|-
+|''Sunday Express''
+|29
+|style="background:#CCEBFF;color:black"|'''47'''
+|20
+|4
+|style="background:{{party color|Conservative Party (UK)}};color:#FFFFFF;"|18
+|67
+|-
+|[[Sunday Mail (Scotland)|''Sunday Mail'']]
+|style="background:#FF668C;color:black"|'''53'''
+|14
+|13
+|20
+|style="background:{{party color|Labour Party (UK)}};color:#FFFFFF;"|33
+|59
+|-
+|''[[Sunday Mirror]]''
+|style="background:#FF668C;color:black"|'''72'''
+|16
+|9
+|3
+|style="background:{{party color|Labour Party (UK)}};color:#FFFFFF;"|56
+|62
+|-
+|''[[The Sunday Post]]''
+|style="background:#FFCCD9;color:black"|'''43'''
+|22
+|18
+|17
+|style="background:{{party color|Labour Party (UK)}};color:#FFFFFF;"|21
+|64
+|-
+|''[[The Sunday Telegraph]]''
+|17
+|style="background:#66C2FF;color:black"|'''63'''
+|13
+|7
+|style="background:{{party color|Conservative Party (UK)}};color:#FFFFFF;"|46
+|71
+|-
+|''[[The Mail on Sunday]]''
+|25
+|style="background:#66C2FF;color:black"|'''53'''
+|17
+|5
+|style="background:{{party color|Conservative Party (UK)}};color:#FFFFFF;"|28
+|65
+|-
+|''[[The Observer]]''
+|style="background:#FF668C;color:black"|'''53'''
+|4
+|34
+|9
+|style="background:{{party color|Labour Party (UK)}};color:#FFFFFF;"|19
+|71
+|-
+|''[[Sunday People]]''
+|style="background:#FF668C;color:black"|'''65'''
+|19
+|13
+|3
+|style="background:{{party color|Labour Party (UK)}};color:#FFFFFF;"|46
+|60
+|-
+|''[[The Sunday Times]]''
+|29
+|style="background:#CCEBFF;color:black"|'''40'''
+|24
+|7
+|style="background:{{party color|Conservative Party (UK)}};color:#FFFFFF;"|11
+|67
+|-
+|''Independent on Sunday''
+|style="background:#FFCCD9;color:black"|'''47'''
+|10
+|37
+|6
+|style="background:{{party color|Labour Party (UK)}};color:#FFFFFF;"|10
+|70
+|-
+|No Sunday paper
+|style="background:#FFCCD9;color:black"|'''42'''
+|30
+|22
+|6
+|style="background:{{party color|Labour Party (UK)}};color:#FFFFFF;"|12
+|55
+|}
+[[File:2001 UK General Election Gallagher Index.png|right|thumb|The disproportionality of the house of parliament in the 2001 election was 18.03 according to the [[Gallagher index]], mainly between Labour and the Liberal Democrats.]]
+
+== See also ==
+* [[List of MPs elected in the 2001 United Kingdom general election]]
+* [[Results of the 2001 United Kingdom general election]]
+* [[List of MPs for constituencies in Wales (2001–2005)]]
+* [[List of MPs for constituencies in Scotland (2001–2005)]]
+* [[2001 United Kingdom foot-and-mouth outbreak]]
+* [[2001 United Kingdom general election in Northern Ireland]]
+* [[2001 United Kingdom general election in England]]
+* [[2001 United Kingdom general election in Scotland]]
+* [[2001 United Kingdom general election in Wales]]
+* [[2001 United Kingdom local elections]]
+
+== Notes ==
+{{Notelist}}
+
+==References==
+{{Reflist|30em}}
+
+==Bibliography==
+* Butler, David and Dennis Kavanagh. ''The British General Election of 2001'' (2002), the standard scholarly study
+* {{cite web |url=https://researchbriefings.files.parliament.uk/documents/RP01-54/RP01-54.pdf |title=General Election Results, 7 June 2001 [Revised Edition] |department=Research Paper 01/54 |last=Morgan |first=Bryn |date=18 June 2001 |publisher=[[House of Commons Library]]}}
+
+==External links==
+* [https://news.bbc.co.uk/news/vote2001/ BBC News: Vote 2001] – in depth coverage.
+* [https://archives.lse.ac.uk/TreeBrowse.aspx?src=CalmView.Catalog&field=RefNo&key=GENERAL%20ELECTION%202001 Catalogue of 2001 general election ephemera] at the [https://archives.lse.ac.uk/ Archives Division] of the [[London School of Economics]].
+
+{{2001 United Kingdom general election|state=collapsed}}
+{{British elections}}
+{{Tony Blair}}
+{{William Hague}}
+{{New Labour}}
+
+[[Category:2001 United Kingdom general election| ]]
+[[Category:2001 elections in the United Kingdom]]
+[[Category:General elections to the Parliament of the United Kingdom|2001]]
+[[Category:June 2001 in the United Kingdom]]
+[[Category:Premiership of Tony Blair]]
+[[Category:Gordon Brown]]
+[[Category:Peter Mandelson]]
+[[Category:New Labour]]
+[[Category:History of the Labour Party (UK)]]

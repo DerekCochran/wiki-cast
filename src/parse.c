@@ -61,19 +61,183 @@
 /* ── Orphan-token cleanup helpers ──────────────────────────────────────────
  *
  * After build(), any accumulator token that is not reachable from the root
- * tree is an orphan.  Orphans arise when a later-stage parser (e.g.
- * parse_braces, parse_links) stores content containing an earlier-stage
- * sentinel via a NUL-terminated string API (strdup / str_restore).  The
- * embedded \0 byte of the sentinel is silently truncated, so the sentinel
- * is never written into a token text child that build_from_str can expand.
- * The token is then in the accumulator but not in the tree → leak.
+ * tree is an orphan.
  *
- * Fix: walk the final tree, collect all live token pointers, then iterate
- * the accumulator and call token_free_shallow() on every non-live entry.
- * token_free_shallow() frees the token struct and its text children but
- * does NOT recurse into token children, so sub-tokens that each have their
- * own accum entry are freed individually without double-freeing.
+ * Important: not every token child is guaranteed to have its own accum slot
+ * (for example nested tokens created during braces/template construction), so
+ * shallow-freeing only accum entries leaks non-accum descendants.
+ *
+ * We therefore free orphan components recursively while:
+ * - detaching edges to live (root-reachable) tokens,
+ * - detaching edges to previously-freed orphan tokens,
+ * - nulling all matching accum slots before freeing a component.
  */
+typedef struct {
+	Token *ptr;
+	size_t index;
+} AccumSlotRef;
+
+typedef struct {
+	Token **items;
+	size_t count;
+	size_t cap;
+} TokenVec;
+
+typedef struct {
+	Token **items;
+	size_t cap;
+	size_t count;
+} TokenPtrSet;
+
+static bool token_vec_push(TokenVec *v, Token *t) {
+	if(!v) return false;
+	if(v->count >= v->cap) {
+		size_t next_cap= v->cap ? v->cap * 2 : 64;
+		Token **grown= realloc(v->items, next_cap * sizeof(Token *));
+		if(!grown) return false;
+		v->items= grown;
+		v->cap= next_cap;
+	}
+	v->items[v->count++]= t;
+	return true;
+}
+
+static size_t token_ptr_hash(const Token *t) {
+	uintptr_t x= (uintptr_t)t;
+	x >>= 4;
+	x ^= x >> 7;
+	x ^= x >> 13;
+	return (size_t)x;
+}
+
+static bool token_ptr_set_init(TokenPtrSet *set, size_t min_cap) {
+	if(!set) return false;
+	size_t cap= 16;
+	while(cap < min_cap) cap <<= 1;
+	set->items= calloc(cap, sizeof(Token *));
+	if(!set->items) return false;
+	set->cap= cap;
+	set->count= 0;
+	return true;
+}
+
+static void token_ptr_set_destroy(TokenPtrSet *set) {
+	if(!set) return;
+	free(set->items);
+	set->items= NULL;
+	set->cap= 0;
+	set->count= 0;
+}
+
+static bool token_ptr_set_contains(const TokenPtrSet *set, const Token *t) {
+	if(!set || !set->items || !t) return false;
+	size_t mask= set->cap - 1;
+	size_t pos= token_ptr_hash(t) & mask;
+	while(true) {
+		Token *cur= set->items[pos];
+		if(!cur) return false;
+		if(cur == t) return true;
+		pos= (pos + 1) & mask;
+	}
+}
+
+static bool token_ptr_set_rehash(TokenPtrSet *set, size_t new_cap) {
+	Token **old_items= set->items;
+	size_t old_cap= set->cap;
+
+	Token **new_items= calloc(new_cap, sizeof(Token *));
+	if(!new_items) return false;
+
+	set->items= new_items;
+	set->cap= new_cap;
+	set->count= 0;
+
+	for(size_t i= 0; i < old_cap; i++) {
+		Token *cur= old_items[i];
+		if(!cur) continue;
+		size_t mask= set->cap - 1;
+		size_t pos= token_ptr_hash(cur) & mask;
+		while(set->items[pos]) {
+			pos= (pos + 1) & mask;
+		}
+		set->items[pos]= cur;
+		set->count++;
+	}
+
+	free(old_items);
+	return true;
+}
+
+static bool token_ptr_set_insert(TokenPtrSet *set, Token *t) {
+	if(!set || !set->items || !t) return false;
+	if(set->count * 10 >= set->cap * 7) {
+		if(!token_ptr_set_rehash(set, set->cap << 1)) return false;
+	}
+
+	size_t mask= set->cap - 1;
+	size_t pos= token_ptr_hash(t) & mask;
+	while(true) {
+		Token *cur= set->items[pos];
+		if(!cur) {
+			set->items[pos]= t;
+			set->count++;
+			return true;
+		}
+		if(cur == t) return true;
+		pos= (pos + 1) & mask;
+	}
+}
+
+static int cmp_accum_slot_ref_ptr(const void *a, const void *b) {
+	uintptr_t pa= (uintptr_t)((const AccumSlotRef *)a)->ptr;
+	uintptr_t pb= (uintptr_t)((const AccumSlotRef *)b)->ptr;
+	return (pa > pb) - (pa < pb);
+}
+
+static size_t accum_slot_ref_lower_bound(const AccumSlotRef *refs, size_t count, const Token *ptr) {
+	uintptr_t target= (uintptr_t)ptr;
+	size_t lo= 0;
+	size_t hi= count;
+	while(lo < hi) {
+		size_t mid= lo + (hi - lo) / 2;
+		uintptr_t cur= (uintptr_t)refs[mid].ptr;
+		if(cur < target)
+			lo= mid + 1;
+		else
+			hi= mid;
+	}
+	return lo;
+}
+
+static bool token_ptr_in_sorted(const Token *ptr, Token *const *sorted, size_t count) {
+	if(!ptr || !sorted || count == 0) return false;
+	size_t lo= 0;
+	size_t hi= count;
+	uintptr_t target= (uintptr_t)ptr;
+	while(lo < hi) {
+		size_t mid= lo + (hi - lo) / 2;
+		uintptr_t cur= (uintptr_t)sorted[mid];
+		if(cur == target) return true;
+		if(cur < target)
+			lo= mid + 1;
+		else
+			hi= mid;
+	}
+	return false;
+}
+
+static void null_accum_slots_for_ptr(Accum *accum,
+																const AccumSlotRef *refs,
+																size_t ref_count,
+																Token *ptr) {
+	if(!accum || !refs || ref_count == 0 || !ptr) return;
+	size_t pos= accum_slot_ref_lower_bound(refs, ref_count, ptr);
+	while(pos < ref_count && refs[pos].ptr == ptr) {
+		accum->tokens[refs[pos].index]= NULL;
+		pos++;
+	}
+}
+
 static void collect_tree_tokens(const Token *t, Token ***arr,
 																size_t *count, size_t *cap) {
 	if(!t) return;
@@ -96,7 +260,40 @@ static int cmp_token_ptr(const void *a, const void *b) {
 	return (pa > pb) - (pa < pb);
 }
 
+static void collect_orphan_component(Token *node,
+													 Token *const *live_sorted,
+													 size_t live_count,
+													 const TokenPtrSet *freed_set,
+													 TokenVec *component,
+													 unsigned mark_epoch) {
+	if(!node) return;
+	if(token_ptr_set_contains(freed_set, node)) return;
+	if(node->seen_epoch == mark_epoch) return;
+
+	node->seen_epoch= mark_epoch;
+	if(!token_vec_push(component, node)) {
+		log_fatal("collect_orphan_component: out of memory while collecting orphan graph");
+		abort();
+	}
+
+	for(size_t i= 0; i < node->child_count; i++) {
+		Child *c= &node->children[i];
+		if(c->is_text || !c->token) continue;
+
+		Token *child= c->token;
+		if(token_ptr_set_contains(freed_set, child) || token_ptr_in_sorted(child, live_sorted, live_count)) {
+			/* Do not free already-freed or live tokens through an orphan path. */
+			c->token= NULL;
+			continue;
+		}
+
+		collect_orphan_component(child, live_sorted, live_count, freed_set, component, mark_epoch);
+	}
+}
+
 static void free_accum_orphans(const Token *root, Accum *accum) {
+	if(!accum || accum->count == 0) return;
+
 	size_t cap= 64 + accum->count;
 	size_t count= 0;
 	Token **live= malloc(cap * sizeof(Token *));
@@ -105,38 +302,122 @@ static void free_accum_orphans(const Token *root, Accum *accum) {
 	collect_tree_tokens(root, &live, &count, &cap); // Collect live tokens from the tree
 	qsort(live, count, sizeof(Token *), cmp_token_ptr);
 
+	/* De-duplicate live pointers for fast membership checks. */
+	size_t live_count= 0;
+	for(size_t i= 0; i < count; i++) {
+		if(live_count == 0 || live[i] != live[live_count - 1]) {
+			live[live_count++]= live[i];
+		}
+	}
+
+	AccumSlotRef *refs= malloc(accum->count * sizeof(AccumSlotRef));
+	if(!refs) {
+		free(live);
+		return;
+	}
+
+	size_t ref_count= 0;
+	for(size_t i= 0; i < accum->count; i++) {
+		if(!accum->tokens[i]) continue;
+		refs[ref_count].ptr= accum->tokens[i];
+		refs[ref_count].index= i;
+		ref_count++;
+	}
+	qsort(refs, ref_count, sizeof(AccumSlotRef), cmp_accum_slot_ref_ptr);
+
+	TokenPtrSet freed_set;
+	if(!token_ptr_set_init(&freed_set, ref_count ? ref_count * 2 : 16)) {
+		free(refs);
+		free(live);
+		return;
+	}
+
+	TokenVec component= {0};
+	static unsigned orphan_mark_epoch= 1;
+	unsigned mark_epoch= orphan_mark_epoch++;
+	if(orphan_mark_epoch == 0) orphan_mark_epoch= 1;
+
 	for(size_t i= 0; i < accum->count; i++) {
 		Token *t= accum->tokens[i];
 		if(!t) continue;
+		if(token_ptr_set_contains(&freed_set, t)) {
+			accum->tokens[i]= NULL;
+			continue;
+		}
 
-		/* Binary search in sorted live set */
-		size_t lo= 0, hi= count;
-		bool found= false;
-		while(lo < hi) {
-			size_t mid= (lo + hi) / 2;
-			if(live[mid] == t) {
-				found= true;
-				break;
-			}
-			if((uintptr_t)live[mid] < (uintptr_t)t)
-				lo= mid + 1;
-			else
-				hi= mid;
+		if(token_ptr_in_sorted(t, live, live_count)) continue;
+
+		component.count= 0;
+		collect_orphan_component(t, live, live_count, &freed_set, &component, mark_epoch);
+		if(component.count == 0) {
+			accum->tokens[i]= NULL;
+			continue;
 		}
-		if(!found) {
-			/* Orphan: free shallowly — token children are separate accum
-             * entries and are freed when their own slot is encountered. */
-			token_free_shallow(t);
+
+		for(size_t k= 0; k < component.count; k++) {
+			Token *ptr= component.items[k];
+			(void)token_ptr_set_insert(&freed_set, ptr);
+			null_accum_slots_for_ptr(accum, refs, ref_count, ptr);
+			/* collect_orphan_component uses seen_epoch as a temporary mark; clear it
+			 * before token_free() so free-epoch matching cannot short-circuit cleanup. */
+			ptr->seen_epoch= 0;
 		}
+
+		token_free(t);
 	}
+
+	token_ptr_set_destroy(&freed_set);
+	free(component.items);
+	free(refs);
 	free(live);
 }
 
-static bool mem_has(const char *s, size_t len, const char *needle) {
-	size_t nlen= needle ? strlen(needle) : 0;
-	if(!s || nlen == 0 || len < nlen) return false;
-	return sz_find(s, len, needle, nlen) != NULL;
+static bool debug_bad_sentinel_enabled(void) {
+	const char *v= getenv("WTC_DEBUG_BAD_SENTINEL");
+	return v && v[0] && v[0] != '0';
 }
+
+static ssize_t find_nul_colon(const char *s, size_t len) {
+	if(!s || len < 2) return -1;
+	for(size_t i= 0; i + 1 < len; i++) {
+		if((unsigned char)s[i] == 0x00 && s[i + 1] == ':') {
+			return (ssize_t)i;
+		}
+	}
+	return -1;
+}
+
+static void debug_dump_bad_sentinel_window(const char *label, const ThreadBuf *tb, const Token *t) {
+	if(!debug_bad_sentinel_enabled() || !tb || !tb->buf) return;
+	ssize_t hit= find_nul_colon(tb->buf, tb->len);
+	if(hit < 0) return;
+
+	const char *type_name= (t && t->type_name) ? t->type_name : "(null)";
+	const char *name= (t && t->name) ? t->name : "(null)";
+	fprintf(stderr,
+	        "DEBUG bad-sentinel: label=%s token=%p type=%d type_name=%s name=%s len=%zu nul_colon_at=%zd\n",
+	        label ? label : "(null)",
+	        (void *)t,
+	        t ? (int)t->type : -1,
+	        type_name,
+	        name,
+	        tb->len,
+	        hit);
+
+	size_t pos= (size_t)hit;
+	size_t start= (pos > 24) ? (pos - 24) : 0;
+	size_t end= pos + 96;
+	if(end > tb->len) end= tb->len;
+
+	fprintf(stderr, "DEBUG bad-sentinel bytes: ");
+	for(size_t i= start; i < end; i++) {
+		unsigned char ch= (unsigned char)tb->buf[i];
+		fprintf(stderr, "[%zu]=0x%02x '%c' ", i, ch, (ch >= 0x20 && ch < 0x7f) ? ch : '?');
+	}
+	fprintf(stderr, "\n");
+}
+
+
 
 /* Nested postprocess serialization parity: preserve special marker chars for
  * magic-word transcludes instead of collapsing everything to 't'. */
@@ -259,6 +540,28 @@ static bool stage_json_parse_sentinel(const char *s, size_t len, size_t *pos, si
 	log_debug_env_token("WTC_DEBUG_STAGE_1", NULL,
 		"[C stage_json_parse_sentinel] OK parsed idx=%zu type=%02X next_pos=%zu", idx, type_ch, *pos);
 	return true;
+}
+
+/* True when tb contains at least one well-formed sentinel of given type,
+ * e.g. type_ch='q' for quote tokens. */
+static bool thread_buf_has_sentinel_type(const ThreadBuf *tb, char type_ch) {
+	if(!tb || !tb->buf || tb->len < 4) return false;
+
+	for(size_t i= 0; i + 3 < tb->len; i++) {
+		if((unsigned char)tb->buf[i] != '\0') continue;
+
+		size_t p= i + 1;
+		if(p >= tb->len || !isdigit((unsigned char)tb->buf[p])) continue;
+
+		while(p < tb->len && isdigit((unsigned char)tb->buf[p])) p++;
+		if(p + 1 >= tb->len) continue;
+
+		if(tb->buf[p] == type_ch && (unsigned char)tb->buf[p + 1] == 0x7F) {
+			return true;
+		}
+	}
+
+	return false;
 }
 
 static void stage_json_write_text(const char *s, size_t len, FILE *fp) {
@@ -694,11 +997,14 @@ static Token *parse_gallery_image_line(const char *line, size_t line_len,
 
 			size_t prefix_len= p + 5;
 			size_t new_len= first->text_len - prefix_len;
-			const char *view= wiki_thread_buf_append_to_tokens(first->text + prefix_len, new_len);
+			char *owned= malloc(new_len + 1);
+			if(!owned) continue;
+			if(new_len > 0) memcpy(owned, first->text + prefix_len, new_len);
+			owned[new_len]= '\0';
 			if(first->text_owned && first->text) free((void *)first->text);
-			first->text= view;
+			first->text= owned;
 			first->text_len= new_len;
-			first->text_owned= false;
+			first->text_owned= true;
 		}
 	}
 	if(!out) {
@@ -1036,19 +1342,21 @@ static void run_nested_plain_pipeline(ThreadBuf *scratch,
 																			const ParserConfig *cfg,
 																					Accum *accum,
 																					const char *page) {
+	bool is_poem_ext_inner= is_ext_inner && t && t->name && strcmp(t->name, "poem") == 0;
+
 	if(is_ext_inner) {
 		parse_comment_and_ext(scratch, cfg, accum, false);
 	}
 
-	/* JS parity: td-inner nested parsing starts at stage 4; stage 1 braces
-	 * should not run here (templates inside table cells are already handled
-	 * before table tokenization on the root stream). */
-	if(!is_heading_title && !is_td_inner) {
-		parse_braces(scratch, cfg, accum);
+	/* JS parity: this post-build nested pass models later stages (4+).
+	 * Do not run braces here for td-inner or ext-inner; running stage 1 this
+	 * late can over-parse constructs JS leaves as plain text. */
+	if(!is_heading_title && !is_td_inner && !is_ext_inner) {
+		parse_braces_with_heading(scratch, cfg, accum, !is_poem_ext_inner);
 	}
 
 	if(is_td_inner || is_ext_inner) {
-		bool is_poem_ext_inner= is_ext_inner && t && t->name && strcmp(t->name, "poem") == 0;
+		debug_dump_bad_sentinel_window("run_nested_plain_pipeline:before-stage4", scratch, t);
 		bool ext_inner_has_sentinel = false;
 		if (is_ext_inner) {
 			const char _zn_run = '\0';
@@ -1065,10 +1373,13 @@ static void run_nested_plain_pipeline(ThreadBuf *scratch,
 			else parse_table_skip_first_line(scratch, cfg, accum);
 		}
 		TokenType hr_root_type= t->type;
-		if(ext_inner_has_sentinel) {
+		if(ext_inner_has_sentinel && !is_poem_ext_inner) {
 			hr_root_type= TOKEN_PLAIN;
 		}
-		parse_hr_and_double_underscore(scratch, cfg, accum, hr_root_type, t->type_name);
+		const char *hr_root_name= t->type_name;
+		if(is_ext_inner && t && t->name) hr_root_name= t->name;
+		parse_hr_and_double_underscore(scratch, cfg, accum, hr_root_type, hr_root_name);
+		debug_dump_bad_sentinel_window("run_nested_plain_pipeline:after-stage4", scratch, t);
 		const ParserConfig *links_cfg= cfg;
 		ParserConfig cfg_local;
 		if(is_ext_inner && cfg) {
@@ -1076,8 +1387,12 @@ static void run_nested_plain_pipeline(ThreadBuf *scratch,
 			cfg_local.in_ext= true;
 			links_cfg= &cfg_local;
 		}
+		debug_dump_bad_sentinel_window("run_nested_plain_pipeline:before-stage5", scratch, t);
 		parse_links(scratch, links_cfg, accum, page, false);
-		parse_quotes_stage6_per_line(scratch, cfg, accum);
+		debug_dump_bad_sentinel_window("run_nested_plain_pipeline:after-stage5", scratch, t);
+		if(!thread_buf_has_sentinel_type(scratch, 'q')) {
+			parse_quotes_stage6_per_line(scratch, cfg, accum);
+		}
 		parse_external_links(scratch, cfg, accum, false);
 		parse_magic_links(scratch, cfg, accum);
 		if(is_td_inner) {
@@ -1090,10 +1405,15 @@ static void run_nested_plain_pipeline(ThreadBuf *scratch,
 			}
 		}
 		parse_converter(scratch, cfg, accum);
+		debug_dump_bad_sentinel_window("run_nested_plain_pipeline:after-stage10", scratch, t);
 	} else if(is_heading_title) {
+		debug_dump_bad_sentinel_window("run_nested_plain_pipeline:heading-before-stage5", scratch, t);
 		parse_html(scratch, cfg, accum);
 		parse_links(scratch, cfg, accum, page, false);
-		parse_quotes_stage6_per_line(scratch, cfg, accum);
+		debug_dump_bad_sentinel_window("run_nested_plain_pipeline:heading-after-stage5", scratch, t);
+		if(!thread_buf_has_sentinel_type(scratch, 'q')) {
+			parse_quotes_stage6_per_line(scratch, cfg, accum);
+		}
 		parse_external_links(scratch, cfg, accum, false);
 		parse_magic_links(scratch, cfg, accum);
 	}
@@ -1445,16 +1765,78 @@ static AttrValueParseMode classify_attr_value_parse_mode(const Token *parent,
 	return ATTR_VALUE_PARSE_NONE;
 }
 
+static bool token_has_ext_inner_ancestor(const Token *target, const Accum *accum) {
+	if(!target || !accum || accum->count == 0) return false;
+
+	size_t cap= accum->count;
+	const Token **stack= malloc(cap * sizeof(*stack));
+	const Token **seen= malloc(cap * sizeof(*seen));
+	if(!stack || !seen) {
+		free((void *)stack);
+		free((void *)seen);
+		return false;
+	}
+
+	size_t sp= 0;
+	size_t seen_n= 0;
+	stack[sp++]= target;
+	seen[seen_n++]= target;
+
+	while(sp > 0) {
+		const Token *cur= stack[--sp];
+		for(size_t ai= 0; ai < accum->count; ai++) {
+			Token *parent= accum->tokens[ai];
+			if(!parent || parent == cur) continue;
+
+			bool is_parent= false;
+			for(size_t ci= 0; ci < parent->child_count; ci++) {
+				if(parent->children[ci].is_text) continue;
+				if(parent->children[ci].token == cur) {
+					is_parent= true;
+					break;
+				}
+			}
+			if(!is_parent) continue;
+
+			if(parent->type == TOKEN_EXT_INNER && parent->type_name && strcmp(parent->type_name, "ext-inner") == 0) {
+				free((void *)stack);
+				free((void *)seen);
+				return true;
+			}
+
+			bool already_seen= false;
+			for(size_t si= 0; si < seen_n; si++) {
+				if(seen[si] == parent) {
+					already_seen= true;
+					break;
+				}
+			}
+			if(!already_seen && seen_n < cap && sp < cap) {
+				seen[seen_n++]= parent;
+				stack[sp++]= parent;
+			}
+		}
+	}
+
+	free((void *)stack);
+	free((void *)seen);
+	return false;
+}
+
 static void postprocess_parameter_value_inline_impl(Token *t, const ParserConfig *cfg, Accum *accum,
 																				const char *page, const Token *parent,
-																				const Token *grandparent) {
+																						const Token *grandparent,
+																						bool in_ext_context) {
 	if(!t) return;
 
 	log_debug_env_token("DEBUG_PARAM_VALUE", t, "postprocess_parameter_value_inline_impl start");
 
+	bool self_is_ext_inner= (t->type == TOKEN_EXT_INNER && t->type_name && strcmp(t->type_name, "ext-inner") == 0);
+	bool current_in_ext_context= in_ext_context || self_is_ext_inner;
+
 	for(size_t i= 0; i < t->child_count; i++) {
 		if(!t->children[i].is_text && t->children[i].token) {
-			postprocess_parameter_value_inline_impl(t->children[i].token, cfg, accum, page, t, parent);
+			postprocess_parameter_value_inline_impl(t->children[i].token, cfg, accum, page, t, parent, current_in_ext_context);
 		}
 	}
 
@@ -1483,6 +1865,17 @@ static void postprocess_parameter_value_inline_impl(Token *t, const ParserConfig
 		}
 	}
 
+	bool use_in_ext_links= current_in_ext_context || (cfg && cfg->in_ext);
+	ParserConfig links_cfg_local;
+	const ParserConfig *links_cfg= cfg;
+	if(use_in_ext_links && cfg && !cfg->in_ext) {
+		links_cfg_local= *cfg;
+		links_cfg_local.in_ext= true;
+		links_cfg= &links_cfg_local;
+	}
+
+	bool has_quote_token= false;
+
 	/* Handle brace spans split across mixed text/token children (for example
 	 * parameter values containing nested templates that were already expanded).
 	 * Serialize token children back to sentinels so parse_braces can see one
@@ -1495,6 +1888,7 @@ static void postprocess_parameter_value_inline_impl(Token *t, const ParserConfig
 		bool has_close_braces= false;
 		bool has_open_links= false;
 		bool has_close_links= false;
+		bool has_quote_markup= false;
 
 		for(size_t i= 0; i < t->child_count; i++) {
 			Child cur= t->children[i];
@@ -1505,9 +1899,13 @@ static void postprocess_parameter_value_inline_impl(Token *t, const ParserConfig
 					if(sz_find(cur.text, cur.text_len, "}}", 2)) has_close_braces= true;
 					if(sz_find(cur.text, cur.text_len, "[[", 2)) has_open_links= true;
 					if(sz_find(cur.text, cur.text_len, "]]", 2)) has_close_links= true;
+					if(sz_find(cur.text, cur.text_len, "''", 2)) has_quote_markup= true;
 				}
 			} else if(cur.token) {
 				has_token= true;
+				if(cur.token->type == TOKEN_QUOTE) {
+					has_quote_token= true;
+				}
 				if(cur.token->type == TOKEN_LINK || cur.token->type == TOKEN_FILE || cur.token->type == TOKEN_CATEGORY) {
 					has_link_like_token= true;
 				}
@@ -1518,11 +1916,13 @@ static void postprocess_parameter_value_inline_impl(Token *t, const ParserConfig
 		/* Avoid rejoining across already-parsed nested links such as
 		 * "[[1, [[2, 3]], 4]]", where JS keeps the outer link unparsed. */
 		bool has_split_link_span= has_open_links && has_close_links && !has_link_like_token;
-		if(has_text && has_token && (has_split_brace_span || has_split_link_span)) {
+		bool has_split_quote_span= has_quote_markup && !has_quote_token;
+		if(has_text && has_token && (has_split_brace_span || has_split_link_span || has_split_quote_span)) {
 			ThreadBuf *tmp_ser = wiki_thread_buf_acquire_scratch();
 			if(tmp_ser) {
 				tmp_ser->len= 0;
 				bool serializable= true;
+				bool allow_serialized_braces= !is_parameter_value || !has_link_like_token;
 
 				for(size_t i= 0; i < t->child_count; i++) {
 					Child cur= t->children[i];
@@ -1560,13 +1960,17 @@ static void postprocess_parameter_value_inline_impl(Token *t, const ParserConfig
 					tmp_ser->buf[tmp_ser->len]= '\0';
 
 					parse_comment_and_ext(tmp_ser, cfg, accum, false);
-					parse_braces(tmp_ser, cfg, accum);
+					if(allow_serialized_braces) {
+						parse_braces(tmp_ser, cfg, accum);
+					}
 					parse_html(tmp_ser, cfg, accum);
 					if(is_parameter_value) parse_table(tmp_ser, cfg, accum);
 					else parse_table_skip_first_line(tmp_ser, cfg, accum);
 					parse_hr_and_double_underscore(tmp_ser, cfg, accum, TOKEN_PLAIN, "parameter-value");
-					parse_links(tmp_ser, cfg, accum, page, false);
-					parse_quotes_stage6_per_line(tmp_ser, cfg, accum);
+					parse_links(tmp_ser, links_cfg, accum, page, false);
+					if(!has_quote_token) {
+						parse_quotes_stage6_per_line(tmp_ser, cfg, accum);
+					}
 					parse_external_links(tmp_ser, cfg, accum, false);
 					parse_magic_links(tmp_ser, cfg, accum);
 					parse_list_skip_first_line(tmp_ser, cfg, accum);
@@ -1597,7 +2001,7 @@ static void postprocess_parameter_value_inline_impl(Token *t, const ParserConfig
 
 						for(size_t i= 0; i < t->child_count; i++) {
 							if(!t->children[i].is_text && t->children[i].token) {
-								postprocess_parameter_value_inline_impl(t->children[i].token, cfg, accum, page, t, parent);
+								postprocess_parameter_value_inline_impl(t->children[i].token, cfg, accum, page, t, parent, current_in_ext_context);
 							}
 						}
 
@@ -1621,6 +2025,13 @@ static void postprocess_parameter_value_inline_impl(Token *t, const ParserConfig
 
 	Child *old_children= t->children;
 	size_t old_count= t->child_count;
+	bool has_non_text_children= false;
+	for(size_t i= 0; i < old_count; i++) {
+		if(!old_children[i].is_text) {
+			has_non_text_children= true;
+			break;
+		}
+	}
 	size_t new_cap= old_count ? old_count : 1;
 	Child *new_children= malloc(new_cap * sizeof(Child));
 	if(!new_children) {
@@ -1650,7 +2061,7 @@ static void postprocess_parameter_value_inline_impl(Token *t, const ParserConfig
 		if(is_attr_value) {
 			if(attr_mode == ATTR_VALUE_PARSE_RICH_INLINE) {
 				parse_braces(scratch, cfg, accum);
-				parse_links(scratch, cfg, accum, page, false);
+				parse_links(scratch, links_cfg, accum, page, false);
 				parse_quotes_stage6_per_line(scratch, cfg, accum);
 				parse_external_links(scratch, cfg, accum, false);
 				parse_magic_links(scratch, cfg, accum);
@@ -1664,21 +2075,27 @@ static void postprocess_parameter_value_inline_impl(Token *t, const ParserConfig
 				 * heading + converter; quotes must still run (stage 6). */
 				parse_html(scratch, cfg, accum);
 				parse_table_skip_first_line(scratch, cfg, accum);
-				parse_hr_and_double_underscore(scratch, cfg, accum, TOKEN_PLAIN, "parameter-key");
-				parse_links(scratch, cfg, accum, page, false);
+				if(!has_non_text_children) {
+					parse_hr_and_double_underscore(scratch, cfg, accum, TOKEN_PLAIN, "parameter-key");
+				}
+				parse_links(scratch, links_cfg, accum, page, false);
 				parse_quotes_stage6_per_line(scratch, cfg, accum);
 				parse_external_links(scratch, cfg, accum, false);
 				parse_magic_links(scratch, cfg, accum);
 				parse_list_skip_first_line(scratch, cfg, accum);
 			} else {
 				parse_comment_and_ext(scratch, cfg, accum, false);
-				parse_braces(scratch, cfg, accum);
+				if(!has_non_text_children) {
+					parse_braces(scratch, cfg, accum);
+				}
 				parse_html(scratch, cfg, accum);
 				if(is_parameter_value) parse_table(scratch, cfg, accum);
 				else parse_table_skip_first_line(scratch, cfg, accum);
 				parse_hr_and_double_underscore(scratch, cfg, accum, TOKEN_PLAIN, is_attr_value ? "attr-value" : "parameter-value");
-				parse_links(scratch, cfg, accum, page, false);
-				parse_quotes_stage6_per_line(scratch, cfg, accum);
+				parse_links(scratch, links_cfg, accum, page, false);
+				if(!has_quote_token) {
+					parse_quotes_stage6_per_line(scratch, cfg, accum);
+				}
 				parse_external_links(scratch, cfg, accum, false);
 				parse_magic_links(scratch, cfg, accum);
 				parse_list_skip_first_line(scratch, cfg, accum);
@@ -1751,7 +2168,8 @@ static void postprocess_parameter_value_inline_impl(Token *t, const ParserConfig
 
 static void postprocess_parameter_value_inline(Token *t, const ParserConfig *cfg, Accum *accum,
 																			const char *page) {
-	postprocess_parameter_value_inline_impl(t, cfg, accum, page, NULL, NULL);
+	bool inferred_in_ext_context= token_has_ext_inner_ancestor(t, accum);
+	postprocess_parameter_value_inline_impl(t, cfg, accum, page, NULL, NULL, inferred_in_ext_context);
 }
 
 static void finalize_gallery_and_link_names(Token *t, const ParserConfig *cfg,
@@ -1862,7 +2280,8 @@ static void stage1_parse_braces_on_accum(const ParserConfig *cfg, Accum *accum) 
 		scratch->buf[txt_len]= '\0';
 		scratch->len= txt_len;
 
-		parse_braces(scratch, cfg, accum);
+		bool allow_heading= !(tok->name && strcmp(tok->name, "poem") == 0);
+		parse_braces_with_heading(scratch, cfg, accum, allow_heading);
 		if(!(scratch->len == txt_len && sz_equal(scratch->buf, txt, txt_len))) {
 			build_from_str(tok, scratch->buf, scratch->len, accum);
 		}
@@ -1957,13 +2376,8 @@ Token *wiki_parse_with_page(const char *wikitext, size_t input_len, const Parser
      * the pointer to str_tidy_into(), which never allocates. */
 	wiki_thread_buf_reserve(&tbufs->stage, input_len);
 
-	/* Pre-reserve the tokens arena to multiple times the input length and
-	 * reset it. This is a temporary workaround to avoid reallocations of
-	 * the tokens arena during parsing which would invalidate previously
-	 * returned text pointers. The correct fix (see TODO.md) is to avoid
-	 * appending sentinel-containing inner text into the arena. */
-	if(tbufs->tokens.cap < input_len * 4 + 1)
-		wiki_thread_buf_reserve(&tbufs->tokens, input_len * 4);
+	/* Token text is currently copied into per-token owned memory, so we only
+	 * clear the legacy tokens arena bookkeeping for compatibility/debug paths. */
 	tbufs->tokens.len= 0;
 
 	size_t tidy_len= 0;
@@ -2070,9 +2484,28 @@ Token *wiki_parse_with_page(const char *wikitext, size_t input_len, const Parser
      * token, not just root-reachable tokens). This ensures we also process
      * parameter-value tokens embedded inside sentinels of tokens not yet
      * linked into the root tree (e.g. templates inside table-attr-dirty). */
-	for(size_t _ai= 0; _ai < accum.count; _ai++) {
-		if(accum.tokens[_ai]) {
-			postprocess_parameter_value_inline(accum.tokens[_ai], cfg, &accum, page);
+	/* JS parity: parseOnce walks accum dynamically, so newly created tokens can
+	 * also be processed. Keep that behavior, but cap growth on malformed inputs
+	 * so post-build processing cannot run forever. */
+	{
+		const size_t max_inline_passes= 3;
+		const size_t max_inline_tokens= 50000;
+		size_t pass= 0;
+		size_t scan_start= 0;
+
+		while(scan_start < accum.count && pass < max_inline_passes && scan_start < max_inline_tokens) {
+			size_t scan_end= accum.count;
+			if(scan_end > max_inline_tokens) scan_end= max_inline_tokens;
+
+			for(size_t _ai= scan_start; _ai < scan_end; _ai++) {
+				if(accum.tokens[_ai]) {
+					postprocess_parameter_value_inline(accum.tokens[_ai], cfg, &accum, page);
+				}
+			}
+
+			if(accum.count <= scan_end) break;
+			scan_start= scan_end;
+			pass++;
 		}
 	}
 

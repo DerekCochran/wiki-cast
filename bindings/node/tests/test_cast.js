@@ -3,7 +3,200 @@
 // Parity test: templates, arguments, section headings (stage 1 – parseBraces).
 const { runTests } = require('./helpers');
 
-runTests([
+const castTests = [
+  // Failures from export of wikitexts
+    `{{reflist |group=Note |refs=
+<ref name="c">French reports: "The (over 5{{nbs"[[Hectare|ha]]) era...}}</ref>
+}}`,
+  `* ﻿{{cite web |url= https://reason.com/2019/10/31/its-that-old-looney-tuner-lysander-spooner/ |title= It's That Old Looney Tuner, Lysander Spooner |last= Bagge |first= Peter |date= November 2019 |website= Reason Magazine |format= Comic strip| access-date= }}`,
+  `<ref =EJ440-444>{{Cite book|volume=18|edition=Second| location= Detroit |date= 2007| page=440-444|title=Encyclopaedia Judaica|last1=Berenbaum|first1=Michael|last2=Skolnik|first2=Fred|publisher=Thomson Gale}}</ref>`,
+  `{{ubl|
+|'''Legitimate'''<ref name="nyugenphuc">Bao Dai had two sons and three daughters, according to the genealogy of the Nyugen Phuc clan. Only his children by Nam Phuong are listed. His obituary in ''[https://www.independent.co.uk/news/people/obituary-bao-dai-1243873.html The Independent]'' says he had two sons and two daughters while the ''[https://www.nytimes.com/1997/08/02/world/bao-dai-83-of-vietnam-emperor-and-bon-vivant.html New York Times]'' says two sons and four daughters. (''''[http://giapha.nguyenphuoctoc.info/download/NGUYEN-PHUC-TOC-THE-PHA.pdf Nguyễn Phúc tộc thế phả]'', 1995, p. 330).</ref>{{ubl|
+|[[Bảo Long]] (1936–2007)
+|[[Phương Mai]] (1937–2021)
+|[[Phương Liên]] (1938–)
+|Phương Dung (1942–)
+|[[Bảo Thăng]] (1943–2017)}}
+|'''Unrecognized'''{{ubl|
+|Phương Thảo (1946–)
+|Phương Minh (1949–2012)
+|[[Bảo Ân]] (1951–)
+|Bảo Hoàng (1954–1955)
+|Bảo Sơn (1957–1987)
+|Phương Từ (1955)
+|Patrick-Édouard Bloch-Carcenac (1958–)
+}}
+}}`,
+  `{{Collapsible list|title=''See list''{{[[Felix de Muelenaere|Comte de Muelenaere]] (1831-1832)|[[Albert Goblet d'Alviella|Comte d'Alviella]] (1832-1834)|[[Barthélémy de Theux de Meylandt|Chevalier de Theux de Meylandt]] (1834-1840; 1846-1847)|[[Joseph Lebeau]] (1840-1841)|[[Jean-Baptiste Nothomb]] (1841-1845)|[[Sylvain Van de Weyer]] (1845-1846)|[[Charles Rogier]] (1847-1852; 1857-1862)|[[Henri de Brouckère]] (1852-1855)|[[Pierre de Decker]] (1855-1857)}}}}`,
+  `{{&prime;}}`,
+  `<imagemap>
+Image:Menthol synthesis.png|
+
+rect 6 14 131 92 [[myrcene]]
+rect 136 46 201 63 [[diethylamine]]
+rect 468 110 628 180 [[citronellal]]
+rect 387 112 458 135 [[zinc bromide]]
+rect 95 97 223 209 [[menthol]]
+
+desc bottom-left
+#Notes:
+#Details on the new coding for clickable images is here: [[mw:Extension:ImageMap]]
+#[https://web.archive.org/web/20080327003154/http://tools.wikimedia.de/~dapete/ImageMapEdit/ImageMapEdit.html?en This image editor] was used.
+</imagemap>`,
+  `{{refn|''StarHorse2: Fifth Expansion''
+* Fiscal year ended 31 March 2010: ¥2.8&nbsp;billion<ref name="sega_mar10"/>
+* Fiscal year ended 31 March 2011: ¥2&nbsp;billion<ref name="sega_mar11"/>
+* Currency conversion:<ref name="xe_currency"/>
+** ¥2.8 billion = $34.6039 million
+** ¥2 billion = $24.7171 million
+|group=n|name=StarHorse2}}`,
+  `{{SAFESUBST:<noinclude />#invoke:Unsubst||date=__DATE__ |$B=
+{{More citations needed section| name  = More citations needed section
+| find  = {{#if:{{{find|}}}|{{{find|}}}|none}}
+| find2  = {{{find2|{{{unquoted|}}}}}}
+|date=June 2025| talk  = {{{talk|}}}
+| small = {{{small|}}}
+}}
+}}`,
+  `<poem>In the name of God, the Merciful, the Compassionate
+Name and surname
+Signature|author=Ruhollah Khomeini|title=Iranian Constitution|source=Article 67 of the Constitution of the Islamic Republic of Iran}}
+===Monarch===
+{{blockquote|<poem>
+So help me, God Almighty!
+(This I affirm!)</poem>`,
+  `<inputbox>
+id = style-searchbox
+type=fulltext
+width=35
+break=yez
+searchfilter=deepcat:"Canadian people"
+namespaces=Main**
+placeholder=e.g. female historians
+searchbuttonlabel = Search Canadian people articles 
+</inputbox>`,
+  `{{c. |1979|lk=none}}`,
+  `<gallery>
+File:Sydney Skyline (5620756401).jpg|The [[Sydney central business district]] in [[Sydney]]'s [[Western Suburbs, Sydney|western suburbs
+</gallery>`,
+  `<ref name="Poznań">''{{cite web |url=http://www.poznan.pl/mim/public/publikacje/pages.html?co=list&id=19&ch=20&instance=1017&lang=pl |title=Poznań Official Website – Twin Towns|access-date=29 November 2008 |publisher={{fontcolor|Green|(in [[Polish language|{{fontcolor|Green|Polish}}]])}} [[copyright|]] 1998–2008 Urząd Miasta Poznania }}''</ref>`,
+  `{| class=wikitable
+|+ Occitan words and their French, Catalan and Spanish cognates
+|-
+!  scope="col" rowspan=2 | English
+!! scope="col" colspan=2 | Cognate of French
+!! scope="col" colspan=3 | Cognate of Catalan and Spanish
+|-
+!  scope="col" | Occitan
+!! scope="col" | French
+!! scope="col" | Occitan
+!! scope="col" | Catalan
+!! scope="col" | Spanish
+|-
+| broom || style{{=}}"background: Gainsboro" | {{lang|oc|balaja}} || {{lang|fr|balai}} || style{{=}}"background: Gainsboro" | {{lang|oc|escoba}} || {{lang|ca|escombra}} || {{lang|es|escoba}}
+|-
+|}`,
+  `<imagemap>
+File:Subtraction_game_SMIL.svg|thumb|Interactive subtraction game.
+default [http://upload.wikimedia.org/wikipedia/commons/4/4d/Subtraction_game_SMIL.svg]
+</imagemap>`,
+  `{{Infobox national military
+| name = Tatmadaw
+| native_name = {{lang|my|တပ်မတော်}} {{lang|my-latn|{{small|Tapmătau}}}}<br>{{lang|en|[[Royal Burmese Armed Forces|Royal Armed Forces]]}}
+| image = {{ubl|[[File:Full Emblem of the Myanmar Armed Forces.svg|200px|frameless]]|[[Emblem of Tatmadaw|Emblem of the Myanmar Armed Forces]]
+----
+[[File: Flag of the Armed Forces (Tatmadaw) of Myanmar.svg|225px|border]]|Flag of the Myanmar Armed Forces}}
+| image_size = 
+| alt = 
+| caption = 
+| image2 = {{ubl|[[File: Emblem of the Myanmar Armed Forces.svg|150px|frameless]]|Mark Logo
+----
+{{Photomontage
+ | photo1a = Shoulder Sleeve of Myanmar Army.svg
+ | size    = 300
+ | spacing = 5
+ | color   = transparent
+ | border  = 0
+ | text    = 
+}}|'''Top:''' Emblems of main service branches: [[Myanmar Army|Army]]{{efn|Also the [[formation patch]] of Chief of Staffs' office.<ref>{{cite web |url=https://www.cincds.gov.mm/ |title=CINCDS Myanmar |publisher=Cincds.gov.mm |date= |accessdate=2022-08-03 |archive-date=14 June 2022 |archive-url=https://web.archive.org/web/20220614005935/https://cincds.gov.mm/ |url-status=live }}</ref>}}, [[Myanmar Navy|Navy]] and [[Myanmar Air Force|Air Force]]|'''Bottom:''' Emblems of auxiliary services: [[Myanmar Coast Guard|Coast Guard]], [[Myanmar Police Force|Police Force]] and [[Myanmar Border Guard Forces|Border Guard Forces]]}}
+| branches = {{plainlist|
+* {{army|MYA}}
+* {{navy|MYA}}
+* {{air force|MYA}}
+* {{flagicon image|Myanmar MOHA Flag.svg}} [[Ministry of Home Affairs (Myanmar)]] (de facto)
+}}
+* {{flagicon image|Flag of the Myanmar Police Force.svg}} [[Myanmar Police Force]]{{cn|date=March 2026}}
+| headquarters = [[Naypyidaw]], [[Myanmar]]
+| website = {{Bulleted list
+| {{URL|mod.gov.mm}}
+| {{URL|cincds.gov.mm}}
+}}
+| ranks = [[Military ranks of Myanmar]]
+}}`,
+
+    `<imagemap>
+File:Mustelidae-01.jpg|250px|alt=Alt text 
+rect 800 1066 1599 1594 [[Honey badger |Honey badger (''Mellivora capensis'')]] 
+desc none
+default [[Mustelidae]]
+</imagemap>`,
+  `<gallery mode="packed" caption="Coloniae and Municipia image gallery">
+  File:Arco Romano.jpg|Roman arch of [[Pax Iulia|]]''[[Pax Julia|Pax Iulia]]'' ([[Beja, Portugal|Beja]])
+  </gallery>`,
+  `{{gloss|listen, earl, to [[Kvasir]]'s blood (=poetry)}}`,
+  `<ref name="Eaton-sep" |pages=286 |date=July 2025}}<ref name="Eaton 2004">{{cite book |last=Eaton |first=Richard M. |title=Temple desecration and Muslim states in medieval India |date=2004 |publisher=Hope India Publications |isbn=978-8178710273 |location=Gurgaon |pages=31–49 |quote=For, while  }}</ref>`,
+  `[[File:Kasparov-34.jpg{{!}}border|thumb|alt=refer to caption|Kasparov in 2007|upright=0.75]]`,
+  `[[File:Sarnia Cherie.ogg|alt=
+  Chord progression of Sarnia Chérie (English: Guernsey Dear), unofficial anthem of Guernsey]]`,
+  `{|width=50% |gap=4em
+  | '''Child'''
+  | '''Namesake'''
+  |-
+  | 1st son
+  | paternal grandfather
+  |-
+  | 2nd son
+  | maternal grandfather
+  |-
+  | 3rd son
+  | father
+  |-
+  | 4th son
+  | father's oldest brother
+  |-
+  | 1st daughter
+  | maternal grandmother
+  |-
+  | 2nd daughter
+  | paternal grandmother
+  |-
+  | 3rd daughter
+  | mother
+  |-
+  | 4th daughter
+  | mother's oldest sister
+  |}
+  `,
+  `{{cite web https://www.imf.org/external/datamapper/profile/GHA#:~:text=Here's%20some%20information%20about%20Ghana's%20GDP%20from,PPP%2C%20share%20of%20world**%200.14%25%20in%202026|url=https://www.imf.org/en/Publications/WEO/weo-database/2025/april |language=en |access-date=21 June 2025 |archive-date=28 April 2025 |archive-url=https://web.archive.org/web/20250428212902/https://www.imf.org/en/Publications/WEO/weo-database/2025/April |url-status=live }}
+  `,
+  `<gallery widths="160px" heights="160px" style="text-align:center;" caption="Schlegel diagrams of some fullerenes">
+  Graph of 20-fullerene w-nodes.svg|C20<br />([[dodecahedron]])
+  Graph of 26-fullerene 5-base w-nodes.svg|C26
+  Graph of 60-fullerene w-nodes.svg|C60<br/>([[truncated icosahedron]])
+  Graph of 70-fullerene w-nodes.svg|C70
+  </gallery>
+  `,
+  `<gallery widths="180px" heights="180px">
+  Caduceus on Mauryan coin.jpg | Caduceus symbol on a Maurya-era [[punch-marked coin]]
+  India Mauryan emperor Ashoka Punch-marked Coin.jpg | A punch-marked coin attributed to Ashoka<ref>{{cite book |last=Mitchiner |first=Michael |date=1978 |title=Oriental Coins & Their Values: The Ancient and Classical World 600 B.C. - A.D. 650 |publisher=Hawkins Publications |page=544 |isbn=978-0-9041731-6-1}}</ref>
+  I15 1karshapana Maurya Ashoka MACW4229 1ar (8486624862).jpg | A Maurya-era silver coin of 1 [[karshapana]], possibly from Ashoka's period, workshop of Mathura. ''Obverse:'' Symbols including a sun and an animal ''Reverse:'' Symbol ''Dimensions:'' 13.92 x 11.75&nbsp;mm ''Weight:'' 3.4 g.
+  </gallery>
+  `,
+  `<gallery mode="packed">
+  File:Collins class submarine with the aircraft carrier Charles de Gaulle in May 2019.jpg|[[French aircraft carrier Charles de Gaulle|[[French aircraft carrier Charles de Gaulle|''Charles de Gaulle'' (R91)]] nuclear-powered aircraft carrier
+  File:Temeraire1048.jpg|[[Triomphant-class submarine|[[Triomphant-class submarine|''Triomphant'']]-class nuclear ballistic missile submarine
+  </gallery>`,  
+  `[<!-- http://perso.univ-rennes1.fr/antoine.chambert-loir/DJVU/ -->https://www.irphe.fr/~clanet/otherpaperfile/articles/Galois/N0029062_PDF_1_84.pdf Œuvres Mathématiques]`,
   // Basic template
   '{{Template|}}',
   // Template with one positional argument
@@ -986,4 +1179,10 @@ helpers.js:355
   '-{|zh-hans:简体;zh-hant:繁體}-',
   // Unidirectional rule form
   '-{a=>zh-hans:简;zh-hant:繁}-',  
-], { name: 'wiki-cast' });
+];
+
+if (process.argv[1] === __filename) {
+    runTests(castTests, { name: 'wiki-cast' });
+}
+
+module.exports = { castTests };

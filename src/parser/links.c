@@ -104,6 +104,29 @@ static bool has_invalid_title_sentinel(const char *s, size_t len) {
 	return false;
 }
 
+static bool has_sentinel_type_in_view(const char *s, size_t len, char want) {
+	if(!s || len == 0) return false;
+	for(size_t i= 0; i < len;) {
+		if((unsigned char)s[i] != '\0') {
+			i++;
+			continue;
+		}
+		size_t j= i + 1;
+		if(j >= len || !(s[j] >= '0' && s[j] <= '9')) {
+			i++;
+			continue;
+		}
+		while(j < len && s[j] >= '0' && s[j] <= '9') j++;
+		if(j + 1 < len && (unsigned char)s[j + 1] == 0x7F) {
+			if(s[j] == want) return true;
+			i= j + 2;
+			continue;
+		}
+		i++;
+	}
+	return false;
+}
+
 /* Forward declaration for helper defined later in this file. */
 static Token *parse_inner_fragment(const char *s, size_t len, const ParserConfig *cfg, Accum *accum,
 																	const char *type_name, bool tidy,
@@ -161,8 +184,15 @@ static bool match_img_syntax(const char *seg, size_t seg_len,
 	if(suf_len > 0 && memcmp(seg + seg_len - suf_len, slot + 2, suf_len) != 0) return false;
 
 	if(has_cap) *has_cap= true;
-	if(cap_ptr) *cap_ptr= seg + pre_len;
-	if(cap_len) *cap_len= seg_len - pre_len - suf_len;
+	size_t captured_len= seg_len - pre_len - suf_len;
+	const char *captured_ptr= seg + pre_len;
+	/* JS parity: getSyntaxRegex uses (.*) without dotAll, so a $1 capture
+	 * cannot include line breaks. */
+	for(size_t i= 0; i < captured_len; i++) {
+		if(captured_ptr[i] == '\n' || captured_ptr[i] == '\r') return false;
+	}
+	if(cap_ptr) *cap_ptr= captured_ptr;
+	if(cap_len) *cap_len= captured_len;
 	return true;
 }
 
@@ -200,6 +230,15 @@ static void append_fragment_children(Token *dst, Token *frag) {
 		} else {
 			token_append_child(dst, frag->children[ci].token);
 			frag->children[ci].token= NULL;
+		}
+	}
+}
+
+static void accum_clear_token(Accum *accum, Token *tok) {
+	if(!accum || !tok) return;
+	for(size_t i= 0; i < accum->count; i++) {
+		if(accum->tokens[i] == tok) {
+			accum->tokens[i]= NULL;
 		}
 	}
 }
@@ -797,12 +836,13 @@ static void append_file_image_params(Token *file_tok,
 						}
 						/* Note: Do NOT trim the value - JavaScript parser preserves whitespace */
 
-														Token *val= parse_inner_fragment(vp, vl, cfg, accum, "text", tidy, true,
-																														 strcmp(name, "caption") == 0,
-																														 page);
+						Token *val= parse_inner_fragment(vp, vl, cfg, accum, "text", tidy, true,
+							strcmp(name, "caption") == 0,
+							page);
 						if(val) {
 							append_fragment_children(param, val);
-							token_free(val);
+							accum_clear_token(accum, val);
+							token_free_shallow(val);
 						}
 						/* JS parity: ImageParameterToken is always created with the captured
 						 * value string (even empty ""), so it always has at least one text
@@ -831,10 +871,11 @@ static void append_file_image_params(Token *file_tok,
 			if(!matched) {
 				param= make_image_param_token("caption", accum);
 				if(param) {
-													Token *cap= parse_inner_fragment(seg_ptr, seg_len, cfg, accum, "text", tidy, true, true, page);
+					Token *cap= parse_inner_fragment(seg_ptr, seg_len, cfg, accum, "text", tidy, true, true, page);
 					if(cap) {
 						append_fragment_children(param, cap);
-						token_free(cap);
+						accum_clear_token(accum, cap);
+						token_free_shallow(cap);
 					}
 					/* JS parity: empty caption segment still serializes as one empty text child. */
 					if(param->child_count == 0) {
@@ -1054,6 +1095,11 @@ void parse_links(ThreadBuf *tb, const ParserConfig *cfg, Accum *accum,
 			if(sentinel_scan_next(link_ptr, link_len, &_pos, &_n, &_t, &_total)) {
 				has_sentinel_in_link = true;
 			}
+			/* JS parity: nested-link artifacts inside a target (\0N l \x7F)
+			 * must not form an outer link target. */
+			if(!has_sentinel_in_link && has_sentinel_type_in_view(link_ptr, link_len, 'l')) {
+				has_sentinel_in_link = true;
+			}
 		}
 		log_debug_env_token("WTC_DEBUG_STAGE_5", NULL,
 			"[C parse_links] proto=%d has_sentinel_in_link=%d", is_proto, has_sentinel_in_link);
@@ -1232,9 +1278,11 @@ void parse_links(ThreadBuf *tb, const ParserConfig *cfg, Accum *accum,
 			/* text = parseLinks(text, ...) — recursive call on accumulated image text */
 			{
 				ThreadBuf tmp_tb;
+				memset(&tmp_tb, 0, sizeof(tmp_tb));
 				tmp_tb.buf= img_buf;
 				tmp_tb.len= img_len;
 				tmp_tb.cap= img_cap;
+				tmp_tb.is_on_heap= true;
 				/*
                  * This temporary buffer is not managed by thread_buffer.
                  * Disable shrink-path logic by setting a very large threshold
@@ -1333,6 +1381,18 @@ void parse_links(ThreadBuf *tb, const ParserConfig *cfg, Accum *accum,
 			free(no_comment);
 			continue;
 		} /* end mightBeImg */
+
+		/* JS parity: text &&= parseQuotes(text, config, accum, tidy) */
+		if(text_ptr && text_len > 0) {
+			ThreadBuf *quotes_tb= wiki_thread_buf_acquire_scratch_from_data(text_ptr, text_len);
+			if(quotes_tb) {
+				parse_quotes(quotes_tb, cfg, accum, tidy);
+				const char *q_view= wiki_thread_buf_append_to_tokens(quotes_tb->buf, quotes_tb->len);
+				text_ptr= q_view ? q_view : text_ptr;
+				text_len= quotes_tb->len;
+				wiki_thread_buf_release_scratch(quotes_tb);
+			}
+		}
 
 		/* ---- Normal link token ---- */
 
@@ -1455,6 +1515,12 @@ static Token *parse_inner_fragment(const char *s, size_t len, const ParserConfig
 
 	build_from_str(inner, inner_tb->buf, inner_tb->len, accum);
 	wiki_thread_buf_release_scratch(inner_tb);
+
+	/* Keep temporary fragment tokens in the accumulator so orphan cleanup can
+	 * free them consistently under the per-token-owned-text mode. */
+	if(accum) {
+		accum_push(accum, inner);
+	}
 
 	return inner;
 }

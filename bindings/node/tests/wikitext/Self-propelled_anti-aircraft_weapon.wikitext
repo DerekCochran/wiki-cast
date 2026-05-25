@@ -1,0 +1,488 @@
+{{short description|Mobile vehicle with a dedicated anti-aircraft capability}}
+{{Redirect|SPAA|other uses|SPAA (disambiguation)}}
+{{more citations needed|date=August 2023}}
+[[File:ZSU-23-4-Camp-Pendleton.jpg|thumb|300px|A Soviet-made [[ZSU-23-4]] "Shilka" in [[California]] during a [[United States Marine Corps|USMC]] exercise, 1997]]
+{{History of the tank|state-uncllopsed}}
+An '''anti-aircraft vehicle''', also known as a '''self-propelled anti-aircraft gun''' ('''SPAAG''') or '''self-propelled air defense system''' ('''SPAD'''), is a mobile vehicle with a dedicated [[anti-aircraft warfare|anti-aircraft capability]].
+
+Specific weapon systems used include [[machine gun]]s, [[autocannon]]s, larger guns, or [[surface-to-air missile]]s, and some mount both guns and longer-ranged missiles (e.g. the [[Pantsir missile system]]). Platforms used include both [[truck]]s and heavier [[combat vehicle]]s such as [[armoured personnel carrier]]s and [[tank]]s, which add protection from aircraft, artillery, and small arms fire for front line deployment.
+
+Anti-aircraft guns are usually mounted in a quickly-traversing [[gun turret|turret]] with a high rate of elevation, for tracking fast-moving aircraft. They are often in dual or quadruple mounts, allowing a high rate of fire. In addition, most anti-aircraft guns can be used in a direct-fire role against surface targets to great effect. Today, [[surface-to-air missile]]s (generally mounted on similar turrets) have largely supplanted anti-aircraft guns, but they may return as a cheap way to counter unmanned aerial systems (drones), cruise missiles, and ultralight aircraft.
+
+==History==
+
+===World War I===
+{{Multiple image | total_width = 400
+| image1 = 3inch20cwtAAgunPeerlessLorryWWI.jpg | caption1 = A World War 1, British, truck-mounted, QF 3 inch gun
+| image2 = Pierce-Arrow armoured AA lorry 2.jpg | caption2 = [[Pierce-Arrow armoured AA lorry]]
+}}
+Anti-aircraft machine guns have long been mounted on trucks, and these were quite common during [[World War I]]. A predecessor of the WWII German "88" anti-aircraft gun, the WWI German 77&nbsp;mm anti-aircraft gun, was truck-mounted and used to great effect against British tanks.
+
+The British [[QF 3 inch 20 cwt]] was mounted on trucks for use on the [[Western Front (World War I)|Western Front]]. The British also had a first dedicated  anti aircraft weapon, the [[QF 1-pounder pom-pom]]. Mounted on an armoured truck titled the [[Pierce-Arrow armoured AA lorry]], which was produced in limited numbers and only seeing service throughout 1915. Towards the end of the war Germany produced three prototype SPAAGs with AA guns mounted on [[A7V]] chassis known as the A7V Flakpanzer.<ref name=Zaloga>{{cite book |last=Zaloga  |first=Steven J |author-link=Steven Zaloga |date=2006 |title=German Panzers 1914–18 |url= |location= |publisher=Osprey Publishing |pages=13–14 |isbn=9781472802347 }}</ref>
+
+===Inter-war period===
+{{Unreferenced section|date=November 2024}}
+Between the two World Wars, the United Kingdom developed the [[Birch gun]], a general-purpose artillery piece on an armoured tracked chassis capable of maintaining formation with their current tanks over terrain. The gun could be elevated for anti-aircraft use.
+
+[[File:Boworadet Rebellion montage Vickers Type 76.png|thumb|Vickers Armstrong "Type 76" SPAAG loaded onto a train.]]
+The first tracked SPAAG-design to be manufactured in series was most likely the British/Siamese Vickers Armstrong "Type 76" (per [[Thai calendar|Buddhist year 2476]] = 1933 CE), as named by the [[Royal Siamese Army]], a SPAAG based on the chassis of the [[Vickers Medium Dragon|Dragon, Medium, Mark IV artillery tractor]] ([[Vickers 6-ton|Vickers Mk.E 6-ton]] light tank derivative), mounting a revolving Vickers 40&nbsp;mm [[QF 2 pounder pom-pom]] autocannon in an open fighting compartment. About 26 were sold to [[Siam]] in 1932 and saw action as infantry support guns and AA guns during the [[Franco-Thai war]] (1940–1941) along with 30 Vickers Mk.E Type B 6-ton tanks. Despite being the first tracked SPAAG en masse, the open-top design of the Vickers Type 76 made it outdated even by the early 1930s.
+
+[[File:Landsverk L-62 Anti.jpg|thumb|Landsverk L-62 Anti-prototype in 1939.]]
+The first modern SPAAG to be produced was most likely the Swedish [[40M Nimród|Landsverk L-62 Anti]] in 1936, featuring a tracked armoured body with a revolving turret, a so-called ''anti-aircraft tank''. It was based on a widened chassis of the [[Landsverk L-60]] light tank and was armed with a [[Bofors 40 mm Automatic Gun L/60]] in an open-top revolving turret. The design was bought by Hungary just prior to the war and Finland ordered a refined model in 1941, known as the [[Landsverk L-62 Anti II|Anti II]].
+
+By the late 1930s, the British had developed a version of the [[Light Tank Mark VI|Mk.VI Light Tank]] armed with four machine guns that were known as Light Tank AA Mk.I, and also a twin 15&nbsp;mm version based on the Light Tank Mk.V was built. Among early pre-war pioneers of self-propelled AA guns were the Germans. By the time of the war, they fielded the [[Sd.Kfz. 10|Sd.Kfz. 10/4]] and [[Sd.Kfz. 6|Sd.Kfz. 6/2]], cargo half-tracks mounting single 20&nbsp;mm or 37&nbsp;mm AA guns (respectively). Later in the war similar German half-tracks mounted [[Flakvierling|quadruple 20&nbsp;mm weapons]].
+
+===World War II===
+{{Unreferenced section|date=November 2024}}[[File:Niemieckie samobieżne działo przeciwlotnicze "Wirbelwind" (2-426).jpg|thumb|left|German ''Flakpanzer IV "[[Wirbelwind]]"'' - a [[2 cm Flak 30/38/Flakvierling#2 cm Flakvierling 38|20 mm ''Flakvierling'']] quadmount on a [[Panzer IV]] chassis.]]
+Larger guns followed on larger trucks, but these mountings generally required off-truck setup in order to unlimber the stabilizing legs these guns needed. One exception to this rule was the Italian [[Cannone da 90/53]] which was highly effective when mounted on trucks, a fit known as the "''autocannoni da 90/53''". The 90/53 was a feared weapon, notably in the anti-tank role, but only a few hundred had been produced by the time of the armistice in 1943.
+
+Other nations tended to work on truck chassis. Starting in 1941, the British developed the "en [[portee]]" method of mounting an anti-tank gun (initially a [[2 pounder]]) on a truck. This was to prevent the weapon from being damaged by long-distance towing across rough, stony deserts, and it was intended only to be a carrying method, with the gun unloaded for firing. However, crews tended to fire their weapons from their vehicles for the mobility this method provided, with consequent casualties. This undoubtedly inspired their Morris C9/B (officially the "Carrier, SP, 4x4, 40 mm AA"), a [[Bofors 40 mm L/60 gun|Bofors 40&nbsp;mm AA gun]] mounted on a chassis derived from the [[Morris C8|Morris "Quad"]] Field Artillery Tractor truck. Similar types, based on 3-ton lorries, were produced in Britain, Canada and Australia, and together formed the most numerous self-propelled AA guns in British service.
+
+The U.S. Army brought truck-towed Bofors 40&nbsp;mm AA guns along with truck-mounted units fitted with mechanized turrets when they sailed, first for Great Britain and then onto France. The turrets carried four .50&nbsp;inch (12.7&nbsp;mm) machine guns, which were designed to be adjusted to converge at the single point where enemy aircraft were expected to appear at low altitude in conduction of strafing runs directed at large infantry and field artillery units.
+
+Interest in mobile AA turned to heavier vehicles with the mass and stability needed to easily train weapons of all sizes. Probably the desire, particularly in German service, for anti-aircraft vehicles to be armoured for their own protection also assisted this trend.
+
+[[File:Nimród Battery 02 (cropped).jpg|thumb|[[40M Nimrod]] anti-aircraft battery.]]
+The concept of using armored SPAAG (anti-aircraft tanks) en masse was pioneered by [[Hungary]] during [[World War II]] with the production of the [[40M Nimrod]], a license-produced version of the previously mentioned late 1930s Landsverk L-62 Anti I SPAAG. Germany followed later with their "''Flakpanzer''" series. German World War II SPAAGs include the [[Möbelwagen]], [[Wirbelwind]], [[Ostwind]] and [[Kugelblitz (armoured fighting vehicle)|Kugelblitz]]. Other forces followed with designs of their own, notably the American M16 created by mounting [[M45 Quadmount|quadruple M2HB Browning machine guns]] on a [[M3 Half-track]].
+
+The British developed their own SPAAGs throughout the war mounting multiple machine guns and light cannon on various tank and armoured car chassis and by 1943, the [[Crusader tank|Crusader AA tanks]], which mounted the [[Bofors 40 mm Automatic Gun L/60|Bofors 40 mm]] gun or two-three [[Oerlikon 20 mm cannon]]. Although used during the Normandy landings, by that point German aircraft were contained by the Allies own air forces and they were largely unneeded.
+
+===Cold War and later===
+{{Unreferenced section|date=November 2024}}[[File:Brno, Řečkovice, transportér Praga V33 II.JPG|thumb|Czechoslovak self-propelled anti-aircraft gun [[M53/59 Praga]] developed in the late 1950s.]]
+[[File:Gepard 1a2 overview.jpg|thumb|[[Flakpanzer Gepard]], combining radars, fire control and two 35&nbsp;mm guns in a new turret mounted on a  Leopard chassis.]]
+[[File:2K22 Tunguska, SA-19 Grison, Artillery museum, Saint-Petersburg pic2.JPG|thumb|Typical of more modern designs, the [[Tunguska-M1]] mounts both missiles and cannons.]]
+The introduction of [[jet engine]]s and the subsequent rough doubling of aircraft speeds greatly reduced the effectiveness of the SPAAG against attack aircraft.{{dubious | date=July 2014}} A typical SPAAG round might have a muzzle velocity on the order of {{convert|1000|m/s|foot/s}} and might take as long as two to three seconds to reach a target at its maximum range. An aircraft flying at {{convert|1000|km/h|mph}} is moving at a rate of about {{convert|280|m/s|foot/s}}. This means the aircraft will have moved hundreds of meters during the flight time of the shells, greatly complicating the aiming problem to the point where close passes were essentially impossible to aim using manual gunsights. This speed also allowed the aircraft to rapidly fly out of range of the guns; even if the aircraft passes directly over the SPAAG, it would be within its firing radius for under 30 seconds.
+
+SPAAG development continued through the early 1950s with ever-larger guns, improving the range and allowing the engagement to take place at longer distances where the crossing angle was smaller and aiming was easier. Examples including the 40&nbsp;mm U.S. [[M42 Duster]] and the 57&nbsp;mm Soviet [[ZSU-57-2]]. However, both were essentially obsolete before they entered service, and found employment solely in the ground-support role. The M42 was introduced to the [[Vietnam War]] to counter an expected North Vietnamese air offensive, but when this failed to materialize it was used as an effective direct-fire weapon. The ZSU-57 found similar use in the [[Yugoslav Wars]], where its high-angle fire was useful in the mountainous terrain.
+
+By the late 1950s, the US Army had given up on the SPAAG concept, considering all gun-based weapons to be useless against modern aircraft. This belief was generally held by many forces, and the anti-aircraft role turned almost exclusively to missile systems. The Soviet Union remained an outlier, beginning the development of a new SPAAG in 1957, which emerged as the [[ZSU-23-4]] in 1965. This system included search-and-track radars, fire control, and automatic gun-laying, greatly increasing its effectiveness against modern targets. The ZSU-23 proved very effective when used in concert with SAMs; the presence of SAMs forced aircraft to fly low to avoid their radars, placing them within range of the ZSUs.
+
+The success of the ZSU-23 led to a resurgence of SPAAG development. This was also prompted by the introduction of [[attack helicopter]]s in the 1970s, which could hide behind terrain and then "pop up" for an attack lasting only a few tens of seconds; missiles were ineffective at low altitudes, while the helicopters would often be within range of the guns for a rapid counterattack. Notable among these later systems is the German [[Flugabwehrkanonenpanzer Gepard|Gepard]], the first western SPAAG to offer performance equal to or better than the ZSU. This system was widely copied in various [[NATO]] forces.
+
+SPAAG development continues, with many modern examples often combining both guns and short-range missiles. Examples include the newer versions of the Gepard, the Chinese [[Type 95 SPAAA]], and the British [[Marksman anti-aircraft system|Marksman turret]], which can be used on a wide variety of platforms. Some forces, like the [[United States Army|US Army]] and [[United States Marine Corps|USMC]] have mostly forgone self-propelled guns in favor of systems with short-range infrared-guided surface-to-air missiles in the [[AN/TWQ-1 Avenger]] and [[Bradley Fighting Vehicle#M6 Linebacker|M6 Linebacker]], which do not require radar to be accurate and are generally more reliable and cost-effective to field, though their ability to provide ground support is more limited. The U.S. Army did use the [[M163 VADS]] and developed the prototype design of the [[M247 Sergeant York]].
+
+=== Present day ===
+Modern SPAAGs usually have short-range missiles for longer range engagement.
+
+Some examples of modern SPAAG:<!-- In alphabetic order of countries, then in alphabetic order of systems -->
+{| class="wikitable" style="width:100%;"
+!style="text-align: left;"|Model
+!Manufacturer
+!Image
+!style="text-align: left;"|Origin
+!style="text-align: left;"|Platforms
+!style="text-align: left;"|Weapons
+! style="text-align: left;" |Caliber and ammunitions
+!Number built
+!style="text-align: left;"|Notes
+|-
+|'''[[Type 08#Export Variant|CS/SA5 SPAAG]]'''
+|[[Norinco]]
+| style="text-align: center;" |—
+|{{flag|China}}
+|[[Type 08#Export Variant|Type 08]]
+|1 × [[Gatling gun]] <small>(6 barrels)</small>
+2 × [[FN-6|FN-6A]]
+|30 × 113&nbsp;mm
+—
+| style="text-align: center;" |—
+|<ref>{{Cite web |date=2022-11-26 |title=China has unveiled new short-range air defence systems that target drones |url=https://www.scmp.com/news/china/military/article/3201007/china-has-unveiled-new-short-range-air-defence-systems-target-drones |access-date=2024-06-29 |website=South China Morning Post |language=en}}</ref><ref>{{Cite web |last=Helfrich |first=Emma |date=2022-11-18 |title=This Is China's Beastly New Air Defense Vehicle |url=https://www.twz.com/this-is-chinas-beastly-new-chinese-air-defense-vehicle |access-date=2024-06-29 |website=The War Zone |language=en-US}}</ref>
+|-
+|'''[[PGZ-95|PGZ-95 SPAAA]]'''
+| rowspan="2" |[[Norinco]]
+| rowspan="2" |[[File:Type 95 SPAAG - Beijing Museum 1.jpg|180x180px]]
+| rowspan="2" |{{flag|China}}
+| rowspan="2" |—
+|4 × [[ZU-23-2#China|PG-87]]
+
+4 × [[QW-2 MANPADS|QW-2]] [[Infrared homing|IR]] missiles
+| rowspan="2" |[[25 mm caliber|25 x 183 mmB]]
+| rowspan="2" style="text-align: center;" |'''~ 270'''
+<ref name="IISS_2023">{{Cite book |last1=For Strategic Studies (Iiss) |first1=The International Institute |title=The Military Balance 2023 |date=15 February 2023 |work=The International Institute for Strategic Studies |publisher=Routledge |isbn=9781003400226 |location=London |chapter=6 Asia |doi=10.4324/9781003400226}}</ref>
+|<ref name=":1">{{Cite web |title=PGZ95 |url=https://weaponsystems.net/system/918-PGZ95 |access-date=2024-06-29 |website=Weaponsystems.net |language=en}}</ref>
+|-
+|'''[[Type 95 SPAAA#Variants|PGZ-04/A SPAAA]]'''
+|4 × Type 87
+
+4 × [[FN-6]] IR missiles
+|Upgraded variant of [[PGZ-95|PGZ-95 SPAAA]]<ref name=":1" />
+|-
+|'''[[Type 09 SPAAA|PGZ-09 SPAAA]]'''
+|[[Norinco]]
+|[[File:PGZ-09 Self-propelled anti-aircraft artillery 20170902.jpg|180x180px]]
+|{{flag|China}}
+|[[PLZ-05|PLZ-05 chassis]]
+|2 × [[Oerlikon GDF#Versions|PG99]]
+{{refn|group=note|License produced [[Oerlikon GDF|Oerlikon GDF-002]] by China.}}
+|{{ill|35 x 228 mm|de|35 x 228 mm}}
+| style="text-align: center;" |—
+|<ref>{{Cite web |title=PGZ-09 35mm guns |url=https://www.globalsecurity.org/military/world/china/pgz-09.htm |access-date=2024-07-01 |website=www.globalsecurity.org}}</ref><ref>Page 216
+
+https://irp.fas.org/doddir/army/atp7-100-3.pdf</ref>
+|-
+|'''[[Type 08#Variants|PGZ 625]]'''
+<small>''PGL-XX (Code name 625)''</small>
+|[[Norinco]]
+| style="text-align: center;" |—
+|{{flag|China}}
+|[[Type 08#PGL-XX (Code name 625) air defense gun-missile system|Type 08]]
+|1 × [[Gatling gun]] <small>(6 barrels)</small> 
+4 to 8 × [[FN-6|FN-16]] <small>(for [[Type 08#Export Variant|PGZ 625E]])</small>
+|25 × 287&nbsp;mm
+| style="text-align: center;" |—
+|<ref name="defence-blog.com">{{cite web | url=https://defence-blog.com/china-unveils-type-625-air-defense-system/ | title=China shows its drone-killing monster in action | date=29 December 2023 }}</ref><ref>{{cite web |date=4 February 2021 |title=625 Strikes Back, why PLA choose 625 8x8 anti-air system for Medium Combined Arms Brigade |url=https://www.163.com/dy/article/G3KFD7K30543OQYO.html |website=NetEase 163 News |language=Chinese |access-date=1 July 2024 |archive-date=12 July 2022 |archive-url=https://web.archive.org/web/20220712191527/https://www.163.com/dy/article/G3KFD7K30543OQYO.html |url-status=dead }}</ref>
+|-
+|'''[[Type 08#Variants|PGL-12 (Type 12)]]'''
+|[[Norinco]]
+| style="text-align: center;" |—
+|{{flag|China}}
+|[[Type 08#Export Variant|Type 08]]
+|1 × 35&nbsp;mm [[revolver cannon]]
+4 × [[FN-6#Variants|FN-6]] in PGZ-04A pod.
+|{{ill|35 x 228 mm|de|35 x 228 mm}}
+| style="text-align: center;" |—
+|<ref name="defence-blog.com"/>
+|-
+|'''[[Machbet]]'''
+|[[Israeli Aircraft Industries|IAI]] 
+<small>(Israeli Aircraft Industries)</small>
+|
+|<small>{{flag|Israel}}</small>
+|[[M113 armored personnel carrier|M113]]
+|1 × [[M61 Vulcan|M61A1 Vulcan]] <small>[[Gatling gun]] (6 barrels)</small>
+4 × [[FIM-92 Stinger]]
+|[[20×102mm|20 × 102 mm]]
+—
+| style="text-align: center;" |—
+|Entered service in 1997, retired in 2006 <ref>{{Cite web |title=Machbet |url=https://weaponsystems.net/system/68-Machbet |access-date=2024-06-29 |website=Weaponsystems.net |language=en}}</ref>
+|-
+|[[Otomatic|'''OTOMATIC''']]
+''<small>"OTO Main Anti-aircraft Tank for Intercept and Combat"</small>''
+|[[Oto Melara|OTO-Melara]]
+|[[File:76-mm Super Rapid Gun System on OF-40 tank chassis (moderately clouded sky background).png|180x180px]]
+|{{flag|Italy}}
+|Hulls of the:
+
+* [[Leopard 1|Leopard 1A2]]
+* [[OF-40|OF-40 Mk.2]]
+* [[Palmaria (artillery)|Palmaria]]
+|1 × [[OTO Melara 76 mm|Cannone 76/62 OTO-Breda Super Rapido]]
+|[[OTO Melara 76 mm#Ammunition|76 × 636 mmR]]
+| style="text-align: center;" |'''2'''
+|<ref>{{Cite web |last=Giusti |first=Arturo |date=2020-10-17 |title=OTOMATIC |url=https://tanks-encyclopedia.com/otomatic/ |access-date=2024-06-29 |website=Tank Encyclopedia |language=en-US}}</ref>
+|-
+|'''[[SIDAM 25]]'''
+|[[Oto Melara|OTO Breda]]
+|[[File:SIDAM-IT.JPG|180x180px]]
+|{{flag|Italy}}
+|[[M113 armored personnel carrier|M113]]
+|4 × [[Oerlikon KBA]]
+|[[25×137mm|25 × 137 mm]]
+| style="text-align: center;" |'''275'''
+|<ref>{{Cite web |title=SIDAM 25 |url=https://weaponsystems.net/system/71-SIDAM+25 |access-date=2024-06-29 |website=Weaponsystems.net |language=en}}</ref>
+|-
+|'''[[Stryker#M-SHORAD|Stryker M-SHORAD]]'''
+''<small>"Maneuver Short Range Air Defense"</small>''
+|[[Leonardo DRS]]
+|[[File:5-4 ADA train with Polish ADA during Saber Strike 2022 03 (cropped).jpg|184x184px]]
+|<small>{{flag|Italy}}</small><small>{{flag|United States}}</small>
+|[[Stryker]]
+|1 × [[M230 chain gun|XM914]] <small>(M230LF chain gun)</small> 
+1  [[M240 machine gun|M240]] (7.62mm)
+
+4 × [[FIM-92 Stinger]]
+
+2 × [[AGM-114 Hellfire|AGM-114L Hellfire]]
+|30 × 113&nbsp;mm
+[[7.62×51mm NATO|7.62 × 51 mm]]
+
+—
+
+—
+| style="text-align: center;" |'''312 to''' '''361'''
+<ref>{{Cite web |title=U.S. Army's Maneuver Short-Range Air Defense (M-SHORAD) System |url=https://www.everycrsreport.com/reports/IF12397.html |access-date=2024-06-28 |website=www.everycrsreport.com |language=en}}</ref> 
+|<ref>{{Cite web |title=Maneuver Short Range Air Defense (M-SHORAD) |url=https://www.leonardodrs.com/what-we-do/products-and-services/m-shorad/ |access-date=2024-06-28 |website=Leonardo DRS |language=en-US}}</ref>
+|-
+|'''[[Type 87 self-propelled anti-aircraft gun|Type 87 SPAAG]]'''
+|[[Mitsubishi Heavy Industries|MHI]] 
+<small>(Mitsubishi Heavy Industries)</small>
+|[[File:JGSDF type 87 Self-Propelled Anti-Aircraft Gun 02.jpg|180x180px]]
+|<small>{{flag|Japan}}</small>
+|[[Type 74 tank]]
+|2 × [[Oerlikon GDF|Oerlikon KDA]]
+
+{{refn|group=note|name=second}}
+|{{ill|35 x 228 mm|de|35 x 228 mm}}
+[[AHEAD ammunition|HEI ammunition]]
+| style="text-align: center;" |'''52'''
+|<ref>{{Cite web |title=87式自走高射機関砲 |url=https://combat1.sakura.ne.jp/87SHIKI-T.htm |access-date=2024-07-01 |website=combat1.sakura.ne.jp}}</ref>
+|-
+|'''[[Protector RWS#Overview|Kongsberg RS6]]''' 
+'''MADIS RWS MK2'''
+
+''<small>"Marine Air Defense Integrated System US Marine Corps Ground Based Air Defense"</small>''
+|[[Kongsberg]]
+| style="text-align: center;" |—
+|<small>{{flag|Norway}}</small>
+|[[Oshkosh JLTV]]
+|1 × [[M230 chain gun|XM914E1]] <small>(M230LF chain gun)</small> 
+1 × [[M240 machine gun|M240C]] (7.62mm)
+
+2 × [[Air-to-Air Stinger]]
+|[[30 mm caliber|30 × 113 mm]]
+[[7.62×51mm NATO|7.62 × 51 mm]]
+
+—
+| style="text-align: center;" |—
+|Future USMC SHORAD system<ref>{{Cite web |date=2022-06-14 |title=U.S. Marine Corps C-UAS Program Kicks off U.S. Production |url=https://www.kongsberg.com/kda/news/news-archive/2022/u.s.-marine-corps-c-uas-program-kicks-off-u.s.-production |access-date=2024-06-28 |website=www.kongsberg.com |language=en}}</ref><ref>{{Cite web |title=Production starts on US Marine Corps C-UAS programme {{!}} Shephard |url=https://www.shephardmedia.com/news/landwarfareintl/us-marine-corps-c-uas-programme-starts-us-production/ |access-date=2024-07-01 |website=www.shephardmedia.com |language=en}}</ref>
+|-
+|'''[[PZA Loara]]'''
+|{{ill|Radwar|pl|Radwar}}
+|[[File:Loara Kielce.png|180x180px]]
+|<small>{{flag|Poland}}</small>
+|[[T-72|T-72M]] chassis
+|2 × [[Oerlikon GDF|Oerlikon KDA]]
+
+{{refn|group=note|name=second}}
+|{{ill|35 x 228 mm|de|35 x 228 mm}}
+[[High-explosive incendiary|HEI ammunition]]
+| style="text-align: center;" |'''2 - 4'''
+|<ref>{{Cite web |date=2019-09-08 |title=Samobieżny zestaw przeciwlotniczy PZA i PZR Loara {{!}} |url=http://militarium.net/samobiezny-zestaw-przeciwlotniczy-pza-pzr-loara/ |access-date=2024-07-01 |archive-url=https://web.archive.org/web/20190908222753/http://militarium.net/samobiezny-zestaw-przeciwlotniczy-pza-pzr-loara/ |archive-date=2019-09-08 }}</ref>
+|-
+|'''[[SA-35]]'''
+|[[PIT-Radwar|PIT-RADWAR]] 
+[[PGZ]]
+
+<small>(Polska Grupa Zbrojeniowa)</small>
+| style="text-align: center;" |—
+|<small>{{flag|Poland}}</small>
+|[[Jelcz|Jelcz 6×6]]
+|1 × [[Oerlikon GDF|Oerlikon KDA]]
+|[[AHEAD ammunition|35 x 228 mm]]
+Air burst programmable rounds
+| style="text-align: center;" |—
+|<ref>{{Cite web |date=2024-09-03 |title=MSPO 2024: Armata przeciwlotnicza 35 mm z PIT-Radwaru dla polskiego wojska |url=https://milmag.pl/mspo-2024-armata-przeciwlotnicza-35-mm-z-pit-radwaru-dla-polskiego-wojska/ |access-date=2024-09-04 |website=MILMAG |language=pl-PL}}</ref>
+Developed from AM-35K naval gun.  
+|-
+|'''[[ZSU-23-4MP Biała]]'''
+|[[Zakłady Mechaniczne Tarnów|ZMT SA]] 
+<small>(Zakłady Mechaniczne Tarnów)</small>
+|[[File:Strzelania 34. Brygady Kawalerii Pancernej z Żagania z ZSU-23-4 MP „BIAŁA” (03).jpg|180x180px]]
+|<small>{{flag|Poland}}</small>
+|—
+|4 × [[ZU-23-2|AZP-23]]
+4 × [[FIM-92 Stinger|Grom]] IR missiles
+|[[23×152mmB|23 × 152 mm]] 
+—
+| style="text-align: center;" |'''~ 70'''
+|Polish modernised variant <ref>{{Cite web |date=2021-12-12 |title=Przeciwlotnicze Białe do naprawy |url=https://defence24.pl/sily-zbrojne/przeciwlotnicze-biale-do-naprawy |access-date=2024-06-29 |website=defence24.pl |language=pl}}</ref>
+|-
+|'''[[Oerlikon KBA#VALHALLA Turrets|Mangart 25]]'''
+|[[Oerlikon KBA#VALHALLA Turrets|Valhalla Turrets]]
+|[[File:OPERATION SHIELD 2025 (8968839) (cropped).jpg|180x180px]]
+|<small>{{flag|Slovenia}}</small>
+|[[Oshkosh JLTV]]
+|1 × [[Oerlikon KBA]]
+
+1 × [[FN MAG]]
+
+Option for short-range IR missiles
+|[[25×137mm|25 × 137 mm]] 
+[[7.62×51mm NATO|7.62 × 51 mm]]
+| style="text-align: center;" |—
+|<ref>{{Cite web |date=2023-06-13 |title=Mangart 25 – Valhalla Turrets mit der Entwicklung eines 25-mm-Flugabwehrkanonensystems für 4x4-Fahrzeuge beauftragt |url=https://soldat-und-technik.de/2023/06/bewaffnung/35065/mangart-25-valhalla-turrets-mit-der-entwicklung-eines-25-mm-flugabwehrkanonensystems-fuer-4x4-fahrzeuge-beauftragt/ |access-date=2024-06-28 |website=soldat-und-technik.de |language=de-DE}}</ref>
+|-
+|[[K200 KIFV#Variants|'''K263 Cheongoong SPAAG''']]
+|[[Hanwha Defense|Doosan]]
+|[[File:2013.10.1 건군 제65주년 국군의 날 행사 The celebration ceremony for the 65th Anniversary of ROK Armed Forces (10078326986) (cropped).jpg|180x180px]]
+|<small>{{flag|South Korea}}</small>
+|[[K200 KIFV|K200A1 KIFV]]
+|1 × [[M167 VADS|KM167 A1 VADS]]
+[[Gatling gun]] (6 barrels)
+|[[20×102mm|20 × 102 mm]]
+| style="text-align: center;" |'''200'''
+|<ref name=":0">{{cite web| page = 38 | website = mags.shephardmedia.com | year = 2018 | title = THE CONCISE GLOBAL INDUSTRY GUIDE: ARTILLERY AND AIR DEFENCE | url = https://mags.shephardmedia.com/HB-samples-2018/AAD5-webmag.pdf | issue = 5 }}</ref> 
+|-
+|[[K30 Biho|'''K30 Bi Ho''']]
+''<small>"Flying Tiger"</small>''
+|[[Hanwha Defense|Doosan]]
+|[[File:2014 대한민국 방위산업전(DX Korea) 육군의 명품 무기와 장비 소개 (14960330913) (cropped).jpg|182x182px]]
+|<small>{{flag|South Korea}}</small>
+|[[K200 KIFV|K200A1 KIFV]]
+|2 × [[Oerlikon KCB]]
+|[[30 mm caliber|30 × 170 mm]]
+| style="text-align: center;" |'''176'''
+|<ref name=":0" />
+|-
+|[[K30 Biho|'''K30 Bi Ho Hybrid''']]
+''<small>"Flying Tiger"</small>''
+|[[Hanwha Aerospace]] 
+[[LIG Nex1]]
+|[[File:US Army photo 160803-A-VV548-006 Standing Watch together (cropped).jpg|180x180px]]
+|<small>{{flag|South Korea}}</small>
+|[[K808 White Tiger]]
+|2 × [[Oerlikon KCB]]
+2 × [[KP-SAM Chiron|LIG Nex1 Chiron]]
+|[[30 mm caliber|30 × 170 mm]]
+—
+| style="text-align: center;" |—
+|<ref>{{Cite web|url=https://www.deagel.com/Armies/WAV/a002459|title=None}}</ref><ref>{{Cite web |last=Ng |first=Jr |date=2020-07-08 |title=South Korea acquires new anti-air gun system |url=https://www.asianmilitaryreview.com/2020/07/south-korea-acquires-new-anti-air-gun-system/ |access-date=2024-06-29 |website=Asian Military Review |language=en-US}}</ref>
+|-
+|[[K30 Biho|'''K30 Bi Ho II''']]
+''<small>"Flying Tiger"</small>''
+|[[Joint venture|Joint Venture]]
+[[Hanwha Aerospace]]
+
+[[Saudi Arabian Military Industries|SAMI]] <small>(Saudi Arabian Military Industries)</small>
+| style="text-align: center;" |—
+|<small>{{flag|South Korea}}</small> <small>{{flag|Saudi Arabia}}</small>
+|[[K808 White Tiger]]
+|1 × [[Oerlikon KCB|Oerlikon KCB-B]]
+4 SAM
+|[[30 mm caliber|30 × 170 mm]] 
+Air burst programmable munitions
+
+—
+| style="text-align: center;" |—
+|In development <ref>{{Cite web |date=2022-01-07 |title=Saudi SAMI-Hanwha JV and Biho II air defense system |url=https://www.tacticalreport.com/daily/59200-saudi-sami-hanwha-jv-and-biho-ii-air-defense-system |access-date=2024-07-01 |website=Tactical Report |language=en}}</ref>
+|-
+|[[Combat Vehicle 90#Domestic|'''Lvkv 9040''']]
+<small>''Luftvärnskanonvagn 9040''</small>
+|[[BAE Systems AB|BAE Systems Bofors]]
+|[[File:Swedish CV9040 AAV - Anti-Air Vehicle (cropped).JPG|180x180px]]
+|<small>{{flag|Sweden}}</small>
+|[[Combat Vehicle 90#Domestic|CV90]]
+|1 × [[Bofors 40 mm Automatic Gun L/70|40 mm Bofors L/70B]] autocannon
+|40 × 365&nbsp;mm 
+| style="text-align: center;" |'''30'''
+|<ref>{{Cite web|url=https://www.forsvarsmakten.se/sv/information-och-fakta/materiel-och-teknik/mark/luftvarnskanonvagn-90/|title=Luftvärnskanonvagn 90 - Försvarsmakten}}</ref><ref>{{Cite web |title=CV 90 TriAD |url=https://weaponsystems.net/system/62-CV+90+TriAD |access-date=2024-06-26 |website=Weaponsystems.net |language=en}}</ref>
+|-
+|'''[[Flakpanzer Gepard]]'''
+| rowspan="2" |[[Oerlikon Contraves]]
+{{ill|Siemens-Albis|de|Albiswerk Zürich}}
+
+[[KraussMaffei|Krauss-Maffei]]
+|[[File:Romanian Army FlakPz Gepard SPAAG at Radom-2023.jpg|180x180px]]
+| rowspan="2" |<small>{{flag|Switzerland}}</small><small>{{flag|Germany}}</small>
+| rowspan="2" |
+* [[Leopard 1]]
+|2 × [[Oerlikon GDF|Oerlikon KDA]]
+{{refn|group=note|name=second|Cannon used on the GDF-001, GDF-002, GDF-003 and GDF-005, without programmable ammunition capacity, using HE rounds.<ref>{{cite web | url=https://weaponsystems.net/system/283-35mm+Oerlikon+KDA | title=35mm Oerlikon KDA}}</ref>}}
+|{{ill|35 x 228 mm|de|35 x 228 mm}}
+[[Nammo|HEI ammunition]]
+| rowspan="2" style="text-align: center;" |'''570'''
+'''<ref>{{Cite web |title=GEPARD 1 A2 - KNDS |url=https://www.knds.de/en/systems-products/tracked-vehicles/air-defence-systems/gepard-1-a2/ |access-date=2024-06-28 |website=www.knds.de}}</ref>'''
+| rowspan="2" |<ref>{{Cite web |title=Flakpanzer Gepard A1 |url=https://www.panzer-modell.de/referenz/in_detail/gepard_a1/gepard.htm |access-date=2024-06-28 |website=www.panzer-modell.de}}</ref><ref>{{Cite web |date=2023-09-17 |title=Gepard-Panzer in der Ukraine: "Holt die Drohnen wie Früchte vom Himmel" |url=https://www.merkur.de/politik/russland-krieg-gepard-panzer-flak-flugabwehr-deutschland-lieferung-ukraine-zr-92510512.html |access-date=2024-06-28 |website=www.merkur.de |language=de}}</ref>
+|-
+|[[Flakpanzer Gepard|'''Flakpanzer Gepard 1A2''']]
+|[[File:Gepard 1a2 overview noBG.jpg|180x180px]]
+|2 × {{ill|Rheinmetall KDG 35/1000|de|Rheinmetall KDG-Revolverkanone}}
+{{refn|group=note|name=first|Cannon used since Oerlikon GDF-006 series with [[AHEAD ammunition|AHEAD programmable ammunition]] capacity.<ref>{{cite web | url=https://defence-industry.eu/threat-adequate-and-highly-mobile-rheinmetalls-oerlikon-skyranger-35-video/ | title=Threat-adequate and highly mobile: Rheinmetall's Oerlikon Skyranger 35 | date=13 September 2023}}</ref>}}
+|[[AHEAD ammunition|35 x 228 mm]] 
+Airburst programmable rounds [[AHEAD ammunition|AHEAD]]
+|-
+|'''[[Skyranger 30]]'''
+|[[Rheinmetall Air Defence|Rheinmetall Air Defence (Oerlikon)]]
+|[[File:Boxer_Skyranger_30_ILA-2022.jpg|180x180px]]
+[[File:MBDA, ILA 2024, Schoenefeld (ILA45444).jpg|180x180px]]
+|<small>{{flag|Switzerland}}</small><small>{{flag|Germany}}</small>
+|
+* [[Boxer (armoured fighting vehicle)|Boxer A3 / tracked]]
+* [[Lynx (Rheinmetall armoured fighting vehicle)|KF-41 Lynx]]
+* [[Leopard 2|Pandur 6×6 EVO]]
+* [[Mowag Piranha IV|Piranha IV]] and [[Mowag Piranha V|V]]
+* [[PMMC G5]]
+|Oerlikon KCE
+
+Option for short-range IR missiles ([[FIM-92 Stinger]] or [[Mistral (missile)|Mistral]])
+|[[30x173mm|30 × 173 mm]] 
+Air burst programmable rounds [[AHEAD ammunition|AHEAD]]
+
+—
+| style="text-align: center;" |'''93 ordered'''
+<small>(48 more planned, 9 in option)</small>
+
+<ref>{{Cite web |last=Höller |first=Linus |date=2024-02-26 |title=Austrian Pandur vehicles to schlep slimmed Skyranger air defense gun |url=https://www.defensenews.com/global/europe/2024/02/26/austrian-pandur-vehicles-to-schlep-slimmed-skyranger-air-defense-gun/ |access-date=2024-05-15 |website=Defense News |language=en}}</ref><ref name=":02">{{Cite web|url=https://www.rheinmetall.com/en/media/news-watch/news/2023/12/2023-12-20-lynx-with-skyranger-30-for-hungary|title=Rheinmetall|website=Rheinmetall}}</ref><ref>{{Cite web |last=Fiorenza |first=Nicholas |title=Bundeswehr orders Skyranger 30 mounted on Boxer |url=https://www.janes.com/defence-news/news-detail/bundeswehr-orders-skyranger-30-mounted-on-boxer |website=Janes|date=March 2024 }}</ref><ref>{{Cite web |title=Kiszivárgott: újfajta légvédelmi rendszerek beszerzését fontolgatja Magyarország |date=22 March 2021 |url=https://www.portfolio.hu/global/20210322/kiszivargott-ujfajta-legvedelmi-rendszerek-beszerzeset-fontolgatja-magyarorszag-475148}}</ref><ref name=":7">{{Cite web |date=2025-01-29 |title=Defensie versterkt luchtverdediging met anti-drone kanonsystemen - Nieuwsbericht - Defensie.nl |trans-title=Ministry of Defence strengthens air defence with anti-drone gun system |url=https://www.defensie.nl/actueel/nieuws/2025/01/29/defensie-versterkt-luchtverdediging-met-anti-drone-kanonsystemen |url-status=live |archive-url=https://archive.today/20250129214828/https://www.defensie.nl/actueel/nieuws/2025/01/29/defensie-versterkt-luchtverdediging-met-anti-drone-kanonsystemen |archive-date=2025-01-29 |access-date=2025-01-29 |website=www.defensie.nl |language=nl-NL}}</ref>
+|<ref name=":2">{{Cite web |title=Rheinmetall |url=https://www.rheinmetall.com/de/produkte/flugabwehr/flugabwehrsysteme/mobile-flugabwehr-skyranger#anchor-skyranger-familie |access-date=2024-07-01 |website=Rheinmetall |language=de}}</ref><ref name="edr3march21">[https://www.edrmagazine.eu/rheinmetall-air-defence-unveils-its-skyranger-30 Rheinmetall Air Defence unveils its Skyranger 30 (upgraded)]. ''European Defence Review''. 3 March 2021.</ref><ref name="edr1july22">[https://www.edrmagazine.eu/countering-ram-drones-and-other-flying-objects-with-highly-mobile-assets-rheinmetalls-solutions Countering RAM, drones and other flying objects with highly mobile assets, Rheinmetall’s solutions]. ''European Defence Review''. 1 July 2022.</ref>
+|-
+|'''[[Skyranger 35]]'''
+|[[Rheinmetall Air Defence|Rheinmetall Air Defence (Oerlikon)]]
+|[[File:Boxer fitted with the Oerlikon Skyranger air defence system.jpg|180x180px]]
+|<small>{{flag|Switzerland}}</small><small>{{flag|Germany}}</small>
+|
+* [[Boxer (armoured fighting vehicle)|Boxer A3 / tracked]]
+* [[Lynx (Rheinmetall armoured fighting vehicle)|KF-41 Lynx]]
+* [[Leopard 2]]
+* [[Mowag Piranha IV|Piranha IV]] and [[Mowag Piranha V|V]]
+|1 × {{ill|Rheinmetall KDG 35/1000|de|Rheinmetall KDG-Revolverkanone}}
+{{refn|group=note|name=first}}
+|[[AHEAD ammunition|35 x 228 mm]]
+Air burst programmable rounds [[AHEAD ammunition|AHEAD]]
+| style="text-align: center;" |—
+|Turret based on [[Skyshield]] / [[MANTIS Air Defence System|MANTIS]]<ref name=":2" />
+|-
+|'''GÜRZ'''
+|[[Aselsan]]
+| style="text-align: center;" |—
+|<small>{{flag|Turkey}}</small>
+|Seyit 8×8 (Anadolu Savunma)
+|1 × [[Oerlikon GDF#Versions|KDC-02]]
+4 × [[GÖKTUĞ#Bozdoğan (Merlin)|Bozdoğan IR missile]]
+|{{ill|35 x 228 mm|de|35 x 228 mm}}
+ATOM [[Airburst round|airburst]]
+
+— 
+| style="text-align: center;" |—
+|Comparable to [[Pantsir missile system|Pantsir]], in development<ref>{{Cite web |title=Aselsan's GÜRZ Air and Missile Defense System Debut at WDS |url=https://www.defenceturkey.com/en/content/aselsan-s-gurz-air-and-missile-defense-system-debut-at-wds-5867 |access-date=2024-06-29 |website=www.defenceturkey.com}}</ref>
+|-
+|'''[[KORKUT]]'''
+|[[Aselsan]]
+|<small>''[[File:2022-04-27 Gokdeniz 001.jpg|180x180px]]''</small>
+<small>''(Turret adapted to land platform)''</small>
+|<small>{{flag|Turkey}}</small>
+|
+* [[FNSS ACV-30|ACV-30]] (FNSS)
+* [[Otokar Arma|Arma 8×8]] (Otokar)
+|2 × [[Oerlikon GDF#Versions|KDC-02]]
+{{refn|group=note|License produced [[Oerlikon GDF|Oerlikon GDF-002]] by [[Mechanical and Chemical Industry Corporation|MKE]] using the programmable ATOM 35mm ammunition.}}
+|{{ill|35 x 228 mm|de|35 x 228 mm}}
+ATOM [[Airburst round|airburst]] 
+| style="text-align: center;" |'''13'''
+|<ref>{{Cite web |title=Türk Silahlı Kuvvetlerine 10 yeni Korkut teslimatı |url=https://www.aa.com.tr/tr/ekonomi/turk-silahli-kuvvetlerine-10-yeni-korkut-teslimati/1642523 |access-date=2024-06-29 |website=www.aa.com.tr}}</ref>
+|-
+|[[Marksman anti-aircraft system|'''Marksman''']]
+|[[Marconi Electronic Systems]]
+|[[File:Marksman SPAAG.jpg|180x180px]]
+|<small>{{flag|United Kingdom}}</small>
+|
+* [[T-55A|T-55AM]]
+* [[Leopard 2|Leopard 2A4]]
+|2 × [[Oerlikon GDF|Oerlikon KDA]]
+
+{{refn|group=note|name=second}}
+
+|{{ill|35 x 228 mm|de|35 x 228 mm}}
+[[High-explosive incendiary|HEI ammunition]]
+| style="text-align: center;" |'''7'''
+|<ref>{{Cite web|url=https://catcha.fi/en/domains/ilmatorjuntaupseeriyhdistys.fi|archiveurl=https://web.archive.org/web/20070928003602/http://www.ilmatorjuntaupseeriyhdistys.fi/4_2004/tekstit/panssari.htm|url-status=dead|title=ilmatorjuntaupseeriyhdistys.fi|archivedate=September 28, 2007}}</ref><ref name="PSPR2015">{{cite web |date=5 August 2015 |title=MAAVOIMIEN LIIKKUVUUDEN JA TULIVOIMAN ROLL OUT PANSSARIPRIKAATISSA 5.8.2015 – Esiteltävä kalusto |url=http://puolustusvoimat.fi/wcm/a2748e00495d6be1a9e0a98833fba23b/Toimintanaytoksen_materiaalitiedot_5+8+2015.pdf?MOD=AJPERES |url-status=dead |archive-url=https://web.archive.org/web/20151005155147/http://www.puolustusvoimat.fi/wcm/a2748e00495d6be1a9e0a98833fba23b/Toimintanaytoksen_materiaalitiedot_5%2B8%2B2015.pdf?MOD=AJPERES |archive-date=5 October 2015 |accessdate=4 May 2016 |publisher=Finnish Defence Forces |language=Finnish}}</ref>
+|-
+|}
+
+==See also==
+* [[4M (artillery)]]
+* [[Assault gun]]
+* [[Flakpanzer]], a collective term for German anti-aircraft tanks, particularly those used in World War II.
+* [[List of anti-aircraft guns]]
+* [[Man-portable air-defense system]]
+* [[Self-propelled artillery]]
+* [[Tank destroyer]]
+
+== Footnotes ==
+<references group="note" responsive="1"></references>
+
+==References==
+{{reflist}}
+
+{{Authority control}}
+
+[[Category:Self-propelled anti-aircraft weapons]]

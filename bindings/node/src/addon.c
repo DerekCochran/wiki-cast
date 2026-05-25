@@ -9,8 +9,6 @@
 #include "token.h"
 #include "config.h"
 
-static napi_ref token_prototype_ref; // Use a reference to keep it alive
-
 // Cache for config
 static char* cached_config_path = NULL;
 static ParserConfig* cached_config = NULL;
@@ -22,19 +20,12 @@ static void token_finalizer(napi_env env, void *finalize_data, void *finalize_co
 }
 
 static napi_value toString_wrapper(napi_env env, napi_callback_info info) {
-    size_t argc = 1;
-    napi_value args[1];
-    napi_value this_arg;
-    // We usually unwrap 'this' if these are methods on the prototype
-    napi_status status = napi_get_cb_info(env, info, &argc, args, &this_arg, NULL);
+    void *data;
+    napi_get_cb_info(env, info, NULL, NULL, NULL, &data);
     
-    // If no argument was passed, we might be calling this as a method: obj.toString()
-    napi_value target = (argc > 0) ? args[0] : this_arg;
-
-    Token *token;
-    status = napi_unwrap(env, target, (void **)&token);
-    if (status != napi_ok) {
-        napi_throw_error(env, NULL, "Failed to unwrap Token object");
+    Token *token = (Token *)data;
+    if (!token) {
+        napi_throw_error(env, NULL, "Token pointer is NULL");
         return NULL;
     }
 
@@ -48,7 +39,7 @@ static napi_value toString_wrapper(napi_env env, napi_callback_info info) {
     }
 
     napi_value result;
-    status = napi_create_string_utf8(env, str, scratch->len, &result);
+    napi_status status = napi_create_string_utf8(env, str, scratch->len, &result);
     
     wiki_thread_buf_release_scratch(scratch);
     
@@ -126,11 +117,21 @@ static napi_value token_to_js(napi_env env, const Token *token, bool wrap_root) 
     napi_create_object(env, &js_token);
 
     if (wrap_root) {
-        napi_value proto;
-        napi_get_reference_value(env, token_prototype_ref, &proto);
-        napi_set_named_property(env, js_token, "__proto__", proto);
         napi_wrap(env, js_token, (void *)token, token_finalizer, NULL, NULL);
     }
+
+    // Attach toString directly to this token object
+    napi_property_descriptor toString_desc = {
+        "toString",
+        NULL,
+        toString_wrapper,
+        NULL,
+        NULL,
+        NULL,
+        napi_default,
+        (void *)token
+    };
+    napi_define_properties(env, js_token, 1, &toString_desc);
 
     // type
     napi_value type_val;
@@ -434,17 +435,6 @@ napi_value Init(napi_env env, napi_value exports) {
         }
     };
     napi_define_properties(env, exports, 2, desc);
-
-    napi_value proto;
-    napi_create_object(env, &proto);
-    
-    napi_property_descriptor proto_descs[] = {
-        { "toString", 0, toString_wrapper, 0, 0, 0, napi_default, 0 }
-    };
-    napi_define_properties(env, proto, 1, proto_descs);
-
-    // Create a persistent reference so the prototype lives forever
-    napi_create_reference(env, proto, 1, &token_prototype_ref);
 
     return exports;
 }

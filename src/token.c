@@ -36,11 +36,17 @@ void token_append_text_n(Token *t, const char *text, size_t len) {
 		t->children= realloc(t->children, t->child_cap * sizeof(Child));
 		assert(t->children);
 	}
+	char *owned= malloc(len + 1);
+	assert(owned);
+	if(len > 0) {
+		memcpy(owned, text, len);
+	}
+	owned[len]= '\0';
 	Child *c= &t->children[t->child_count++];
 	c->is_text= true;
 	c->text_len= len;
-	c->text= text;
-	c->text_owned = false;
+	c->text= owned;
+	c->text_owned = true;
 }
 
 void token_append_child(Token *t, Token *child) {
@@ -309,10 +315,17 @@ static void token_to_string_rec(const Token *t, ThreadBuf *tb) {
 		}
 		for(size_t i= 0; i < t->child_count; i++) {
 			if(i > 0) {
-				/* Special-case: leading ':' text child should not be
-                     * separated from the following target by a '|'. */
+				/* Special-case: leading ':' text child should not be separated from the following target by a delimiter. */
 				if(!(i == 1 && t->children[0].is_text && t->children[0].text && t->children[0].text[0] == ':')) {
-					if(i == 1 && t->data.link.magic_pipe) {
+					if(t->type == TOKEN_FILE) {
+						/* JS LinkBaseToken parity: FileToken uses one delimiter style for all separators. */
+						if(t->data.link.magic_pipe) {
+							thread_buf_append(tb, "{{!}}", 5);
+						} else {
+							thread_buf_append_char(tb, '|');
+						}
+					} else if(t->data.link.magic_pipe && i == 1) {
+						/* For LinkToken, only use {{!}} for the first delimiter if magic_pipe is set. */
 						thread_buf_append(tb, "{{!}}", 5);
 					} else {
 						thread_buf_append_char(tb, '|');

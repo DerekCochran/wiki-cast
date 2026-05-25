@@ -34,13 +34,188 @@
 #include <stdlib.h>
 #include <string.h>
 
-/* Old malloc/realloc-based helpers removed: we use ThreadBuf-based
- * append helpers (`append_key_token_repr_tb`) to avoid heap churn.
- */
-
-/* ThreadBuf-based append helpers (use the central API in thread_buffer.c) */
 static void append_key_token_repr_tb(const Token *t, ThreadBuf *tb) {
 	if(!t || !tb) return;
+
+	/* JS toString(true) parity: hidden/include-like tokens serialize as empty. */
+	if(t->type == TOKEN_COMMENT || t->type == TOKEN_NOINCLUDE ||
+	   t->type == TOKEN_INCLUDE || t->type == TOKEN_DOUBLE_UNDERSCORE) {
+		return;
+	}
+
+	if(t->type == TOKEN_EXT) {
+		const char *ext_tag= t->data.ext.name ? t->data.ext.name : t->name;
+		const char *ext_closing= t->data.ext.closing ? t->data.ext.closing : ext_tag;
+
+		wiki_thread_buf_putc(tb, '<');
+		if(ext_tag) wiki_thread_buf_append(tb, (sz_string_view_t){ ext_tag, strlen(ext_tag) });
+		if(t->child_count > 0) {
+			const Child *c= &t->children[0];
+			if(c->is_text) {
+				wiki_thread_buf_append(tb, (sz_string_view_t){ c->text, c->text_len });
+			} else {
+				append_key_token_repr_tb(c->token, tb);
+			}
+		}
+		if(t->data.ext.self_closing) {
+			wiki_thread_buf_append(tb, (sz_string_view_t){ "/>", 2 });
+			return;
+		}
+
+		wiki_thread_buf_putc(tb, '>');
+		if(t->child_count > 1) {
+			const Child *c= &t->children[1];
+			if(c->is_text) {
+				wiki_thread_buf_append(tb, (sz_string_view_t){ c->text, c->text_len });
+			} else {
+				append_key_token_repr_tb(c->token, tb);
+			}
+		}
+		wiki_thread_buf_append(tb, (sz_string_view_t){ "</", 2 });
+		if(ext_closing) wiki_thread_buf_append(tb, (sz_string_view_t){ ext_closing, strlen(ext_closing) });
+		wiki_thread_buf_putc(tb, '>');
+		return;
+	}
+
+	if(t->type == TOKEN_EXT_ATTR) {
+		if(t->child_count > 0) {
+			const Child *c= &t->children[0];
+			if(c->is_text) {
+				wiki_thread_buf_append(tb, (sz_string_view_t){ c->text, c->text_len });
+			} else {
+				append_key_token_repr_tb(c->token, tb);
+			}
+		}
+		if(t->data.ext_attr.equal) {
+			wiki_thread_buf_append(tb, (sz_string_view_t){ t->data.ext_attr.equal, strlen(t->data.ext_attr.equal) });
+			if(t->data.ext_attr.quote_open) wiki_thread_buf_putc(tb, t->data.ext_attr.quote_open);
+			if(t->child_count > 1) {
+				const Child *c= &t->children[1];
+				if(c->is_text) {
+					wiki_thread_buf_append(tb, (sz_string_view_t){ c->text, c->text_len });
+				} else {
+					append_key_token_repr_tb(c->token, tb);
+				}
+			}
+			if(t->data.ext_attr.quote_close) wiki_thread_buf_putc(tb, t->data.ext_attr.quote_close);
+		}
+		return;
+	}
+
+	if(t->type == TOKEN_LINK || t->type == TOKEN_FILE ||
+	   t->type == TOKEN_CATEGORY || t->type == TOKEN_REDIRECT_TARGET) {
+		bool is_file_line_image =
+			(t->type == TOKEN_FILE && t->type_name &&
+			 (strcmp(t->type_name, "gallery-image") == 0 ||
+			  strcmp(t->type_name, "imagemap-image") == 0));
+
+		if(!is_file_line_image) {
+			wiki_thread_buf_append(tb, (sz_string_view_t){ "[[", 2 });
+		}
+
+		for(size_t i = 0; i < t->child_count; i++) {
+			if(i > 0) {
+				if(!(i == 1 && t->children[0].is_text && t->children[0].text && t->children[0].text[0] == ':')) {
+					if(t->type == TOKEN_FILE) {
+						if(t->data.link.magic_pipe)
+							wiki_thread_buf_append(tb, (sz_string_view_t){ "{{!}}", 5 });
+						else
+							wiki_thread_buf_putc(tb, '|');
+					} else if(t->data.link.magic_pipe && i == 1) {
+						wiki_thread_buf_append(tb, (sz_string_view_t){ "{{!}}", 5 });
+					} else {
+						wiki_thread_buf_putc(tb, '|');
+					}
+				}
+			}
+
+			const Child *c = &t->children[i];
+			if(c->is_text) {
+				wiki_thread_buf_append(tb, (sz_string_view_t){ c->text, c->text_len });
+			} else {
+				append_key_token_repr_tb(c->token, tb);
+			}
+		}
+
+		if(!is_file_line_image) {
+			wiki_thread_buf_append(tb, (sz_string_view_t){ "]]", 2 });
+		}
+		return;
+	}
+
+	if(t->type == TOKEN_HTML) {
+		const char *tag= t->data.html.orig_tag ? t->data.html.orig_tag : t->name;
+		if(t->data.html.closing) {
+			wiki_thread_buf_putc(tb, '<');
+			wiki_thread_buf_putc(tb, '/');
+			if(tag) wiki_thread_buf_append(tb, (sz_string_view_t){ tag, strlen(tag) });
+			if(t->child_count > 0) {
+				const Child *c= &t->children[0];
+				if(c->is_text) {
+					wiki_thread_buf_append(tb, (sz_string_view_t){ c->text, c->text_len });
+				} else if(c->token) {
+					append_key_token_repr_tb(c->token, tb);
+				}
+			}
+			if(t->data.html.self_closing) {
+				wiki_thread_buf_append(tb, (sz_string_view_t){ "/>", 2 });
+			} else {
+				wiki_thread_buf_putc(tb, '>');
+			}
+			return;
+		}
+
+		wiki_thread_buf_putc(tb, '<');
+		if(tag) wiki_thread_buf_append(tb, (sz_string_view_t){ tag, strlen(tag) });
+		if(t->child_count > 0) {
+			const Child *c= &t->children[0];
+			if(c->is_text) {
+				wiki_thread_buf_append(tb, (sz_string_view_t){ c->text, c->text_len });
+			} else if(c->token) {
+				append_key_token_repr_tb(c->token, tb);
+			}
+		}
+		if(t->data.html.self_closing) {
+			wiki_thread_buf_append(tb, (sz_string_view_t){ "/>", 2 });
+		} else {
+			wiki_thread_buf_putc(tb, '>');
+		}
+		return;
+	}
+
+	if(t->type == TOKEN_EXT_LINK) {
+		wiki_thread_buf_putc(tb, '[');
+		if(t->child_count > 0) {
+			const Child *c0= &t->children[0];
+			if(c0->is_text) {
+				wiki_thread_buf_append(tb, (sz_string_view_t){ c0->text, c0->text_len });
+			} else {
+				append_key_token_repr_tb(c0->token, tb);
+			}
+
+			if(t->child_count == 1) {
+				if(t->data.ext_link.space) {
+					wiki_thread_buf_append(tb, (sz_string_view_t){ t->data.ext_link.space, strlen(t->data.ext_link.space) });
+				}
+			} else {
+				if(t->data.ext_link.space) {
+					wiki_thread_buf_append(tb, (sz_string_view_t){ t->data.ext_link.space, strlen(t->data.ext_link.space) });
+				} else {
+					wiki_thread_buf_putc(tb, ' ');
+				}
+				for(size_t i= 1; i < t->child_count; i++) {
+					const Child *ci= &t->children[i];
+					if(ci->is_text) {
+						wiki_thread_buf_append(tb, (sz_string_view_t){ ci->text, ci->text_len });
+					} else {
+						append_key_token_repr_tb(ci->token, tb);
+					}
+				}
+			}
+		}
+		wiki_thread_buf_putc(tb, ']');
+		return;
+	}
 
 	if(t->type == TOKEN_TRANSCLUDE) {
 		wiki_thread_buf_putc(tb, '{');
@@ -129,6 +304,41 @@ static void append_key_token_repr_tb(const Token *t, ThreadBuf *tb) {
 	}
 }
 
+/* JS String.prototype.trim() parity for template-name normalization. */
+static size_t js_trim_ws_at(const char *s, size_t len, size_t i) {
+	if(i >= len) return 0;
+	unsigned char c0= (unsigned char)s[i];
+	if(c0 == 0x09 || c0 == 0x0A || c0 == 0x0B || c0 == 0x0C || c0 == 0x0D || c0 == 0x20) return 1;
+	if(i + 1 < len && c0 == 0xC2 && (unsigned char)s[i + 1] == 0xA0) return 2; /* U+00A0 */
+	if(i + 2 < len && c0 == 0xE1 && (unsigned char)s[i + 1] == 0x9A && (unsigned char)s[i + 2] == 0x80) return 3; /* U+1680 */
+	if(i + 2 < len && c0 == 0xE2 && (unsigned char)s[i + 1] == 0x80) {
+		unsigned char c2= (unsigned char)s[i + 2];
+		if((c2 >= 0x80 && c2 <= 0x8A) || c2 == 0xA8 || c2 == 0xA9 || c2 == 0xAF) return 3; /* U+2000..U+200A/U+2028/U+2029/U+202F */
+	}
+	if(i + 2 < len && c0 == 0xE2 && (unsigned char)s[i + 1] == 0x81 && (unsigned char)s[i + 2] == 0x9F) return 3; /* U+205F */
+	if(i + 2 < len && c0 == 0xE3 && (unsigned char)s[i + 1] == 0x80 && (unsigned char)s[i + 2] == 0x80) return 3; /* U+3000 */
+	if(i + 2 < len && c0 == 0xEF && (unsigned char)s[i + 1] == 0xBB && (unsigned char)s[i + 2] == 0xBF) return 3; /* U+FEFF */
+	return 0;
+}
+
+static size_t js_trim_ws_before(const char *s, size_t end) {
+	if(end == 0) return 0;
+	unsigned char c1= (unsigned char)s[end - 1];
+	if(c1 == 0x09 || c1 == 0x0A || c1 == 0x0B || c1 == 0x0C || c1 == 0x0D || c1 == 0x20) return 1;
+	if(end >= 2 && (unsigned char)s[end - 2] == 0xC2 && (unsigned char)s[end - 1] == 0xA0) return 2;
+	if(end >= 3) {
+		unsigned char c0= (unsigned char)s[end - 3];
+		unsigned char c2= (unsigned char)s[end - 2];
+		unsigned char c3= (unsigned char)s[end - 1];
+		if(c0 == 0xE1 && c2 == 0x9A && c3 == 0x80) return 3;
+		if(c0 == 0xE2 && c2 == 0x80 && ((c3 >= 0x80 && c3 <= 0x8A) || c3 == 0xA8 || c3 == 0xA9 || c3 == 0xAF)) return 3;
+		if(c0 == 0xE2 && c2 == 0x81 && c3 == 0x9F) return 3;
+		if(c0 == 0xE3 && c2 == 0x80 && c3 == 0x80) return 3;
+		if(c0 == 0xEF && c2 == 0xBB && c3 == 0xBF) return 3;
+	}
+	return 0;
+}
+
 /* JS parity: TranscludeToken.afterBuild() sets the normalized template name.
  * In JS this happens after build() completes, so the name is absent from
  * stage-log snapshots captured during parseBraces (Stage 1). */
@@ -150,20 +360,24 @@ static void refresh_template_name(Token *t, const ParserConfig *cfg) {
 		return;
 	}
 
-	/* JS parity: trimLc() is applied before normalizeTitle, so strip all
-     * leading/trailing whitespace (including \n) from the raw name text. */
+	/* JS parity: trimLc() uses String.trim(), including Unicode whitespace. */
 	char *text = scratch->buf;
-	while(len > 0 && (text[len - 1] == ' ' || text[len - 1] == '\t' ||
-										text[len - 1] == '\n' || text[len - 1] == '\r' ||
-										text[len - 1] == '\f' || text[len - 1] == '\v')) len--;
-	size_t skip= 0;
-	while(skip < len && (text[skip] == ' ' || text[skip] == '\t' ||
-											 text[skip] == '\n' || text[skip] == '\r' ||
-											 text[skip] == '\f' || text[skip] == '\v')) skip++;
-	if(skip) {
-		memmove(text, text + skip, len - skip);
-		len-= skip;
+	size_t start= 0;
+	size_t end= len;
+	while(start < end) {
+		size_t ws= js_trim_ws_at(text, end, start);
+		if(ws == 0) break;
+		start+= ws;
 	}
+	while(end > start) {
+		size_t ws= js_trim_ws_before(text, end);
+		if(ws == 0) break;
+		end-= ws;
+	}
+	if(start > 0) {
+		memmove(text, text + start, end - start);
+	}
+	len= end - start;
 	text[len]= '\0';
 	if(len == 0) {
 		wiki_thread_buf_release_scratch(scratch);
@@ -221,6 +435,7 @@ static void refresh_parameter_name(Token *t) {
 		sz_string_view_t vk = { key->text, key->text_len };
 		wiki_thread_buf_append(scratch, vk);
 	} else if(key->token) {
+		/* JS parity: ParameterToken.trimName() uses keyToken.toString(true). */
 		append_key_token_repr_tb(key->token, scratch);
 	}
 
@@ -257,15 +472,33 @@ void build_from_str(Token *parent, const char *str, size_t str_len,
 	 * on NUL-termination. */
 	const char *s= str;
 
-	/* Free existing children first. Only free owned text buffers; views into
-	 * the per-thread tokens arena must not be freed here. */
+	/* If caller passed one of our owned child buffers as input, copy it first
+	 * because existing children are freed before reconstruction. */
+	char *src_copy= NULL;
 	for(size_t i= 0; i < parent->child_count; i++) {
 		Child *c= &parent->children[i];
-		if(c->is_text) {
-			if(c->text_owned && c->text) free((void*)c->text);
+		if(c->is_text && c->text == str) {
+			if(c->text_owned) {
+				src_copy= malloc(str_len + 1);
+				if(!src_copy) {
+					log_fatal("build_from_str: malloc failed while copying aliased input");
+					abort();
+				}
+				if(str_len > 0) memcpy(src_copy, str, str_len);
+				src_copy[str_len]= '\0';
+				s= src_copy;
+			}
 		}
-		/* Token pointers are owned by the accum — do NOT free them here */
 	}
+
+	/* Free existing children first. Token children are owned by the accum. */
+	for(size_t i= 0; i < parent->child_count; i++) {
+		Child *c= &parent->children[i];
+		if(c->is_text && c->text_owned && c->text) {
+			free((void *)c->text);
+		}
+	}
+
 	parent->child_count= 0;
 
 	/* Walk str, splitting on \0 … \x7F markers.
@@ -299,49 +532,79 @@ void build_from_str(Token *parent, const char *str, size_t str_len,
 			}
 		} else {
 			/* Inside marker — find the \x7F */
-				if(c == '\x7F' || i == str_len) {
+			if(c == '\x7F' || i == str_len) {
 				/* Segment is "N<type_ch>" where N is decimal */
-					const char *marker_content= s + seg_start;
+				const char *marker_content= s + seg_start;
 				size_t marker_len= i - seg_start;
+				bool missing_terminator= (c != '\x7F');
 
-				if(marker_len >= 2) {
-					/* Parse decimal index (all but last char) */
-					size_t idx= 0;
-					bool valid= true;
-					for(size_t d= 0; d < marker_len - 1; d++) {
-						char dc= marker_content[d];
-						if(dc >= '0' && dc <= '9') {
-							idx= idx * 10 + (size_t)(dc - '0');
-						} else {
-							valid= false;
-							break;
-						}
+				if(missing_terminator || marker_len < 2) {
+					fprintf(stderr,
+					        "DEBUG build_from_str: INVALID sentinel at parent=%p, reason=%s, marker_len=%zu, seg_start=%zu, cursor=%zu\n",
+					        (void*)parent,
+					        missing_terminator ? "missing DEL terminator" : "marker too short",
+					        marker_len,
+					        seg_start,
+					        i);
+					fprintf(stderr, "DEBUG build_from_str: INVALID sentinel raw bytes: ");
+					for(size_t dbg= 0; dbg < marker_len; dbg++) {
+						unsigned char ch= (unsigned char)marker_content[dbg];
+						fprintf(stderr, "[%zu]=0x%02x '%c' ", dbg, ch,
+						        (ch >= 0x20 && ch < 0x7f) ? ch : '?');
 					}
-					if(valid) {
-						Token *child= accum_get(accum, idx);
-						if(child) {
-							token_append_child(parent, child);
-						} else {
-							log_error("build_from_str: accum[%zu] is NULL", idx);
-						}
-						} else {
-							/* Not a valid sentinel — emit as text into a leased scratch
-							 * buffer using the ThreadBuf API (avoid heap allocs). The
-							 * desired sequence is: '\0' + marker_content + '\x7F'. */
-							ThreadBuf *scratch = wiki_thread_buf_acquire_scratch();
-							/* prepend NUL byte */
-							wiki_thread_buf_putc(scratch, '\0');
-							if(marker_len > 0) {
-								sz_string_view_t v = { marker_content, marker_len };
-								wiki_thread_buf_append(scratch, v);
-							}
-							/* trailing DEL */
-							wiki_thread_buf_putc(scratch, '\x7F');
-							const char *p = wiki_thread_buf_append_to_tokens(scratch->buf, scratch->len);
-							token_append_text_n(parent, p, scratch->len);
-							wiki_thread_buf_release_scratch(scratch);
-						}
+					fprintf(stderr, "\n");
+					log_fatal("build_from_str: invalid sentinel (reason=%s, marker_len=%zu, seg_start=%zu, cursor=%zu)",
+					          missing_terminator ? "missing DEL terminator" : "marker too short",
+					          marker_len,
+					          seg_start,
+					          i);
+					abort();
 				}
+
+				/* Parse decimal index (all but last char). */
+				size_t idx= 0;
+				for(size_t d= 0; d < marker_len - 1; d++) {
+					unsigned char dc= (unsigned char)marker_content[d];
+					if(dc < '0' || dc > '9') {
+						fprintf(stderr,
+						        "DEBUG build_from_str: INVALID sentinel at parent=%p, marker_len=%zu, failed_at=%zu, byte=0x%02x\n",
+						        (void*)parent,
+						        marker_len,
+						        d,
+						        dc);
+						fprintf(stderr, "DEBUG build_from_str: INVALID sentinel raw bytes: ");
+						for(size_t dbg= 0; dbg < marker_len; dbg++) {
+							unsigned char ch= (unsigned char)marker_content[dbg];
+							fprintf(stderr, "[%zu]=0x%02x '%c' ", dbg, ch,
+							        (ch >= 0x20 && ch < 0x7f) ? ch : '?');
+						}
+						fprintf(stderr, "\n");
+						log_fatal("build_from_str: invalid sentinel digit at offset=%zu (byte=0x%02x)", d, dc);
+						abort();
+					}
+					idx= idx * 10 + (size_t)(dc - '0');
+				}
+
+				Token *child= accum_get(accum, idx);
+				if(!child) {
+					unsigned char type_ch= (unsigned char)marker_content[marker_len - 1];
+					fprintf(stderr,
+					        "DEBUG build_from_str: INVALID sentinel unresolved idx=%zu type=0x%02x '%c' marker_len=%zu\n",
+					        idx,
+					        type_ch,
+					        (type_ch >= 0x20 && type_ch < 0x7f) ? type_ch : '?',
+					        marker_len);
+					fprintf(stderr, "DEBUG build_from_str: INVALID sentinel raw bytes: ");
+					for(size_t dbg= 0; dbg < marker_len; dbg++) {
+						unsigned char ch= (unsigned char)marker_content[dbg];
+						fprintf(stderr, "[%zu]=0x%02x '%c' ", dbg, ch,
+						        (ch >= 0x20 && ch < 0x7f) ? ch : '?');
+					}
+					fprintf(stderr, "\n");
+					log_fatal("build_from_str: sentinel points to missing accum index=%zu", idx);
+					abort();
+				}
+				token_append_child(parent, child);
 
 				seg_start= i + 1;
 				in_marker= false;
@@ -352,7 +615,7 @@ void build_from_str(Token *parent, const char *str, size_t str_len,
 		}
 	}
 
-	/* no src to free (we operated on the caller-owned buffer `str`) */
+	if(src_copy) free(src_copy);
 }
 
 /* Recursively expand sentinel markers in all text descendants of a token.

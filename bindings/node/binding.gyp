@@ -1,7 +1,7 @@
 {
   "targets": [
     {
-      "target_name": "wikiparser-node-c-tokenizer",
+      "target_name": "wiki-cast",
       "defines": [ "NAPI_VERSION=9", "_DEFAULT_SOURCE" ],
       "sources": [
         "src/addon.c",

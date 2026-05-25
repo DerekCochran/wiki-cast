@@ -13,6 +13,18 @@
 #include <string.h>
 #include <ctype.h>
 
+static size_t align_up_64(size_t n) {
+	return (n + 63u) & ~(size_t)63u;
+}
+
+static void *aligned_zalloc_64(size_t n) {
+	size_t alloc_n= align_up_64(n);
+	void *p= aligned_alloc(64, alloc_n);
+	assert(p);
+	memset(p, 0, alloc_n);
+	return p;
+}
+
 /* Use 48 for inline to keep the total ThreadBuf struct exactly 1 cache line (64 bytes) */
 #define SSO_MAX 47
 
@@ -92,25 +104,14 @@ static void registry_add(ThreadBuffers *tb) {
 
 const char *wiki_thread_buf_append_to_tokens(const char *s, size_t len) {
 	if(!s || len == 0) return NULL;
-	ThreadBuffers *tbs = wiki_thread_buf_get();
-	ThreadBuf *tb = &tbs->tokens;
-	size_t off = tb->len;
-	if(tb->len + len + 1 > tb->cap) {
-		log_debug("tokens arena GROW: cap=%zu len=%zu append=%zu — pointer invalidation imminent; append='%.*s'",
-		          tb->cap, tb->len, len, (int)(len > 80 ? 80 : len), s);
-	}
-	sz_string_view_t v = { .start = s, .length = len };
-	wiki_thread_buf_append(tb, v);
-	return tb->buf + off;
+	/* Temporary mode: token_append_text_n() now duplicates text into owned memory,
+	 * so we can avoid using the shared tokens arena and pointer lifetime hazards. */
+	return s;
 }
 
 const char *wiki_thread_buf_append_view_to_tokens(sz_string_view_t view) {
 	if(view.length == 0 || !view.start) return NULL;
-	ThreadBuffers *tbs = wiki_thread_buf_get();
-	ThreadBuf *tb = &tbs->tokens;
-	size_t off = tb->len;
-	wiki_thread_buf_append(tb, view);
-	return tb->buf + off;
+	return view.start;
 }
 
 /* Remove the registry entry for tb (called from the TLS destructor). */
@@ -224,8 +225,7 @@ static void alloc_inner_buffers(ThreadBuffers *tb) {
 	tb->finalized= false;
 }
 
-void wiki_thread_buf_assert_no_leased_scratch(const char *context,
-																							const ThreadBuf *ignore_tb) {
+void wiki_thread_buf_assert_no_leased_scratch(const char *context, const ThreadBuf *ignore_tb) {
 	ThreadBuffers *tb= wiki_thread_buf_get();
 	size_t leased_count= 0;
 	size_t leased_cap= 0;
@@ -510,7 +510,7 @@ void wiki_thread_buf_reserve(ThreadBuf *tb, size_t need) {
         }
 
         if (tb->is_on_heap) {
-            free(tb->buf);
+			free(tb->buf);
         }
 
         tb->buf = (char *)new_ptr;
@@ -537,7 +537,7 @@ ThreadBuffers *wiki_thread_buf_get(void) {
 
 	if(!tb) {
 		/* First call on this thread: allocate the struct and register it. */
-		tb= calloc(1, sizeof(ThreadBuffers));
+		tb= aligned_zalloc_64(sizeof(ThreadBuffers));
 		assert(tb);
 		alloc_inner_buffers(tb);
 		pthread_setspecific(g_tls_key, tb);
@@ -605,7 +605,7 @@ ThreadBuf *wiki_thread_buf_acquire_scratch(void) {
 	}
 
 	size_t idx= tb->scratch_count++;
-	tb->scratch_pool[idx]= malloc(sizeof(ThreadBuf));
+	tb->scratch_pool[idx]= aligned_zalloc_64(sizeof(ThreadBuf));
 	assert(tb->scratch_pool[idx]);
 	init_thread_buf(tb->scratch_pool[idx], g_scratch_shrink_bytes, g_scratch_target_bytes);
 	tb->scratch_in_use[idx]= true;

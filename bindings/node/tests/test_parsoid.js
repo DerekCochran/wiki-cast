@@ -4,7 +4,7 @@
 const path = require('path');
 const { runTests } = require('./helpers');
 
-const tests = [
+const parsoidTests = [
   // `Parents of subpages, one level up`,
 //  `[[../|L2]]`,
   // `T213468: Corner cases in edit section ID assignment in tokenizer`,
@@ -10217,21 +10217,26 @@ after table}-
 Even if the <nowiki>nowiki -{contains}- lc markup</nowiki>.`,
 ];
 
-const ROOT = path.resolve(__dirname, '..', '..', '..', 'config');
-const CONFIGS = ['enwiki', 'jawiki', 'llwiki'];
-//const CONFIGS = ['enwiki'];
+if (process.argv[1] === __filename) {
 
-for (const configName of CONFIGS) {
-  const configPath = path.join(ROOT, `${configName}.json`);
-  process.env.WIKI_CONFIG = configPath;
+  const ROOT = path.resolve(__dirname, '..', '..', '..', 'config');
+  const CONFIGS = ['enwiki', 'jawiki', 'llwiki'];
+  //const CONFIGS = ['enwiki'];
 
-  let testCount = 0;
-  for (const test of tests) {
-    testCount++;
-    const ok = runTests([test], { name: `parsoid-${configName}` });
-    if (!ok) {
-      console.error(`Test ${testCount} failed for ${configName}`);
-      process.exit(1);
+  for (const configName of CONFIGS) {
+    const configPath = path.join(ROOT, `${configName}.json`);
+    process.env.WIKI_CONFIG = configPath;
+
+    let testCount = 0;
+    for (const test of parsoidTests) {
+      testCount++;
+      const ok = runTests([test], { name: `parsoid-${configName}` });
+      if (!ok) {
+        console.error(`Test ${testCount} failed for ${configName}`);
+        return !ok;
+      }
     }
   }
 }
+
+module.exports = { parsoidTests };
