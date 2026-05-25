@@ -1978,9 +1978,7 @@ static void postprocess_parameter_value_inline_impl(Token *t, const ParserConfig
 				parse_html(scratch, cfg, accum);
 				if(is_parameter_value) parse_table(scratch, cfg, accum);
 				else parse_table_skip_first_line(scratch, cfg, accum);
-				if(!has_non_text_children) {
-					parse_hr_and_double_underscore(scratch, cfg, accum, TOKEN_PLAIN, is_attr_value ? "attr-value" : "parameter-value");
-				}
+				parse_hr_and_double_underscore(scratch, cfg, accum, TOKEN_PLAIN, is_attr_value ? "attr-value" : "parameter-value");
 				parse_links(scratch, cfg, accum, page, false);
 				parse_quotes_stage6_per_line(scratch, cfg, accum);
 				parse_external_links(scratch, cfg, accum, false);

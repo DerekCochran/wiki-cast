@@ -362,8 +362,14 @@ void parse_hr_and_double_underscore(ThreadBuf *tb, const ParserConfig *cfg, Accu
 	parse_dunder_pass(tb, &wiki_rule_dunder_ascii, false, cfg, accum);
 	parse_dunder_pass(tb, &wiki_rule_dunder_fullwidth, true, cfg, accum);
 
+	bool skip_heading_for_param_ctx= root_type == TOKEN_PLAIN
+		&& root_name
+		&& (strcmp(root_name, "parameter-value") == 0
+			|| strcmp(root_name, "parameter-key") == 0
+			|| strcmp(root_name, "attr-value") == 0);
+
 	/* Heading finalization: line-at-a-time forward scan */
-	if(!config_excluded(cfg, "heading")) {
+	if(!config_excluded(cfg, "heading") && !skip_heading_for_param_ctx) {
 		size_t out_cap2 = tb->len * 2 + 64;
 		char *out2 = malloc(out_cap2);
 		if(!out2) { log_fatal("OOM in heading finalization"); abort(); }

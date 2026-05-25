@@ -5,6 +5,40 @@ const { runTests } = require('./helpers');
 
 const castTests = [
   // Failures from export of wikitexts
+    `{{Infobox national military
+| name = Tatmadaw
+| native_name = {{lang|my|တပ်မတော်}} {{lang|my-latn|{{small|Tapmătau}}}}<br>{{lang|en|[[Royal Burmese Armed Forces|Royal Armed Forces]]}}
+| image = {{ubl|[[File:Full Emblem of the Myanmar Armed Forces.svg|200px|frameless]]|[[Emblem of Tatmadaw|Emblem of the Myanmar Armed Forces]]
+----
+[[File: Flag of the Armed Forces (Tatmadaw) of Myanmar.svg|225px|border]]|Flag of the Myanmar Armed Forces}}
+| image_size = 
+| alt = 
+| caption = 
+| image2 = {{ubl|[[File: Emblem of the Myanmar Armed Forces.svg|150px|frameless]]|Mark Logo
+----
+{{Photomontage
+ | photo1a = Shoulder Sleeve of Myanmar Army.svg
+ | size    = 300
+ | spacing = 5
+ | color   = transparent
+ | border  = 0
+ | text    = 
+}}|'''Top:''' Emblems of main service branches: [[Myanmar Army|Army]]{{efn|Also the [[formation patch]] of Chief of Staffs' office.<ref>{{cite web |url=https://www.cincds.gov.mm/ |title=CINCDS Myanmar |publisher=Cincds.gov.mm |date= |accessdate=2022-08-03 |archive-date=14 June 2022 |archive-url=https://web.archive.org/web/20220614005935/https://cincds.gov.mm/ |url-status=live }}</ref>}}, [[Myanmar Navy|Navy]] and [[Myanmar Air Force|Air Force]]|'''Bottom:''' Emblems of auxiliary services: [[Myanmar Coast Guard|Coast Guard]], [[Myanmar Police Force|Police Force]] and [[Myanmar Border Guard Forces|Border Guard Forces]]}}
+| branches = {{plainlist|
+* {{army|MYA}}
+* {{navy|MYA}}
+* {{air force|MYA}}
+* {{flagicon image|Myanmar MOHA Flag.svg}} [[Ministry of Home Affairs (Myanmar)]] (de facto)
+}}
+* {{flagicon image|Flag of the Myanmar Police Force.svg}} [[Myanmar Police Force]]{{cn|date=March 2026}}
+| headquarters = [[Naypyidaw]], [[Myanmar]]
+| website = {{Bulleted list
+| {{URL|mod.gov.mm}}
+| {{URL|cincds.gov.mm}}
+}}
+| ranks = [[Military ranks of Myanmar]]
+}}`,
+
     `<imagemap>
 File:Mustelidae-01.jpg|250px|alt=Alt text 
 rect 800 1066 1599 1594 [[Honey badger |Honey badger (''Mellivora capensis'')]] 
