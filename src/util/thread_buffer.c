@@ -13,6 +13,18 @@
 #include <string.h>
 #include <ctype.h>
 
+static size_t align_up_64(size_t n) {
+	return (n + 63u) & ~(size_t)63u;
+}
+
+static void *aligned_zalloc_64(size_t n) {
+	size_t alloc_n= align_up_64(n);
+	void *p= aligned_alloc(64, alloc_n);
+	assert(p);
+	memset(p, 0, alloc_n);
+	return p;
+}
+
 /* Use 48 for inline to keep the total ThreadBuf struct exactly 1 cache line (64 bytes) */
 #define SSO_MAX 47
 
@@ -510,7 +522,7 @@ void wiki_thread_buf_reserve(ThreadBuf *tb, size_t need) {
         }
 
         if (tb->is_on_heap) {
-            free(tb->buf);
+			free(tb->buf);
         }
 
         tb->buf = (char *)new_ptr;
@@ -537,7 +549,7 @@ ThreadBuffers *wiki_thread_buf_get(void) {
 
 	if(!tb) {
 		/* First call on this thread: allocate the struct and register it. */
-		tb= calloc(1, sizeof(ThreadBuffers));
+		tb= aligned_zalloc_64(sizeof(ThreadBuffers));
 		assert(tb);
 		alloc_inner_buffers(tb);
 		pthread_setspecific(g_tls_key, tb);
@@ -605,7 +617,7 @@ ThreadBuf *wiki_thread_buf_acquire_scratch(void) {
 	}
 
 	size_t idx= tb->scratch_count++;
-	tb->scratch_pool[idx]= malloc(sizeof(ThreadBuf));
+	tb->scratch_pool[idx]= aligned_zalloc_64(sizeof(ThreadBuf));
 	assert(tb->scratch_pool[idx]);
 	init_thread_buf(tb->scratch_pool[idx], g_scratch_shrink_bytes, g_scratch_target_bytes);
 	tb->scratch_in_use[idx]= true;

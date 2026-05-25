@@ -1239,9 +1239,11 @@ void parse_links(ThreadBuf *tb, const ParserConfig *cfg, Accum *accum,
 			/* text = parseLinks(text, ...) — recursive call on accumulated image text */
 			{
 				ThreadBuf tmp_tb;
+				memset(&tmp_tb, 0, sizeof(tmp_tb));
 				tmp_tb.buf= img_buf;
 				tmp_tb.len= img_len;
 				tmp_tb.cap= img_cap;
+				tmp_tb.is_on_heap= true;
 				/*
                  * This temporary buffer is not managed by thread_buffer.
                  * Disable shrink-path logic by setting a very large threshold

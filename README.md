@@ -86,6 +86,7 @@ ThreadSanitizer in the same binary).
 1. Undefined Behavior Sanitizer (UBSan)
 
 ```bash
+cd ~/git/wiki-cast
 rm -rf build_ubsan && mkdir -p build_ubsan && cd build_ubsan
 cmake \
   -DCMAKE_BUILD_TYPE=RelWithDebInfo \
@@ -94,12 +95,14 @@ cmake \
 make -j
 
 # run a C-stage test (point WIKI_CONFIG at your wikiparser package config)
-WIKI_CONFIG=../../wikiparser-node-1.38.1/package/config/default.json ./test_stage0
+cd ..
+WIKI_CONFIG=./config/enwiki.json ./build_ubsan/test_wikitext
 ```
 
 2. ThreadSanitizer (TSan) — data race detection
 
 ```bash
+cd ~/git/wiki-cast
 rm -rf build_tsan && mkdir -p build_tsan && cd build_tsan
 cmake \
   -DCMAKE_BUILD_TYPE=RelWithDebInfo \
@@ -108,13 +111,14 @@ cmake \
 make -j
 
 # run the same test binary under TSan
-TSAN_OPTIONS="report_thread_leaks=1" \
-  WIKI_CONFIG=../../wikiparser-node-1.38.1/package/config/default.json ./test_stage0
+cd ..
+TSAN_OPTIONS="report_thread_leaks=1" WIKI_CONFIG=./config/enwiki.json ./build_tsan/test_wikitext
 ```
 
 3. AddressSanitizer (ASan) — heap/stack buffer overflows, use separately
 
 ```bash
+cd ~/git/wiki-cast
 rm -rf build_asan && mkdir -p build_asan && cd build_asan
 cmake \
   -DCMAKE_BUILD_TYPE=RelWithDebInfo \
@@ -122,7 +126,8 @@ cmake \
   -DCMAKE_EXE_LINKER_FLAGS="-fsanitize=address" ..
 make -j
 
-WIKI_CONFIG=../../wikiparser-node-1.38.1/package/config/default.json ./test_stage0
+cd ..
+WIKI_CONFIG=./config/enwiki.json ./build_asan/test_wikitext
 ```
 
 ## Profiling 
