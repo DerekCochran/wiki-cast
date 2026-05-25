@@ -48,6 +48,65 @@ static void append_key_token_repr_tb(const Token *t, ThreadBuf *tb) {
 		return;
 	}
 
+	if(t->type == TOKEN_EXT) {
+		const char *ext_tag= t->data.ext.name ? t->data.ext.name : t->name;
+		const char *ext_closing= t->data.ext.closing ? t->data.ext.closing : ext_tag;
+
+		wiki_thread_buf_putc(tb, '<');
+		if(ext_tag) wiki_thread_buf_append(tb, (sz_string_view_t){ ext_tag, strlen(ext_tag) });
+		if(t->child_count > 0) {
+			const Child *c= &t->children[0];
+			if(c->is_text) {
+				wiki_thread_buf_append(tb, (sz_string_view_t){ c->text, c->text_len });
+			} else {
+				append_key_token_repr_tb(c->token, tb);
+			}
+		}
+		if(t->data.ext.self_closing) {
+			wiki_thread_buf_append(tb, (sz_string_view_t){ "/>", 2 });
+			return;
+		}
+
+		wiki_thread_buf_putc(tb, '>');
+		if(t->child_count > 1) {
+			const Child *c= &t->children[1];
+			if(c->is_text) {
+				wiki_thread_buf_append(tb, (sz_string_view_t){ c->text, c->text_len });
+			} else {
+				append_key_token_repr_tb(c->token, tb);
+			}
+		}
+		wiki_thread_buf_append(tb, (sz_string_view_t){ "</", 2 });
+		if(ext_closing) wiki_thread_buf_append(tb, (sz_string_view_t){ ext_closing, strlen(ext_closing) });
+		wiki_thread_buf_putc(tb, '>');
+		return;
+	}
+
+	if(t->type == TOKEN_EXT_ATTR) {
+		if(t->child_count > 0) {
+			const Child *c= &t->children[0];
+			if(c->is_text) {
+				wiki_thread_buf_append(tb, (sz_string_view_t){ c->text, c->text_len });
+			} else {
+				append_key_token_repr_tb(c->token, tb);
+			}
+		}
+		if(t->data.ext_attr.equal) {
+			wiki_thread_buf_append(tb, (sz_string_view_t){ t->data.ext_attr.equal, strlen(t->data.ext_attr.equal) });
+			if(t->data.ext_attr.quote_open) wiki_thread_buf_putc(tb, t->data.ext_attr.quote_open);
+			if(t->child_count > 1) {
+				const Child *c= &t->children[1];
+				if(c->is_text) {
+					wiki_thread_buf_append(tb, (sz_string_view_t){ c->text, c->text_len });
+				} else {
+					append_key_token_repr_tb(c->token, tb);
+				}
+			}
+			if(t->data.ext_attr.quote_close) wiki_thread_buf_putc(tb, t->data.ext_attr.quote_close);
+		}
+		return;
+	}
+
 	if(t->type == TOKEN_LINK || t->type == TOKEN_FILE ||
 	   t->type == TOKEN_CATEGORY || t->type == TOKEN_REDIRECT_TARGET) {
 		bool is_file_line_image =
