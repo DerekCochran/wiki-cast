@@ -1068,6 +1068,13 @@ static void split_gallery_unclosed_caption_local(Token *img,
 												const ParserConfig *cfg,
 												Accum *accum) {
 	if(!img || img->type != TOKEN_FILE || img->child_count < 2) return;
+	ParserConfig cfg_local;
+	const ParserConfig *links_cfg= cfg;
+	if(cfg) {
+		cfg_local= *cfg;
+		cfg_local.in_ext= true;
+		links_cfg= &cfg_local;
+	}
 
 	for(size_t ci= 1; ci < img->child_count; ci++) {
 		if(img->children[ci].is_text || !img->children[ci].token) continue;
@@ -1123,7 +1130,7 @@ static void split_gallery_unclosed_caption_local(Token *img,
 			parse_comment_and_ext(tb, cfg, accum, false);
 			parse_braces(tb, cfg, accum);
 			parse_html(tb, cfg, accum);
-			parse_links(tb, cfg, accum, NULL, false);
+			parse_links(tb, links_cfg, accum, NULL, false);
 			parse_quotes(tb, cfg, accum, false);
 			parse_external_links(tb, cfg, accum, false);
 			parse_magic_links(tb, cfg, accum);
@@ -1147,7 +1154,7 @@ static void split_gallery_unclosed_caption_local(Token *img,
 		parse_comment_and_ext(tb, cfg, accum, false);
 		parse_braces(tb, cfg, accum);
 		parse_html(tb, cfg, accum);
-		parse_links(tb, cfg, accum, NULL, false);
+		parse_links(tb, links_cfg, accum, NULL, false);
 		parse_quotes(tb, cfg, accum, false);
 		parse_external_links(tb, cfg, accum, false);
 		parse_magic_links(tb, cfg, accum);
@@ -1173,6 +1180,13 @@ static void append_gallery_params_via_wrapper_local(Token *dst,
 															 const ParserConfig *cfg,
 															 Accum *accum) {
 	if(!dst || !file_ptr || file_len == 0 || !alt_ptr) return;
+	ParserConfig cfg_local;
+	const ParserConfig *links_cfg= cfg;
+	if(cfg) {
+		cfg_local= *cfg;
+		cfg_local.in_ext= true;
+		links_cfg= &cfg_local;
+	}
 
 	const char *fptr= file_ptr;
 	size_t flen= file_len;
@@ -1205,7 +1219,7 @@ static void append_gallery_params_via_wrapper_local(Token *dst,
 	tb->len= 10 + flen + alt_len;
 
 	parse_braces(tb, cfg, accum);
-	parse_links(tb, cfg, accum, NULL, false);
+	parse_links(tb, links_cfg, accum, NULL, false);
 
 	Token *tmp= token_new(TOKEN_PLAIN, "gallery-param-wrapper");
 	if(!tmp) {
@@ -1232,6 +1246,13 @@ static Token *parse_gallery_image_line_local(const char *line, size_t line_len,
 																			const ParserConfig *cfg,
 																			Accum *accum) {
 	if(!line || line_len == 0) return NULL;
+	ParserConfig cfg_local;
+	const ParserConfig *links_cfg= cfg;
+	if(cfg) {
+		cfg_local= *cfg;
+		cfg_local.in_ext= true;
+		links_cfg= &cfg_local;
+	}
 
 	const char pipe_ch = '|';
 	const char *pipe_ptr = sz_find_byte(line, line_len, &pipe_ch);
@@ -1273,7 +1294,7 @@ static Token *parse_gallery_image_line_local(const char *line, size_t line_len,
 			 * later inline-link stages before FileToken parameter splitting. */
 			parse_comment_and_ext(pre_text_tb, cfg, accum, false);
 			parse_braces(pre_text_tb, cfg, accum);
-			parse_links(pre_text_tb, cfg, accum, NULL, false);
+			parse_links(pre_text_tb, links_cfg, accum, NULL, false);
 			parse_external_links(pre_text_tb, cfg, accum, false);
 			parse_magic_links(pre_text_tb, cfg, accum);
 		}
@@ -1308,7 +1329,7 @@ static Token *parse_gallery_image_line_local(const char *line, size_t line_len,
 	}
 
 	parse_braces(tmp_tb, cfg, accum);
-	parse_links(tmp_tb, cfg, accum, NULL, false);
+	parse_links(tmp_tb, links_cfg, accum, NULL, false);
 
 	Token *tmp= token_new(TOKEN_PLAIN, "gallery-line");
 	if(!tmp) {
@@ -1530,6 +1551,13 @@ static Token *parse_imagemap_image_line_local(const char *line, size_t line_len,
 														 const ParserConfig *cfg,
 														 Accum *accum) {
 	if(!line || line_len == 0) return NULL;
+	ParserConfig cfg_local;
+	const ParserConfig *links_cfg= cfg;
+	if(cfg) {
+		cfg_local= *cfg;
+		cfg_local.in_ext= true;
+		links_cfg= &cfg_local;
+	}
 
 	ThreadBuf *tmp_tb = wiki_thread_buf_acquire_scratch();
 	if(!tmp_tb) { log_fatal("thread_buffer: failed to acquire scratch in parse_imagemap_image_line_local"); abort(); }
@@ -1543,7 +1571,7 @@ static Token *parse_imagemap_image_line_local(const char *line, size_t line_len,
 	tmp_tb->len= line_len + 4;
 
 	parse_braces(tmp_tb, cfg, accum);
-	parse_links(tmp_tb, cfg, accum, NULL, false);
+	parse_links(tmp_tb, links_cfg, accum, NULL, false);
 
 	Token *tmp= token_new(TOKEN_PLAIN, "imagemap-image-line");
 	if(!tmp) {

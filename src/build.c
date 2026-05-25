@@ -42,6 +42,53 @@
 static void append_key_token_repr_tb(const Token *t, ThreadBuf *tb) {
 	if(!t || !tb) return;
 
+	/* JS toString(true) parity: hidden/include-like tokens serialize as empty. */
+	if(t->type == TOKEN_COMMENT || t->type == TOKEN_NOINCLUDE ||
+	   t->type == TOKEN_INCLUDE || t->type == TOKEN_DOUBLE_UNDERSCORE) {
+		return;
+	}
+
+	if(t->type == TOKEN_LINK || t->type == TOKEN_FILE ||
+	   t->type == TOKEN_CATEGORY || t->type == TOKEN_REDIRECT_TARGET) {
+		bool is_file_line_image =
+			(t->type == TOKEN_FILE && t->type_name &&
+			 (strcmp(t->type_name, "gallery-image") == 0 ||
+			  strcmp(t->type_name, "imagemap-image") == 0));
+
+		if(!is_file_line_image) {
+			wiki_thread_buf_append(tb, (sz_string_view_t){ "[[", 2 });
+		}
+
+		for(size_t i = 0; i < t->child_count; i++) {
+			if(i > 0) {
+				if(!(i == 1 && t->children[0].is_text && t->children[0].text && t->children[0].text[0] == ':')) {
+					if(t->type == TOKEN_FILE) {
+						if(t->data.link.magic_pipe)
+							wiki_thread_buf_append(tb, (sz_string_view_t){ "{{!}}", 5 });
+						else
+							wiki_thread_buf_putc(tb, '|');
+					} else if(t->data.link.magic_pipe && i == 1) {
+						wiki_thread_buf_append(tb, (sz_string_view_t){ "{{!}}", 5 });
+					} else {
+						wiki_thread_buf_putc(tb, '|');
+					}
+				}
+			}
+
+			const Child *c = &t->children[i];
+			if(c->is_text) {
+				wiki_thread_buf_append(tb, (sz_string_view_t){ c->text, c->text_len });
+			} else {
+				append_key_token_repr_tb(c->token, tb);
+			}
+		}
+
+		if(!is_file_line_image) {
+			wiki_thread_buf_append(tb, (sz_string_view_t){ "]]", 2 });
+		}
+		return;
+	}
+
 	if(t->type == TOKEN_HTML) {
 		const char *tag= t->data.html.orig_tag ? t->data.html.orig_tag : t->name;
 		if(t->data.html.closing) {
@@ -261,6 +308,7 @@ static void refresh_parameter_name(Token *t) {
 		sz_string_view_t vk = { key->text, key->text_len };
 		wiki_thread_buf_append(scratch, vk);
 	} else if(key->token) {
+		/* JS parity: ParameterToken.trimName() uses keyToken.toString(true). */
 		append_key_token_repr_tb(key->token, scratch);
 	}
 

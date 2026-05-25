@@ -4,7 +4,9 @@
 const { runTests } = require('./helpers');
 
 const tempTests = [
-  `<ref name="Eaton-sep" |pages=286 |date=July 2025}}<ref name="Eaton 2004">{{cite book |last=Eaton |first=Richard M. |title=Temple desecration and Muslim states in medieval India |date=2004 |publisher=Hope India Publications |isbn=978-8178710273 |location=Gurgaon |pages=31–49 |quote=For, while  }}</ref>`
+  `<gallery mode="packed" caption="Coloniae and Municipia image gallery">
+  File:Arco Romano.jpg|Roman arch of [[Pax Iulia|]]''[[Pax Julia|Pax Iulia]]'' ([[Beja, Portugal|Beja]])
+  </gallery>`
 ];
 
 if (process.argv[1] === __filename) {

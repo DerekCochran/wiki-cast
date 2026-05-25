@@ -1,0 +1,291 @@
+{{Short description|Roman province in Hispania (27 BC – c. 410 AD)}}
+{{about|the Roman province|the ship|RMS Lusitania{{!}}RMS ''Lusitania''|other uses}}
+{{Distinguish|Lusatia|Lusiana|Luzitania}}
+
+{{Infobox former subdivision
+| native_name            = {{aut|Provincia Lusitania}}
+| conventional_long_name = 
+| common_name            = Lusitania
+| subdivision            = [[Roman province|Province]]
+| nation                 = the [[Roman Empire]]
+| p1                     = Lusitanians
+| s1                     = Alans 
+| s2                     = Suebi
+| s3                     = Vandals
+| s4                     = Visigoths
+| status_text            = 
+| government_type        = 
+| title_leader           = 
+| title_deputy           = 
+| leader1                = 
+| year_leader1           = 
+| deputy1                = 
+| year_deputy1           = 
+| legislature            = 
+| house1                 = 
+| house2                 = 
+| type_house1            = 
+| type_house2            = 
+| capital                = [[Emerita Augusta]] (Mérida)
+| latd                   = 
+| latm                   = 
+| latNS                  = 
+| longd                  = 
+| longm                  = 
+| longEW                 = 
+| national_motto         = 
+| national_anthem        = 
+| political_subdiv       = 
+| today                  = [[Portugal]]<br />[[Spain]]
+| year_start             = 27 BC
+| year_end               = AD 438
+| event_start            = 
+| date_start             = 
+| event_end              = 
+| date_end               = 
+| event1                 = 
+| date_event1            = 
+| event2                 = 
+| date_event2            = 
+| event3                 = 
+| date_event3            = 
+| event4                 = 
+| date_event4            = 
+| life_span              = 
+| era                    = [[Roman Empire]]
+| event_pre              = 
+| date_pre               = 
+| event_post             = 
+| date_post              = 
+| image_flag             = 
+| image_border           = 
+| flag_type              = 
+| flag                   = 
+| image_coat             = 
+| symbol_type            = 
+| symbol                 = 
+| image_map              = Roman Empire - Lusitania (125 AD).svg
+| image_map_caption      = 
+| stat_year1             = 
+| stat_area1             = 
+| stat_pop1              = 
+| footnotes              = 
+}}
+
+{{GeoGroup}}
+
+[[File:Iberian Peninsula in 125-en.svg|thumb|The Iberian Peninsula in the time of [[Hadrian]] (ruled 117–138 AD) showing, in western [[Iberian Peninsula|Iberia]], the [[imperial province]] of ''Lusitania'' (Portugal and Extremadura)]]
+
+'''Lusitania''' ({{IPAc-en|ˌ|l|uː|.|s|ɪ|.|ˈ|t|eɪ|.|n|i|.|ə}}; {{IPA|la-x-classic|luːsiːˈtaːnia|lang|link=yes}}) was an ancient [[Roman province]] encompassing most of modern-day [[Portugal]] (south of the [[Douro River]]) and a large portion of western [[Spain]] (the present [[Extremadura]] and [[Province of Salamanca]]). Romans named the region after the [[Lusitanians]], an [[Proto-Indo-Europeans|Indo-European]] tribe inhabiting the lands.
+
+The capital [[Emerita Augusta]] was initially part of the [[Roman Republic]] province of [[Hispania Ulterior]] before becoming a province of its own during the [[Roman Empire]].<ref name="hdp">{{cite book |title=História de Portugal: Uma Visão Global |last=Garcia |first=José Manuel |year=1989 |publisher=Editorial Presença |location= Lisbon|isbn=9722309897 |pages=32, 33, 38}}</ref> 
+
+After Romans arrived in the territory during the 2nd century BC, a [[Lusitanian War|war with Lusitanian tribes]] ensued between 155 and 139 BC, with the Roman province eventually established in 27 BC.<ref>{{cite book |url=https://books.google.com/books?id=X9PGRaZt-zcC|title=Toward an Understanding of Europe: A Political Economic Précis of Continental Integration|author=Alan W. Ertl |year=2008|access-date= 2012-08-12|publisher=Universal-Publishers |isbn=9781599429830 }}</ref>
+
+In modern parlance, ''Lusitania'' is often synonymous with Portugal, despite the Roman province's capital being located in modern [[Mérida, Spain]].
+
+== Etymology ==
+The etymology of the name of the [[Lusitanians|Lusitani]] (who gave the Roman province its name) remains unclear. Popular etymology connected the name to a supposed Roman demigod [[Lusus]], whereas some early-modern scholars{{which|date=January 2016}} suggested that ''Lus'' was a form of the Celtic [[Lugus]] followed by another (unattested) root ''*tan-'', supposed to mean "tribe",<ref>{{cite book |title= Placenames of the World |page= 228 |last= Room |first= Adrian |publisher= McFarland Inc. |date= 2006 |isbn= 9780786422487}}</ref> while others derived the name from ''Lucis'', an ancient people mentioned in [[Avienius|Avienius' ''Ora Maritima'']] (4th century AD) and from ''tan'' ([[-stan]] in [[Iranian languages|Iranian]]), or from ''tain'', meaning "a region" or implying "a country of waters", a root word that formerly meant a prince or sovereign governor of a region.<ref>{{cite book |chapter-url= https://books.google.com/books?id=boIBAAAAQAAJ&q=celtic+tan&pg=PA22 |title= An Universal History from the Earliest Account of Time |page= 22  |volume= VI |chapter= Chapter XII, Section I: The History of the Celtes |publisher= T. Osborne, A. Millar, and J. Osborn |location= London |date= 1747 |access-date= 18 October 2015}}</ref><ref>{{cite book|chapter-url= https://books.google.com/books?id=z3WsOrbjfh4C&q=celtic+tan&pg=PA279 |first= Henry |last= Piers |editor-first= Charles |editor-last= Vallancey |title= Collectanea de Rebus Hibernicis |edition= 2nd |volume= 1 |chapter= No. IV: A Dissertation concerning the ancient Irish Laws, &c., Part II |page= 279 |publisher= Luke White |location= Dublin |date= 1786 |orig-year= 1682 |access-date= 18 October 2015}}</ref><ref>{{cite book|chapter-url=https://books.google.com/books?id=C30CAAAAQAAJ&pg=RA2-PA464 |chapter=Ta'n & Tàin |title= Focalóir gaoidhilge-sax-bhéarla, or An Irish-English dictionary |first= John |last= O'Brien |author-link=John O'Brien (bishop) |page= 464 |publisher=Nicolas-Francis Valleyre |date= 1768 |access-date= 18 October 2015}}</ref>
+
+Ancient Romans, such as [[Pliny the Elder]] (''[[Pliny's Natural History|Natural History]]'', [https://www.perseus.tufts.edu/cgi-bin/ptext?lookup=Plin.+Nat.+3.5 3.5]) and [[Marcus Terentius Varro|Varro]] (116 – 27 BC, cited by Pliny), speculated that the name ''Lusitania'' had Roman origins, as when Pliny says "''lusum enim Liberi Patris aut lyssam cum eo bacchantium nomen dedisse Lusitaniae et Pana praefectum eius universae''" [Lusitania takes its name from the ''[[Lusus]]'' associated with Bacchus and the ''[[Lyssa]]'' of his [[Bacchantes]], and [[Pan (mythology)|Pan]] is its governor].
+
+''Lusus'' is usually translated as "game" or "play", while ''lyssa'' is a borrowing from the [[Greek language|Greek]] λυσσα, "frenzy" or "rage", and sometimes [[Rage (emotion)|Rage]] personified; for later poets, Lusus and Lyssa become flesh-and-blood companions (even children) of [[Dionysus|Bacchus]]. [[Luís de Camões]]' epic ''[[Os Lusíadas]]'' (1572), which portrays Lusus as the founder of Lusitania, extends these ideas, which have no connection with modern etymology.
+
+In his work, [[Geographica|''Geography'']], the classical geographer [[Strabo]] (died ca. 24 AD) suggests a change had occurred in the use of the name "Lusitanian". He mentions a group who had once been called "Lusitanians" living north of the Douro river but were called in his day "Callacans".<ref>{{Cite web |url=https://penelope.uchicago.edu/Thayer/E/Roman/Texts/Strabo/3D*.html |title=Strabo, ''Geography'', Book III, Chapter 4, paragraph 20 |access-date=2021-02-19 |archive-date=2023-11-03 |archive-url=https://web.archive.org/web/20231103151037/https://penelope.uchicago.edu/Thayer/E/Roman/Texts/Strabo/3D%2A.html |url-status=live }}</ref>
+
+==Lusitanians==
+[[File:Iberia 300BC-en.svg|thumb|left|Iberian Peninsula at about 300 BC.<ref>{{cite web |url=http://arkeotavira.com/Mapas/Iberia/Populi.htm |title=Ethnographic Map of Pre-Roman Iberia (circa 200 b |publisher=Arkeotavira.com |access-date=2010-08-03 |archive-date=2011-02-26 |archive-url=https://web.archive.org/web/20110226102727/http://www.arkeotavira.com/Mapas/Iberia/Populi.htm |url-status=dead }}</ref>]]
+{{main article|Lusitanians}}
+The Lusitani established themselves in the region in the 6th century BC, but [[historian]]s and [[archeologist]]s are still undecided about their [[ethnogenesis]]. Some modern authors consider them to be an indigenous people who were Celticized culturally and possibly also through intermarriage.<ref name="hdp"/>
+
+The archeologist Scarlat Lambrino defended the position that the Lusitanians were a tribal group of Celtic origin related to the [[Lusones]] (a tribe that inhabited the east of [[Iberian peninsula|Iberia]]). Some have claimed that both tribes came from the Swiss mountains.{{Citation needed|date=October 2010}} Others argue that the evidence points to the Lusitanians being a native Iberian tribe, resulting from intermarriage between different local tribes.  {{Citation needed|date=August 2008}}
+
+The first area colonized by the Lusitani was probably the [[Douro]] valley and the region of [[Beira Alta Province|Beira Alta]] (present day Portugal); in [[Beira, Portugal|Beira]], they stayed until they defeated the [[Celtici]] and other tribes, then they expanded to cover a territory that reached [[Estremadura Province (historical)|Estremadura]] before the arrival of the [[Roman Republic|Roman]]s.
+
+==War against Rome==
+{{Campaignbox Roman conquest of the Iberian Peninsula}}
+{{Main article|Lusitanian War}}
+{{blockquote|And yet the country north of the Tagus, Lusitania, is the greatest of the Iberian nations, and is the nation against which the Romans waged war for the longest times|Strabo<ref>{{cite web |url=https://penelope.uchicago.edu/Thayer/E/Roman/Texts/Strabo/3C*.html |title=Strabo.Geography |publisher=Penelope.uchicago.edu |access-date=2010-08-03 |archive-date=2019-09-12 |archive-url=https://web.archive.org/web/20190912063057/https://penelope.uchicago.edu/Thayer/E/Roman/Texts/Strabo/3C*.html |url-status=live }}</ref> }}
+[[File:Conquista Hispania.svg|thumb|left|Roman conquest of Iberia]]
+The Lusitani are mentioned for the first time in [[Livy]] who describes them as fighting for the [[Ancient Carthage|Carthaginians]] in 218 BCE; they are reported as fighting against Rome in 194 BC, sometimes allied with [[Celtiberians|Celtiberian]] tribes.
+
+In 179 BC, the ''[[praetor]]'' [[Lucius Postumius Albinus (consul 173 BC)|Lucius Postumius Albinus]] celebrated a [[Roman Triumph|triumph]] over the Lusitani, but in 155 BC, on the command of [[Punicus]] (Πουνίκου, perhaps a Carthaginian) first and [[Caesarus]] (Καίσαρος) after, the Lusitani reached [[Gibraltar]]. Here they were defeated by the ''praetor'' [[Lucius Mummius]].
+
+From 152 BC onwards, the Roman Republic had difficulties in recruiting soldiers for the wars in Hispania, deemed particularly brutal.  In 150 BC, [[Servius Sulpicius Galba (consul 144 BC)|Servius Sulpicius Galba]] organised a false armistice. While the Lusitani celebrated this new alliance, he massacred them, selling the survivors as slaves; this caused a new rebellion led by [[Viriathus]], who was after many attempts killed by traitors paid by the Romans in 139 BC, after having led a successful guerrilla campaign against Rome and their local allies. Two years after, in 137 BC [[Decimus Junius Brutus Callaicus]] led a successful campaign against the Lusitani, reaching as far north as the [[Minho River|Minho river]].
+
+Romans scored other victories with ''[[proconsul]]'' Decimus Junius Brutus Callaicus and [[Gaius Marius]] (elected in 113 BC), but still the Lusitani resisted with a long guerilla war; they later joined [[Sertorius]]' (a renegade Roman General) troops (around 80 BC) and [[Julius Caesar]] conducted a successful campaign against them in 61-60 BC,<ref>Suetonius, Cae, 18; Appian, BH, 102; Plut, Cae., 12; Dio, 37 & 52, 153-154, Valleius Patraculus, II, 52-5; Antonio Santosuosso, Storming the Heavans: Soldiers, Emperors, and Civilians in the Roman Empire (London: Pilmico/Random House, 2011), p. 57-58; Casey Simpson, "Caesar or Rex?" (Honors thesis, Ball State University, 2004); Stephen Dando-Collins, Legions of Rome (New York: Thomas Dunne/St. Martin's, 2010), pp. 28, 61-63; CAH, both editions</ref> but they were not finally defeated until the reign of [[Augustus]] (around 28–24 BC).
+
+== Roman province ==
+=== Territory ===
+==== Under Augustus ====
+With Lusitania (and [[Asturia]] and [[Gallaecia]]), Rome had completed the conquest of the [[Iberian Peninsula]], which was then divided by [[Augustus]] (25–20 BC<ref>{{cite web | url=https://theancientweb.com/explore/europe/portugal/ | title=The Ancient Lusitanian World | access-date=25 June 2019 | archive-url=https://web.archive.org/web/20190708102459/https://theancientweb.com/explore/europe/portugal/ | archive-date=8 July 2019 | url-status=dead }}</ref> or 16–13 BC<ref name="hdp"/>) into the eastern and northern ''[[Hispania Tarraconensis]],'' the southwestern ''[[Hispania Baetica]]'' and the western ''[[Provincia Lusitana]]''. Originally, Lusitania included the territories of Asturia and Gallaecia, but these were later ceded to the jurisdiction of the new ''[[Provincia Tarraconensis]]'' and the former remained as ''Provincia Lusitania et [[Vettones]]''. Its northern border was along the Douro River, while on its eastern side its border passed through ''[[Salmantica]]'' ([[Salamanca]]) and ''[[Caesarobriga]]'' ([[Talavera de la Reina]]) to the ''[[Anas]]'' ([[Guadiana]]) river.
+
+Between 28 and 24 BC Augustus' military campaigns pacified all Iberia under Roman rule, with the foundation of Roman cities like ''[[Asturica Augusta]]'' ([[Astorga, Spain|Astorga]]) and ''[[Bracara Augusta]]'' ([[Braga]]) to the north, and to the south ''[[Emerita Augusta]]'' ([[Mérida, Spain|Mérida]]) (settled with the [[emeriti]] of the [[Legio V Alaudae]] and [[Legio X Gemina]] [[Roman legion|legions]]).
+
+==== ''Conventus Iuridicus'' ====
+Between the time of [[Augustus]] and [[Claudius]], the province was divided into three [[conventus iuridicus]], territorial units presided by capital cities with a court of justice and joint Roman/indigenous people assemblies (conventus), that counseled the Governor:
+
+*''[[Conventus Emeritensis]]'', with capital in ''[[Emerita Augusta]]'' ([[Mérida, Spain|Mérida]], Spain)
+*''[[Conventus Scalabitanus]]'', with capital in [[Scalabis|''Scalabis Iulia'']] ([[Santarém, Portugal|Santarém]], Portugal)
+*''[[Conventus Pacensis]]'', with capital in [[Pax Julia|''Pax Iulia'']] ([[Beja (Portugal)|Beja]], Portugal)
+
+The ''conventus'' ruled of a total of forty-six populis. Five were [[Colonia (Roman)|Roman colonies]]:<ref>{{Cite book |last=García y Bellido |first=Antonio |url=https://www.cervantesvirtual.com/descargaPdf/las-colonias-romanas-de-la-provincia-lusitania-0 |title=Las colonias romanas de la provincia Lusitania |publisher=Gabinete de Antigüedades de la Real Academia de la Historia |year=1958 |access-date=2023-06-01 |archive-date=2023-06-01 |archive-url=https://web.archive.org/web/20230601191931/https://www.cervantesvirtual.com/descargaPdf/las-colonias-romanas-de-la-provincia-lusitania-0 |url-status=live }}</ref> ''[[Emerita Augusta]]'' ([[Mérida, Spain|Mérida]], Spain), ''[[Pax Iulia]]'' ([[Beja (Portugal)|Beja]]), ''[[Scalabis]]'' ([[Santarém, Portugal|Santarém]]), ''[[Norba Caesarina]]'' ([[Cáceres, Spain|Cáceres]]) and ''[[Metellinum]]'' ([[Medellín, Spain|Medellín]]). ''[[Felicitas Iulia Olisipo]]'' ([[Lisbon]], which was a [[Roman law]] municipality) and three other towns had the old Latin status:<ref>{{Cite book | url = https://books.google.com/books?id=JZLW4-wba7UC&q=lusitania+coloniae&pg=PA456 | title = The Cambridge Ancient History | isbn = 9780521264303 | last1 = Bowman | first1 = Alan K | last2 = Champlin | first2 = Edward | last3 = Lintott | first3 = Andrew | date = 1996-02-08| publisher = Cambridge University Press }}</ref> ''[[Ebora]]'' ([[Évora]]), ''[[Myrtilis Iulia]]'' ([[Mértola]]) and ''Salacia'' ([[Alcácer do Sal]]). The other thirty-seven were of ''[[stipendiarii]]'' class, among which ''[[Aeminium]]'' ([[Coimbra]]), [[Balsa (Roman town)|''Balsa'']] ([[Tavira]]), or [[Miróbriga|''Mirobriga'']] ([[Santiago do Cacém]]). Other cities include [[Ossonoba (Roman city)|''Ossonoba'']] ([[Faro, Portugal|Faro]]), ''[[Cetobriga]]'' ([[Setúbal]]), ''[[Collippo]]'' ([[Leiria]]) or [[Arabriga (Roman city)|''Arabriga'']] ([[Alenquer Municipality, Portugal|Alenquer]]).
+
+==== Under Diocletian ====
+Under [[Diocletian]], Lusitania kept its borders and was ruled by a ''[[praeses]]'', later by a ''[[consularis]].''
+
+==== Roman diocese ====
+Finally, in 298 AD, Lusitania was united with the other provinces to form the ''[[Diocesis Hispaniarum]]'' ("[[Roman diocese|Diocese]] of the Hispanias").
+<gallery mode="packed" caption="Lusitania province territory ">
+File:Hispania 2a division provincial.svg|Roman Iberia under [[Augustus]]: ''[[Hispania Tarraconensis|Tarraconensis]],''  ''[[Hispania Baetica|Baetica]]'' and  ''Lusitana''
+File:Conventushispanus.svg|Roman Iberia after [[Claudius]]: [[Conventus iuridicus|''Conventus juridici'']] (''Emeritensis,''  ''Scalabitanus'' and  ''Pacensis)''
+File:Iberia 293.svg|Roman Iberia under [[Diocletian]]:  Lusitania found in the west
+File:Roman Empire with dioceses in 300 AD.png|Roman Empire in 300 AD: ''[[Diocesis Hispaniarum]]'' in the west
+</gallery>
+
+=== Known governors ===
+
+==== 1st century BC ====
+* Quintus Acutius Faienanus, ''[[legatus Augusti pro praetore]],'' 19 – 1 BC.<ref>[[Géza Alföldy]], ''Fasti Hispanienses'', Steiner, Wiesbaden (1969).</ref>
+* Quintus Articuleius Regulus, 2 BC – AD 14.<ref>{{cite thesis|type=PhD|author=Thomas Elliott|title=Epigraphic Evidence for Boundary Disputes in the Roman Empire|year=2004|publisher=University of North Carolina|pages=63f}}</ref>
+
+==== 1st century ====
+* [[Gaius Ummidius Durmius Quadratus]], c. 37<ref>{{CIL|2|172}} = ILS&nbsp;190</ref>
+* Lucius Caecilius Rufus, early 1st century<ref>{{cite web|last=Abascal|first=J. M.|title=Lucius Caecilius Rufus|url=http://dbe.rah.es/biografias/23208/lucius-caecilius-rufus|work=Diccionario Biográfico electrónico|publisher=Real Academia de la Historia|access-date=2023-06-01|archive-date=2023-04-06|archive-url=https://web.archive.org/web/20230406144132/https://dbe.rah.es/biografias/23208/lucius-caecilius-rufus|url-status=live}}</ref>
+* [[Lucius Calventius Vetus Carminius]], ''legatus Augusti pro praetore,'' 44 – 45<ref>''Der Neue Pauly'', Stuttgart 1999, T. 2, c. 951-992</ref><ref>{{cite web|last=Abascal|first=J. M.|title=Lucius Calventius Vetus Carminius|url=http://dbe.rah.es/biografias/23209/lucius-calventius-vetus-carminius|work=Diccionario Biográfico electrónico|publisher=Real Academia de la Historia|access-date=2023-06-01|archive-date=2023-04-05|archive-url=https://web.archive.org/web/20230405085126/https://dbe.rah.es/biografias/23209/lucius-calventius-vetus-carminius|url-status=live}}</ref>
+*[Marcus?] [Porcius?] Cato, c. 46 <ref>{{cite web|last=Abascal|first=J. M.|title=[Marcus?] Porcius?] Cato|url=http://dbe.rah.es/biografias/23218/marcus-porcius-cato|work=Diccionario Biográfico electrónico|publisher=Real Academia de la Historia|access-date=2023-06-01|archive-date=2023-04-05|archive-url=https://web.archive.org/web/20230405235405/https://dbe.rah.es/biografias/23218/marcus-porcius-cato|url-status=live}}</ref>
+* [[File:Oth001 cropped.jpg|thumb|[[Otho|Marcus Salvius Otho Caesar Augustus]], governor of Lusitania between 58 and 68.]][[Otho|Marcus Salvius Otho Caesar Augustus]], 58 – 68<ref name="Suetonius">{{cite book|last=Suetonius|title=The Twelve Caesars|date=25 October 2007|publisher=Penguin|isbn=978-0-14-045516-8|pages=[https://archive.org/details/twelvecaesarspen00suet/page/255 255–262]|url-access=registration|url=https://archive.org/details/twelvecaesarspen00suet/page/255}}</ref><ref>{{cite web|last=Abascal|first=J. M.|title=Otón|url=http://dbe.rah.es/biografias/17054/oton|work=Diccionario Biográfico electrónico|publisher=Real Academia de la Historia|access-date=2023-06-01|archive-date=2023-06-08|archive-url=https://web.archive.org/web/20230608025712/https://dbe.rah.es/biografias/17054/oton|url-status=live}}</ref>
+* [[Gaius Catellius Celer]], 75/76 – 77/78<ref>Unless otherwise noted, the governors from 75 to the end of Hadrian's reign are taken from Werner Eck, "Jahres- und Provinzialfasten der senatorischen Statthalter von 69/70 bis 138/139", ''[[Chiron (journal)|Chiron]]'', '''12''' (1982), pp.&nbsp;281-362; '''13''' (1983), pp.&nbsp;147-237.</ref>
+* Quintus Acutius Faienanus, 78 – 119<ref>{{cite web|last=Abascal|first=J. M.|title=Quintus Acutius Faienanus|url=http://dbe.rah.es/biografias/23203/quintus-acutius-faienanus|work=Diccionario Biográfico electrónico|publisher=Real Academia de la Historia|access-date=2023-06-01|archive-date=2023-04-05|archive-url=https://web.archive.org/web/20230405085130/https://dbe.rah.es/biografias/23203/quintus-acutius-faienanus|url-status=live}}</ref>
+
+==== 2nd century ====
+* ? [[Gaius Calpurnius Flaccus]],  119/120 – 120/121
+* [[Gaius Oppius Sabinus Julius Nepos Manius Vibius Sollemnis Severus]], 128 – 130<ref>{{cite web|last=Abascal|first=J. M.|title=Caius Oppius Sabinus|url=http://dbe.rah.es/biografias/23229/caius-oppius-sabinus|work=Diccionario Biográfico electrónico|publisher=Real Academia de la Historia|access-date=2023-06-01|archive-date=2023-04-06|archive-url=https://web.archive.org/web/20230406121834/https://dbe.rah.es/biografias/23229/caius-oppius-sabinus|url-status=live}}</ref>
+* Lucius Roscius Maecius Celer Postumus Mamilianus Vergilius Staberianus, under Hadrian
+* [[Gaius Javolenus Calvinus]], 138 – 140<ref name="Alföldy-256">Géza Alföldy, ''Konsulat und Senatorenstand unter der Antoninen'' (Bonn: Rudolf Habelt Verlag, 1977), p.&nbsp;256</ref>
+* [Aulus Avillius Urina]tius Quadratus, c.151 – c.154<ref name="Alföldy-256" /><ref>{{cite web|last=Abascal|first=J. M.|title=Quadratus|url=http://dbe.rah.es/biografias/23207/quadratus|work=Diccionario Biográfico electrónico|publisher=Real Academia de la Historia|access-date=2023-06-01|archive-date=2023-04-05|archive-url=https://web.archive.org/web/20230405235404/https://dbe.rah.es/biografias/23207/quadratus|url-status=live}}</ref>
+* Sextus Tigidius Perennis, before 185<ref>{{cite web|last=Abascal|first=J. M.|title=Sextus Tigidius Perennis|url=http://dbe.rah.es/biografias/23222/sextus-tigidius-perennis|work=Diccionario Biográfico electrónico|publisher=Real Academia de la Historia|access-date=2023-06-01|archive-date=2023-03-27|archive-url=https://web.archive.org/web/20230327131250/https://dbe.rah.es/biografias/23222/sextus-tigidius-perennis|url-status=live}}</ref>
+* ? [[Cornelius Repentinus]], c.185 – c.188<ref name="Leunissen-290">Leunissen, ''Konsuln und Konsulare'', p.&nbsp;290</ref>
+* [[Publius Septimius Geta (brother of Septimius Severus)|Publius Septimius Geta]],  c.188 – c.191<ref name="Leunissen-289">Paul Leunissen, ''Konsuln und Konsulare in der Zeit von Commodus bis Severus Alexander'' (Amsterdam: J.C. Gieben, 1989), p.&nbsp;289</ref>
+* [[Gaius Caesonius Macer Rufinianus]], 193/194 – 197<ref name="Leunissen-289" />
+* [[Gaius Junius Faustinus Postumianus|Gaius Junius Faustinus [Pl]a[cidus] Postumianus]], c.197 – c.200<ref name="Leunissen-289" />
+
+==== 3rd century ====
+* Decimus Iun[ius? ...] Coelianus,  c.201 – 209<ref name="Leunissen-289" /><ref>{{cite web|last=Abascal|first=J. M.|title=Decimus Iunius Coelianus|url=http://dbe.rah.es/biografias/23215/decimus-iunius-coelianus|work=Diccionario Biográfico electrónico|publisher=Real Academia de la Historia|access-date=2023-06-01|archive-date=2023-06-03|archive-url=https://web.archive.org/web/20230603110056/https://dbe.rah.es/biografias/23215/decimus-iunius-coelianus|url-status=live}}</ref>
+* Sextus Furnius Julianus, c.211<ref name="Leunissen-289" /><ref name="leunissen-289">Paul Leunissen, ''Konsuln und Konsulare in der Zeit von Commodus bis Severus Alexander'' (Amsterdam: J.C. Gieben, 1989), p.&nbsp;289.</ref>
+* [[Rutilius Pudens Crispinus]], c.225 – c.227<ref name="Leunissen-290" /><ref>{{cite web|last=Abascal|first=J. M.|title=Rutilus Pudens Crispinus|url=http://dbe.rah.es/biografias/23192/rutilus-pudens-crispinus|work=Diccionario Biográfico electrónico|publisher=Real Academia de la Historia|access-date=2023-06-01|archive-date=2023-09-26|archive-url=https://web.archive.org/web/20230926125228/https://dbe.rah.es/biografias/23192/rutilus-pudens-crispinus|url-status=live}}</ref>
+* Aemilius Aemilianus, late 3rd century<ref>{{cite web|last=Abascal|first=J. M.|title=Aemilius Aemilianus|url=http://dbe.rah.es/biografias/23204/aemilius-aemilianus|work=Diccionario Biográfico electrónico|publisher=Real Academia de la Historia|access-date=2023-06-01|archive-date=2023-04-06|archive-url=https://web.archive.org/web/20230406125131/https://dbe.rah.es/biografias/23204/aemilius-aemilianus|url-status=live}}</ref>
+* Datianus, 286 – 293<ref>{{cite web|last=Abascal|first=J. M.|title=Datianus|url=http://dbe.rah.es/biografias/23191/datianus|work=Diccionario Biográfico electrónico|publisher=Real Academia de la Historia|access-date=2023-06-01|archive-date=2023-04-06|archive-url=https://web.archive.org/web/20230406061652/https://dbe.rah.es/biografias/23191/datianus|url-status=live}}</ref>
+
+==== 4th century ====
+* Iulius Saturninus, c.337 – c. 340<ref>{{cite web|last=Abascal|first=J. M.|title=Iulius Saturninus|url=http://dbe.rah.es/biografias/23214/iulius-saturninus|work=Diccionario Biográfico electrónico|publisher=Real Academia de la Historia|access-date=2023-06-01|archive-date=2023-04-06|archive-url=https://web.archive.org/web/20230406094136/https://dbe.rah.es/biografias/23214/iulius-saturninus|url-status=live}}</ref>
+* [[Vettius Agorius Praetextatus]],  361– 362<ref>{{cite web|last=Abascal|first=J. M.|title=Vettius Agorius Praetextatus|url=http://dbe.rah.es/biografias/23223/vettius-agorius-praetextatus|work=Diccionario Biográfico electrónico|publisher=Real Academia de la Historia|access-date=2023-06-01|archive-date=2023-06-01|archive-url=https://web.archive.org/web/20230601191411/https://dbe.rah.es/biografias/23223/vettius-agorius-praetextatus|url-status=live}}</ref>
+
+===''Coloniae'' and ''Municipia''===
+{{Location map many
+| Iberia
+| width = 480
+| caption = Map of ''Coloniae'' and ''Municipia''
+| alt     = Map of ''Coloniae'' and ''Municipia''
+| places  =
+| label1  = Augusta Emerita		            |coordinates1={{coord|38|55|N|6|20|W}}       |pos1 = left
+| label2  = Metellinum						|coordinates2={{coord|38|57|47|N|5|57|28|W}} |
+| label3  = Norba Caesarina 				|coordinates3={{coord|39|29|N|6|22|W}}       |pos3 = left
+| label4  = Pax Julia			            |coordinates4={{coord|38.0178|N|7.8653|W}}   |pos4 = bottom
+| label5  = Scalabis                        |coordinates5={{coord|39|14|02|N|08|41|10|W}}|pos5 = top
+| label6  = Caesarobriga					|coordinates6={{coord|39|57|30|N|4|49|58|W}} |
+| label7  = Aeminium						|coordinates7={{coord|40|12|40|N|8|25|45|W}} |pos7 = top
+| label8  = Conimbriga						|coordinates8={{coord|40|5|58|N|8|29|26|W}}  |pos8 = bottom
+| label9  = Salmantica						|coordinates9={{Coord|40|57|54|N|05|39|51|W}}|
+| label10  = Caurium						|coordinates10={{Coord|39.981944|-6.537222}} |pos10 = bottom
+| label11  = Turgalium						|coordinates11={{coord|39|27|55|N|5|52|44|W}}|
+| label12  = Capara					        |coordinates12={{coord|40.1666|N|6.1010|W}}  |pos12 = top
+| label13  = Olisipo						|coordinates13={{coord|38.7122204|-9.133973}}|pos13 = bottom
+| label14  = Egitania			            |coordinates14={{coord|39.997|N|7.144|W|}}   |pos14 = top
+| label15  = Regina Turdulorum				|coordinates15={{coord|38|12|8|N|5|58|11|W}} |pos15 = bottom
+| label16  = Lacobriga						|coordinates16={{coord|37|6|10|N|8|40|22|W}} |
+| label17  = Augustobriga                   |coordinates17={{coord|39|48|18|N|5|24|25|W}}|
+
+}}
+
+* ''Colonia [[Emerita Augusta|Augusta Emerita]]'' ([[Mérida, Spain|Mérida]]) - provincial capital, {{coord|38|55|N|6|20|W|display=inline|name=Colonia Augusta Emerita}}
+* ''Colonia [[Metellinum]]'' ([[Medellín, Spain|Medellín]]), {{coord|38|57|47|N|5|57|28|W|display=inline|name=Colonia Metellinum}}
+* ''Colonia [[Norba Caesarina]]'' ([[Cáceres, Spain|Cáceres]]), {{coord|39|29|N|6|22|W|region:ES_type:city|display=inline|name=Colonia Norba Caesarina}}
+* ''Colonia [[Pax Julia|Civitas Pacensis]]'' ([[Beja, Portugal|Beja]]), {{coord|38.0178|N|7.8653|W|source:wikidata|display=inline|name=Colonia Civitas Pacensis}}
+* ''Colonia [[Scalabis|Scalabis Praesidium Iulium]]'' ([[Santarém, Portugal|Santarém]]), {{coord|39|14|02|N|08|41|10|W|type:adm1st_region:PT_dim:100000|display=inline|name=Colonia Scalabis Praesidium Iulium}}
+* ''Municipium [[Caesarobriga]]'' ([[Talavera de la Reina]]), {{coord|39|57|30|N|4|49|58|W|region:ES|display=inline|name=Municipium Caesarobriga}}
+* ''Municipium [[Talavera la Vieja|Augustobriga]]'' ([[List of submerged places in Spain#Submerged villages and municipalities|Talavera la Vieja]]), {{coord|39|48|18|N|5|24|25|W|display=inline|name=Municipium Augustobriga}}
+* ''Municipium [[Aeminium]]'' ([[Coimbra]]), {{coord|40|12|40|N|8|25|45|W|type:adm1st_region:PT_dim:100000|display=inline|name=Municipium Aeminium}}
+* ''Municipium [[Conímbriga]]'' ([[Condeixa-a-Nova]]), {{coord|40|5|58|N|8|29|26|W|display=inline|name=Municipium Conímbriga}}
+* ''Municipium [[Salmantica]]'' ([[Salamanca]]), {{Coord|40|57|54|N|05|39|51|W|region:ES|display=inline|name=Municipium Salmantica}}
+* ''Municipium [[Caurium]]'' ([[Coria, Cáceres|Coria]]), {{Coord|39.981944|-6.537222|display=inline|name=Municipium Caurium}}
+* ''Municipium [[Turgalium]]'' ([[Trujillo, Cáceres|Trujillo]]), {{coord|39|27|55|N|5|52|44|W|type:city|display=inline|name=Municipium Turgalium}}
+* ''Municipium [[Cáparra|Capara]]'' ([[Cáparra]]), {{coord|40.1666|N|6.1010|W|source:wikidata|display=inline|name=Municipium Capara}}
+* ''Municipium [[Olisipo]]'' ([[Lisbon]]), {{coord|38.7122204|-9.1339731|scale:5000|format=dms|display=inline|name=Municipium Olisipo}}
+* ''Municipium [[Egitania|Egitandiorum]]'' ([[Idanha-a-Velha]]), {{coord|39.997|N|7.144|W|source:ptwiki|display=inline|name=Municipium Egitandiorum}}
+* ''Municipium [[Regina Turdulorum]]'' ([[Casas de Reina]]), {{coord|38|12|8|N|5|58|11|W|region:ES|display=inline|name=Municipium Regina Turdulorum}}
+* ''Municipium [[Lacobriga]]'' ([[Lagos, Portugal|Lagos]]), {{coord|37|6|10|N|8|40|22|W|type:adm1st_region:PT_dim:100000|display=inline|name=Municipium Lacobriga}}
+<gallery mode="packed" caption="Coloniae and Municipia image gallery">
+File:Merida Roman Theatre2.jpg|[[Roman Theatre (Mérida)|Roman Theatre of ''Augusta Emerita'' (Mérida)]]
+File:Teatro Romano de Medellín 23.jpg|Roman Theatre of ''[[Metellinum]]'' ([[Medellín, Spain|Medellín]])
+File:Arco Romano.jpg|Roman arch of [[Pax Iulia|]]''[[Pax Julia|Pax Iulia]]'' ([[Beja, Portugal|Beja]])
+File:Cryptoporticus of Aeminium - Museu Nacional de Machado de Castro - Coimbra, Portugal - DSC09856.jpg|[[Cryptoporticus]] of the ancient forum of ''[[Aeminium]]'' ([[Coimbra]])
+File:Conimbriga.jpg|Ruins of [[Conímbriga|Conimbriga]]
+File:Pont romain et cathédrales vieille et nouvelle de Salamanque (1967-08-07).jpg|Roman bridge of ''[[Salmantica]]'' ([[Salamanca]])
+File:Coria - Murallas 1.jpg|[[Ancient Roman defensive walls|Roman walls]] of ''[[Caurium]]'' ([[Coria, Cáceres|Coria]])
+File:Ciudad Romana de Caparra - 011 (30618914251).jpg|[[Forum (Roman)|Forum]] gate of ''[[Cáparra|Capara]]'' ([[Cáparra]])
+File:Cerca Velha - Portas do Sol.JPG|Roman walls of ''[[Olisipo]]'' ([[Lisbon]])
+File:Roman arch, Egitania, Idanha-a-Velha, Lusitania, Portugal (13249368064).jpg|Roman arch of ''[[Egitania|Egitandiorum]]'' ([[Idanha-a-Velha]]) 
+</gallery>
+
+== Notable Lusitanians ==
+*[[Viriathus]]
+*[[Gaius Appuleius Diocles]]
+*[[Pope Damasus I]]
+
+==Legacy of the name==
+{{See also|List of things named after Lusitania}}
+As with the Roman names of many European countries, ''Lusitania'' was and is often used as an alternative name for Portugal, especially in formal or literary and poetic contexts. The 16th-century colony that would eventually become Brazil was initially founded as "[[New Lusitania]]". In common use are such terms as [[Lusophone]], meaning Portuguese-speaking, and [[Lusitanic]], referring to the [[Community of Portuguese Language Countries]]—once [[Portuguese Empire|Portugal's colonies]] and presently independent countries still sharing some common heritage. Prior to his [[French invasion of Portugal|invasion]] in 1807, [[Napoleon Bonaparte]] proposed the establishment of a French-backed puppet [[Kingdom of Northern Lusitania]] as one of the successor states to Portugal under the assumption that such a campaign would result in an easy French victory.
+
+The province was also the namesake of the North Atlantic Ocean liner [[RMS Lusitania|RMS ''Lusitania'']] infamous for being torpedoed by a German [[U-boat]] in 1915. [[Cunard]], the ship's owner, commonly named its vessels after Roman provinces with the ''Lusitania'' so being called after the Roman Iberian province to the north of the [[Strait of Gibraltar]] while her sister ship [[RMS Mauretania|RMS ''Mauretania'']] was named after the Roman North African province on the south side of the strait.
+
+==See also==
+{{Portal|Ancient Rome|Portugal|Spain}}
+*[[Lusitanian mythology]]
+*[[Lusitanian language]]
+*[[National Archaeology Museum (Portugal)]]
+*[[Ophiussa]]
+*[[History of Portugal]]
+*[[Timeline of Portuguese history]]
+*[[History of Spain]]
+*[[Timeline of Spanish history]]
+*[[Pre-Roman peoples of the Iberian Peninsula]]
+*[[Romanization of Iberia]]
+*[[Balsa (Roman town)]]
+
+==References==
+{{reflist}}
+
+==External links==
+{{Commons category|Lusitania}}
+{{Americana Poster|year=1920}}
+*[https://www.perseus.tufts.edu/hopper/text?doc=Perseus:text:1999.04.0064:id=lusitania-geo Lusitania, Dictionary of Greek and Roman Geography] {{Webarchive|url=https://web.archive.org/web/20210225014243/http://www.perseus.tufts.edu/hopper/text?doc=Perseus:text:1999.04.0064:id=lusitania-geo |date=2021-02-25 }}
+* [https://web.archive.org/web/20040611215344/http://www.arqueotavira.com/Mapas/Iberia/Populi.htm Detailed map of the Pre-Roman Peoples of Iberia (around 200 BC)]
+*[https://web.archive.org/web/20190708130808/https://www.southernstar.ie/News/Crewmans-strange-foreboding-of-disaster-24042015.htm Southern Star Article: Crewman's strange foreboding of disaster]
+{{Roman provinces AD 117}}
+{{Late Roman Provinces|state=collapsed}}
+{{Roman history by territory}}
+{{Authority control}}
+{{coord|38.7689|N|7.2181|W|source:wikidata|display=title}}
+
+[[Category:Lusitania| ]]
+[[Category:Portugal in the Roman era|.L]]
+[[Category:Provinces of the Roman Empire]]
+[[Category:History of Portugal by polity]]
+[[Category:Ancient Portugal]]
+[[Category:Medieval history of Portugal]]
+[[Category:States and territories established in the 1st century BC]]
+[[Category:States and territories disestablished in the 9th century]]
+[[Category:1st-century BC establishments in the Roman Republic]]
+[[Category:9th-century disestablishments in Portugal]]
+[[Category:1st millennium in Portugal]]
