@@ -33,9 +33,9 @@
  *
  * Environment variables
  * ---------------------
- *   TOKENIZER_THREAD_BUFFER_MAIN_SHRINK_SIZE_MB    (default 10)
- *   TOKENIZER_THREAD_BUFFER_MAIN_TARGET_SIZE_MB    (default  5)
- *   TOKENIZER_THREAD_BUFFER_SCRATCH_SHRINK_SIZE_MB (default 10)
+ *   TOKENIZER_THREAD_BUFFER_MAIN_SHRINK_SIZE_MB    (default  5)
+ *   TOKENIZER_THREAD_BUFFER_MAIN_TARGET_SIZE_MB    (default  1)
+ *   TOKENIZER_THREAD_BUFFER_SCRATCH_SHRINK_SIZE_MB (default  5)
  *   TOKENIZER_THREAD_BUFFER_SCRATCH_TARGET_SIZE_MB (default  1)
  */
 #pragma once
@@ -43,7 +43,7 @@
 #include <stddef.h>
 #include <stdbool.h>
 #include <stdalign.h>
-#include <stringzilla/types.h>
+#include <stringzilla/small_string.h>
 
 #if defined(_MSC_VER)
 #define THREAD_LOCAL __declspec(thread)
@@ -52,6 +52,11 @@
 #else
 #define THREAD_LOCAL _Thread_local
 #endif
+
+/* Keep thread-buffer SSO capacity aligned with StringZilla's small-string ABI. */
+#define WIKI_THREAD_BUF_INLINE_CAP SZ_STRING_INTERNAL_SPACE
+#define WIKI_THREAD_BUF_INVALID_INDEX ((size_t)-1)
+#define WIKI_THREAD_SCRATCH_BUCKET_COUNT 4u
 
 /* ── A single resizable buffer slot ─────────────────────────────────────── */
 /*
@@ -74,10 +79,13 @@ typedef struct {
     size_t cap;         /* allocated bytes */
     size_t shrink_size; /* shrink when cap > this AND need < target_size  */
     size_t target_size; /* minimum allocation and post-shrink target size */
+    size_t pool_index;  /* Scratch-pool slot index; INVALID for non-scratch buffers. */
 
     /* SSO / Alignment metadata */
     bool   is_on_heap;  /* True if buf points to heap; false if inline_data */
-    char   inline_data[31]; /* Internal storage to avoid heap for small tokens */
+    bool   sso_allowed; /* Per-buffer default for reserve(): true unless callers opt out. */
+    bool   shrink_allowed; /* False for arenas whose views must remain stable. */
+    char   inline_data[WIKI_THREAD_BUF_INLINE_CAP];
 } __attribute__((aligned(64))) ThreadBuf;
 
 /* ── The pair of buffers owned by one thread ─────────────────────────────── */
@@ -85,8 +93,11 @@ typedef struct {
 typedef struct {
     ThreadBuf **scratch_pool;
     bool      *scratch_in_use;
+    size_t    *scratch_next_free;
+    unsigned char *scratch_bucket;
     size_t     scratch_count;
     size_t     scratch_cap;
+    size_t     scratch_free_head[WIKI_THREAD_SCRATCH_BUCKET_COUNT];
     ThreadBuf  stage;
     ThreadBuf  tokens; /* append-only arena for token text views */
     bool       finalized; /* set by finalize_all; cleared on re-init */
@@ -113,6 +124,17 @@ ThreadBuffers *wiki_thread_buf_get(void);
 void wiki_thread_buf_assert_no_leased_scratch(const char *context,
                                               const ThreadBuf *ignore_tb);
 
+
+/** 
+ * Acquire a scratch buffer sized for at least `len` bytes (plus null).
+ *
+ * Selection is bucketed for cache reuse:
+ * - <= 64 bytes: small inline buffers
+ * - 65..1024 bytes: heap bucket up to 1KB
+ * - 1025..1048576 bytes: heap bucket up to 1MB
+ * - > 1MB: large heap bucket
+ */
+ThreadBuf *wiki_thread_buf_acquire_scratch_with_len(size_t len);
 
 /** 
  * Acquire, resize and copy a scratch buffer. 
@@ -146,6 +168,14 @@ void wiki_thread_buf_release_scratch(ThreadBuf *tb);
  * Callers never realloc a ThreadBuf directly; they always go through here.
  */
 void wiki_thread_buf_reserve(ThreadBuf *tb, size_t need);
+
+/**
+ * Variant of wiki_thread_buf_reserve with explicit SSO policy.
+ *
+ * When sso_allowed is false, the buffer will not transition to inline_data;
+ * heap storage is retained/used even for small sizes.
+ */
+void wiki_thread_buf_reserve_ex(ThreadBuf *tb, size_t need, bool sso_allowed);
 
 /**
  * Copy s (len bytes) into tb->buf, reserving space first if needed.

@@ -25,6 +25,18 @@ const DEFAULT_WIKI_CONFIG = path.join(__dirname, '..', '..', '..', 'config', 'en
 wikiparser.config = String(DEFAULT_WIKI_CONFIG);
 nativeParser.config = String(DEFAULT_WIKI_CONFIG);
 
+function releaseNativeResult(result) {
+  if (!result || !result.root) return;
+  const root = result.root;
+  if (typeof root._freeNative === 'function') {
+    try {
+      root._freeNative();
+    } catch (e) {
+      /* best-effort cleanup; ignore */
+    }
+  }
+}
+
 function writeLatestSampleCheckpoint(wikitext, opts) {
   fs.writeFileSync(LAST_SAMPLE_PATH, wikitext, 'utf8');
 }
@@ -334,6 +346,10 @@ function compareSample(wikitext, { include = false, tidy = false, name = 'sample
       try { fs.rmdirSync(stageDir); } catch (e) { /* ignore */ }
     }
   }
+
+  releaseNativeResult(nativeResult);
+  nativeResult = null;
+  jsResult = null;
 
   return ok;
 }

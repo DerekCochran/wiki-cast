@@ -8,6 +8,7 @@
 #include <errno.h>
 #include <dirent.h>
 #include <sys/stat.h>
+#include <unistd.h>
 #include "parse.h"
 #include "token.h"
 #include "config.h"
@@ -229,6 +230,62 @@ static bool load_file_samples(const char *path,
     return true;
 }
 
+static size_t read_rss_kb(void)
+{
+    FILE *fp = fopen("/proc/self/status", "r");
+    if (!fp) {
+        return 0;
+    }
+
+    char line[256];
+    size_t rss_kb = 0;
+    while (fgets(line, sizeof(line), fp)) {
+        if (strncmp(line, "VmRSS:", 6) == 0) {
+            unsigned long v = 0;
+            if (sscanf(line + 6, "%lu", &v) == 1) {
+                rss_kb = (size_t)v;
+            }
+            break;
+        }
+    }
+
+    fclose(fp);
+    return rss_kb;
+}
+
+static void log_thread_buffer_stats(const char *sample_name, size_t sample_index)
+{
+    ThreadBuffers *tb = wiki_thread_buf_get();
+    if (!tb) return;
+
+    size_t scratch_in_use = 0;
+    size_t scratch_heap_cap = 0;
+    size_t scratch_heap_count = 0;
+    for (size_t i = 0; i < tb->scratch_count; ++i) {
+        ThreadBuf *s = tb->scratch_pool ? tb->scratch_pool[i] : NULL;
+        bool in_use = tb->scratch_in_use ? tb->scratch_in_use[i] : false;
+        if (in_use) scratch_in_use++;
+        if (s && s->is_on_heap) {
+            scratch_heap_count++;
+            scratch_heap_cap += s->cap;
+        }
+    }
+
+    size_t rss_kb = read_rss_kb();
+    printf("MEM sample=%zu name=%s rss_kb=%zu stage_cap=%zu stage_len=%zu tokens_cap=%zu tokens_len=%zu scratch_count=%zu scratch_in_use=%zu scratch_heap_count=%zu scratch_heap_cap=%zu\n",
+           sample_index + 1,
+           sample_name ? sample_name : "(null)",
+           rss_kb,
+           tb->stage.cap,
+           tb->stage.len,
+           tb->tokens.cap,
+           tb->tokens.len,
+           tb->scratch_count,
+           scratch_in_use,
+           scratch_heap_count,
+           scratch_heap_cap);
+}
+
 int main(int argc, char **argv)
 {
     /* Order of precedence: argv[1] -> WIKI_CONFIG env -> CONFIG_PATH */
@@ -272,9 +329,13 @@ int main(int argc, char **argv)
     }
 
     size_t total_failed = 0;
+    bool debug_mem = getenv("WTC_DEBUG_RSS_EACH") != NULL;
     for (size_t i = 0; i < sample_count; ++i) {
         const char *single_sample = samples[i];
         size_t failed = run_parser_samples("wikitext", &single_sample, 1, cfg, false, 10);
+        if (debug_mem) {
+            log_thread_buffer_stats(names[i], i);
+        }
         if (failed > 0) {
             printf("FAILED: %s\n", names[i]);
             total_failed++;

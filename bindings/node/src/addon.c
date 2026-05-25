@@ -19,6 +19,27 @@ static void token_finalizer(napi_env env, void *finalize_data, void *finalize_co
     return;
 }
 
+static napi_value free_wrapper(napi_env env, napi_callback_info info) {
+    napi_value this_arg;
+    napi_status status = napi_get_cb_info(env, info, NULL, NULL, &this_arg, NULL);
+    if (status != napi_ok) {
+        return NULL;
+    }
+
+    void *wrapped = NULL;
+    status = napi_remove_wrap(env, this_arg, &wrapped);
+
+    bool freed = false;
+    if (status == napi_ok && wrapped) {
+        token_free((Token *)wrapped);
+        freed = true;
+    }
+
+    napi_value out;
+    napi_get_boolean(env, freed, &out);
+    return out;
+}
+
 static napi_value toString_wrapper(napi_env env, napi_callback_info info) {
     void *data;
     napi_get_cb_info(env, info, NULL, NULL, NULL, &data);
@@ -132,6 +153,20 @@ static napi_value token_to_js(napi_env env, const Token *token, bool wrap_root) 
         (void *)token
     };
     napi_define_properties(env, js_token, 1, &toString_desc);
+
+    if (wrap_root) {
+        napi_property_descriptor free_desc = {
+            "_freeNative",
+            NULL,
+            free_wrapper,
+            NULL,
+            NULL,
+            NULL,
+            napi_default,
+            NULL
+        };
+        napi_define_properties(env, js_token, 1, &free_desc);
+    }
 
     // type
     napi_value type_val;

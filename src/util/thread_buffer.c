@@ -12,6 +12,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <ctype.h>
+#include <stdint.h>
 
 static size_t align_up_64(size_t n) {
 	return (n + 63u) & ~(size_t)63u;
@@ -24,9 +25,6 @@ static void *aligned_zalloc_64(size_t n) {
 	memset(p, 0, alloc_n);
 	return p;
 }
-
-/* Use 48 for inline to keep the total ThreadBuf struct exactly 1 cache line (64 bytes) */
-#define SSO_MAX 47
 
 /* ── Default thresholds (in megabytes) ───────────────────────────────────── */
 #define DEFAULT_MAIN_SHRINK_MB 5
@@ -41,6 +39,18 @@ static size_t g_scratch_shrink_bytes;
 static size_t g_scratch_target_bytes;
 
 #define INITIAL_SCRATCH_POOL_CAP 4
+
+#define SCRATCH_BUCKET_1K_CAP ((size_t)1024u)
+#define SCRATCH_BUCKET_1M_CAP ((size_t)(1024u * 1024u))
+#define INVALID_INDEX WIKI_THREAD_BUF_INVALID_INDEX
+#define SCRATCH_BUCKET_COUNT WIKI_THREAD_SCRATCH_BUCKET_COUNT
+
+typedef enum {
+	SCRATCH_BUCKET_SMALL = 0,
+	SCRATCH_BUCKET_64_TO_1K = 1,
+	SCRATCH_BUCKET_1K_TO_1M = 2,
+	SCRATCH_BUCKET_GT_1M = 3
+} ScratchBucket;
 
 /* ── Env-var helpers ─────────────────────────────────────────────────────── */
 
@@ -170,12 +180,15 @@ static void create_tls_key(void) {
 static void init_thread_buf(ThreadBuf *tb, size_t shrink_size, size_t target_size) {
     tb->shrink_size = shrink_size;
     tb->target_size = target_size;
+	tb->pool_index = INVALID_INDEX;
     tb->len = 0;
 
     /* Start with SSO: point buf at inline storage, no heap allocation needed. */
     tb->buf = tb->inline_data;
     tb->cap = sizeof(tb->inline_data);
     tb->is_on_heap = false;
+	tb->sso_allowed = true;
+	tb->shrink_allowed = true;
     tb->inline_data[0] = '\0';
 }
 
@@ -188,7 +201,161 @@ static void free_thread_buf(ThreadBuf *tb) {
 	tb->buf = tb->inline_data;
 	tb->cap = sizeof(tb->inline_data);
 	tb->is_on_heap = false;
+	tb->sso_allowed = true;
+	tb->shrink_allowed = true;
+	tb->pool_index = INVALID_INDEX;
 	tb->len = 0;
+}
+
+static void scratch_reset_free_heads(ThreadBuffers *tb) {
+	for(size_t i= 0; i < SCRATCH_BUCKET_COUNT; i++) {
+		tb->scratch_free_head[i]= INVALID_INDEX;
+	}
+}
+
+static size_t scratch_actual_need(size_t len) {
+	if(len == INVALID_INDEX) return INVALID_INDEX;
+	return len + 1;
+}
+
+static ScratchBucket scratch_bucket_for_need(size_t len) {
+	size_t actual_need= scratch_actual_need(len);
+	if(actual_need <= WIKI_THREAD_BUF_INLINE_CAP) return SCRATCH_BUCKET_SMALL;
+	if(actual_need <= SCRATCH_BUCKET_1K_CAP) return SCRATCH_BUCKET_64_TO_1K;
+	if(actual_need <= SCRATCH_BUCKET_1M_CAP) return SCRATCH_BUCKET_1K_TO_1M;
+	return SCRATCH_BUCKET_GT_1M;
+}
+
+static ScratchBucket scratch_heap_bucket_for_cap(size_t cap) {
+	if(cap <= SCRATCH_BUCKET_1K_CAP) return SCRATCH_BUCKET_64_TO_1K;
+	if(cap <= SCRATCH_BUCKET_1M_CAP) return SCRATCH_BUCKET_1K_TO_1M;
+	return SCRATCH_BUCKET_GT_1M;
+}
+
+static ScratchBucket scratch_bucket_for_buffer(const ThreadBuf *scratch) {
+	if(!scratch || !scratch->is_on_heap) return SCRATCH_BUCKET_SMALL;
+	return scratch_heap_bucket_for_cap(scratch->cap);
+}
+
+static void scratch_free_push(ThreadBuffers *tb, size_t idx, ScratchBucket bucket) {
+	assert(bucket < SCRATCH_BUCKET_COUNT);
+	tb->scratch_bucket[idx]= (unsigned char)bucket;
+	tb->scratch_next_free[idx]= tb->scratch_free_head[bucket];
+	tb->scratch_free_head[bucket]= idx;
+}
+
+static size_t scratch_free_pop_bucket(ThreadBuffers *tb, ScratchBucket bucket, size_t avoid_idx) {
+	assert(bucket < SCRATCH_BUCKET_COUNT);
+	size_t head= tb->scratch_free_head[bucket];
+	if(head == INVALID_INDEX) return INVALID_INDEX;
+	assert(head < tb->scratch_count);
+	assert(tb->scratch_bucket[head] == (unsigned char)bucket);
+
+	if(head != avoid_idx) {
+		tb->scratch_free_head[bucket]= tb->scratch_next_free[head];
+		tb->scratch_next_free[head]= INVALID_INDEX;
+		return head;
+	}
+
+	size_t second= tb->scratch_next_free[head];
+	if(second == INVALID_INDEX) {
+		return INVALID_INDEX;
+	}
+	assert(second < tb->scratch_count);
+	assert(tb->scratch_bucket[second] == (unsigned char)bucket);
+	tb->scratch_next_free[head]= tb->scratch_next_free[second];
+	tb->scratch_next_free[second]= INVALID_INDEX;
+	return second;
+}
+
+static size_t scratch_acquire_index(ThreadBuffers *tb, ScratchBucket desired_bucket, size_t avoid_idx) {
+	size_t idx= scratch_free_pop_bucket(tb, desired_bucket, avoid_idx);
+	if(idx != INVALID_INDEX) {
+		return idx;
+	}
+
+	if(desired_bucket == SCRATCH_BUCKET_SMALL) {
+		idx= scratch_free_pop_bucket(tb, SCRATCH_BUCKET_64_TO_1K, avoid_idx);
+		if(idx != INVALID_INDEX) {
+			return idx;
+		}
+		idx= scratch_free_pop_bucket(tb, SCRATCH_BUCKET_1K_TO_1M, avoid_idx);
+		if(idx != INVALID_INDEX) {
+			return idx;
+		}
+		return scratch_free_pop_bucket(tb, SCRATCH_BUCKET_GT_1M, avoid_idx);
+	}
+
+	if(desired_bucket == SCRATCH_BUCKET_64_TO_1K) {
+		idx= scratch_free_pop_bucket(tb, SCRATCH_BUCKET_1K_TO_1M, avoid_idx);
+		if(idx != INVALID_INDEX) {
+			return idx;
+		}
+		return scratch_free_pop_bucket(tb, SCRATCH_BUCKET_GT_1M, avoid_idx);
+	}
+
+	if(desired_bucket == SCRATCH_BUCKET_1K_TO_1M) {
+		return scratch_free_pop_bucket(tb, SCRATCH_BUCKET_GT_1M, avoid_idx);
+	}
+
+	return INVALID_INDEX;
+}
+
+static void ensure_scratch_capacity(ThreadBuffers *tb, size_t min_cap) {
+	if(tb->scratch_cap >= min_cap) return;
+
+	size_t new_cap= tb->scratch_cap ? tb->scratch_cap * 2 : INITIAL_SCRATCH_POOL_CAP;
+	while(new_cap < min_cap) {
+		new_cap*= 2;
+	}
+
+	ThreadBuf **new_pool= realloc(tb->scratch_pool, new_cap * sizeof(ThreadBuf *));
+	bool *new_in_use= realloc(tb->scratch_in_use, new_cap * sizeof(bool));
+	size_t *new_next_free= realloc(tb->scratch_next_free, new_cap * sizeof(size_t));
+	unsigned char *new_bucket= realloc(tb->scratch_bucket, new_cap * sizeof(unsigned char));
+	assert(new_pool && new_in_use && new_next_free && new_bucket);
+
+	tb->scratch_pool= new_pool;
+	tb->scratch_in_use= new_in_use;
+	tb->scratch_next_free= new_next_free;
+	tb->scratch_bucket= new_bucket;
+
+	for(size_t i= tb->scratch_cap; i < new_cap; i++) {
+		tb->scratch_pool[i]= NULL;
+		tb->scratch_in_use[i]= false;
+		tb->scratch_next_free[i]= INVALID_INDEX;
+		tb->scratch_bucket[i]= (unsigned char)SCRATCH_BUCKET_SMALL;
+	}
+
+	tb->scratch_cap= new_cap;
+}
+
+static size_t scratch_alloc_entry(ThreadBuffers *tb) {
+	ensure_scratch_capacity(tb, tb->scratch_count + 1);
+
+	size_t idx= tb->scratch_count++;
+	tb->scratch_pool[idx]= aligned_zalloc_64(sizeof(ThreadBuf));
+	assert(tb->scratch_pool[idx]);
+	init_thread_buf(tb->scratch_pool[idx], g_scratch_shrink_bytes, g_scratch_target_bytes);
+	tb->scratch_pool[idx]->pool_index= idx;
+	tb->scratch_in_use[idx]= false;
+	tb->scratch_next_free[idx]= INVALID_INDEX;
+	tb->scratch_bucket[idx]= (unsigned char)SCRATCH_BUCKET_SMALL;
+	return idx;
+}
+
+static size_t scratch_find_owner_idx(ThreadBuffers *tb, const char *ptr) {
+	if(!tb || !ptr) return INVALID_INDEX;
+	uintptr_t p= (uintptr_t)ptr;
+	for(size_t i= 0; i < tb->scratch_count; i++) {
+		if(!tb->scratch_in_use[i]) continue;
+		ThreadBuf *scratch= tb->scratch_pool[i];
+		if(!scratch || !scratch->buf || scratch->cap == 0) continue;
+		uintptr_t b= (uintptr_t)scratch->buf;
+		uintptr_t e= b + scratch->cap;
+		if(p >= b && p < e) return i;
+	}
+	return INVALID_INDEX;
 }
 
 static void free_scratch_pool(ThreadBuffers *tb) {
@@ -201,10 +368,15 @@ static void free_scratch_pool(ThreadBuffers *tb) {
 	}
 	free(tb->scratch_pool);
 	free(tb->scratch_in_use);
+	free(tb->scratch_next_free);
+	free(tb->scratch_bucket);
 	tb->scratch_pool= NULL;
 	tb->scratch_in_use= NULL;
+	tb->scratch_next_free= NULL;
+	tb->scratch_bucket= NULL;
 	tb->scratch_count= 0;
 	tb->scratch_cap= 0;
+	scratch_reset_free_heads(tb);
 }
 
 /* ── Inner buffer allocation ─────────────────────────────────────────────── */
@@ -217,10 +389,14 @@ static void free_scratch_pool(ThreadBuffers *tb) {
 static void alloc_inner_buffers(ThreadBuffers *tb) {
 	init_thread_buf(&tb->stage, g_main_shrink_bytes, g_main_target_bytes);
 	init_thread_buf(&tb->tokens, g_main_shrink_bytes, g_main_target_bytes);
+	tb->tokens.shrink_allowed= false;
 	tb->scratch_pool= NULL;
 	tb->scratch_in_use= NULL;
+	tb->scratch_next_free= NULL;
+	tb->scratch_bucket= NULL;
 	tb->scratch_count= 0;
 	tb->scratch_cap= 0;
+	scratch_reset_free_heads(tb);
 
 	tb->finalized= false;
 }
@@ -444,42 +620,53 @@ void wiki_thread_buf_log_state(const char *stage_label, ThreadBuf *stage_tb) {
  *
  * Callers must never realloc a ThreadBuf buffer directly; always use this.
  */
-void wiki_thread_buf_reserve(ThreadBuf *tb, size_t need) {
-    size_t actual_need = need + 1; /* +1 for null terminator */
+void wiki_thread_buf_reserve_ex(ThreadBuf *tb, size_t need, bool sso_allowed) {
+	if(!tb) return;
 
-	/* 1. Shrink: on heap, cap is wastefully large, and new request is small.
-	 * NOTE: The `tokens` arena holds non-owning views returned to tokens
-	 * during parsing. Those views must remain valid for the lifetime of
-	 * the parse, so never perform the shrink/free logic on the tokens
-	 * ThreadBuf while parsing. Detect the tokens buffer and skip shrink.
-	 */
-	ThreadBuffers *__tbs_for_reserve = NULL;
-	bool __is_tokens_arena = false;
-	/* Attempt to get the thread-local buffers; if available, detect tokens */
-	__tbs_for_reserve = wiki_thread_buf_get();
-	if(__tbs_for_reserve) __is_tokens_arena = (tb == &__tbs_for_reserve->tokens);
+	size_t actual_need = need + 1; /* +1 for null terminator */
+	bool allow_sso = sso_allowed && tb->sso_allowed;
 
-	if (!__is_tokens_arena && tb->is_on_heap && tb->cap > tb->shrink_size && need < tb->target_size) {
-        free(tb->buf);
-        if (actual_need <= sizeof(tb->inline_data)) {
-            tb->buf = tb->inline_data;
-            tb->cap = sizeof(tb->inline_data);
-            tb->is_on_heap = false;
-        } else {
-            size_t alloc_sz = (tb->target_size + 63) & ~63;
-            tb->buf = aligned_alloc(64, alloc_sz);
-            assert(tb->buf);
-            tb->cap = alloc_sz;
-            tb->is_on_heap = true;
-        }
-        log_trace("thread_buffer shrink: new_cap=%zu", tb->cap);
-        return;
-    }
+	/* If caller disallows SSO and this buffer is currently inline, migrate to heap. */
+	if(!allow_sso && !tb->is_on_heap) {
+		size_t new_cap= tb->target_size;
+		if(new_cap < actual_need) new_cap = actual_need;
+		new_cap = (new_cap + 63) & ~((size_t)63);
+
+		void *new_ptr= aligned_alloc(64, new_cap);
+		assert(new_ptr);
+		if(tb->len > 0) {
+			memcpy(new_ptr, tb->buf, tb->len);
+		}
+		tb->buf = (char *)new_ptr;
+		tb->cap = new_cap;
+		tb->is_on_heap = true;
+		log_trace("thread_buffer force-heap: need=%zu, new_cap=%zu", need, new_cap);
+	}
+
+	if (tb->shrink_allowed && tb->is_on_heap && tb->cap > tb->shrink_size && need < tb->target_size) {
+		free(tb->buf);
+		if (allow_sso && actual_need <= sizeof(tb->inline_data)) {
+			tb->buf = tb->inline_data;
+			tb->cap = sizeof(tb->inline_data);
+			tb->is_on_heap = false;
+		} else {
+			size_t alloc_sz = (tb->target_size + 63) & ~63;
+			if(alloc_sz < actual_need) {
+				alloc_sz = (actual_need + 63) & ~((size_t)63);
+			}
+			tb->buf = aligned_alloc(64, alloc_sz);
+			assert(tb->buf);
+			tb->cap = alloc_sz;
+			tb->is_on_heap = true;
+		}
+		log_trace("thread_buffer shrink: new_cap=%zu", tb->cap);
+		return;
+	}
 
     /* 2. Grow: current buffer cannot hold `need` bytes. */
     if (tb->cap < actual_need) {
         /* Can the new content fit in the inline SSO buffer? */
-        if (actual_need <= sizeof(tb->inline_data)) {
+		if (allow_sso && actual_need <= sizeof(tb->inline_data)) {
             if (tb->is_on_heap) {
                 free(tb->buf);
                 tb->is_on_heap = false;
@@ -519,6 +706,10 @@ void wiki_thread_buf_reserve(ThreadBuf *tb, size_t need) {
 
         log_trace("thread_buffer grow: need=%zu, new_cap=%zu", need, new_cap);
     }
+}
+
+void wiki_thread_buf_reserve(ThreadBuf *tb, size_t need) {
+	wiki_thread_buf_reserve_ex(tb, need, true);
 }
 
 ThreadBuffers *wiki_thread_buf_get(void) {
@@ -561,70 +752,77 @@ ThreadBuffers *wiki_thread_buf_get(void) {
 	return tb;
 }
 
+static ThreadBuf *acquire_scratch_with_len_internal(ThreadBuffers *tb, size_t len, size_t avoid_idx) {
+	ScratchBucket desired_bucket= scratch_bucket_for_need(len);
+	size_t idx= scratch_acquire_index(tb, desired_bucket, avoid_idx);
+
+	if(idx == INVALID_INDEX) {
+		idx= scratch_alloc_entry(tb);
+	}
+
+	assert(idx < tb->scratch_count);
+	ThreadBuf *scratch= tb->scratch_pool[idx];
+	assert(scratch);
+	assert(scratch->pool_index == idx);
+	tb->scratch_in_use[idx]= true;
+	tb->scratch_next_free[idx]= INVALID_INDEX;
+
+	/* Reserve only what this call needs to avoid inflating pool buffers. */
+	wiki_thread_buf_reserve(scratch, len);
+	scratch->len= 0;
+	if(scratch->cap > 0) {
+		scratch->buf[0]= '\0';
+	}
+
+	return scratch;
+}
+
+ThreadBuf *wiki_thread_buf_acquire_scratch_with_len(size_t len) {
+	ThreadBuffers *tb= wiki_thread_buf_get();
+	return acquire_scratch_with_len_internal(tb, len, INVALID_INDEX);
+}
+
 ThreadBuf *wiki_thread_buf_acquire_scratch_from_data(const char *s, size_t len) {
-    /* 1. Get the next available scratch buffer from the pool */
-    ThreadBuf *scratch = wiki_thread_buf_acquire_scratch();
+	ThreadBuffers *tb= wiki_thread_buf_get();
+	size_t avoid_idx= scratch_find_owner_idx(tb, s);
+	ThreadBuf *scratch= acquire_scratch_with_len_internal(tb, len, avoid_idx);
 
-    /* 2. Ensure it has enough capacity for the data + null terminator */
-    wiki_thread_buf_reserve(scratch, len);
+	if(len > 0 && s != NULL) {
+		memmove(scratch->buf, s, len);
+	}
 
-    /* 3. Copy the data if provided */
-    if (len > 0 && s != NULL) {
-        memcpy(scratch->buf, s, len);
-    }
-    
-    scratch->buf[len] = '\0';
-    scratch->len = len;
-
-    return scratch;
+	scratch->buf[len]= '\0';
+	scratch->len= len;
+	return scratch;
 }
 
 ThreadBuf *wiki_thread_buf_acquire_scratch(void) {
-	ThreadBuffers *tb= wiki_thread_buf_get();
-
-	for(size_t i= 0; i < tb->scratch_count; i++) {
-		if(!tb->scratch_in_use[i]) {
-			tb->scratch_in_use[i]= true;
-			tb->scratch_pool[i]->len= 0;
-			return tb->scratch_pool[i];
-		}
-	}
-
-	if(tb->scratch_count == tb->scratch_cap) {
-		size_t new_cap= tb->scratch_cap ? tb->scratch_cap * 2 : INITIAL_SCRATCH_POOL_CAP;
-		ThreadBuf **new_pool= realloc(tb->scratch_pool, new_cap * sizeof(ThreadBuf *));
-		bool *new_in_use= realloc(tb->scratch_in_use, new_cap * sizeof(bool));
-		assert(new_pool && new_in_use);
-		tb->scratch_pool= new_pool;
-		tb->scratch_in_use= new_in_use;
-		for(size_t i= tb->scratch_cap; i < new_cap; i++) {
-			tb->scratch_pool[i]= NULL;
-			tb->scratch_in_use[i]= false;
-		}
-		tb->scratch_cap= new_cap;
-	}
-
-	size_t idx= tb->scratch_count++;
-	tb->scratch_pool[idx]= aligned_zalloc_64(sizeof(ThreadBuf));
-	assert(tb->scratch_pool[idx]);
-	init_thread_buf(tb->scratch_pool[idx], g_scratch_shrink_bytes, g_scratch_target_bytes);
-	tb->scratch_in_use[idx]= true;
-	return tb->scratch_pool[idx];
+	return wiki_thread_buf_acquire_scratch_with_len(0);
 }
 
 void wiki_thread_buf_release_scratch(ThreadBuf *scratch) {
 	if(!scratch) return;
 
 	ThreadBuffers *tb= wiki_thread_buf_get();
-	for(size_t i= 0; i < tb->scratch_count; i++) {
-		if(tb->scratch_pool[i] == scratch) {
-			tb->scratch_in_use[i]= false;
-			tb->scratch_pool[i]->len= 0;
-			return;
-		}
+	size_t idx= scratch->pool_index;
+	if(idx == INVALID_INDEX || idx >= tb->scratch_count || tb->scratch_pool[idx] != scratch) {
+		assert(!"wiki_thread_buf_release_scratch called with non-pooled buffer");
+		return;
 	}
 
-	assert(!"wiki_thread_buf_release_scratch called with non-pooled buffer");
+	if(!tb->scratch_in_use[idx]) {
+		log_fatal("wiki_thread_buf_release_scratch: double release (idx=%zu)", idx);
+		abort();
+	}
+
+	tb->scratch_in_use[idx]= false;
+	scratch->len= 0;
+	if(scratch->cap > 0) {
+		scratch->buf[0]= '\0';
+	}
+
+	ScratchBucket bucket= scratch_bucket_for_buffer(scratch);
+	scratch_free_push(tb, idx, bucket);
 }
 
 void wiki_thread_buf_set(ThreadBuf *tb, const char *s, size_t len) {
