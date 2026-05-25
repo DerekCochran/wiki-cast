@@ -3,9 +3,11 @@
 #include "parser/braces.h"
 #include "parser/comment_and_ext.h"
 #include "parser/external_links.h"
+#include "parser/html.h"
 #include "parser/link.h"
 #include "parser/links.h"
 #include "parser/magic_links.h"
+#include "parser/quotes.h"
 #include "title.h"
 #include "util/string_util.h"
 #include "util/thread_buffer.h"
@@ -1040,6 +1042,160 @@ static Token *build_references_inner_token(const char *inner_str, size_t inner_l
 	return t;
 }
 
+/* JS GalleryImageToken/FileToken parity for fallback/direct gallery-image params:
+ * - parse caption text through in-file inline stages so links/quotes build.
+ * - for malformed outer links like [[A|[[B|C]] tail, split at first pipe and
+ *   parse right side as a second caption parameter. */
+static void split_gallery_unclosed_caption_local(Token *img,
+												const ParserConfig *cfg,
+												Accum *accum) {
+	if(!img || img->type != TOKEN_FILE || img->child_count < 2) return;
+
+	for(size_t ci= 1; ci < img->child_count; ci++) {
+		if(img->children[ci].is_text || !img->children[ci].token) continue;
+		Token *cap= img->children[ci].token;
+		if(cap->type != TOKEN_PLAIN || !cap->type_name || strcmp(cap->type_name, "image-parameter") != 0) continue;
+		if(!cap->name || strcmp(cap->name, "caption") != 0) continue;
+		if(cap->child_count != 1 || !cap->children[0].is_text || !cap->children[0].text) continue;
+
+		const char *txt= cap->children[0].text;
+		size_t tlen= cap->children[0].text_len;
+		const char pipe_ch= '|';
+		const char *pipe_ptr= sz_find_byte(txt, tlen, &pipe_ch);
+
+		bool needs_split= false;
+		size_t split_at= 0;
+		if(pipe_ptr) {
+			split_at= (size_t)(pipe_ptr - txt);
+			if(split_at + 3 <= tlen &&
+				 pipe_ptr[1] == '[' && pipe_ptr[2] == '[' &&
+				 sz_find(txt, split_at, "[[", 2) &&
+				 sz_find(pipe_ptr + 1, tlen - (split_at + 1), "]]", 2)) {
+				needs_split= true;
+			}
+		}
+
+		if(needs_split) {
+			size_t left_len= split_at;
+			size_t right_len= tlen - (split_at + 1);
+			const char *left_view= wiki_thread_buf_append_to_tokens(txt, left_len);
+			if(cap->children[0].text_owned && cap->children[0].text) {
+				free((void *)cap->children[0].text);
+			}
+			cap->children[0].text= left_view;
+			cap->children[0].text_len= left_len;
+			cap->children[0].text_owned= false;
+
+			ThreadBuf *tb= wiki_thread_buf_acquire_scratch_from_data(pipe_ptr + 1, right_len);
+			if(!tb) return;
+			parse_comment_and_ext(tb, cfg, accum, false);
+			parse_braces(tb, cfg, accum);
+			parse_html(tb, cfg, accum);
+			parse_links(tb, cfg, accum, NULL, false);
+			parse_quotes(tb, cfg, accum, false);
+			parse_external_links(tb, cfg, accum, false);
+			parse_magic_links(tb, cfg, accum);
+
+			Token *cap2= token_new(TOKEN_PLAIN, "image-parameter");
+			if(cap2) {
+				cap2->name= strdup("caption");
+				build_from_str(cap2, tb->buf, tb->len, accum);
+				if(cap2->child_count == 0) {
+					token_append_text_n(cap2, "", 0);
+				}
+				accum_push(accum, cap2);
+				token_append_child(img, cap2);
+			}
+			wiki_thread_buf_release_scratch(tb);
+			continue;
+		}
+
+		ThreadBuf *tb= wiki_thread_buf_acquire_scratch_from_data(txt, tlen);
+		if(!tb) return;
+		parse_comment_and_ext(tb, cfg, accum, false);
+		parse_braces(tb, cfg, accum);
+		parse_html(tb, cfg, accum);
+		parse_links(tb, cfg, accum, NULL, false);
+		parse_quotes(tb, cfg, accum, false);
+		parse_external_links(tb, cfg, accum, false);
+		parse_magic_links(tb, cfg, accum);
+
+		if(cap->children[0].text_owned && cap->children[0].text) {
+			free((void *)cap->children[0].text);
+		}
+		cap->child_count= 0;
+		build_from_str(cap, tb->buf, tb->len, accum);
+		if(cap->child_count == 0) {
+			token_append_text_n(cap, "", 0);
+		}
+		wiki_thread_buf_release_scratch(tb);
+	}
+}
+
+/* Fallback helper: parse gallery alt text into FileToken image parameters by
+ * feeding a synthetic [[File:...|...]] through stage-1/5 parsing and moving
+ * parameter children (index >= 1) onto the destination gallery-image token. */
+static void append_gallery_params_via_wrapper_local(Token *dst,
+															 const char *file_ptr, size_t file_len,
+															 const char *alt_ptr, size_t alt_len,
+															 const ParserConfig *cfg,
+															 Accum *accum) {
+	if(!dst || !file_ptr || file_len == 0 || !alt_ptr) return;
+
+	const char *fptr= file_ptr;
+	size_t flen= file_len;
+	while(flen > 0 && isspace((unsigned char)fptr[0])) {
+		fptr++;
+		flen--;
+	}
+	while(flen > 0 && isspace((unsigned char)fptr[flen - 1])) {
+		flen--;
+	}
+	if(flen == 0) return;
+
+	ThreadBuf *tb= wiki_thread_buf_acquire_scratch();
+	if(!tb) return;
+
+	/* [[File:<trimmed file>|<alt>]] */
+	size_t wrapped_len= 2 + 5 + flen + 1 + alt_len + 2;
+	wiki_thread_buf_reserve(tb, wrapped_len + 1);
+	tb->buf[0]= '[';
+	tb->buf[1]= '[';
+	memcpy(tb->buf + 2, "File:", 5);
+	memcpy(tb->buf + 7, fptr, flen);
+	tb->buf[7 + flen]= '|';
+	if(alt_len > 0) {
+		memcpy(tb->buf + 8 + flen, alt_ptr, alt_len);
+	}
+	tb->buf[8 + flen + alt_len]= ']';
+	tb->buf[9 + flen + alt_len]= ']';
+	tb->buf[10 + flen + alt_len]= '\0';
+	tb->len= 10 + flen + alt_len;
+
+	parse_braces(tb, cfg, accum);
+	parse_links(tb, cfg, accum, NULL, false);
+
+	Token *tmp= token_new(TOKEN_PLAIN, "gallery-param-wrapper");
+	if(!tmp) {
+		wiki_thread_buf_release_scratch(tb);
+		return;
+	}
+	build_from_str(tmp, tb->buf, tb->len, accum);
+	build_token_recursive(tmp, accum, cfg);
+
+	if(tmp->child_count == 1 && !tmp->children[0].is_text && tmp->children[0].token && tmp->children[0].token->type == TOKEN_FILE) {
+		Token *ft= tmp->children[0].token;
+		for(size_t pi= 1; pi < ft->child_count; pi++) {
+			if(ft->children[pi].is_text || !ft->children[pi].token) continue;
+			token_append_child(dst, ft->children[pi].token);
+			ft->children[pi].token= NULL;
+		}
+	}
+
+	token_free_shallow(tmp);
+	wiki_thread_buf_release_scratch(tb);
+}
+
 static Token *parse_gallery_image_line_local(const char *line, size_t line_len,
 																			const ParserConfig *cfg,
 																			Accum *accum) {
@@ -1095,30 +1251,28 @@ static Token *parse_gallery_image_line_local(const char *line, size_t line_len,
 	if(!tmp_tb) { log_fatal("thread_buffer: failed to acquire scratch in parse_gallery_image_line_local"); abort(); }
 	if(pre_text_tb && pipe_idx != SIZE_MAX) {
 		size_t lhs_len= pipe_idx + 1; /* include the first '|' */
-		size_t wrapped_len= 7 + lhs_len + pre_text_tb->len + 2; /* [[File: + lhs + pre + ]] */
+		size_t wrapped_len= 2 + lhs_len + pre_text_tb->len + 2; /* [[ + lhs + pre + ]] */
 		wiki_thread_buf_reserve(tmp_tb, wrapped_len + 1);
 		tmp_tb->buf[0]= '[';
 		tmp_tb->buf[1]= '[';
-		memcpy(tmp_tb->buf + 2, "File:", 5);
-		memcpy(tmp_tb->buf + 7, line, lhs_len);
+		memcpy(tmp_tb->buf + 2, line, lhs_len);
 		if(pre_text_tb->len > 0) {
-			memcpy(tmp_tb->buf + 7 + lhs_len, pre_text_tb->buf, pre_text_tb->len);
+			memcpy(tmp_tb->buf + 2 + lhs_len, pre_text_tb->buf, pre_text_tb->len);
 		}
-		size_t tail= 7 + lhs_len + pre_text_tb->len;
+		size_t tail= 2 + lhs_len + pre_text_tb->len;
 		tmp_tb->buf[tail]= ']';
 		tmp_tb->buf[tail + 1]= ']';
 		tmp_tb->buf[tail + 2]= '\0';
 		tmp_tb->len= tail + 2;
 	} else {
-		wiki_thread_buf_reserve(tmp_tb, line_len + 9);
+		wiki_thread_buf_reserve(tmp_tb, line_len + 4);
 		tmp_tb->buf[0]= '[';
 		tmp_tb->buf[1]= '[';
-		memcpy(tmp_tb->buf + 2, "File:", 5);
-		memcpy(tmp_tb->buf + 7, line, line_len);
-		tmp_tb->buf[7 + line_len]= ']';
-		tmp_tb->buf[8 + line_len]= ']';
-		tmp_tb->buf[9 + line_len]= '\0';
-		tmp_tb->len= line_len + 9;
+		memcpy(tmp_tb->buf + 2, line, line_len);
+		tmp_tb->buf[2 + line_len]= ']';
+		tmp_tb->buf[3 + line_len]= ']';
+		tmp_tb->buf[4 + line_len]= '\0';
+		tmp_tb->len= line_len + 4;
 	}
 
 	parse_braces(tmp_tb, cfg, accum);
@@ -1177,27 +1331,8 @@ static Token *parse_gallery_image_line_local(const char *line, size_t line_len,
 			first->text_len= new_len;
 			first->text_owned= false;
 		}
-		/* JS parity: GalleryImageToken stores raw line file text (without "File:"). */
-		if(out->child_count > 0 && !out->children[0].is_text && out->children[0].token) {
-			Token *target= out->children[0].token;
-			if(target->child_count > 0 && target->children[0].is_text && target->children[0].text && target->children[0].text_len >= 5 && strncasecmp(target->children[0].text, "File:", 5) == 0) {
-				const char *old_ptr = target->children[0].text;
-				size_t old_len= target->children[0].text_len;
-				size_t new_len= old_len - 5;
-				char *nw= malloc(new_len + 1);
-				if(nw) {
-					memcpy(nw, old_ptr + 5, new_len);
-					nw[new_len]= '\0';
-					/* Free previous text only if it was heap-allocated */
-					if(target->children[0].text_owned && target->children[0].text) {
-						free((void*)target->children[0].text);
-					}
-					target->children[0].text= nw;
-					target->children[0].text_len= new_len;
-					target->children[0].text_owned = true;
-				}
-			}
-		}
+		split_gallery_unclosed_caption_local(out, cfg, accum);
+		/* Preserve the original gallery line target text exactly as parsed. */
 		/* JS stage-log parity: link/file names are assigned later in afterBuild(). */
 		for(size_t ci= 0; ci < out->child_count; ci++) {
 			if(out->children[ci].is_text || !out->children[ci].token) continue;
@@ -1271,14 +1406,25 @@ static Token *parse_gallery_image_line_local(const char *line, size_t line_len,
 							token_append_child(fallback, target);
 						}
 
-						Token *cap= token_new(TOKEN_PLAIN, "image-parameter");
-						if(cap) {
-							cap->name= strdup("caption");
-							const char *rhs_view= wiki_thread_buf_append_to_tokens(pipe_ptr2 + 1, rhs_len);
-							token_append_text_n(cap, rhs_view, rhs_len);
-							accum_push(accum, cap);
-							token_append_child(fallback, cap);
+						const char *alt_src= pipe_ptr2 + 1;
+						size_t alt_len= rhs_len;
+						if(pre_text_tb) {
+							alt_src= pre_text_tb->buf;
+							alt_len= pre_text_tb->len;
 						}
+						append_gallery_params_via_wrapper_local(fallback, line, lhs_len, alt_src, alt_len, cfg, accum);
+						if(fallback->child_count == 1) {
+							Token *cap= token_new(TOKEN_PLAIN, "image-parameter");
+							if(cap) {
+								cap->name= strdup("caption");
+								const char *rhs_view= wiki_thread_buf_append_to_tokens(pipe_ptr2 + 1, rhs_len);
+								token_append_text_n(cap, rhs_view, rhs_len);
+								accum_push(accum, cap);
+								token_append_child(fallback, cap);
+							}
+						}
+
+						split_gallery_unclosed_caption_local(fallback, cfg, accum);
 
 						accum_push(accum, fallback);
 						out= fallback;

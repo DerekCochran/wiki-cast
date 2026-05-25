@@ -171,15 +171,17 @@ static bool parse_external_inner(const char *inner, size_t len,
                                  const char **url_ptr, size_t *url_len,
                                  const char **space_ptr, size_t *space_len,
                                  const char **text_ptr, size_t *text_len) {
-    /* Leading (?:\x00\d+[cn]\x7F)* */
+    /* Leading (?:\x00\d+[cn]\x7F)*
+     * JS captures these sentinels as part of URL group 1, so keep them in
+     * the returned URL span while still skipping them for URL validation.
+     */
     size_t i = 0;
+    size_t u0 = 0;
     while(i < len) {
         size_t sc = skip_cn_sentinel(inner, len, i);
         if(sc == 0) break;
         i += sc;
     }
-
-    size_t u0 = i;
     size_t sf = skip_typed_sentinel(inner, len, i, 'f');
     if(sf > 0) {
         i += sf;
