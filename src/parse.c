@@ -61,19 +61,183 @@
 /* ── Orphan-token cleanup helpers ──────────────────────────────────────────
  *
  * After build(), any accumulator token that is not reachable from the root
- * tree is an orphan.  Orphans arise when a later-stage parser (e.g.
- * parse_braces, parse_links) stores content containing an earlier-stage
- * sentinel via a NUL-terminated string API (strdup / str_restore).  The
- * embedded \0 byte of the sentinel is silently truncated, so the sentinel
- * is never written into a token text child that build_from_str can expand.
- * The token is then in the accumulator but not in the tree → leak.
+ * tree is an orphan.
  *
- * Fix: walk the final tree, collect all live token pointers, then iterate
- * the accumulator and call token_free_shallow() on every non-live entry.
- * token_free_shallow() frees the token struct and its text children but
- * does NOT recurse into token children, so sub-tokens that each have their
- * own accum entry are freed individually without double-freeing.
+ * Important: not every token child is guaranteed to have its own accum slot
+ * (for example nested tokens created during braces/template construction), so
+ * shallow-freeing only accum entries leaks non-accum descendants.
+ *
+ * We therefore free orphan components recursively while:
+ * - detaching edges to live (root-reachable) tokens,
+ * - detaching edges to previously-freed orphan tokens,
+ * - nulling all matching accum slots before freeing a component.
  */
+typedef struct {
+	Token *ptr;
+	size_t index;
+} AccumSlotRef;
+
+typedef struct {
+	Token **items;
+	size_t count;
+	size_t cap;
+} TokenVec;
+
+typedef struct {
+	Token **items;
+	size_t cap;
+	size_t count;
+} TokenPtrSet;
+
+static bool token_vec_push(TokenVec *v, Token *t) {
+	if(!v) return false;
+	if(v->count >= v->cap) {
+		size_t next_cap= v->cap ? v->cap * 2 : 64;
+		Token **grown= realloc(v->items, next_cap * sizeof(Token *));
+		if(!grown) return false;
+		v->items= grown;
+		v->cap= next_cap;
+	}
+	v->items[v->count++]= t;
+	return true;
+}
+
+static size_t token_ptr_hash(const Token *t) {
+	uintptr_t x= (uintptr_t)t;
+	x >>= 4;
+	x ^= x >> 7;
+	x ^= x >> 13;
+	return (size_t)x;
+}
+
+static bool token_ptr_set_init(TokenPtrSet *set, size_t min_cap) {
+	if(!set) return false;
+	size_t cap= 16;
+	while(cap < min_cap) cap <<= 1;
+	set->items= calloc(cap, sizeof(Token *));
+	if(!set->items) return false;
+	set->cap= cap;
+	set->count= 0;
+	return true;
+}
+
+static void token_ptr_set_destroy(TokenPtrSet *set) {
+	if(!set) return;
+	free(set->items);
+	set->items= NULL;
+	set->cap= 0;
+	set->count= 0;
+}
+
+static bool token_ptr_set_contains(const TokenPtrSet *set, const Token *t) {
+	if(!set || !set->items || !t) return false;
+	size_t mask= set->cap - 1;
+	size_t pos= token_ptr_hash(t) & mask;
+	while(true) {
+		Token *cur= set->items[pos];
+		if(!cur) return false;
+		if(cur == t) return true;
+		pos= (pos + 1) & mask;
+	}
+}
+
+static bool token_ptr_set_rehash(TokenPtrSet *set, size_t new_cap) {
+	Token **old_items= set->items;
+	size_t old_cap= set->cap;
+
+	Token **new_items= calloc(new_cap, sizeof(Token *));
+	if(!new_items) return false;
+
+	set->items= new_items;
+	set->cap= new_cap;
+	set->count= 0;
+
+	for(size_t i= 0; i < old_cap; i++) {
+		Token *cur= old_items[i];
+		if(!cur) continue;
+		size_t mask= set->cap - 1;
+		size_t pos= token_ptr_hash(cur) & mask;
+		while(set->items[pos]) {
+			pos= (pos + 1) & mask;
+		}
+		set->items[pos]= cur;
+		set->count++;
+	}
+
+	free(old_items);
+	return true;
+}
+
+static bool token_ptr_set_insert(TokenPtrSet *set, Token *t) {
+	if(!set || !set->items || !t) return false;
+	if(set->count * 10 >= set->cap * 7) {
+		if(!token_ptr_set_rehash(set, set->cap << 1)) return false;
+	}
+
+	size_t mask= set->cap - 1;
+	size_t pos= token_ptr_hash(t) & mask;
+	while(true) {
+		Token *cur= set->items[pos];
+		if(!cur) {
+			set->items[pos]= t;
+			set->count++;
+			return true;
+		}
+		if(cur == t) return true;
+		pos= (pos + 1) & mask;
+	}
+}
+
+static int cmp_accum_slot_ref_ptr(const void *a, const void *b) {
+	uintptr_t pa= (uintptr_t)((const AccumSlotRef *)a)->ptr;
+	uintptr_t pb= (uintptr_t)((const AccumSlotRef *)b)->ptr;
+	return (pa > pb) - (pa < pb);
+}
+
+static size_t accum_slot_ref_lower_bound(const AccumSlotRef *refs, size_t count, const Token *ptr) {
+	uintptr_t target= (uintptr_t)ptr;
+	size_t lo= 0;
+	size_t hi= count;
+	while(lo < hi) {
+		size_t mid= lo + (hi - lo) / 2;
+		uintptr_t cur= (uintptr_t)refs[mid].ptr;
+		if(cur < target)
+			lo= mid + 1;
+		else
+			hi= mid;
+	}
+	return lo;
+}
+
+static bool token_ptr_in_sorted(const Token *ptr, Token *const *sorted, size_t count) {
+	if(!ptr || !sorted || count == 0) return false;
+	size_t lo= 0;
+	size_t hi= count;
+	uintptr_t target= (uintptr_t)ptr;
+	while(lo < hi) {
+		size_t mid= lo + (hi - lo) / 2;
+		uintptr_t cur= (uintptr_t)sorted[mid];
+		if(cur == target) return true;
+		if(cur < target)
+			lo= mid + 1;
+		else
+			hi= mid;
+	}
+	return false;
+}
+
+static void null_accum_slots_for_ptr(Accum *accum,
+																const AccumSlotRef *refs,
+																size_t ref_count,
+																Token *ptr) {
+	if(!accum || !refs || ref_count == 0 || !ptr) return;
+	size_t pos= accum_slot_ref_lower_bound(refs, ref_count, ptr);
+	while(pos < ref_count && refs[pos].ptr == ptr) {
+		accum->tokens[refs[pos].index]= NULL;
+		pos++;
+	}
+}
+
 static void collect_tree_tokens(const Token *t, Token ***arr,
 																size_t *count, size_t *cap) {
 	if(!t) return;
@@ -96,7 +260,40 @@ static int cmp_token_ptr(const void *a, const void *b) {
 	return (pa > pb) - (pa < pb);
 }
 
+static void collect_orphan_component(Token *node,
+													 Token *const *live_sorted,
+													 size_t live_count,
+													 const TokenPtrSet *freed_set,
+													 TokenVec *component,
+													 unsigned mark_epoch) {
+	if(!node) return;
+	if(token_ptr_set_contains(freed_set, node)) return;
+	if(node->seen_epoch == mark_epoch) return;
+
+	node->seen_epoch= mark_epoch;
+	if(!token_vec_push(component, node)) {
+		log_fatal("collect_orphan_component: out of memory while collecting orphan graph");
+		abort();
+	}
+
+	for(size_t i= 0; i < node->child_count; i++) {
+		Child *c= &node->children[i];
+		if(c->is_text || !c->token) continue;
+
+		Token *child= c->token;
+		if(token_ptr_set_contains(freed_set, child) || token_ptr_in_sorted(child, live_sorted, live_count)) {
+			/* Do not free already-freed or live tokens through an orphan path. */
+			c->token= NULL;
+			continue;
+		}
+
+		collect_orphan_component(child, live_sorted, live_count, freed_set, component, mark_epoch);
+	}
+}
+
 static void free_accum_orphans(const Token *root, Accum *accum) {
+	if(!accum || accum->count == 0) return;
+
 	size_t cap= 64 + accum->count;
 	size_t count= 0;
 	Token **live= malloc(cap * sizeof(Token *));
@@ -105,31 +302,119 @@ static void free_accum_orphans(const Token *root, Accum *accum) {
 	collect_tree_tokens(root, &live, &count, &cap); // Collect live tokens from the tree
 	qsort(live, count, sizeof(Token *), cmp_token_ptr);
 
+	/* De-duplicate live pointers for fast membership checks. */
+	size_t live_count= 0;
+	for(size_t i= 0; i < count; i++) {
+		if(live_count == 0 || live[i] != live[live_count - 1]) {
+			live[live_count++]= live[i];
+		}
+	}
+
+	AccumSlotRef *refs= malloc(accum->count * sizeof(AccumSlotRef));
+	if(!refs) {
+		free(live);
+		return;
+	}
+
+	size_t ref_count= 0;
+	for(size_t i= 0; i < accum->count; i++) {
+		if(!accum->tokens[i]) continue;
+		refs[ref_count].ptr= accum->tokens[i];
+		refs[ref_count].index= i;
+		ref_count++;
+	}
+	qsort(refs, ref_count, sizeof(AccumSlotRef), cmp_accum_slot_ref_ptr);
+
+	TokenPtrSet freed_set;
+	if(!token_ptr_set_init(&freed_set, ref_count ? ref_count * 2 : 16)) {
+		free(refs);
+		free(live);
+		return;
+	}
+
+	TokenVec component= {0};
+	static unsigned orphan_mark_epoch= 1;
+	unsigned mark_epoch= orphan_mark_epoch++;
+	if(orphan_mark_epoch == 0) orphan_mark_epoch= 1;
+
 	for(size_t i= 0; i < accum->count; i++) {
 		Token *t= accum->tokens[i];
 		if(!t) continue;
-
-		/* Binary search in sorted live set */
-		size_t lo= 0, hi= count;
-		bool found= false;
-		while(lo < hi) {
-			size_t mid= (lo + hi) / 2;
-			if(live[mid] == t) {
-				found= true;
-				break;
-			}
-			if((uintptr_t)live[mid] < (uintptr_t)t)
-				lo= mid + 1;
-			else
-				hi= mid;
+		if(token_ptr_set_contains(&freed_set, t)) {
+			accum->tokens[i]= NULL;
+			continue;
 		}
-		if(!found) {
-			/* Orphan: free shallowly — token children are separate accum
-             * entries and are freed when their own slot is encountered. */
-			token_free_shallow(t);
+
+		if(token_ptr_in_sorted(t, live, live_count)) continue;
+
+		component.count= 0;
+		collect_orphan_component(t, live, live_count, &freed_set, &component, mark_epoch);
+		if(component.count == 0) {
+			accum->tokens[i]= NULL;
+			continue;
+		}
+
+		for(size_t k= 0; k < component.count; k++) {
+			Token *ptr= component.items[k];
+			(void)token_ptr_set_insert(&freed_set, ptr);
+			null_accum_slots_for_ptr(accum, refs, ref_count, ptr);
+			/* collect_orphan_component uses seen_epoch as a temporary mark; clear it
+			 * before token_free() so free-epoch matching cannot short-circuit cleanup. */
+			ptr->seen_epoch= 0;
+		}
+
+		token_free(t);
+	}
+
+	token_ptr_set_destroy(&freed_set);
+	free(component.items);
+	free(refs);
+	free(live);
+}
+
+static bool debug_bad_sentinel_enabled(void) {
+	const char *v= getenv("WTC_DEBUG_BAD_SENTINEL");
+	return v && v[0] && v[0] != '0';
+}
+
+static ssize_t find_nul_colon(const char *s, size_t len) {
+	if(!s || len < 2) return -1;
+	for(size_t i= 0; i + 1 < len; i++) {
+		if((unsigned char)s[i] == 0x00 && s[i + 1] == ':') {
+			return (ssize_t)i;
 		}
 	}
-	free(live);
+	return -1;
+}
+
+static void debug_dump_bad_sentinel_window(const char *label, const ThreadBuf *tb, const Token *t) {
+	if(!debug_bad_sentinel_enabled() || !tb || !tb->buf) return;
+	ssize_t hit= find_nul_colon(tb->buf, tb->len);
+	if(hit < 0) return;
+
+	const char *type_name= (t && t->type_name) ? t->type_name : "(null)";
+	const char *name= (t && t->name) ? t->name : "(null)";
+	fprintf(stderr,
+	        "DEBUG bad-sentinel: label=%s token=%p type=%d type_name=%s name=%s len=%zu nul_colon_at=%zd\n",
+	        label ? label : "(null)",
+	        (void *)t,
+	        t ? (int)t->type : -1,
+	        type_name,
+	        name,
+	        tb->len,
+	        hit);
+
+	size_t pos= (size_t)hit;
+	size_t start= (pos > 24) ? (pos - 24) : 0;
+	size_t end= pos + 96;
+	if(end > tb->len) end= tb->len;
+
+	fprintf(stderr, "DEBUG bad-sentinel bytes: ");
+	for(size_t i= start; i < end; i++) {
+		unsigned char ch= (unsigned char)tb->buf[i];
+		fprintf(stderr, "[%zu]=0x%02x '%c' ", i, ch, (ch >= 0x20 && ch < 0x7f) ? ch : '?');
+	}
+	fprintf(stderr, "\n");
 }
 
 
@@ -690,11 +975,14 @@ static Token *parse_gallery_image_line(const char *line, size_t line_len,
 
 			size_t prefix_len= p + 5;
 			size_t new_len= first->text_len - prefix_len;
-			const char *view= wiki_thread_buf_append_to_tokens(first->text + prefix_len, new_len);
+			char *owned= malloc(new_len + 1);
+			if(!owned) continue;
+			if(new_len > 0) memcpy(owned, first->text + prefix_len, new_len);
+			owned[new_len]= '\0';
 			if(first->text_owned && first->text) free((void *)first->text);
-			first->text= view;
+			first->text= owned;
 			first->text_len= new_len;
-			first->text_owned= false;
+			first->text_owned= true;
 		}
 	}
 	if(!out) {
@@ -1044,6 +1332,7 @@ static void run_nested_plain_pipeline(ThreadBuf *scratch,
 	}
 
 	if(is_td_inner || is_ext_inner) {
+		debug_dump_bad_sentinel_window("run_nested_plain_pipeline:before-stage4", scratch, t);
 		bool is_poem_ext_inner= is_ext_inner && t && t->name && strcmp(t->name, "poem") == 0;
 		bool ext_inner_has_sentinel = false;
 		if (is_ext_inner) {
@@ -1065,6 +1354,7 @@ static void run_nested_plain_pipeline(ThreadBuf *scratch,
 			hr_root_type= TOKEN_PLAIN;
 		}
 		parse_hr_and_double_underscore(scratch, cfg, accum, hr_root_type, t->type_name);
+		debug_dump_bad_sentinel_window("run_nested_plain_pipeline:after-stage4", scratch, t);
 		const ParserConfig *links_cfg= cfg;
 		ParserConfig cfg_local;
 		if(is_ext_inner && cfg) {
@@ -1072,7 +1362,9 @@ static void run_nested_plain_pipeline(ThreadBuf *scratch,
 			cfg_local.in_ext= true;
 			links_cfg= &cfg_local;
 		}
+		debug_dump_bad_sentinel_window("run_nested_plain_pipeline:before-stage5", scratch, t);
 		parse_links(scratch, links_cfg, accum, page, false);
+		debug_dump_bad_sentinel_window("run_nested_plain_pipeline:after-stage5", scratch, t);
 		parse_quotes_stage6_per_line(scratch, cfg, accum);
 		parse_external_links(scratch, cfg, accum, false);
 		parse_magic_links(scratch, cfg, accum);
@@ -1086,9 +1378,12 @@ static void run_nested_plain_pipeline(ThreadBuf *scratch,
 			}
 		}
 		parse_converter(scratch, cfg, accum);
+		debug_dump_bad_sentinel_window("run_nested_plain_pipeline:after-stage10", scratch, t);
 	} else if(is_heading_title) {
+		debug_dump_bad_sentinel_window("run_nested_plain_pipeline:heading-before-stage5", scratch, t);
 		parse_html(scratch, cfg, accum);
 		parse_links(scratch, cfg, accum, page, false);
+		debug_dump_bad_sentinel_window("run_nested_plain_pipeline:heading-after-stage5", scratch, t);
 		parse_quotes_stage6_per_line(scratch, cfg, accum);
 		parse_external_links(scratch, cfg, accum, false);
 		parse_magic_links(scratch, cfg, accum);

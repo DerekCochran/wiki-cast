@@ -297,15 +297,33 @@ void build_from_str(Token *parent, const char *str, size_t str_len,
 	 * on NUL-termination. */
 	const char *s= str;
 
-	/* Free existing children first. Only free owned text buffers; views into
-	 * the per-thread tokens arena must not be freed here. */
+	/* If caller passed one of our owned child buffers as input, copy it first
+	 * because existing children are freed before reconstruction. */
+	char *src_copy= NULL;
 	for(size_t i= 0; i < parent->child_count; i++) {
 		Child *c= &parent->children[i];
-		if(c->is_text) {
-			if(c->text_owned && c->text) free((void*)c->text);
+		if(c->is_text && c->text == str) {
+			if(c->text_owned) {
+				src_copy= malloc(str_len + 1);
+				if(!src_copy) {
+					log_fatal("build_from_str: malloc failed while copying aliased input");
+					abort();
+				}
+				if(str_len > 0) memcpy(src_copy, str, str_len);
+				src_copy[str_len]= '\0';
+				s= src_copy;
+			}
 		}
-		/* Token pointers are owned by the accum — do NOT free them here */
 	}
+
+	/* Free existing children first. Token children are owned by the accum. */
+	for(size_t i= 0; i < parent->child_count; i++) {
+		Child *c= &parent->children[i];
+		if(c->is_text && c->text_owned && c->text) {
+			free((void *)c->text);
+		}
+	}
+
 	parent->child_count= 0;
 
 	/* Walk str, splitting on \0 … \x7F markers.
@@ -339,49 +357,79 @@ void build_from_str(Token *parent, const char *str, size_t str_len,
 			}
 		} else {
 			/* Inside marker — find the \x7F */
-				if(c == '\x7F' || i == str_len) {
+			if(c == '\x7F' || i == str_len) {
 				/* Segment is "N<type_ch>" where N is decimal */
-					const char *marker_content= s + seg_start;
+				const char *marker_content= s + seg_start;
 				size_t marker_len= i - seg_start;
+				bool missing_terminator= (c != '\x7F');
 
-				if(marker_len >= 2) {
-					/* Parse decimal index (all but last char) */
-					size_t idx= 0;
-					bool valid= true;
-					for(size_t d= 0; d < marker_len - 1; d++) {
-						char dc= marker_content[d];
-						if(dc >= '0' && dc <= '9') {
-							idx= idx * 10 + (size_t)(dc - '0');
-						} else {
-							valid= false;
-							break;
-						}
+				if(missing_terminator || marker_len < 2) {
+					fprintf(stderr,
+					        "DEBUG build_from_str: INVALID sentinel at parent=%p, reason=%s, marker_len=%zu, seg_start=%zu, cursor=%zu\n",
+					        (void*)parent,
+					        missing_terminator ? "missing DEL terminator" : "marker too short",
+					        marker_len,
+					        seg_start,
+					        i);
+					fprintf(stderr, "DEBUG build_from_str: INVALID sentinel raw bytes: ");
+					for(size_t dbg= 0; dbg < marker_len; dbg++) {
+						unsigned char ch= (unsigned char)marker_content[dbg];
+						fprintf(stderr, "[%zu]=0x%02x '%c' ", dbg, ch,
+						        (ch >= 0x20 && ch < 0x7f) ? ch : '?');
 					}
-					if(valid) {
-						Token *child= accum_get(accum, idx);
-						if(child) {
-							token_append_child(parent, child);
-						} else {
-							log_error("build_from_str: accum[%zu] is NULL", idx);
-						}
-					} else {
-						/* Not a valid sentinel — emit as text into a leased scratch
-							* buffer using the ThreadBuf API (avoid heap allocs). The
-							* desired sequence is: '\0' + marker_content + '\x7F'. */
-						ThreadBuf *scratch = wiki_thread_buf_acquire_scratch();
-						/* prepend NUL byte */
-						wiki_thread_buf_putc(scratch, '\0');
-						if(marker_len > 0) {
-							sz_string_view_t v = { marker_content, marker_len };
-							wiki_thread_buf_append(scratch, v);
-						}
-						/* trailing DEL */
-						wiki_thread_buf_putc(scratch, '\x7F');
-						const char *p = wiki_thread_buf_append_to_tokens(scratch->buf, scratch->len);
-						token_append_text_n(parent, p, scratch->len);
-						wiki_thread_buf_release_scratch(scratch);
-					}
+					fprintf(stderr, "\n");
+					log_fatal("build_from_str: invalid sentinel (reason=%s, marker_len=%zu, seg_start=%zu, cursor=%zu)",
+					          missing_terminator ? "missing DEL terminator" : "marker too short",
+					          marker_len,
+					          seg_start,
+					          i);
+					abort();
 				}
+
+				/* Parse decimal index (all but last char). */
+				size_t idx= 0;
+				for(size_t d= 0; d < marker_len - 1; d++) {
+					unsigned char dc= (unsigned char)marker_content[d];
+					if(dc < '0' || dc > '9') {
+						fprintf(stderr,
+						        "DEBUG build_from_str: INVALID sentinel at parent=%p, marker_len=%zu, failed_at=%zu, byte=0x%02x\n",
+						        (void*)parent,
+						        marker_len,
+						        d,
+						        dc);
+						fprintf(stderr, "DEBUG build_from_str: INVALID sentinel raw bytes: ");
+						for(size_t dbg= 0; dbg < marker_len; dbg++) {
+							unsigned char ch= (unsigned char)marker_content[dbg];
+							fprintf(stderr, "[%zu]=0x%02x '%c' ", dbg, ch,
+							        (ch >= 0x20 && ch < 0x7f) ? ch : '?');
+						}
+						fprintf(stderr, "\n");
+						log_fatal("build_from_str: invalid sentinel digit at offset=%zu (byte=0x%02x)", d, dc);
+						abort();
+					}
+					idx= idx * 10 + (size_t)(dc - '0');
+				}
+
+				Token *child= accum_get(accum, idx);
+				if(!child) {
+					unsigned char type_ch= (unsigned char)marker_content[marker_len - 1];
+					fprintf(stderr,
+					        "DEBUG build_from_str: INVALID sentinel unresolved idx=%zu type=0x%02x '%c' marker_len=%zu\n",
+					        idx,
+					        type_ch,
+					        (type_ch >= 0x20 && type_ch < 0x7f) ? type_ch : '?',
+					        marker_len);
+					fprintf(stderr, "DEBUG build_from_str: INVALID sentinel raw bytes: ");
+					for(size_t dbg= 0; dbg < marker_len; dbg++) {
+						unsigned char ch= (unsigned char)marker_content[dbg];
+						fprintf(stderr, "[%zu]=0x%02x '%c' ", dbg, ch,
+						        (ch >= 0x20 && ch < 0x7f) ? ch : '?');
+					}
+					fprintf(stderr, "\n");
+					log_fatal("build_from_str: sentinel points to missing accum index=%zu", idx);
+					abort();
+				}
+				token_append_child(parent, child);
 
 				seg_start= i + 1;
 				in_marker= false;
@@ -392,7 +440,7 @@ void build_from_str(Token *parent, const char *str, size_t str_len,
 		}
 	}
 
-	/* no src to free (we operated on the caller-owned buffer `str`) */
+	if(src_copy) free(src_copy);
 }
 
 /* Recursively expand sentinel markers in all text descendants of a token.

@@ -211,6 +211,15 @@ static void append_fragment_children(Token *dst, Token *frag) {
 	}
 }
 
+static void accum_clear_token(Accum *accum, Token *tok) {
+	if(!accum || !tok) return;
+	for(size_t i= 0; i < accum->count; i++) {
+		if(accum->tokens[i] == tok) {
+			accum->tokens[i]= NULL;
+		}
+	}
+}
+
 /* ---- JS parity: validate(key, val, config, extOrType, halfParsed=true) ---- *
  *                                                                              *
  * Returns true if the parameter value is valid for the given key and file      *
@@ -809,6 +818,8 @@ static void append_file_image_params(Token *file_tok,
 																														 page);
 						if(val) {
 							append_fragment_children(param, val);
+							accum_clear_token(accum, val);
+							token_free_shallow(val);
 						}
 						/* JS parity: ImageParameterToken is always created with the captured
 						 * value string (even empty ""), so it always has at least one text
@@ -840,6 +851,8 @@ static void append_file_image_params(Token *file_tok,
 													Token *cap= parse_inner_fragment(seg_ptr, seg_len, cfg, accum, "text", tidy, true, true, page);
 					if(cap) {
 						append_fragment_children(param, cap);
+						accum_clear_token(accum, cap);
+						token_free_shallow(cap);
 					}
 					/* JS parity: empty caption segment still serializes as one empty text child. */
 					if(param->child_count == 0) {

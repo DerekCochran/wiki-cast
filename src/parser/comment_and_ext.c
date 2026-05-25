@@ -1078,15 +1078,29 @@ static void split_gallery_unclosed_caption_local(Token *img,
 		if(needs_split) {
 			size_t left_len= split_at;
 			size_t right_len= tlen - (split_at + 1);
-			const char *left_view= wiki_thread_buf_append_to_tokens(txt, left_len);
+			char *right_owned= NULL;
+			char *left_owned= malloc(left_len + 1);
+			if(!left_owned) return;
+			if(right_len > 0) {
+				right_owned= malloc(right_len);
+				if(!right_owned) {
+					free(left_owned);
+					return;
+				}
+				memcpy(right_owned, pipe_ptr + 1, right_len);
+			}
+			if(left_len > 0) memcpy(left_owned, txt, left_len);
+			left_owned[left_len]= '\0';
 			if(cap->children[0].text_owned && cap->children[0].text) {
 				free((void *)cap->children[0].text);
 			}
-			cap->children[0].text= left_view;
+			cap->children[0].text= left_owned;
 			cap->children[0].text_len= left_len;
-			cap->children[0].text_owned= false;
+			cap->children[0].text_owned= true;
 
-			ThreadBuf *tb= wiki_thread_buf_acquire_scratch_from_data(pipe_ptr + 1, right_len);
+			ThreadBuf *tb= wiki_thread_buf_acquire_scratch_from_data(
+				right_len > 0 ? right_owned : "", right_len);
+			if(right_owned) free(right_owned);
 			if(!tb) return;
 			parse_comment_and_ext(tb, cfg, accum, false);
 			parse_braces(tb, cfg, accum);
@@ -1325,11 +1339,14 @@ static Token *parse_gallery_image_line_local(const char *line, size_t line_len,
 
 			size_t prefix_len= p + 5;
 			size_t new_len= first->text_len - prefix_len;
-			const char *view= wiki_thread_buf_append_to_tokens(first->text + prefix_len, new_len);
+			char *owned= malloc(new_len + 1);
+			if(!owned) continue;
+			if(new_len > 0) memcpy(owned, first->text + prefix_len, new_len);
+			owned[new_len]= '\0';
 			if(first->text_owned && first->text) free((void *)first->text);
-			first->text= view;
+			first->text= owned;
 			first->text_len= new_len;
-			first->text_owned= false;
+			first->text_owned= true;
 		}
 		split_gallery_unclosed_caption_local(out, cfg, accum);
 		/* Preserve the original gallery line target text exactly as parsed. */

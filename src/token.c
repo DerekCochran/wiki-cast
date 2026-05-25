@@ -318,7 +318,9 @@ static void token_to_string_rec(const Token *t, ThreadBuf *tb) {
 				/* Special-case: leading ':' text child should not be
                      * separated from the following target by a '|'. */
 				if(!(i == 1 && t->children[0].is_text && t->children[0].text && t->children[0].text[0] == ':')) {
-					if(t->data.link.magic_pipe) {
+					/* JS parity: magic-pipe delimiter applies to the target/text split,
+					 * not every subsequent file parameter separator. */
+					if(t->data.link.magic_pipe && i == 1) {
 						thread_buf_append(tb, "{{!}}", 5);
 					} else {
 						thread_buf_append_char(tb, '|');
