@@ -1348,10 +1348,10 @@ static void run_nested_plain_pipeline(ThreadBuf *scratch,
 		parse_comment_and_ext(scratch, cfg, accum, false);
 	}
 
-	/* JS parity: td-inner nested parsing starts at stage 4; stage 1 braces
-	 * should not run here (templates inside table cells are already handled
-	 * before table tokenization on the root stream). */
-	if(!is_heading_title && !is_td_inner) {
+	/* JS parity: this post-build nested pass models later stages (4+).
+	 * Do not run braces here for td-inner or ext-inner; running stage 1 this
+	 * late can over-parse constructs JS leaves as plain text. */
+	if(!is_heading_title && !is_td_inner && !is_ext_inner) {
 		parse_braces_with_heading(scratch, cfg, accum, !is_poem_ext_inner);
 	}
 
