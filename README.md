@@ -147,9 +147,12 @@ sudo chown djc:djc -R bindings/node/build
 # run Valgrind Callgrind (very slow, detailed)
 sudo ./scripts/profile_wikitext.sh --callgrind --config node_modules/wikiparser-node/config/enwiki.json --testsdir tests/wikitext
 callgrind_annotate /home/djc/git/wiki-cast/build_profile/callgrind.out --auto=yes
+sudo chown djc:djc -R bindings/node/build
 
 # run gprof
 sudo ./scripts/profile_wikitext.sh --gprof --config node_modules/wikiparser-node/config/enwiki.json --testsdir tests/wikitext
+sudo chown djc:djc -R bindings/node/build
+
 ```
 
 - **Interpretation:** Start with the flamegraph to find heavy call stacks. For hotspots, run Callgrind on a smaller reproducer to inspect callers/callees in detail (open `callgrind.out` with `kcachegrind`). Use `perf report` and `perf script` for quick sampling summaries.
