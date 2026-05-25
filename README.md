@@ -143,6 +143,7 @@ git clone https://github.com/brendangregg/FlameGraph FlameGraph
 # run perf (default — may require sudo)
 sudo ./scripts/profile_wikitext.sh --perf --config node_modules/wikiparser-node/config/enwiki.json --testsdir tests/wikitext
 sudo chown djc:djc -R bindings/node/build
+sudo chown djc:djc -R build_profile
 
 # run Valgrind Callgrind (very slow, detailed)
 sudo ./scripts/profile_wikitext.sh --callgrind --config node_modules/wikiparser-node/config/enwiki.json --testsdir tests/wikitext

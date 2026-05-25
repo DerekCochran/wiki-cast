@@ -232,14 +232,6 @@ static ScratchBucket scratch_heap_bucket_for_cap(size_t cap) {
 	return SCRATCH_BUCKET_GT_1M;
 }
 
-static size_t scratch_bucket_reserve_need(size_t len) {
-	ScratchBucket bucket= scratch_bucket_for_need(len);
-	if(bucket == SCRATCH_BUCKET_SMALL) return WIKI_THREAD_BUF_INLINE_CAP - 1;
-	if(bucket == SCRATCH_BUCKET_64_TO_1K) return SCRATCH_BUCKET_1K_CAP - 1;
-	if(bucket == SCRATCH_BUCKET_1K_TO_1M) return SCRATCH_BUCKET_1M_CAP - 1;
-	return len;
-}
-
 static ScratchBucket scratch_bucket_for_buffer(const ThreadBuf *scratch) {
 	if(!scratch || !scratch->is_on_heap) return SCRATCH_BUCKET_SMALL;
 	return scratch_heap_bucket_for_cap(scratch->cap);
@@ -280,6 +272,18 @@ static size_t scratch_acquire_index(ThreadBuffers *tb, ScratchBucket desired_buc
 	size_t idx= scratch_free_pop_bucket(tb, desired_bucket, avoid_idx);
 	if(idx != INVALID_INDEX) {
 		return idx;
+	}
+
+	if(desired_bucket == SCRATCH_BUCKET_SMALL) {
+		idx= scratch_free_pop_bucket(tb, SCRATCH_BUCKET_64_TO_1K, avoid_idx);
+		if(idx != INVALID_INDEX) {
+			return idx;
+		}
+		idx= scratch_free_pop_bucket(tb, SCRATCH_BUCKET_1K_TO_1M, avoid_idx);
+		if(idx != INVALID_INDEX) {
+			return idx;
+		}
+		return scratch_free_pop_bucket(tb, SCRATCH_BUCKET_GT_1M, avoid_idx);
 	}
 
 	if(desired_bucket == SCRATCH_BUCKET_64_TO_1K) {
@@ -763,8 +767,8 @@ static ThreadBuf *acquire_scratch_with_len_internal(ThreadBuffers *tb, size_t le
 	tb->scratch_in_use[idx]= true;
 	tb->scratch_next_free[idx]= INVALID_INDEX;
 
-	/* Prime this buffer to the target bucket so repeated callers reuse buckets. */
-	wiki_thread_buf_reserve(scratch, scratch_bucket_reserve_need(len));
+	/* Reserve only what this call needs to avoid inflating pool buffers. */
+	wiki_thread_buf_reserve(scratch, len);
 	scratch->len= 0;
 	if(scratch->cap > 0) {
 		scratch->buf[0]= '\0';
