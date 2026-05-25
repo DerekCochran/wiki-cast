@@ -89,7 +89,7 @@ function testExport(argv) {
   const args = argv.slice(2);
   const options = {
     input: null,
-    start: 37_670,
+    start: 39_220,
     end: 0, // 0 means no limit
   };
 
