@@ -1320,6 +1320,8 @@ static void run_nested_plain_pipeline(ThreadBuf *scratch,
 																			const ParserConfig *cfg,
 																					Accum *accum,
 																					const char *page) {
+	bool is_poem_ext_inner= is_ext_inner && t && t->name && strcmp(t->name, "poem") == 0;
+
 	if(is_ext_inner) {
 		parse_comment_and_ext(scratch, cfg, accum, false);
 	}
@@ -1328,12 +1330,11 @@ static void run_nested_plain_pipeline(ThreadBuf *scratch,
 	 * should not run here (templates inside table cells are already handled
 	 * before table tokenization on the root stream). */
 	if(!is_heading_title && !is_td_inner) {
-		parse_braces(scratch, cfg, accum);
+		parse_braces_with_heading(scratch, cfg, accum, !is_poem_ext_inner);
 	}
 
 	if(is_td_inner || is_ext_inner) {
 		debug_dump_bad_sentinel_window("run_nested_plain_pipeline:before-stage4", scratch, t);
-		bool is_poem_ext_inner= is_ext_inner && t && t->name && strcmp(t->name, "poem") == 0;
 		bool ext_inner_has_sentinel = false;
 		if (is_ext_inner) {
 			const char _zn_run = '\0';
@@ -1350,10 +1351,12 @@ static void run_nested_plain_pipeline(ThreadBuf *scratch,
 			else parse_table_skip_first_line(scratch, cfg, accum);
 		}
 		TokenType hr_root_type= t->type;
-		if(ext_inner_has_sentinel) {
+		if(ext_inner_has_sentinel && !is_poem_ext_inner) {
 			hr_root_type= TOKEN_PLAIN;
 		}
-		parse_hr_and_double_underscore(scratch, cfg, accum, hr_root_type, t->type_name);
+		const char *hr_root_name= t->type_name;
+		if(is_ext_inner && t && t->name) hr_root_name= t->name;
+		parse_hr_and_double_underscore(scratch, cfg, accum, hr_root_type, hr_root_name);
 		debug_dump_bad_sentinel_window("run_nested_plain_pipeline:after-stage4", scratch, t);
 		const ParserConfig *links_cfg= cfg;
 		ParserConfig cfg_local;
@@ -2236,7 +2239,8 @@ static void stage1_parse_braces_on_accum(const ParserConfig *cfg, Accum *accum) 
 		scratch->buf[txt_len]= '\0';
 		scratch->len= txt_len;
 
-		parse_braces(scratch, cfg, accum);
+		bool allow_heading= !(tok->name && strcmp(tok->name, "poem") == 0);
+		parse_braces_with_heading(scratch, cfg, accum, allow_heading);
 		if(!(scratch->len == txt_len && sz_equal(scratch->buf, txt, txt_len))) {
 			build_from_str(tok, scratch->buf, scratch->len, accum);
 		}
@@ -2439,9 +2443,28 @@ Token *wiki_parse_with_page(const char *wikitext, size_t input_len, const Parser
      * token, not just root-reachable tokens). This ensures we also process
      * parameter-value tokens embedded inside sentinels of tokens not yet
      * linked into the root tree (e.g. templates inside table-attr-dirty). */
-	for(size_t _ai= 0; _ai < accum.count; _ai++) {
-		if(accum.tokens[_ai]) {
-			postprocess_parameter_value_inline(accum.tokens[_ai], cfg, &accum, page);
+	/* JS parity: parseOnce walks accum dynamically, so newly created tokens can
+	 * also be processed. Keep that behavior, but cap growth on malformed inputs
+	 * so post-build processing cannot run forever. */
+	{
+		const size_t max_inline_passes= 3;
+		const size_t max_inline_tokens= 50000;
+		size_t pass= 0;
+		size_t scan_start= 0;
+
+		while(scan_start < accum.count && pass < max_inline_passes && scan_start < max_inline_tokens) {
+			size_t scan_end= accum.count;
+			if(scan_end > max_inline_tokens) scan_end= max_inline_tokens;
+
+			for(size_t _ai= scan_start; _ai < scan_end; _ai++) {
+				if(accum.tokens[_ai]) {
+					postprocess_parameter_value_inline(accum.tokens[_ai], cfg, &accum, page);
+				}
+			}
+
+			if(accum.count <= scan_end) break;
+			scan_start= scan_end;
+			pass++;
 		}
 	}
 

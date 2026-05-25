@@ -345,7 +345,8 @@ void parse_hr_and_double_underscore(ThreadBuf *tb, const ParserConfig *cfg, Accu
 									TokenType root_type, const char *root_name) {
 	if(!tb || !tb->buf) return;
 
-	bool prefixed= root_type != TOKEN_ROOT && !(root_type == TOKEN_EXT_INNER && root_name && strcmp(root_name, "poem") == 0);
+	bool poem_ctx= root_name && strcmp(root_name, "poem") == 0;
+	bool prefixed= root_type != TOKEN_ROOT && !(root_type == TOKEN_EXT_INNER && poem_ctx);
 	if(prefixed) {
 		char *pref= malloc(tb->len + 1);
 		assert(pref);
@@ -369,7 +370,7 @@ void parse_hr_and_double_underscore(ThreadBuf *tb, const ParserConfig *cfg, Accu
 			|| strcmp(root_name, "attr-value") == 0);
 
 	/* Heading finalization: line-at-a-time forward scan */
-	if(!config_excluded(cfg, "heading") && !skip_heading_for_param_ctx) {
+	if(!config_excluded(cfg, "heading") && !skip_heading_for_param_ctx && !poem_ctx) {
 		size_t out_cap2 = tb->len * 2 + 64;
 		char *out2 = malloc(out_cap2);
 		if(!out2) { log_fatal("OOM in heading finalization"); abort(); }

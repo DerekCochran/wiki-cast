@@ -22,3 +22,8 @@
  * safe for further stages.
  */
 void parse_braces(ThreadBuf *tb, const ParserConfig *cfg, Accum *accum);
+
+/* Same as parse_braces() but allows callers (poem ext-inner parity) to
+ * disable heading recognition while keeping template/arg parsing enabled. */
+void parse_braces_with_heading(ThreadBuf *tb, const ParserConfig *cfg, Accum *accum,
+								 bool allow_heading);

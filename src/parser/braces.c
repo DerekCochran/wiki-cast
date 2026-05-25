@@ -746,15 +746,24 @@ static Token *build_template_token(const char **parts_restored, const size_t *pa
 				char *prefix= trim_copy(title_part, prefix_len);
 				if(prefix && (str_list_contains_ci(&cfg->parser_function_subst, prefix)
 								 || str_list_contains_ci(&cfg->parser_function_raw, prefix))) {
-					size_t mod_len= prefix_len + 1;
-					while(mod_len < title_part_len && isspace((unsigned char)title_part[mod_len])) {
-						mod_len++;
+					/* JS parity: consume leading whitespace and c/n sentinels from the
+					 * first argument after the modifier colon into the modifier slice. */
+					size_t mt_len= 0;
+					while(prefix_len + 1 + mt_len < title_part_len) {
+						size_t p= prefix_len + 1 + mt_len;
+						if(isspace((unsigned char)title_part[p])) {
+							mt_len++;
+							continue;
+						}
+						size_t sl= 0;
+						if(parse_sentinel_at_allowed(title_part, title_part_len, p, "cn", &sl)) {
+							mt_len+= sl;
+							continue;
+						}
+						break;
 					}
-					t->data.transclude.modifier= malloc(mod_len + 1);
-					if(t->data.transclude.modifier) {
-						sz_copy(t->data.transclude.modifier, title_part, mod_len);
-						t->data.transclude.modifier[mod_len]= '\0';
-					}
+					size_t mod_len= prefix_len + 1 + mt_len;
+					t->data.transclude.modifier= build_transclude_modifier(title_part, title_part_len, mod_len, accum);
 					title_part= title_part + mod_len;
 					title_part_len-= mod_len;
 				}
@@ -1347,7 +1356,8 @@ static char braces_arg_symbol(const char *inner, size_t inner_len, const ParserC
 
 static bool braces_state_machine(ThreadBuf *tb, const ParserConfig *cfg,
 											Accum *accum, char **link_stack, size_t link_count,
-											const size_t *link_stack_lens) {
+										const size_t *link_stack_lens,
+										bool allow_heading) {
 	if(!tb || !tb->buf) return false;
 	BraceFrame *stack= malloc(64 * sizeof(BraceFrame));
 	if(!stack) {
@@ -1703,7 +1713,7 @@ static bool braces_state_machine(ThreadBuf *tb, const ParserConfig *cfg,
 						top_requeued= true;
 					}
 				}
-			} else if(matched && evkind == BRACE_EVT_HEADING_OPEN) {
+			} else if(matched && evkind == BRACE_EVT_HEADING_OPEN && allow_heading) {
 				/* Track heading lines so newline can close and tokenize them. */
 				BraceFrame heading_frame;
 				if(brace_frame_init(&heading_frame, "=", 1, cur_index, cur_index + syntax_len, false)) {
@@ -2128,7 +2138,8 @@ static void main_braces_run_pass(void *user_data) {
 }
 
 /* Main parse function */
-void parse_braces(ThreadBuf *tb, const ParserConfig *cfg, Accum *accum) {
+void parse_braces_with_heading(ThreadBuf *tb, const ParserConfig *cfg, Accum *accum,
+									 bool allow_heading) {
 	if(!tb || !tb->buf) return;
 
 	/* First, replace simple innermost triple-brace args. */
@@ -2163,7 +2174,8 @@ void parse_braces(ThreadBuf *tb, const ParserConfig *cfg, Accum *accum) {
 	log_debug_env_token("WTC_DEBUG_STAGE_1", NULL,
 							  "[C parseBraces] entering state machine: len=%zu, buf=%.200s, link_count=%zu",
 							  tb->len, tb->buf, link_count);
-	braces_state_machine(tb, cfg, accum, link_stack, link_count, link_stack_lens);
+	braces_state_machine(tb, cfg, accum, link_stack, link_count, link_stack_lens,
+							allow_heading);
 
 	/* Final restoration of parked [[...]] / -{...}- placeholders. */
 	{
@@ -2184,4 +2196,8 @@ void parse_braces(ThreadBuf *tb, const ParserConfig *cfg, Accum *accum) {
 	for(size_t i= 0; i < link_count; i++) free(link_stack[i]);
 	free(link_stack);
 	free(link_stack_lens);
+}
+
+void parse_braces(ThreadBuf *tb, const ParserConfig *cfg, Accum *accum) {
+	parse_braces_with_heading(tb, cfg, accum, true);
 }
