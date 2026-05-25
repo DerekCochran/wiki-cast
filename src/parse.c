@@ -1736,16 +1736,78 @@ static AttrValueParseMode classify_attr_value_parse_mode(const Token *parent,
 	return ATTR_VALUE_PARSE_NONE;
 }
 
+static bool token_has_ext_inner_ancestor(const Token *target, const Accum *accum) {
+	if(!target || !accum || accum->count == 0) return false;
+
+	size_t cap= accum->count;
+	const Token **stack= malloc(cap * sizeof(*stack));
+	const Token **seen= malloc(cap * sizeof(*seen));
+	if(!stack || !seen) {
+		free((void *)stack);
+		free((void *)seen);
+		return false;
+	}
+
+	size_t sp= 0;
+	size_t seen_n= 0;
+	stack[sp++]= target;
+	seen[seen_n++]= target;
+
+	while(sp > 0) {
+		const Token *cur= stack[--sp];
+		for(size_t ai= 0; ai < accum->count; ai++) {
+			Token *parent= accum->tokens[ai];
+			if(!parent || parent == cur) continue;
+
+			bool is_parent= false;
+			for(size_t ci= 0; ci < parent->child_count; ci++) {
+				if(parent->children[ci].is_text) continue;
+				if(parent->children[ci].token == cur) {
+					is_parent= true;
+					break;
+				}
+			}
+			if(!is_parent) continue;
+
+			if(parent->type == TOKEN_EXT_INNER && parent->type_name && strcmp(parent->type_name, "ext-inner") == 0) {
+				free((void *)stack);
+				free((void *)seen);
+				return true;
+			}
+
+			bool already_seen= false;
+			for(size_t si= 0; si < seen_n; si++) {
+				if(seen[si] == parent) {
+					already_seen= true;
+					break;
+				}
+			}
+			if(!already_seen && seen_n < cap && sp < cap) {
+				seen[seen_n++]= parent;
+				stack[sp++]= parent;
+			}
+		}
+	}
+
+	free((void *)stack);
+	free((void *)seen);
+	return false;
+}
+
 static void postprocess_parameter_value_inline_impl(Token *t, const ParserConfig *cfg, Accum *accum,
 																				const char *page, const Token *parent,
-																				const Token *grandparent) {
+																						const Token *grandparent,
+																						bool in_ext_context) {
 	if(!t) return;
 
 	log_debug_env_token("DEBUG_PARAM_VALUE", t, "postprocess_parameter_value_inline_impl start");
 
+	bool self_is_ext_inner= (t->type == TOKEN_EXT_INNER && t->type_name && strcmp(t->type_name, "ext-inner") == 0);
+	bool current_in_ext_context= in_ext_context || self_is_ext_inner;
+
 	for(size_t i= 0; i < t->child_count; i++) {
 		if(!t->children[i].is_text && t->children[i].token) {
-			postprocess_parameter_value_inline_impl(t->children[i].token, cfg, accum, page, t, parent);
+			postprocess_parameter_value_inline_impl(t->children[i].token, cfg, accum, page, t, parent, current_in_ext_context);
 		}
 	}
 
@@ -1772,6 +1834,15 @@ static void postprocess_parameter_value_inline_impl(Token *t, const ParserConfig
 		if(!is_parameter_value && !is_arg_default && !is_parameter_key) {
 			return;
 		}
+	}
+
+	bool use_in_ext_links= current_in_ext_context || (cfg && cfg->in_ext);
+	ParserConfig links_cfg_local;
+	const ParserConfig *links_cfg= cfg;
+	if(use_in_ext_links && cfg && !cfg->in_ext) {
+		links_cfg_local= *cfg;
+		links_cfg_local.in_ext= true;
+		links_cfg= &links_cfg_local;
 	}
 
 	/* Handle brace spans split across mixed text/token children (for example
@@ -1856,7 +1927,7 @@ static void postprocess_parameter_value_inline_impl(Token *t, const ParserConfig
 					if(is_parameter_value) parse_table(tmp_ser, cfg, accum);
 					else parse_table_skip_first_line(tmp_ser, cfg, accum);
 					parse_hr_and_double_underscore(tmp_ser, cfg, accum, TOKEN_PLAIN, "parameter-value");
-					parse_links(tmp_ser, cfg, accum, page, false);
+					parse_links(tmp_ser, links_cfg, accum, page, false);
 					parse_quotes_stage6_per_line(tmp_ser, cfg, accum);
 					parse_external_links(tmp_ser, cfg, accum, false);
 					parse_magic_links(tmp_ser, cfg, accum);
@@ -1888,7 +1959,7 @@ static void postprocess_parameter_value_inline_impl(Token *t, const ParserConfig
 
 						for(size_t i= 0; i < t->child_count; i++) {
 							if(!t->children[i].is_text && t->children[i].token) {
-								postprocess_parameter_value_inline_impl(t->children[i].token, cfg, accum, page, t, parent);
+								postprocess_parameter_value_inline_impl(t->children[i].token, cfg, accum, page, t, parent, current_in_ext_context);
 							}
 						}
 
@@ -1948,7 +2019,7 @@ static void postprocess_parameter_value_inline_impl(Token *t, const ParserConfig
 		if(is_attr_value) {
 			if(attr_mode == ATTR_VALUE_PARSE_RICH_INLINE) {
 				parse_braces(scratch, cfg, accum);
-				parse_links(scratch, cfg, accum, page, false);
+				parse_links(scratch, links_cfg, accum, page, false);
 				parse_quotes_stage6_per_line(scratch, cfg, accum);
 				parse_external_links(scratch, cfg, accum, false);
 				parse_magic_links(scratch, cfg, accum);
@@ -1965,7 +2036,7 @@ static void postprocess_parameter_value_inline_impl(Token *t, const ParserConfig
 				if(!has_non_text_children) {
 					parse_hr_and_double_underscore(scratch, cfg, accum, TOKEN_PLAIN, "parameter-key");
 				}
-				parse_links(scratch, cfg, accum, page, false);
+				parse_links(scratch, links_cfg, accum, page, false);
 				parse_quotes_stage6_per_line(scratch, cfg, accum);
 				parse_external_links(scratch, cfg, accum, false);
 				parse_magic_links(scratch, cfg, accum);
@@ -1979,7 +2050,7 @@ static void postprocess_parameter_value_inline_impl(Token *t, const ParserConfig
 				if(is_parameter_value) parse_table(scratch, cfg, accum);
 				else parse_table_skip_first_line(scratch, cfg, accum);
 				parse_hr_and_double_underscore(scratch, cfg, accum, TOKEN_PLAIN, is_attr_value ? "attr-value" : "parameter-value");
-				parse_links(scratch, cfg, accum, page, false);
+				parse_links(scratch, links_cfg, accum, page, false);
 				parse_quotes_stage6_per_line(scratch, cfg, accum);
 				parse_external_links(scratch, cfg, accum, false);
 				parse_magic_links(scratch, cfg, accum);
@@ -2053,7 +2124,8 @@ static void postprocess_parameter_value_inline_impl(Token *t, const ParserConfig
 
 static void postprocess_parameter_value_inline(Token *t, const ParserConfig *cfg, Accum *accum,
 																			const char *page) {
-	postprocess_parameter_value_inline_impl(t, cfg, accum, page, NULL, NULL);
+	bool inferred_in_ext_context= token_has_ext_inner_ancestor(t, accum);
+	postprocess_parameter_value_inline_impl(t, cfg, accum, page, NULL, NULL, inferred_in_ext_context);
 }
 
 static void finalize_gallery_and_link_names(Token *t, const ParserConfig *cfg,
