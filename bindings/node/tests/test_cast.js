@@ -5,6 +5,22 @@ const { runTests } = require('./helpers');
 
 const castTests = [
   // Failures from export of wikitexts
+  `{| class=wikitable
+|+ Occitan words and their French, Catalan and Spanish cognates
+|-
+!  scope="col" rowspan=2 | English
+!! scope="col" colspan=2 | Cognate of French
+!! scope="col" colspan=3 | Cognate of Catalan and Spanish
+|-
+!  scope="col" | Occitan
+!! scope="col" | French
+!! scope="col" | Occitan
+!! scope="col" | Catalan
+!! scope="col" | Spanish
+|-
+| broom || style{{=}}"background: Gainsboro" | {{lang|oc|balaja}} || {{lang|fr|balai}} || style{{=}}"background: Gainsboro" | {{lang|oc|escoba}} || {{lang|ca|escombra}} || {{lang|es|escoba}}
+|-
+|}`,
   `<imagemap>
 File:Subtraction_game_SMIL.svg|thumb|Interactive subtraction game.
 default [http://upload.wikimedia.org/wikipedia/commons/4/4d/Subtraction_game_SMIL.svg]

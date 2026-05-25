@@ -159,12 +159,69 @@ static bool is_valid_attr_key_after_comment_trim(const char *k, size_t klen) {
 	return ok;
 }
 
+/* Returns the byte length of the sentinel starting at buf[i] if its type
+ * byte matches `type`, otherwise 0.
+ * A valid sentinel: buf[i]=='\0', one or more ASCII digits, type byte, '\x7F'. */
+static size_t sentinel_at(const char *buf, size_t len, size_t i, char type) {
+	if(i >= len || (unsigned char)buf[i] != 0x00) return 0;
+	size_t j= i + 1;
+	while(j < len && (unsigned char)buf[j] >= '0' && (unsigned char)buf[j] <= '9') j++;
+	if(j == i + 1) return 0;
+	if(j >= len || buf[j] != type) return 0;
+	if(j + 1 >= len || (unsigned char)buf[j + 1] != 0x7F) return 0;
+	return j + 2 - i;
+}
+
+static bool table_attr_has_equal_marker(const char *s, size_t len) {
+	if(!s || len == 0) return false;
+	if(memchr(s, '=', len) != NULL) return true;
+	for(size_t i= 0; i < len; i++) {
+		size_t sl= sentinel_at(s, len, i, '~');
+		if(sl) return true;
+	}
+	return false;
+}
+
+static char *table_attr_normalize_equal_syntax(const char *eq, size_t eq_len, size_t *out_len) {
+	if(!eq) return NULL;
+
+	size_t need= 0;
+	for(size_t i= 0; i < eq_len;) {
+		size_t sl= sentinel_at(eq, eq_len, i, '~');
+		if(sl) {
+			need+= 5; /* {{=}} */
+			i+= sl;
+			continue;
+		}
+		need++;
+		i++;
+	}
+
+	char *out= malloc(need + 1);
+	if(!out) return NULL;
+
+	size_t p= 0;
+	for(size_t i= 0; i < eq_len;) {
+		size_t sl= sentinel_at(eq, eq_len, i, '~');
+		if(sl) {
+			memcpy(out + p, "{{=}}", 5);
+			p+= 5;
+			i+= sl;
+			continue;
+		}
+		out[p++]= eq[i++];
+	}
+	out[p]= '\0';
+	if(out_len) *out_len= p;
+	return out;
+}
+
 static void parse_table_attrs(Token *attrs_tok, const char *attr_str, size_t attr_len, Accum *accum) {
 	if(!attr_str || attr_len == 0) return;
 
 	/* JS parity: dynamic boolean attrs (e.g. " {{green}} ") should become
      * dirty-prefix + table-attr + dirty-suffix, not a single dirty token. */
-	if(memchr(attr_str, '=', attr_len) == NULL) {
+	if(!table_attr_has_equal_marker(attr_str, attr_len)) {
 		size_t first= 0;
 		while(first < attr_len && (attr_str[first] == ' ' || attr_str[first] == '\t' || attr_str[first] == '\n' || attr_str[first] == '\r' || attr_str[first] == '\f' || attr_str[first] == '\v')) first++;
 		size_t last= attr_len;
@@ -218,7 +275,12 @@ static void parse_table_attrs(Token *attrs_tok, const char *attr_str, size_t att
 		}
 
 		size_t key_start= i;
-		while(i < attr_len && attr_str[i] != '/' && attr_str[i] != '=' && attr_str[i] != ' ' && attr_str[i] != '\t' && attr_str[i] != '\n' && attr_str[i] != '\r' && attr_str[i] != '\f' && attr_str[i] != '\v') {
+		while(i < attr_len) {
+			if(attr_str[i] == '/' || attr_str[i] == '=' ||
+				 attr_str[i] == ' ' || attr_str[i] == '\t' || attr_str[i] == '\n' || attr_str[i] == '\r' || attr_str[i] == '\f' || attr_str[i] == '\v') {
+				break;
+			}
+			if(sentinel_at(attr_str, attr_len, i, '~')) break;
 			i++;
 		}
 		size_t key_len= i - key_start;
@@ -239,6 +301,27 @@ static void parse_table_attrs(Token *attrs_tok, const char *attr_str, size_t att
 			bool dynamic_key= memchr(key, '\0', key_len) != NULL || (key_len >= 2 && key[0] == '{' && key[1] == '{') || (key_len >= 2 && key[0] == '-' && key[1] == '{');
 			if(!dynamic_key || !is_valid_attr_key_after_comment_trim(key, key_len)) {
 				for(size_t k= 0; k < key_len; k++) dirty_buf[dirty_len++]= key[k];
+				/* JS parity: when an invalid key is immediately followed by '=value',
+				 * keep the whole chunk dirty instead of treating value as a new attr key. */
+				size_t eq_sl= (i < attr_len) ? sentinel_at(attr_str, attr_len, i, '~') : 0;
+				if(i < attr_len && (attr_str[i] == '=' || eq_sl > 0)) {
+					size_t eq_take= (attr_str[i] == '=') ? 1 : eq_sl;
+					memcpy(dirty_buf + dirty_len, attr_str + i, eq_take);
+					dirty_len+= eq_take;
+					i+= eq_take;
+					if(i < attr_len && (attr_str[i] == '"' || attr_str[i] == '\'')) {
+						char q= attr_str[i];
+						dirty_buf[dirty_len++]= attr_str[i++];
+						while(i < attr_len) {
+							dirty_buf[dirty_len++]= attr_str[i];
+							if(attr_str[i++] == q) break;
+						}
+					} else {
+						while(i < attr_len && attr_str[i] != ' ' && attr_str[i] != '\t' && attr_str[i] != '\n' && attr_str[i] != '\r' && attr_str[i] != '\f' && attr_str[i] != '\v') {
+							dirty_buf[dirty_len++]= attr_str[i++];
+						}
+					}
+				}
 				continue;
 			}
 		}
@@ -246,7 +329,8 @@ static void parse_table_attrs(Token *attrs_tok, const char *attr_str, size_t att
 		size_t ws_start= i;
 		while(i < attr_len && (attr_str[i] == ' ' || attr_str[i] == '\t' || attr_str[i] == '\n' || attr_str[i] == '\r' || attr_str[i] == '\f' || attr_str[i] == '\v')) i++;
 
-		if(i >= attr_len || attr_str[i] != '=') {
+		size_t eq_sl= (i < attr_len) ? sentinel_at(attr_str, attr_len, i, '~') : 0;
+		if(i >= attr_len || (attr_str[i] != '=' && eq_sl == 0)) {
 			FLUSH_DIRTY();
 			Token *at= make_table_attr(key, key_len, NULL, 0, NULL, 0, '\0', '\0', accum);
 			if(at) token_append_child(attrs_tok, at);
@@ -258,7 +342,9 @@ static void parse_table_attrs(Token *attrs_tok, const char *attr_str, size_t att
 		}
 
 		size_t eq_start= ws_start;
-		i++;
+		size_t eq_marker_len= (attr_str[i] == '=') ? 1 : eq_sl;
+		bool eq_has_magic= (eq_marker_len > 1);
+		i+= eq_marker_len;
 		while(i < attr_len && (attr_str[i] == ' ' || attr_str[i] == '\t' || attr_str[i] == '\n' || attr_str[i] == '\r' || attr_str[i] == '\f' || attr_str[i] == '\v')) i++;
 		size_t eq_len= i - eq_start;
 
@@ -284,10 +370,18 @@ static void parse_table_attrs(Token *attrs_tok, const char *attr_str, size_t att
 		}
 
 		FLUSH_DIRTY();
+		const char *eq_ptr= attr_str + eq_start;
+		size_t eq_use_len= eq_len;
+		char *eq_norm= NULL;
+		if(eq_has_magic) {
+			eq_norm= table_attr_normalize_equal_syntax(attr_str + eq_start, eq_len, &eq_use_len);
+			if(eq_norm) eq_ptr= eq_norm;
+		}
 		Token *at= make_table_attr(key, key_len, val, val_len,
-															 attr_str + eq_start, eq_len,
+														 eq_ptr, eq_use_len,
 															 quote_open, quote_close,
 															 accum);
+		if(eq_norm) free(eq_norm);
 		if(at) token_append_child(attrs_tok, at);
 	}
 
