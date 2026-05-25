@@ -132,11 +132,7 @@ static void free_accum_orphans(const Token *root, Accum *accum) {
 	free(live);
 }
 
-static bool mem_has(const char *s, size_t len, const char *needle) {
-	size_t nlen= needle ? strlen(needle) : 0;
-	if(!s || nlen == 0 || len < nlen) return false;
-	return sz_find(s, len, needle, nlen) != NULL;
-}
+
 
 /* Nested postprocess serialization parity: preserve special marker chars for
  * magic-word transcludes instead of collapsing everything to 't'. */

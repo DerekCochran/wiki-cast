@@ -364,23 +364,23 @@ void build_from_str(Token *parent, const char *str, size_t str_len,
 						} else {
 							log_error("build_from_str: accum[%zu] is NULL", idx);
 						}
-						} else {
-							/* Not a valid sentinel — emit as text into a leased scratch
-							 * buffer using the ThreadBuf API (avoid heap allocs). The
-							 * desired sequence is: '\0' + marker_content + '\x7F'. */
-							ThreadBuf *scratch = wiki_thread_buf_acquire_scratch();
-							/* prepend NUL byte */
-							wiki_thread_buf_putc(scratch, '\0');
-							if(marker_len > 0) {
-								sz_string_view_t v = { marker_content, marker_len };
-								wiki_thread_buf_append(scratch, v);
-							}
-							/* trailing DEL */
-							wiki_thread_buf_putc(scratch, '\x7F');
-							const char *p = wiki_thread_buf_append_to_tokens(scratch->buf, scratch->len);
-							token_append_text_n(parent, p, scratch->len);
-							wiki_thread_buf_release_scratch(scratch);
+					} else {
+						/* Not a valid sentinel — emit as text into a leased scratch
+							* buffer using the ThreadBuf API (avoid heap allocs). The
+							* desired sequence is: '\0' + marker_content + '\x7F'. */
+						ThreadBuf *scratch = wiki_thread_buf_acquire_scratch();
+						/* prepend NUL byte */
+						wiki_thread_buf_putc(scratch, '\0');
+						if(marker_len > 0) {
+							sz_string_view_t v = { marker_content, marker_len };
+							wiki_thread_buf_append(scratch, v);
 						}
+						/* trailing DEL */
+						wiki_thread_buf_putc(scratch, '\x7F');
+						const char *p = wiki_thread_buf_append_to_tokens(scratch->buf, scratch->len);
+						token_append_text_n(parent, p, scratch->len);
+						wiki_thread_buf_release_scratch(scratch);
+					}
 				}
 
 				seg_start= i + 1;
