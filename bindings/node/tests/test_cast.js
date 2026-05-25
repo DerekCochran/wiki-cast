@@ -5,6 +5,9 @@ const { runTests } = require('./helpers');
 
 const castTests = [
   // Failures from export of wikitexts
+    `{{reflist |group=Note |refs=
+<ref name="c">French reports: "The (over 5{{nbs"[[Hectare|ha]]) era...}}</ref>
+}}`,
   `* ﻿{{cite web |url= https://reason.com/2019/10/31/its-that-old-looney-tuner-lysander-spooner/ |title= It's That Old Looney Tuner, Lysander Spooner |last= Bagge |first= Peter |date= November 2019 |website= Reason Magazine |format= Comic strip| access-date= }}`,
   `<ref =EJ440-444>{{Cite book|volume=18|edition=Second| location= Detroit |date= 2007| page=440-444|title=Encyclopaedia Judaica|last1=Berenbaum|first1=Michael|last2=Skolnik|first2=Fred|publisher=Thomson Gale}}</ref>`,
   `{{ubl|
