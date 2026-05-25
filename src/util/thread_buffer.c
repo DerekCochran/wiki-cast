@@ -225,8 +225,7 @@ static void alloc_inner_buffers(ThreadBuffers *tb) {
 	tb->finalized= false;
 }
 
-void wiki_thread_buf_assert_no_leased_scratch(const char *context,
-																							const ThreadBuf *ignore_tb) {
+void wiki_thread_buf_assert_no_leased_scratch(const char *context, const ThreadBuf *ignore_tb) {
 	ThreadBuffers *tb= wiki_thread_buf_get();
 	size_t leased_count= 0;
 	size_t leased_cap= 0;

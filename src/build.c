@@ -34,11 +34,6 @@
 #include <stdlib.h>
 #include <string.h>
 
-/* Old malloc/realloc-based helpers removed: we use ThreadBuf-based
- * append helpers (`append_key_token_repr_tb`) to avoid heap churn.
- */
-
-/* ThreadBuf-based append helpers (use the central API in thread_buffer.c) */
 static void append_key_token_repr_tb(const Token *t, ThreadBuf *tb) {
 	if(!t || !tb) return;
 
