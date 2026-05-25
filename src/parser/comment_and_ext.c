@@ -638,7 +638,28 @@ static void parse_ext_attrs(Token *attrs_tok, const char *attr_str, size_t attr_
 		}
 		size_t key_len= i - key_start;
 		if(key_len == 0) {
-			dirty_buf[dirty_len++]= attr_str[i++];
+			/* JS parity: malformed spans beginning with '=' (for example
+			 * " =EJ440-444") remain dirty text and must not synthesize
+			 * a boolean attribute from the following token. */
+			if(attr_str[i] == '=') {
+				size_t full_end= i + 1;
+				size_t probe= full_end;
+
+				while(probe < attr_len && isspace((unsigned char)attr_str[probe])) probe++;
+				if(probe < attr_len && (attr_str[probe] == '"' || attr_str[probe] == '\'')) {
+					char q= attr_str[probe++];
+					while(probe < attr_len && attr_str[probe] != q) probe++;
+					if(probe < attr_len && attr_str[probe] == q) probe++;
+				} else {
+					while(probe < attr_len && !isspace((unsigned char)attr_str[probe])) probe++;
+				}
+
+				full_end= probe;
+				for(size_t k= i; k < full_end; k++) dirty_buf[dirty_len++]= attr_str[k];
+				i= full_end;
+			} else {
+				dirty_buf[dirty_len++]= attr_str[i++];
+			}
 			continue;
 		}
 

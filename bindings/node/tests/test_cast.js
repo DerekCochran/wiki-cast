@@ -5,7 +5,8 @@ const { runTests } = require('./helpers');
 
 const castTests = [
   // Failures from export of wikitexts
-    `{{ubl|
+  `<ref =EJ440-444>{{Cite book|volume=18|edition=Second| location= Detroit |date= 2007| page=440-444|title=Encyclopaedia Judaica|last1=Berenbaum|first1=Michael|last2=Skolnik|first2=Fred|publisher=Thomson Gale}}</ref>`,
+  `{{ubl|
 |'''Legitimate'''<ref name="nyugenphuc">Bao Dai had two sons and three daughters, according to the genealogy of the Nyugen Phuc clan. Only his children by Nam Phuong are listed. His obituary in ''[https://www.independent.co.uk/news/people/obituary-bao-dai-1243873.html The Independent]'' says he had two sons and two daughters while the ''[https://www.nytimes.com/1997/08/02/world/bao-dai-83-of-vietnam-emperor-and-bon-vivant.html New York Times]'' says two sons and four daughters. (''''[http://giapha.nguyenphuoctoc.info/download/NGUYEN-PHUC-TOC-THE-PHA.pdf Nguyễn Phúc tộc thế phả]'', 1995, p. 330).</ref>{{ubl|
 |[[Bảo Long]] (1936–2007)
 |[[Phương Mai]] (1937–2021)
