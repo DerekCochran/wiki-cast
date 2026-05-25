@@ -5,6 +5,7 @@ const { runTests } = require('./helpers');
 
 const castTests = [
   // Failures from export of wikitexts
+  `[[File:Kasparov-34.jpg{{!}}border|thumb|alt=refer to caption|Kasparov in 2007|upright=0.75]]`,
   `[[File:Sarnia Cherie.ogg|alt=
   Chord progression of Sarnia Chérie (English: Guernsey Dear), unofficial anthem of Guernsey]]`,
   `{|width=50% |gap=4em

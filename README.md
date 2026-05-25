@@ -110,7 +110,6 @@ cmake \
   -DCMAKE_EXE_LINKER_FLAGS="-fsanitize=thread" ..
 make -j
 
-# run the same test binary under TSan
 cd ..
 TSAN_OPTIONS="report_thread_leaks=1" WIKI_CONFIG=./config/enwiki.json ./build_tsan/test_wikitext
 ```

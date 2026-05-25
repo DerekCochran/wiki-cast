@@ -313,7 +313,7 @@ function compareSample(wikitext, { include = false, tidy = false, name = 'sample
             }
           }
         }
-      }else {
+      }else if(! cmp.success) {
         const smallestDiff = getWikiTextSmallesDiff(cmp.jsToken, cmp.ncToken, cmp.parents);
         fs.writeFileSync(LATEST_FAILED_PATH, smallestDiff || '', 'utf8');
         if( smallestDiff && smallestDiff.length <= 1500  ) {
