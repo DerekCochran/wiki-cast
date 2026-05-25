@@ -5,6 +5,17 @@ const { runTests } = require('./helpers');
 
 const castTests = [
   // Failures from export of wikitexts
+  `<inputbox>
+id = style-searchbox
+type=fulltext
+width=35
+break=yez
+searchfilter=deepcat:"Canadian people"
+namespaces=Main**
+placeholder=e.g. female historians
+searchbuttonlabel = Search Canadian people articles 
+</inputbox>`,
+  `{{c. |1979|lk=none}}`,
   `<gallery>
 File:Sydney Skyline (5620756401).jpg|The [[Sydney central business district]] in [[Sydney]]'s [[Western Suburbs, Sydney|western suburbs
 </gallery>`,

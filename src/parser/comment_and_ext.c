@@ -986,6 +986,85 @@ static Token *build_ext_inner(const char *tag_name,
 	return t;
 }
 
+/* JS ParamTagToken/InputboxToken parity:
+ * - inputbox: parseCommentAndExt + parseBraces on full inner text, then split
+ *   by '\n' into ParamLineToken children.
+ * - dynamicpagelist: split by '\n', parseCommentAndExt per line.
+ */
+static Token *build_param_tag_inner_token(const char *tag_name,
+														const char *inner_str, size_t inner_len,
+														const ParserConfig *cfg,
+														Accum *accum,
+														bool inputbox_mode) {
+	Token *t= token_new(TOKEN_EXT_INNER, "ext-inner");
+	if(!t) return NULL;
+	t->name= strdup(tag_name);
+	t->sep= '\n';
+	accum_push(accum, t);
+
+	if(!inner_str || inner_len == 0) return t;
+
+	const char *src= inner_str;
+	size_t src_len= inner_len;
+	ThreadBuf *pre_tb= NULL;
+	if(inputbox_mode) {
+		pre_tb= wiki_thread_buf_acquire_scratch_from_data(inner_str, inner_len);
+		if(!pre_tb) {
+			log_fatal("thread_buffer: failed to acquire scratch in build_param_tag_inner_token");
+			abort();
+		}
+		parse_comment_and_ext(pre_tb, cfg, accum, false);
+		parse_braces(pre_tb, cfg, accum);
+		src= pre_tb->buf;
+		src_len= pre_tb->len;
+	}
+
+	if(src_len == 0) {
+		if(pre_tb) wiki_thread_buf_release_scratch(pre_tb);
+		return t;
+	}
+
+	size_t line_start= 0;
+	while(line_start <= src_len) {
+		const char *nl= sz_find_byte(src + line_start, src_len - line_start, "\n");
+		size_t end= nl ? (size_t)(nl - src) : src_len;
+		size_t line_len= end - line_start;
+		const char *line_ptr= src + line_start;
+
+		const char *line_emit= line_ptr;
+		size_t line_emit_len= line_len;
+		ThreadBuf *line_tb= NULL;
+		if(!inputbox_mode) {
+			line_tb= wiki_thread_buf_acquire_scratch_from_data(line_ptr, line_len);
+			if(line_tb) {
+				parse_comment_and_ext(line_tb, cfg, accum, false);
+				line_emit= line_tb->buf;
+				line_emit_len= line_tb->len;
+			}
+		}
+
+		Token *pl= token_new(TOKEN_PLAIN, "param-line");
+		if(pl) {
+			pl->name= strdup(tag_name);
+			if(line_emit_len > 0) {
+				const char *line_view= wiki_thread_buf_append_to_tokens(line_emit, line_emit_len);
+				token_append_text_n(pl, line_view, line_emit_len);
+			} else {
+				token_append_text_n(pl, "", 0);
+			}
+			accum_push(accum, pl);
+			token_append_child(t, pl);
+		}
+
+		if(line_tb) wiki_thread_buf_release_scratch(line_tb);
+		if(!nl) break;
+		line_start= end + 1;
+	}
+
+	if(pre_tb) wiki_thread_buf_release_scratch(pre_tb);
+	return t;
+}
+
 /* JS parity for ExtToken(name='references') using NestedToken(inner, include, ['ref']):
  * 1) parseCommentAndExt(inner, includeOnly=false)
  * 2) parseBraces(inner)
@@ -1940,8 +2019,11 @@ static Token *build_imagemap_inner_token(const char *inner_str, size_t inner_len
 						break;
 					}
 				}
+				size_t lead= 0;
+				while(lead < line_len && isspace((unsigned char)line_ptr[lead])) lead++;
+				bool comment_line= (lead < line_len && line_ptr[lead] == '#');
 
-				if(ws_only) {
+				if(ws_only || comment_line) {
 					Token *n= token_new(TOKEN_NOINCLUDE, "noinclude");
 					if(n) {
 						const char *ln_view = wiki_thread_buf_append_to_tokens(line_ptr, line_len);
@@ -2104,6 +2186,10 @@ static Token *build_ext_token(const char *name, size_t name_len,
 		inner_tok= build_references_inner_token(inner, inner_len, cfg, accum);
 	} else if(strcmp(lcname, "pre") == 0 && !self_closing && !ext_attr_is_format_wikitext(attr, attr_len)) {
 		inner_tok= build_pre_inner_token(inner, inner_len, accum);
+	} else if(strcmp(lcname, "dynamicpagelist") == 0 && !self_closing) {
+		inner_tok= build_param_tag_inner_token(lcname, inner, inner_len, cfg, accum, false);
+	} else if(strcmp(lcname, "inputbox") == 0 && !self_closing) {
+		inner_tok= build_param_tag_inner_token(lcname, inner, inner_len, cfg, accum, true);
 	} else if(strcmp(lcname, "gallery") == 0 && !self_closing) {
 		inner_tok= build_gallery_inner_token(inner, inner_len, cfg, accum);
 	} else if(strcmp(lcname, "imagemap") == 0 && !self_closing) {

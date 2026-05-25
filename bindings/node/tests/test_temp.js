@@ -4,9 +4,16 @@
 const { runTests } = require('./helpers');
 
 const tempTests = [
-  `<gallery>
-File:Sydney Skyline (5620756401).jpg|The [[Sydney central business district]] in [[Sydney]]'s [[Western Suburbs, Sydney|western suburbs
-</gallery>`
+  `<inputbox>
+id = style-searchbox
+type=fulltext
+width=35
+break=yez
+searchfilter=deepcat:"Canadian people"
+namespaces=Main**
+placeholder=e.g. female historians
+searchbuttonlabel = Search Canadian people articles 
+</inputbox>`
 ];
 
 if (process.argv[1] === __filename) {
