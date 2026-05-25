@@ -274,6 +274,7 @@ static const struct {
 {"amp", '&'},
 {"quot", '"'},
 {"apos", '\''},
+{"prime", 0x2032},
 {"ndash", 0x2013},
 {"mdash", 0x2014},
 {"minus", 0x2212},
