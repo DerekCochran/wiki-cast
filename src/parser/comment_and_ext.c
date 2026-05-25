@@ -1547,6 +1547,95 @@ static Token *create_raw_link_token_local(const char *s, size_t len, Accum *accu
 	return link;
 }
 
+static bool imagemap_tail_ok_local(const char *s, size_t len) {
+	for(size_t i= 0; i < len; i++) {
+		unsigned char c= (unsigned char)s[i];
+		if(isalnum(c) || c == '_' || isspace(c)) continue;
+		return false;
+	}
+	return true;
+}
+
+static Token *create_raw_ext_link_token_local(const char *url, size_t url_len,
+																					 const char *space, size_t space_len,
+																					 const char *text, size_t text_len,
+																					 Accum *accum) {
+	if(!url || url_len == 0) return NULL;
+
+	Token *url_tok= token_new(TOKEN_MAGIC_LINK, "ext-link-url");
+	if(!url_tok) return NULL;
+	const char *url_view= wiki_thread_buf_append_to_tokens(url, url_len);
+	token_append_text_n(url_tok, url_view, url_len);
+	accum_push(accum, url_tok);
+
+	Token *ext= token_new(TOKEN_EXT_LINK, "ext-link");
+	if(!ext) {
+		token_free(url_tok);
+		return NULL;
+	}
+
+	if(space_len > 0) {
+		ext->data.ext_link.space= malloc(space_len + 1);
+		if(!ext->data.ext_link.space) {
+			token_free(ext);
+			return NULL;
+		}
+		memcpy(ext->data.ext_link.space, space, space_len);
+		ext->data.ext_link.space[space_len]= '\0';
+	}
+
+	token_append_child(ext, url_tok);
+
+	if(text_len > 0) {
+		Token *txt= token_new(TOKEN_PLAIN, "ext-link-text");
+		if(!txt) {
+			token_free(ext);
+			return NULL;
+		}
+		const char *txt_view= wiki_thread_buf_append_to_tokens(text, text_len);
+		token_append_text_n(txt, txt_view, text_len);
+		accum_push(accum, txt);
+		token_append_child(ext, txt);
+	}
+
+	accum_push(accum, ext);
+	return ext;
+}
+
+static Token *create_imagemap_link_wrapper_local(const char *pre, size_t pre_len,
+																						  Token *link,
+																						  const char *post, size_t post_len,
+																						  Accum *accum) {
+	if(!link) return NULL;
+
+	Token *t= token_new(TOKEN_PLAIN, "imagemap-link");
+	if(!t) return NULL;
+	accum_push(accum, t);
+
+	if(pre_len > 0) {
+		const char *pre_view= wiki_thread_buf_append_to_tokens(pre, pre_len);
+		token_append_text_n(t, pre_view, pre_len);
+	} else {
+		token_append_text_n(t, "", 0);
+	}
+
+	token_append_child(t, link);
+
+	Token *tail= token_new(TOKEN_NOINCLUDE, "noinclude");
+	if(tail) {
+		if(post_len > 0) {
+			const char *post_view= wiki_thread_buf_append_to_tokens(post, post_len);
+			token_append_text_n(tail, post_view, post_len);
+		} else {
+			token_append_text_n(tail, "", 0);
+		}
+		accum_push(accum, tail);
+		token_append_child(t, tail);
+	}
+
+	return t;
+}
+
 static Token *parse_imagemap_image_line_local(const char *line, size_t line_len,
 														 const ParserConfig *cfg,
 														 Accum *accum) {
@@ -1619,56 +1708,90 @@ static Token *parse_imagemap_link_line_local(const char *line, size_t line_len,
 														const ParserConfig *cfg,
 														Accum *accum) {
 	if(!line || line_len == 0) return NULL;
-	/* Find opening '[[' and closing ']]' using sz_find */
-	const char *p_open = sz_find(line, line_len, "[[", 2);
+
+	const char *p_open= sz_find_byte(line, line_len, "[");
 	if(!p_open) return NULL;
-	size_t open = (size_t)(p_open - line);
+	size_t open= (size_t)(p_open - line);
+	const char *substr= line + open;
+	size_t substr_len= line_len - open;
 
-	const char *p_close = sz_find(line + open + 2, line_len - (open + 2), "]]", 2);
-	if(!p_close) return NULL;
-	size_t close = (size_t)(p_close - line);
-	if(close <= open + 1) return NULL;
+	/* Internal link branch: [[target|text]]post */
+	if(substr_len >= 4 && substr[0] == '[' && substr[1] == '[') {
+		const char *p_close= sz_find(substr + 2, substr_len - 2, "]]", 2);
+		if(!p_close) return NULL;
 
-	Token *t= token_new(TOKEN_PLAIN, "imagemap-link");
-	if(!t) return NULL;
-	accum_push(accum, t);
+		size_t close_rel= (size_t)(p_close - substr);
+		const char *after= p_close + 2;
+		size_t after_len= substr_len - (close_rel + 2);
+		if(!imagemap_tail_ok_local(after, after_len)) return NULL;
 
-	if(open > 0) {
-		const char *pre_view = wiki_thread_buf_append_to_tokens(line, open);
-		token_append_text_n(t, pre_view, open);
-	} else {
-		token_append_text_n(t, "", 0);
+		const char *inner= substr + 2;
+		size_t inner_len= close_rel - 2;
+		const char *pipe= sz_find_byte(inner, inner_len, "|");
+		const char *target= inner;
+		size_t target_len= pipe ? (size_t)(pipe - inner) : inner_len;
+		if(target_len == 0) return NULL;
+
+		Title *title= title_parse_half_parsed(target, target_len, 0, cfg, true, "");
+		bool valid= title && title->valid;
+		title_free(title);
+		if(!valid) return NULL;
+
+		Token *link= create_raw_link_token_local(inner, inner_len, accum);
+		if(!link) return NULL;
+		return create_imagemap_link_wrapper_local(line, open, link, after, after_len, accum);
 	}
 
-	const char *inner= line + open + 2;
-	size_t inner_len= close - (open + 2);
-	Token *link= create_raw_link_token_local(inner, inner_len, accum);
-	if(link) {
-		token_append_child(t, link);
-	} else {
-		size_t seg_len = (close + 2) - open;
-		if(seg_len > 0) {
-			const char *seg_view = wiki_thread_buf_append_to_tokens(line + open, seg_len);
-			token_append_text_n(t, seg_view, seg_len);
-		} else {
-			token_append_text_n(t, "", 0);
+	/* External link branch: [url text]post */
+	if(substr_len >= 3 && substr[0] == '[' && substr[1] != '[') {
+		const char *p_close= sz_find(substr + 1, substr_len - 1, "]", 1);
+		if(!p_close) return NULL;
+
+		size_t close_rel= (size_t)(p_close - substr);
+		const char *after= p_close + 1;
+		size_t after_len= substr_len - (close_rel + 1);
+		if(!imagemap_tail_ok_local(after, after_len)) return NULL;
+
+		const char *inner= substr + 1;
+		size_t inner_len= close_rel - 1;
+		if(inner_len == 0) return NULL;
+
+		size_t url_end= 0;
+		while(url_end < inner_len && !isspace((unsigned char)inner[url_end])) url_end++;
+		if(url_end == 0) return NULL;
+
+		const char *url= inner;
+		size_t url_len= url_end;
+		bool proto_ok= (url_len >= 2 && url[0] == '/' && url[1] == '/');
+		if(!proto_ok) {
+			proto_ok= match_proto_prefix(url, url_len, cfg) > 0;
 		}
-	}
+		if(!proto_ok) return NULL;
 
-	size_t tail_len= (close + 2 < line_len) ? (line_len - (close + 2)) : 0;
-	Token *tail= token_new(TOKEN_NOINCLUDE, "noinclude");
-	if(tail) {
-		if(tail_len > 0) {
-			const char *tail_view= wiki_thread_buf_append_to_tokens(line + close + 2, tail_len);
-			token_append_text_n(tail, tail_view, tail_len);
-		} else {
-			token_append_text_n(tail, "", 0);
+		const char *space= NULL;
+		size_t space_len= 0;
+		const char *text= NULL;
+		size_t text_len= 0;
+
+		if(url_end < inner_len) {
+			size_t p= url_end;
+			while(p < inner_len && isspace((unsigned char)inner[p])) p++;
+			if(p == url_end) return NULL;
+			space= inner + url_end;
+			space_len= p - url_end;
+			text= inner + p;
+			text_len= inner_len - p;
 		}
-		accum_push(accum, tail);
-		token_append_child(t, tail);
+
+		Token *ext= create_raw_ext_link_token_local(url, url_len,
+			space ? space : "", space_len,
+			text ? text : "", text_len,
+			accum);
+		if(!ext) return NULL;
+		return create_imagemap_link_wrapper_local(line, open, ext, after, after_len, accum);
 	}
 
-	return t;
+	return NULL;
 }
 
 static Token *build_imagemap_inner_token(const char *inner_str, size_t inner_len,

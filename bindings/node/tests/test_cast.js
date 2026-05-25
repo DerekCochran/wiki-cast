@@ -5,7 +5,11 @@ const { runTests } = require('./helpers');
 
 const castTests = [
   // Failures from export of wikitexts
-    `{{Infobox national military
+  `<imagemap>
+File:Subtraction_game_SMIL.svg|thumb|Interactive subtraction game.
+default [http://upload.wikimedia.org/wikipedia/commons/4/4d/Subtraction_game_SMIL.svg]
+</imagemap>`,
+  `{{Infobox national military
 | name = Tatmadaw
 | native_name = {{lang|my|တပ်မတော်}} {{lang|my-latn|{{small|Tapmătau}}}}<br>{{lang|en|[[Royal Burmese Armed Forces|Royal Armed Forces]]}}
 | image = {{ubl|[[File:Full Emblem of the Myanmar Armed Forces.svg|200px|frameless]]|[[Emblem of Tatmadaw|Emblem of the Myanmar Armed Forces]]
