@@ -4,22 +4,7 @@
 const { runTests } = require('./helpers');
 
 const tempTests = [
-  `{| class=wikitable
-|+ Occitan words and their French, Catalan and Spanish cognates
-|-
-!  scope="col" rowspan=2 | English
-!! scope="col" colspan=2 | Cognate of French
-!! scope="col" colspan=3 | Cognate of Catalan and Spanish
-|-
-!  scope="col" | Occitan
-!! scope="col" | French
-!! scope="col" | Occitan
-!! scope="col" | Catalan
-!! scope="col" | Spanish
-|-
-| broom || style{{=}}"background: Gainsboro" | {{lang|oc|balaja}} || {{lang|fr|balai}} || style{{=}}"background: Gainsboro" | {{lang|oc|escoba}} || {{lang|ca|escombra}} || {{lang|es|escoba}}
-|-
-|}`
+  `<ref name="Poznań">''{{cite web |url=http://www.poznan.pl/mim/public/publikacje/pages.html?co=list&id=19&ch=20&instance=1017&lang=pl |title=Poznań Official Website – Twin Towns|access-date=29 November 2008 |publisher={{fontcolor|Green|(in [[Polish language|{{fontcolor|Green|Polish}}]])}} [[copyright|]] 1998–2008 Urząd Miasta Poznania }}''</ref>`
 ];
 
 if (process.argv[1] === __filename) {
