@@ -542,6 +542,28 @@ static bool stage_json_parse_sentinel(const char *s, size_t len, size_t *pos, si
 	return true;
 }
 
+/* True when tb contains at least one well-formed sentinel of given type,
+ * e.g. type_ch='q' for quote tokens. */
+static bool thread_buf_has_sentinel_type(const ThreadBuf *tb, char type_ch) {
+	if(!tb || !tb->buf || tb->len < 4) return false;
+
+	for(size_t i= 0; i + 3 < tb->len; i++) {
+		if((unsigned char)tb->buf[i] != '\0') continue;
+
+		size_t p= i + 1;
+		if(p >= tb->len || !isdigit((unsigned char)tb->buf[p])) continue;
+
+		while(p < tb->len && isdigit((unsigned char)tb->buf[p])) p++;
+		if(p + 1 >= tb->len) continue;
+
+		if(tb->buf[p] == type_ch && (unsigned char)tb->buf[p + 1] == 0x7F) {
+			return true;
+		}
+	}
+
+	return false;
+}
+
 static void stage_json_write_text(const char *s, size_t len, FILE *fp) {
 	fputs("{\"type\":\"text\",\"data\":", fp);
 	json_write_escaped_len(s, len, fp);
@@ -1368,7 +1390,9 @@ static void run_nested_plain_pipeline(ThreadBuf *scratch,
 		debug_dump_bad_sentinel_window("run_nested_plain_pipeline:before-stage5", scratch, t);
 		parse_links(scratch, links_cfg, accum, page, false);
 		debug_dump_bad_sentinel_window("run_nested_plain_pipeline:after-stage5", scratch, t);
-		parse_quotes_stage6_per_line(scratch, cfg, accum);
+		if(!thread_buf_has_sentinel_type(scratch, 'q')) {
+			parse_quotes_stage6_per_line(scratch, cfg, accum);
+		}
 		parse_external_links(scratch, cfg, accum, false);
 		parse_magic_links(scratch, cfg, accum);
 		if(is_td_inner) {
@@ -1387,7 +1411,9 @@ static void run_nested_plain_pipeline(ThreadBuf *scratch,
 		parse_html(scratch, cfg, accum);
 		parse_links(scratch, cfg, accum, page, false);
 		debug_dump_bad_sentinel_window("run_nested_plain_pipeline:heading-after-stage5", scratch, t);
-		parse_quotes_stage6_per_line(scratch, cfg, accum);
+		if(!thread_buf_has_sentinel_type(scratch, 'q')) {
+			parse_quotes_stage6_per_line(scratch, cfg, accum);
+		}
 		parse_external_links(scratch, cfg, accum, false);
 		parse_magic_links(scratch, cfg, accum);
 	}
