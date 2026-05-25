@@ -36,11 +36,17 @@ void token_append_text_n(Token *t, const char *text, size_t len) {
 		t->children= realloc(t->children, t->child_cap * sizeof(Child));
 		assert(t->children);
 	}
+	char *owned= malloc(len + 1);
+	assert(owned);
+	if(len > 0) {
+		memcpy(owned, text, len);
+	}
+	owned[len]= '\0';
 	Child *c= &t->children[t->child_count++];
 	c->is_text= true;
 	c->text_len= len;
-	c->text= text;
-	c->text_owned = false;
+	c->text= owned;
+	c->text_owned = true;
 }
 
 void token_append_child(Token *t, Token *child) {

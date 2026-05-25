@@ -1957,13 +1957,8 @@ Token *wiki_parse_with_page(const char *wikitext, size_t input_len, const Parser
      * the pointer to str_tidy_into(), which never allocates. */
 	wiki_thread_buf_reserve(&tbufs->stage, input_len);
 
-	/* Pre-reserve the tokens arena to multiple times the input length and
-	 * reset it. This is a temporary workaround to avoid reallocations of
-	 * the tokens arena during parsing which would invalidate previously
-	 * returned text pointers. The correct fix (see TODO.md) is to avoid
-	 * appending sentinel-containing inner text into the arena. */
-	if(tbufs->tokens.cap < input_len * 4 + 1)
-		wiki_thread_buf_reserve(&tbufs->tokens, input_len * 4);
+	/* Token text is currently copied into per-token owned memory, so we only
+	 * clear the legacy tokens arena bookkeeping for compatibility/debug paths. */
 	tbufs->tokens.len= 0;
 
 	size_t tidy_len= 0;

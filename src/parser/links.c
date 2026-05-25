@@ -809,7 +809,6 @@ static void append_file_image_params(Token *file_tok,
 																														 page);
 						if(val) {
 							append_fragment_children(param, val);
-							token_free(val);
 						}
 						/* JS parity: ImageParameterToken is always created with the captured
 						 * value string (even empty ""), so it always has at least one text
@@ -841,7 +840,6 @@ static void append_file_image_params(Token *file_tok,
 													Token *cap= parse_inner_fragment(seg_ptr, seg_len, cfg, accum, "text", tidy, true, true, page);
 					if(cap) {
 						append_fragment_children(param, cap);
-						token_free(cap);
 					}
 					/* JS parity: empty caption segment still serializes as one empty text child. */
 					if(param->child_count == 0) {
@@ -1464,6 +1462,12 @@ static Token *parse_inner_fragment(const char *s, size_t len, const ParserConfig
 
 	build_from_str(inner, inner_tb->buf, inner_tb->len, accum);
 	wiki_thread_buf_release_scratch(inner_tb);
+
+	/* Keep temporary fragment tokens in the accumulator so orphan cleanup can
+	 * free them consistently under the per-token-owned-text mode. */
+	if(accum) {
+		accum_push(accum, inner);
+	}
 
 	return inner;
 }

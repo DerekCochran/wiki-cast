@@ -104,25 +104,14 @@ static void registry_add(ThreadBuffers *tb) {
 
 const char *wiki_thread_buf_append_to_tokens(const char *s, size_t len) {
 	if(!s || len == 0) return NULL;
-	ThreadBuffers *tbs = wiki_thread_buf_get();
-	ThreadBuf *tb = &tbs->tokens;
-	size_t off = tb->len;
-	if(tb->len + len + 1 > tb->cap) {
-		log_debug("tokens arena GROW: cap=%zu len=%zu append=%zu — pointer invalidation imminent; append='%.*s'",
-		          tb->cap, tb->len, len, (int)(len > 80 ? 80 : len), s);
-	}
-	sz_string_view_t v = { .start = s, .length = len };
-	wiki_thread_buf_append(tb, v);
-	return tb->buf + off;
+	/* Temporary mode: token_append_text_n() now duplicates text into owned memory,
+	 * so we can avoid using the shared tokens arena and pointer lifetime hazards. */
+	return s;
 }
 
 const char *wiki_thread_buf_append_view_to_tokens(sz_string_view_t view) {
 	if(view.length == 0 || !view.start) return NULL;
-	ThreadBuffers *tbs = wiki_thread_buf_get();
-	ThreadBuf *tb = &tbs->tokens;
-	size_t off = tb->len;
-	wiki_thread_buf_append(tb, view);
-	return tb->buf + off;
+	return view.start;
 }
 
 /* Remove the registry entry for tb (called from the TLS destructor). */

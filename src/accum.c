@@ -33,8 +33,8 @@ Token *accum_get(const Accum *a, size_t i) {
 // TODO:  Do a true free and rename this to reset
 void accum_free(Accum *a) {
 	if(!a) return;
-	//free(a->tokens);
-	//a->tokens= NULL;
+	free(a->tokens);
+	a->tokens= NULL;
 	a->count= 0;
-	//a->cap= 0;
+	a->cap= 0;
 }
