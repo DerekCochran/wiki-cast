@@ -104,6 +104,29 @@ static bool has_invalid_title_sentinel(const char *s, size_t len) {
 	return false;
 }
 
+static bool has_sentinel_type_in_view(const char *s, size_t len, char want) {
+	if(!s || len == 0) return false;
+	for(size_t i= 0; i < len;) {
+		if((unsigned char)s[i] != '\0') {
+			i++;
+			continue;
+		}
+		size_t j= i + 1;
+		if(j >= len || !(s[j] >= '0' && s[j] <= '9')) {
+			i++;
+			continue;
+		}
+		while(j < len && s[j] >= '0' && s[j] <= '9') j++;
+		if(j + 1 < len && (unsigned char)s[j + 1] == 0x7F) {
+			if(s[j] == want) return true;
+			i= j + 2;
+			continue;
+		}
+		i++;
+	}
+	return false;
+}
+
 /* Forward declaration for helper defined later in this file. */
 static Token *parse_inner_fragment(const char *s, size_t len, const ParserConfig *cfg, Accum *accum,
 																	const char *type_name, bool tidy,
@@ -813,9 +836,9 @@ static void append_file_image_params(Token *file_tok,
 						}
 						/* Note: Do NOT trim the value - JavaScript parser preserves whitespace */
 
-														Token *val= parse_inner_fragment(vp, vl, cfg, accum, "text", tidy, true,
-																														 strcmp(name, "caption") == 0,
-																														 page);
+						Token *val= parse_inner_fragment(vp, vl, cfg, accum, "text", tidy, true,
+							strcmp(name, "caption") == 0,
+							page);
 						if(val) {
 							append_fragment_children(param, val);
 							accum_clear_token(accum, val);
@@ -848,7 +871,7 @@ static void append_file_image_params(Token *file_tok,
 			if(!matched) {
 				param= make_image_param_token("caption", accum);
 				if(param) {
-													Token *cap= parse_inner_fragment(seg_ptr, seg_len, cfg, accum, "text", tidy, true, true, page);
+					Token *cap= parse_inner_fragment(seg_ptr, seg_len, cfg, accum, "text", tidy, true, true, page);
 					if(cap) {
 						append_fragment_children(param, cap);
 						accum_clear_token(accum, cap);
@@ -1070,6 +1093,11 @@ void parse_links(ThreadBuf *tb, const ParserConfig *cfg, Accum *accum,
 			char _t = '\0';
 			size_t _total = 0;
 			if(sentinel_scan_next(link_ptr, link_len, &_pos, &_n, &_t, &_total)) {
+				has_sentinel_in_link = true;
+			}
+			/* JS parity: nested-link artifacts inside a target (\0N l \x7F)
+			 * must not form an outer link target. */
+			if(!has_sentinel_in_link && has_sentinel_type_in_view(link_ptr, link_len, 'l')) {
 				has_sentinel_in_link = true;
 			}
 		}
@@ -1353,6 +1381,18 @@ void parse_links(ThreadBuf *tb, const ParserConfig *cfg, Accum *accum,
 			free(no_comment);
 			continue;
 		} /* end mightBeImg */
+
+		/* JS parity: text &&= parseQuotes(text, config, accum, tidy) */
+		if(text_ptr && text_len > 0) {
+			ThreadBuf *quotes_tb= wiki_thread_buf_acquire_scratch_from_data(text_ptr, text_len);
+			if(quotes_tb) {
+				parse_quotes(quotes_tb, cfg, accum, tidy);
+				const char *q_view= wiki_thread_buf_append_to_tokens(quotes_tb->buf, quotes_tb->len);
+				text_ptr= q_view ? q_view : text_ptr;
+				text_len= quotes_tb->len;
+				wiki_thread_buf_release_scratch(quotes_tb);
+			}
+		}
 
 		/* ---- Normal link token ---- */
 

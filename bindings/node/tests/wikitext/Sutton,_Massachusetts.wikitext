@@ -1,0 +1,254 @@
+{{short description|Town in Massachusetts, United States}}
+{{Use American English|date=June 2025}}
+{{Use mdy dates|date=May 2024}}
+{{Infobox settlement
+|official_name      = Sutton, Massachusetts
+|image_skyline      = Sutton_Common.jpg
+|image_caption      = Partial view of the [[Sutton Center Historic District]] in 2007.
+|image_seal         = Seal of Sutton, Massachusetts.png
+|image_flag=
+|image_map          = Worcester County Massachusetts incorporated and unincorporated areas Sutton highlighted.svg
+|mapsize            = 260px
+|map_caption        = Location in [[Worcester County, Massachusetts|Worcester County]] and the state of [[Massachusetts]].
+|subdivision_type   = Country
+|subdivision_name   = United States
+|subdivision_type1  = [[U.S. state|State]]
+|subdivision_name1  = [[Massachusetts]]
+|subdivision_type2  = [[List of counties in Massachusetts|County]]
+|subdivision_name2  = [[Worcester County, Massachusetts|Worcester]]
+|established_title  = Settled
+|established_date   = 1704
+|established_title2 = Incorporated
+|established_date2  = 1716
+|government_type    = [[Open town meeting]]
+|leader_title       = [[Town Manager|Town<br>{{nbsp|3}}Manager]]
+|leader_name        = Austin Cyganiewicz
+|leader_title1      = Select Board<br>{{nbsp|3}}
+|leader_name1       = Jesse Limanek<br>Christine Watkins<br>Jonathan Anderson<br>James Ettamarna<BR>Normand Champigny
+|area_total_km2 = 87.9
+|area_total_sq_mi = 33.9
+|area_land_km2 = 83.9
+|area_land_sq_mi = 32.4
+|area_water_km2 = 4.0
+|area_water_sq_mi = 1.6
+|population_as_of = 2020
+|settlement_type = [[New England town|Town]]
+|population_total = 9357
+|population_density_km2 = auto
+|population_density_sq_mi = 
+|elevation_m = 215
+|elevation_ft = 706
+|timezone = [[Eastern Standard Time Zone|Eastern]]
+|utc_offset = −5
+|timezone_DST = [[Eastern Standard Time Zone|Eastern]]
+|utc_offset_DST = −4
+|coordinates      = {{coord|42|09|00|N|71|45|48|W|region:US-MA|display=inline,title}}
+|postal_code_type = [[ZIP Code]]s
+|postal_code = {{ubl|01590 (Sutton)|01588 ([[Whitinsville, Massachusetts|Whitinsville]])}}
+|area_code = [[Area code 508|508]]/[[Area code 774|774]]
+|blank_name = [[Federal Information Processing Standard|FIPS code]]
+|blank_info = 25-68610
+|blank1_name = [[Geographic Names Information System|GNIS]] feature ID
+|blank1_info = 0619491
+|website = {{URL|www.suttonma.org}}
+}}
+
+'''Sutton''', officially the '''Town of Sutton''', is a [[town]] in [[Worcester County, Massachusetts]], United States. The population was 9,357 in the [[2020 United States census]].<ref>{{cite web |url=https://data.census.gov/cedsci/profile?g=0600000US2502768610|publisher=[[United States Census Bureau]]|access-date=November 11, 2021|title=Census - Geography Profile: Sutton town, Worcester County, Massachusetts}}</ref> Located in the [[Blackstone Valley]], the town was designated as a [[Preserve America]] community in 2004.<ref>{{Cite web | url=https://www.achp.gov/preserve-america/community/sutton-massachusetts | title=Sutton, Massachusetts &#124; Advisory Council on Historic Preservation }}</ref>
+
+==History==
+A [[Nipmuc]], John Wampas, visited [[England]] in 1627 and deeded land in the Sutton area to Edward Pratt, who later sold interests to others. Competing claims involving the Nipmucs led to a [[Massachusetts General Court]] case in 1704, which granted Pratt and fellow proprietors an eight-mile-square section of land, which is now Sutton.<ref>{{cite web |title=History of Sutton |publisher=suttonma.org |url=https://www.suttonma.org/about-sutton/pages/history-sutton |access-date= January 24, 2011}}</ref>
+
+Three families were the first to settle in Sutton, namely those of Elisha Johnson, Nathaniel Johnson, and [[Benjamin Marsh]], who is credited as a founder of the town and the [[First Baptist Church of Sutton]]. In 1717, [[The Great Snow of 1717|The Great Snow]] completely buried structures their home cabins. According to accounts, a local [[Indigenous peoples of the Americas|Indigenous]] person rescued the Johnson family by noticing [[smoke]] from their [[chimney]] through the snow. Marsh served in several capacities for the town including as a [[selectman]] and [[Moderator (town official)|moderator]]. He also served as [[Elder (Christianity)|elder]] and [[pastor]] from 1737 until his death in 1775.<ref>Marsh, William H. III, ''History of our Marsh Family,'' p. 9, Bremerhaven, Germany, 1978.</ref>
+
+By 1735, area inhabited by [[Hassanamisco Nipmuc]] and a small portion of the northeastern Sutton had incorporated as the town of [[Grafton, Massachusetts|Grafton]]. In 1813, the northern part of Sutton became [[Millbury, Massachusetts|Millbury]].
+
+In 1737, the [[Edward Putnam House]], one of the oldest homes in Sutton, was built by its namesake and cousin of the military officer [[Rufus Putnam]]. The house is featured on the town seal.<ref>Hubbard, Robert Ernest.  ''General Rufus Putnam: George Washington's Chief Military Engineer and the "Father of Ohio,"'' pp. 6-8, 192, McFarland & Company, Inc., Jefferson, North Carolina.  {{ISBN|978-1-4766-7862-7}}.</ref>
+
+On September 26, 1777, [[Holman's Regiment of Militia]] was called up in Sutton during the [[American Revolutionary War]].
+
+Since 1962, the [[Pleasant Valley Country Club]] has hosted a number of notable [[Professional Golfers' Association of America]] tournaments such as the [[Booz Allen Classic]], the [[Lady Carling Eastern Open]], and the [[New England Classic]]. The 1968-67 and 1970-74 [[Women's PGA Championship]] took place at Pleasant Valley. From 1965 to 1973, golfer [[Paul Harney]] worked there.
+
+In 1984, [[Vaillancourt Folk Art]], noted makers of [[chalkware]], was established in Sutton.
+
+In 2004, Sutton was designated as a [[Preserve America]] community.<ref>{{Cite web | url=https://www.achp.gov/preserve-america/community/sutton-massachusetts | title=Sutton, Massachusetts &#124; Advisory Council on Historic Preservation }}</ref>
+
+==Geography==
+According to the [[United States Census Bureau]], the town has a total area of {{convert|33.9|sqmi|km2}}, of which {{convert|32.4|sqmi|km2}} is land and {{convert|1.5|sqmi|km2}}, or 4.57%, is water.
+
+The town contains five villages, known as [[Manchaug Village Historic District|Manchaug]], South Sutton, [[Sutton Center Historic District|Sutton Center]], [[West Sutton Historic District|West Sutton]], and Wilkinsonville. Located in the [[Blackstone Valley]], Sutton shares its borders with the towns of [[Douglas, Massachusetts|Douglas]], [[Grafton, Massachusetts|Grafton]], [[Millbury, Massachusetts|Millbury]], [[Northbridge, Massachusetts|Northbridge]], [[Oxford, Massachusetts|Oxford]], and [[Uxbridge, Massachusetts|Uxbridge]].
+
+===Historic places===
+Sutton has [[National Register of Historic Places listings in Worcester County, Massachusetts|seven sites]] on the [[National Register of Historic Places]]:
+
+<div align=center><gallery perrow="8" widths="125px" heights="75px">
+File:BlackstoneQuackQuack.jpg|[[Blackstone Canal Historic District]] (1995)
+File:First Baptist Church of Sutton, West Sutton MA.jpg|[[First Baptist Church of Sutton]] (2001)
+File:Freegrace Marble Farm, Sutton MA.jpg|[[Freegrace Marble Farm Historic District]] (1989)
+File:Manchaug Mill.jpg|[[Manchaug Village Historic District]] (2018)
+File:Sutton Common.jpg|[[Sutton Center Historic District]] (2001)
+File:Waters Farm, West Sutton MA.jpg|[[Waters Farm]] (1985)
+File:West Sutton Cemetery, West Sutton MA.jpg|[[West Sutton Historic District]] (2001)
+File:Putnam House, 211 Putnam Hill Road, Sutton, Massachusetts.jpg|[[The [[Edward Putnam House]] still stands at 211 Putnam Hill Road in Sutton.]]
+</gallery></div>
+
+===Climate===
+{{Weather box
+|width=auto
+|location = Sutton, Massachusetts
+|single line = Y
+|Jan high F = 34
+|Feb high F = 37
+|Mar high F = 45
+|Apr high F = 57
+|May high F = 68
+|Jun high F = 77
+|Jul high F = 81
+|Aug high F = 80
+|Sep high F = 73
+|Oct high F = 61
+|Nov high F = 51
+|Dec high F = 38
+|Jan record high F = 64
+|Feb record high F = 73
+|Mar record high F = 83
+|Apr record high F = 91
+|May record high F = 95
+|Jun record high F = 97
+|Jul record high F = 98
+|Aug record high F = 98
+|Sep record high F = 95
+|Oct record high F = 87
+|Nov record high F = 79
+|Dec record high F = 72
+|year record high F = 
+|year high F = 
+|Jan low F = 12
+|Feb low F = 15
+|Mar low F = 23
+|Apr low F = 34
+|May low F = 44
+|Jun low F = 54
+|Jul low F = 60
+|Aug low F = 58
+|Sep low F = 49
+|Oct low F = 37
+|Nov low F = 30
+|Dec low F = 19
+|Jan record low F = −28
+|Feb record low F = −22
+|Mar record low F = −16
+|Apr record low F = 2
+|May record low F = 25
+|Jun record low F = 34
+|Jul record low F = 40
+|Aug record low F = 34
+|Sep record low F = 9
+|Oct record low F = 16
+|Nov record low F = -2
+|Dec record low F = −16
+|year record low F = 
+|year low F = 
+|precipitation colour = green
+|Jan precipitation inch = 3.76
+|Feb precipitation inch = 3.39
+|Mar precipitation inch =  4.45
+|Apr precipitation inch =  4.39
+|May precipitation inch =  3.73
+|Jun precipitation inch =  4.15
+|Jul precipitation inch =  4.30
+|Aug precipitation inch =  3.78
+|Sep precipitation inch =  3.88
+|Oct precipitation inch =  4.61
+|Nov precipitation inch =  4.49
+|Dec precipitation inch =  3.87
+|year precipitation inch =
+|source 1 = <ref>{{cite web|url=https://weather.com/weather/monthly/l/f68eac66a8995fd0f32fa1c840773ce7f84613d3125a1e0b4fd02cd5daacf808|title=Sutton, MA Monthly Weather|website=www.weather.com|access-date=August 29, 2020}}</ref>
+}}
+
+==Demographics==
+{{Historical populations | type=USA
+ | 1850|2595
+ | 1860|2676
+ | 1870|2699
+ | 1880|3105
+ | 1890|3180
+ | 1900|3328
+ | 1910|3078
+ | 1920|2578
+ | 1930|2147
+ | 1940|2749
+ | 1950|3102
+ | 1960|3638
+ | 1970|4590
+ | 1980|5855
+ | 1990|6824
+ | 2000|8250
+ | 2010|8963
+ | 2020|9357
+ | 2023*|9436
+ | footnote=* = population estimate.  {{Historical populations/Massachusetts municipalities references}}<ref>{{cite web | title=City and Town Population Totals: 2020−2023| publisher=[[United States Census Bureau]] | access-date=June 4, 2024 | url=https://www.census.gov/data/tables/time-series/demo/popest/2020s-total-cities-and-towns.html}}</ref>
+}}
+
+As of the 2010 U.S. Census there were 8,963 people residing in Sutton. As of the [[census]]<ref name="GR2">{{cite web |url=https://www.census.gov|publisher=[[United States Census Bureau]]|access-date=January 31, 2008|title=U.S. Census website}}</ref> of 2000, there were 8,250 people, 2,811 households, and 2,282 families residing in the town. The [[population density]] was {{convert|254.8|PD/sqmi|/km2}}. There were 2,950 housing units at an average density of {{convert|91.1|/sqmi|/km2}}. The racial makeup of the town was 98.18% [[White (U.S. Census)|White]], 0.68% [[African American (U.S. Census)|African American]], 0.01% [[Native American (U.S. Census)|Native American]], 0.59% [[Asian (U.S. Census)|Asian]], 0.27% from [[Race (United States Census)|other races]], and 0.55% from two or more races. [[Hispanic (U.S. Census)|Hispanic]] or [[Latino (U.S. Census)|Latino]] of any race were 0.70% of the population.
+
+There were 2,811 households, out of which 42.3% had children under the age of 18 living with them, 71.3% were [[Marriage|married couples]] living together, 6.8% had a female householder with no husband present, and 18.8% were non-families. Of all households, 15.0% were made up of individuals, and 6.2% had someone living alone who was 65 years of age or older. The average household size was 2.93 and the average family size was 3.27.
+
+In the town, the population was spread out, with 29.4% under the age of 18, 5.6% from 18 to 24, 31.5% from 25 to 44, 25.4% from 45 to 64, and 8.1% who were 65 years of age or older. The median age was 36 years. For every 100 females, there were 99.3 males. For every 100 females age 18 and over, there were 97.1 males.
+
+The median income for a household in the town was $75,141, and the median income for a family was $81,000. Males had a median income of $53,482 versus $37,463 for females. The [[per capita income]] for the town was $27,490. About 3.4% of families and 4.4% of the population were below the [[poverty line]], including 5.2% of those under age 18 and 6.8% of those age 65 or over.
+
+==Government==
+Sutton has an [[open town meeting]] type government. The current Town Moderator is Ken Stuart, who served as a Selectman prior to his election in 2015.
+
+The town government in Sutton consists of the Town Manager and the Board of Selectmen. The current Town Manager is James A. Smith, and the current members of the Board of Selectmen are Jesse Limanek, Jonathan Anderson, James Ettamarna, Normand Champigny, and Christine Watkins.<ref>[https://www.suttonma.org/select-board Select Board]</ref>
+
+The public services in Sutton include the police, fire, and highway departments. The Police Department is located at 489 Central Turnpike. The Fire Department has three stations, one in the center of town, one in the Wilkinsonville village, and one in the Manchaug village. The Sutton Highway Department is located at 25 Pleasant Valley Road.<ref>{{cite web|url=http://suttonma.org/Pages/index|title=Sutton, MA|first=Sutton|last=MA|website=suttonma.org|access-date=April 15, 2018}}</ref>
+
+==Education==
+Public schools in Sutton fall under the jurisdiction of Sutton Public School District. Sutton public schools consist of the Simonian Center for Early Learning, Sutton Elementary School, Sutton Middle School, and [[Sutton High School (Massachusetts)|Sutton High School]]. Caitlin Paget currently serves as the district’s superintendent.
+
+The Sutton Free Library was established in 1876.<ref>C.B. Tillinghast. The free public libraries of Massachusetts. [https://books.google.com/books?id=LusKAAAAYAAJ 1st Report of the Free Public Library Commission of Massachusetts]. Boston: Wright & Potter, 1891.</ref><ref>[http://www.suttonpubliclibrary.org/sutton/ Sutton Public Library]. Retrieved November 10, 2010</ref> In fiscal year 2008, the town of Sutton spent 0.7% ($165,982) of its budget on its public library—approximately $18 per person, per year ($23.72 adjusted for inflation to 2022).<ref>July 1, 2007, through June 30, 2008; cf. The FY2008 Municipal Pie: What's Your Share? Commonwealth of Massachusetts, Board of Library Commissioners. Boston: 2009. Available: [http://mblc.state.ma.us/advisory/statistics/public/repmunicpie/index.php Municipal Pie Reports] {{Webarchive|url=https://web.archive.org/web/20120123010127/http://mblc.state.ma.us/advisory/statistics/public/repmunicpie/index.php |date=January 23, 2012 }}. Retrieved August 4, 2010</ref>
+
+==Notable people==
+* [[Eunice White Beecher]], author
+* [[Thomas Blanchard (inventor)|Thomas Blanchard]], inventor
+* [[George B. Boomer]], military officer
+* [[Jennifer Callahan]], politician
+* [[Jonathan Chase (colonel)|Jonathan Chase]], military officer
+* [[Ryan Fattman]], politician
+* [[Cornelius Holland (politician)|Cornelius Holland]], politician
+* [[Willard Francis Mallalieu]], religious figure
+* [[Alden March]], physician
+* [[Benjamin Marsh]], founder of Sutton
+* [[John D. McCrate]], politician
+* [[David Muradian]], politician
+* [[Jessica Phillips (actress)|Jessica Phillips]], actress
+* [[Rufus Putnam]], military officer.  His house is depicted on the town seal of Sutton.
+* [[Jonas Sibley]], politician
+* [[Solomon Sibley]], politician
+* [[Amos Singletary]], politician
+* [[Homer Sprague]], military officer
+* [[Asa Waters]], industrialist
+* [[Charles Andrew Whitney]], businessman
+* [[Vladas Zajančkauskas]], war criminal
+
+==See also==
+*[[List of Preserve America Communities]]
+
+==References==
+
+{{reflist}}
+
+==External links==
+{{Commons category}}
+*{{Official website|http://www.suttonma.org/}}
+*[http://www.suttonmass.org/ Unofficial website]
+*[http://www.suttonschools.net/ Sutton Public Schools]
+
+{{Worcester County, Massachusetts}}
+{{Blackstone Valley}}
+{{authority control}}
+
+[[Category:Sutton, Massachusetts| ]]
+[[Category:Towns in Worcester County, Massachusetts]]
+[[Category:Towns in Massachusetts]]

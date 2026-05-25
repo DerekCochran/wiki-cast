@@ -188,6 +188,40 @@ static void append_key_token_repr_tb(const Token *t, ThreadBuf *tb) {
 		return;
 	}
 
+	if(t->type == TOKEN_EXT_LINK) {
+		wiki_thread_buf_putc(tb, '[');
+		if(t->child_count > 0) {
+			const Child *c0= &t->children[0];
+			if(c0->is_text) {
+				wiki_thread_buf_append(tb, (sz_string_view_t){ c0->text, c0->text_len });
+			} else {
+				append_key_token_repr_tb(c0->token, tb);
+			}
+
+			if(t->child_count == 1) {
+				if(t->data.ext_link.space) {
+					wiki_thread_buf_append(tb, (sz_string_view_t){ t->data.ext_link.space, strlen(t->data.ext_link.space) });
+				}
+			} else {
+				if(t->data.ext_link.space) {
+					wiki_thread_buf_append(tb, (sz_string_view_t){ t->data.ext_link.space, strlen(t->data.ext_link.space) });
+				} else {
+					wiki_thread_buf_putc(tb, ' ');
+				}
+				for(size_t i= 1; i < t->child_count; i++) {
+					const Child *ci= &t->children[i];
+					if(ci->is_text) {
+						wiki_thread_buf_append(tb, (sz_string_view_t){ ci->text, ci->text_len });
+					} else {
+						append_key_token_repr_tb(ci->token, tb);
+					}
+				}
+			}
+		}
+		wiki_thread_buf_putc(tb, ']');
+		return;
+	}
+
 	if(t->type == TOKEN_TRANSCLUDE) {
 		wiki_thread_buf_putc(tb, '{');
 		wiki_thread_buf_putc(tb, '{');
