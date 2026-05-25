@@ -1655,14 +1655,18 @@ static Token *parse_imagemap_link_line_local(const char *line, size_t line_len,
 		}
 	}
 
-	if(close + 2 < line_len) {
-		size_t suffix_len = line_len - (close + 2);
-		const char *suf_view = wiki_thread_buf_append_to_tokens(line + close + 2, suffix_len);
-		token_append_text_n(t, suf_view, suffix_len);
+	size_t tail_len= (close + 2 < line_len) ? (line_len - (close + 2)) : 0;
+	Token *tail= token_new(TOKEN_NOINCLUDE, "noinclude");
+	if(tail) {
+		if(tail_len > 0) {
+			const char *tail_view= wiki_thread_buf_append_to_tokens(line + close + 2, tail_len);
+			token_append_text_n(tail, tail_view, tail_len);
+		} else {
+			token_append_text_n(tail, "", 0);
+		}
+		accum_push(accum, tail);
+		token_append_child(t, tail);
 	}
-
-	Token *tail= make_empty_noinclude_local(accum);
-	if(tail) token_append_child(t, tail);
 
 	return t;
 }

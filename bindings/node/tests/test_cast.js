@@ -5,6 +5,12 @@ const { runTests } = require('./helpers');
 
 const castTests = [
   // Failures from export of wikitexts
+    `<imagemap>
+File:Mustelidae-01.jpg|250px|alt=Alt text 
+rect 800 1066 1599 1594 [[Honey badger |Honey badger (''Mellivora capensis'')]] 
+desc none
+default [[Mustelidae]]
+</imagemap>`,
   `<gallery mode="packed" caption="Coloniae and Municipia image gallery">
   File:Arco Romano.jpg|Roman arch of [[Pax Iulia|]]''[[Pax Julia|Pax Iulia]]'' ([[Beja, Portugal|Beja]])
   </gallery>`,
