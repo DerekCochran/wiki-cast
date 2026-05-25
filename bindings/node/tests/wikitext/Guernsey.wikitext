@@ -1,0 +1,725 @@
+{{Short description|English Channel island near Normandy}}
+{{About|the eponymous island, the administrative unit, and the jurisdiction of Guernsey|the whole Bailiwick|Bailiwick of Guernsey|other uses|Guernsey (disambiguation)}}
+{{Use British English|date=October 2016}}
+{{Use dmy dates|date=November 2023}}
+{{Infobox dependency
+| name = Guernsey
+| native_name = {{nobold|{{native name|nrf-GG|Guernési}}}} 
+| settlement_type = [[Bailiwick of Guernsey|Jurisdiction of the Bailiwick of Guernsey]]
+| linking_name = Guernsey
+| image_flag = Flag of Guernsey.svg
+| flag_size = 125px
+| flag_link = Flag of Guernsey
+| image_seal = Coat of arms of Guernsey.svg
+| seal_size = 70px
+| seal_type = Coat of arms
+| seal_link = Coat of arms of Guernsey
+| anthem = "[[Sarnia Cherie]]"<br /><div style="display:inline-block;margin-top:0.4em">[[File:Sarnia Cherie.ogg|alt=
+Chord progression of Sarnia Chérie (English: Guernsey Dear), unofficial anthem of Guernsey]]</div>
+| song = 
+| song_type = 
+| image_map = {{Bailiwick of Guernsey location map|Guernsey}}
+| mapsize = 
+| map_alt = Location of Guernsey
+| map_caption = {{map caption|location=circled |region = the [[Bailiwick of Guernsey]] |region_color=red}}
+| image_map2 = Guernsey-Guernsey.png
+| mapsize2 = 
+| map_alt2 = Map of Guernsey within the Bailiwick
+| map_caption2 = Map of Guernsey within the Bailiwick
+| subdivision_type = [[List of sovereign states|Sovereign state]]
+| subdivision_name = [[United Kingdom]]
+| subdivision_type2 = [[Crown Dependencies|Crown Dependency]]
+| subdivision_name2 = [[Bailiwick of Guernsey]]
+| established_title = Separation from the [[Duchy of Normandy]]
+| established_date = 1204
+| official_languages = {{hlist|[[English language|English]]}}
+| regional_languages = {{hlist|[[Sercquiais]]|[[Auregnais]]{{efn|Extinct language.}}}}
+| capital = [[Saint Peter Port]]
+| coordinates = {{Coord|49|27|36|N|2|32|7|W|type:city_region:GG}}
+| largest_city = capital
+| ethnic_groups = 95.8% [[White British|White]]<br>1.9% [[British Asians|Asian]]
+| demonym = {{hlist|Guernseyman|Guernseywoman|Giernésiais(e)|Sarnian}}{{Citation needed|date=August 2022}}
+| government_type = [[Self-governance|Self-governing]] parliamentary [[constitutional monarchy]]
+| leader_title1 = [[Monarchy of the United Kingdom|Duke of Normandy]]<ref>{{Google books |id=eNHriNq-89QC |page=314 |title=The Queen: Elizabeth II and the Monarchy }}</ref><ref>{{Google books |id=UlY6unhtCEAC |page=11 |title=The Channel Islands }}</ref>
+| leader_name1 = [[Charles, King of the United Kingdom|Charles III]]
+| leader_title2 = [[Lieutenant Governor of Guernsey|Lieutenant Governor]]
+| leader_name2 = [[Richard Cripwell]]
+| leader_title3 = [[Bailiff of Guernsey|Bailiff]]
+| leader_name3 = [[Richard McMahon (bailiff)|Sir Richard McMahon]]
+| leader_title4 = [[President of the Policy and Resources Committee of Guernsey|Chief Minister]]
+| leader_name4 = [[Lindsay de Sausmarez]]
+| legislature = [[States of Guernsey]]
+| national_representation = [[Government of the United Kingdom]]
+| national_representation_type1 = [[Parliamentary Under-Secretary of State for Justice|Minister]]
+| national_representation1 = [[Alison Levitt, Baroness Levitt|Baroness Levitt]]<ref>{{Cite web |date=2025-09-06 |title=Ministerial appointments: September 2025 |url=https://www.gov.uk/government/news/ministerial-appointments-5-september-2025 |access-date=2025-10-31 |website=GOV.UK |language=en}}</ref>
+| area_km2 = 62{{efn|Comprising the island of Guernsey only.}}<ref>{{citation|url=https://www.gov.gg/CHttpHandler.ashx?id=121362&p=0|publisher=States of Guernsey, Data and Analysis|date=2019|title=Guernsey Facts and Figures}}</ref>
+| percent_water = 0
+| elevation_max_m = 
+| population_estimate = 
+| population_census = 63,950<ref name="population">{{Citation |date=2 May 2023|title=Guernsey Quarterly Population, Employment and Earnings Bulletin |url=https://www.gov.gg/CHttpHandler.ashx?id=167034&p=0}}</ref>
+| population_estimate_year = 
+| population_census_rank = 207th
+| population_census_year = 2022
+| population_density_km2 = 965
+| population_density_rank = 
+| GDP_PPP = £3.272 billion<ref name="2018 gdp">{{Cite web |date=15 August 2019 |title=Guernsey Annual GVA and GDP Bulletin - 2018 |url=https://www.gov.gg/CHttpHandler.ashx?id=120674&p=0 |access-date=29 March 2020 |website=gov.gg |publisher=States of Guernsey}}</ref>
+| GDP_PPP_year = 2018
+| GDP_PPP_per_capita = £52,531<ref name="2018 gdp" />
+| currency = [[Guernsey pound]]{{efn|The Guernsey pound is not a separate currency, but a local issue of standard pound sterling.}}<br />[[Pound sterling]] (£)
+| currency_code = GBP
+| timezone = [[Greenwich Mean Time|GMT]]
+| utc_offset = +00:00
+| timezone_DST = [[British Summer Time|BST]]
+| utc_offset_DST = +01:00
+| date_format = dd/mm/yyyy
+| drives_on = left
+| calling_code = [[Telephone numbers in the United Kingdom#Guernsey|+44]]
+| postal_code_type = [[Postcodes in the United Kingdom#Crown Dependencies|UK postcode]]
+| postal_code = [[GY postcode area|GY1–GY8]]
+| iso_code = [[ISO 3166-2:GG|GG]]
+| cctld = [[.gg]]
+}}
+
+'''Guernsey''' ({{IPAc-en|ˈ|ɡ|ɜːr|n|z|i|audio=En-Guernsey.ogg}} {{respell|GURN|zee}}; [[Guernésiais]]: ''Guernési'') is the second-largest island in the [[Channel Islands]], located {{Convert|27|mi|km}} west of the [[Cotentin Peninsula]], [[Normandy]]. It is the largest island in the [[Bailiwick of Guernsey]], which includes five other inhabited islands – [[Alderney]], [[Herm]], [[Jethou]], [[Lihou]] and [[Sark]] – and many small islets and rocks. The bailiwick has a population of 63,950,<ref name="population" /> the vast majority of whom live on Guernsey, and the island has a land area of {{Convert|24|mi2|km2}}.<ref name="gov.gg tax" />
+
+Guernsey was part of the [[Duchy of Normandy]] until 1204, when the Channel Islands remained loyal to the English crown, splitting from mainland Normandy. In 1290, the Channel Islands were divided administratively and Guernsey became part of the Bailiwick of Guernsey. During the [[World War II|Second World War]], Guernsey was invaded and occupied by [[Nazi Germany]]. After five years of occupation, the island was liberated on 9 May 1945, that date being celebrated annually as [[Liberation Day]].
+
+Guernsey is administered as part of the Bailiwick of Guernsey, a self-governing [[Crown Dependencies|dependency of the British Crown]]. The island is thus not part of the [[United Kingdom]], although the UK government has certain responsibilities for the Bailiwick. The [[Monarchy of the United Kingdom|British monarch]] is the head of state<ref>House of Commons Justice Committee (30 March 2010). ''Crown dependencies''. 8th Report of Session 2009–10 (HC 56-1 ed.). [[The Stationery Office|The Stationery Office Ltd.]] {{ISBN|978-0-215-55334-8}}.</ref> and the head of government is the [[President of the Policy and Resources Committee of Guernsey|President of the Policy and Resources Committee]]. The jurisdiction's parliament and government is the [[States of Guernsey]]. The island is divided into [[Parishes of Guernsey|ten parishes]]. It has one town, called [[Saint Peter Port]]. The government variously defines the position of the [[King of England]] as "Head of State" or "successor to the Duke of Normandy."<ref>{{cite web |url=https://gov.gg/islandconstitution |title=Information on the location of the islands and their constitution |publisher=States of Guernsey |access-date=13 August 2024}}</ref> Although no document explicitly defines the Head of State as a "monarch", or the islands as a monarchy, all documents refer to the king by royal titles.
+
+Guernsey's largest industry is [[financial services]], followed by tourism and agriculture. The island is particularly well known for its [[Guernsey cattle|cattle]]. Guernsey's culture is strongly influenced by [[Great Britain|Britain]], evident in its use of the [[pound sterling]] and the status of [[English language|English]] as the primary native language. Norman and [[Culture of France|French culture]] have also had an impact, such as with the island's traditional language, [[Guernésiais]]. French writer [[Victor Hugo]] spent fifteen years in exile in Guernsey, where he wrote some of his best-known works.<ref name="Cooper192">{{harvnb|Cooper|2006|p=19}}</ref>
+
+==Toponymy==
+The island's name, "Guernsey", like that of neighbouring "[[Jersey]]", is of [[Old Norse]] origin. The second element of each word, "[[:wikt:ey#Old Norse|-ey]]", is the Old Norse for "island",<ref>{{Cite web |title=Old Norse Words in the Norman Dialect |url=http://www.viking.no/the-viking-heritage/the-viking-linguistic-heritage/v/ |url-status=dead |archive-url=https://web.archive.org/web/20181115204130/http://www.viking.no/the-viking-heritage/the-viking-linguistic-heritage/v/ |archive-date=15 November 2018 |access-date=30 August 2016 |publisher=Viking Network}}</ref> while the original root, "guern(s)", is of uncertain origin and meaning, possibly deriving from either a personal name such as Grani or Warinn, or from ''[[wikt:grǫn|grǫn]]'', meaning [[spruce]] or [[pine tree|pine]].<ref>{{Cite book |last=Hocart |first=Richard |title=Guernsey's Countryside: An Introduction to the History of the Rural Landscape |publisher=Societé Guernesiaise |year=2010 |isbn=978-0953254798 |location=Guernsey}}</ref>
+
+Previous names for the Channel Islands vary over history, but include the ''Lenur'' islands,<ref>{{Cite web |title=Guernsey, Channel Islands, UK |url=https://h2g2.com/edited_entry/A590302 |access-date=10 October 2007 |website=BBC}}</ref> and ''Sarnia''; Sarnia for Guernsey, or ''Lisia'' (Guernsey) and ''Angia'' (Jersey).
+
+==History==
+{{main|History of Guernsey}}
+{{see also|Maritime history of the Channel Islands|Archaeology of the Channel Islands|German occupation of the Channel Islands}}
+
+===Early history===
+Around 6000&nbsp;BC, rising seas created the [[English Channel]] and separated the [[Normandy|Norman]] [[Promontory|promontories]] that became the bailiwicks of Guernsey and Jersey from [[continental Europe]].<ref>{{Cite web |title=La Cotte Cave, St Brelade |url=http://www.societe-jersiaise.org/whitsco/lacotte1.htm |url-status=dead |archive-url=https://web.archive.org/web/20080323050028/http://www.societe-jersiaise.org/whitsco/lacotte1.htm |archive-date=23 March 2008 |access-date=10 October 2007 |publisher=Société Jersiaise}}</ref> [[Neolithic]] farmers then settled on its coast and built the [[dolmen]]s and [[menhir]]s found in the islands today, providing evidence of human presence dating back to around 5000 BC.<ref>{{Cite web |title=Guernsey Attractions – Ancient Monuments |url=https://www.islandlife.org/ancient_monuments_gsy.htm |access-date=24 November 2017 |website=Island Life}}</ref>
+
+Evidence of Roman settlements on the island, and the discovery of [[amphora]]e from the [[Herculaneum]] area and Spain, show evidence of an intricate trading network with regional and long-distance trade.<ref>{{harvnb|Sebire|2005|p=107}}</ref> Buildings found in La Plaiderie, [[Saint Peter Port|St. Peter Port]] dating from 100 to 400 AD appear to be warehouses.<ref>{{harvnb|Sebire|2005|p=110}}</ref> The earliest evidence of shipping was the discovery of a wreck of a ship in [[Saint Peter Port Harbour|St Peter Port harbour]], which has been named ''Asterix''. It is thought to be a 3rd-century Roman cargo vessel and was probably at anchor or grounded when a fire broke out.<ref>{{Cite web |date=19 July 2012 |title=Gallo-Roman Ship |url=https://museums.gov.gg/romanship |access-date=22 November 2017 |website=Guernsey Museums & Galleries}}</ref> Travelling from the [[Kingdom of Gwent]], Saint [[Samson of Dol|Sampson]], later the abbot of [[Dol-de-Bretagne|Dol]] in [[Brittany]], is credited with the introduction of [[Christianity]] to Guernsey.<ref name="HoG">{{Cite book |last=Marr |first=James |title=The History of Guernsey – The Bailiwick's Story |date=2001 |publisher=The Guernsey Press |isbn=978-0953916610}}</ref>
+
+===Middle Ages===
+In 933, the [[Cotentin Peninsula]], including [[Avranchin]], which included the islands, were placed by the French [[Rudolph of France|King Ranulf]] under the control of [[William I Longsword|William I]]. The island of Guernsey and the other [[Channel Island]]s represent the last remnants of the medieval [[Duchy of Normandy]].<ref name="HoG" />
+
+About the year 1030, the fleet of [[Robert I, Duke of Normandy|Robert, Duke of Normandy]], which was to support the claim of his cousins [[Alfred Aetheling|Alfred]] and [[Edward the Confessor|Edward]] to the English crown against [[Cnut|Canute]], was scattered by a storm, and was driven down the Channel to Guernsey. The Duke was taken to St. Michael's Abbey. In gratitude for the abbot's hospitality, he gave all the lands within the Close of the Vale to the abbot forever as fief of St. Michael, with permission to extend this to the northwestern part of the island as soon as settlers could be found to clear and cultivate the land; and he gave them engineers and workmen to complete the castle of St. Michael and to erect such other forts as were deemed necessary.
+
+Around the middle of the eleventh century, Guernsey was beset by a new breed of pirates who built a castle called Le Château des Sarrasins in the centre of the island near the present church of Catel; [[William the Conqueror|Duke William of Normandy (later the Conqueror)]] commissioned his Esquire Sampson d'Anneville to fight them. As a reward, in 1061 he received half of the western part of the island under the title of Fief d'Anneville. Sampson attracted many emigrants from Normandy to settle on his feudal estate, and Duke William distributed lands in Guernsey to other Norman landowners, such as the estates of Sausmarez, Les Bruniaux de St. Martin, Mauxmarquis, Rohais, etc.
+
+Most of Guernsey was soon cultivated, and around this time the island was divided into ten parishes. Each free fief had a manorial court to hear disputes between tenants, and the Abbot of St. Michael and the Seigneur d'Anneville had the right of high jurisdiction and the privilege of trying and executing criminals, respectively, so that the civil order of the island was fully regulated even before the Norman conquest of England.<ref>{{cite web|work= British History Online|title=Guernsey|url=https://www.british-history.ac.uk/topographical-dict/england/pp348-360/ |access-date=13 June 2022}}</ref>
+
+In 1204, when [[John, King of England|King John]] lost the continental portion of the Duchy to [[Philip II of France]], the islands remained part of the Kingdom of England.<ref>{{harvnb|Crossan|2015|p=7}}</ref> The islands were then recognised by the [[Treaty of Paris (1259)|1259 Treaty of Paris]] as part of [[Henry III of England|Henry III]]'s territories.<ref name="Ogier">{{Cite book |last=Ogier |first=Daryl Mark |title=The Government and Law of Guernsey |publisher=The States of Guernsey |year=2005 |isbn=978-0954977504}}</ref>
+
+During the [[Middle Ages]], the island was a haven for pirates that would use the "lamping technique" to ground ships close to the island. This intensified during the [[Hundred Years War]], when, [[English Channel naval campaign, 1338-1339|starting in 1339]], the island was occupied by the [[Capetian dynasty|Capetians]] on several occasions.<ref name="HoG" /> The [[Royal Guernsey Militia|Guernsey Militia]] was first mentioned as operational in 1331 and would help defend the island for a further 600 years.<ref>{{Cite web |date=19 July 2012 |title=Royal Guernsey Militia Regimental Museum |url=https://museums.gov.gg/rgm |access-date=24 September 2017 |website=Guernsey Museums & Galleries}}</ref>
+
+In 1372, the island was invaded by [[Kingdom of Aragon|Aragonese]] mercenaries under the command of [[Owain Lawgoch]] (remembered as ''Yvon de Galles''), who was in the pay of the French king. Owain and his dark-haired mercenaries were later absorbed into Guernsey legend as invading [[Fairy|fairies]] from across the sea.<ref>{{Cite book |last=de Garis |first=Marie |title=Folklore of Guernsey |year=1986 |oclc=19840362}}</ref>
+
+===Early modern period===
+As part of the peace between England and France, [[Pope Sixtus IV]] issued in 1483 a [[papal bull]] granting the "Privilege of Neutrality'", by which "the Islands, their harbours and seas, as far as the eye can see," were considered neutral territory.<ref>{{harvnb|Cooper|2006|p=13}}</ref> Anyone molesting Islanders would be excommunicated. A [[Royal charters applying to the Channel Islands|royal charter]] in 1548 confirmed the neutrality. The French attempted to invade Jersey a year later in 1549 but were defeated by the [[Royal Militia of the Island of Jersey|militia]]. The neutrality lasted another century, until [[William III of England]] abolished the privilege due to [[privateer]]ing activity against Dutch ships.<ref>{{Cite book |last=Wimbush |first=Henry |title=The Channel Islands |date=1924 |publisher=A&C Black |page=89}}</ref>
+
+In the mid-16th century, the island was influenced by [[Calvinism|Calvinist]] reformers from Normandy. During the [[Marian persecutions]], three women, the [[Guernsey Martyrs]], were [[burned at the stake]] for their [[Protestant]] beliefs,<ref>{{Cite book |last=Ogier |first=Daryl Mark |title=Reformation and Society in Guernsey |publisher=Boydell & Brewer |year=1997 |isbn=978-0851156033}}</ref> along with the infant son of one of the women. The burning of the infant was ordered by Bailiff Hellier Gosselin, with the advice of priests nearby who said the boy should burn due to having inherited moral stain from his mother.<ref>{{cite book |url=https://brill.com/view/book/edcoll/9789004364950/B9789004364950_009.xml |chapter=Pleading the Belly: A Sparing Plea? Pregnant Convicts and the Courts in Medieval England |first=Sara M. |last=Butler |title=Crossing Borders: Boundaries and Margins in Medieval and Early Modern Britain |pages=131–152 |editor-last1=Butler |editor-first1=Sara |editor-last2=Kesselring |editor-first2=K. J. |date=2018 |publisher=Brill |doi=10.1163/9789004364950_009 |isbn=978-90-04-33568-4}}</ref> Later on, Hellier Gosselin fled the island to escape widespread outrage.<ref>{{Cite web |last= |date=1972-07-18 |title=The Guernsey Martyrs were burned at the stake |url=https://history.gg/guernsey-martyrs-burned-stake/ |access-date=2024-10-06 |website=On this day in Guernsey}}</ref>
+
+[[File:Jacob Knyff - An English Ship and other Shipping off Castle Cornet, Guernsey - WGA12219.jpg|thumb|left|upright=1.35|[[Castle Cornet]] over the harbour of [[St Peter Port]] in the second half of the 17th century]]
+During the [[English Civil War]], Guernsey sided with the [[Roundhead|Parliamentarians]]. The allegiance was not total, however; there were a few Royalist uprisings in the southwest of the island, while [[Castle Cornet]] was occupied by the Governor, [[Peter Osborne (1584-1653)|Sir Peter Osborne]], and Royalist troops. In December 1651, with full honours of war, Castle Cornet surrendered—the last Royalist outpost anywhere in the British Isles to surrender.<ref>{{Cite book |title=The Atlantic Monthly, Volume 65 |page=621}}</ref><ref>{{Cite web |date=19 July 2012 |title=History of the Castle |url=http://www.museums.gov.gg/castlehistory |access-date=19 September 2017 |website=Guernsey Museums & Galleries}}</ref>
+
+Wars against France and Spain during the 17th and 18th centuries allowed Guernsey shipowners and sea captains to exploit the island's proximity to mainland Europe by applying for [[Letter of marque|letters of marque]] and turning their [[cargo ships]] into [[privateer|privateering vessels]].<ref name="Hillman_2011">{{cite journal |last1= Hillman |first1= Henning |last2=Gathmann |first2=Christina |date=2013-03-22 |title=Overseas Trade and the Decline of Privateering |url=https://www.jstor.org/stable/23018337 |journal=The Journal of Economic History |volume= 71 |issue= 3 |pages= 730–761 |doi= 10.1017/S0022050711001902 |jstor= 23018337 |access-date=2024-04-18}}</ref><ref name="Timewell_2013">{{cite journal |last1= Timewell |first1=H. C. |date=September 2011 |title=Guernsey Privateers |url=https://www.tandfonline.com/doi/abs/10.1080/00253359.1970.10658533 |journal=The Mariner's Mirror |volume= 56 |issue= 2 |pages= 199–214 |doi= 10.1080/00253359.1970.10658533 |access-date=2024-04-18|url-access=subscription }}</ref>
+
+By the beginning of the 18th century, Guernsey's residents were starting to settle in North America,<ref>{{Cite web |title=Guernsey's emigrant children |url=https://www.bbc.co.uk/legacies/immig_emig/channel_islands/guernsey/article_1.shtml |access-date=22 November 2017 |website=BBC Legacies}}</ref> in particular founding [[Guernsey County, Ohio|Guernsey County]] in Ohio in 1810.<ref>{{harvnb|Jamieson|1986|p=281}}</ref> The threat of invasion by [[Napoleon]] prompted many defensive structures to be built at the end of that century.<ref>{{Cite web |title=18th & 19th Century Defences |url=http://www.museums.gov.gg/defences |access-date=18 September 2017 |website=Guernsey Museums & Galleries|date=19 July 2012 }}</ref> The early 19th century saw a dramatic increase in the prosperity of the island, due to its success in the global [[maritime trade]], and the rise of the stone industry. Maritime trade suffered a major decline with the move away from sailing craft as materials such as iron and steel were not available on the island.<ref>{{harvnb|Jamieson|1986|p=291}}</ref>
+
+[[Braye du Valle, Guernsey|Le Braye du Valle]] was a tidal channel that made the northern extremity of Guernsey, Le Clos du Valle, a [[tidal island]]. Le Braye du Valle was drained and reclaimed in 1806 by the British Government as a defence measure. The eastern end of the former channel became the town and harbour (from 1820) of [[Saint Sampson, Guernsey|St Sampson's]], now the second biggest port in Guernsey. The western end of La Braye is now Le Grand Havre. The roadway called "The Bridge" across the end of the harbour at St Sampson's recalls the bridge that formerly linked the two parts of Guernsey at high tide. New roads were built and main roads were metalled for ease of use by the military.<ref>{{harvnb|Crossan|2015|p=241}}</ref> Infrastructure was funded by [[Money creation|creating money]] debt-free starting in 1815.<ref>{{Cite book|last=Edward Holloway|url=http://archive.org/details/HowGuernseyBeatTheBankers|title=How Guernsey Beat the Bankers}}</ref>
+
+===Contemporary period===
+[[File:Guernsey by Sentinel-2.jpg|alt=|thumb|The islands of Guernsey, Herm and Sark (left to right) as seen from space]]
+[[File:Guernsey bunker P1860645.jpg|thumb|A German bunker from the [[Atlantic Wall]]]]
+During the [[First World War]], about 3,000 island men served in the [[British Expeditionary Force (World War I)|British Expeditionary Force]]. Of these, about 1,000 served in the [[Royal Guernsey Light Infantry]] regiment formed from the [[Royal Guernsey Militia]] in 1916.<ref>{{Cite book |last=Parks |first=Edwin |title=Diex Aix: God Help Us – The Guernseymen who marched away 1914–1918 |publisher=[[States of Guernsey]] |year=1992 |isbn=978-1871560855 |location=Guernsey}}</ref>
+
+From 30 June 1940, during the [[Second World War]], the Channel Islands were [[German occupation of the Channel Islands|occupied by German troops]]. Out of a total population of 41,000, some 17,000 people were evacuated to England before the German occupation.<ref name="Bunting">{{cite book |last1=Bunting |first1=Madeleine |title=The Model Occupation |date=1995 |publisher=[[HarperCollins|Harper Collins]] |location=London |isbn=0002552426 |page=21}}</ref> The evacuees included 80 per cent of [[Evacuation of civilians from the Channel Islands in 1940|Guernsey children]] who lived with relatives or strangers in Great Britain during the war. Most children returned home after the war ended in 1945.<ref>{{Cite news |date=12 November 2010 |title=Evacuees from Guernsey recall life in Scotland |work=[[BBC News Online|BBC News]] |url=https://www.bbc.co.uk/news/uk-scotland-11708270 |access-date=12 November 2010}}</ref> The occupying German forces [[Deportations from the German-occupied Channel Islands|deported over 1,000 Guernsey residents]] to camps in southern Germany, notably to the [[Oflag V-B|''Lager Lindele'']] (Lindele Camp) near [[Biberach an der Riß]] and to [[Oflag VII-C]] in [[Laufen, Germany|Laufen]]. [[German fortification of Guernsey|Guernsey was very heavily fortified during World War II]], out of all proportion to the island's strategic value. German defences and alterations remain visible, particularly to Castle Cornet and around the northern coast of the island. Guernsey and Jersey were both liberated on 9 May 1945, now celebrated as [[Liberation Day (Channel Islands)|Liberation Day]] on the two islands.<ref>{{Cite web |title=Learn more about Liberation Day |url=https://www.visitguernsey.com/learn-more-about-liberation-day |access-date=22 November 2017 |website=Visit Guernsey |archive-date=3 July 2017 |archive-url=https://web.archive.org/web/20170703223818/https://www.visitguernsey.com/learn-more-about-liberation-day |url-status=dead }}</ref>
+
+During the late 1940s, the island repaired the damage caused to its buildings during the occupation. The tomato industry started up again and thrived until the 1970s when the significant increase in world oil prices led to a sharp, terminal decline.<ref name="Tomato">{{Cite web |title=The tomato growing industry |url=https://www.bbc.co.uk/guernsey/content/articles/2009/03/18/tomato_growing_feature.shtml |access-date=23 November 2017 |website=Local History Guernsey |publisher=[[BBC]]}}</ref> Tourism has remained important.<ref>{{Cite web |title=Guernsey Tourism Strategic Plan 2015–2025 |url=http://www.guernseytrademedia.com/sites/default/files/master_page_related_downloads/2015/Sep/vg_strategic_plan_2015_aw_web2.pdf |archive-url=https://web.archive.org/web/20171201035822/http://www.guernseytrademedia.com/sites/default/files/master_page_related_downloads/2015/Sep/vg_strategic_plan_2015_aw_web2.pdf |archive-date=1 December 2017 |url-status=live |access-date=23 November 2017 |website=VisitGuernsey Trade and Media}}</ref> Finance businesses grew in the 1970s, expanding in the next two decades, and are important employers.<ref name="Crossan17" /> Guernsey's constitutional and trading relationships with the UK are largely unaffected by [[Brexit]].<ref>{{Cite web |title=Inside Brexit – Guernsey's Response |url=https://www.weareguernsey.com/media/2090/guernsey-and-brexit.pdf |archive-url=https://web.archive.org/web/20171201031301/https://www.weareguernsey.com/media/2090/guernsey-and-brexit.pdf |archive-date=1 December 2017 |url-status=dead |access-date=23 November 2017 |website=We are Guernsey}}</ref>
+
+==Geography==
+[[File:GuernseySarkAndOthers2021OSM.png|thumb|Detailed map of Guernsey and nearby islands]]
+Situated in [[Mont-Saint-Michel Bay|Mont Saint-Michel Bay]] at around {{coord|49|35|N|2|20|W}}, Guernsey, Herm and some other smaller islands together have a total area of {{convert|71|km²|sqmi}} and coastlines of about {{convert|46|km|mi}}. Elevation varies from sea level to {{convert|110|m|ft|abbr=on}} at Hautnez on Guernsey.<ref>{{Cite web |title=Guernsey topographic map, elevation, terrain |url=https://en-zw.topographic-map.com/map-c3jfcz/Guernsey/ |access-date=5 November 2022 |website=Topographic maps |language=en |url-status=live |archive-url=https://web.archive.org/web/20221105130942/https://en-zw.topographic-map.com/map-c3jfcz/Guernsey/?center=48.21735%2C-1.01212 |archive-date= 5 November 2022 }}</ref>
+[[File:Guernsey from the air - geograph.ci - 371.jpg|thumb|left|Guernsey from the air]]
+There are many smaller [[List of islands of the Bailiwick of Guernsey|islands, islets, rocks and reefs]] in Guernsey waters. Combined with a tidal range of {{convert|10|m|abbr=off}} and fast currents of up to 12 [[Knot (unit)|knots]], this makes sailing in local waters dangerous. The very large tidal variation provides an environmentally rich inter-tidal zone around the islands, and some sites have received [[Ramsar Convention]] designation.<ref>{{Cite web |title=Nature Reserves |url=https://www.gov.gg/nature |access-date=2 June 2017 |website=States of Guernsey |date=May 2016 |language=en}}</ref>
+
+The tidal flows in the area are remarkable, owing to the flatness of the ground for nearly 32&nbsp;km (20&nbsp;mi) westward. Guernsey is the westernmost of the [[Channel Islands]], and the jurisdiction is at the greatest distance from the coast of Normandy than any of the other islands.<ref>{{Cite book |last=Berry |first=William |url=https://books.google.com/books?id=aL4_AAAAcAAJ&q=Guernsey&pg=PA139 |title=The History of the Island of Guernsey |date=1815 |language=en}}</ref>
+
+===Climate===
+Guernsey's climate is temperate, with mild winters and mild, sunny summers. It is classified as an [[oceanic climate]], with a dry-summer trend, although marginally wetter than [[mediterranean climate|Mediterranean]] summers. The warmest months are July and August, when temperatures are generally around {{convert|20|C}}, with some days occasionally going above {{convert|24|C}}. On average, the coldest month is February, with an average air temperature of {{convert|6.9|C|1}}. Average air temperature reaches {{convert|17.1|C|1}} in August. Snow rarely falls, and is unlikely to settle, but is most likely to fall in February. Temperatures rarely drop below freezing, although strong wind-chill from Arctic winds can sometimes make it feel like it. The rainiest months are December (average {{convert|119|mm|in|1|abbr=on}}), November (average {{convert|107|mm|in|1|abbr=on}}) and January (average {{convert|92|mm|in|1|abbr=on}}). July is, on average, the sunniest month, with 253 hours recorded sunshine; December the least, with 58 hours recorded sunshine.
+
+Sea temperatures have been rising, and now vary between {{convert|8|C}} in February to {{convert|20|C}} in August.<ref>{{cite web |title=Annual average weather for Guernsey, Channel Islands |url=https://beach-weather.com/Western-Europe/Channel-Islands/Guernsey/averages/ |access-date=1 November 2023}}</ref> Average wind speeds vary between {{convert|20|kph}} and {{convert|40|kph}}, with gusts over {{convert|60|kph}} every four to five years.<ref>{{cite web |title=Guernsey, United Kingdom Weather Averages |url=https://www.worldweatheronline.com/guernsey-weather-averages/gb.aspx |access-date=1 November 2023}}</ref>
+
+{{Weather box
+| location = Guernsey (1991–2020 normals, extremes 1947–present)
+| metric first = Yes
+| single line = Yes
+| Jan record high C = 13.3
+| Feb record high C = 16.1
+| Mar record high C = 19.6
+| Apr record high C = 24.5
+| May record high C = 25.9
+| Jun record high C = 30.8
+| Jul record high C = 34.2
+| Aug record high C = 34.3
+| Sep record high C = 30.6
+| Oct record high C = 24.3
+| Nov record high C = 18.0
+| Dec record high C = 15.6
+| year record high C = 
+| Jan high C = 9.0
+| Feb high C = 8.8
+| Mar high C = 10.2
+| Apr high C = 12.4
+| May high C = 15.1
+| Jun high C = 17.7
+| Jul high C = 19.6
+| Aug high C = 19.9
+| Sep high C = 18.2
+| Oct high C = 15.3
+| Nov high C = 12.1
+| Dec high C = 9.9
+| year high C = 
+| Jan mean C = 7.2
+| Feb mean C = 6.9
+| Mar mean C = 8.0
+| Apr mean C = 9.7
+| May mean C = 12.3
+| Jun mean C = 14.8
+| Jul mean C = 16.7
+| Aug mean C = 17.1
+| Sep mean C = 15.7
+| Oct mean C = 13.2
+| Nov mean C = 10.3
+| Dec mean C = 8.1
+| year mean C = 
+| Jan low C = 5.4
+| Feb low C = 4.9
+| Mar low C = 5.8
+| Apr low C = 7.0
+| May low C = 9.4
+| Jun low C = 11.8
+| Jul low C = 13.8
+| Aug low C = 14.2
+| Sep low C = 13.1
+| Oct low C = 11.1
+| Nov low C = 8.4
+| Dec low C = 6.3
+| year low C = 
+| Jan record low C = -7.8
+| Feb record low C = -7.2
+| Mar record low C = -2.2
+| Apr record low C = -1.4
+| May record low C = 0.1
+| Jun record low C = 5.4
+| Jul record low C = 8.3
+| Aug record low C = 9.2
+| Sep record low C = 5.8
+| Oct record low C = 3.5
+| Nov record low C = -0.8
+| Dec record low C = -3.8
+| year record low C = 
+| rain colour = green
+| Jan rain mm = 92.0
+| Feb rain mm = 75.8
+| Mar rain mm = 63.3
+| Apr rain mm = 54.0
+| May rain mm = 49.0
+| Jun rain mm = 47.9
+| Jul rain mm = 43.2
+| Aug rain mm = 56.6
+| Sep rain mm = 55.2
+| Oct rain mm = 97.9
+| Nov rain mm = 106.7
+| Dec rain mm = 119.3
+| year rain mm = 
+| unit rain days = 0.2 mm
+| Jan rain days = 19.1
+| Feb rain days = 16.5
+| Mar rain days = 14.8
+| Apr rain days = 12.9
+| May rain days = 11.3
+| Jun rain days = 10.8
+| Jul rain days = 10.8
+| Aug rain days = 11.6
+| Sep rain days = 11.9
+| Oct rain days = 17.8
+| Nov rain days = 19.5
+| Dec rain days = 19.5
+| year rain days = 
+| Jan snow days = 2.0
+| Feb snow days = 3.0
+| Mar snow days = 1.4
+| Apr snow days = 0.4
+| May snow days = 0.0
+| Jun snow days = 0.0
+| Jul snow days = 0.0
+| Aug snow days = 0.0
+| Sep snow days = 0.0
+| Oct snow days = 0.0
+| Nov snow days = 0.4
+| Dec snow days = 1.3
+| year snow days = 
+| Jan sun = 62.6
+| Feb sun = 87.0
+| Mar sun = 135.3
+| Apr sun = 200.7
+| May sun = 238.9
+| Jun sun = 245.9
+| Jul sun = 253.3
+| Aug sun = 226.8
+| Sep sun = 183.9
+| Oct sun = 120.1
+| Nov sun = 76.8
+| Dec sun = 58.3
+| year sun = 
+| Jan percentsun = 23.2
+| Feb percentsun = 29.5
+| Mar percentsun = 36.8
+| Apr percentsun = 49.1
+| May percentsun = 50.5
+| Jun percentsun = 51.1
+| Jul percentsun = 52.3
+| Aug percentsun = 51.2
+| Sep percentsun = 48.8
+| Oct percentsun = 36.2
+| Nov percentsun = 28.3
+| Dec percentsun = 22.9
+| year percentsun = 42.4
+|source 1 = Guernsey Met Office<ref>{{cite web
+| url = http://www.metoffice.gov.gg/AnnualReports/2021%20Annual%20Report.pdf
+| title = 2021 Annual Weather Report
+| publisher = Guernsey Meteorological Office
+| accessdate = 4 January 2023
+}}</ref><ref>{{cite web
+| url = http://www.metoffice.gov.gg/record.html
+| title = Weather Records
+| publisher = Guernsey Meteorological Office
+| accessdate = 4 January 2023
+}}</ref>
+}}
+
+====Carbon====
+Guernsey plans to reach [[carbon neutrality]] by 2050, according to the Climate Change Policy & Action Plan adopted in August 2020.<ref>{{Cite news |date=20 August 2020 |title=States agree plans to combat climate change |publisher=Bailiwick Express |url=https://gsy.bailiwickexpress.com/gsy/news/climate-change1/#.X7-C4i-l2fU}}</ref>
+
+===Geology===
+{{main|Geology of Guernsey}}
+[[File:Guernsey.jpg|thumb|Guernsey cliffs]]
+Guernsey has a geological history stretching further back into the past than most of Europe. It forms part of the geological province of France known as the [[Armorican Massif]].<ref>{{Cite journal |last=Renouf |first=John |date=May 1985 |title=Geological excursion guide 1: Jersey and Guernsey, Channel Islands |journal=Geology Today |volume=1 |issue=3 |page=90 |doi=10.1111/j.1365-2451.1985.tb00293.x|bibcode=1985GeolT...1...90R }}</ref> There is a broad geological division between the north and south of the island. The Southern Metamorphic Complex is elevated above the geologically younger, lower-lying Northern Igneous Complex. Guernsey has experienced a complex geological evolution (especially the rocks of the southern complex) with multiple phases of [[Intrusive rock|intrusion]] and [[Fold (geology)|deformation]] recognisable.{{Citation needed|date=November 2021}}
+
+Guernsey is composed of nine main rock types; two of these are [[granite]]s and the rest [[gneiss]].<ref>{{Cite web |title=Geology and Geography |url=http://www.societe.org.gg/sections/geology.php |access-date=17 November 2017 |website=La Société Guernesiaise |archive-date=8 September 2017 |archive-url=https://web.archive.org/web/20170908003214/http://www.societe.org.gg/sections/geology.php |url-status=dead }}</ref>
+
+==Politics==
+{{main|Politics of Guernsey|Elections in Guernsey}}
+
+Guernsey is a self-governing<ref>{{cite web |title=Guernsey |url=https://www.adph.org.uk/networks/islands/guernsey/ |author=ADPH Islands |quote=Guernsey is a self-governing dependency of the Crown (a ‘Crown Dependency’). It is an autonomous jurisdiction with its own parliament, government and judiciary and forms part of the southernmost British Isles archipelago —the Channel Islands. }}</ref><ref>{{cite web |title=Guernsey Country Information |url=https://www.aardy.com/blog/guernsey-country-information/ |website=aardy.com |quote=The Bailiwick of Guernsey is a self-governing British Crown dependency that is not part of the United Kingdom. }}</ref> [[Parliamentary system|parliamentary]] [[representative democracy]] and British [[Crown Dependencies|Crown Dependency]]. The [[Lieutenant Governor of Guernsey]] is the "representative of [[the Crown]] in right of the ''république'' of the Bailiwick of Guernsey".<ref>{{Cite web |date=30 March 2010 |title=Review of the Roles of the Jersey Crown officers |url=http://www.gov.je/SiteCollectionDocuments/Government%20and%20administration/R%20Guernsey%20LOs%20Submission%2020100330%20HR%20v1.pdf |archive-url=https://web.archive.org/web/20110621222617/http://www.gov.je/SiteCollectionDocuments/Government%20and%20administration/R%20Guernsey%20LOs%20Submission%2020100330%20HR%20v1.pdf |archive-date=21 June 2011 |url-status=live |access-date=31 May 2011}}</ref> The [[official residence]] of the Lieutenant Governor is Government House. Since 2022 the incumbent has been [[Lieutenant general (United Kingdom)|Lieutenant General]] [[Richard Cripwell]] {{postnominals|country=GBR|size=100|sep=,|CB|CBE|CStJ}}. The post was created in 1835 as a result of the abolition of the office of Governor. Since that point, the Lieutenant Governor has always resided locally.<ref>{{harvnb|Crossan|2015|p=8}}</ref>
+
+The jurisdiction is not part of the [[United Kingdom]], although defence and most foreign relations are handled by the British Government.<ref name="Ogier" />
+
+The entire jurisdiction lies within the [[Common Travel Area]] of the [[British Islands]] and the [[Republic of Ireland]]. Taken together with the separate jurisdictions of [[Alderney]] and [[Sark]] it forms the [[Bailiwick of Guernsey]].
+
+===States of Guernsey===
+{{main|States of Guernsey}}
+[[File:Lieutenant Governor and Bailiff of Guernsey.jpg|thumb|right|Bailiff Richard Collas (right) attending [[Elizabeth II]]'s birthday parade 2016 in his formal robes]]
+The deliberative assembly of the States of Guernsey ({{lang|fr|États de Guernesey}}) is called the States of Deliberation ({{lang|fr|États de Délibération}}) and consists of 38 People's Deputies, elected on an islandwide basis every four years.<ref>{{Cite news |date=7 December 2020 |title=Guernsey Election 2020: Island-wide vote 'successful' |language=en-GB |work=BBC News |url=https://www.bbc.com/news/world-europe-guernsey-55216328 |access-date=27 December 2020}}</ref> There are also two representatives from [[Alderney]], a semi-autonomous dependency of the Bailiwick, but [[Sark]] sends no representative since it has its own legislature. The [[Bailiff of Guernsey|Bailiff]] or Deputy Bailiff preside in the assembly. There are also two non-voting members: H.M. Procureur (analogous to the role of [[Attorney General]]) and H.M. Comptroller (analogous to [[Solicitor General]]), both appointed by the Crown and collectively known as the Law Officers of the Crown.
+
+A ''projet de loi'' is the equivalent of a UK bill or a French ''projet de loi'', and a law is the equivalent of a UK [[Act of Parliament in the UK|act of parliament]] or a French ''loi''. A draft law passed by the States can have no legal effect until formally approved by His Majesty in Council and promulgated by means of an [[order in council]].<ref>{{Cite book |last=Dawes |first=Gordon |title=Laws of Guernsey |publisher=Hart Publishing |year=2003 |isbn=978-1847311856 |location=Oxford}}</ref> Laws are given the Royal Sanction at regular meetings of the Privy Council in London, after which they are returned to the islands for formal registration at the [[Courts of Guernsey#Royal Court|Royal Court]]. The States also make delegated legislation known as Ordinances (''Ordonnances'') and Orders (''ordres'') which do not require the [[Royal Assent]]. Commencement orders are usually in the form of ordinances.
+
+The [[Policy and Resources Committee of Guernsey|Policy and Resources Committee]] is responsible for Guernsey's constitutional and external affairs, developing strategic and corporate policy and coordinating States business. It also examines proposals and Reports placed before Guernsey's Parliament (the States of Deliberation) by Departments and Non States Bodies. The President of the committee is the de facto head of government of Guernsey.<ref name="P&R">{{Cite web |title=Policy & Resources |date=15 April 2016 |url=https://www.gov.gg/article/152833/Policy--Resources |publisher=States of Guernsey}}</ref>
+
+===Legal system===
+{{main|Law of Guernsey}}
+Guernsey's legal system originates in Norman Customary Law, overlaid with principles taken from [[English common law]] and [[Equity (law)|Equity]] as well as from statute law enacted by the competent legislature(s) – usually, but not always, the States of Guernsey. Guernsey has almost complete autonomy over internal affairs and certain external matters. However, the Crown – that is to say, the UK Government – retains an ill-defined reserved power to intervene in the domestic affairs of any of the three Crown Dependencies within the [[British Islands]] "in the interests of good government".<ref>{{cite court|litigants=Hotchkiss v. Channel Islands Knitwear Company Limited|date=2001|pinpoint=207}}</ref> The UK Parliament is also a source of Guernsey law for those matters which are reserved to the UK, namely defence and foreign affairs.{{Citation needed|date=November 2021}}<ref>{{Cite web |title=International Conventions and Treaties |url=https://www.gov.gg/conventions |access-date=2024-04-09 |website=The official website for the States of Guernsey}}</ref>
+
+The head of the bailiwick judiciary in Guernsey is the Bailiff, who, as well as performing the judicial functions of a Chief Justice, is also the head of the States of Guernsey and has certain civic, ceremonial and executive functions. The Bailiff's functions may be exercised by the Deputy Bailiff. The posts of Bailiff and Deputy Bailiff are Crown appointments. Sixteen Jurats, who need no specific legal training, are elected by the [[States of Election]] from among Islanders. They act as a jury, as judges in civil and criminal cases and fix the sentence in criminal cases. First mentioned in 1179, there is a list of Jurats who have served since 1299.<ref>{{Cite web |title=Jurats |date=4 August 2011 |url=https://www.guernseyroyalcourt.gg/article/3089/Jurats |publisher=Guernsey Royal Court}}</ref>
+
+The oldest [[Courts of Guernsey]] can be traced back to the 9th century. The principal court is the Royal Court and exercises both civil and criminal jurisdiction. Additional courts, such as the Magistrate's Court, which deals with minor criminal matters, and the Court of Appeal, which hears appeals from the Royal Court, have been added to the Island's legal system over the years.{{Citation needed|date=November 2021}}<ref>{{Cite web |title=The Magistrate's Court - Royal Court |url=https://www.guernseyroyalcourt.gg/article/6328/The-Magistrates-Court |access-date=9 April 2024 |website=The Magistrate's Court}}</ref><ref>{{Cite web |title=The Magistrate's Court |url=https://www.guernseyroyalcourt.gg/article/6328/The-Magistrates-Court |access-date=10 August 2024 |website=The Royal Court of Guernsey}}</ref><ref>{{Cite web |title=Criminal and Civil Jurisdiction of the Magistrate's Court |url=https://www.guernseyroyalcourt.gg/article/6329/Criminal-and-Civil-Jurisdiction-of-the-Magistrates-Court |access-date=10 August 2024 |website=The Royal Court of Guernsey}}</ref>
+
+===External relations===
+{{main|External relations of Guernsey}}
+Several European countries have a consular presence within the jurisdiction. The French Consulate is based at [[Victor Hugo]]'s former residence at [[Hauteville House]].<ref>{{Cite web |title=Consulate of France in Guernsey, United Kingdom |url=https://www.embassypages.com/missions/embassy4446/ |access-date=19 September 2017 |website=Embassypages.com}}</ref>
+
+While the jurisdiction of Guernsey has complete autonomy over internal affairs and certain external matters, the topic of complete independence from the British Crown has been discussed widely and frequently, with ideas ranging from Guernsey obtaining independence as a Dominion to the bailiwicks of Guernsey and Jersey uniting and forming an independent Federal State within the Commonwealth, whereby both islands retain their independence with regards to domestic affairs, but, internationally, the islands would be regarded as one state.<ref name=HoG/>
+
+Although it was not a member of the [[European Union]], Guernsey had a special relationship with it until [[Brexit]]. It had been treated as part of the European Community, with access to the single market for the purposes of the free trade in goods. From 2021, with free travel to the continent ceasing, additional bureaucratic procedures come into force, including the need for international driving licences.<ref>{{Cite web |date=2021-09-30 |title=Brits, don't drive into the EU without this new sticker |url=https://www.euronews.com/travel/2021/09/30/brits-don-t-drive-into-the-eu-without-this-new-sticker |access-date=2024-12-07 |website=euronews |language=en}}</ref><ref>{{Cite web |last=Ogier |first=Mark |date=2024-08-29 |title=Visa waivers needed before travelling to Europe next year |url=https://guernseypress.com/news/2024/08/29/visa-waivers-needed-before-travelling-to-europe-next-year/ |access-date=2024-12-07 |website=guernseypress.com |language=en}}</ref>
+
+===Parishes===
+{{main|Parishes of Guernsey}}
+[[File:Guernsey (zoom), administrative divisions - en - colored.svg|thumb|450px|The parishes of Guernsey]]
+Guernsey has ten [[Parish (administrative division)|parishes]], which act as civil administration districts with limited powers. Each parish is administered by a Douzaine, made up of twelve members or more, known as Douzeniers.<ref>{{cite web |title=Douzenier or Constable |url=https://womeninpubliclife.gg/index.php/douzenier/ |access-date=27 August 2023}}</ref> Douzeniers are elected for a four-year mandate, three, four or five Douzeniers being elected by parishioners at a parish meeting each year. The senior Douzenier is known as the Doyen (Dean). Two elected [[Connétable (Jersey and Guernsey)|Constables]] ({{lang|fr|Connétables}}) carry out the decisions of the Douzaine, serving for between one and three years. The longer serving Constable is known as the Senior Constable and his or her colleague as the Junior Constable.<ref>{{Cite web |title=Parochial Officers |url=https://www.stppcons.com/information/parochialofficers.html |url-status=dead |archive-url=https://web.archive.org/web/20170313024623/http://stppcons.com/information/parochialofficers.html |archive-date=13 March 2017 |access-date=29 November 2017 |website=St Peter Port Parish}}</ref> The Douzaines levy an Occupiers Rate on properties to provide funding for running of the administration.<ref>{{Cite web |title=Parishes and Douzaines |url=https://www.guernseyroyalcourt.gg/article/1954/Parishes-and-Douzaines |access-date=22 September 2017 |website=The Royal Court of Guernsey|date=22 June 2011 }}</ref>
+
+Guernsey's [[Parish (Church of England)|Church of England parishes]] fall under the [[See of Canterbury]], having split from the [[Bishopric of Winchester]] in 2014.<ref>{{Cite news |date=13 April 2014 |title=Channel Islands' Anglican churches pay Parish Shares to Canterbury |work=[[BBC News Online|BBC News]] |url=https://www.bbc.co.uk/news/world-europe-27004204 |access-date=19 September 2017}}</ref> The biggest parish is Castel, while the most populated is St Peter Port.<ref>{{Cite web |title=Parishes |url=https://www.swoffers.co.uk/relocating-to-guernsey/parishes/ |access-date=4 March 2022 |website=Swoffers |language=en-GB}}</ref>
+
+==Economy==
+Financial services, such as banking, [[Investment management|fund management]], and insurance, account for about 37% of GDP.<ref name="www.gov.gg">{{Cite web |title=Guernsey Gross Domestic Product First Release 2010 |url=https://www.gov.gg/GDP |access-date=11 September 2012 |publisher=States of Guernsey}}</ref> Tourism, manufacturing, and horticulture, mainly tomatoes and cut flowers, especially [[freesia]]s, have been declining.<ref name="Tomato" /> Light tax and death duties make Guernsey a popular [[offshore finance]] centre for [[private-equity fund]]s.
+
+Guernsey does not have a Central Bank and it issues its own [[pound sterling|sterling]] [[Coins of the Guernsey pound|coinage]] and [[Guernsey pound#Banknotes|banknotes]]. UK coinage and (English, Scottish and Northern Irish-faced) banknotes also circulate freely and interchangeably.<ref>{{Cite web |title=About Guernsey |url=http://www.visitguernsey.com/aboutguernsey/ |url-status=dead |archive-url=https://web.archive.org/web/20110529004318/http://www.visitguernsey.com/aboutguernsey/ |archive-date=29 May 2011 |access-date=31 May 2011 |publisher=Visitguernsey.com}}</ref> Total island investment funds, used to fund pensions and future island costs, amount to £2.7billion as at June 2016.<ref>{{Cite web |date=28 September 2016 |title=Total States Funds = £2.7 Billion |url=http://www.islandfm.com/total-states-assets-2-7-billion/ |publisher=Island FM |access-date=28 September 2016 |archive-date=2 April 2019 |archive-url=https://web.archive.org/web/20190402110927/http://www.islandfm.com/total-states-assets-2-7-billion/ |url-status=dead }}</ref> The island issued a 30-year bond in December 2015 for £330m, its first bond in 80 years.<ref>{{Cite news |title=Guernsey's Debt Draws Strong Demand |work=[[The Wall Street Journal]] |url=https://www.wsj.com/articles/guernseys-debt-draws-strong-demand-1434367951}}</ref> The island has been given a [[credit rating]] of AA-/A-1+ with a stable outlook from [[Standard & Poor's]].<ref>{{Cite web |date=30 January 2017 |title=Island Credit Rating Remains The Same |url=http://www.islandfm.com/island-credit-rating-remains/ |url-status=dead |archive-url=https://web.archive.org/web/20190402174741/http://www.islandfm.com/island-credit-rating-remains/ |archive-date=2 April 2019 |access-date=30 January 2017 |publisher=Island fm}}</ref>
+
+Guernsey has the official [[ISO 3166-1 alpha-2]] code '''GG''' and the official [[ISO 3166-1 alpha-3]] code '''GGY'''; vendors of economic and financial information, such as [[Reuters]], will report products related to Guernsey using the alpha-3 code.<ref>{{Cite web |title=GGY country code according to ISO-3166 Alpha 3, Abbreviation / Code |url=https://laendercode.net/en/3-letter-code/ggy |access-date=1 January 2023 |website=Country code |language=en}}</ref>
+
+In March 2016 there were over 32,291 people employed in Guernsey with 4,864 being self-employed and 2,453 employing businesses. 19.6% worked in the finance industry and median earnings were £31,215.<ref>{{Cite web |title=Guernsey Quarterly Population, Employment and Earnings Bulletin |url=http://www.islandfm.com/wp-content/uploads/2016/10/Quarterly-population-employment-and-earnings-bulletin-Q3-2015-final-embargoed.pdf |url-status=dead |archive-url=https://web.archive.org/web/20171018114848/http://www.islandfm.com/wp-content/uploads/2016/10/Quarterly-population-employment-and-earnings-bulletin-Q3-2015-final-embargoed.pdf |archive-date=18 October 2017 |access-date=29 October 2016 |publisher=Island FM}}</ref>
+
+===Infrastructure===
+[[File:Guernsey Postbox type C double aperture pillar box.jpg|thumb|A Guernsey Post pillar box]]
+Public services, such as water, wastewater, the two main harbours and the airport are owned and controlled by the States of Guernsey.
+
+Electricity, and postal services have been commercialised and are now operated by companies [[Guernsey Electricity]] and [[Guernsey Post]] which are wholly owned by the States of Guernsey.
+
+Gas is supplied by an independent private company.
+
+In 1998, Guernsey and Jersey jointly formed the [[Channel Islands Electricity Grid]] to operate and manage the submarine cables between continental Europe and the Channel Islands.<ref>{{Cite web |title=The CIEG Ltd |url=https://www.electricity.gg/about/the-cieg/ |access-date=1 December 2017 |website=Guernsey Electric |archive-date=18 January 2022 |archive-url=https://web.archive.org/web/20220118182705/https://www.electricity.gg/about/the-cieg/ |url-status=dead }}</ref> The installation of these cables was originally to provide the island with a secure form of backup power but now are effectively the primary source of power with the local diesel generators providing back-up.<ref>{{Cite web |title=Channel Islands Electricity Grid Project |url=https://library.e.abb.com/public/e787fe9fe44174a3c1256e360040f3cb/Project%20Channel%20Islands%2090%20kV%20XLPE%20subm-land-.pdf |archive-url=https://web.archive.org/web/20160128185306/https://library.e.abb.com/public/e787fe9fe44174a3c1256e360040f3cb/project%20channel%20islands%2090%20kv%20xlpe%20subm-land-.pdf |archive-date=28 January 2016 |url-status=live |access-date=1 December 2017 |website=ABB}}</ref>
+
+[[Guernsey Telecoms]], which provided telecommunications, was sold by the States to [[Cable & Wireless plc]], rebranded as [[Sure (company)|Sure]] and was sold to [[Batelco|Batel co]] in April 2013. Newtel was the first alternative telecommunications company on the island and was acquired by Wave Telecom in 2010<ref>{{Cite news |date=25 August 2009 |title=Wave buys Newtel |work=Guernsey Press |url=https://guernseypress.com/news/2009/08/25/wave-buys-newtel/ |access-date=30 November 2017 |archive-date=1 December 2017 |archive-url=https://web.archive.org/web/20171201034119/https://guernseypress.com/news/2009/08/25/wave-buys-newtel/ |url-status=dead }}</ref> and subsequently rebranded as [[Jersey Telecom]].<ref>{{Cite web |title=Guernsey – A fresh look to mark the tenth birthday of Wave Telecom |url=https://jtglobal.com/Guernsey/super-footer/Latest-News/2012/A-fresh-look-to-mark-the-tenth-birthday-of-Wave-Telecom/ |url-status=dead |archive-url=https://web.archive.org/web/20171201041428/https://jtglobal.com/Guernsey/super-footer/Latest-News/2012/A-fresh-look-to-mark-the-tenth-birthday-of-Wave-Telecom/ |archive-date=1 December 2017 |access-date=30 November 2017 |website=JT Global}}</ref> [[Airtel-Vodafone]] also provide a mobile network.<ref>{{Cite web |title=Guernsey Airtel Launches Services |url=https://www.airtel.in/about-bharti/media-centre/bharti-airtel-news/corporate/pg_guernsey+airtel+launches+services |access-date=30 November 2017 |website=Airtel}}</ref>
+
+Both the [[Guernsey Post]] postal boxes (since 1969) and the telephone boxes (since 2002) are painted blue, but otherwise are identical to their British counterparts, the red [[pillar box]] and [[red telephone box]]. In 2009 the telephone boxes at the bus station were painted yellow just like they used to be when Guernsey Telecoms was state-owned. The oldest pillar box still in use in the British Isles can be found in Union Street, St Peter Port, and dates back to 1853.<ref>{{Cite web |title=Well adapted for the purpose... |date=23 November 2012 |url=https://postalheritage.wordpress.com/2012/11/23/well-adapted-for-the-purpose/ |publisher=The British Postal Museum & Archive blog}}</ref>
+
+===Transport===
+{{Main|Transport in Guernsey}}
+
+The primary mode of transport on the island is the [[motor vehicle]]. Guernsey has an extensive network of lanes, some of which are distinguished as green lanes under the name 'Ruette Tranquille', translated to 'quiet street'. Pedestrians, cyclists, and horse riders have priority with a recommended speed of 15&nbsp;mph.
+
+Guernsey's bus network is operated by [[Stagecoach South West]] as [[Stagecoach South West#Buses.gg|Buses.gg]], on behalf of the States of Guernsey's Committee for Environment and Infrastructure.<ref>{{Cite web |title=Using the bus service |url=https://www.buses.gg/about |access-date=21 September 2017 |website=buses.gg}}</ref>
+
+[[File:Aurigny Air Services ATR 72-600 G-ORAI.jpg|right|thumb| An [[Aurigny]] [[ATR 72-600]] aircraft]]
+[[Guernsey Airport]] is the only airport in Guernsey and is located in the parish of [[Forest, Guernsey|Forest]]. It offers flights to the UK, Alderney, Jersey and international destinations. The [[States of Guernsey]] wholly own their own airline, [[Aurigny]]. The decision to purchase the airline was made to protect important air links to and from the island and the sale was completed on 15 May 2003.<ref>{{cite magazine | magazine=Airways Magazine |access-date=15 May 2023 |date=15 May 2003 |title=Government of Guernsey Acquires Aurigny |url=https://airwaysmag.com/guernsey-acquires-aurigny/ |first=Lee |last=Cross}}</ref>
+
+[[File:MV Islander entering in Saint-Malo.jpg|right|thumb|The ''[[MV Islander (2005)|Islander]]'' [[ro-ro]] vessel, operated by [[Brittany Ferries]]]]
+[[Saint Peter Port Harbour]] is the main port on the island, with ports existing elsewhere, including in [[Saint Sampson, Guernsey|St Sampson]]. [[Ro-ro]] and fast [[catamaran]] ferries are operated to and from Saint Peter Port Harbour, with services to the UK, France and occasionally Jersey, operated by [[Brittany Ferries]].<ref>{{citation|url=https://www.islandfm.com/news/guernsey/brittany-ferries-takes-control-of-guernseys-sea-links/|title=Brittany Ferries takes control of Guernsey's sea links|accessdate=23 April 2025|date=28 March 2025|publisher=Island FM}}</ref> Various independent operators serve destinations elsewhere.<ref>{{citation|url=https://www.visitguernsey.com/planning/getting-here/sail-to-guernsey/|title=Sail To Guernsey
+|accessdate=23 April 2025}}</ref> In summer months, [[cruise ships]] call into Guernsey, either arriving in the [[Little Roussel]] or docking in one of two ro-ro berths.<ref>{{cite web|title=Small cruise ships to dock in the harbour|url=https://guernseypress.com/news/2025/03/18/small-cruise-ships-to-dock-in-the-harbour/|date=18 March 2025|access-date=5 May 2025|publisher=Guernsey Press}}</ref>
+
+===Business===
+{{as of|2014}}, the finance industry forms the largest economic sector in Guernsey, generating around 40% of Guernsey's GDP and directly employing around 21% of its workforce.<ref>{{Cite web |title=Guernsey Financial Services – A Strategy for the Future |url=https://www.gov.gg/CHttpHandler.ashx?id=86940&p=0 |access-date=21 November 2017 |website=Gov.GG}}</ref> Banks began setting up operations in the island from the early 1960s onwards in order to avoid high onshore taxes and restrictive regulation.<ref name="Crossan17">{{harvnb|Crossan|2015|p=17}}</ref> The industry regulator is the [[Guernsey Financial Services Commission]], which was established in 1987.<ref>{{Cite web |title=Locations – Guernsey |url=https://www.blenheimgroup.com/locations/ |url-status=dead |archive-url=https://web.archive.org/web/20151026065355/http://www.blenheimgroup.com/locations/ |archive-date=26 October 2015 |access-date=21 November 2017 |website=Blenheim Group}}</ref> In 2015, the Bailiwick of Guernsey (in conjunction with Jersey) established the [[Channel Islands Financial Ombudsman]] (CIFO) to resolve consumer complaints about financial services provided in or from the Channel Islands of Jersey, Guernsey, Alderney and Sark.<ref>{{Cite web |title=History |url=https://www.ci-fo.org/about/history/ |access-date=6 May 2022 |website=[[Channel Islands Financial Ombudsman]] |language=en-US}}</ref>
+
+Prior to the growth of the finance industry, the island's main industries were quarrying and horticulture. The latter particularly declined as a result of the oil-price shocks of the 1970s and the introduction of cheap [[North Sea]] gas that benefited Dutch growers.<ref name="Crossan17" /> Guernsey is home to [[Specsavers]] Optical Group, and [[Healthspan (company)|Healthspan]] also has its headquarters in Guernsey.<ref>{{Cite web |title=About Healthspan |url=http://www.healthspan.co.uk/aboutus.aspx |url-status=dead |archive-url=https://web.archive.org/web/20110609043113/http://www.healthspan.co.uk/aboutus.aspx |archive-date=9 June 2011 |access-date=31 May 2011 |publisher=Healthspan.co.uk}}</ref>
+
+===Tourism===
+[[File:Guernsey towers.JPG|thumb|Loophole Towers in Guernsey]]
+Guernsey has been a tourist destination since at least the Victorian days, with the first tourist guide published in 1834. In the 19th century, two rail companies ([[London and South Western Railway]] and [[Great Western Railway]]<ref>{{Cite web |title=The Wreck of the Stella – Titanic of the Channel Islands |url=http://www.museums.gov.gg/CHttpHandler.ashx?id=76913&p=0 |access-date=20 November 2017 |website=Guernsey Museums and Galleries| date=12 July 2012 }}</ref>) ran competing boats from the UK to St Peter Port, with a race to the only convenient berth. This was halted with the sinking of the [[SS Stella (1890)|SS ''Stella'']] in 1899.<ref>{{Cite web |title=Guernsey History Timeline for Schools |url=http://www.museums.gov.gg/article/155666/Guernsey-History-Timeline |access-date=20 November 2017 |website=Guernsey Museums and Galleries|date=12 July 2012 }}</ref>
+
+Guernsey enters [[Britain in Bloom]] with [[Saint Martin, Guernsey|St Martin]] Parish winning the small town category twice in 2006 and 2011,<ref>{{Cite web |title=Where is the greenest, cleanest, prettiest place in Britain? |url=http://press.rhs.org.uk/RHS-Outreach/Press-releases/Where-s-the-greenest,-cleanest,-prettiest-place-in.aspx |publisher=RHS |access-date=17 October 2015 |archive-date=18 November 2015 |archive-url=https://web.archive.org/web/20151118040149/http://press.rhs.org.uk/RHS-Outreach/Press-releases/Where-s-the-greenest,-cleanest,-prettiest-place-in.aspx |url-status=dead }}</ref> [[Saint Peter Port]] winning the large coastal category in 2014 and [[Saint Peter, Guernsey|St Peter's]] winning the small coastal prize in 2015.<ref>{{Cite web |title=St Peter's wins class in national Britain in Bloom |date=17 October 2015 |url=https://guernseypress.com/news/2015/10/17/st-peters-wins-class-in-national-britain-in-bloom/ |publisher=Guernsey press}}</ref> Herm has won Britain in Bloom categories several times:<ref name="BIB 2">{{Cite web |date=27 January 2013 |title=Herm aims for fourth gold medal in Britain in Bloom |url=https://www.bbc.co.uk/news/world-europe-guernsey-21204510 |access-date=31 December 2013 |publisher=BBC}}</ref> in 2002, 2008, and 2012, Herm won the Britain in Bloom Gold Award.<ref name="BIB Dates">{{Cite web |title=Herm Garden Tour |url=http://herm.com/activities/herm-garden-tours/ |access-date=1 January 2014 |publisher=Herm Island |archive-date=16 February 2016 |archive-url=https://web.archive.org/web/20160216104907/http://herm.com/activities/herm-garden-tours/ |url-status=dead }}</ref>
+
+The military history of the island has left a number of fortifications, including [[Castle Cornet]], [[Fort Grey]], [[Guernsey loophole towers]] and a large collection of [[German fortification of Guernsey|German fortifications]] with a number of museums.
+
+The use of the roadstead in front of St Peter Port by over 100 cruise ships a year is bringing over 100,000 day-trip passengers to the island each year.<ref>{{Cite web |date=10 October 2015 |title=Record year for cruise ship passengers in Guernsey |url=https://www.bbc.co.uk/news/world-europe-guernsey-34492474 |publisher=BBC}}</ref>
+
+===Taxation===
+Guernsey, Alderney and Sark each raise their own taxation,<ref name="MOJ">{{Cite web |title=Background briefing on the Crown Dependencies: Jersey, Guernsey and the Isle of Man |url=https://www.justice.gov.uk/downloads/about/moj/our-responsibilities/Background_Briefing_on_the_Crown_Dependencies2.pdf |publisher=Ministry of Justice |access-date=7 February 2016 |archive-date=10 April 2016 |archive-url=https://web.archive.org/web/20160410054056/http://www.justice.gov.uk/downloads/about/moj/our-responsibilities/Background_Briefing_on_the_Crown_Dependencies2.pdf |url-status=dead }}</ref> although in 1949 Alderney (but not Sark) transferred its fiscal rights to Guernsey.<ref>{{cite act |title="The Alderney (Application of Legislation) Law, 1948 |url=http://www.guernseylegalresources.gg/CHttpHandler.ashx?id=83875 |date=22 December 1948 |access-date=30 November 2017}}</ref>
+
+Personal tax liability differs according to whether an individual is resident in the island or not. Individuals resident in the Jurisdiction of Guernsey (which does not include Sark) pay [[income tax]] at the rate of 20% on their worldwide income, whereas non-residents are only liable on income arising from activity or ownership within Guernsey. The income tax year in Guernsey aligns to the calendar year.<ref>{{Cite web |title=Guernsey Income Tax |url=https://www.gov.gg/CHttpHandler.ashx?id=90433&p=0 |access-date=21 November 2017 |website=States of Guernsey}}</ref> All Guernsey-resident individuals are subject to an upper limit on their tax liability, which is known as the "tax cap". Individuals may elect either of the following; Tax on non-Guernsey-source income originally restricted to £110,000, plus tax on Guernsey-source income (excluding Guernsey bank interest), or Taxed on worldwide income originally restricted to £220,000, including Guernsey-source income. Income derived from Guernsey land and property is excluded from the tax cap, as from 1 January 2015, and is subject to tax at the normal rate of 20%. Only one cap applies per married couple.<ref>{{Cite web |title=2018 Tax Guide Summary – Guernsey |url=https://www.fitzroytax.com/media/1019/guernsey-taxation-a-summary-guide.pdf |archive-url=https://web.archive.org/web/20190126164429/https://www.fitzroytax.com/media/1019/guernsey-taxation-a-summary-guide.pdf |archive-date=26 January 2019 |url-status=live}}</ref> As from 1 January 2019, these tax caps have increased to £130,000 and £260,000 respectively.<ref>{{Cite web|url=https://www.pwc.com/jg/en/topics/guernsey-budget.html|title=Guernsey Budget 2019|website=PwC|accessdate=20 December 2022}}</ref> Guernsey has also introduced a new lower £50k tax cap for new residents for three years, subject to buying an Open Market Part A house with a document duty in excess of that amount, and not having lived in Guernsey or Alderney for three years prior.<ref>{{Cite web|url=https://www.gov.gg/CHttpHandler.ashx?id=117035&p=0|title=Guernsey Tax Office Tax Cap rules}}</ref>
+
+Since 2008, Guernsey has operated three levels of [[Corporate tax|corporation tax]], depending on the source of the income.
+* A 0% corporation tax rate on most companies.
+* A 10% rate (income from banking business and, with effect from 1 January 2013, extended to domestic insurance business, fiduciary business, insurance intermediary business and insurance manager business).
+* A 20% rate (income from trading activities regulated by the Office of the Director General of Utility Regulation, and income from the ownership of lands and buildings).<ref>{{Cite web |title=Tax for businesses, companies and employers |url=https://www.gov.gg/article/120167/Tax-for-businesses-companies-and-employers |access-date=21 November 2017 |website=Gov.GG}}</ref>
+
+Guernsey levies no [[Capital gains tax|capital gains]], [[Inheritance tax|inheritance]], capital transfer, value added (VAT / TVA) or general withholding taxes.<ref>{{Cite web |title=Guernsey Tax |url=http://www.locateguernsey.com/your-business/tax/ |access-date=21 November 2017 |website=Locate Guernsey |archive-date=1 December 2017 |archive-url=https://web.archive.org/web/20171201033448/http://www.locateguernsey.com/your-business/tax/ |url-status=dead }}</ref> Guernsey has thus been described a [[tax haven]].<ref>{{Cite news |date=29 May 2019 |title=Channel Islands 'among worst tax havens' worldwide |language=en-GB |work=BBC News |url=https://www.bbc.com/news/world-europe-jersey-48354081 |access-date=1 August 2022}}</ref><ref>{{Cite news |date=25 March 2010 |title=Island life beckons in tax haven Guernsey |work=Financial Times |url=https://www.ft.com/content/a0af191a-3610-11df-aa43-00144feabdc0 |archive-url=https://ghostarchive.org/archive/20221210/https://www.ft.com/content/a0af191a-3610-11df-aa43-00144feabdc0 |archive-date=10 December 2022 |url-access=subscription |url-status=live |access-date=1 August 2022}}</ref> In the 2011 Budget, the UK announced that it would be ending Low Value Consignment Relief that was being used to sell goods VAT free to customers across the UK, with this legislation coming into force on 1 April 2012.<ref>{{Cite web |title=Government ends exploitation of Channel Islands VAT rules |url=https://www.gov.uk/government/news/government-ends-exploitation-of-channel-islands-vat-rules |access-date=24 November 2017 |website=UK Government}}</ref> Tax revenues represent 22.4% of GDP.<ref name="gov.gg tax">{{Cite web |title=Guernsey Facts and Figures |url=https://www.gov.gg/CHttpHandler.ashx?id=104269&p=0 |access-date=28 February 2016 |publisher=States of Guernsey}}</ref>
+
+Social Insurance Scheme payments are based on gross earnings and apply to all persons over school leaving age. Employees are subject to a rate of 6.8%, whilst the self-employed pay 11.3%. Both have upper and lower earnings limits.<ref name="GovGG1">{{cite web |title=Social Security contributions information for Class 1 employed and Class 2 self-employed persons |url=https://www.gov.gg/SScontributions |website=www.gov.gg |access-date=22 September 2022 |language=en |date=22 October 2018}}</ref> Those classed as non-employed and under pension age pay a rate of 10.7%. Other categories have different rates.<ref name="GovGG2">{{cite web |title=Social Security contributions information for Class 3 non-employed people and people over pension age |url=https://www.gov.gg/non-employedcontributions |website=www.gov.gg |access-date=22 September 2022 |language=en |date=22 October 2018}}</ref>
+
+==Society==
+
+===Demographics===
+The population is 63,026 (July 2016 est.)<ref name="population" /> The median age for males is 40 years and for females is 42 years. The population growth rate is 0.775% with 9.62 births/1,000 population, 8 deaths/1,000 population, and annual net migration of 6.07/1,000 population. The life expectancy is 80.1 years for males and 84.5 years for females.<ref>{{Cite web |title=Health Profile for Guernsey and Alderney |url=https://www.gov.gg/CHttpHandler.ashx?id=104975&p=0 |access-date=29 November 2017 |website=States of Guernsey Public Health Services}}</ref> The Bailiwick ranked 10th in the world in 2015 with an average life expectancy of 82.47 years.<ref>{{Cite web |title=Life Expectancy at Birth |url=https://www.cia.gov/library/publications/the-world-factbook/rankorder/2102rank.html |publisher=CIA World Factbook |access-date=8 September 2015 |archive-date=29 December 2018 |archive-url=https://web.archive.org/web/20181229134543/https://www.cia.gov/library/publications/the-world-factbook/rankorder/2102rank.html |url-status=dead }}</ref>
+
+===Structure of the population===
+
+{{Hidden begin 
+|title= Population Estimates by Sex and Age Group (31.III.2021):<ref>{{cite web |url=https://unstats.un.org/unsd/demographic-social/products/dyb/#statistics |title=Demographic and Social Statistics |publisher=United Nations Statistics Division |access-date=29 May 2023}}</ref>
+|titlestyle = background:#EEBC35;
+}}
+{| class="wikitable"
+|-
+! width="80pt"|Age group
+! width="80pt"|Male
+! width="80pt"|Female
+! width="80pt"|Total
+! width="80pt"|%
+|-
+| align="right" | Total
+| align="right" | 31 381
+| align="right" | 32 067 
+| align="right" | 63 448
+| align="right" | 100
+|-
+| align="right" | 0–4
+| align="right" | 1 403
+| align="right" | 1 295
+| align="right" | 2 698
+| align="right" | 4.25
+|-
+| align="right" | 5–9
+| align="right" | 1 692 
+| align="right" | 1 602
+| align="right" | 3 294
+| align="right" | 5.19
+|-
+| align="right" | 10–14
+| align="right" | 1 723
+| align="right" | 1 581
+| align="right" | 3 304
+| align="right" | 5.21
+|-
+| align="right" | 15–19
+| align="right" | 1 620
+| align="right" | 1 512
+| align="right" | 3 132
+| align="right" | 4.94
+|-
+| align="right" | 20–24
+| align="right" | 1 866
+| align="right" | 1 778
+| align="right" | 3 644
+| align="right" | 5.74
+|-
+| align="right" | 25–29
+| align="right" | 1 976
+| align="right" | 1 869
+| align="right" | 3 845
+| align="right" | 6.06
+|-
+| align="right" | 30–34
+| align="right" | 2 080
+| align="right" | 2 052
+| align="right" | 4 132
+| align="right" | 6.51
+|-
+| align="right" | 35–39
+| align="right" | 2 033
+| align="right" | 1 902
+| align="right" | 3 935
+| align="right" | 6.20
+|-
+| align="right" | 40–44
+| align="right" | 1 913
+| align="right" | 1 987
+| align="right" | 3 900
+| align="right" | 6.15
+|-
+| align="right" | 45–49
+| align="right" | 2 095
+| align="right" | 2 212
+| align="right" | 4 307
+| align="right" | 6.79
+|-
+| align="right" | 50–54
+| align="right" | 2 378
+| align="right" | 2 601
+| align="right" | 4 979
+| align="right" | 7.85
+|-
+| align="right" | 55–59
+| align="right" | 2 467
+| align="right" | 2 494
+| align="right" | 4 961
+| align="right" | 7.82
+|-
+| align="right" | 60–64
+| align="right" | 2 059
+| align="right" | 2 172
+| align="right" | 4 231
+| align="right" | 6.67
+|-
+| align="right" | 65–69
+| align="right" | 1 763
+| align="right" | 1 729
+| align="right" | 3 492
+| align="right" | 5.50
+|-
+| align="right" | 70–74
+| align="right" | 1 730
+| align="right" | 1 882
+| align="right" | 3 612
+| align="right" | 5.69
+|-
+| align="right" | 75–79
+| align="right" | 1 095
+| align="right" | 1 211
+| align="right" | 2 306
+| align="right" | 3.63
+|-
+| align="right" | 80–84
+| align="right" | 858
+| align="right" | 1 030
+| align="right" | 1 888
+| align="right" | 2.98
+|-
+| align="right" | 85–89
+| align="right" | 419
+| align="right" | 687
+| align="right" | 1 106
+| align="right" | 1.74
+|-
+| align="right" | 90–94
+| align="right" | 172
+| align="right" | 347
+| align="right" | 519
+| align="right" | 0.82
+|-
+| align="right" | 95+
+| align="right" | 39
+| align="right" | 124
+| align="right" | 163
+| align="right" | 0.26
+|-
+! width="50"|Age group 
+! width="80pt"|Male
+! width="80"|Female
+! width="80"|Total
+! width="50"|Per cent
+|-
+| align="right" | 0–14
+| align="right" | 4 818
+| align="right" | 4 478
+| align="right" | 9 296
+| align="right" | 14.65
+|-
+| align="right" | 15–64
+| align="right" | 20 487
+| align="right" | 20 579
+| align="right" | 41 066
+| align="right" | 64.72
+|-
+| align="right" | 65+
+| align="right" | 6 076
+| align="right" | 7 010
+| align="right" | 13 086
+| align="right" | 20.62
+|-
+|}
+{{Hidden end}}
+
+===Border control===
+The whole jurisdiction of Guernsey is part of the [[Common Travel Area]].<ref>{{Cite web |title=Guidance – Common travel area (CTA) |url=https://www.gov.uk/government/publications/common-travel-area-cta/common-travel-area-cta |access-date=14 November 2017 |website=UK Visas and Immigration}}</ref>
+
+For immigration and nationality purposes it is UK law, and not Guernsey law, which applies (technically the Immigration Act 1971,<ref>{{cite legislation UK | type = act | year = 1971 | chapter = 77 | act = Immigration Act 1971}}</ref> extended to Guernsey by [[Order in Council]]). Guernsey may not apply different immigration controls from the UK.<ref name=":1">{{Cite web |title=Guidance for EU nationals and employers |url=https://www.gov.gg/eunationalsbrexit |access-date=2 January 2023 |website=States of Guernsey |language=en}}</ref> After the United Kingdom left the European Union, from 1 January 2021 all EU nationals, other than British or Irish nationals, travelling for anything other than visitor purposes, are required to apply for a visa to enter the UK, Bailiwick of Guernsey, Jersey or the Isle of Man, prior to travel. People coming for employment to Guernsey require a Visa and a Population Management document.<ref name=":1" />
+
+===Housing restrictions===
+Guernsey undertakes a population management mechanism using restrictions over who may work in the island through control of which properties people may live in. The housing market is split between "local market" properties and a set number of "open market" properties.<ref>{{Cite web |title=Guernsey's Two Tier Housing Market |url=http://www.gov.gg/twotierhousingmarket |url-status=dead |archive-url=https://web.archive.org/web/20150419235752/http://www.gov.gg/twotierhousingmarket |archive-date=19 April 2015 |publisher=States of Guernsey}}</ref> Anyone may live in an open market property, but local market properties can only be lived in by those who qualify – either through being born in Guernsey (to at least one local parent), by obtaining a housing licence, or by virtue of sharing a property with someone who does qualify (living ''en famille''). Consequently, "open market'" properties are much more expensive both to buy and to rent. Housing licences are for fixed periods, often only valid for 4 years and only as long as the individual remains employed by a specified Guernsey employer. The licence will specify the type of accommodation and be specific to the address the person lives in,<ref>{{Cite web |title=Where can licence holders live |url=http://www.gov.gg/live |url-status=dead |archive-url=https://web.archive.org/web/20150501145835/http://www.gov.gg/live |archive-date=1 May 2015 |publisher=States of Guernsey}}</ref> and is often subject to a police record check. These restrictions apply equally regardless of whether the property is owned or rented, and only apply to occupation of the property. Thus, a person whose housing licence expires may continue to own a Guernsey property, but will no longer be able to live in it. There are no restrictions on who may own a property.
+
+[[File:Guernsey July 2010 92.jpg|thumb|Coast of Guernsey]]
+There are a number of routes to qualifying as a "local" for housing purposes. Generally, it is sufficient to be born to at least one Guernsey parent and to live in the island for ten years in a twenty-year period. In a similar way a partner (married or otherwise) of a local can acquire local status. Multiple problems arise following early separation of couples, especially if they have young children or if a local partner dies; in these situations, personal circumstances and compassion can add weight to requests for local status. Once "local" status has been achieved it remains in place for life. Even a lengthy period of residence outside Guernsey does not invalidate "local" housing status.<ref>{{Cite web |title=What is a Qualified Resident? |url=http://www.gov.gg/qualifiedresident |url-status=dead |archive-url=https://web.archive.org/web/20150414221632/http://www.gov.gg/qualifiedresident |archive-date=14 April 2015 |publisher=States of Guernsey}}</ref>
+
+Although Guernsey's inhabitants are full [[British nationality law|British citizens]],<ref>{{cite legislation UK | type = act | year = 1981| chapter = 61| act = British Nationality Act 1981}}</ref> prior to the [[United Kingdom withdrawal from the European Union|UK's withdrawal from the EU]], an endorsement restricted the right of establishment in other European Union states was placed in the passport of British citizens connected solely with the Channel Islands and [[Isle of Man]]. If it was classified with "Islander Status", the British passport was endorsed as follows: 'The holder is not entitled to benefit from EU provisions relating to employment or establishment'. Those who had a parent or grandparent born in the United Kingdom itself (England, Scotland, Wales and Northern Ireland), or had lived in the United Kingdom for 5 years, were not subject to this restriction.<ref>{{Cite web |title=What is Islander status? |url=http://www.gov.gg/article/2822/What-is-Islander-status |url-status=dead |archive-url=https://web.archive.org/web/20131007233859/http://www.gov.gg/article/2822/What-is-Islander-status |archive-date=7 October 2013 |publisher=States of Guernsey}}</ref>
+
+==Education==
+{{Main|Education in Guernsey}}
+[[File:Elizabeth College Guernsey.jpg|thumb|[[Elizabeth College, Guernsey|Elizabeth College]], in [[St Peter Port, Guernsey]]]]
+Teaching in Guernsey is based on the English National Curriculum. There are 10 primary schools, plus two junior schools and three infant schools. {{as of|2022}}, the island no longer has the 11-plus exam, which was used to transfer pupils to one of four 11–16 secondary schools, or a co-educational grammar school.<ref>{{Cite web |title=Selection at 11 (the 11+ process) |url=https://www.gov.gg/elevenplus |access-date=29 November 2017 |website=Gov.GG}}</ref> There are also three fee-paying colleges with lower schools, for which pupils over 11 receive grant support from the States of Guernsey. In 2016, the States of Guernsey voted to end the use of the 11-plus exams from 2019 onwards.<ref>{{Cite news |date=2 December 2016 |title=Guernsey 11-plus vote: End of selection confirmed by States vote |work=BBC News |url=https://www.bbc.co.uk/news/world-europe-guernsey-38169962 |access-date=29 November 2017}}</ref> It is also responsible for education on the neighbouring islands.<ref>{{Cite web |title=Teaching in the Channel Islands |url=https://www.tes.com/articles/teaching-channel-islands |access-date=23 November 2017 |website=Times Educational Supplement |archive-date=1 December 2017 |archive-url=https://web.archive.org/web/20171201080921/https://www.tes.com/articles/teaching-channel-islands |url-status=dead }}</ref>
+
+In 2008, the school-leaving age was raised so the earliest date is the last Friday in June in the year a pupil turns 16, in line with England, Wales and Northern Ireland. This means pupils will be between 15 and 10 months and 16 and 10 months before being able to leave. Prior to this, pupils could leave school at the end of the term in which they turned 14, if they so wished: a letter was required to be sent to the Education department to confirm this. However, this option was undertaken by relatively few pupils, the majority choosing to complete their GCSEs and then either begin employment or continue their education.
+
+Post-[[GCSE]] pupils have a choice of transferring to the state-run [[Sixth Form Centre]] at the La Mare site, or to the independent colleges for academic AS/A Levels/International Baccalureate Diploma Programme. They also have the option to study vocational subjects at the island's ''Guernsey College of Further Education''.
+
+There are no universities in the island. Students who attend university in the United Kingdom receive state support towards both maintenance and tuition fees. In 2007, the Education Department received the approval of the States Assembly to introduce student contributions to the costs of higher education, in the form of student loans, as apply in the UK. However, immediately after the general election of 2008, the States Assembly voted in favour of a [[Private member's bill|Requête]] which proposed abolishing the student loans scheme on the grounds that it was expensive to run and would potentially discourage students from going to, and then returning to the island from, university. In 2012, the Education Department reported to the States Assembly that it had no need to re-examine the basis of higher education funding at the present time.
+
+==Culture==
+
+{{main|Culture of Guernsey}}
+
+[[File:George Métivier.jpg|thumb|left|[[George Métivier]]]]
+
+[[File:Pierre-Auguste Renoir - Children on the Seashore, Guernsey (Enfants au bord de la mer à Guernesey) - BF10 - Barnes Foundation.jpg|thumb|''Children on the Beach of Guernsey'' (1883) by Pierre-Auguste Renoir]]
+The French [[impressionist]] painter [[Pierre-Auguste Renoir]] visited the island in late summer 1883. While on the island, he painted fifteen pictures of the views on the island, all featuring the bay and beach of Moulin Huet on the south coast.<ref>{{Cite book |last=House |first=John |url=http://www.museums.gov.gg/CHttpHandler.ashx?id=81297&p=0 |title=Renoir in Guernsey |date=1988 |publisher=Guernsey Museum & Art Gallery |isbn=978-1871560817 |page=3 |access-date=29 November 2017}}</ref>
+
+[[File:Guernsey cow.jpg|thumb|A Guernsey cow]]
+[[Guernsey cow|Guernsey cattle]] are an internationally famous icon of the island. As well as being prized for its rich creamy milk, which is claimed to hold health benefits over milk from other breeds,<ref>{{Cite news |date=9 April 2001 |title=Milk protein blamed for heart disease |publisher=BBC News – Health |url=https://news.bbc.co.uk/2/hi/health/1268481.stm |access-date=31 May 2011}}</ref> Guernsey cattle are increasingly being raised for their distinctively flavoured and rich yellowy-fatted beef, with butter made from the milk of Guernsey cows also having a distinctive yellow colour.<ref>{{Cite book |last=Lewis |first=Samuel |url=https://archive.org/details/atopographicald02lewigoog |title=A Topographical Dictionary of England |date=1831 |publisher=S Lewis and Co |location=London}}</ref> Since the 1960s the number of individual islanders raising these cattle for private supply has diminished significantly, but Guernsey steers can still be occasionally seen grazing on L'Ancresse common.<ref>{{Cite web |title=Grazing returns to L'Ancresse Common |url=http://www.birdsontheedge.org/2017/04/07/grazing-returns-to-lancresse-common/ |access-date=29 November 2017 |website=Birds on the Edge|date=7 April 2017 }}</ref>
+
+Guernsey also hosts a breed of goat known as the [[Golden Guernsey|Royal Golden Guernsey Goat]], distinguished by its golden-coloured coat. At the end of the [[Second World War]], the Golden Guernsey had almost been rendered extinct due to [[Hybrid (biology)|interbreeding]] on the island. The survival of this breed is largely credited to the work of a single woman, Miriam Milbourne, who successfully hid her herd from the Germans during the occupation.<ref>{{Cite news |last=Watson |first=Angus |date=4 May 2007 |title=Alive and kicking |work=Financial Times |url=https://www.ft.com/content/24c16874-fa33-11db-8bd0-000b5df10621 |archive-url=https://ghostarchive.org/archive/20221210/https://www.ft.com/content/24c16874-fa33-11db-8bd0-000b5df10621 |archive-date=10 December 2022 |url-access=subscription |url-status=live |access-date=20 November 2017}}</ref> Although no longer considered to be [[critically endangered]], the breed remains on the watchlist of the [[Rare Breeds Survival Trust]].<ref>{{Cite web |title=A Brief History of the Golden Guernsey Goat |url=http://www.goldenguernseygoat.org.uk/history.htm |access-date=19 September 2017 |website=Golden Guernsey Goat Society |archive-date=22 September 2017 |archive-url=https://web.archive.org/web/20170922145745/http://www.goldenguernseygoat.org.uk/history.htm |url-status=dead }}</ref> The traditional explanation for the donkey (''âne'' in French and Guernésiais) is the steepness of St Peter Port streets that necessitated beasts of burden for transport (in contrast to the flat terrain of the rival capital of [[Saint Helier]] in Jersey), although it is also used in reference to Guernsey inhabitants' stubbornness. In turn, Guernseymen traditionally refer to Jerseymen as ''[[crapaud]]s'' ("[[toad]]s").<ref>{{Cite news |date=9 October 2014 |title=Jersey toad is unique species, say experts |work=BBC News |url=https://www.bbc.co.uk/news/world-europe-jersey-29530886 |access-date=29 November 2017}}</ref>
+
+The so-called [[Nerine sarniensis|Guernsey lily]], ''Nerine sarniensis'', is also used as a symbol of the island, although this species was introduced to the island from South Africa.<ref>{{Cite web |title=Nerine sarniensis |url=https://www.rhs.org.uk/Plants/84299/Nerine-sarniensis/Details |access-date=29 November 2017 |website=Royal Horticultural Society}}</ref>
+
+=== Local food ===
+A local delicacy is the [[Abalone|ormer]] (''Haliotis tuberculata''), a variety of abalone harvested under strict laws from beaches at [[Tide|low spring tides]].<ref>{{Cite web |title=Ormers |url=http://www.visitguernsey.com/ormers |access-date=19 September 2017 |website=Visit Guernsey |archive-date=18 October 2017 |archive-url=https://web.archive.org/web/20171018114324/http://www.visitguernsey.com/ormers |url-status=dead }}</ref> Traditional Guernsey recipes include a stew called [[Guernsey bean jar]], notably served at the annual [[Viaer Marchi]] festival.<ref>{{Cite web |title=Guernsey Bean Jar |url=https://www.bbc.co.uk/guernsey/content/articles/2004/07/22/bean_jar_feature.shtml |access-date=29 November 2017 |publisher=BBC}}</ref> Its chief ingredients include haricot and butter beans, pork, and shin beef. [[Guernsey gâche]] (pronounced "gosh") is a special bread made with raisins, sultanas and mixed peel.<ref>{{Cite web |title=Guernsey Gâche |url=https://www.bbc.co.uk/guernsey/content/articles/2004/07/22/gache_feature.shtml |access-date=29 November 2017 |publisher=BBC}}</ref> ''Gâche mélée'' is a dessert consisting of spiced, chopped apples suspended in a sponge mix.<ref name=":0">{{Cite web|title=Gache Melee - Guernsey Apple Dessert Recipe - Food.com|url=https://www.food.com/recipe/gache-melee-guernsey-apple-dessert-389531|access-date=14 May 2021|website=www.food.com}}</ref>
+
+=== Languages ===
+English is the language in general use by the majority of the population, while [[Guernésiais]], the [[Norman language]] of the island, is spoken fluently by only about 2% of the population (according to the 2001 census). However, 14% of the population claim some understanding of the language. Guernésiais and French were recognised as official languages in August 2020, although until the early 20th century, French was the only official language of the Bailiwick, and all deeds for the sale and purchase of real estate in Guernsey were written in French until 1971. Family and place names reflect this linguistic heritage. [[George Métivier]], a poet, wrote in Guernésiais. The loss of the island's language and the Anglicisation of its culture, which began in the 19th century and proceeded inexorably for a century, accelerated sharply when the majority of the island's school children were evacuated to the UK for five years during the German occupation of 1940–45.{{Citation needed|date=November 2021}}
+
+=== Literature ===
+
+[[Victor Hugo]], having arrived on Halloween 1855,<ref name="Cooper192"/> wrote some of his best-known works while in exile in Guernsey, including ''[[Les Misérables]]''. His home in St Peter Port, Hauteville House, is now a museum administered by the city of [[Paris]]. In 1866, he published a novel set on Guernsey, ''Travailleurs de la Mer'' (''[[Toilers of the Sea]]''), which he dedicated to the island. Guernsey was his home for fifteen years.<ref name="Cooper192"/>
+
+[[Mabel Collins]] (1851–1927), a [[theosophist]] and prolific author, was born in St Peter Port.<ref>{{Cite web |date=2010-11-20 |title=Collins, Mabel (1851-1927). |url=https://www.theosophyforward.com/collins-mabel-1851-1927 |access-date=2024-12-21 |website=Theosophy Forward |language=en-gb}}</ref><ref>{{Cite web |title=Mabel Collins Kim Farnell Astrologer-Writer |url=http://www.kimfarnell.co.uk/mabel1.htm |access-date=2024-12-21 |website=www.kimfarnell.co.uk}}</ref>
+
+Guernseyman [[Gerald Basil Edwards|G. B. Edwards]] wrote a critically acclaimed novel, ''[[The Book of Ebenezer Le Page]]'', that was published in 1981, including insights into Guernsey life during the 20th century.<ref>{{Cite news |date=19 April 1981 |title=A Novel of Life in a Small World |work=[[The New York Times]] |url=https://www.nytimes.com/1981/04/19/books/a-novel-of-life-in-a-small-world.html |access-date=29 November 2017}}</ref><ref>Chaney, Edward, GB Edwards and Ebenezer Le Page, Review of the [[Guernsey Society]], Parts 1–3, 1994–95.</ref> In September 2008, a [[blue plaque]] was affixed to the house on the Braye Road where Edwards was raised.<ref>{{Cite web |title=A plaque for G.B. Edwards |url=https://www.bbc.co.uk/guernsey/content/articles/2008/10/13/gb_edwards_plaque_feature.shtml |access-date=20 November 2017 |website=BBC}}</ref>
+
+[[Henry Watson Fowler]] moved to Guernsey in 1903. He and his brother [[Francis George Fowler]] composed ''[[The King's English]]'', the [[Concise Oxford Dictionary]] and much of ''[[Modern English Usage]]'' on the island.<ref>{{Cite news |date=10 December 2009 |title=H.W. Fowler, the King of English |work=[[The New York Times]] |url=https://www.nytimes.com/2009/12/13/books/review/Holt-t.html |access-date=29 November 2017}}</ref>
+
+''[[The Guernsey Literary and Potato Peel Pie Society]]'', a novel by [[Mary Ann Shaffer]] and [[Annie Barrows]], describes the [[Military occupation|Occupation]] of Germans during [[World War II]]. Written in 2009, it is about a writer who begins corresponding with residents of the island, and becomes compelled to visit the island.
+
+===Film===
+A [[The Guernsey Literary and Potato Peel Pie Society (film)|film adaptation]] of ''The Guernsey Literary and Potato Peel Pie Society'', starring [[Lily James]] and [[Jessica Brown Findlay]], was released in 2018.
+
+The 2022 British psychological thriller film ''Marooned Awakening'', starring [[Murray McArthur]], [[Tilly Keeper]] and [[Tim McInnerny]] was co-written by and stars Guernseyman Cameron Ashplant. He produced the film through Across the Channel Productions Ltd, alongside London-based director Musaab Mustafa, and Guernsey co-producers Frances and Roger Le Tissier of Ivy Gate Films. Principal photography was completed entirely on Guernsey in September 2021.<ref>{{cite news |last1=Grobar |first1=Matt |title=Thrillers 'Marooned Awakening', 'American Trash' And 'Deadly Games' Set Casts; Gravitas Acquires 'The Other Me' From EP David Lynch And Horror Pic 'Tethered'; More – Film Briefs |url=https://deadline.com/2022/01/marooned-awakening-american-trash-deadly-games-set-casts-film-briefs-1234921342/ |access-date=27 May 2022 |publisher=Deadline Hollywood |date=28 January 2022}}</ref> The film premiered on the island at Beau Séjour Theatre on 3 September 2022.<ref>{{cite news |last1=Clayton |first1=Laura |title=Blackadder, Notting Hill, Game of Thrones - and now Guernsey |url=https://gsy.bailiwickexpress.com/gsy/news/tim-mcinnerny-star-local-film/ |access-date=27 May 2022 |publisher=Bailiwick Express |date=3 February 2022}}</ref>
+
+===Media===
+Local TV coverage is provided by [[BBC South West|BBC Channel Islands]] and [[ITV Channel Television]]. There are three relay transmitters in Guernsey (St Peter Port,<ref>{{cite web|url=https://ukfree.tv/transmitters/tv/St_Peter_Port|title=Freeview Light on the St Peter Port transmitter|date=May 2004|publisher=UK Free TV|access-date=23 January 2024|archive-date=23 January 2024|archive-url=https://web.archive.org/web/20240123075636/https://ukfree.tv/transmitters/tv/St_Peter_Port|url-status=dead}}</ref> Les Touillets<ref>{{cite web|url=https://ukfree.tv/transmitters/tv/Les_Touillets|title=Freeview Light on the Les Touillets transmitter|date=May 2004|publisher=UK Free TV|access-date=23 January 2024|archive-date=23 January 2024|archive-url=https://web.archive.org/web/20240123075631/https://ukfree.tv/transmitters/tv/Les_Touillets|url-status=dead}}</ref> and Torteval<ref>{{cite web|url=https://ukfree.tv/transmitters/tv/Torteval|title=Freeview Light on the Torteval transmitter|date=May 2004|publisher=UK Free TV|access-date=23 January 2024|archive-date=23 January 2024|archive-url=https://web.archive.org/web/20240123075633/https://ukfree.tv/transmitters/tv/Torteval|url-status=dead}}</ref>) which are transmitted from the [[Fremont Point transmitting station|Fremont Point]] transmitter.
+
+Guernsey has two radio stations: [[BBC Radio Guernsey]] on 93.2 FM and [[Island FM]] on 104.7 FM, which both broadcast from [[Saint Peter Port|St. Peter Port]].
+
+The main local newspaper for the island is served by the ''[[Guernsey Press]]''.<ref>{{Cite web |url=https://guernseypress.com/|title=Guernsey Press|access-date=23 January 2024}}</ref>
+
+===Sport===
+{{main|Sport in Guernsey}}
+[[File:Jersey Town Criterium 2010 53.jpg|thumb|Joshua Gosselin racing for the Guernsey Velo Club]]
+Guernsey participates in the biennial [[Island Games]], which it hosted in 1987, 2003 and 2023 at [[Footes Lane]].<ref>{{Cite web |title=Games Reports & Results |url=https://www.iiga.org/games.html |access-date=10 November 2017 |website=International Island Games Association}}</ref> Guernsey has also participated as a country in its own right in [[Commonwealth Games]] since [[1970 British Commonwealth Games|1970]]. Its first medals came in [[1982 Commonwealth Games|1982]] with its first gold in [[1990 Commonwealth Games|1990]].<ref>{{Cite web |title=Guernsey – Introduction |url=https://www.thecgf.com/countries/intro.asp?loc=GGY |url-status=dead |archive-url=https://web.archive.org/web/20171114202424/https://www.thecgf.com/countries/intro.asp?loc=GGY |archive-date=14 November 2017 |access-date=14 November 2017 |website=Commonwealth Games Federation}}</ref>
+
+In those sporting events where Guernsey does not have international representation, but the British [[Home Nations]] are competing separately, highly skilled islanders may choose to compete for any of the Home Nations. There are, however, restrictions on subsequent transfers to represent other Home Nations. The football player [[Matt Le Tissier]], for example, could have played for the [[Scotland national football team|Scottish]] or [[Wales national football team|Welsh]] football teams, but opted to play for [[England national football team|England]] instead.<ref>{{Cite web|date=20 November 2020|title=Matt Le Tissier – 'Le God' Who Lived Among the Saints|url=https://punditfeed.com/nostalgia/matt-le-tissier/|access-date=24 May 2021|website=Pundit Feed|language=en}}</ref>
+
+Football in Guernsey is run by the [[Guernsey Football Association]]. The top tier of Guernsey football is the FNB [[Priaulx League]] where there are eight teams (Alderney, Belgrave Wanderers, Northerners, Sylvans, St Martin's, Rovers, [[Guernsey Rangers F.A.C.|Rangers]] and [[Vale Recreation F.C.|Vale Recreation]]). The second tier is the [[Jackson League]]. In the 2011–12 season, [[Guernsey F.C.]] was formed and entered the [[Combined Counties League]] Division 1, becoming the first Channel Island club ever to compete in the English leagues. Guernsey became division champions comfortably on 24 March 2012,<ref>{{Cite news |date=24 March 2012 |title=Guernsey FC secure Combined Counties Division One title |work=BBC Sport |url=https://www.bbc.co.uk/sport/football/17501874 |access-date=25 March 2012}}</ref> they won the Combined Counties Premier Challenge Cup on 4 May 2012.<ref>{{Cite web |last=Guernsey Press |date=7 May 2012 |title='Dom'-inating Green Lions finally get just rewards |url=http://www.thisisguernsey.com/sport/2012/05/07/dom-inating-green-lions-finally-get-just-rewards/ |access-date=7 May 2012 |publisher=thisisguernsey |archive-date=7 November 2012 |archive-url=https://web.archive.org/web/20121107011222/http://www.thisisguernsey.com/sport/2012/05/07/dom-inating-green-lions-finally-get-just-rewards/ |url-status=dead }}</ref> Their second season saw them promoted again on the final day in front of 1,754 'Green Lions' fans, this time to Division One South of the Isthmian League,<ref>{{Cite news |date=6 May 2013 |title=Guernsey FC: Fourth Win in Four Days Earns Promotion |work=BBC Sport |url=https://www.bbc.co.uk/sport/football/22425517}}</ref><ref>{{Cite news |date=8 May 2013 |title=Ryman here we come |publisher=Guernsey Press |url=http://www.thisisguernsey.com/sport/2013/05/08/ryman-here-we-come/ |access-date=9 May 2013 |archive-date=11 May 2013 |archive-url=https://web.archive.org/web/20130511180314/http://www.thisisguernsey.com/sport/2013/05/08/ryman-here-we-come/ |url-status=dead }}</ref> despite their fixtures being heavily affected not only by poor winter weather, but by their notable progression to the semi-finals of the FA Vase cup competition.<ref>{{Cite news |date=23 March 2013 |title=Guernsey FC lose FA Vase semi-final first leg to Spennymoor |work=BBC Sport |url=https://www.bbc.co.uk/sport/football/21894945}}</ref> They play in level 8 of the [[English football pyramid]]. The [[Corbet Field|Corbet Football Field]], donated by Jurat Wilfred Corbet in 1932, has fostered the sport greatly over the years. Recently,{{when|date=November 2023}} the island upgraded to a larger, better-quality stadium, in Footes Lane.<ref>{{Cite web |title=BBC photo of Guernsey Stadium |url=https://newsimg.bbc.co.uk/media/images/38868000/jpg/_38868145_guernseystadium203.jpg |access-date=31 May 2011}}</ref>
+
+Rugby union is also a popular sport in Guernsey, the main [[Guernsey RFC|club]] is accredited and governed by the [[Rugby Football Union]] (RFU). Guernsey RFC has 2 senior men’s teams (Guernsey Raiders and St Jacques Vikings), a Senior Ladies team, a Colts U18’s team and multiple other junior teams for both boys and girls. The main men’s team, the Raiders, currently play in National 2 East, which is a semi-professional league at level 4 of the RFU’s tiered league structure. The Vikings currently play in Counties 1 Hampshire (Level 7) and have had a string of promotions in the last few seasons. At the end of each season, all Guernsey teams will compete in the [[Siam Cup]], which was first played in 1920 between [[Jersey RFC|Jersey]] and Guernsey. The Siam Cup is the second oldest trophy in the world after the Calcutta Cup and each year’s competition continues to reflect the sporting rivalry between Jersey and Guernsey.
+
+Guernsey has the second oldest tennis club in the world, at Kings<ref name="kingstory">{{Cite web |title=The Kings Story |url=https://kings.gg/about-us/the-kings-story/ |access-date=14 November 2017 |website=Kings Premier Health Club}}</ref> (founded in 1857<ref>{{Cite web |title=Island Archives acquires Guernsey Lawn Tennis and Croquet Club historical material |url=https://www.gov.gg/article/155445/Island-Archives-acquires-Guernsey-Lawn-Tennis-and-Croquet-Club-historical-material |access-date=14 November 2017 |website=Gov.GG|date=29 July 2016 }}</ref>), with courts built in 1875. The island has produced a world class tennis player in [[Heather Watson]] as well as professional squash players in [[Martine Le Moignan]], [[Lisa Opie]] and [[Chris Simpson (squash player)|Chris Simpson]].<ref name="kingstory" />
+
+Guernsey was declared an affiliate member by the [[International Cricket Council]] (ICC) in 2005 and an associate member in 2008.<ref>{{Cite web |title=Guernsey |url=https://www.icc-cricket.com/about/members/europe/associate/102 |access-date=14 November 2017 |website=[[International Cricket Council]] |archive-date=31 July 2019 |archive-url=https://web.archive.org/web/20190731102550/https://www.icc-cricket.com/about/members/europe/associate/102 |url-status=dead }}</ref> The [[Guernsey cricket team]] plays in the [[World Cricket League]] and [[European Cricket Championship]] as well as the [[Sussex Cricket League]].
+
+Various forms of [[motorsport]] take place on the island, including races on the sands on Vazon beach as well as a quarter-mile "sprint" along the Vazon coast road. Le Val des Terres, a steeply winding road rising south from St Peter Port to Fort George, is often the focus of both local and international [[hill-climb]] races. The 2005, 2006 and 2007 World Touring Car Champion [[Andy Priaulx]] is a Guernseyman.<ref>{{Cite web |title=Andy Priaulx |url=http://www.chipganassiracing.com/Drivers/Andy-Priaulx.aspx |access-date=16 November 2017 |website=Chip Ganassi Racing |archive-date=16 November 2017 |archive-url=https://web.archive.org/web/20171116185103/http://www.chipganassiracing.com/Drivers/Andy-Priaulx.aspx |url-status=dead }}</ref>
+
+The [[racecourse]] on [[L'Ancresse]] Common was re-established in 2004 after a gap of 13 years, with the first new race occurring on 2 May 2005.<ref>{{Cite news |last=Connaughton |first=Mick |date=31 August 2004 |title=Racing: Guernsey racecourse ready for revival after gap of 13 years |work=[[The Independent]] |url=https://www.independent.co.uk/sport/general/racing-guernsey-racecourse-ready-for-revival-after-gap-of-13-years-558472.html |access-date=14 November 2017}}</ref> Races are held on most May Day [[bank holiday]]s, with competitors from Guernsey as well as Jersey, France and the UK participating. [[Sea angling]] around Guernsey and the other islands in the Bailiwick from shore or boat is a popular pastime for both locals and visitors with the Bailiwick boasting multiple UK records.
+
+== See also ==
+* [[Index of Guernsey-related articles]]
+* [[Bibliography of Guernsey]]
+* [[List of people from Guernsey]]
+* [[United Kingdom–Crown Dependencies Customs Union]]
+* [[Little Chapel]]
+
+== References ==
+=== Notes ===
+{{notelist}}
+
+=== Citations ===
+{{reflist}}
+
+=== Sources ===
+* {{Cite book |last=Cooper |first=Glynis |title=Foul deeds & suspicious deaths in Guernsey |publisher=Wharncliffe Books |year=2006 |isbn=978-1845630089}}
+* {{Cite book |last=Crossan |first=Rose-Marie |title=Poverty and Welfare in Guernsey, 1560–2015 |publisher=Boydell & Brewer |year=2015 |isbn=978-1783270408}}
+* {{Cite book |last=Jamieson |first=A.G. |title=A people of the sea |publisher=Methuen |year=1986 |isbn=978-0416405408}}
+* {{Cite book |last=Sebire |first=Heather |title=The Archaeology and Early history of the Channel Islands |publisher=The History Press |year=2005 |isbn=978-0752434490}}
+
+== External links ==
+{{Wikivoyage}}
+{{Wiktionary}}
+* [http://www.gov.gg/ States of Guernsey]
+* [https://www.governmenthouse.gg/ Government House Guernsey]
+* [http://www.visitguernsey.com/ VisitGuernsey tourism website]
+
+{{Channel Islands}}
+{{Guernsey topics |state=collapsed}}
+{{British dependencies}}
+{{Sovereign states of Europe}}
+{{English official language clickable map}}
+{{Authority control}}
+{{Portal bar|Geography|Europe}}
+
+{{coord|49.45|-2.58|type:isle_region:GG|display=title}}
+
+[[Category:Guernsey| ]]<!--please leave the empty space as standard-->
+[[Category:British Islands|Guernsey]]
+[[Category:Countries and territories where English is an official language]]
+[[Category:Geography of Guernsey]]
+[[Category:Islands of the Channel Islands]]
+[[Category:States and territories established in 1204]]

@@ -42,6 +42,46 @@
 static void append_key_token_repr_tb(const Token *t, ThreadBuf *tb) {
 	if(!t || !tb) return;
 
+	if(t->type == TOKEN_HTML) {
+		const char *tag= t->data.html.orig_tag ? t->data.html.orig_tag : t->name;
+		if(t->data.html.closing) {
+			wiki_thread_buf_putc(tb, '<');
+			wiki_thread_buf_putc(tb, '/');
+			if(tag) wiki_thread_buf_append(tb, (sz_string_view_t){ tag, strlen(tag) });
+			if(t->child_count > 0) {
+				const Child *c= &t->children[0];
+				if(c->is_text) {
+					wiki_thread_buf_append(tb, (sz_string_view_t){ c->text, c->text_len });
+				} else if(c->token) {
+					append_key_token_repr_tb(c->token, tb);
+				}
+			}
+			if(t->data.html.self_closing) {
+				wiki_thread_buf_append(tb, (sz_string_view_t){ "/>", 2 });
+			} else {
+				wiki_thread_buf_putc(tb, '>');
+			}
+			return;
+		}
+
+		wiki_thread_buf_putc(tb, '<');
+		if(tag) wiki_thread_buf_append(tb, (sz_string_view_t){ tag, strlen(tag) });
+		if(t->child_count > 0) {
+			const Child *c= &t->children[0];
+			if(c->is_text) {
+				wiki_thread_buf_append(tb, (sz_string_view_t){ c->text, c->text_len });
+			} else if(c->token) {
+				append_key_token_repr_tb(c->token, tb);
+			}
+		}
+		if(t->data.html.self_closing) {
+			wiki_thread_buf_append(tb, (sz_string_view_t){ "/>", 2 });
+		} else {
+			wiki_thread_buf_putc(tb, '>');
+		}
+		return;
+	}
+
 	if(t->type == TOKEN_TRANSCLUDE) {
 		wiki_thread_buf_putc(tb, '{');
 		wiki_thread_buf_putc(tb, '{');

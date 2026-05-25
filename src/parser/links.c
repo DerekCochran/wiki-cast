@@ -161,8 +161,15 @@ static bool match_img_syntax(const char *seg, size_t seg_len,
 	if(suf_len > 0 && memcmp(seg + seg_len - suf_len, slot + 2, suf_len) != 0) return false;
 
 	if(has_cap) *has_cap= true;
-	if(cap_ptr) *cap_ptr= seg + pre_len;
-	if(cap_len) *cap_len= seg_len - pre_len - suf_len;
+	size_t captured_len= seg_len - pre_len - suf_len;
+	const char *captured_ptr= seg + pre_len;
+	/* JS parity: getSyntaxRegex uses (.*) without dotAll, so a $1 capture
+	 * cannot include line breaks. */
+	for(size_t i= 0; i < captured_len; i++) {
+		if(captured_ptr[i] == '\n' || captured_ptr[i] == '\r') return false;
+	}
+	if(cap_ptr) *cap_ptr= captured_ptr;
+	if(cap_len) *cap_len= captured_len;
 	return true;
 }
 
