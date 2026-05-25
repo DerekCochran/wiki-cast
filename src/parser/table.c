@@ -583,6 +583,23 @@ static void parse_table_attrs(Token *attrs_tok, const char *attr_str, size_t att
 			bool dynamic_key= memchr(key, '\0', key_len) != NULL || (key_len >= 2 && key[0] == '{' && key[1] == '{') || (key_len >= 2 && key[0] == '-' && key[1] == '{');
 			if(!dynamic_key || !is_valid_attr_key_after_comment_trim(key, key_len)) {
 				for(size_t k= 0; k < key_len; k++) dirty_buf[dirty_len++]= key[k];
+				/* JS parity: when an invalid key is immediately followed by '=value',
+				 * keep the whole chunk dirty instead of treating value as a new attr key. */
+				if(i < attr_len && attr_str[i] == '=') {
+					dirty_buf[dirty_len++]= attr_str[i++];
+					if(i < attr_len && (attr_str[i] == '"' || attr_str[i] == '\'')) {
+						char q= attr_str[i];
+						dirty_buf[dirty_len++]= attr_str[i++];
+						while(i < attr_len) {
+							dirty_buf[dirty_len++]= attr_str[i];
+							if(attr_str[i++] == q) break;
+						}
+					} else {
+						while(i < attr_len && attr_str[i] != ' ' && attr_str[i] != '\t' && attr_str[i] != '\n' && attr_str[i] != '\r' && attr_str[i] != '\f' && attr_str[i] != '\v') {
+							dirty_buf[dirty_len++]= attr_str[i++];
+						}
+					}
+				}
 				continue;
 			}
 		}

@@ -842,22 +842,29 @@ static Token *build_template_token(const char **parts_restored, const size_t *pa
 				while(b < e && isspace((unsigned char)cleaned[b])) b++;
 				while(e > b && isspace((unsigned char)cleaned[e - 1])) e--;
 				bool leading_placeholder= false;
-				if(e > b && (unsigned char)cleaned[b] == '\0') {
-					size_t k= b + 1;
-					while(k < e && isdigit((unsigned char)cleaned[k])) k++;
-					if(k > b + 1 && k + 1 < e && (unsigned char)cleaned[k + 1] == '\x7F') {
-						leading_placeholder= true;
+				/* JS parity: Title validity rejects %HH in the title part, but
+				 * not inside fragment text after '#'. */
+				size_t percent_check_end= e;
+				for(size_t p= b; p < e; p++) {
+					if(cleaned[p] == '#') {
+						percent_check_end= p;
+						break;
 					}
 				}
-				/* JS parity: TranscludeToken uses normalizeTitle without decode,
-				 * so percent-escaped bytes in template names are invalid. */
-				for(size_t p= b; p + 2 < e; p++) {
+				for(size_t p= b; p + 2 < percent_check_end; p++) {
 					if(cleaned[p] == '%' &&
 					   isxdigit((unsigned char)cleaned[p + 1]) &&
 					   isxdigit((unsigned char)cleaned[p + 2])) {
 						free(cleaned);
 						token_free(t);
 						return NULL;
+					}
+				}
+				if(e > b && (unsigned char)cleaned[b] == '\0') {
+					size_t k= b + 1;
+					while(k < e && isdigit((unsigned char)cleaned[k])) k++;
+					if(k > b + 1 && k + 1 < e && (unsigned char)cleaned[k + 1] == '\x7F') {
+						leading_placeholder= true;
 					}
 				}
 				Title *parsed= NULL;
