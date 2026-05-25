@@ -5,6 +5,7 @@ const { runTests } = require('./helpers');
 
 const castTests = [
   // Failures from export of wikitexts
+  `<ref name="Eaton-sep" |pages=286 |date=July 2025}}<ref name="Eaton 2004">{{cite book |last=Eaton |first=Richard M. |title=Temple desecration and Muslim states in medieval India |date=2004 |publisher=Hope India Publications |isbn=978-8178710273 |location=Gurgaon |pages=31–49 |quote=For, while  }}</ref>`,
   `[[File:Kasparov-34.jpg{{!}}border|thumb|alt=refer to caption|Kasparov in 2007|upright=0.75]]`,
   `[[File:Sarnia Cherie.ogg|alt=
   Chord progression of Sarnia Chérie (English: Guernsey Dear), unofficial anthem of Guernsey]]`,

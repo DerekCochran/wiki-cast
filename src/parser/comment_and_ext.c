@@ -656,8 +656,26 @@ static void parse_ext_attrs(Token *attrs_tok, const char *attr_str, size_t attr_
 		}
 
 		if(!valid_key) {
-			/* Not a valid key — add to dirty */
-			for(size_t k= 0; k < key_len; k++) dirty_buf[dirty_len++]= key[k];
+			/* JS parity: invalid key contributes the full attr-like span (key + optional '=value') to dirty text. */
+			size_t full_end= i;
+			size_t probe= i;
+			while(probe < attr_len && isspace((unsigned char)attr_str[probe])) probe++;
+			if(probe < attr_len && attr_str[probe] == '=') {
+				probe++; /* skip '=' */
+				while(probe < attr_len && isspace((unsigned char)attr_str[probe])) probe++;
+
+				if(probe < attr_len && (attr_str[probe] == '"' || attr_str[probe] == '\'')) {
+					char q= attr_str[probe++];
+					while(probe < attr_len && attr_str[probe] != q) probe++;
+					if(probe < attr_len && attr_str[probe] == q) probe++;
+				} else {
+					while(probe < attr_len && !isspace((unsigned char)attr_str[probe])) probe++;
+				}
+				full_end= probe;
+			}
+
+			for(size_t k= key_start; k < full_end; k++) dirty_buf[dirty_len++]= attr_str[k];
+			i= full_end;
 			continue;
 		}
 

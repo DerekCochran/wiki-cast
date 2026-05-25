@@ -390,6 +390,32 @@ void parse_hr_and_double_underscore(ThreadBuf *tb, const ParserConfig *cfg, Accu
 
 			HdLineResult hr;
 			if(heading_line_parse_full(line, line_len, &hr)) {
+				if(getenv("WTC_DEBUG_STAGE_4")) {
+					size_t preview_n = line_len < 96 ? line_len : 96;
+					char preview[256];
+					size_t pp = 0;
+					for(size_t k = 0; k < preview_n && pp + 1 < sizeof(preview); k++) {
+						unsigned char c = (unsigned char)line[k];
+						if(c >= 0x20 && c < 0x7F) {
+							preview[pp++] = (char)c;
+						} else if(c == 0x00 && pp + 2 < sizeof(preview)) {
+							preview[pp++] = '\\';
+							preview[pp++] = '0';
+						} else {
+							preview[pp++] = '.';
+						}
+					}
+					preview[pp] = '\0';
+					log_debug_env_token(
+						"WTC_DEBUG_STAGE_4", NULL,
+						"heading-match root_type=%d root_name=%s line_len=%zu level=%zu preview=%s",
+						(int)root_type,
+						root_name ? root_name : "(null)",
+						line_len,
+						hr.eq_count,
+						preview
+					);
+				}
 				/* JS parity for /...((?:\s|\0\d+[cn]\x7F)*)$/gmu:
 				 * consume maximal whitespace/cn-sentinel run after the heading,
 				 * but end match at a line boundary (before '\n' or EOS). */

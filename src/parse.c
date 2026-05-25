@@ -1912,6 +1912,13 @@ static void postprocess_parameter_value_inline_impl(Token *t, const ParserConfig
 
 	Child *old_children= t->children;
 	size_t old_count= t->child_count;
+	bool has_non_text_children= false;
+	for(size_t i= 0; i < old_count; i++) {
+		if(!old_children[i].is_text) {
+			has_non_text_children= true;
+			break;
+		}
+	}
 	size_t new_cap= old_count ? old_count : 1;
 	Child *new_children= malloc(new_cap * sizeof(Child));
 	if(!new_children) {
@@ -1955,7 +1962,9 @@ static void postprocess_parameter_value_inline_impl(Token *t, const ParserConfig
 				 * heading + converter; quotes must still run (stage 6). */
 				parse_html(scratch, cfg, accum);
 				parse_table_skip_first_line(scratch, cfg, accum);
-				parse_hr_and_double_underscore(scratch, cfg, accum, TOKEN_PLAIN, "parameter-key");
+				if(!has_non_text_children) {
+					parse_hr_and_double_underscore(scratch, cfg, accum, TOKEN_PLAIN, "parameter-key");
+				}
 				parse_links(scratch, cfg, accum, page, false);
 				parse_quotes_stage6_per_line(scratch, cfg, accum);
 				parse_external_links(scratch, cfg, accum, false);
@@ -1963,11 +1972,15 @@ static void postprocess_parameter_value_inline_impl(Token *t, const ParserConfig
 				parse_list_skip_first_line(scratch, cfg, accum);
 			} else {
 				parse_comment_and_ext(scratch, cfg, accum, false);
-				parse_braces(scratch, cfg, accum);
+				if(!has_non_text_children) {
+					parse_braces(scratch, cfg, accum);
+				}
 				parse_html(scratch, cfg, accum);
 				if(is_parameter_value) parse_table(scratch, cfg, accum);
 				else parse_table_skip_first_line(scratch, cfg, accum);
-				parse_hr_and_double_underscore(scratch, cfg, accum, TOKEN_PLAIN, is_attr_value ? "attr-value" : "parameter-value");
+				if(!has_non_text_children) {
+					parse_hr_and_double_underscore(scratch, cfg, accum, TOKEN_PLAIN, is_attr_value ? "attr-value" : "parameter-value");
+				}
 				parse_links(scratch, cfg, accum, page, false);
 				parse_quotes_stage6_per_line(scratch, cfg, accum);
 				parse_external_links(scratch, cfg, accum, false);

@@ -315,12 +315,17 @@ static void token_to_string_rec(const Token *t, ThreadBuf *tb) {
 		}
 		for(size_t i= 0; i < t->child_count; i++) {
 			if(i > 0) {
-				/* Special-case: leading ':' text child should not be
-                     * separated from the following target by a '|'. */
+				/* Special-case: leading ':' text child should not be separated from the following target by a delimiter. */
 				if(!(i == 1 && t->children[0].is_text && t->children[0].text && t->children[0].text[0] == ':')) {
-					/* JS parity: magic-pipe delimiter applies to the target/text split,
-					 * not every subsequent file parameter separator. */
-					if(t->data.link.magic_pipe && i == 1) {
+					if(t->type == TOKEN_FILE) {
+						/* JS LinkBaseToken parity: FileToken uses one delimiter style for all separators. */
+						if(t->data.link.magic_pipe) {
+							thread_buf_append(tb, "{{!}}", 5);
+						} else {
+							thread_buf_append_char(tb, '|');
+						}
+					} else if(t->data.link.magic_pipe && i == 1) {
+						/* For LinkToken, only use {{!}} for the first delimiter if magic_pipe is set. */
 						thread_buf_append(tb, "{{!}}", 5);
 					} else {
 						thread_buf_append_char(tb, '|');
