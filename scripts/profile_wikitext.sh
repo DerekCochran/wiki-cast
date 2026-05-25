@@ -62,13 +62,13 @@ fi
 cmake --build . -j"$(nproc)"
 
 find_test_binary() {
-  # Prefer the well-known name; otherwise find an executable named test_wikitext*
-  if [[ -x ./test_wikitext ]]; then
-    echo ./test_wikitext
+  # Prefer the well-known name; otherwise find an executable named test_pipeline*
+  if [[ -x ./test_pipeline ]]; then
+    echo ./test_pipeline
     return 0
   fi
   local exe
-  exe=$(find . -maxdepth 2 -type f -executable -name 'test_wikitext*' | head -n1 || true)
+  exe=$(find . -maxdepth 2 -type f -executable -name 'test_pipeline*' | head -n1 || true)
   if [[ -n "$exe" ]]; then
     echo "$exe"
     return 0
@@ -77,7 +77,7 @@ find_test_binary() {
 }
 
 BIN=$(find_test_binary) || {
-  echo "Cannot find test_wikitext binary in $BUILD_DIR" >&2
+  echo "Cannot find test_pipeline binary in $BUILD_DIR" >&2
   ls -la
   popd >/dev/null
   exit 1

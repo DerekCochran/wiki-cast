@@ -65,10 +65,9 @@ static bool token_append_text_decoded_nul(Token *t, const char *s, size_t len) {
 	for(size_t i= 0; i < len; i++) {
 		if(scratch->buf[i] == CONVERTER_ESC_NUL) scratch->buf[i]= '\0';
 	}
-	const char *view = wiki_thread_buf_append_to_tokens(scratch->buf, len);
+	token_append_text_n(t, scratch->buf, len);
 	wiki_thread_buf_release_scratch(scratch);
-	if(view) token_append_text_n(t, view, len);
-	return view != NULL;
+	return true;
 }
 
 static Token *build_converter_rule_token(const char *rule, bool has_colon, const ParserConfig *cfg) {

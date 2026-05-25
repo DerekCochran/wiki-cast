@@ -1173,6 +1173,7 @@ void parse_links(ThreadBuf *tb, const ParserConfig *cfg, Accum *accum,
 		}
 		int ns= parsed->ns;
 		bool interwiki= parsed->interwiki && parsed->interwiki[0] != '\0';
+		ThreadBuf *quotes_tb_hold= NULL;
 
 		/* ---- mightBeImg: File namespace handling ----
          * JS: else if (mightBeImg) {
@@ -1283,6 +1284,7 @@ void parse_links(ThreadBuf *tb, const ParserConfig *cfg, Accum *accum,
 				tmp_tb.len= img_len;
 				tmp_tb.cap= img_cap;
 				tmp_tb.is_on_heap= true;
+				tmp_tb.sso_allowed= false;
 				/*
                  * This temporary buffer is not managed by thread_buffer.
                  * Disable shrink-path logic by setting a very large threshold
@@ -1384,13 +1386,11 @@ void parse_links(ThreadBuf *tb, const ParserConfig *cfg, Accum *accum,
 
 		/* JS parity: text &&= parseQuotes(text, config, accum, tidy) */
 		if(text_ptr && text_len > 0) {
-			ThreadBuf *quotes_tb= wiki_thread_buf_acquire_scratch_from_data(text_ptr, text_len);
-			if(quotes_tb) {
-				parse_quotes(quotes_tb, cfg, accum, tidy);
-				const char *q_view= wiki_thread_buf_append_to_tokens(quotes_tb->buf, quotes_tb->len);
-				text_ptr= q_view ? q_view : text_ptr;
-				text_len= quotes_tb->len;
-				wiki_thread_buf_release_scratch(quotes_tb);
+			quotes_tb_hold= wiki_thread_buf_acquire_scratch_from_data(text_ptr, text_len);
+			if(quotes_tb_hold) {
+				parse_quotes(quotes_tb_hold, cfg, accum, tidy);
+				text_ptr= quotes_tb_hold->buf;
+				text_len= quotes_tb_hold->len;
 			}
 		}
 
@@ -1426,6 +1426,7 @@ void parse_links(ThreadBuf *tb, const ParserConfig *cfg, Accum *accum,
 		if(!tok) {
 			title_free(parsed);
 			free(no_comment);
+			if(quotes_tb_hold) wiki_thread_buf_release_scratch(quotes_tb_hold);
 			continue;
 		}
 
@@ -1470,6 +1471,7 @@ void parse_links(ThreadBuf *tb, const ParserConfig *cfg, Accum *accum,
 
 		title_free(parsed);
 		free(no_comment);
+		if(quotes_tb_hold) wiki_thread_buf_release_scratch(quotes_tb_hold);
 	} /* end for bi */
 
 	out[out_len]= '\0';
