@@ -4,16 +4,10 @@
 const { runTests } = require('./helpers');
 
 const tempTests = [
-  `<inputbox>
-id = style-searchbox
-type=fulltext
-width=35
-break=yez
-searchfilter=deepcat:"Canadian people"
-namespaces=Main**
-placeholder=e.g. female historians
-searchbuttonlabel = Search Canadian people articles 
-</inputbox>`
+  `
+{{blockquote|<poem>
+So help me, God Almighty!
+(This I affirm!)</poem>`
 ];
 
 if (process.argv[1] === __filename) {

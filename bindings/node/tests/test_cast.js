@@ -5,6 +5,13 @@ const { runTests } = require('./helpers');
 
 const castTests = [
   // Failures from export of wikitexts
+//     `<poem>In the name of God, the Merciful, the Compassionate
+// Name and surname
+// Signature|author=Ruhollah Khomeini|title=Iranian Constitution|source=Article 67 of the Constitution of the Islamic Republic of Iran}}
+// ===Monarch===
+// {{blockquote|<poem>
+// So help me, God Almighty!
+// (This I affirm!)</poem>`,
   `<inputbox>
 id = style-searchbox
 type=fulltext
