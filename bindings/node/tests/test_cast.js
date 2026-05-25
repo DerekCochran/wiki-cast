@@ -5,6 +5,19 @@ const { runTests } = require('./helpers');
 
 const castTests = [
   // Failures from export of wikitexts
+  `<gallery widths="160px" heights="160px" style="text-align:center;" caption="Schlegel diagrams of some fullerenes">
+  Graph of 20-fullerene w-nodes.svg|C20<br />([[dodecahedron]])
+  Graph of 26-fullerene 5-base w-nodes.svg|C26
+  Graph of 60-fullerene w-nodes.svg|C60<br/>([[truncated icosahedron]])
+  Graph of 70-fullerene w-nodes.svg|C70
+  </gallery>
+  `,
+  `<gallery widths="180px" heights="180px">
+  Caduceus on Mauryan coin.jpg | Caduceus symbol on a Maurya-era [[punch-marked coin]]
+  India Mauryan emperor Ashoka Punch-marked Coin.jpg | A punch-marked coin attributed to Ashoka<ref>{{cite book |last=Mitchiner |first=Michael |date=1978 |title=Oriental Coins & Their Values: The Ancient and Classical World 600 B.C. - A.D. 650 |publisher=Hawkins Publications |page=544 |isbn=978-0-9041731-6-1}}</ref>
+  I15 1karshapana Maurya Ashoka MACW4229 1ar (8486624862).jpg | A Maurya-era silver coin of 1 [[karshapana]], possibly from Ashoka's period, workshop of Mathura. ''Obverse:'' Symbols including a sun and an animal ''Reverse:'' Symbol ''Dimensions:'' 13.92 x 11.75&nbsp;mm ''Weight:'' 3.4 g.
+  </gallery>
+  `,
   `<gallery mode="packed">
   File:Collins class submarine with the aircraft carrier Charles de Gaulle in May 2019.jpg|[[French aircraft carrier Charles de Gaulle|[[French aircraft carrier Charles de Gaulle|''Charles de Gaulle'' (R91)]] nuclear-powered aircraft carrier
   File:Temeraire1048.jpg|[[Triomphant-class submarine|[[Triomphant-class submarine|''Triomphant'']]-class nuclear ballistic missile submarine

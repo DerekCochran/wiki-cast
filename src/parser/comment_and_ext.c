@@ -1375,19 +1375,8 @@ static Token *parse_gallery_image_line_local(const char *line, size_t line_len,
 			}
 
 			if(!out) {
-			const char lt_ch = '<';
-			const char gt_ch = '>';
-			const char *has_lt = sz_find_byte(line, line_len, &lt_ch);
-			const char *has_gt = sz_find_byte(line, line_len, &gt_ch);
-			if(has_lt || has_gt) {
-				Token *comment_line = token_new(TOKEN_NOINCLUDE, "noinclude");
-				if(comment_line) {
-					const char *line_view = wiki_thread_buf_append_to_tokens(line, line_len);
-					token_append_text_n(comment_line, line_view, line_len);
-					accum_push(accum, comment_line);
-					out = comment_line;
-				}
-			}
+			/* JS GalleryToken parity: caption text may legitimately include ext tags
+			 * such as <ref>...</ref>, so do not reject on angle brackets here. */
 			}
 
 			if(!out) {
