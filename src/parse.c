@@ -1848,6 +1848,8 @@ static void postprocess_parameter_value_inline_impl(Token *t, const ParserConfig
 		links_cfg= &links_cfg_local;
 	}
 
+	bool has_quote_token= false;
+
 	/* Handle brace spans split across mixed text/token children (for example
 	 * parameter values containing nested templates that were already expanded).
 	 * Serialize token children back to sentinels so parse_braces can see one
@@ -1860,6 +1862,7 @@ static void postprocess_parameter_value_inline_impl(Token *t, const ParserConfig
 		bool has_close_braces= false;
 		bool has_open_links= false;
 		bool has_close_links= false;
+		bool has_quote_markup= false;
 
 		for(size_t i= 0; i < t->child_count; i++) {
 			Child cur= t->children[i];
@@ -1870,9 +1873,13 @@ static void postprocess_parameter_value_inline_impl(Token *t, const ParserConfig
 					if(sz_find(cur.text, cur.text_len, "}}", 2)) has_close_braces= true;
 					if(sz_find(cur.text, cur.text_len, "[[", 2)) has_open_links= true;
 					if(sz_find(cur.text, cur.text_len, "]]", 2)) has_close_links= true;
+					if(sz_find(cur.text, cur.text_len, "''", 2)) has_quote_markup= true;
 				}
 			} else if(cur.token) {
 				has_token= true;
+				if(cur.token->type == TOKEN_QUOTE) {
+					has_quote_token= true;
+				}
 				if(cur.token->type == TOKEN_LINK || cur.token->type == TOKEN_FILE || cur.token->type == TOKEN_CATEGORY) {
 					has_link_like_token= true;
 				}
@@ -1883,11 +1890,13 @@ static void postprocess_parameter_value_inline_impl(Token *t, const ParserConfig
 		/* Avoid rejoining across already-parsed nested links such as
 		 * "[[1, [[2, 3]], 4]]", where JS keeps the outer link unparsed. */
 		bool has_split_link_span= has_open_links && has_close_links && !has_link_like_token;
-		if(has_text && has_token && (has_split_brace_span || has_split_link_span)) {
+		bool has_split_quote_span= has_quote_markup && !has_quote_token;
+		if(has_text && has_token && (has_split_brace_span || has_split_link_span || has_split_quote_span)) {
 			ThreadBuf *tmp_ser = wiki_thread_buf_acquire_scratch();
 			if(tmp_ser) {
 				tmp_ser->len= 0;
 				bool serializable= true;
+				bool allow_serialized_braces= !is_parameter_value || !has_link_like_token;
 
 				for(size_t i= 0; i < t->child_count; i++) {
 					Child cur= t->children[i];
@@ -1925,13 +1934,17 @@ static void postprocess_parameter_value_inline_impl(Token *t, const ParserConfig
 					tmp_ser->buf[tmp_ser->len]= '\0';
 
 					parse_comment_and_ext(tmp_ser, cfg, accum, false);
-					parse_braces(tmp_ser, cfg, accum);
+					if(allow_serialized_braces) {
+						parse_braces(tmp_ser, cfg, accum);
+					}
 					parse_html(tmp_ser, cfg, accum);
 					if(is_parameter_value) parse_table(tmp_ser, cfg, accum);
 					else parse_table_skip_first_line(tmp_ser, cfg, accum);
 					parse_hr_and_double_underscore(tmp_ser, cfg, accum, TOKEN_PLAIN, "parameter-value");
 					parse_links(tmp_ser, links_cfg, accum, page, false);
-					parse_quotes_stage6_per_line(tmp_ser, cfg, accum);
+					if(!has_quote_token) {
+						parse_quotes_stage6_per_line(tmp_ser, cfg, accum);
+					}
 					parse_external_links(tmp_ser, cfg, accum, false);
 					parse_magic_links(tmp_ser, cfg, accum);
 					parse_list_skip_first_line(tmp_ser, cfg, accum);
@@ -2054,7 +2067,9 @@ static void postprocess_parameter_value_inline_impl(Token *t, const ParserConfig
 				else parse_table_skip_first_line(scratch, cfg, accum);
 				parse_hr_and_double_underscore(scratch, cfg, accum, TOKEN_PLAIN, is_attr_value ? "attr-value" : "parameter-value");
 				parse_links(scratch, links_cfg, accum, page, false);
-				parse_quotes_stage6_per_line(scratch, cfg, accum);
+				if(!has_quote_token) {
+					parse_quotes_stage6_per_line(scratch, cfg, accum);
+				}
 				parse_external_links(scratch, cfg, accum, false);
 				parse_magic_links(scratch, cfg, accum);
 				parse_list_skip_first_line(scratch, cfg, accum);
