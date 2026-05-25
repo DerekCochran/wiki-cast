@@ -1824,67 +1824,37 @@ static Token *parse_imagemap_image_line_local(const char *line, size_t line_len,
 														 const ParserConfig *cfg,
 														 Accum *accum) {
 	if(!line || line_len == 0) return NULL;
-	ParserConfig cfg_local;
-	const ParserConfig *links_cfg= cfg;
-	if(cfg) {
-		cfg_local= *cfg;
-		cfg_local.in_ext= true;
-		links_cfg= &cfg_local;
+
+	/* JS parity: ImagemapToken first-line image uses GalleryImageToken logic.
+	 * Reuse gallery-image parsing and retag to imagemap-image. */
+	Token *out= parse_gallery_image_line_local(line, line_len, cfg, accum);
+	if(!out || out->type != TOKEN_FILE) return NULL;
+
+	if(out->type_name) free(out->type_name);
+	out->type_name= strdup("imagemap-image");
+	if(out->name) {
+		free(out->name);
+		out->name= NULL;
 	}
 
-	ThreadBuf *tmp_tb = wiki_thread_buf_acquire_scratch();
-	if(!tmp_tb) { log_fatal("thread_buffer: failed to acquire scratch in parse_imagemap_image_line_local"); abort(); }
-	wiki_thread_buf_reserve(tmp_tb, line_len + 5);
-	tmp_tb->buf[0]= '[';
-	tmp_tb->buf[1]= '[';
-	memcpy(tmp_tb->buf + 2, line, line_len);
-	tmp_tb->buf[2 + line_len]= ']';
-	tmp_tb->buf[3 + line_len]= ']';
-	tmp_tb->buf[4 + line_len]= '\0';
-	tmp_tb->len= line_len + 4;
-
-	parse_braces(tmp_tb, cfg, accum);
-	parse_links(tmp_tb, links_cfg, accum, NULL, false);
-
-	Token *tmp= token_new(TOKEN_PLAIN, "imagemap-image-line");
-	if(!tmp) {
-		wiki_thread_buf_release_scratch(tmp_tb);
-		return NULL;
-	}
-	build_from_str(tmp, tmp_tb->buf, tmp_tb->len, accum);
-	build_token_recursive(tmp, accum, cfg);
-
-	Token *out= NULL;
-	if(tmp->child_count == 1 && !tmp->children[0].is_text && tmp->children[0].token && tmp->children[0].token->type == TOKEN_FILE) {
-		out= tmp->children[0].token;
-		tmp->children[0].token= NULL;
-		if(out->type_name) free(out->type_name);
-		out->type_name= strdup("imagemap-image");
-		if(out->name) {
-			free(out->name);
-			out->name= NULL;
+	/* JS stage-log parity: link/file names are assigned later in afterBuild(). */
+	for(size_t ci= 0; ci < out->child_count; ci++) {
+		if(out->children[ci].is_text || !out->children[ci].token) continue;
+		Token *child= out->children[ci].token;
+		if((child->type == TOKEN_LINK || child->type == TOKEN_FILE || child->type == TOKEN_CATEGORY) && child->name) {
+			free(child->name);
+			child->name= NULL;
 		}
-		/* JS stage-log parity: link/file names are assigned later in afterBuild(). */
-		for(size_t ci= 0; ci < out->child_count; ci++) {
-			if(out->children[ci].is_text || !out->children[ci].token) continue;
-			Token *child= out->children[ci].token;
-			if((child->type == TOKEN_LINK || child->type == TOKEN_FILE || child->type == TOKEN_CATEGORY) && child->name) {
-				free(child->name);
-				child->name= NULL;
-			}
-			for(size_t cj= 0; cj < child->child_count; cj++) {
-				if(child->children[cj].is_text || !child->children[cj].token) continue;
-				Token *g= child->children[cj].token;
-				if((g->type == TOKEN_LINK || g->type == TOKEN_FILE || g->type == TOKEN_CATEGORY) && g->name) {
-					free(g->name);
-					g->name= NULL;
-				}
+		for(size_t cj= 0; cj < child->child_count; cj++) {
+			if(child->children[cj].is_text || !child->children[cj].token) continue;
+			Token *g= child->children[cj].token;
+			if((g->type == TOKEN_LINK || g->type == TOKEN_FILE || g->type == TOKEN_CATEGORY) && g->name) {
+				free(g->name);
+				g->name= NULL;
 			}
 		}
 	}
 
-	token_free_shallow(tmp);
-	wiki_thread_buf_release_scratch(tmp_tb);
 	return out;
 }
 
@@ -1989,7 +1959,8 @@ static Token *build_imagemap_inner_token(const char *inner_str, size_t inner_len
 
 	if(!inner_str || inner_len == 0) return t;
 
-	bool image_seen= false;
+	bool first= true;
+	bool error= false;
 	size_t line_start= 0;
 	while(line_start <= inner_len) {
 		const char *nl = sz_find_byte(inner_str + line_start, inner_len - line_start, "\n");
@@ -1997,46 +1968,61 @@ static Token *build_imagemap_inner_token(const char *inner_str, size_t inner_len
 		size_t line_len= i - line_start;
 		const char *line_ptr= inner_str + line_start;
 
-		if(line_len == 0) {
-			Token *n= make_empty_noinclude_local(accum);
-			if(n) token_append_child(t, n);
+		size_t lead= 0;
+		while(lead < line_len && isspace((unsigned char)line_ptr[lead])) lead++;
+		bool trimmed_empty= (lead >= line_len);
+		bool comment_line= (!trimmed_empty && line_ptr[lead] == '#');
+
+		if(error || trimmed_empty || comment_line) {
+			Token *n= token_new(TOKEN_NOINCLUDE, "noinclude");
+			if(n) {
+				if(line_len > 0) {
+					const char *ln_view= wiki_thread_buf_append_to_tokens(line_ptr, line_len);
+					token_append_text_n(n, ln_view, line_len);
+				} else {
+					token_append_text_n(n, "", 0);
+				}
+				accum_push(accum, n);
+				token_append_child(t, n);
+			}
 		} else {
 			Token *tok= NULL;
-			if(!image_seen) {
+			if(first) {
 				tok= parse_imagemap_image_line_local(line_ptr, line_len, cfg, accum);
-				if(tok) image_seen= true;
+				if(tok) {
+					token_append_child(t, tok);
+					first= false;
+					if(!nl) break;
+					line_start= i + 1;
+					continue;
+				}
+				error= true;
 			}
-			if(!tok) {
+
+			/* desc lines are preserved as plain text (JS ImagemapToken parity). */
+			size_t word_end= lead;
+			while(word_end < line_len && line_ptr[word_end] != ' ' && line_ptr[word_end] != '\t') word_end++;
+			if(word_end > lead && (word_end - lead) == 4 && strncmp(line_ptr + lead, "desc", 4) == 0) {
+				const char *ln_view= wiki_thread_buf_append_to_tokens(line_ptr, line_len);
+				token_append_text_n(t, ln_view, line_len);
+				if(!nl) break;
+				line_start= i + 1;
+				continue;
+			}
+
+			if(sz_find_byte(line_ptr, line_len, "[") != NULL) {
 				tok= parse_imagemap_link_line_local(line_ptr, line_len, cfg, accum);
 			}
+
 			if(tok) {
 				token_append_child(t, tok);
 			} else {
-				bool ws_only = true;
-				for(size_t wi = 0; wi < line_len; wi++) {
-					if(!isspace((unsigned char)line_ptr[wi])) {
-						ws_only = false;
-						break;
-					}
-				}
-				size_t lead= 0;
-				while(lead < line_len && isspace((unsigned char)line_ptr[lead])) lead++;
-				bool comment_line= (lead < line_len && line_ptr[lead] == '#');
-
-				if(ws_only || comment_line) {
-					Token *n= token_new(TOKEN_NOINCLUDE, "noinclude");
-					if(n) {
-						const char *ln_view = wiki_thread_buf_append_to_tokens(line_ptr, line_len);
-						token_append_text_n(n, ln_view, line_len);
-						accum_push(accum, n);
-						token_append_child(t, n);
-					} else {
-						const char *ln_view = wiki_thread_buf_append_to_tokens(line_ptr, line_len);
-						token_append_text_n(t, ln_view, line_len);
-					}
-				} else {
-					const char *ln_view = wiki_thread_buf_append_to_tokens(line_ptr, line_len);
-					token_append_text_n(t, ln_view, line_len);
+				Token *n= token_new(TOKEN_NOINCLUDE, "noinclude");
+				if(n) {
+					const char *ln_view= wiki_thread_buf_append_to_tokens(line_ptr, line_len);
+					token_append_text_n(n, ln_view, line_len);
+					accum_push(accum, n);
+					token_append_child(t, n);
 				}
 			}
 		}
