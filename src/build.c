@@ -34,6 +34,41 @@
 #include <stdlib.h>
 #include <string.h>
 
+char *build_normalize_attr_equal(const char *equal, size_t equal_len,
+													 Accum *accum) {
+	if(!equal || equal_len == 0) return NULL;
+
+	if(memchr(equal, '\0', equal_len) == NULL) {
+		char *out= malloc(equal_len + 1);
+		if(!out) return NULL;
+		memcpy(out, equal, equal_len);
+		out[equal_len]= '\0';
+		return out;
+	}
+
+	Token *tmp= token_new(TOKEN_PLAIN, "attr-equal-tmp");
+	if(!tmp) return NULL;
+	build_from_str(tmp, equal, equal_len, accum);
+
+	ThreadBuf *scratch= wiki_thread_buf_acquire_scratch();
+	if(!scratch) {
+		token_free_shallow(tmp);
+		return NULL;
+	}
+
+	const char *s= token_to_string(tmp, scratch);
+	size_t slen= scratch->len;
+	char *out= malloc(slen + 1);
+	if(out) {
+		if(slen > 0 && s) memcpy(out, s, slen);
+		out[slen]= '\0';
+	}
+
+	wiki_thread_buf_release_scratch(scratch);
+	token_free_shallow(tmp);
+	return out;
+}
+
 static void append_key_token_repr_tb(const Token *t, ThreadBuf *tb) {
 	if(!t || !tb) return;
 

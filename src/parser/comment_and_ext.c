@@ -554,9 +554,8 @@ static Token *make_ext_attr(const char *tag_name,
 
 	/* Store equal and quote chars (JS AttributeToken #equal / #quotes) */
 	if(equal && equal_len > 0) {
-		t->data.ext_attr.equal= malloc(equal_len + 1);
-	sz_copy(t->data.ext_attr.equal, equal, equal_len);
-		t->data.ext_attr.equal[equal_len]= '\0';
+		t->data.ext_attr.equal= build_normalize_attr_equal(equal, equal_len, accum);
+		assert(t->data.ext_attr.equal);
 	}
 	t->data.ext_attr.quote_open= quote_open;
 	t->data.ext_attr.quote_close= quote_close;
