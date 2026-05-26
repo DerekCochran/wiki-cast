@@ -73,7 +73,7 @@ static int title_lookup_namespace(const ParserConfig *cfg, const char *s, size_t
 		sz_size_t name_len;
 		sz_string_range(&cfg->namespaces[i].name, &name_start, &name_len);
 		if(!name_start || name_len != trimmed_len) continue;
-		if(strncasecmp(s + start, (const char *)name_start, trimmed_len) == 0) {
+		if(str_ci_eq_n(s + start, (const char *)name_start, trimmed_len)) {
 			return cfg->namespaces[i].num;
 		}
 	}
@@ -538,7 +538,8 @@ Title *title_parse_half_parsed(const char *raw, size_t raw_len,
 			}
 		}
 
-		const char *colon= memchr(title, ':', title_len);
+		char colon_ch_= ':';
+		const char *colon= (const char *)sz_find_byte(title, title_len, &colon_ch_);
 		if(colon) {
 			int found= title_lookup_namespace(cfg, title, (size_t)(colon - title));
 			if(found) {

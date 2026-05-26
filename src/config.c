@@ -16,6 +16,8 @@
 #include "util/thread_buffer.h"
 #include "util/callback_parser.h"
 #include "util/wiki_parser_rules.h"
+#include "util/string_util.h"
+#include <stringzilla/stringzilla.h>
 #include <assert.h>
 #include <ctype.h>
 #include <cjson/cJSON.h>
@@ -152,7 +154,7 @@ static bool str_list_contains_exact(const StrList *sl, const char *needle) {
 		sz_ptr_t start;
 		sz_size_t len;
 		sz_string_range(&sl->items[i], &start, &len);
-		if(start && len == strlen(needle) && memcmp(start, needle, len) == 0) return true;
+		if(start && len == strlen(needle) && sz_equal(start, needle, len) == sz_true_k) return true;
 	}
 	return false;
 }
@@ -175,7 +177,7 @@ static bool str_map_contains_key(const StrMap *m, const char *key) {
 		sz_ptr_t start;
 		sz_size_t len;
 		sz_string_range(&m->keys[i], &start, &len);
-		if(start && len == strlen(key) && memcmp(start, key, len) == 0) return true;
+		if(start && len == strlen(key) && sz_equal(start, key, len) == sz_true_k) return true;
 	}
 	return false;
 }
@@ -187,7 +189,7 @@ static bool ns_entry_exists_ci(const NsEntry *arr, size_t count,
 		sz_ptr_t entry_name;
 		sz_size_t entry_len;
 		sz_string_range(&arr[i].name, &entry_name, &entry_len);
-		if(arr[i].num == num && entry_name && entry_len == strlen(name) && strncasecmp(entry_name, name, entry_len) == 0) {
+		if(arr[i].num == num && entry_name && entry_len == strlen(name) && str_ci_eq_n((const char *)entry_name, name, entry_len)) {
 			return true;
 		}
 	}
@@ -435,9 +437,7 @@ static bool build_protocol_items(ParserConfig *cfg) {
 			return false;
 		}
 		const char *proto_start = (const char *)cfg->protocol_items.items[i].protocol.start;
-		for(size_t j = 0; j < len; j++) {
-			lower_ptr[j] = (char)tolower((unsigned char)proto_start[j]);
-		}
+		sz_lookup((sz_ptr_t)lower_ptr, len, proto_start, (const char *)fast_tolower_table());
 	}
 	cfg->protocol_items_valid = true;
 	return true;
@@ -737,7 +737,7 @@ bool config_excluded(const ParserConfig *cfg, const char *name) {
 		sz_ptr_t start;
 		sz_size_t len;
 		sz_string_range(&cfg->excludes.items[i], &start, &len);
-		if(start && len == strlen(name) && memcmp(start, name, len) == 0) return true;
+		if(start && len == strlen(name) && sz_equal(start, name, len) == sz_true_k) return true;
 	}
 	return false;
 }
@@ -749,7 +749,7 @@ bool config_has_ext(const ParserConfig *cfg, const char *name) {
 		sz_ptr_t start;
 		sz_size_t len;
 		sz_string_range(&cfg->ext.items[i], &start, &len);
-		if(start && len == strlen(name) && strncasecmp(start, name, len) == 0) return true;
+		if(start && len == strlen(name) && str_ci_eq_n((const char *)start, name, len)) return true;
 	}
 	return false;
 }

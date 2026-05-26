@@ -39,7 +39,7 @@ void token_append_text_n(Token *t, const char *text, size_t len) {
 	char *owned= malloc(len + 1);
 	assert(owned);
 	if(len > 0) {
-		memcpy(owned, text, len);
+		sz_copy(owned, text, len);
 	}
 	owned[len]= '\0';
 	Child *c= &t->children[t->child_count++];

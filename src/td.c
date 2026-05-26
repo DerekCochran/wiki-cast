@@ -238,7 +238,7 @@ static char *table_attr_normalize_equal_syntax(const char *eq, size_t eq_len, si
 	for(size_t i= 0; i < eq_len;) {
 		size_t sl= sentinel_at(eq, eq_len, i, '~');
 		if(sl) {
-			memcpy(out + p, "{{=}}", 5);
+			sz_copy(out + p, "{{=}}", 5);
 			p+= 5;
 			i+= sl;
 			continue;
@@ -309,7 +309,7 @@ static void parse_table_attrs(Token *attrs_tok, const char *attr_str, size_t att
 		size_t ws_take= table_ws_len_at(attr_str, attr_len, i);
 		if(attr_str[i] == '/' || ws_take > 0) {
 			if(ws_take > 0) {
-				memcpy(dirty_buf + dirty_len, attr_str + i, ws_take);
+				sz_copy(dirty_buf + dirty_len, attr_str + i, ws_take);
 				dirty_len+= ws_take;
 				i+= ws_take;
 			} else {
@@ -332,7 +332,7 @@ static void parse_table_attrs(Token *attrs_tok, const char *attr_str, size_t att
 			size_t eq_take= sentinel_at(attr_str, attr_len, i, '~');
 			if(i < attr_len && (attr_str[i] == '=' || eq_take > 0)) {
 				if(eq_take == 0) eq_take= 1;
-				memcpy(dirty_buf + dirty_len, attr_str + i, eq_take);
+				sz_copy(dirty_buf + dirty_len, attr_str + i, eq_take);
 				dirty_len+= eq_take;
 				i+= eq_take;
 				if(i < attr_len && (attr_str[i] == '"' || attr_str[i] == '\'')) {
@@ -370,7 +370,7 @@ static void parse_table_attrs(Token *attrs_tok, const char *attr_str, size_t att
 				size_t eq_sl= (i < attr_len) ? sentinel_at(attr_str, attr_len, i, '~') : 0;
 				if(i < attr_len && (attr_str[i] == '=' || eq_sl > 0)) {
 					size_t eq_take= (attr_str[i] == '=') ? 1 : eq_sl;
-					memcpy(dirty_buf + dirty_len, attr_str + i, eq_take);
+					sz_copy(dirty_buf + dirty_len, attr_str + i, eq_take);
 					dirty_len+= eq_take;
 					i+= eq_take;
 					if(i < attr_len && (attr_str[i] == '"' || attr_str[i] == '\'')) {

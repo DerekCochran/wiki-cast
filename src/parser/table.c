@@ -15,10 +15,7 @@
 static int contains_literal_seq(const char *s, size_t len, const char *needle) {
 	size_t nlen= strlen(needle);
 	if(nlen == 0 || len < nlen) return 0;
-	for(size_t i= 0; i + nlen <= len; i++) {
-		if(memcmp(s + i, needle, nlen) == 0) return 1;
-	}
-	return 0;
+	return sz_find(s, len, needle, nlen) != NULL;
 }
 
 static Token *make_attr_key(const char *key, size_t key_len, Accum *accum) {
@@ -565,7 +562,7 @@ static char *table_attr_normalize_equal_syntax(const char *eq, size_t eq_len, si
 	for(size_t i= 0; i < eq_len;) {
 		size_t sl= sentinel_at(eq, eq_len, i, '~');
 		if(sl) {
-			memcpy(out + p, "{{=}}", 5);
+			sz_copy(out + p, "{{=}}", 5);
 			p+= 5;
 			i+= sl;
 			continue;
@@ -643,7 +640,7 @@ static void parse_table_attrs(Token *attrs_tok, const char *attr_str, size_t att
 		size_t ws_take= table_ws_len_at(attr_str, attr_len, i);
 		if(attr_str[i] == '/' || ws_take > 0) {
 			if(ws_take > 0) {
-				memcpy(dirty_buf + dirty_len, attr_str + i, ws_take);
+				sz_copy(dirty_buf + dirty_len, attr_str + i, ws_take);
 				dirty_len+= ws_take;
 				i+= ws_take;
 			} else {
@@ -666,7 +663,7 @@ static void parse_table_attrs(Token *attrs_tok, const char *attr_str, size_t att
 			size_t eq_take= sentinel_at(attr_str, attr_len, i, '~');
 			if(i < attr_len && (attr_str[i] == '=' || eq_take > 0)) {
 				if(eq_take == 0) eq_take= 1;
-				memcpy(dirty_buf + dirty_len, attr_str + i, eq_take);
+				sz_copy(dirty_buf + dirty_len, attr_str + i, eq_take);
 				dirty_len+= eq_take;
 				i+= eq_take;
 				if(i < attr_len && (attr_str[i] == '"' || attr_str[i] == '\'')) {
@@ -704,7 +701,7 @@ static void parse_table_attrs(Token *attrs_tok, const char *attr_str, size_t att
 				size_t eq_sl= (i < attr_len) ? sentinel_at(attr_str, attr_len, i, '~') : 0;
 				if(i < attr_len && (attr_str[i] == '=' || eq_sl > 0)) {
 					size_t eq_take= (attr_str[i] == '=') ? 1 : eq_sl;
-					memcpy(dirty_buf + dirty_len, attr_str + i, eq_take);
+					sz_copy(dirty_buf + dirty_len, attr_str + i, eq_take);
 					dirty_len+= eq_take;
 					i+= eq_take;
 					if(i < attr_len && (attr_str[i] == '"' || attr_str[i] == '\'')) {
@@ -854,7 +851,7 @@ static void out_append(char **out_buf, size_t *out_len, size_t *out_cap,
 		*out_buf= realloc(*out_buf, *out_cap);
 		assert(*out_buf);
 	}
-	memcpy(*out_buf + *out_len, s, n);
+	sz_copy(*out_buf + *out_len, s, n);
 	*out_len+= n;
 }
 
@@ -950,7 +947,7 @@ static void push_text_like_js(char **out_buf, size_t *out_len, size_t *out_cap,
 						wiki_thread_buf_release_scratch(scratch);
 						return;
 					}
-					if(scratch->len > 0) memcpy(merged_owned, scratch->buf, scratch->len);
+					if(scratch->len > 0) sz_copy(merged_owned, scratch->buf, scratch->len);
 					merged_owned[scratch->len]= '\0';
 					if(inner_last->text_owned && inner_last->text) free((void*)inner_last->text);
 					inner_last->text = merged_owned;

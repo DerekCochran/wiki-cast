@@ -4,6 +4,7 @@
 #include "util/thread_buffer.h"
 #include "util/wiki_parser_rules.h"
 #include "token.h"
+#include "stringzilla/stringzilla.h"
 #include <assert.h>
 #include <ctype.h>
 #include <stdio.h>
@@ -21,11 +22,11 @@
  * (heading_line_parse_full) instead of PCRE.
  */
 
-/* Lowercase ASCII-only copy */
+/* Lowercase ASCII-only copy using the LUT-based path */
 static char *lower_copy(const char *s, size_t len) {
 	char *out= malloc(len + 1);
 	assert(out);
-	for(size_t i= 0; i < len; i++) out[i]= (char)tolower((unsigned char)s[i]);
+	if(len > 0) sz_lookup(out, len, s, (const char *)fast_tolower_table());
 	out[len]= '\0';
 	return out;
 }
@@ -165,7 +166,7 @@ static void parse_hr_pass(ThreadBuf *tb, Accum *accum) {
 			size_t sc = skip_cno_sentinel(tb->buf + p, line_end - p);
 			if(sc == 0) break;
 			ENSURE_OUT(sc);
-			memcpy(out + out_len, tb->buf + p, sc);
+			sz_copy(out + out_len, tb->buf + p, sc);
 			out_len += sc;
 			p += sc;
 		}
@@ -181,12 +182,12 @@ static void parse_hr_pass(ThreadBuf *tb, Accum *accum) {
 				char sent[64]; size_t slen = 0;
 				work_str_sentinel(accum->count - 1, 'r', sent, &slen);
 				ENSURE_OUT(slen + (line_end - dash));
-				memcpy(out + out_len, sent, slen); out_len += slen;
-				if(line_end > dash) { memcpy(out + out_len, tb->buf + dash, line_end - dash); out_len += line_end - dash; }
+				sz_copy(out + out_len, sent, slen); out_len += slen;
+				if(line_end > dash) { sz_copy(out + out_len, tb->buf + dash, line_end - dash); out_len += line_end - dash; }
 			}
 		} else {
 			ENSURE_OUT(line_end - p);
-			memcpy(out + out_len, tb->buf + p, line_end - p);
+			sz_copy(out + out_len, tb->buf + p, line_end - p);
 			out_len += line_end - p;
 		}
 
@@ -246,7 +247,7 @@ static void dunder_cb(const char *seg, size_t len, ParserSegmentKind kind, void 
 	if(case_sensitive) {
 		char *raw = malloc(len + 1);
 		if(!raw) { log_fatal("OOM in dunder_cb"); abort(); }
-		memcpy(raw, seg, len);
+		sz_copy(raw, seg, len);
 		raw[len] = '\0';
 		alias = strmap_get_exact(&ctx->cfg->double_underscore_alias[1], raw);
 		free(raw);
@@ -300,7 +301,7 @@ static int strlist_has_exact(const StrList *sl, const char *s, size_t len) {
 		sz_size_t it_len;
 		sz_string_range(&sl->items[i], &it, &it_len);
 		if(!it) continue;
-		if(it_len == len && memcmp(it, s, len) == 0) return 1;
+		if(it_len == len && sz_equal((const char *)it, s, len) == sz_true_k) return 1;
 	}
 	return 0;
 }
@@ -311,27 +312,20 @@ static int strlist_has_lower(const StrList *sl, const char *s, size_t len) {
 		sz_ptr_t it;
 		sz_size_t it_len;
 		sz_string_range(&sl->items[i], &it, &it_len);
-		if(!it) continue;
-		if(it_len != len) continue;
-		int ok= 1;
-		for(size_t k= 0; k < len; k++) {
-			if(tolower((unsigned char)((const char *)it)[k]) != tolower((unsigned char)s[k])) {
-				ok= 0;
-				break;
-			}
-		}
-		if(ok) return 1;
+		if(!it || it_len != len) continue;
+		if(str_ci_eq_n((const char *)it, s, len)) return 1;
 	}
 	return 0;
 }
 
 static const char *strmap_get_exact(const StrMap *m, const char *key) {
 	if(!m || !key) return NULL;
+	size_t key_cmp_len = strlen(key);
 	for(size_t i= 0; i < m->count; i++) {
 		sz_ptr_t key_start;
 		sz_size_t key_len;
 		sz_string_range(&m->keys[i], &key_start, &key_len);
-		if(key_start && key_len == strlen(key) && memcmp(key_start, key, key_len) == 0) {
+		if(key_start && key_len == key_cmp_len && sz_equal((const char *)key_start, key, key_cmp_len) == sz_true_k) {
 			sz_ptr_t val_start;
 			sz_size_t val_len;
 			sz_string_range(&m->values[i], &val_start, &val_len);
@@ -352,7 +346,7 @@ void parse_hr_and_double_underscore(ThreadBuf *tb, const ParserConfig *cfg, Accu
 		assert(pref);
 		pref[0]= '\0';
 		if(tb->len > 0) {
-			memcpy(pref + 1, tb->buf, tb->len);
+			sz_copy(pref + 1, tb->buf, tb->len);
 		}
 		wiki_thread_buf_set(tb, pref, tb->len + 1);
 		free(pref);
@@ -448,7 +442,7 @@ void parse_hr_and_double_underscore(ThreadBuf *tb, const ParserConfig *cfg, Accu
 				/* 1. Emit lead sentinels verbatim */
 				if(hr.lead_len > 0) {
 					GROW_OUT2(hr.lead_len);
-					memcpy(out2 + out2_len, hr.lead, hr.lead_len);
+					sz_copy(out2 + out2_len, hr.lead, hr.lead_len);
 					out2_len += hr.lead_len;
 				}
 
@@ -514,7 +508,7 @@ void parse_hr_and_double_underscore(ThreadBuf *tb, const ParserConfig *cfg, Accu
 					size_t slen = 0;
 					work_str_sentinel(accum->count - 1, 'h', sent, &slen);
 					GROW_OUT2(slen);
-					memcpy(out2 + out2_len, sent, slen);
+					sz_copy(out2 + out2_len, sent, slen);
 					out2_len += slen;
 
 					/* Continue from match end (newline boundary char is not consumed). */
@@ -525,7 +519,7 @@ void parse_hr_and_double_underscore(ThreadBuf *tb, const ParserConfig *cfg, Accu
 				/* OOM fallback: leave current line unchanged */
 				size_t copy_len = (line_end < buf2_len) ? line_len + 1 : line_len;
 				GROW_OUT2(copy_len);
-				memcpy(out2 + out2_len, buf2 + line_start, copy_len);
+				sz_copy(out2 + out2_len, buf2 + line_start, copy_len);
 				out2_len += copy_len;
 				cursor = (line_end < buf2_len) ? (line_end + 1) : line_end;
 				continue;
@@ -534,7 +528,7 @@ void parse_hr_and_double_underscore(ThreadBuf *tb, const ParserConfig *cfg, Accu
 			/* Not a heading: copy line + optional '\n' verbatim */
 			size_t copy_len = (line_end < buf2_len) ? line_len + 1 : line_len;
 			GROW_OUT2(copy_len);
-			memcpy(out2 + out2_len, buf2 + line_start, copy_len);
+			sz_copy(out2 + out2_len, buf2 + line_start, copy_len);
 			out2_len += copy_len;
 			cursor = (line_end < buf2_len) ? (line_end + 1) : line_end;
 		}
@@ -549,7 +543,7 @@ void parse_hr_and_double_underscore(ThreadBuf *tb, const ParserConfig *cfg, Accu
 		char *tmp= malloc(unpref_len + 1);
 		assert(tmp);
 		if(unpref_len > 0) {
-			memcpy(tmp, tb->buf + 1, unpref_len);
+			sz_copy(tmp, tb->buf + 1, unpref_len);
 		}
 		tmp[unpref_len]= '\0';
 		wiki_thread_buf_set(tb, tmp, unpref_len);

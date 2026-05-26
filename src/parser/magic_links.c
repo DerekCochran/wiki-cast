@@ -3,6 +3,7 @@
 #include "util/log.h"
 #include "parser/magic_links.h"
 #include "util/string_util.h"
+#include "stringzilla/stringzilla.h"
 #include "token.h"
 #include "util/wiki_parser_rules.h"
 #include <assert.h>
@@ -28,10 +29,7 @@ static Token *build_magic_link(const char *s, size_t len,
 static bool ci_eq_lit(const char *s, size_t slen, const char *lit) {
     size_t n = strlen(lit);
     if (n > slen) return false;
-    for (size_t i = 0; i < n; i++) {
-        if (tolower((unsigned char)s[i]) != tolower((unsigned char)lit[i])) return false;
-    }
-    return true;
+    return str_ci_eq_n(s, lit, n);
 }
 
 static bool utf8_prev_cp(const char *s, size_t len, size_t pos, UChar32 *out_cp) {
@@ -337,7 +335,7 @@ void parse_magic_links(ThreadBuf *tb, const ParserConfig *cfg, Accum *accum) {
         if (mm.mstart > search_at) {
             size_t before = mm.mstart - search_at;
             ENSURE_CAP(before + 1);
-            memcpy(out_buf + out_len, tb->buf + search_at, before);
+            sz_copy(out_buf + out_len, tb->buf + search_at, before);
             out_len += before;
         }
 
@@ -350,7 +348,7 @@ void parse_magic_links(ThreadBuf *tb, const ParserConfig *cfg, Accum *accum) {
         if (lead_e > lead_s) {
             size_t llen = lead_e - lead_s;
             ENSURE_CAP(llen + 2);
-            memcpy(out_buf + out_len, tb->buf + lead_s, llen);
+            sz_copy(out_buf + out_len, tb->buf + lead_s, llen);
             out_len += llen;
         }
 
@@ -416,7 +414,7 @@ void parse_magic_links(ThreadBuf *tb, const ParserConfig *cfg, Accum *accum) {
 
             if (entity_at < url_len) {
                 trail_len = url_len - entity_at;
-                memcpy(trail, url_ptr + entity_at, trail_len);
+                sz_copy(trail, url_ptr + entity_at, trail_len);
                 url_len = entity_at;
             }
 
@@ -459,7 +457,7 @@ void parse_magic_links(ThreadBuf *tb, const ParserConfig *cfg, Accum *accum) {
                 /* Bail out - emit original match */
                 size_t rest_len = mend - lead_e;
                 ENSURE_CAP(rest_len + 1);
-                memcpy(out_buf + out_len, tb->buf + lead_e, rest_len);
+                sz_copy(out_buf + out_len, tb->buf + lead_e, rest_len);
                 out_len += rest_len;
                 free(trail);
                 search_at = mend + (mend == mstart ? 1 : 0);
@@ -474,16 +472,16 @@ void parse_magic_links(ThreadBuf *tb, const ParserConfig *cfg, Accum *accum) {
                 size_t slen;
                 work_str_sentinel(idx, 'w', sent, &slen);
                 ENSURE_CAP(slen + trail_len + 1);
-                memcpy(out_buf + out_len, sent, slen);
+                sz_copy(out_buf + out_len, sent, slen);
                 out_len += slen;
                 if (trail_len > 0) {
-                    memcpy(out_buf + out_len, trail, trail_len);
+                    sz_copy(out_buf + out_len, trail, trail_len);
                     out_len += trail_len;
                 }
             } else {
                 size_t rest_len = mend - lead_e;
                 ENSURE_CAP(rest_len + 1);
-                memcpy(out_buf + out_len, tb->buf + lead_e, rest_len);
+                sz_copy(out_buf + out_len, tb->buf + lead_e, rest_len);
                 out_len += rest_len;
             }
             free(trail);
@@ -499,7 +497,7 @@ void parse_magic_links(ThreadBuf *tb, const ParserConfig *cfg, Accum *accum) {
             if (!is_magic) {
                 size_t rest_len = mend - lead_e;
                 ENSURE_CAP(rest_len + 1);
-                memcpy(out_buf + out_len, tb->buf + lead_e, rest_len);
+                sz_copy(out_buf + out_len, tb->buf + lead_e, rest_len);
                 out_len += rest_len;
             } else {
                 Token *ml = build_magic_link(inner_ptr, inner_len, "magic-link", accum);
@@ -509,12 +507,12 @@ void parse_magic_links(ThreadBuf *tb, const ParserConfig *cfg, Accum *accum) {
                     size_t slen;
                     work_str_sentinel(idx, 'i', sent, &slen);
                     ENSURE_CAP(slen + 1);
-                    memcpy(out_buf + out_len, sent, slen);
+                    sz_copy(out_buf + out_len, sent, slen);
                     out_len += slen;
                 } else {
                     size_t rest_len = mend - lead_e;
                     ENSURE_CAP(rest_len + 1);
-                    memcpy(out_buf + out_len, tb->buf + lead_e, rest_len);
+                    sz_copy(out_buf + out_len, tb->buf + lead_e, rest_len);
                     out_len += rest_len;
                 }
             }
@@ -527,7 +525,7 @@ void parse_magic_links(ThreadBuf *tb, const ParserConfig *cfg, Accum *accum) {
     if (search_at < tb->len) {
         size_t rest = tb->len - search_at;
         ENSURE_CAP(rest + 1);
-        memcpy(out_buf + out_len, tb->buf + search_at, rest);
+        sz_copy(out_buf + out_len, tb->buf + search_at, rest);
         out_len += rest;
     }
 

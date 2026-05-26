@@ -29,6 +29,11 @@ unsigned char fast_tolower(unsigned char c) {
     return s_tolower_lut[c];
 }
 
+const unsigned char *fast_tolower_table(void) {
+    ensure_tolower_lut();
+    return s_tolower_lut;
+}
+
 bool str_ci_eq_n(const char *a, const char *b, size_t n) {
 	if (n == 0) return true;
 	ensure_tolower_lut();
@@ -196,7 +201,7 @@ bool sentinel_scan_next(const char *buf, size_t len, size_t *pos,
 		while(k < len && buf[k] >= '0' && buf[k] <= '9') k++;
 		if(k >= len) { i = p + 1; continue; }
 		char t = buf[k];
-		if(strchr(SENTINEL_TYPES, t) == NULL) { i = p + 1; continue; }
+		if(sz_find_byte(SENTINEL_TYPES, sizeof(SENTINEL_TYPES) - 1, &t) == NULL) { i = p + 1; continue; }
 		if(k + 1 >= len || (unsigned char)buf[k + 1] != '\x7F') { i = p + 1; continue; }
 
 		/* parse decimal */
@@ -227,7 +232,7 @@ void sentinel_scan(const char *buf, size_t len, SentinelScanCb cb, void *user_da
 		while(k < len && buf[k] >= '0' && buf[k] <= '9') k++;
 		if(k >= len) { i = p + 1; continue; }
 		char t = buf[k];
-		if(strchr(SENTINEL_TYPES, t) == NULL) { i = p + 1; continue; }
+		if(sz_find_byte(SENTINEL_TYPES, sizeof(SENTINEL_TYPES) - 1, &t) == NULL) { i = p + 1; continue; }
 		if(k + 1 >= len || (unsigned char)buf[k + 1] != '\x7F') { i = p + 1; continue; }
 
 		size_t n = 0;
@@ -620,14 +625,8 @@ size_t match_proto_prefix(const char *s, size_t len, const ParserConfig *cfg) {
 		    continue;
 		}
 
-		/* Compare input lowered vs precomputed protocol lowercase */
-		bool match = true;
-		for(size_t i =0; i < proto->protocol.length; i++) {
-			if(fast_tolower((unsigned char)s[i]) != (unsigned char)((const char *)lower_start)[i]) {
-				match = false;
-				break;
-			}
-		}
+		/* Compare input lowered vs precomputed protocol lowercase using sz_equal */
+		bool match = str_ci_eq_n(s, (const char *)lower_start, lower_len);
 		if(match) {
 		    return proto->protocol.length;
 		}

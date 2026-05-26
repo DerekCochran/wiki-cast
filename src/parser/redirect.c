@@ -18,12 +18,7 @@ static inline bool is_ws_char(unsigned char c) {
 
 static bool ci_starts_with_n(const char *s, size_t slen, const char *pat, size_t plen) {
     if(plen > slen) return false;
-    for(size_t i = 0; i < plen; i++) {
-        unsigned char a = (unsigned char)s[i];
-        unsigned char b = (unsigned char)pat[i];
-        if(tolower(a) != tolower(b)) return false;
-    }
-    return true;
+    return str_ci_eq_n(s, pat, plen);
 }
 
 static bool parse_redirect_prefix(const char *s, size_t len, const ParserConfig *cfg,
@@ -157,17 +152,17 @@ Accum *accum) {
 	Token *redir= token_new(TOKEN_REDIRECT, "redirect");
 	if(!redir) return NULL;
 	redir->data.redirect.pre= malloc(pre_len + 1);
-	memcpy(redir->data.redirect.pre, pre, pre_len);
+	sz_copy(redir->data.redirect.pre, pre, pre_len);
 	redir->data.redirect.pre[pre_len]= '\0';
 	if(post && post_len > 0) {
 		redir->data.redirect.post= malloc(post_len + 1);
-		memcpy(redir->data.redirect.post, post, post_len);
+		sz_copy(redir->data.redirect.post, post, post_len);
 		redir->data.redirect.post[post_len]= '\0';
 	} else {
 		redir->data.redirect.post= strdup("");
 	}
 	redir->data.redirect.link= malloc(link_len + 1);
-	memcpy(redir->data.redirect.link, link, link_len);
+	sz_copy(redir->data.redirect.link, link, link_len);
 	redir->data.redirect.link[link_len]= '\0';
 
 	token_append_child(redir, syn_tok);
@@ -217,11 +212,8 @@ bool parse_redirect(ThreadBuf *tb, const ParserConfig *cfg, Accum *accum) {
 		cfg, accum);
 	if(!redir) return false;
 
-	size_t sent_idx = SIZE_MAX;
-	for(size_t i = 0; i < accum->count; i++) {
-		if(accum->tokens[i] == redir) { sent_idx = i; break; }
-	}
-	if(sent_idx == SIZE_MAX) { /* build_redirect_token contract violated */ abort(); }
+	/* The redirect token was the last item pushed to accum */
+	size_t sent_idx = accum->count - 1;
 
 	char sent_buf[32];
 	size_t sent_len = 0;
@@ -229,12 +221,11 @@ bool parse_redirect(ThreadBuf *tb, const ParserConfig *cfg, Accum *accum) {
 
 	size_t rest_len = tb->len - full_end;
 	size_t new_len = sent_len + rest_len;
-	char *new_buf = malloc(new_len + 1);
-	if(!new_buf) { log_fatal("OOM in parse_redirect"); abort(); }
-	memcpy(new_buf, sent_buf, sent_len);
-	if(rest_len > 0) memcpy(new_buf + sent_len, tb->buf + full_end, rest_len);
-	new_buf[new_len] = '\0';
-	wiki_thread_buf_set(tb, new_buf, new_len);
-	free(new_buf);
+	wiki_thread_buf_reserve(tb, new_len + 1);
+	/* Assemble sentinel + remaining content directly into tb */
+	sz_copy(tb->buf, sent_buf, sent_len);
+	if(rest_len > 0) sz_copy(tb->buf + sent_len, tb->buf + full_end, rest_len);
+	tb->buf[new_len] = '\0';
+	tb->len = new_len;
 	return true;
 }

@@ -137,7 +137,7 @@ static void trim_view(const char **ptr, size_t *len);
 static int eq_n(const char *a, size_t alen, const char *b) {
 	size_t blen= strlen(b);
 	if(alen != blen) return 0;
-	return memcmp(a, b, alen) == 0;
+	return sz_equal(a, b, alen) == sz_true_k;
 }
 
 static Token *make_image_param_token(const char *name, Accum *accum) {
@@ -180,8 +180,8 @@ static bool match_img_syntax(const char *seg, size_t seg_len,
 	size_t pre_len= (size_t)(slot - syntax);
 	size_t suf_len= strlen(slot + 2);
 	if(seg_len < pre_len + suf_len) return false;
-	if(pre_len > 0 && memcmp(seg, syntax, pre_len) != 0) return false;
-	if(suf_len > 0 && memcmp(seg + seg_len - suf_len, slot + 2, suf_len) != 0) return false;
+	if(pre_len > 0 && sz_equal(seg, syntax, pre_len) != sz_true_k) return false;
+	if(suf_len > 0 && sz_equal(seg + seg_len - suf_len, slot + 2, suf_len) != sz_true_k) return false;
 
 	if(has_cap) *has_cap= true;
 	size_t captured_len= seg_len - pre_len - suf_len;
@@ -212,11 +212,10 @@ static char *build_img_syntax_template(const char *seg_ptr, size_t seg_len,
 	size_t out_len= lead_ws_len + syntax_len + tmpl_trail_ws_len;
 	char *out= malloc(out_len + 1);
 	if(!out) return NULL;
-	if(lead_ws_len > 0) memcpy(out, seg_ptr, lead_ws_len);
 	if(lead_ws_len > 0) sz_copy(out, seg_ptr, lead_ws_len);
 	sz_copy(out + lead_ws_len, syntax, syntax_len);
 	if(tmpl_trail_ws_len > 0) {
-		memcpy(out + lead_ws_len + syntax_len,
+		sz_copy(out + lead_ws_len + syntax_len,
 				 seg_ptr + seg_len - trail_ws_len + trail_prefix_skip,
 					 tmpl_trail_ws_len);
 	}

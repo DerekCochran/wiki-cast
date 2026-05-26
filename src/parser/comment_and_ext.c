@@ -207,8 +207,8 @@ static bool cae_match_ext(const char *s, size_t len, size_t i,
         sz_size_t ename_len;
         sz_string_range(&cfg->ext.items[ei], &ename, &ename_len);
         if(!ename) continue;
-        if(has_translate && ((ename_len == strlen("translate") && memcmp(ename, "translate", ename_len) == 0) ||
-                           (ename_len == strlen("tvar") && memcmp(ename, "tvar", ename_len) == 0)))
+		if(has_translate && ((ename_len == 9 && sz_equal(ename, "translate", 9) == sz_true_k) ||
+				   (ename_len == 4 && sz_equal(ename, "tvar", 4) == sz_true_k)))
             continue;
 
         CaeOpenTag ot;
@@ -388,7 +388,7 @@ static size_t str_restore_to_tb(const char *s, size_t len,
 			size_t rem = (size_t)(end - p);
 			if(rem) {
 				wiki_thread_buf_reserve(tb, tb->len + rem);
-				memcpy(tb->buf + tb->len, p, rem);
+				sz_copy(tb->buf + tb->len, p, rem);
 				tb->len += rem;
 			}
 			break;
@@ -397,7 +397,7 @@ static size_t str_restore_to_tb(const char *s, size_t len,
 		size_t seg = (size_t)(found - p);
 		if(seg) {
 			wiki_thread_buf_reserve(tb, tb->len + seg);
-			memcpy(tb->buf + tb->len, p, seg);
+			sz_copy(tb->buf + tb->len, p, seg);
 			tb->len += seg;
 		}
 
@@ -411,7 +411,7 @@ static size_t str_restore_to_tb(const char *s, size_t len,
 				size_t replen = (stack_lengths && stack_lengths[idx]) ? stack_lengths[idx] : strlen(rep);
 				if(replen) {
 					wiki_thread_buf_reserve(tb, tb->len + replen);
-					memcpy(tb->buf + tb->len, rep, replen);
+					sz_copy(tb->buf + tb->len, rep, replen);
 					tb->len += replen;
 				}
 				p = k + 1;
@@ -462,7 +462,7 @@ static size_t restore_accum_mode_to_tb(const char *s, size_t len,
 						} else {
 							if(rep_len) {
 								wiki_thread_buf_reserve(tb, tb->len + rep_len);
-								memcpy(tb->buf + tb->len, rep_s, rep_len);
+								sz_copy(tb->buf + tb->len, rep_s, rep_len);
 								tb->len += rep_len;
 							}
 						}
@@ -782,7 +782,7 @@ static Token *build_ext_attrs(const char *tag_name,
 		if(!scratch) { log_fatal("thread_buffer: failed to acquire scratch in build_ext_attrs"); abort(); }
 		wiki_thread_buf_reserve(scratch, attr_len + 1);
 		scratch->buf[0]= ' ';
-		memcpy(scratch->buf + 1, attr_str, attr_len);
+		sz_copy(scratch->buf + 1, attr_str, attr_len);
 		scratch->len = attr_len + 1;
 		scratch->buf[scratch->len] = '\0';
 		parse_ext_attrs(t, scratch->buf, scratch->len, tag_name, accum);
@@ -826,7 +826,7 @@ static bool ext_attr_is_format_wikitext(const char *attr, size_t attr_len) {
 			continue;
 		}
 
-		bool is_format= (key_e - key_s == 6 && strncasecmp(attr + key_s, "format", 6) == 0);
+		bool is_format= (key_e - key_s == 6 && str_ci_eq_n(attr + key_s, "format", 6));
 		while(i < attr_len && isspace((unsigned char)attr[i])) i++;
 		if(i >= attr_len || attr[i] != '=') {
 			continue;
@@ -850,7 +850,7 @@ static bool ext_attr_is_format_wikitext(const char *attr, size_t attr_len) {
 		if(is_format) {
 			while(v_s < v_e && isspace((unsigned char)attr[v_s])) v_s++;
 			while(v_e > v_s && isspace((unsigned char)attr[v_e - 1])) v_e--;
-			if(v_e - v_s == 8 && strncasecmp(attr + v_s, "wikitext", 8) == 0) {
+			if(v_e - v_s == 8 && str_ci_eq_n(attr + v_s, "wikitext", 8)) {
 				return true;
 			}
 		}
@@ -878,7 +878,7 @@ static bool find_ci_lit(const char *s, size_t len, size_t from,
 							 const char *lit, size_t lit_len, size_t *out_pos) {
 	if(!s || !lit || lit_len == 0 || from >= len) return false;
 	for(size_t i= from; i + lit_len <= len; i++) {
-		if(strncasecmp(s + i, lit, lit_len) == 0) {
+		if(str_ci_eq_n(s + i, lit, lit_len)) {
 			if(out_pos) *out_pos= i;
 			return true;
 		}
@@ -1128,7 +1128,7 @@ static Token *build_references_inner_token(const char *inner_str, size_t inner_l
 			if(k > i + 1 && k + 1 < tmp->len && (unsigned char)tmp->buf[k + 1] == '\x7F') {
 				size_t mlen= (k + 2) - i;
 				ENSURE_REF_CAP(out_tb, mlen + 1);
-				memcpy(out_tb->buf + out_tb->len, tmp->buf + i, mlen);
+				sz_copy(out_tb->buf + out_tb->len, tmp->buf + i, mlen);
 				out_tb->len += mlen;
 				i= k + 2;
 				continue;
@@ -1149,7 +1149,7 @@ static Token *build_references_inner_token(const char *inner_str, size_t inner_l
 				size_t slen;
 				work_str_sentinel(idx, 'n', sent, &slen);
 				ENSURE_REF_CAP(out_tb, slen + 1);
-				memcpy(out_tb->buf + out_tb->len, sent, slen);
+				sz_copy(out_tb->buf + out_tb->len, sent, slen);
 				out_tb->len += slen;
 			}
 		}
@@ -1294,10 +1294,10 @@ static void split_gallery_unclosed_caption_local(Token *img,
 						free(left_owned);
 						continue;
 					}
-					memcpy(right_owned, txt + pipe_pos + 1, right_len);
+					sz_copy(right_owned, txt + pipe_pos + 1, right_len);
 				}
 
-				if(left_len > 0) memcpy(left_owned, txt, left_len);
+				if(left_len > 0) sz_copy(left_owned, txt, left_len);
 				left_owned[left_len]= '\0';
 				if(cap->children[cj].text_owned && cap->children[cj].text) {
 					free((void *)cap->children[cj].text);
@@ -1380,9 +1380,9 @@ static void split_gallery_unclosed_caption_local(Token *img,
 					free(left_owned);
 					return;
 				}
-				memcpy(right_owned, pipe_ptr + 1, right_len);
+				sz_copy(right_owned, pipe_ptr + 1, right_len);
 			}
-			if(left_len > 0) memcpy(left_owned, txt, left_len);
+			if(left_len > 0) sz_copy(left_owned, txt, left_len);
 			left_owned[left_len]= '\0';
 			if(cap->children[0].text_owned && cap->children[0].text) {
 				free((void *)cap->children[0].text);
@@ -1456,9 +1456,9 @@ static void normalize_gallery_thumb_caption_local(Token *img, Accum *accum) {
 		const char *txt= param->children[0].text;
 		size_t txt_len= param->children[0].text_len;
 		size_t cut= 0;
-		if(txt_len >= 6 && strncasecmp(txt, "thumb|", 6) == 0) {
+		if(txt_len >= 6 && str_ci_eq_n(txt, "thumb|", 6)) {
 			cut= 6;
-		} else if(txt_len >= 10 && strncasecmp(txt, "thumbnail|", 10) == 0) {
+		} else if(txt_len >= 10 && str_ci_eq_n(txt, "thumbnail|", 10)) {
 			cut= 10;
 		} else {
 			continue;
@@ -1477,7 +1477,7 @@ static void normalize_gallery_thumb_caption_local(Token *img, Accum *accum) {
 			token_free(thumb);
 			return;
 		}
-		memcpy(thumb->data.image_param.raw_syntax, txt, syntax_len);
+		sz_copy(thumb->data.image_param.raw_syntax, txt, syntax_len);
 		thumb->data.image_param.raw_syntax[syntax_len]= '\0';
 		accum_push(accum, thumb);
 
@@ -1487,7 +1487,7 @@ static void normalize_gallery_thumb_caption_local(Token *img, Accum *accum) {
 			token_free(thumb);
 			return;
 		}
-		if(remain_len > 0) memcpy(owned, txt + cut, remain_len);
+		if(remain_len > 0) sz_copy(owned, txt + cut, remain_len);
 		owned[remain_len]= '\0';
 		if(param->children[0].text_owned && param->children[0].text) free((void *)param->children[0].text);
 		param->children[0].text= owned;
@@ -1548,11 +1548,11 @@ static void append_gallery_params_via_wrapper_local(Token *dst,
 	wiki_thread_buf_reserve(tb, wrapped_len + 1);
 	tb->buf[0]= '[';
 	tb->buf[1]= '[';
-	memcpy(tb->buf + 2, "File:", 5);
-	memcpy(tb->buf + 7, fptr, flen);
+	sz_copy(tb->buf + 2, "File:", 5);
+	sz_copy(tb->buf + 7, fptr, flen);
 	tb->buf[7 + flen]= '|';
 	if(alt_len > 0) {
-		memcpy(tb->buf + 8 + flen, alt_ptr, alt_len);
+		sz_copy(tb->buf + 8 + flen, alt_ptr, alt_len);
 	}
 	tb->buf[8 + flen + alt_len]= ']';
 	tb->buf[9 + flen + alt_len]= ']';
@@ -1646,7 +1646,7 @@ static Token *parse_gallery_image_line_local(const char *line, size_t line_len,
 			if(pre_text_tb->len > 0) {
 				pre_text_owned= malloc(pre_text_tb->len);
 				if(pre_text_owned) {
-					memcpy(pre_text_owned, pre_text_tb->buf, pre_text_tb->len);
+					sz_copy(pre_text_owned, pre_text_tb->buf, pre_text_tb->len);
 					pre_text_ptr= pre_text_owned;
 					pre_text_len= pre_text_tb->len;
 					wiki_thread_buf_release_scratch(pre_text_tb);
@@ -1671,9 +1671,9 @@ static Token *parse_gallery_image_line_local(const char *line, size_t line_len,
 		wiki_thread_buf_reserve(tmp_tb, wrapped_len + 1);
 		tmp_tb->buf[0]= '[';
 		tmp_tb->buf[1]= '[';
-		memcpy(tmp_tb->buf + 2, line, lhs_len);
+		sz_copy(tmp_tb->buf + 2, line, lhs_len);
 		if(pre_text_len > 0) {
-			memcpy(tmp_tb->buf + 2 + lhs_len, pre_text_ptr, pre_text_len);
+			sz_copy(tmp_tb->buf + 2 + lhs_len, pre_text_ptr, pre_text_len);
 		}
 		size_t tail= 2 + lhs_len + pre_text_len;
 		tmp_tb->buf[tail]= ']';
@@ -1684,7 +1684,7 @@ static Token *parse_gallery_image_line_local(const char *line, size_t line_len,
 		wiki_thread_buf_reserve(tmp_tb, line_len + 4);
 		tmp_tb->buf[0]= '[';
 		tmp_tb->buf[1]= '[';
-		memcpy(tmp_tb->buf + 2, line, line_len);
+		sz_copy(tmp_tb->buf + 2, line, line_len);
 		tmp_tb->buf[2 + line_len]= ']';
 		tmp_tb->buf[3 + line_len]= ']';
 		tmp_tb->buf[4 + line_len]= '\0';
@@ -1734,8 +1734,8 @@ static Token *parse_gallery_image_line_local(const char *line, size_t line_len,
 			free(param->data.image_param.raw_syntax);
 			param->data.image_param.raw_syntax= malloc(p + 8);
 			if(param->data.image_param.raw_syntax) {
-				if(p > 0) memcpy(param->data.image_param.raw_syntax, first->text, p);
-				memcpy(param->data.image_param.raw_syntax + p, "link=$1", 7);
+				if(p > 0) sz_copy(param->data.image_param.raw_syntax, first->text, p);
+				sz_copy(param->data.image_param.raw_syntax + p, "link=$1", 7);
 				param->data.image_param.raw_syntax[p + 7]= '\0';
 			}
 
@@ -1743,7 +1743,7 @@ static Token *parse_gallery_image_line_local(const char *line, size_t line_len,
 			size_t new_len= first->text_len - prefix_len;
 			char *owned= malloc(new_len + 1);
 			if(!owned) continue;
-			if(new_len > 0) memcpy(owned, first->text + prefix_len, new_len);
+			if(new_len > 0) sz_copy(owned, first->text + prefix_len, new_len);
 			owned[new_len]= '\0';
 			if(first->text_owned && first->text) free((void *)first->text);
 			first->text= owned;
@@ -1946,7 +1946,7 @@ static Token *create_raw_ext_link_token_local(const char *url, size_t url_len,
 			token_free(ext);
 			return NULL;
 		}
-		memcpy(ext->data.ext_link.space, space, space_len);
+		sz_copy(ext->data.ext_link.space, space, space_len);
 		ext->data.ext_link.space[space_len]= '\0';
 	}
 
@@ -2563,7 +2563,7 @@ static void translate_scan_cb_wrap(const char *segment, size_t len,
 		char sent[64]; size_t slen;
 		work_str_sentinel(tok_idx, 'g', sent, &slen);
 		wiki_thread_buf_reserve(ctx->out, ctx->out->len + slen);
-		memcpy(ctx->out->buf + ctx->out->len, sent, slen);
+		sz_copy(ctx->out->buf + ctx->out->len, sent, slen);
 		ctx->out->len += slen;
 	} else {
 		/* Fallback: emit original matched bytes as-is. For self-closing the
@@ -2684,7 +2684,7 @@ static bool handle_onlyinclude(ThreadBuf *tb, const ParserConfig *cfg, Accum *ac
 			accum_push(accum, ni);
 			size_t sent_len;
 			work_str_sentinel(noincl_idx, 'n', sent_buf, &sent_len);
-			memcpy(new_tb->buf + new_len, sent_buf, sent_len);
+			sz_copy(new_tb->buf + new_len, sent_buf, sent_len);
 			new_len+= sent_len;
 		}
 
@@ -2701,7 +2701,7 @@ static bool handle_onlyinclude(ThreadBuf *tb, const ParserConfig *cfg, Accum *ac
 		accum_push(accum, oi);
 			size_t sent_len;
 			work_str_sentinel(onlyi_idx, 'g', sent_buf, &sent_len);
-			memcpy(new_tb->buf + new_len, sent_buf, sent_len);
+			sz_copy(new_tb->buf + new_len, sent_buf, sent_len);
 			new_len+= sent_len;
 
 		remaining= next_close + close_len;
@@ -2716,7 +2716,7 @@ static bool handle_onlyinclude(ThreadBuf *tb, const ParserConfig *cfg, Accum *ac
 			accum_push(accum, ni);
 			size_t sent_len;
 			work_str_sentinel(noincl_idx, 'n', sent_buf, &sent_len);
-			memcpy(new_tb->buf + new_len, sent_buf, sent_len);
+			sz_copy(new_tb->buf + new_len, sent_buf, sent_len);
 			new_len+= sent_len;
 		}
 
@@ -2735,7 +2735,7 @@ void parse_comment_and_ext(ThreadBuf *tb, const ParserConfig *cfg,
         sz_ptr_t ext_name;
         sz_size_t ext_len;
         sz_string_range(&cfg->ext.items[i], &ext_name, &ext_len);
-        if(ext_len == strlen("translate") && memcmp(ext_name, "translate", ext_len) == 0) {
+		if(ext_len == 9 && sz_equal(ext_name, "translate", 9) == sz_true_k) {
             has_translate = true;
             break;
         }
@@ -2768,7 +2768,7 @@ void parse_comment_and_ext(ThreadBuf *tb, const ParserConfig *cfg,
 
         size_t before = mm.mstart - search_at;
         ENSURE_CAP(before + 64);
-        memcpy(out_tb->buf + out_tb->len, tb->buf + search_at, before);
+        sz_copy(out_tb->buf + out_tb->len, tb->buf + search_at, before);
         out_tb->len += before;
 
         const char *substr = tb->buf + mm.mstart;
@@ -2855,11 +2855,11 @@ void parse_comment_and_ext(ThreadBuf *tb, const ParserConfig *cfg,
             size_t sent_len = 0;
             work_str_sentinel(tok_idx, ch, sent_buf, &sent_len);
             ENSURE_CAP(sent_len);
-            memcpy(out_tb->buf + out_tb->len, sent_buf, sent_len);
+            sz_copy(out_tb->buf + out_tb->len, sent_buf, sent_len);
             out_tb->len += sent_len;
         } else {
             ENSURE_CAP(sub_len);
-            memcpy(out_tb->buf + out_tb->len, substr, sub_len);
+            sz_copy(out_tb->buf + out_tb->len, substr, sub_len);
             out_tb->len += sub_len;
         }
 
@@ -2869,7 +2869,7 @@ void parse_comment_and_ext(ThreadBuf *tb, const ParserConfig *cfg,
     if(search_at < tb->len) {
         size_t rest = tb->len - search_at;
         ENSURE_CAP(rest + 1);
-        memcpy(out_tb->buf + out_tb->len, tb->buf + search_at, rest);
+        sz_copy(out_tb->buf + out_tb->len, tb->buf + search_at, rest);
         out_tb->len += rest;
     }
 

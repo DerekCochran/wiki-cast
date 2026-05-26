@@ -990,8 +990,8 @@ static Token *parse_gallery_image_line(const char *line, size_t line_len,
 			free(param->data.image_param.raw_syntax);
 			param->data.image_param.raw_syntax= malloc(p + 8);
 			if(param->data.image_param.raw_syntax) {
-				if(p > 0) memcpy(param->data.image_param.raw_syntax, first->text, p);
-				memcpy(param->data.image_param.raw_syntax + p, "link=$1", 7);
+				if(p > 0) sz_copy(param->data.image_param.raw_syntax, first->text, p);
+				sz_copy(param->data.image_param.raw_syntax + p, "link=$1", 7);
 				param->data.image_param.raw_syntax[p + 7]= '\0';
 			}
 
@@ -999,7 +999,7 @@ static Token *parse_gallery_image_line(const char *line, size_t line_len,
 			size_t new_len= first->text_len - prefix_len;
 			char *owned= malloc(new_len + 1);
 			if(!owned) continue;
-			if(new_len > 0) memcpy(owned, first->text + prefix_len, new_len);
+			if(new_len > 0) sz_copy(owned, first->text + prefix_len, new_len);
 			owned[new_len]= '\0';
 			if(first->text_owned && first->text) free((void *)first->text);
 			first->text= owned;
@@ -1108,7 +1108,7 @@ static Token *parse_imagemap_image_line(const char *line, size_t line_len,
 	wiki_thread_buf_reserve(scratch, line_len + 4);
 	scratch->buf[0]= '[';
 	scratch->buf[1]= '[';
-	memcpy(scratch->buf + 2, line, line_len);
+	sz_copy(scratch->buf + 2, line, line_len);
 	scratch->buf[2 + line_len]= ']';
 	scratch->buf[3 + line_len]= ']';
 	scratch->buf[4 + line_len]= '\0';

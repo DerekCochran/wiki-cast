@@ -123,7 +123,7 @@ static Token *build_ext_link_token(Token *url_tok,
 		token_free(ext);
 		return NULL;
 	}
-	if(space && space_len > 0) memcpy(ext->data.ext_link.space, space, space_len);
+    if(space && space_len > 0) sz_copy(ext->data.ext_link.space, space, space_len);
 	ext->data.ext_link.space[space_len]= '\0';
 
 	token_append_child(ext, url_tok);

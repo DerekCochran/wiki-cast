@@ -348,7 +348,7 @@ static bool str_list_contains_ci(const StrList *sl, const char *needle) {
 		sz_ptr_t start;
 		sz_size_t len;
 		sz_string_range(&sl->items[i], &start, &len);
-		if(start && len == strlen(needle) && strncasecmp(start, needle, len) == 0) return true;
+		if(start && len == strlen(needle) && str_ci_eq_n((const char *)start, needle, len)) return true;
 	}
 	return false;
 }
@@ -359,7 +359,7 @@ static const char *str_map_get_exact(const StrMap *m, const char *key) {
 		sz_ptr_t key_start, val_start;
 		sz_size_t key_len, val_len;
 		sz_string_range(&m->keys[i], &key_start, &key_len);
-		if(key_start && key_len == strlen(key) && memcmp(key_start, key, key_len) == 0) {
+		if(key_start && key_len == strlen(key) && sz_equal(key_start, key, key_len) == sz_true_k) {
 			sz_string_range(&m->values[i], &val_start, &val_len);
 			return (const char *)val_start;
 		}
@@ -551,13 +551,7 @@ static char *lower_copy(const char *s, size_t len) {
 	/* Use a precomputed lookup table + Stringzilla's sz_lookup for faster
 	 * bulk lowercase transformation. This preserves the byte-wise tolower()
 	 * semantics used previously (C locale/unsigned-char based). */
-	static unsigned char lut[256];
-	static int lut_inited= 0;
-	if(!lut_inited) {
-		for(int i= 0; i < 256; ++i) lut[i]= (unsigned char)tolower((unsigned char)i);
-		lut_inited= 1;
-	}
-
+	const unsigned char *lut = fast_tolower_table();
 	char *out= malloc(len + 1);
 	if(!out) return NULL;
 	sz_lookup(out, len, s, (const char *)lut);
@@ -820,12 +814,11 @@ static Token *build_template_token(const char **parts_restored, const size_t *pa
 				t->name= strdup(canonical);
 			} else {
 				char *nm= magic_raw_name;
-				if(nm) {
-					for(char *p= nm; *p; p++) {
-						*p= (char)tolower((unsigned char)*p);
+					if(nm) {
+						size_t nm_len= strlen(nm);
+						sz_lookup(nm, nm_len, nm, (const char *)fast_tolower_table());
+						t->name= nm;
 					}
-					t->name= nm;
-				}
 			}
 			if(canonical && magic_raw_name) free(magic_raw_name);
 			if(t->name && strcmp(t->name, "invoke") == 0) invoke_magic= true;
@@ -1519,10 +1512,10 @@ static bool braces_state_machine(ThreadBuf *tb, const ParserConfig *cfg,
 									}
 									ENSURE_OUT_CAP((top.index > next_write ? top.index - next_write : 0) + slen);
 									if(top.index > next_write) {
-										memcpy(out + out_len, tb->buf + next_write, top.index - next_write);
+										sz_copy(out + out_len, tb->buf + next_write, top.index - next_write);
 										out_len+= top.index - next_write;
 									}
-									memcpy(out + out_len, sent, slen);
+									sz_copy(out + out_len, sent, slen);
 									out_len+= slen;
 									next_write= cur_index;
 								} else {
@@ -1619,7 +1612,7 @@ static bool braces_state_machine(ThreadBuf *tb, const ParserConfig *cfg,
 							next_write= top.index;
 							if(rep_start > next_write) {
 								ENSURE_OUT_CAP(rep_start - next_write);
-								memcpy(out + out_len, tb->buf + next_write, rep_start - next_write);
+								sz_copy(out + out_len, tb->buf + next_write, rep_start - next_write);
 								out_len+= rep_start - next_write;
 								next_write= rep_start;
 							} else {
@@ -1629,10 +1622,10 @@ static bool braces_state_machine(ThreadBuf *tb, const ParserConfig *cfg,
 
 						ENSURE_OUT_CAP((rep_start > next_write ? rep_start - next_write : 0) + slen);
 						if(rep_start > next_write) {
-							memcpy(out + out_len, tb->buf + next_write, rep_start - next_write);
+							sz_copy(out + out_len, tb->buf + next_write, rep_start - next_write);
 							out_len+= rep_start - next_write;
 						}
-						memcpy(out + out_len, sent, slen);
+						sz_copy(out + out_len, sent, slen);
 						out_len+= slen;
 						next_write= rep_end;
 						if(rest > 1) {
@@ -1669,7 +1662,7 @@ static bool braces_state_machine(ThreadBuf *tb, const ParserConfig *cfg,
 						size_t rep_end= cur_index + close_consume;
 						if(rep_end > next_write) {
 							ENSURE_OUT_CAP(rep_end - next_write);
-							memcpy(out + out_len, tb->buf + next_write, rep_end - next_write);
+							sz_copy(out + out_len, tb->buf + next_write, rep_end - next_write);
 							out_len+= rep_end - next_write;
 						}
 						next_write= rep_end;
@@ -1686,7 +1679,7 @@ static bool braces_state_machine(ThreadBuf *tb, const ParserConfig *cfg,
 			if(matched && evkind == BRACE_EVT_BRACE_OPEN) {
 				if(cur_index > next_write) {
 					ENSURE_OUT_CAP(cur_index - next_write);
-					memcpy(out + out_len, tb->buf + next_write, cur_index - next_write);
+					sz_copy(out + out_len, tb->buf + next_write, cur_index - next_write);
 					out_len+= cur_index - next_write;
 					next_write= cur_index;
 				}
@@ -1801,7 +1794,7 @@ static bool braces_state_machine(ThreadBuf *tb, const ParserConfig *cfg,
 
 	if(next_write < tb->len) {
 		ENSURE_OUT_CAP(tb->len - next_write + 1);
-		memcpy(out + out_len, tb->buf + next_write, tb->len - next_write);
+		sz_copy(out + out_len, tb->buf + next_write, tb->len - next_write);
 		out_len+= tb->len - next_write;
 	}
 	out[out_len]= '\0';
@@ -1858,9 +1851,7 @@ static char braces_arg_symbol(const char *inner, size_t inner_len, const ParserC
 		free(cleaned);
 		return 'a';
 	}
-	for(size_t k= 0; k < base_len; k++) {
-		base[k]= (char)tolower((unsigned char)cleaned[i + k]);
-	}
+	sz_lookup(base, base_len, cleaned + i, (const char *)fast_tolower_table());
 	base[base_len]= '\0';
 	free(cleaned);
 
@@ -1870,7 +1861,7 @@ static char braces_arg_symbol(const char *inner, size_t inner_len, const ParserC
 		sz_size_t s_len;
 		sz_string_range(&cfg->parser_function_subst.items[n], &s, &s_len);
 		if(!s) continue;
-		if(s_len == strlen(base) && memcmp(s, base, s_len) == 0) {
+		if(s_len == strlen(base) && sz_equal(s, base, s_len) == sz_true_k) {
 			sym= 's';
 			break;
 		}
@@ -2068,9 +2059,9 @@ static void main_braces_park_cb(const char *segment, size_t len,
 	size_t full_len= r->open_len + len + r->close_len;
 	char *tmp= malloc(full_len + 1);
 	assert(tmp);
-	memcpy(tmp, r->open_delim, r->open_len);
-	memcpy(tmp + r->open_len, segment, len);
-	memcpy(tmp + r->open_len + len, r->close_delim, r->close_len);
+	sz_copy(tmp, r->open_delim, r->open_len);
+	sz_copy(tmp + r->open_len, segment, len);
+	sz_copy(tmp + r->open_len + len, r->close_delim, r->close_len);
 	tmp[full_len]= '\0';
 	main_braces_push_link_stack(ctx, tmp, full_len);
 	free(tmp);
