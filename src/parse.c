@@ -1888,6 +1888,8 @@ static void postprocess_parameter_value_inline_impl(Token *t, const ParserConfig
 		bool has_close_braces= false;
 		bool has_open_links= false;
 		bool has_close_links= false;
+		bool has_open_ext_bracket= false;
+		bool has_close_ext_bracket= false;
 		bool has_quote_markup= false;
 
 		for(size_t i= 0; i < t->child_count; i++) {
@@ -1900,6 +1902,12 @@ static void postprocess_parameter_value_inline_impl(Token *t, const ParserConfig
 					if(sz_find(cur.text, cur.text_len, "[[", 2)) has_open_links= true;
 					if(sz_find(cur.text, cur.text_len, "]]", 2)) has_close_links= true;
 					if(sz_find(cur.text, cur.text_len, "''", 2)) has_quote_markup= true;
+				}
+				if(cur.text && cur.text_len > 0) {
+					char lb= '[';
+					char rb= ']';
+					if(sz_find_byte(cur.text, cur.text_len, &lb)) has_open_ext_bracket= true;
+					if(sz_find_byte(cur.text, cur.text_len, &rb)) has_close_ext_bracket= true;
 				}
 			} else if(cur.token) {
 				has_token= true;
@@ -1916,8 +1924,9 @@ static void postprocess_parameter_value_inline_impl(Token *t, const ParserConfig
 		/* Avoid rejoining across already-parsed nested links such as
 		 * "[[1, [[2, 3]], 4]]", where JS keeps the outer link unparsed. */
 		bool has_split_link_span= has_open_links && has_close_links && !has_link_like_token;
+		bool has_split_ext_link_span= has_open_ext_bracket && has_close_ext_bracket;
 		bool has_split_quote_span= has_quote_markup && !has_quote_token;
-		if(has_text && has_token && (has_split_brace_span || has_split_link_span || has_split_quote_span)) {
+		if(has_text && has_token && (has_split_brace_span || has_split_link_span || has_split_ext_link_span || has_split_quote_span)) {
 			ThreadBuf *tmp_ser = wiki_thread_buf_acquire_scratch();
 			if(tmp_ser) {
 				tmp_ser->len= 0;
