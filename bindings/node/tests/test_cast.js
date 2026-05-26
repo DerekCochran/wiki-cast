@@ -5,6 +5,47 @@ const { runTests } = require('./helpers');
 
 const castTests = [
   // Failures from export of wikitexts
+  `{{Clade|style=font-size:90%; line-height:90%
+|label1=Halobacteriales
+|1={{clade
+  |1={{clade
+    |1=[[Natronoarchaeaceae]]
+    |2={{clade
+      |1=''[[Haloparvum]]'' **
+      |2={{clade
+        |1=''[[Halopenitus]]'' **
+        |2=''[[Halorubrum]]'' {[[Halorubraceae]]}
+         }}
+       }}
+     }}
+  |2={{clade
+    |1=[[Haloferacaceae]]
+    |2={{clade
+      |1={{clade
+        |1=[[Halobacteriaceae]]
+        |2=[[Haloarculaceae]]
+         }}
+      |2={{clade
+        |1={{clade
+          |1=''[[Halostella]]'' * {"Halostellaceae"}
+          |2={{clade
+            |1=''[[Halalkalicoccus]]'' {"Halalkalicoccaceae"}
+            |2=''[[Halococcus]]'' {[[Halococcaceae]]}
+             }}
+           }}
+        |2={{clade
+          |1={{clade
+            |1=''[[Salinarchaeum]]'' * {"Salinarchaeaceae"}
+            |2=[[Haladaptaceae]] (Halorubellaceae)
+             }}
+          |2=[[Natrialbaceae]]
+           }}
+         }}
+       }}
+     }}
+   }}
+}}`,  
+  `<ref = name=lance>[https://www.theglobeandmail.com/sports/more-sports/lance-armstrong-building-deception-upon-lies/article4500335/] " Lance Armstrong: building deception upon lies" ''Globe and Mail'', BRUCE DOWBIGGIN.</ref>`,
   `[[File:Jersey yellow.svg|20px|link=General classification in the Tour de France|alt=Yellow 
 ]]`,
   `{{reflist |group=Note |refs=

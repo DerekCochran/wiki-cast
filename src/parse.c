@@ -2154,6 +2154,15 @@ static void postprocess_parameter_value_inline_impl(Token *t, const ParserConfig
 	t->child_cap= new_cap;
 	wiki_thread_buf_release_scratch(scratch);
 
+	/* Recurse after replacement: transforming this token may have created brand-new
+	 * nested tokens (for example template parameters from a freshly parsed {{...}})
+	 * that were not visited by the pre-order recursion at function entry. */
+	for(size_t i= 0; i < t->child_count; i++) {
+		if(!t->children[i].is_text && t->children[i].token) {
+			postprocess_parameter_value_inline_impl(t->children[i].token, cfg, accum, page, t, parent, current_in_ext_context);
+		}
+	}
+
 	/* JS parity: any sub-token (e.g. ExtToken with ext-inner) that was
      * built from this parameter-value text must run the nested-plain pass
      * so its ext-inner content goes through stages 5..10 just like JS
