@@ -200,8 +200,11 @@ static bool parse_isbn(const char *s, size_t len, size_t i, size_t *out_end) {
     if (p + 2 < len && s[p] == '9' && s[p + 1] == '7' && (s[p + 2] == '8' || s[p + 2] == '9')) {
         size_t p13 = p + 3;
         size_t sep = consume_magic_space(s, len, p13);
-        if (sep > 0) p13 += sep;
-        if (p13 < len && s[p13] == '-') p13++;
+        if (sep > 0) {
+            p13 += sep;
+        } else if (p13 < len && s[p13] == '-') {
+            p13++;
+        }
         size_t end13 = 0;
         if (parse_isbn_core_10(s, len, p13, &end13) && end13 > best_end) {
             best_end = end13;
