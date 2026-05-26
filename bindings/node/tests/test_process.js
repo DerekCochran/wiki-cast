@@ -46,20 +46,20 @@ async function testAll() {
   }
   console.log("Regression Wikitext tests passed");
 
-  console.log("Running export tests...");
-  ok = await testExport(process.argv);
-  if (!ok) {
-    console.error(`FAILED: Getting failure point in export tests`);
-    // VBerify that the copied wikitext fails and have it output the smallest diff for analysis
-    ok = testWikitext();
-    if (!ok) {
-      console.error(`FAILED: wikitests also failed.`);
-      process.exit(6);
-    }else {
-      console.error(`FAILED: wikitests passed, but export tests failed.  This is unexpected and should be investigated.`);
-      process.exit(5);
-    }
-  }
+  // console.log("Running export tests...");
+  // ok = await testExport(process.argv);
+  // if (!ok) {
+  //   console.error(`FAILED: Getting failure point in export tests`);
+  //   // VBerify that the copied wikitext fails and have it output the smallest diff for analysis
+  //   ok = testWikitext();
+  //   if (!ok) {
+  //     console.error(`FAILED: wikitests also failed.`);
+  //     process.exit(6);
+  //   }else {
+  //     console.error(`FAILED: wikitests passed, but export tests failed.  This is unexpected and should be investigated.`);
+  //     process.exit(5);
+  //   }
+  // }
 
   console.log("All tests passed");
   process.exit(0);

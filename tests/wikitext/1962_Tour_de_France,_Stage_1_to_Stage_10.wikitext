@@ -1,0 +1,1519 @@
+[[File:1962 Tour de France map.png|thumb|350px|Route of the [[1962 Tour de France]]; followed counterclockwise, starting in [[Nancy, France|Nancy]] and finishing in Paris]]
+The [[1962 Tour de France]] was the 49th edition of the Tour de France, one of cycling's [[Grand Tour (cycling)|Grand Tours]]. It took place between from 24 June and 15 July, with 22 stages covering a distance of {{convert|4274|km|0|abbr=on}}. After more than 30 years, the Tour was again contested by trade teams. Frenchman [[Jacques Anquetil]] defended his title, winning his third Tour de France.<ref name="bri-1962">{{cite web|title=1962 Tour de France|url=http://bikeraceinfo.com/tdf/tdf1962.html|access-date=4 October 2016|work=BikeRaceInfo|publisher=McGann Publishing|archive-url=https://web.archive.org/web/20161111003512/http://bikeraceinfo.com/tdf/tdf1962.html|archive-date=11 November 2016|url-status=live}}</ref>
+
+==Classification standings==
+
+{| class="wikitable"
+|-
+! scope="col" colspan="4" | Legend{{refn|Jerseys appearing in the table on the left of the page indicate those worn by the cyclist during the particular stage, while those appearing in the table on the right of the page indicate those awarded to the cyclist after the stage.|group=n|name=jerseys}}<ref>{{cite news|last1=Cunningham|first1=Josh|title=History of the Tour de France jerseys|url=http://www.cyclist.co.uk/in-depth/1409/history-of-the-tour-de-france-jerseys|accessdate=4 October 2016|work=[[Cyclist (magazine)|Cyclist]]|publisher=[[Dennis Publishing]]|date=4 July 2016|archive-url=https://web.archive.org/web/20161026180408/http://www.cyclist.co.uk/in-depth/1409/history-of-the-tour-de-france-jerseys|archive-date=26 October 2016|url-status=live}}</ref>
+|-
+| [[File:Jersey yellow.svg|20px|link=General classification in the Tour de France|alt=A yellow jersey]]
+| Denotes the leader of the [[General classification in the Tour de France|general classification]]
+| [[File:Jersey green.svg|20px|link=Points classification in the Tour de France|alt=A green jersey]]
+| Denotes the leader of the [[Points classification in the Tour de France|points classification]]
+|}
+
+==Stage 1==
+'''24 June 1962&nbsp;— [[Nancy, France|Nancy]] to [[Spa, Belgium|Spa]] (Belgium), {{convert|253|km|abbr=on}}'''<ref name="het-route">{{cite news|title=Veel is anders|trans-title=Much is different|url=http://resolver.kb.nl/resolve?urn=ddd:010953864:mpeg21:p025|accessdate=25 April 2017|work=[[Het Vrije Volk]]|page=25|date=22 June 1962|language=Dutch|via=[[Delpher]]}}</ref><ref name="md-route">{{cite news|url=http://hemeroteca-paginas.mundodeportivo.com/EMD02/HEM/1962/06/24/MD19620624-008.pdf|title=Las 22 etapas del "Tour"|language=Spanish|trans-title=The 22 stages of the "Tour"|newspaper=[[Mundo Deportivo]]|page=8|date=24 June 1962|accessdate=3 October 2016|archive-url=https://web.archive.org/web/20170510180731/http://hemeroteca-paginas.mundodeportivo.com/EMD02/HEM/1962/06/24/MD19620624-008.pdf|archive-date=10 May 2017|url-status=live}}</ref>
+
+{|
+|
+{| class="wikitable"
+|+ Stage 1 result<ref name="mundo-1">{{cite news|url=http://hemeroteca-paginas.mundodeportivo.com/EMD02/HEM/1962/06/25/MD19620625-007.pdf |title=Clasificacions |language=Spanish |trans-title=Classifications |work=[[Mundo Deportivo]] |page=7 |date=25 June 1962 |accessdate=4 October 2016 |archive-url=https://web.archive.org/web/20170510185638/http://hemeroteca-paginas.mundodeportivo.com/EMD02/HEM/1962/06/25/MD19620625-007.pdf |archive-date=10 May 2017 |url-status=live }}</ref><ref name="corriere-1">{{cite news|title=Ordine d'arrivo|trans-title=Order of arrival|url=http://dlib.coninet.it/bookreader.php?&f=11498|accessdate=10 May 2017|work=[[Corriere dello Sport]]|date=25 June 1962|page=9|language=Italian|archive-url=https://web.archive.org/web/20170510034606/http://dlib.coninet.it/bookreader.php?&f=11498|archive-date=10 May 2017|url-status=live}}</ref>
+|-
+! scope="col" | Rank
+! scope="col" | Rider
+! scope="col" | Team
+! scope="col" | Time
+|-
+| style="text-align:center;" | 1
+| {{Flag athlete|[[Rudi Altig]]|FRG}}
+| {{UCI team code|Saint-Raphaël|1962}}
+| style="text-align:right;" | {{nowrap|6h 36' 33"}}
+|-
+| style="text-align:center;" | 2
+| {{Flag athlete|[[André Darrigade]]|FRA}}
+| {{UCI team code|Alcyon|1962}}
+| style="text-align:right;" | + 0"
+|-
+| style="text-align:center;" | 3
+| {{Flag athlete|[[Rik Van Looy]]|BEL}}
+| {{UCI team code|Flandria|1962}}
+| style="text-align:right;" | + 0"
+|-
+| style="text-align:center;" | 4
+| {{Flag athlete|[[Jos Hoevenaers]]|BEL}}
+| {{UCI team code|Philco|1962}}
+| style="text-align:right;" | + 0"
+|-
+| style="text-align:center;" | 5
+| {{Flag athlete|[[Guido Carlesi]]|ITA}}
+| {{UCI team code|Philco|1962}}
+| style="text-align:right;" | + 0"
+|-
+| style="text-align:center;" | 6
+| {{Flag athlete|[[Gilbert Desmet]]|BEL}}
+| {{UCI team code|Carpano|1962}}
+| style="text-align:right;" | + 0"
+|-
+| style="text-align:center;" | 7
+| {{Flag athlete|[[Piet van Est]]|NED}}
+| {{UCI team code|Flandria|1962}}
+| style="text-align:right;" | + 0"
+|-
+| style="text-align:center;" | 8
+| {{Flag athlete|[[Luis Otaño]]|ESP|1945}}
+| {{UCI team code|Philco|1962}}
+| style="text-align:right;" | + 0"
+|-
+| style="text-align:center;" | 9
+| {{Flag athlete|[[Tom Simpson]]|GBR}}
+| {{UCI team code|Alcyon|1962}}
+| style="text-align:right;" | + 0"
+|-
+| style="text-align:center;" | 10
+| {{Flag athlete|[[Hans Junkermann (cyclist)|Hans Junkermann]]|BEL}}
+| {{UCI team code|Groene Leeuw|1962}}
+| style="text-align:right;" | + 0"
+|}
+||
+|
+{| class="wikitable"
+|+ General classification after stage 1<ref name="mundo-1" /><ref name="corriere-1" />
+|-
+! scope="col" | Rank
+! scope="col" | Rider
+! scope="col" | Team
+! scope="col" | Time
+|-
+| style="text-align:center;" | 1
+| {{Flag athlete|[[Rudi Altig]]|FRG}} [[File:Jersey yellow.svg|20px|link=General classification in the Tour de France|alt=A yellow jersey]] [[File:Jersey green.svg|20px|link=Points classification in the Tour de France|alt=A green jersey]]
+| {{UCI team code|Saint-Raphaël|1962}}
+| style="text-align:right;" | {{nowrap|6h 35' 33"}}
+|-
+| style="text-align:center;" | 2
+| {{Flag athlete|[[André Darrigade]]|FRA}}
+| {{UCI team code|Alcyon|1962}}
+| style="text-align:right;" | + 30"
+|-
+| style="text-align:center;" | 3
+| {{Flag athlete|[[Rik Van Looy]]|BEL}}
+| {{UCI team code|Flandria|1962}}
+| style="text-align:right;" | + 1' 00"
+|-
+| style="text-align:center;" | 4
+| {{Flag athlete|[[Jos Hoevenaers]]|BEL}}
+| {{UCI team code|Philco|1962}}
+| style="text-align:right;" | + 1' 00"
+|-
+| style="text-align:center;" | 5
+| {{Flag athlete|[[Guido Carlesi]]|ITA}}
+| {{UCI team code|Philco|1962}}
+| style="text-align:right;" | + 1' 00"
+|-
+| style="text-align:center;" | 6
+| {{Flag athlete|[[Gilbert Desmet]]|BEL}}
+| {{UCI team code|Carpano|1962}}
+| style="text-align:right;" | + 1' 00"
+|-
+| style="text-align:center;" | 7
+| {{Flag athlete|[[Piet van Est]]|NED}}
+| {{UCI team code|Flandria|1962}}
+| style="text-align:right;" | + 1' 00"
+|-
+| style="text-align:center;" | 8
+| {{Flag athlete|[[Luis Otaño]]|ESP|1945}}
+| {{UCI team code|Philco|1962}}
+| style="text-align:right;" | + 1' 00"
+|-
+| style="text-align:center;" | 9
+| {{Flag athlete|[[Tom Simpson]]|GBR}}
+| {{UCI team code|Alcyon|1962}}
+| style="text-align:right;" | + 1' 00"
+|-
+| style="text-align:center;" | 10
+| {{Flag athlete|[[Hans Junkermann (cyclist)|Hans Junkermann]]|FRG}}
+| {{UCI team code|Groene Leeuw|1962}}
+| style="text-align:right;" | + 1' 00"
+|}
+|}
+
+==Stage 2a==
+'''25 June 1962&nbsp;— [[Spa, Belgium|Spa]] (Belgium) to [[Herentals]] (Belgium), {{convert|147|km|abbr=on}}'''<ref name="het-route" /><ref name="md-route" />
+
+{|
+|
+{| class="wikitable"
+|+ Stage 2a result<ref name="mundo-2">{{cite news|url=http://hemeroteca-paginas.mundodeportivo.com/EMD02/HEM/1962/06/27/MD19620627-002.pdf |title=La que fue etapa dellunes |language=Spanish |trans-title=What was the stage on Monday |work=[[Mundo Deportivo]] |page=2 |date=27 June 1962 |accessdate=4 October 2016 |archive-url=https://web.archive.org/web/20170510185657/http://hemeroteca-paginas.mundodeportivo.com/EMD02/HEM/1962/06/27/MD19620627-002.pdf |archive-date=10 May 2017 |url-status=live }}</ref><ref name="corriere-2">{{cite news|title=Tutte le cifre del Tour|trans-title=All the figures of the Tour|url=http://dlib.coninet.it/bookreader.php?&f=11499|accessdate=10 May 2017|work=[[Corriere dello Sport]]|date=26 June 1962|page=7|language=Italian|archive-url=https://web.archive.org/web/20170510034343/http://dlib.coninet.it/bookreader.php?&f=11499|archive-date=10 May 2017|url-status=live}}</ref>
+|-
+! scope="col" | Rank
+! scope="col" | Rider
+! scope="col" | Team
+! scope="col" | Time
+|-
+| style="text-align:center;" | 1
+| {{Flag athlete|[[André Darrigade]]|FRA}}
+| {{UCI team code|Alcyon|1962}}
+| style="text-align:right;" | {{nowrap|3h 40' 48"}}
+|-
+| style="text-align:center;" | 2
+| {{Flag athlete|[[Frans Melckenbeeck]]|FRA}}
+| {{UCI team code|Mercier|1962}}
+| style="text-align:right;" | + 0"
+|-
+| style="text-align:center;" | 3
+| {{Flag athlete|[[Willy Vannitsen]]|BEL}}
+| {{UCI team code|Groene Leeuw|1962}}
+| style="text-align:right;" | + 0"
+|-
+| style="text-align:center;" | 4
+| {{Flag athlete|[[Rik Van Looy]]|BEL}}
+| {{UCI team code|Flandria|1962}}
+| style="text-align:right;" | + 0"
+|-
+| style="text-align:center;" | 5
+| {{Flag athlete|[[Joseph Groussard]]|FRA}}
+| {{UCI team code|Pelforth|1962}}
+| style="text-align:right;" | + 0"
+|-
+| style="text-align:center;" | 6
+| {{Flag athlete|[[Bas Maliepaard]]|NED}}
+| {{UCI team code|Alcyon|1962}}
+| style="text-align:right;" | + 0"
+|-
+| style="text-align:center;" | 7
+| {{Flag athlete|[[Giuseppe Zorzi]]|ITA}}
+| {{UCI team code|Ignis|1962}}
+| style="text-align:right;" | + 0"
+|-
+| style="text-align:center;" | 8
+| {{Flag athlete|[[Piet van Est]]|NED}}
+| {{UCI team code|Flandria|1962}}
+| style="text-align:right;" | + 0"
+|-
+| style="text-align:center;" | 9
+| {{Flag athlete|[[Frans De Mulder]]|BEL}}
+| {{UCI team code|Groene Leeuw|1962}}
+| style="text-align:right;" | + 0"
+|-
+| style="text-align:center;" | 10
+| {{Flag athlete|[[Frans Schoubben]]|BEL}}
+| {{UCI team code|Peugeot|1962}}
+| style="text-align:right;" | + 0"
+|}
+||
+|
+{| class="wikitable"
+|+ General classification after stage 2a<ref name="mundo-2" />
+|-
+! scope="col" | Rank
+! scope="col" | Rider
+! scope="col" | Team
+! scope="col" | Time
+|-
+| style="text-align:center;" | 1
+| {{Flag athlete|[[André Darrigade]]|FRA}} [[File:Jersey yellow.svg|20px|link=General classification in the Tour de France|alt=A yellow jersey]] [[File:Jersey green.svg|20px|link=Points classification in the Tour de France|alt=A green jersey]]
+| {{UCI team code|Alcyon|1962}}
+| style="text-align:right;" | {{nowrap|10h 15' 51"}}
+|-
+| style="text-align:center;" | 2
+| {{Flag athlete|[[Rudi Altig]]|FRG}}
+| {{UCI team code|Saint-Raphaël|1962}}
+| style="text-align:right;" | + 30"
+|-
+| style="text-align:center;" | 3
+| {{Flag athlete|[[Jacques Anquetil]]|FRA}}
+| {{UCI team code|Saint-Raphaël|1962}}
+| style="text-align:right;" | + 1' 30"
+|-
+| style="text-align:center;" | 4
+| {{Flag athlete|[[Albertus Geldermans]]|NED}}
+| {{UCI team code|Saint-Raphaël|1962}}
+| style="text-align:right;" | + 1' 30"
+|-
+| style="text-align:center;" | 5
+| {{Flag athlete|[[Michel Stolker]]|NED}}
+| {{UCI team code|Saint-Raphaël|1962}}
+| style="text-align:right;" | + 1' 30"
+|-
+| style="text-align:center;" | 6
+| {{Flag athlete|[[Ercole Baldini]]|ITA}}
+| {{UCI team code|Ignis|1962}}
+| style="text-align:right;" | + 1' 30"
+|-
+| style="text-align:center;" | 7
+| {{Flag athlete|[[Gastone Nencini]]|ITA}}
+| {{UCI team code|Ignis|1962}}
+| style="text-align:right;" | + 1' 30"
+|-
+| style="text-align:center;" | 8
+| {{Flag athlete|[[Diego Ronchini]]|ITA}}
+| {{UCI team code|Ghigi|1962}}
+| style="text-align:right;" | + 1' 30"
+|-
+| style="text-align:center;" | 9
+| {{Flag athlete|[[Antonio Suárez]]|ESP|1945}}
+| {{UCI team code|Ghigi|1962}}
+| style="text-align:right;" | + 1' 30"
+|-
+| style="text-align:center;" | 10
+| {{Flag athlete|[[Henry Anglade]]|FRA}}
+| {{UCI team code|Liberia|1962}}
+| style="text-align:right;" | + 1' 30"
+|}
+|}
+
+==Stage 2b==
+'''25 June 1962&nbsp;— [[Herentals]] (Belgium), {{convert|23|km|abbr=on}} ([[team time trial|TTT]])'''
+
+{|
+|
+{| class="wikitable"
+|+ Stage 2b result<ref name="mundo-2" /><ref name="corriere-2" />
+|-
+! scope="col" | Rank
+! scope="col" | Team
+! scope="col" | Time
+|-
+| style="text-align:center;" | 1
+| {{UCI team code|Flandria|1962}}
+| style="text-align:right;" | {{nowrap|1h 27' 03"}}
+|-
+| style="text-align:center;" | 2
+| {{UCI team code|Alcyon|1962}}
+| style="text-align:right;" | + 1' 15"
+|-
+| style="text-align:center;" | 3
+| {{UCI team code|Saint-Raphaël|1962}}
+| style="text-align:right;" | + 1' 33"
+|-
+| style="text-align:center;" | 4
+| {{UCI team code|Groene Leeuw|1962}}
+| style="text-align:right;" | + 1' 42"
+|-
+| style="text-align:center;" | 5
+| {{UCI team code|Ghigi|1962}}
+| style="text-align:right;" | + 2' 06"
+|-
+| style="text-align:center;" | 6
+| {{UCI team code|Philco|1962}}
+| style="text-align:right;" | + 2' 42"
+|-
+| style="text-align:center;" | 7
+| {{UCI team code|Ignis|1962}}
+| style="text-align:right;" | + 3' 03"
+|-
+| style="text-align:center;" | 8
+| {{UCI team code|Margnat|1962}}
+| style="text-align:right;" | + 3' 36"
+|-
+| style="text-align:center;" | 9
+| {{UCI team code|Carpano|1962}}
+| style="text-align:right;" | + 4' 39"
+|-
+| style="text-align:center;" | 10
+| {{UCI team code|Pelforth|1962}}
+| style="text-align:right;" | + 4' 57"
+|}
+||
+|
+{| class="wikitable"
+|+ General classification after stage 2b<ref name="corriere-2" />
+|-
+! scope="col" | Rank
+! scope="col" | Rider
+! scope="col" | Team
+! scope="col" | Time
+|-
+| style="text-align:center;" | 1
+| {{Flag athlete|[[André Darrigade]]|FRA}} [[File:Jersey yellow.svg|20px|link=General classification in the Tour de France|alt=A yellow jersey]] [[File:Jersey green.svg|20px|link=Points classification in the Tour de France|alt=A green jersey]]
+| {{UCI team code|Alcyon|1962}}
+| style="text-align:right;" | {{nowrap|10h 45' 17"}}
+|-
+| style="text-align:center;" | 2
+| {{Flag athlete|[[Rudi Altig]]|FRG}}
+| {{UCI team code|Saint-Raphaël|1962}}
+| style="text-align:right;" | + 36"
+|-
+| style="text-align:center;" | 3
+| {{Flag athlete|[[Rik Van Looy]]|BEL}}
+| {{UCI team code|Flandria|1962}}
+| style="text-align:right;" | + 1' 05"
+|-
+| style="text-align:center;" | 4
+| {{Flag athlete|[[Piet van Est]]|NED}}
+| {{UCI team code|Flandria|1962}}
+| style="text-align:right;" | + 1' 05"
+|-
+| style="text-align:center;" | 5
+| {{Flag athlete|[[Jef Planckaert]]|BEL}}
+| {{UCI team code|Flandria|1962}}
+| style="text-align:right;" | + 1' 05"
+|-
+| style="text-align:center;" | 6
+| {{Flag athlete|[[Armand Desmet]]|BEL}}
+| {{UCI team code|Flandria|1962}}
+| style="text-align:right;" | + 1' 50"
+|-
+| style="text-align:center;" | 7
+| {{Flag athlete|[[Tom Simpson]]|GBR}}
+| {{UCI team code|Alcyon|1962}}
+| style="text-align:right;" | + 1' 30"
+|-
+| style="text-align:center;" | 8
+| {{Flag athlete|[[Jacques Anquetil]]|FRA}}
+| {{UCI team code|Saint-Raphaël|1962}}
+| style="text-align:right;" | + 1' 36"
+|-
+| style="text-align:center;" | 9
+| {{Flag athlete|[[Michel Stolker]]|NED}}
+| {{UCI team code|Saint-Raphaël|1962}}
+| style="text-align:right;" | + 1' 36"
+|-
+| style="text-align:center;" | 10
+| {{Flag athlete|[[Albertus Geldermans]]|NED}}
+| {{UCI team code|Saint-Raphaël|1962}}
+| style="text-align:right;" | + 1' 36"
+|}
+|}
+
+==Stage 3==
+'''26 June 1962&nbsp;— [[Brussels]] to [[Amiens]], {{convert|210|km|abbr=on}}'''<ref name="het-route" /><ref name="md-route" />
+
+{|
+|
+{| class="wikitable"
+|+ Stage 3 result<ref name="mundo-3">{{cite news|url=http://hemeroteca-paginas.mundodeportivo.com/EMD02/HEM/1962/06/27/MD19620627-003.pdf |title=Clasificacions |language=Spanish |trans-title=Classifications |work=[[Mundo Deportivo]] |page=3 |date=27 June 1962 |accessdate=4 October 2016 |archive-url=https://web.archive.org/web/20170510185749/http://hemeroteca-paginas.mundodeportivo.com/EMD02/HEM/1962/06/27/MD19620627-003.pdf |archive-date=10 May 2017 |url-status=live }}</ref><ref name="corriere-3">{{cite news|title=Tutte le cifre del Tour|trans-title=All the figures of the Tour|url=http://dlib.coninet.it/bookreader.php?&f=11500|accessdate=10 May 2017|work=[[Corriere dello Sport]]|date=27 June 1962|page=7|language=Italian|archive-url=https://web.archive.org/web/20170510034020/http://dlib.coninet.it/bookreader.php?&f=11500|archive-date=10 May 2017|url-status=live}}</ref>
+|-
+! scope="col" | Rank
+! scope="col" | Rider
+! scope="col" | Team
+! scope="col" | Time
+|-
+| style="text-align:center;" | 1
+| {{Flag athlete|[[Rudi Altig]]|FRG}}
+| {{UCI team code|Saint-Raphaël|1962}}
+| style="text-align:right;" | {{nowrap|5h 32' 20"}}
+|-
+| style="text-align:center;" | 2
+| {{Flag athlete|[[Joseph Groussard]]|FRA}}
+| {{UCI team code|Pelforth|1962}}
+| style="text-align:right;" | + 0"
+|-
+| style="text-align:center;" | 3
+| {{Flag athlete|[[Willy Vannitsen]]|BEL}}
+| {{UCI team code|Groene Leeuw|1962}}
+| style="text-align:right;" | + 0"
+|-
+| style="text-align:center;" | 4
+| {{Flag athlete|[[Emile Daems]]|BEL}}
+| {{UCI team code|Philco|1962}}
+| style="text-align:right;" | + 0"
+|-
+| style="text-align:center;" | 5
+| {{Flag athlete|[[André Darrigade]]|FRA}} [[File:Jersey yellow.svg|20px|link=General classification in the Tour de France|alt=A yellow jersey]] [[File:Jersey green.svg|20px|link=Points classification in the Tour de France|alt=A green jersey]]
+| {{UCI team code|Alcyon|1962}}
+| style="text-align:right;" | + 0"
+|-
+| style="text-align:center;" | 6
+| {{Flag athlete|[[Jean Graczyk]]|FRA}}
+| {{UCI team code|Saint-Raphaël|1962}}
+| style="text-align:right;" | + 0"
+|-
+| style="text-align:center;" | 7
+| {{Flag athlete|[[Michel Van Aerde]]|BEL}}
+| {{UCI team code|Carpano|1962}}
+| style="text-align:right;" | + 0"
+|-
+| style="text-align:center;" | 8
+| {{Flag athlete|[[Jean Gainche]]|FRA}}
+| {{UCI team code|Mercier|1962}}
+| style="text-align:right;" | + 0"
+|-
+| style="text-align:center;" | 9
+| {{Flag athlete|[[Guido Carlesi]]|ITA}}
+| {{UCI team code|Philco|1962}}
+| style="text-align:right;" | + 0"
+|-
+| style="text-align:center;" | 10
+| {{Flag athlete|[[Rik Van Looy]]|BEL}}
+| {{UCI team code|Flandria|1962}}
+| style="text-align:right;" | + 0"
+|}
+||
+|
+{| class="wikitable"
+|+ General classification after stage 3<ref name="mundo-3" /><ref name="corriere-3" />
+|-
+! scope="col" | Rank
+! scope="col" | Rider
+! scope="col" | Team
+! scope="col" | Time
+|-
+| style="text-align:center;" | 1
+| {{Flag athlete|[[Rudi Altig]]|FRG}} [[File:Jersey yellow.svg|20px|link=General classification in the Tour de France|alt=A yellow jersey]]
+| {{UCI team code|Saint-Raphaël|1962}}
+| style="text-align:right;" | {{nowrap|16h 17' 13"}}
+|-
+| style="text-align:center;" | 2
+| {{Flag athlete|[[André Darrigade]]|FRA}} [[File:Jersey green.svg|20px|link=Points classification in the Tour de France|alt=A green jersey]]
+| {{UCI team code|Alcyon|1962}}
+| style="text-align:right;" | + 24"
+|-
+| style="text-align:center;" | 3
+| {{Flag athlete|[[Rik Van Looy]]|BEL}}
+| {{UCI team code|Flandria|1962}}
+| style="text-align:right;" | + 1' 29"
+|-
+| style="text-align:center;" | 4
+| {{Flag athlete|[[Jef Planckaert]]|BEL}}
+| {{UCI team code|Flandria|1962}}
+| style="text-align:right;" | + 1' 29"
+|-
+| style="text-align:center;" | 5
+| {{Flag athlete|[[Tom Simpson]]|GBR}}
+| {{UCI team code|Alcyon|1962}}
+| style="text-align:right;" | + 1' 54"
+|-
+| style="text-align:center;" | 6
+| {{Flag athlete|[[Albertus Geldermans]]|NED}}
+| {{UCI team code|Saint-Raphaël|1962}}
+| style="text-align:right;" | + 2' 00"
+|-
+| style="text-align:center;" | 7
+| {{Flag athlete|[[Jacques Anquetil]]|FRA}}
+| {{UCI team code|Saint-Raphaël|1962}}
+| style="text-align:right;" | + 2' 00"
+|-
+| style="text-align:center;" | 8
+| {{Flag athlete|[[Michel Stolker]]|NED}}
+| {{UCI team code|Saint-Raphaël|1962}}
+| style="text-align:right;" | + 2' 00"
+|-
+| style="text-align:center;" | 9
+| {{Flag athlete|[[Hans Junkermann (cyclist)|Hans Junkermann]]|FRG}}
+| {{UCI team code|Groene Leeuw|1962}}
+| style="text-align:right;" | + 2' 03"
+|-
+| style="text-align:center;" | 10
+| {{Flag athlete|[[Antonio Suárez]]|ESP|1945}}
+| {{UCI team code|Ghigi|1962}}
+| style="text-align:right;" | + 2' 11"
+|}
+|}
+
+==Stage 4==
+'''27 June 1962&nbsp;— [[Amiens]] to [[Le Havre]], {{convert|196.5|km|abbr=on}}'''<ref name="het-route" /><ref name="md-route" />
+
+{|
+|
+{| class="wikitable"
+|+ Stage 4 result<ref name="mundo-4">{{cite news|url=http://hemeroteca-paginas.mundodeportivo.com/EMD02/HEM/1962/06/28/MD19620628-004.pdf |title=Clasificacions |language=Spanish |trans-title=Classifications |work=[[Mundo Deportivo]] |page=4 |date=28 June 1962 |accessdate=4 October 2016 |archive-url=https://web.archive.org/web/20170510185801/http://hemeroteca-paginas.mundodeportivo.com/EMD02/HEM/1962/06/28/MD19620628-004.pdf |archive-date=10 May 2017 |url-status=live }}</ref><ref name="corriere-4">{{cite news|title=4ª Tappa: Van den Berghen|trans-title=4th Stage: Van den Berghen|url=http://dlib.coninet.it/bookreader.php?&f=11501|accessdate=10 May 2017|work=[[Corriere dello Sport]]|date=30 June 1962|page=7|language=Italian|archive-url=https://web.archive.org/web/20170510033743/http://dlib.coninet.it/bookreader.php?&f=11501|archive-date=10 May 2017|url-status=live}}</ref>
+|-
+! scope="col" | Rank
+! scope="col" | Rider
+! scope="col" | Team
+! scope="col" | Time
+|-
+| style="text-align:center;" | 1
+| {{Flag athlete|[[Willy Vanden Berghen]]|BEL}}
+| {{UCI team code|Mercier|1962}}
+| style="text-align:right;" | {{nowrap|4h 51' 17"}}
+|-
+| style="text-align:center;" | 2
+| {{Flag athlete|[[Dino Bruni]]|ITA}}
+| {{UCI team code|Gazzola|1962}}
+| style="text-align:right;" | + 0"
+|-
+| style="text-align:center;" | 3
+| {{Flag athlete|[[Rolf Wolfshohl]]|FRG}}
+| {{UCI team code|Alcyon|1962}}
+| style="text-align:right;" | + 0"
+|-
+| style="text-align:center;" | 4
+| {{Flag athlete|[[Giancarlo Manzoni]]|ITA}}
+| {{UCI team code|Legnano|1962}}
+| style="text-align:right;" | + 0"
+|-
+| style="text-align:center;" | 5
+| {{Flag athlete|[[Jean-Claude Lebaube]]|FRA}}
+| {{UCI team code|Alcyon|1962}}
+| style="text-align:right;" | + 0"
+|-
+| style="text-align:center;" | 6
+| {{Flag athlete|[[Rudi Altig]]|FRG}} [[File:Jersey yellow.svg|20px|link=General classification in the Tour de France|alt=A yellow jersey]]
+| {{UCI team code|Saint-Raphaël|1962}}
+| style="text-align:right;" | + 2' 15"
+|-
+| style="text-align:center;" | 7
+| {{Flag athlete|[[Frans Melckenbeeck]]|FRA}}
+| {{UCI team code|Mercier|1962}}
+| style="text-align:right;" | + 2' 15"
+|-
+| style="text-align:center;" | 8
+| {{Flag athlete|[[Tiziano Galvanin]]|ITA}}
+| {{UCI team code|Legnano|1962}}
+| style="text-align:right;" | + 2' 15"
+|-
+| style="text-align:center;" | 9
+| {{Flag athlete|[[Arthur Decabooter]]|BEL}}
+| {{UCI team code|Liberia|1962}}
+| style="text-align:right;" | + 2' 15"
+|-
+| style="text-align:center;" | 10
+| {{Flag athlete|[[Jean Graczyk]]|FRA}}
+| {{UCI team code|Saint-Raphaël|1962}}
+| style="text-align:right;" | + 2' 15"
+|}
+||
+|
+{| class="wikitable"
+|+ General classification after stage 4<ref name="mundo-4" />
+|-
+! scope="col" | Rank
+! scope="col" | Rider
+! scope="col" | Team
+! scope="col" | Time
+|-
+| style="text-align:center;" | 1
+| {{Flag athlete|[[Rudi Altig]]|FRG}} [[File:Jersey yellow.svg|20px|link=General classification in the Tour de France|alt=Yellow 
+]] [[File:Jersey green.svg|20px|link=Points classification in the Tour de France|alt=A green jersey]]
+| {{UCI team code|Saint-Raphaël|1962}}
+| style="text-align:right;" | {{nowrap|21h 10' 45"}}
+|-
+| style="text-align:center;" | 2
+| {{Flag athlete|[[André Darrigade]]|FRA}}
+| {{UCI team code|Alcyon|1962}}
+| style="text-align:right;" | + 35"
+|-
+| style="text-align:center;" | 3
+| {{Flag athlete|[[Rik Van Looy]]|BEL}}
+| {{UCI team code|Flandria|1962}}
+| style="text-align:right;" | + 1' 29"
+|-
+| style="text-align:center;" | 4
+| {{Flag athlete|[[Jef Planckaert]]|BEL}}
+| {{UCI team code|Flandria|1962}}
+| style="text-align:right;" | + 1' 29"
+|-
+| style="text-align:center;" | 5
+| {{Flag athlete|[[Tom Simpson]]|GBR}}
+| {{UCI team code|Alcyon|1962}}
+| style="text-align:right;" | + 1' 54"
+|-
+| style="text-align:center;" | 6
+| {{Flag athlete|[[Albertus Geldermans]]|NED}}
+| {{UCI team code|Saint-Raphaël|1962}}
+| style="text-align:right;" | + 2' 00"
+|-
+| style="text-align:center;" | 7
+| {{Flag athlete|[[Jacques Anquetil]]|FRA}}
+| {{UCI team code|Saint-Raphaël|1962}}
+| style="text-align:right;" | + 2' 00"
+|-
+| style="text-align:center;" | 8
+| {{Flag athlete|[[Michel Stolker]]|NED}}
+| {{UCI team code|Saint-Raphaël|1962}}
+| style="text-align:right;" | + 2' 00"
+|-
+| style="text-align:center;" | 9
+| {{Flag athlete|[[Hans Junkermann (cyclist)|Hans Junkermann]]|FRG}}
+| {{UCI team code|Groene Leeuw|1962}}
+| style="text-align:right;" | + 2' 03"
+|-
+| style="text-align:center;" | 10
+| {{Flag athlete|[[Antonio Suárez]]|ESP|1945}}
+| {{UCI team code|Ghigi|1962}}
+| style="text-align:right;" | + 2' 11"
+|}
+|}
+
+==Stage 5==
+'''28 June 1962&nbsp;— [[Pont-l'Évêque, Calvados|Pont l'Evêque]] to [[Saint-Malo]], {{convert|215|km|abbr=on}}'''<ref name="het-route" /><ref name="md-route" />
+
+{|
+|
+{| class="wikitable"
+|+ Stage 5 result<ref name="mundo-5">{{cite news|url=http://hemeroteca-paginas.mundodeportivo.com/EMD02/HEM/1962/06/29/MD19620629-005.pdf|title=Clasificacions|language=Spanish|trans-title=Classifications|work=[[Mundo Deportivo]]|page=5|date=29 June 1962|accessdate=4 October 2016|archive-url=https://web.archive.org/web/20170222070420/http://hemeroteca.mundodeportivo.com/preview/1962/06/29/pagina-5/648436/pdf.html|archive-date=22 February 2017|url-status=live}}</ref><ref name="corriere-5">{{cite news|title=5ª Tappa: Daems|trans-title=5th Stage: Daems|url=http://dlib.coninet.it/bookreader.php?&f=11501|accessdate=10 May 2017|work=[[Corriere dello Sport]]|date=30 June 1962|page=7|language=Italian|archive-url=https://web.archive.org/web/20170510033743/http://dlib.coninet.it/bookreader.php?&f=11501|archive-date=10 May 2017|url-status=live}}</ref>
+|-
+! scope="col" | Rank
+! scope="col" | Rider
+! scope="col" | Team
+! scope="col" | Time
+|-
+| style="text-align:center;" | 1
+| {{Flag athlete|[[Emile Daems]]|BEL}}
+| {{UCI team code|Philco|1962}}
+| style="text-align:right;" | {{nowrap|5h 21' 48"}}
+|-
+| style="text-align:center;" | 2
+| {{Flag athlete|[[Jean Graczyk]]|FRA}}
+| {{UCI team code|Saint-Raphaël|1962}}
+| style="text-align:right;" | + 2"
+|-
+| style="text-align:center;" | 3
+| {{Flag athlete|[[Giancarlo Manzoni]]|ITA}}
+| {{UCI team code|Ignis|1962}}
+| style="text-align:right;" | + 2"
+|-
+| style="text-align:center;" | 4
+| {{Flag athlete|[[Arthur Decabooter]]|BEL}}
+| {{UCI team code|Liberia|1962}}
+| style="text-align:right;" | + 2"
+|-
+| style="text-align:center;" | 5
+| {{Flag athlete|[[Michel Van Aerde]]|BEL}}
+| {{UCI team code|Carpano|1962}}
+| style="text-align:right;" | + 2"
+|-
+| style="text-align:center;" | 6
+| {{Flag athlete|[[Rik Van Looy]]|BEL}}
+| {{UCI team code|Flandria|1962}}
+| style="text-align:right;" | + 2"
+|-
+| style="text-align:center;" | 7
+| {{Flag athlete|[[Jean Gainche]]|FRA}}
+| {{UCI team code|Mercier|1962}}
+| style="text-align:right;" | + 2"
+|-
+| style="text-align:center;" | 8
+| {{Flag athlete|[[Bas Maliepaard]]|NED}}
+| {{UCI team code|Alcyon|1962}}
+| style="text-align:right;" | + 2"
+|-
+| style="text-align:center;" | 9
+| {{Flag athlete|[[Joseph Velly]]|FRA}}
+| {{UCI team code|Margnat|1962}}
+| style="text-align:right;" | + 2"
+|-
+| style="text-align:center;" | 10
+| {{Flag athlete|[[Rudi Altig]]|FRG}} [[File:Jersey yellow.svg|20px|link=General classification in the Tour de France|alt=A yellow jersey]] [[File:Jersey green.svg|20px|link=Points classification in the Tour de France|alt=A green jersey]]
+| {{UCI team code|Saint-Raphaël|1962}}
+| style="text-align:right;" | + 2"
+|}
+||
+|
+{| class="wikitable"
+|+ General classification after stage 5<ref name="mundo-5" />
+|-
+! scope="col" | Rank
+! scope="col" | Rider
+! scope="col" | Team
+! scope="col" | Time
+|-
+| style="text-align:center;" | 1
+| {{Flag athlete|[[Rudi Altig]]|FRG}} [[File:Jersey yellow.svg|20px|link=General classification in the Tour de France|alt=A yellow jersey]] [[File:Jersey green.svg|20px|link=Points classification in the Tour de France|alt=A green jersey]]
+| {{UCI team code|Saint-Raphaël|1962}}
+| style="text-align:right;" | {{nowrap|26h 32' 00"}}
+|-
+| style="text-align:center;" | 2
+| {{Flag athlete|[[André Darrigade]]|FRA}}
+| {{UCI team code|Alcyon|1962}}
+| style="text-align:right;" | + 35"
+|-
+| style="text-align:center;" | 3
+| {{Flag athlete|[[Emile Daems]]|BEL}}
+| {{UCI team code|Philco|1962}}
+| style="text-align:right;" | + 1' 21"
+|-
+| style="text-align:center;" | 4
+| {{Flag athlete|[[Rik Van Looy]]|BEL}}
+| {{UCI team code|Flandria|1962}}
+| style="text-align:right;" | + 1' 29"
+|-
+| style="text-align:center;" | 5
+| {{Flag athlete|[[Jef Planckaert]]|BEL}}
+| {{UCI team code|Flandria|1962}}
+| style="text-align:right;" | + 1' 29"
+|-
+| style="text-align:center;" | 6
+| {{Flag athlete|[[Tom Simpson]]|GBR}}
+| {{UCI team code|Alcyon|1962}}
+| style="text-align:right;" | + 1' 54"
+|-
+| style="text-align:center;" | 7
+| {{Flag athlete|[[Albertus Geldermans]]|NED}}
+| {{UCI team code|Saint-Raphaël|1962}}
+| style="text-align:right;" | + 2' 00"
+|-
+| style="text-align:center;" | 8
+| {{Flag athlete|[[Jacques Anquetil]]|FRA}}
+| {{UCI team code|Saint-Raphaël|1962}}
+| style="text-align:right;" | + 2' 00"
+|-
+| style="text-align:center;" | 9
+| {{Flag athlete|[[Michel Stolker]]|NED}}
+| {{UCI team code|Saint-Raphaël|1962}}
+| style="text-align:right;" | + 2' 00"
+|-
+| style="text-align:center;" | 10
+| {{Flag athlete|[[Hans Junkermann (cyclist)|Hans Junkermann]]|FRG}}
+| {{UCI team code|Groene Leeuw|1962}}
+| style="text-align:right;" | + 2' 03"
+|}
+|}
+
+==Stage 6==
+'''29 June 1962&nbsp;— [[Dinard]] to [[Brest, France|Brest]], {{convert|235.5|km|abbr=on}}'''<ref name="het-route" /><ref name="md-route" />
+
+{|
+|
+{| class="wikitable"
+|+ Stage 6 result<ref name="mundo-6">{{cite news|url=http://hemeroteca-paginas.mundodeportivo.com/EMD02/HEM/1962/06/29/MD19620629-005.pdf |title=Clasificacions |language=Spanish |trans-title=Classifications |work=[[Mundo Deportivo]] |page=5 |date=30 July 1962 |accessdate=4 October 2016 |archive-url=https://web.archive.org/web/20170510185809/http://hemeroteca-paginas.mundodeportivo.com/EMD02/HEM/1962/06/29/MD19620629-005.pdf |archive-date=10 May 2017 |url-status=live }}</ref><ref name="corriere-6">{{cite news|title=Tutte le cifre del Tour|trans-title=All the figures of the Tour|url=http://dlib.coninet.it/bookreader.php?&f=11501|accessdate=10 May 2017|work=[[Corriere dello Sport]]|date=30 June 1962|page=7|language=Italian|archive-url=https://web.archive.org/web/20170510033743/http://dlib.coninet.it/bookreader.php?&f=11501|archive-date=10 May 2017|url-status=live}}</ref>
+|-
+! scope="col" | Rank
+! scope="col" | Rider
+! scope="col" | Team
+! scope="col" | Time
+|-
+| style="text-align:center;" | 1
+| {{Flag athlete|[[Robert Cazala]]|FRA}}
+| {{UCI team code|Mercier|1962}}
+| style="text-align:right;" | {{nowrap|5h 41' 21"}}
+|-
+| style="text-align:center;" | 2
+| {{Flag athlete|[[Willy Vanden Berghen]]|BEL}}
+| {{UCI team code|Mercier|1962}}
+| style="text-align:right;" | + 0"
+|-
+| style="text-align:center;" | 3
+| {{Flag athlete|[[Daniel Doom]]|BEL}}
+| {{UCI team code|Groene Leeuw|1962}}
+| style="text-align:right;" | + 0"
+|-
+| style="text-align:center;" | 4
+| {{Flag athlete|[[Rolf Wolfshohl]]|FRG}}
+| {{UCI team code|Alcyon|1962}}
+| style="text-align:right;" | + 0"
+|-
+| style="text-align:center;" | 5
+| {{Flag athlete|[[Albertus Geldermans]]|NED}}
+| {{UCI team code|Saint-Raphaël|1962}}
+| style="text-align:right;" | + 0"
+|-
+| style="text-align:center;" | 6
+| {{Flag athlete|[[Guy Ignolin]]|FRA}}
+| {{UCI team code|Alcyon|1962}}
+| style="text-align:right;" | + 0"
+|-
+| style="text-align:center;" | 7
+| {{Flag athlete|[[Francesco Miele]]|ITA}}
+| {{UCI team code|Pelforth|1962}}
+| style="text-align:right;" | + 0"
+|-
+| style="text-align:center;" | 8
+| {{Flag athlete|[[Willy Schroeders]]|BEL}}
+| {{UCI team code|Flandria|1962}}
+| style="text-align:right;" | + 0"
+|-
+| style="text-align:center;" | 9
+| {{Flag athlete|[[Édouard Bihouée]]|FRA}}
+| {{UCI team code|Mercier|1962}}
+| style="text-align:right;" | + 0"
+|-
+| style="text-align:center;" | 10
+| {{Flag athlete|[[Jos Hoevenaers]]|BEL}}
+| {{UCI team code|Philco|1962}}
+| style="text-align:right;" | + 0"
+|}
+||
+|
+{| class="wikitable"
+|+ General classification after stage 6<ref name="mundo-6" /><ref name="corriere-6" />
+|-
+! scope="col" | Rank
+! scope="col" | Rider
+! scope="col" | Team
+! scope="col" | Time
+|-
+| style="text-align:center;" | 1
+| {{Flag athlete|[[Albertus Geldermans]]|NED}} [[File:Jersey yellow.svg|20px|link=General classification in the Tour de France|alt=A yellow jersey]]
+| {{UCI team code|Saint-Raphaël|1962}}
+| style="text-align:right;" | {{nowrap|32h 15' 56"}}
+|-
+| style="text-align:center;" | 2
+| {{Flag athlete|[[Jos Hoevenaers]]|BEL}}
+| {{UCI team code|Philco|1962}}
+| style="text-align:right;" | + 23"
+|-
+| style="text-align:center;" | 3
+| {{Flag athlete|[[Rudi Altig]]|FRG}} [[File:Jersey green.svg|20px|link=Points classification in the Tour de France|alt=A green jersey]]
+| {{UCI team code|Saint-Raphaël|1962}}
+| style="text-align:right;" | + 3' 14"
+|-
+| style="text-align:center;" | 4
+| {{Flag athlete|[[André Darrigade]]|FRA}}
+| {{UCI team code|Alcyon|1962}}
+| style="text-align:right;" | + 3' 49"
+|-
+| style="text-align:center;" | 5
+| {{Flag athlete|[[Emile Daems]]|BEL}}
+| {{UCI team code|Philco|1962}}
+| style="text-align:right;" | + 4' 35"
+|-
+| style="text-align:center;" | 6
+| {{Flag athlete|[[Rik Van Looy]]|BEL}}
+| {{UCI team code|Flandria|1962}}
+| style="text-align:right;" | + 4' 43"
+|-
+| style="text-align:center;" | 7
+| {{Flag athlete|[[Jef Planckaert]]|BEL}}
+| {{UCI team code|Flandria|1962}}
+| style="text-align:right;" | + 4' 43"
+|-
+| style="text-align:center;" | 8
+| {{Flag athlete|[[Tom Simpson]]|GBR}}
+| {{UCI team code|Alcyon|1962}}
+| style="text-align:right;" | + 5' 08"
+|-
+| style="text-align:center;" | 9
+| {{Flag athlete|[[Jacques Anquetil]]|FRA}}
+| {{UCI team code|Saint-Raphaël|1962}}
+| style="text-align:right;" | + 5' 14"
+|-
+| style="text-align:center;" | 10
+| {{Flag athlete|[[Michel Stolker]]|NED}}
+| {{UCI team code|Saint-Raphaël|1962}}
+| style="text-align:right;" | + 5' 14"
+|}
+|}
+
+==Stage 7==
+'''30 June 1962&nbsp;— [[Quimper]] to [[Saint-Nazaire]], {{convert|201|km|abbr=on}}'''<ref name="het-route" /><ref name="md-route" />
+
+{|
+|
+{| class="wikitable"
+|+ Stage 7 result<ref name="mundo-7">{{cite news|url=http://hemeroteca-paginas.mundodeportivo.com/EMD02/HEM/1962/07/01/MD19620701-005.pdf |title=Clasificacions |language=Spanish |trans-title=Classifications |work=[[Mundo Deportivo]] |page=5 |date=1 July 1962 |accessdate=4 October 2016 |archive-url=https://web.archive.org/web/20170510185945/http://hemeroteca-paginas.mundodeportivo.com/EMD02/HEM/1962/07/01/MD19620701-005.pdf |archive-date=10 May 2017 |url-status=live }}</ref><ref name="corriere-7">{{cite news|title=7ª Tappa Zilverberg|trans-title=7th Stage Zilverberg|url=http://dlib.coninet.it/bookreader.php?&f=11502|accessdate=10 May 2017|work=[[Corriere dello Sport]]|date=1 July 1962|page=9|language=Italian|archive-url=https://web.archive.org/web/20170510033516/http://dlib.coninet.it/bookreader.php?&f=11502|archive-date=10 May 2017|url-status=live}}</ref>
+|-
+! scope="col" | Rank
+! scope="col" | Rider
+! scope="col" | Team
+! scope="col" | Time
+|-
+| style="text-align:center;" | 1
+| {{Flag athlete|[[Huub Zilverberg]]|NED}}
+| {{UCI team code|Flandria|1962}}
+| style="text-align:right;" | {{nowrap|4h 30' 55"}}
+|-
+| style="text-align:center;" | 2
+| {{Flag athlete|[[Bas Maliepaard]]|NED}}
+| {{UCI team code|Alcyon|1962}}
+| style="text-align:right;" | + 0"
+|-
+| style="text-align:center;" | 3
+| {{Flag athlete|[[Pierino Baffi]]|ITA}}
+| {{UCI team code|Ghigi|1962}}
+| style="text-align:right;" | + 5"
+|-
+| style="text-align:center;" | 4
+| {{Flag athlete|[[Jean-Baptiste Claes]]|BEL}}
+| {{UCI team code|Groene Leeuw|1962}}
+| style="text-align:right;" | + 5"
+|-
+| style="text-align:center;" | 5
+| {{Flag athlete|[[Piet van Est]]|NED}}
+| {{UCI team code|Flandria|1962}}
+| style="text-align:right;" | + 5"
+|-
+| style="text-align:center;" | 6
+| {{Flag athlete|[[Jef Planckaert]]|BEL}}
+| {{UCI team code|Flandria|1962}}
+| style="text-align:right;" | + 5"
+|-
+| style="text-align:center;" | 7
+| {{Flag athlete|[[Joseph Thomin]]|FRA}}
+| {{UCI team code|Margnat|1962}}
+| style="text-align:right;" | + 5"
+|-
+| style="text-align:center;" | 8
+| {{Flag athlete|[[Fedele Rubagotti]]|ITA}}
+| {{UCI team code|Legnano|1962}}
+| style="text-align:right;" | + 5"
+|-
+| style="text-align:center;" | 9
+| {{Flag athlete|[[Imerio Massignan]]|ITA}}
+| {{UCI team code|Legnano|1962}}
+| style="text-align:right;" | + 5"
+|-
+| style="text-align:center;" | 10
+| {{Flag athlete|[[Italo Mazzacurati]]|ITA}}
+| {{UCI team code|Ignis|1962}}
+| style="text-align:right;" | + 5"
+|}
+||
+|
+{| class="wikitable"
+|+ General classification after stage 7<ref name="mundo-7" />
+|-
+! scope="col" | Rank
+! scope="col" | Rider
+! scope="col" | Team
+! scope="col" | Time
+|-
+| style="text-align:center;" | 1
+| {{Flag athlete|[[Albertus Geldermans]]|NED}} [[File:Jersey yellow.svg|20px|link=General classification in the Tour de France|alt=A yellow jersey]]
+| {{UCI team code|Saint-Raphaël|1962}}
+| style="text-align:right;" | {{nowrap|36h 48' 37"}}
+|-
+| style="text-align:center;" | 2
+| {{Flag athlete|[[Jos Hoevenaers]]|BEL}}
+| {{UCI team code|Philco|1962}}
+| style="text-align:right;" | + 23"
+|-
+| style="text-align:center;" | 3
+| {{Flag athlete|[[André Darrigade]]|FRA}}
+| {{UCI team code|Alcyon|1962}}
+| style="text-align:right;" | + 2' 22"
+|-
+| style="text-align:center;" | 4
+| {{Flag athlete|[[Jef Planckaert]]|BEL}}
+| {{UCI team code|Flandria|1962}}
+| style="text-align:right;" | + 3' 02"
+|-
+| style="text-align:center;" | 5
+| {{Flag athlete|[[Rudi Altig]]|FRG}} [[File:Jersey green.svg|20px|link=Points classification in the Tour de France|alt=A green jersey]]
+| {{UCI team code|Saint-Raphaël|1962}}
+| style="text-align:right;" | + 3' 07"
+|-
+| style="text-align:center;" | 6
+| {{Flag athlete|[[Hans Junkermann (cyclist)|Hans Junkermann]]|FRG}}
+| {{UCI team code|Groene Leeuw|1962}}
+| style="text-align:right;" | + 3' 50"
+|-
+| style="text-align:center;" | 7
+| {{Flag athlete|[[Piet van Est]]|NED}}
+| {{UCI team code|Flandria|1962}}
+| style="text-align:right;" | + 3' 54"
+|-
+| style="text-align:center;" | 8
+| {{Flag athlete|[[Emile Daems]]|BEL}}
+| {{UCI team code|Philco|1962}}
+| style="text-align:right;" | + 4' 35"
+|-
+| style="text-align:center;" | 9
+| {{Flag athlete|[[Rik Van Looy]]|BEL}}
+| {{UCI team code|Flandria|1962}}
+| style="text-align:right;" | + 4' 43"
+|-
+| style="text-align:center;" | 10
+| {{Flag athlete|[[Tom Simpson]]|GBR}}
+| {{UCI team code|Alcyon|1962}}
+| style="text-align:right;" | + 5' 08"
+|}
+|}
+
+==Stage 8a==
+'''1 July 1962&nbsp;— [[Saint-Nazaire]] to [[Luçon]], {{convert|155|km|abbr=on}}'''<ref name="het-route" /><ref name="md-route" />
+
+{|
+|
+{| class="wikitable"
+|+ Stage 8a result<ref name="mundo-8">{{cite news|url=http://hemeroteca-paginas.mundodeportivo.com/EMD02/HEM/1962/07/02/MD19620702-007.pdf |title=Clasificacions |language=Spanish |trans-title=Classifications |work=[[Mundo Deportivo]] |page=7 |date=2 July 1962 |accessdate=4 October 2016 |archive-url=https://web.archive.org/web/20170510185952/http://hemeroteca-paginas.mundodeportivo.com/EMD02/HEM/1962/07/02/MD19620702-007.pdf |archive-date=10 May 2017 |url-status=live }}</ref><ref name="corriere-8">{{cite news|title=Tutte le cifre del Tour|trans-title=All the figures of the Tour|url=http://dlib.coninet.it/bookreader.php?&f=11502|accessdate=10 May 2017|work=[[Corriere dello Sport]]|date=1 July 1962|page=9|language=Italian|archive-url=https://web.archive.org/web/20170510033516/http://dlib.coninet.it/bookreader.php?&f=11502|archive-date=10 May 2017|url-status=live}}</ref>
+|-
+! scope="col" | Rank
+! scope="col" | Rider
+! scope="col" | Team
+! scope="col" | Time
+|-
+| style="text-align:center;" | 1
+| {{Flag athlete|[[Mario Minieri]]|ITA}}
+| {{UCI team code|Ghigi|1962}}
+| style="text-align:right;" | {{nowrap|3h 29' 01"}}
+|-
+| style="text-align:center;" | 2
+| {{Flag athlete|[[Rino Benedetti]]|ITA}}
+| {{UCI team code|Ignis|1962}}
+| style="text-align:right;" | + 0"
+|-
+| style="text-align:center;" | 3
+| {{Flag athlete|[[Jean Graczyk]]|FRA}}
+| {{UCI team code|Saint-Raphaël|1962}}
+| style="text-align:right;" | + 0"
+|-
+| style="text-align:center;" | 4
+| {{Flag athlete|[[Bas Maliepaard]]|NED}}
+| {{UCI team code|Alcyon|1962}}
+| style="text-align:right;" | + 0"
+|-
+| style="text-align:center;" | 5
+| {{Flag athlete|[[Dino Bruni]]|ITA}}
+| {{UCI team code|Gazzola|1962}}
+| style="text-align:right;" | + 0"
+|-
+| style="text-align:center;" | 6
+| {{Flag athlete|[[André Darrigade]]|FRA}}
+| {{UCI team code|Alcyon|1962}}
+| style="text-align:right;" | + 0"
+|-
+| style="text-align:center;" | 7
+| {{Flag athlete|[[Edgard Sorgeloos]]|BEL}}
+| {{UCI team code|Flandria|1962}}
+| style="text-align:right;" | + 0"
+|-
+| style="text-align:center;" | 8
+| {{Flag athlete|[[Bernard Viot]]|FRA}}
+| {{UCI team code|Peugeot|1962}}
+| style="text-align:right;" | + 0"
+|-
+| style="text-align:center;" | 9
+| {{Flag athlete|[[Michel Van Aerde]]|BEL}}
+| {{UCI team code|Carpano|1962}}
+| style="text-align:right;" | + 0"
+|-
+| style="text-align:center;" | 10
+| {{Flag athlete|[[Pino Cerami]]|BEL}}
+| {{UCI team code|Peugeot|1962}}
+| style="text-align:right;" | + 0"
+|}
+||
+|
+{| class="wikitable"
+|+ General classification after stage 8a<ref name="mundo-8" /><ref name="corriere-8" />
+|-
+! scope="col" | Rank
+! scope="col" | Rider
+! scope="col" | Team
+! scope="col" | Time
+|-
+| style="text-align:center;" | 1
+| {{Flag athlete|[[André Darrigade]]|FRA}} [[File:Jersey yellow.svg|20px|link=General classification in the Tour de France|alt=A yellow jersey]]
+| {{UCI team code|Alcyon|1962}}
+| style="text-align:right;" | {{nowrap|40h 20' 00"}}
+|-
+| style="text-align:center;" | 2
+| {{Flag athlete|[[Tom Simpson]]|GBR}}
+| {{UCI team code|Alcyon|1962}}
+| style="text-align:right;" | + 2' 46"
+|-
+| style="text-align:center;" | 3
+| {{Flag athlete|[[Luis Otaño]]|ESP|1945}}
+| {{UCI team code|Philco|1962}}
+| style="text-align:right;" | + 3' 40"
+|-
+| style="text-align:center;" | 4
+| {{Flag athlete|[[Albertus Geldermans]]|NED}}
+| {{UCI team code|Saint-Raphaël|1962}}
+| style="text-align:right;" | + 3' 41"
+|-
+| style="text-align:center;" | 5
+| {{Flag athlete|[[Gilbert Desmet]]|BEL}}
+| {{UCI team code|Carpano|1962}}
+| style="text-align:right;" | + 3' 54"
+|-
+| style="text-align:center;" | 6
+| {{Flag athlete|[[Willy Schroeders]]|BEL}}
+| {{UCI team code|Flandria|1962}}
+| style="text-align:right;" | + 4' 00"
+|-
+| style="text-align:center;" | 7
+| {{Flag athlete|[[Jos Hoevenaers]]|BEL}}
+| {{UCI team code|Philco|1962}}
+| style="text-align:right;" | + 4' 04"
+|-
+| style="text-align:center;" | 8
+| {{Flag athlete|[[Henry Anglade]]|FRA}}
+| {{UCI team code|Liberia|1962}}
+| style="text-align:right;" | + 4' 07"
+|-
+| style="text-align:center;" | 9
+| {{Flag athlete|[[Jean Stablinski]]|FRA}}
+| {{UCI team code|Saint-Raphaël|1962}}
+| style="text-align:right;" | + 4' 40"
+|-
+| style="text-align:center;" | 10
+| {{Flag athlete|[[Michel Van Aerde]]|BEL}}
+| {{UCI team code|Carpano|1962}}
+| style="text-align:right;" | + 5' 42"
+|}
+|}
+
+==Stage 8b==
+'''1 July 1962&nbsp;— [[Luçon]] to [[La Rochelle]], {{convert|43|km|abbr=on}} ([[Individual time trial|ITT]])'''
+
+{|
+|
+{| class="wikitable"
+|+ Stage 8b result<ref name="mundo-8" />
+|-
+! scope="col" | Rank
+! scope="col" | Rider
+! scope="col" | Team
+! scope="col" | Time
+|-
+| style="text-align:center;" | 1
+| {{Flag athlete|[[Jacques Anquetil]]|FRA}}
+| {{UCI team code|Saint-Raphaël|1962}}
+| style="text-align:right;" | {{nowrap|54' 04"}}
+|-
+| style="text-align:center;" | 2
+| {{Flag athlete|[[Ercole Baldini]]|ITA}}
+| {{UCI team code|Ignis|1962}}
+| style="text-align:right;" | + 22"
+|-
+| style="text-align:center;" | 3
+| {{Flag athlete|[[Rudi Altig]]|FRG}} [[File:Jersey green.svg|20px|link=Points classification in the Tour de France|alt=A green jersey]]
+| {{UCI team code|Saint-Raphaël|1962}}
+| style="text-align:right;" | + 46"
+|-
+| style="text-align:center;" | 4
+| {{Flag athlete|[[Jef Planckaert]]|BEL}}
+| {{UCI team code|Flandria|1962}}
+| style="text-align:right;" | + 1' 07"
+|-
+| style="text-align:center;" | 5
+| {{Flag athlete|[[Antonio Suárez]]|ESP|1945}}
+| {{UCI team code|Ghigi|1962}}
+| style="text-align:right;" | + 1' 25"
+|-
+| style="text-align:center;" | 6
+| {{Flag athlete|[[Guido Carlesi]]|ITA}}
+| {{UCI team code|Philco|1962}}
+| style="text-align:right;" | + 1' 41"
+|-
+| style="text-align:center;" | 7
+| {{Flag athlete|[[Willy Vanden Berghen]]|BEL}}
+| {{UCI team code|Mercier|1962}}
+| style="text-align:right;" | + 1' 49"
+|-
+| style="text-align:center;" | 8
+| {{Flag athlete|[[Albertus Geldermans]]|NED}}
+| {{UCI team code|Saint-Raphaël|1962}}
+| style="text-align:right;" | + 1' 54"
+|-
+| style="text-align:center;" | 9
+| {{Flag athlete|[[Diego Ronchini]]|ITA}}
+| {{UCI team code|Ghigi|1962}}
+| style="text-align:right;" | + 1' 55"
+|-
+| style="text-align:center;" | 10
+| {{Flag athlete|[[Antonio Bailetti]]|ITA}}
+| {{UCI team code|Carpano|1962}}
+| style="text-align:right;" | + 1' 58"
+|}
+||
+|
+{| class="wikitable"
+|+ General classification after stage 8b<ref name="mundo-8" />
+|-
+! scope="col" | Rank
+! scope="col" | Rider
+! scope="col" | Team
+! scope="col" | Time
+|-
+| style="text-align:center;" | 1
+| {{Flag athlete|[[André Darrigade]]|FRA}} [[File:Jersey yellow.svg|20px|link=General classification in the Tour de France|alt=A yellow jersey]]
+| {{UCI team code|Alcyon|1962}}
+| style="text-align:right;" | {{nowrap|41h 18in 18"}}
+|-
+| style="text-align:center;" | 2
+| {{Flag athlete|[[Tom Simpson]]|GBR}}
+| {{UCI team code|Alcyon|1962}}
+| style="text-align:right;" | + 51"
+|-
+| style="text-align:center;" | 3
+| {{Flag athlete|[[Albertus Geldermans]]|NED}}
+| {{UCI team code|Saint-Raphaël|1962}}
+| style="text-align:right;" | + 1' 21"
+|-
+| style="text-align:center;" | 4
+| {{Flag athlete|[[Gilbert Desmet]]|BEL}}
+| {{UCI team code|Carpano|1962}}
+| style="text-align:right;" | + 1' 59"
+|-
+| style="text-align:center;" | 5
+| {{Flag athlete|[[Henry Anglade]]|FRA}}
+| {{UCI team code|Liberia|1962}}
+| style="text-align:right;" | + 2' 00"
+|-
+| style="text-align:center;" | 6
+| {{Flag athlete|[[Luis Otaño]]|ESP|1945}}
+| {{UCI team code|Philco|1962}}
+| style="text-align:right;" | + 2' 16"
+|-
+| style="text-align:center;" | 7
+| {{Flag athlete|[[Rudi Altig]]|FRG}} [[File:Jersey green.svg|20px|link=Points classification in the Tour de France|alt=A green jersey]]
+| {{UCI team code|Saint-Raphaël|1962}}
+| style="text-align:right;" | + 3' 20"
+|-
+| style="text-align:center;" | 8
+| {{Flag athlete|[[Jean Stablinski]]|FRA}}
+| {{UCI team code|Saint-Raphaël|1962}}
+| style="text-align:right;" | + 3' 21"
+|-
+| style="text-align:center;" | 9
+| {{Flag athlete|[[Jos Hoevenaers]]|BEL}}
+| {{UCI team code|Philco|1962}}
+| style="text-align:right;" | + 3' 35"
+|-
+| style="text-align:center;" | 10
+| {{Flag athlete|[[Jef Planckaert]]|BEL}}
+| {{UCI team code|Flandria|1962}}
+| style="text-align:right;" | + 3' 36"
+|}
+|}
+
+==Stage 9==
+'''2 July 1962&nbsp;— [[La Rochelle]] to [[Bordeaux]], {{convert|214|km|abbr=on}}'''<ref name="het-route" /><ref name="md-route" />
+
+{|
+|
+{| class="wikitable"
+|+ Stage 9 result<ref name="mundo-9">{{cite news|url=http://hemeroteca-paginas.mundodeportivo.com/EMD02/HEM/1962/07/04/MD19620704-008.pdf |title=Clasificacions |language=Spanish |trans-title=Classifications |work=[[Mundo Deportivo]] |page=8 |date=4 July 1962 |accessdate=4 October 2016 |archive-url=https://web.archive.org/web/20170510185953/http://hemeroteca-paginas.mundodeportivo.com/EMD02/HEM/1962/07/04/MD19620704-008.pdf |archive-date=10 May 2017 |url-status=live }}</ref><ref name="corriere-9">{{cite news|title=Tutte le cifre del Tour|trans-title=All the figures of the Tour|url=http://dlib.coninet.it/bookreader.php?&f=11503|accessdate=10 May 2017|work=[[Corriere dello Sport]]|date=3 July 1962|page=7|language=Italian|archive-url=https://web.archive.org/web/20170510033239/http://dlib.coninet.it/bookreader.php?&f=11503|archive-date=10 May 2017|url-status=live}}</ref>
+|-
+! scope="col" | Rank
+! scope="col" | Rider
+! scope="col" | Team
+! scope="col" | Time
+|-
+| style="text-align:center;" | 1
+| {{Flag athlete|[[Antonio Bailetti]]|ITA}}
+| {{UCI team code|Carpano|1962}}
+| style="text-align:right;" | {{nowrap|5h 11' 17"}}
+|-
+| style="text-align:center;" | 2
+| {{Flag athlete|[[Jean Graczyk]]|FRA}}
+| {{UCI team code|Saint-Raphaël|1962}}
+| style="text-align:right;" | + 0"
+|-
+| style="text-align:center;" | 3
+| {{Flag athlete|[[Franco Magnani]]|ITA}}
+| {{UCI team code|Ghigi|1962}}
+| style="text-align:right;" | + 0"
+|-
+| style="text-align:center;" | 4
+| {{Flag athlete|[[Huub Zilverberg]]|NED}}
+| {{UCI team code|Flandria|1962}}
+| style="text-align:right;" | + 0"
+|-
+| style="text-align:center;" | 5
+| {{Flag athlete|[[Willy Schroeders]]|BEL}}
+| {{UCI team code|Flandria|1962}}
+| style="text-align:right;" | + 0"
+|-
+| style="text-align:center;" | 6
+| {{Flag athlete|[[Frans Melckenbeeck]]|FRA}}
+| {{UCI team code|Mercier|1962}}
+| style="text-align:right;" | + 0"
+|-
+| style="text-align:center;" | 7
+| {{Flag athlete|[[Jean-Baptiste Claes]]|BEL}}
+| {{UCI team code|Groene Leeuw|1962}}
+| style="text-align:right;" | + 0"
+|-
+| style="text-align:center;" | 8
+| {{Flag athlete|[[Édouard Delberghe]]|FRA}}
+| {{UCI team code|Liberia|1962}}
+| style="text-align:right;" | + 0"
+|-
+| style="text-align:center;" | 9
+| {{Flag athlete|[[Alan Ramsbottom]]|GBR}}
+| {{UCI team code|Pelforth|1962}}
+| style="text-align:right;" | + 0"
+|-
+| style="text-align:center;" | 10
+| {{Flag athlete|[[Jean Milesi]]|FRA}}
+| {{UCI team code|Liberia|1962}}
+| style="text-align:right;" | + 0"
+|}
+||
+|
+{| class="wikitable"
+|+ General classification after stage 9<ref name="mundo-9" /><ref name="corriere-9" />
+|-
+! scope="col" | Rank
+! scope="col" | Rider
+! scope="col" | Team
+! scope="col" | Time
+|-
+| style="text-align:center;" | 1
+| {{Flag athlete|[[Willy Schroeders]]|BEL}} [[File:Jersey yellow.svg|20px|link=General classification in the Tour de France|alt=A yellow jersey]]
+| {{UCI team code|Flandria|1962}}
+| style="text-align:right;" | {{nowrap|46h 33' 41"}}
+|-
+| style="text-align:center;" | 2
+| {{Flag athlete|[[André Darrigade]]|FRA}}
+| {{UCI team code|Alcyon|1962}}
+| style="text-align:right;" | + 45"
+|-
+| style="text-align:center;" | 3
+| {{Flag athlete|[[Tom Simpson]]|GBR}}
+| {{UCI team code|Alcyon|1962}}
+| style="text-align:right;" | + 1' 36"
+|-
+| style="text-align:center;" | 4
+| {{Flag athlete|[[Albertus Geldermans]]|NED}}
+| {{UCI team code|Saint-Raphaël|1962}}
+| style="text-align:right;" | + 2' 06"
+|-
+| style="text-align:center;" | 5
+| {{Flag athlete|[[Gilbert Desmet]]|BEL}}
+| {{UCI team code|Carpano|1962}}
+| style="text-align:right;" | + 2' 44"
+|-
+| style="text-align:center;" | 6
+| {{Flag athlete|[[Henry Anglade]]|FRA}}
+| {{UCI team code|Liberia|1962}}
+| style="text-align:right;" | + 2' 45"
+|-
+| style="text-align:center;" | 7
+| {{Flag athlete|[[Luis Otaño]]|ESP|1945}}
+| {{UCI team code|Philco|1962}}
+| style="text-align:right;" | + 3' 01"
+|-
+| style="text-align:center;" | 8
+| {{Flag athlete|[[Rudi Altig]]|FRG}} [[File:Jersey green.svg|20px|link=Points classification in the Tour de France|alt=A green jersey]]
+| {{UCI team code|Saint-Raphaël|1962}}
+| style="text-align:right;" | + 4' 05"
+|-
+| style="text-align:center;" | 9
+| {{Flag athlete|[[Jean Stablinski]]|FRA}}
+| {{UCI team code|Saint-Raphaël|1962}}
+| style="text-align:right;" | + 4' 06"
+|-
+| style="text-align:center;" | 10
+| {{Flag athlete|[[Jos Hoevenaers]]|BEL}}
+| {{UCI team code|Philco|1962}}
+| style="text-align:right;" | + 4' 20"
+|}
+|}
+
+==Stage 10==
+'''3 July 1962&nbsp;— [[Bordeaux]] to [[Bayonne]], {{convert|184.5|km|abbr=on}}'''<ref name="het-route" /><ref name="md-route" />
+
+{|
+|
+{| class="wikitable"
+|+ Stage 10 result<ref name="mundo-10">{{cite news|url=http://hemeroteca-paginas.mundodeportivo.com/EMD02/HEM/1962/07/04/MD19620704-007.pdf |title=Clasificacions |language=Spanish |trans-title=Classifications |work=[[Mundo Deportivo]] |page=7 |date=4 July 1962 |accessdate=4 October 2016 |archive-url=https://web.archive.org/web/20170510190145/http://hemeroteca-paginas.mundodeportivo.com/EMD02/HEM/1962/07/04/MD19620704-007.pdf |archive-date=10 May 2017 |url-status=live }}</ref><ref name="corriere-10">{{cite news|title=Tutte le cifre del Tour|trans-title=All the figures of the Tour|url=http://dlib.coninet.it/bookreader.php?&f=11504|accessdate=10 May 2017|work=[[Corriere dello Sport]]|date=4 July 1962|page=7|language=Italian|archive-url=https://web.archive.org/web/20170510031230/http://dlib.coninet.it/bookreader.php?&f=11504|archive-date=10 May 2017|url-status=live}}</ref>
+|-
+! scope="col" | Rank
+! scope="col" | Rider
+! scope="col" | Team
+! scope="col" | Time
+|-
+| style="text-align:center;" | 1
+| {{Flag athlete|[[Willy Vannitsen]]|BEL}}
+| {{UCI team code|Groene Leeuw|1962}}
+| style="text-align:right;" | {{nowrap|4h 54' 2"}}
+|-
+| style="text-align:center;" | 2
+| {{Flag athlete|[[Giancarlo Manzoni]]|ITA}}
+| {{UCI team code|Ignis|1962}}
+| style="text-align:right;" | + 0"
+|-
+| style="text-align:center;" | 3
+| {{Flag athlete|[[Rudi Altig]]|FRG}} [[File:Jersey green.svg|20px|link=Points classification in the Tour de France|alt=A green jersey]]
+| {{UCI team code|Saint-Raphaël|1962}}
+| style="text-align:right;" | + 0"
+|-
+| style="text-align:center;" | 4
+| {{Flag athlete|[[Bernard Viot]]|FRA}}
+| {{UCI team code|Peugeot|1962}}
+| style="text-align:right;" | + 0"
+|-
+| style="text-align:center;" | 5
+| {{Flag athlete|[[Jean Graczyk]]|FRA}}
+| {{UCI team code|Saint-Raphaël|1962}}
+| style="text-align:right;" | + 0"
+|-
+| style="text-align:center;" | 6
+| {{Flag athlete|[[Giancarlo Gentina]]|ITA}}
+| {{UCI team code|Carpano|1962}}
+| style="text-align:right;" | + 0"
+|-
+| style="text-align:center;" | 7
+| {{Flag athlete|[[Rik Van Looy]]|BEL}}
+| {{UCI team code|Flandria|1962}}
+| style="text-align:right;" | + 0"
+|-
+| style="text-align:center;" | 8
+| {{Flag athlete|[[Michel Van Aerde]]|BEL}}
+| {{UCI team code|Carpano|1962}}
+| style="text-align:right;" | + 0"
+|-
+| style="text-align:center;" | 9
+| {{Flag athlete|[[Gilbert Desmet]]|BEL}}
+| {{UCI team code|Carpano|1962}}
+| style="text-align:right;" | + 0"
+|-
+| style="text-align:center;" | 10
+| {{Flag athlete|[[Arthur Decabooter]]|BEL}}
+| {{UCI team code|Liberia|1962}}
+| style="text-align:right;" | + 0"
+|}
+||
+|
+{| class="wikitable"
+|+ General classification after stage 10<ref name="mundo-10" /><ref name="corriere-10" />
+|-
+! scope="col" | Rank
+! scope="col" | Rider
+! scope="col" | Team
+! scope="col" | Time
+|-
+| style="text-align:center;" | 1
+| {{Flag athlete|[[Willy Schroeders]]|BEL}} [[File:Jersey yellow.svg|20px|link=General classification in the Tour de France|alt=A yellow jersey]]
+| {{UCI team code|Flandria|1962}}
+| style="text-align:right;" | {{nowrap|51h 27' 43"}}
+|-
+| style="text-align:center;" | 2
+| {{Flag athlete|[[André Darrigade]]|FRA}}
+| {{UCI team code|Alcyon|1962}}
+| style="text-align:right;" | + 45"
+|-
+| style="text-align:center;" | 3
+| {{Flag athlete|[[Tom Simpson]]|GBR}}
+| {{UCI team code|Alcyon|1962}}
+| style="text-align:right;" | + 1' 36"
+|-
+| style="text-align:center;" | 4
+| {{Flag athlete|[[Albertus Geldermans]]|NED}}
+| {{UCI team code|Saint-Raphaël|1962}}
+| style="text-align:right;" | + 2' 06"
+|-
+| style="text-align:center;" | 5
+| {{Flag athlete|[[Gilbert Desmet]]|BEL}}
+| {{UCI team code|Carpano|1962}}
+| style="text-align:right;" | + 2' 44"
+|-
+| style="text-align:center;" | 6
+| {{Flag athlete|[[Henry Anglade]]|FRA}}
+| {{UCI team code|Liberia|1962}}
+| style="text-align:right;" | + 2' 45"
+|-
+| style="text-align:center;" | 7
+| {{Flag athlete|[[Luis Otaño]]|ESP|1945}}
+| {{UCI team code|Philco|1962}}
+| style="text-align:right;" | + 3' 01"
+|-
+| style="text-align:center;" | 8
+| {{Flag athlete|[[Rudi Altig]]|FRG}} [[File:Jersey green.svg|20px|link=Points classification in the Tour de France|alt=A green jersey]]
+| {{UCI team code|Saint-Raphaël|1962}}
+| style="text-align:right;" | + 4' 05"
+|-
+| style="text-align:center;" | 9
+| {{Flag athlete|[[Jean Stablinski]]|FRA}}
+| {{UCI team code|Saint-Raphaël|1962}}
+| style="text-align:right;" | + 4' 06"
+|-
+| style="text-align:center;" | 10
+| {{Flag athlete|[[Jef Planckaert]]|BEL}}
+| {{UCI team code|Flandria|1962}}
+| style="text-align:right;" | + 4' 21"
+|}
+|}
+
+==Notes==
+{{reflist|group=n}}
+
+==References==
+{{reflist|30em}}
+
+==External links==
+{{commons category-inline}}
+
+{{Cycling stage recaps|1962 Tour de France|1|10|11|22}}
+
+{{DEFAULTSORT:1962 Tour De France}}
+[[Category:1962 Tour de France]]
+[[Category:Tour de France stages]]
