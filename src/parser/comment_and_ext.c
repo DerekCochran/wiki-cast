@@ -1454,6 +1454,75 @@ static void split_gallery_unclosed_caption_local(Token *img,
 	}
 }
 
+static void normalize_gallery_thumb_caption_local(Token *img, Accum *accum) {
+	if(!img || !accum || img->type != TOKEN_FILE || !img->type_name || strcmp(img->type_name, "gallery-image") != 0) return;
+
+	for(size_t ci= 1; ci < img->child_count; ci++) {
+		if(img->children[ci].is_text || !img->children[ci].token) continue;
+		Token *param= img->children[ci].token;
+		if(param->type != TOKEN_PLAIN || !param->type_name || strcmp(param->type_name, "image-parameter") != 0) continue;
+		if(!param->name || strcmp(param->name, "caption") != 0) continue;
+		if(param->child_count == 0 || !param->children[0].is_text || !param->children[0].text) continue;
+
+		const char *txt= param->children[0].text;
+		size_t txt_len= param->children[0].text_len;
+		size_t cut= 0;
+		if(txt_len >= 6 && strncasecmp(txt, "thumb|", 6) == 0) {
+			cut= 6;
+		} else if(txt_len >= 10 && strncasecmp(txt, "thumbnail|", 10) == 0) {
+			cut= 10;
+		} else {
+			continue;
+		}
+
+		Token *thumb= token_new(TOKEN_PLAIN, "image-parameter");
+		if(!thumb) return;
+		thumb->name= strdup("thumbnail");
+		if(!thumb->name) {
+			token_free(thumb);
+			return;
+		}
+		size_t syntax_len= cut - 1; /* drop trailing '|' */
+		thumb->data.image_param.raw_syntax= malloc(syntax_len + 1);
+		if(!thumb->data.image_param.raw_syntax) {
+			token_free(thumb);
+			return;
+		}
+		memcpy(thumb->data.image_param.raw_syntax, txt, syntax_len);
+		thumb->data.image_param.raw_syntax[syntax_len]= '\0';
+		accum_push(accum, thumb);
+
+		size_t remain_len= txt_len - cut;
+		char *owned= malloc(remain_len + 1);
+		if(!owned) {
+			token_free(thumb);
+			return;
+		}
+		if(remain_len > 0) memcpy(owned, txt + cut, remain_len);
+		owned[remain_len]= '\0';
+		if(param->children[0].text_owned && param->children[0].text) free((void *)param->children[0].text);
+		param->children[0].text= owned;
+		param->children[0].text_len= remain_len;
+		param->children[0].text_owned= true;
+
+		if(img->child_count + 1 > img->child_cap) {
+			size_t new_cap= img->child_cap ? img->child_cap * 2 : 4;
+			Child *grown= realloc(img->children, new_cap * sizeof(Child));
+			if(!grown) {
+				return;
+			}
+			img->children= grown;
+			img->child_cap= new_cap;
+		}
+
+		memmove(&img->children[ci + 1], &img->children[ci], (img->child_count - ci) * sizeof(Child));
+		img->children[ci].is_text= false;
+		img->children[ci].token= thumb;
+		img->child_count++;
+		return;
+	}
+}
+
 /* Fallback helper: parse gallery alt text into FileToken image parameters by
  * feeding a synthetic [[File:...|...]] through stage-1/5 parsing and moving
  * parameter children (index >= 1) onto the destination gallery-image token. */
@@ -1693,6 +1762,7 @@ static Token *parse_gallery_image_line_local(const char *line, size_t line_len,
 			first->text_owned= true;
 		}
 		split_gallery_unclosed_caption_local(out, cfg, accum);
+		normalize_gallery_thumb_caption_local(out, accum);
 		/* Preserve the original gallery line target text exactly as parsed. */
 		/* JS stage-log parity: link/file names are assigned later in afterBuild(). */
 		for(size_t ci= 0; ci < out->child_count; ci++) {
@@ -1775,6 +1845,7 @@ static Token *parse_gallery_image_line_local(const char *line, size_t line_len,
 						}
 
 						split_gallery_unclosed_caption_local(fallback, cfg, accum);
+						normalize_gallery_thumb_caption_local(fallback, accum);
 
 						accum_push(accum, fallback);
 						out= fallback;
