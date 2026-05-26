@@ -5,6 +5,7 @@ const { runTests } = require('./helpers');
 
 const castTests = [
   // Failures from export of wikitexts
+  `ISBN 978-0-9559732 -0-8.`,
   `<gallery Mode="packed" heights="140px">
 File:COLLECTIE TROPENMUSEUM De Broodbakkersstraat in Pasoeroean TMnr 60052542.jpg|Chinatown of Broodbakkerstraat (now Jalan Niaga) in Pasuruan from Hoofdstraat (now Jalan Soekarno Hatta)
 File:COLLECTIE TROPENMUSEUM Stoplicht boven het kruispunt in de Hoofdstraat Pasoeroean TMnr 60052543.jpg|Traffic light over the intersection in the Hoofdstraat of Pasuruan
