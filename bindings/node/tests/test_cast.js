@@ -5,6 +5,14 @@ const { runTests } = require('./helpers');
 
 const castTests = [
   // Failures from export of wikitexts
+  `<gallery Mode="packed" heights="140px">
+File:COLLECTIE TROPENMUSEUM De Broodbakkersstraat in Pasoeroean TMnr 60052542.jpg|Chinatown of Broodbakkerstraat (now Jalan Niaga) in Pasuruan from Hoofdstraat (now Jalan Soekarno Hatta)
+File:COLLECTIE TROPENMUSEUM Stoplicht boven het kruispunt in de Hoofdstraat Pasoeroean TMnr 60052543.jpg|Traffic light over the intersection in the Hoofdstraat of Pasuruan
+File:PSSM B16 at Waroeng-dowo.jpg|Warungdowo as the main operational station of PsSM with Hohenzollern B16 tram engine (right side).
+File:Stasiun Winongan.jpg|Winongan tram station around 1910-1920s
+File:Pasoeroan Town in 1946's map.tif|thumb|Map issued in February 1946 showing the city of Pasuruan including the main railway line of [[Staatsspoorwegen]] (SS) and PsSM's steam tram line]]
+</gallery>`,
+  `<ref>{{usurped|1={{usurped|1=[https://archive.today/20070702164815/http://www.popcultureshock.com/reviews.php?id=4542 APComics 2005 Preview » PopCultureShock<!-- Bot generated title -->]}}}}</ref>`,
   `{{Clade|style=font-size:90%; line-height:90%
 |label1=Halobacteriales
 |1={{clade
