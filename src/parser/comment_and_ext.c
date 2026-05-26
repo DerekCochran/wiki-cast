@@ -644,17 +644,33 @@ static void parse_ext_attrs(Token *attrs_tok, const char *attr_str, size_t attr_
 			if(attr_str[i] == '=') {
 				size_t full_end= i + 1;
 				size_t probe= full_end;
-
 				while(probe < attr_len && isspace((unsigned char)attr_str[probe])) probe++;
-				if(probe < attr_len && (attr_str[probe] == '"' || attr_str[probe] == '\'')) {
+
+				bool keep_following_token_dirty= true;
+				if(probe < attr_len && attr_str[probe] != '"' && attr_str[probe] != '\'') {
+					size_t tok_start= probe;
+					while(probe < attr_len && !isspace((unsigned char)attr_str[probe])) probe++;
+					for(size_t k= tok_start; k < probe; k++) {
+						if(attr_str[k] == '=') {
+							keep_following_token_dirty= false;
+							break;
+						}
+					}
+					if(!keep_following_token_dirty) {
+						full_end= i + 1;
+						while(full_end < attr_len && isspace((unsigned char)attr_str[full_end])) full_end++;
+					} else {
+						full_end= probe;
+					}
+				} else if(probe < attr_len && (attr_str[probe] == '"' || attr_str[probe] == '\'')) {
 					char q= attr_str[probe++];
 					while(probe < attr_len && attr_str[probe] != q) probe++;
 					if(probe < attr_len && attr_str[probe] == q) probe++;
+					full_end= probe;
 				} else {
-					while(probe < attr_len && !isspace((unsigned char)attr_str[probe])) probe++;
+					full_end= probe;
 				}
 
-				full_end= probe;
 				for(size_t k= i; k < full_end; k++) dirty_buf[dirty_len++]= attr_str[k];
 				i= full_end;
 			} else {
