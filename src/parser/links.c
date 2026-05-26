@@ -1494,6 +1494,7 @@ static Token *parse_inner_fragment(const char *s, size_t len, const ParserConfig
 																								 const char *page) {
 	if(!s) return NULL;
 	ThreadBuf *inner_tb = wiki_thread_buf_acquire_scratch_from_data(s, len);
+	bool has_quote_sentinel= has_sentinel_type_in_view(s, len, 'q');
 
 	if(in_file) {
 		parse_comment_and_ext(inner_tb, cfg, accum, false);
@@ -1504,7 +1505,9 @@ static Token *parse_inner_fragment(const char *s, size_t len, const ParserConfig
 		/* JS parity: file/gallery parameter text supports internal links. */
 		parse_links(inner_tb, cfg, accum, page, tidy);
 	}
-	parse_quotes(inner_tb, cfg, accum, tidy);
+	if(!has_quote_sentinel) {
+		parse_quotes(inner_tb, cfg, accum, tidy);
+	}
 	if(in_file) {
 		/* JS parity: parseExternalLinks(text, ..., true) is executed before
 		 * parameter splitting (see parse_links file branches). At this point we
