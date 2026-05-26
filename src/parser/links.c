@@ -1351,7 +1351,7 @@ void parse_links(ThreadBuf *tb, const ParserConfig *cfg, Accum *accum,
 
 				/* Create FILE token with link-target atom */
 				Token *tok= create_link_token(TOKEN_FILE, "file", link_ptr, link_len,
-																			tok_text_ptr, tok_text_len, NULL,
+																					 tok_text_ptr, tok_text_len, delim_ptr,
 																			cfg, accum, tidy);
 				if(!tok) {
 					free(img_buf);
