@@ -644,30 +644,20 @@ static void parse_ext_attrs(Token *attrs_tok, const char *attr_str, size_t attr_
 				size_t full_end= i + 1;
 				size_t probe= full_end;
 				while(probe < attr_len && isspace((unsigned char)attr_str[probe])) probe++;
+				size_t ws_len= probe - full_end;
 
-				bool keep_following_token_dirty= true;
-				if(probe < attr_len && attr_str[probe] != '"' && attr_str[probe] != '\'') {
-					size_t tok_start= probe;
-					while(probe < attr_len && !isspace((unsigned char)attr_str[probe])) probe++;
-					for(size_t k= tok_start; k < probe; k++) {
-						if(attr_str[k] == '=') {
-							keep_following_token_dirty= false;
-							break;
-						}
-					}
-					if(!keep_following_token_dirty) {
-						full_end= i + 1;
-						while(full_end < attr_len && isspace((unsigned char)attr_str[full_end])) full_end++;
-					} else {
-						full_end= probe;
-					}
-				} else if(probe < attr_len && (attr_str[probe] == '"' || attr_str[probe] == '\'')) {
+				if(probe < attr_len && (attr_str[probe] == '"' || attr_str[probe] == '\'')) {
 					char q= attr_str[probe++];
 					while(probe < attr_len && attr_str[probe] != q) probe++;
 					if(probe < attr_len && attr_str[probe] == q) probe++;
 					full_end= probe;
-				} else {
+				} else if(probe < attr_len && ws_len == 0) {
+					/* Keep contiguous "=value" fragments dirty, but allow
+					 * spaced forms like "= name = ..." to parse `name` as attr. */
+					while(probe < attr_len && !isspace((unsigned char)attr_str[probe])) probe++;
 					full_end= probe;
+				} else {
+					full_end= i + 1 + ws_len;
 				}
 
 				for(size_t k= i; k < full_end; k++) dirty_buf[dirty_len++]= attr_str[k];

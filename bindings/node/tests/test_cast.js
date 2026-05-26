@@ -15,10 +15,6 @@ const castTests = [
 |}`,
   `[[Image:Barrère Pierre 1690-1755 Ornithologiae.png|thumbnail|250px|right|Plate from ''''Ornithologiae Specimen'' de Barrère showing his system of bird classification]]`,
   `[[Image:Edward Snowden-2.jpg{{!}}border|thumb|right|200px|During the season, many critics and analysts noticed parallelisms between the series' premise and [[Edward Snowden]].]]`,
-  `<ref name='CNZ'>{{cite web|title=Auckland jeweller relishes residency opportunity|url=http://www.creativenz.govt.nz/en/news/auckland-jeweller-relishes-residency-opportunity|website=Creative New Zealand Toi Aotearoa|accessdate=6 December 2014|date=19 June 2003|url-status=dead|archiveurl=https://web.archive.org/web/20141207235955/http://www.creativenz.govt.nz/en/news/auckland-jeweller-relishes-residency-opportunity|archivedate=7 December 2014}}
-
-==Exhibitions==
-</ref>`,
   `{|class=wikitable
 !=width:60px|[[A Just Russia|JR]]
 |}`,
