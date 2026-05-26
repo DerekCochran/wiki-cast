@@ -5,6 +5,29 @@ const { runTests } = require('./helpers');
 
 const castTests = [
   // Failures from export of wikitexts
+  `{| class="wikitable"
+|-
+|-bgcolor=<!-- party shade if gain -->lightblue
+|}`,
+  `{| class="wikitable sortable"  style="font-size: 100%"
+|}`,
+  `{| class=wikitable =wikitable 
+|}`,
+  `[[Image:Barrère Pierre 1690-1755 Ornithologiae.png|thumbnail|250px|right|Plate from ''''Ornithologiae Specimen'' de Barrère showing his system of bird classification]]`,
+  `[[Image:Edward Snowden-2.jpg{{!}}border|thumb|right|200px|During the season, many critics and analysts noticed parallelisms between the series' premise and [[Edward Snowden]].]]`,
+  `<ref name='CNZ'>{{cite web|title=Auckland jeweller relishes residency opportunity|url=http://www.creativenz.govt.nz/en/news/auckland-jeweller-relishes-residency-opportunity|website=Creative New Zealand Toi Aotearoa|accessdate=6 December 2014|date=19 June 2003|url-status=dead|archiveurl=https://web.archive.org/web/20141207235955/http://www.creativenz.govt.nz/en/news/auckland-jeweller-relishes-residency-opportunity|archivedate=7 December 2014}}
+
+==Exhibitions==
+</ref>`,
+  `{|class=wikitable
+!=width:60px|[[A Just Russia|JR]]
+|}`,
+  `<ref = name = "galloway"></ref>`,
+    `{| class="wikitable sortable"
+| '''[[American pipit]]''' ||''Anthus rubescens'' || '''A'''||=center style="background: #006666"| {{font color|White|Least concern}} || align=center|{{decrease}}|| Vagrant.|| [[Image: Anthus rubescens japonicus.JPG|175px]]
+|}`,
+  `Richardson, Dan and Jacobs, Daniel (2007) ''The Rough Guide to Egypt''. ISBN 978 -1-84353-782-3 (7th edition). p.718`,
+  `* {{ISBN|978-88-11-73836-7}}, ISBN 978 -82-91165-04-2.`,
   `ISBN 978-0-9559732 -0-8.`,
   `<gallery Mode="packed" heights="140px">
 File:COLLECTIE TROPENMUSEUM De Broodbakkersstraat in Pasoeroean TMnr 60052542.jpg|Chinatown of Broodbakkerstraat (now Jalan Niaga) in Pasuruan from Hoofdstraat (now Jalan Soekarno Hatta)

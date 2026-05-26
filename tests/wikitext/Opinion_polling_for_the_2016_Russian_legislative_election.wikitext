@@ -1,0 +1,330 @@
+{{Short description|None}}
+In the run up to the [[2016 Russian legislative election]], various organisations carried out [[opinion polling]] to gauge voting intention in [[Russia]]. Results of such polls are displayed in this article.
+
+The date range for these opinion polls are from the [[2011 Russian legislative election|previous legislative election]], held on 4 December 2011, to 11 September 2016.
+
+==Graphical summary==
+[[File:Opinion polling for the 2016 Russian legislative election.svg|thumb|800px|centre| {{columns-list|colwidth=18em|
+ {{Legend-line|{{party color|United Russia}} solid 5px|[[United Russia]]}}
+ {{Legend-line|{{party color|Communist Party of the Russian Federation}} solid 5px|[[Communist Party of the Russian Federation|CPRF]]}}
+ {{Legend-line|{{party color|A Just Russia}} solid 5px|[[A Just Russia]]}}
+ {{Legend-line|{{party color|Liberal Democratic Party of Russia}} solid 5px|[[Liberal Democratic Party of Russia|LDPR]]}}
+}}]]
+
+==Party vote==
+Poll results are listed in the table below in reverse chronological order, showing the most recent first, and using the date the survey's fieldwork was done, as opposed to the date of publication. If that date is unknown, the date of publication is given instead. The highest percentage figure in each polling survey is displayed in bold, and the background shaded in the leading party's colour. If a tie occurs, then no figure is shaded. The lead column on the right shows the percentage-point difference between the two parties with the highest figures. When a specific poll does not show a data figure for a party, the party's cell corresponding to that poll is shown empty.
+
+The table below represents mostly 2016 polls of Russian citizens (including voters who are undecided about which party they would vote for or are not sure whether they will actually vote, those saying they will not be voting, voters who have decided to spoil their ballots, supporters of any other party that is not on the list). Parties with more than 5% support (enough to enter State Duma) are given in bold. Throughout the campaign political analysts have predicted that only three or four parties will be elected to the Duma - UR, CPRF, LDPR, and JR.<ref>{{Cite web|url=http://www.rbc.ru/politics/07/09/2016/57cf1a3d9a7947bd19b1cb16|title=Политтехнологи дали новый прогноз по числу проходящих в Госдуму партий|access-date=7 September 2016}}</ref>
+
+{|class=wikitable style="font-size:95%; line-height:14px; text-align:center"
+!style=width:150px; rowspan=2|Date
+!style=width:150px; rowspan=2|Poll source
+!style=width:60px|[[United Russia|UR]]
+!style=width:60px|[[Communist Party of the Russian Federation|CPRF]]
+!style=width:60px|[[Liberal Democratic Party of Russia|LDPR]]
+!=width:60px|[[A Just Russia|JR]]
+!style=width:60px|[[People's Freedom Party (Russia)|PARNAS]]
+!style=width:60px|[[Yabloko]]
+!style=width:60px|[[Civic Platform (Russia)|CPl]]
+!style=width:60px|[[Rodina (political party)|Rodina]]
+!style=width:60px|[[Patriots of Russia|PoR]]
+!style=width:60px|[[Russian Ecological Party "The Greens"|Greens]]
+!style=width:60px|[[Party of Growth|PoG]]{{#tag:ref|In opinion polls often found under the old name of "Right Cause"|group=nb}}
+!style=width:60px|[[Communists of Russia|CoR]]
+!style=width:60px|[[Russian Party of Pensioners for Justice|RPPJ]]
+!style=width:60px|[[Civilian Power|CPo]]
+!style="width:60px;" rowspan="2"|Lead
+|-
+|bgcolor={{party color|United Russia}}|
+|bgcolor={{party color|Communist Party of the Russian Federation}}|
+|bgcolor={{party color|Liberal Democratic Party of Russia}}|
+|bgcolor={{party color|A Just Russia}}|
+|bgcolor={{party color|Republican Party of Russia – People's Freedom Party}}|
+|bgcolor={{party color|Yabloko}}|
+|bgcolor=#800080|
+|bgcolor={{party color|Rodina}}|
+|bgcolor={{party color|Patriots of Russia}}|
+|bgcolor=#21421E|
+|bgcolor=#0047AB|
+|bgcolor=#E62020|
+|bgcolor=#1E90FF|
+|bgcolor=#00A86B|
+|-
+| '''''18 September 2016'''''
+| '''''2016 result'''''
+| '''''54.2%''''' || '''''13.3%''''' || '''''13.1%''''' || '''''6.2%''''' || ''0.7%'' || ''2.0%'' || ''0.2%'' || ''1.5%'' || ''0.6%'' || ''0.8%'' || ''1.3%'' || ''2.3%'' || ''1.7%'' || ''0.1%''
+|style="background:#0C2C84; color:white;"|40.9%
+|-
+|11 September 2016
+|[http://fom.ru/Politika/12854 FOM]
+|'''43%'''||'''8%'''||'''11%'''||'''5%'''||1%||1%||0%||1%||0%||0%||1%||0%||1%||0%
+|style="background:#0C2C84; color:white;"|32%
+|-
+|11 September 2016
+|[https://wciom.ru/index.php?id=236&uid=115859 WCIOM]
+|'''41.1%'''||'''7.4%'''||'''12.6%'''||'''6.3%'''||0.8%||1.1%||0.1%||1.1%||0.4%||0.6%||0.8%||0.6%||2.4%||0.0%
+|style="background:#0C2C84; color:white;"|28.5%
+|-
+|4 September 2016
+|[http://tass.ru/elections2016/stats/ WCIOM]
+|'''39.3%'''||'''8.7%'''||'''10.4%'''||'''5.3%'''||0.4%||1.1%||0.2%||0.8%||0.2%||0.5%||0.8%||0.4%||1.6%||0.0%
+|style="background:#0C2C84; color:white;"|28.9%
+|-
+|4 September 2016
+|[http://bd.fom.ru/pdf/d35vgd16.pdf FOM]
+|'''41%'''||'''9%'''||'''11%'''||4%||0%||1%||0%||1%||0%||0%||0%||0%||1%||0%
+|style="background:#0C2C84; color:white;"|30%
+|-
+|26-29 August 2016
+|[http://www.levada.ru/2016/09/01/gotovnost-golosovat-i-predvybornye-rejtingi/ Levada Centre]
+|'''31%'''||'''10%'''||'''9%'''||'''5%'''||1%||1%||<1%||1%||<1%||1%||<1%||1%||1%||<1%
+|style="background:#0C2C84; color:white;"|21%
+|-
+|28 August 2016
+|[http://tass.ru/elections2016/stats/ WCIOM]
+|'''41.2%'''||'''7.7%'''||'''12.2%'''||'''5.4%'''||0.4%||1.3%||0.4%||0.9%||0.4%||0.3%||0.6%||0.4%||1.9%||0.2%
+|style="background:#0C2C84; color:white;"|29%
+|-
+|28 August 2016
+|[http://bd.fom.ru/pdf/d34vybory2016.pdf FOM]
+|'''44%'''||'''8%'''||'''11%'''||'''5%'''||0%||1%||0%||1%||0%||1%||0%||0%||1%||0%
+|style="background:#0C2C84; color:white;"|33%
+|-
+|21 August 2016
+|[http://tass.ru/elections2016/stats/ WCIOM]
+|'''43.3%'''||'''8.4%'''||'''10.8%'''||'''6.6%'''||0.6%||0.9%||0.2%||0.6%||0.2%||0.2%||0.8%||0.4%||1.4%||0.0%
+|style="background:#0C2C84; color:white;"|32.5%
+|-
+|21 August 2016
+|[http://bd.fom.ru/pdf/d33vybory2016.pdf FOM]
+|'''45%'''||'''9%'''||'''8%'''||4%||0%||1%||0%||1%||0%||0%||0%||0%||1%||0%
+|style="background:#0C2C84; color:white;"|36%
+|-
+|14 August 2016
+|[https://wciom.ru/news/ratings/elektoralnyj_rejting_politicheskix_partij// WCIOM]
+|'''44.0%'''||'''10.1%'''||'''11.8%'''||'''7.5%'''||0.3%||1.0%||0.0%||0.3%||0.2%||0.2%||0.6%||0.3%||0.9%||0.2%
+|style="background:#0C2C84; color:white;"|32.2%
+|-
+|14 August 2016
+|[http://bd.fom.ru/pdf/d32vybory2016.pdf FOM]
+|'''42%'''||'''10%'''||'''9%'''||'''8%'''||<1%||1%||<1%||<1%||1%||<1%||<1%||<1%||<1%||<1%
+|style="background:#0C2C84; color:white;"|32%
+|-
+|7 August 2016
+|[http://bd.fom.ru/pdf/d31vybory2016.pdf FOM]
+|'''45%'''||'''10%'''||'''8%'''||'''8%'''||<1%||1%||1%||<1%||<1%||<1%||<1%||<1%||<1%||<1%
+|style="background:#0C2C84; color:white;"|35%
+|-
+|31 July 2016
+|[http://bd.fom.ru/pdf/d30pi2016.pdf FOM]
+|'''47%'''||'''9%'''||'''8%'''||'''8%'''||<1%||<1%||1%||<1%||<1%||–||<1%||<1%||<1%||<1%
+|style="background:#0C2C84; color:white;"|38%
+|-
+|25 July 2016
+|[http://www.levada.ru/2016/08/02/predstoyashhie-vybory-v-gosdumu/ Levada Centre]
+|'''39%'''||'''10%'''||'''10%'''||3%||1%||1%||<1%||<1%||<1%||<1%||<1%||1%||<1%||<1%
+|style="background:#0C2C84; color:white;"|29%
+|-
+|24 July 2016
+|[https://web.archive.org/web/20180128074729/http://bd.fom.ru/pdf/d27pi2016.pdf FOM]
+|'''44%'''||'''10%'''||'''11%'''||'''7%'''||<1%||1%||<1%||<1%||1%||–||<1%||1%|<1%||<1%||<1%
+|style="background:#0C2C84; color:white;"|33%
+|-
+|24 July 2016
+|[https://wciom.ru/news/ratings/elektoralnyj_rejting_politicheskix_partij// WCIOM]
+|'''44.1%'''||'''10.1%'''||'''10.7%'''||'''6.4%'''||0.4%||1.1%||0.2%||0.3%||0.1%||0.5%||0.4%||0.1%||0.7%||0.0%
+|style="background:#0C2C84; color:white;"|33.4%
+|-
+|17 July 2016
+|[https://web.archive.org/web/20180128074729/http://bd.fom.ru/pdf/d27pi2016.pdf FOM]
+|'''45%'''||'''10%'''||'''12%'''||'''7%'''||<1%||1%||<1%||<1%||1%||–||<1%||<1%|<1%||<1%||<1%
+|style="background:#0C2C84; color:white;"|33%
+|-
+|17 July 2016
+|[https://wciom.ru/news/ratings/elektoralnyj_rejting_politicheskix_partij// WCIOM]
+|'''44.9%'''||'''8.7%'''||'''11.3%'''||'''6.7%'''||0.3%||0.7%||0.2%||0.3%||0.2%||0.2%||0.7%||0.1%||0.8%||0.1%
+|style="background:#0C2C84; color:white;"|33.6%
+|-
+|10 July 2016
+|[https://web.archive.org/web/20180128074729/http://bd.fom.ru/pdf/d27pi2016.pdf FOM]
+|'''46%'''||'''10%'''||'''12%'''||'''6%'''||<1%||1%||<1%||<1%||1%||–||<1%||<1%|<1%||<1%||<1%
+|style="background:#0C2C84; color:white;"|34%
+|-
+|10 July 2016
+|[https://wciom.ru/news/ratings/elektoralnyj_rejting_politicheskix_partij/ WCIOM]
+|'''44%'''||'''9.9%'''||'''10.5%'''||'''7.8%'''||0.1%||0.8%||0.2%||0.1%||0.4%||0.6%||0.2%||0.4%||0.5%||0.0%
+|style="background:#0C2C84; color:white;"|33.5%
+|-
+|3 July 2016
+|[https://wciom.ru/news/ratings/elektoralnyj_rejting_politicheskix_partij/ WCIOM]
+|'''44.3%'''||'''10.4%'''||'''9.0%'''||'''7.9%'''||0.5%||0.8%||0.3%||0.4%||0.3%||0.3%||0.4%||0.2%||0.6%||0.0%
+|style="background:#0C2C84; color:white;"|33.9%
+|-
+|3 July 2016
+|[http://bd.fom.ru/pdf/d26pi2016.pdf FOM]
+|'''46%'''||'''10%'''||'''11%'''||'''7%'''||<1%||1%||<1%||<1%||1%||–||<1%||1%|<1%||<1%||<1%
+|style="background:#0C2C84; color:white;"|35%
+|-
+|27 June 2016
+|[http://www.levada.ru/2016/07/18/predstoyashhie-dumskie-vybory-i-obraz-nyneshnej-gosdumy/ Levada Centre]
+|'''55.8%'''||'''18.2%'''||'''14.2%'''||'''5.1%'''||–||–||–||–||–||–||–||–||–||–
+|style="background:#0C2C84; color:white;"|37.6%
+|-
+|26 June 2016
+|[https://wciom.ru/news/ratings/elektoralnyj_rejting_politicheskix_partij/ WCIOM]
+|'''45.1%'''||'''9.4%'''||'''10.1%'''||'''6.5%'''||0.4%||1.1%||0.3%||0.3%||0.6%||0.2%||0.5%||0.7%||0.4%||0.0%
+|style="background:#0C2C84; color:white;"|35%
+|-
+|26 June 2016
+|[https://web.archive.org/web/20180127203421/http://bd.fom.ru/pdf/d24pi2016.pdf FOM]
+|'''45%'''||'''10%'''||'''11%'''||'''6%'''||<1%||1%||1%||<1%||<1%||–||<1%||<1%||<1%||<1%
+|style="background:#0C2C84; color:white;"|34%
+|-
+|24 June 2016
+|[http://nvdaily.ru/info/80226.html FBK]
+|'''39%'''||'''6%'''||'''5%'''||4%||<1%||<1%||–||–||–||–||–||–||–||–
+|style="background:#0C2C84; color:white;"|33%
+|-
+|19 June 2016
+|[https://wciom.ru/news/ratings/elektoralnyj_rejting_politicheskix_partij/ WCIOM]
+|'''43.1%'''||'''9.5%'''||'''11.4%'''||'''6.9%'''||0.6%||1%||0.1%||0.2%||0.2%||0.2%||0.3%||0.2%||0.7%||0.1%
+|style="background:#0C2C84; color:white;"|31.7%
+|-
+|12 June 2016
+|[https://wciom.ru/news/ratings/elektoralnyj_rejting_politicheskix_partij/ WCIOM]
+|'''45.5%'''||'''8.9%'''||'''9.7%'''||'''6.8%'''||0.1%||1.2%||0.3%||0.4%||0.3%||0.5%||0.3%||0.4%||0.6%||0.1%
+|style="background:#0C2C84; color:white;"|35.8%
+|-
+|5 June 2016
+|[http://fom.ru/Politika/10949/ FOM]
+|'''48%'''||'''10%'''||'''11%'''||'''5%'''||<1%||1%||<1%||<1%||1%||–||<1%||<1%||<1%||<1%
+|style="background:#0C2C84; color:white;"|37%
+|-
+|5 June 2016
+|[https://wciom.ru/news/ratings/elektoralnyj_rejting_politicheskix_partij/ WCIOM]
+|'''46.7%'''||'''10.3%'''||'''10.1%'''||'''5.1%'''||0.3%||0.8%||0.4%||0.2%||0.5%||0.6%||0.2%||0.4%||0.5%||0.1%
+|style="background:#0C2C84; color:white;"|36.4%
+|-
+|29 May 2016
+|[https://wciom.ru/news/ratings/elektoralnyj_rejting_politicheskix_partij/ WCIOM]
+|'''45.4%'''||'''9.9%'''||'''9.9%'''||'''5.5%'''||0.3%||1.3%||0.3%||0.1%||0.3%||0.5%||0.1%||0.1%||0.8%||0.2%
+|style="background:#0C2C84; color:white;"|35.5%
+|-
+|22 May 2016
+|[https://wciom.ru/news/ratings/elektoralnyj_rejting_politicheskix_partij/ WCIOM]
+|'''46.2%'''||'''9.3%'''||'''11%'''||'''5.9%'''||0.3%||1.2%||0.2%||0.1%||0.5%||0.5%||0.2%||0.3%||0.5%||0.1%
+|style="background:#0C2C84; color:white;"|35.2%
+|-
+|15 May 2016
+|[https://wciom.ru/news/ratings/elektoralnyj_rejting_politicheskix_partij/ WCIOM]
+|'''47.9%'''||'''10.1%'''||'''10.8%'''||'''5.8%'''||0.2%||0.9%||0.3%||0.1%||0.2%||0.4%||0.1%||0.3%||0.3%||0.0%
+|style="background:#0C2C84; color:white;"|37.1%
+|-
+|1 May 2016
+|[https://wciom.ru/news/ratings/elektoralnyj_rejting_politicheskix_partij/ WCIOM]
+|'''49%'''||'''10.7%'''||'''10.5%'''||'''6.4%'''||0.4%||1.1%||0.1%||0.3%||0.1%||0.5%||0.4%||0.3%||0.8%||0.2%
+|style="background:#0C2C84; color:white;"|38.3%
+|-
+|24 April 2016
+|[https://wciom.ru/news/ratings/elektoralnyj_rejting_politicheskix_partij/ WCIOM]
+|'''48.5%'''||'''9.1%'''||'''9.9%'''||'''6.4%'''||0.2%||0.9%||0.3%||0.2%||0.5%||0.3%||0.3%||0.4%||0.6%||0.1%
+|style="background:#0C2C84; color:white;"|38.6%
+|-
+|17 April 2016
+|[https://wciom.ru/news/ratings/elektoralnyj_rejting_politicheskix_partij/ WCIOM]
+|'''47.6%'''||'''10%'''||'''9.2%'''||'''5.6%'''||0.4%||1%||0.1%||0.4%||0.5%||0.5%||0.4%||0.6%||0.9%||0.1%
+|style="background:#0C2C84; color:white;"|37.6%
+|-
+|10 April 2016
+|[http://fom.ru/Politika/10949/ FOM]
+|'''46%'''||'''9%'''||'''11%'''||'''5%'''||1%||1%||1%||<1%||1%||–||<1%||<1%||<1%||<1%
+|style="background:#0C2C84; color:white;"|35%
+|-
+|10 April 2016
+|[https://wciom.ru/news/ratings/elektoralnyj_rejting_politicheskix_partij/ WCIOM]
+|'''45.7%'''||'''10.3%'''||'''10.6%'''||'''6.6%'''||0.3%||1.5%||0.6%||0.4%||0.2%||0.5%||0.3%||0.2%||1.0%||0.0%
+|style="background:#0C2C84; color:white;"|35.1%
+|-
+|3 April 2016
+|[https://wciom.ru/news/ratings/elektoralnyj_rejting_politicheskix_partij/ WCIOM]
+|'''47.9%'''||'''9%'''||'''8.5%'''||'''6.3%'''||0.5%||0.7%||0.4%||0.1%||0.4%||0.2%||0.1%||0.2%||0.6%||0.0%
+|style="background:#0C2C84; color:white;"|38.9%
+|-
+|27 March 2016
+|[https://wciom.ru/news/ratings/elektoralnyj_rejting_politicheskix_partij/ WCIOM]
+|'''47.5%'''||'''9.1%'''||'''9.3%'''||'''5.4%'''||0.4%||1.7%||0.3%||0.4%||0.5%||0.3%||0.2%||0.3%||1.0%||0.3%
+|style="background:#0C2C84; color:white;"|38.2%
+|-
+|20 March 2016
+|[https://wciom.ru/news/ratings/elektoralnyj_rejting_politicheskix_partij/ WCIOM]
+|'''44.1%'''||'''10.1%'''||'''9.6%'''||'''6.3%'''||0.8%||1.5%||0.5%||0.4%||0.4%||0.3%||0.3%||0.6%||0.3%||0.1%
+|style="background:#0C2C84; color:white;"|34%
+|-
+|February 2016
+|[https://wciom.ru/news/ratings/elektoralnyj_rejting_politicheskix_partij/ WCIOM]{{#tag:ref|Average result for month|group=nb}}
+|'''49%'''||'''9%'''||'''9%'''||'''6%'''||–||–||–||–||–||–||–||–||–||–
+|style="background:#0C2C84; color:white;"|40%
+|-
+|10 February 2016
+|[http://www.levada.ru/2016/02/10/elektoralnyj-rejting-partij-i-vozmozhnyh-kandidatov-v-prezidenty/ Levada Centre]
+|'''39%'''||'''10%'''||'''5%'''||3%||<1%||1%||1%||1%||1%||<1%||–||–||–||–
+|style="background:#0C2C84; color:white;"|29%
+|-
+|January 2016
+|[https://wciom.ru/news/ratings/elektoralnyj_rejting_politicheskix_partij/ WCIOM]{{#tag:ref|Average result for month|group=nb}}
+|'''51%'''||'''9%'''||'''8%'''||'''5%'''||–||–||–||–||–||–||–||–||–||–
+|style="background:#0C2C84; color:white;"|42%
+|-
+|December 2015
+|[https://wciom.ru/news/ratings/elektoralnyj_rejting_politicheskix_partij/ WCIOM]{{#tag:ref|Average result for month|group=nb}}
+|'''53%'''||'''8%'''||'''6%'''||'''5%'''||–||–||–||–||–||–||–||–||–||–
+|style="background:#0C2C84; color:white;"|45%
+|-
+|10 December 2015
+|[http://www.levada.ru/2015/12/10/elektoralnyj-rejting-partij/ Levada Centre]
+|'''44%'''||'''10%'''||'''5%'''||2%||<1%||1%||1%||1%||1%||1%||–||–||–||–
+|style="background:#0C2C84; color:white;"|34%
+|-
+|November 2015
+|[https://wciom.ru/news/ratings/elektoralnyj_rejting_politicheskix_partij/ WCIOM]{{#tag:ref|Average result for month|group=nb}}
+|'''53%'''||'''8%'''||'''7%'''||'''5%'''||–||–||–||–||–||–||–||–||–||–
+|style="background:#0C2C84; color:white;"|45%
+|-
+|October 2015
+|[https://wciom.ru/news/ratings/elektoralnyj_rejting_politicheskix_partij/ WCIOM]{{#tag:ref|Average result for month|group=nb}}
+|'''55%'''||'''8%'''||'''6%'''||'''5%'''||–||–||–||–||–||–||–||–||–||–
+|style="background:#0C2C84; color:white;"|47%
+|-
+|5 October 2015
+|[http://www.levada.ru/2015/11/05/vozmozhnye-rezultaty-vyborov-v-gosdumu/ Levada Centre]
+|'''40%'''||'''11%'''||'''6%'''||3%||1%||1%||1%||1%||1%||1%||–||–||–||–
+|style="background:#0C2C84; color:white;"|31%
+|-
+|September 2015
+|[https://wciom.ru/news/ratings/elektoralnyj_rejting_politicheskix_partij/ WCIOM]{{#tag:ref|Average result for month|group=nb}}
+|'''53%'''||'''8%'''||'''7%'''||'''5%'''||–||–||–||–||–||–||–||–||–||–
+|style="background:#0C2C84; color:white;"|45%
+|-
+|7 September 2015
+|[http://www.levada.ru/2015/10/07/vozmozhnye-rezultaty-parlamentskih-vyborov-2/ Levada Centre]
+|'''43%'''||'''11%'''||'''5%'''||3%||1%||1%||1%||1%||1%||2%||–||–||–||–
+|style="background:#0C2C84; color:white;"|32%
+|-
+|{{nowrap|''4 December 2011''}}
+|{{nowrap|''2011 Result''}}
+|'''''49.32%'''''||'''''19.19%'''''||'''''11.67%'''''||'''''13.24%'''''||''—''||''3.43%''||''—''||''—''||''0.97%''||''—''||''0.60%''||''—''||''—''||''—''
+|style="background:#0C2C84; color:white;"|30.13%
+|-
+|}
+
+==Notes==
+{{reflist|group=nb}}
+
+==References==
+{{Reflist}}
+
+{{Opinion polling for the Russian election}}
+
+[[Category:2016 Russian legislative election|Opinion polling]]
+[[Category:Opinion polling in Russia|Legislative 2016]]
+[[Category:Opinion polling for elections|Russia]]
