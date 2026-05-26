@@ -2298,8 +2298,8 @@ static void stage1_parse_braces_on_accum(const ParserConfig *cfg, Accum *accum) 
 		scratch->buf[txt_len]= '\0';
 		scratch->len= txt_len;
 
-		bool allow_heading= !(tok->name && strcmp(tok->name, "poem") == 0);
-		parse_braces_with_heading(scratch, cfg, accum, allow_heading);
+		/* JS parity: ext-inner parseOnce should not synthesize heading tokens. */
+		parse_braces_with_heading(scratch, cfg, accum, false);
 		if(!(scratch->len == txt_len && sz_equal(scratch->buf, txt, txt_len))) {
 			build_from_str(tok, scratch->buf, scratch->len, accum);
 		}

@@ -157,9 +157,14 @@ static bool parse_isbn_core_10(const char *s, size_t len, size_t p, size_t *core
 		if (isdigit((unsigned char)s[p])) {
 			digits++;
 			p++;
-			size_t sep = consume_magic_space(s, len, p);
-			if (sep > 0) p += sep;
-			if (p < len && s[p] == '-') p++;
+            /* JS parity for (?:\d[\s-]?){9}: only one optional separator token
+             * per position (either a space-token or '-' but not both). */
+            size_t sep = consume_magic_space(s, len, p);
+            if (sep > 0) {
+                p += sep;
+            } else if (p < len && s[p] == '-') {
+                p++;
+            }
 			continue;
 		}
 		break;
