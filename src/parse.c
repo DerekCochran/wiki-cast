@@ -2026,6 +2026,7 @@ static void postprocess_parameter_value_inline_impl(Token *t, const ParserConfig
 
 	Child *old_children= t->children;
 	size_t old_count= t->child_count;
+	bool transformed_children= false;
 	bool has_non_text_children= false;
 	for(size_t i= 0; i < old_count; i++) {
 		if(!old_children[i].is_text) {
@@ -2120,6 +2121,7 @@ static void postprocess_parameter_value_inline_impl(Token *t, const ParserConfig
 			}
 
 			if(cur.text_owned && cur.text) free((void*)cur.text);
+			transformed_children= true;
 
 		Token *tmp= token_new(is_attr_value ? TOKEN_ATTR_VALUE : TOKEN_PLAIN,
 			is_attr_value ? "attr-value" : t->type_name);
@@ -2155,22 +2157,25 @@ static void postprocess_parameter_value_inline_impl(Token *t, const ParserConfig
 	t->child_cap= new_cap;
 	wiki_thread_buf_release_scratch(scratch);
 
-	/* Recurse after replacement: transforming this token may have created brand-new
-	 * nested tokens (for example template parameters from a freshly parsed {{...}})
-	 * that were not visited by the pre-order recursion at function entry. */
-	for(size_t i= 0; i < t->child_count; i++) {
-		if(!t->children[i].is_text && t->children[i].token) {
-			postprocess_parameter_value_inline_impl(t->children[i].token, cfg, accum, page, t, parent, current_in_ext_context);
+	if(transformed_children) {
+		/* Recurse after replacement: transforming this token may have created
+		 * brand-new nested tokens (for example template parameters from a
+		 * freshly parsed {{...}}) that were not visited by the pre-order
+		 * recursion at function entry. */
+		for(size_t i= 0; i < t->child_count; i++) {
+			if(!t->children[i].is_text && t->children[i].token) {
+				postprocess_parameter_value_inline_impl(t->children[i].token, cfg, accum, page, t, parent, current_in_ext_context);
+			}
 		}
-	}
 
-	/* JS parity: any sub-token (e.g. ExtToken with ext-inner) that was
-     * built from this parameter-value text must run the nested-plain pass
-     * so its ext-inner content goes through stages 5..10 just like JS
-     * Token.parseOnce would do for tokens added to the accum. */
-	for(size_t i= 0; i < t->child_count; i++) {
-		if(!t->children[i].is_text && t->children[i].token) {
-			postprocess_nested_plain(t->children[i].token, cfg, accum, page);
+		/* JS parity: any sub-token (e.g. ExtToken with ext-inner) that was
+		 * built from this parameter-value text must run the nested-plain pass
+		 * so its ext-inner content goes through stages 5..10 just like JS
+		 * Token.parseOnce would do for tokens added to the accum. */
+		for(size_t i= 0; i < t->child_count; i++) {
+			if(!t->children[i].is_text && t->children[i].token) {
+				postprocess_nested_plain(t->children[i].token, cfg, accum, page);
+			}
 		}
 	}
 	log_debug_env_token("DEBUG_PARAM_VALUE", t, "postprocess_parameter_value_inline_impl end");
