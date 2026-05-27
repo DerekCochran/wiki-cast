@@ -160,10 +160,13 @@ static bool try_parse_f_sentinel(const char *ptr, size_t len, size_t *out_idx) {
 	if((unsigned char)ptr[0] != 0x00) return false;
 	if(ptr[len - 2] != 'f') return false;
 	if((unsigned char)ptr[len - 1] != 0x7F) return false;
+    const size_t digit_span = len - 3;
+    if(digit_span == 0) return false;
+    const char *not_digit = sz_find_byte_not_from(ptr + 1, digit_span, "0123456789", 10);
+    if(not_digit) return false;
 	size_t idx= 0;
 	for(size_t i= 1; i + 2 < len; i++) {
 		char c= ptr[i];
-		if(c < '0' || c > '9') return false;
 		idx= idx * 10 + (size_t)(c - '0');
 	}
 	*out_idx= idx;
