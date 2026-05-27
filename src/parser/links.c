@@ -52,6 +52,9 @@ static bool proto_token_match_ci_n(const char *s, size_t slen,
     return true;
 }
 
+static bool scan_next_sentinel_any(const char *s, size_t len, size_t *pos,
+																size_t *out_n, char *out_type, size_t *out_total_len);
+
 /* PARITY: links.js uses /^\s*(?:${config.protocol}|\/\/)/iu.
  * Leading whitespace includes Unicode Zs + ASCII whitespace.
  * Protocol alternatives come from cfg->protocol_items (validated in Phase A.1). */
@@ -89,42 +92,63 @@ static bool starts_with_proto(const char *s, size_t len, const ParserConfig *cfg
  * reject targets containing \0\d+[eh!+-]\x7F. */
 static bool has_invalid_title_sentinel(const char *s, size_t len) {
 	if(!s || len == 0) return false;
-	for(size_t i = 0; i < len; i++) {
-		if((unsigned char)s[i] != 0x00) continue;
-		size_t j = i + 1;
-		if(j >= len || !(s[j] >= '0' && s[j] <= '9')) continue;
-		while(j < len && s[j] >= '0' && s[j] <= '9') j++;
-		if(j + 1 >= len) continue;
-		char t = s[j];
-		if((t == 'e' || t == 'h' || t == '!' || t == '+' || t == '-') &&
-		   (unsigned char)s[j + 1] == 0x7F) {
-			return true;
-		}
+	size_t pos= 0;
+	for(;;) {
+		size_t n= 0;
+		char t= '\0';
+		size_t total= 0;
+		if(!scan_next_sentinel_any(s, len, &pos, &n, &t, &total)) break;
+		(void)n;
+		(void)total;
+		if(t == 'e' || t == 'h' || t == '!' || t == '+' || t == '-') return true;
 	}
 	return false;
 }
 
 static bool has_sentinel_type_in_view(const char *s, size_t len, char want) {
 	if(!s || len == 0) return false;
-	for(size_t i= 0; i < len;) {
-		if((unsigned char)s[i] != '\0') {
-			i++;
-			continue;
-		}
-		size_t j= i + 1;
-		if(j >= len || !(s[j] >= '0' && s[j] <= '9')) {
-			i++;
-			continue;
-		}
-		while(j < len && s[j] >= '0' && s[j] <= '9') j++;
-		if(j + 1 < len && (unsigned char)s[j + 1] == 0x7F) {
-			if(s[j] == want) return true;
-			i= j + 2;
-			continue;
-		}
-		i++;
+	size_t pos= 0;
+	for(;;) {
+		size_t n= 0;
+		char t= '\0';
+		size_t total= 0;
+		if(!scan_next_sentinel_any(s, len, &pos, &n, &t, &total)) break;
+		(void)n;
+		(void)total;
+		if(t == want) return true;
 	}
 	return false;
+}
+
+static bool scan_next_sentinel_any(const char *s, size_t len, size_t *pos,
+																size_t *out_n, char *out_type, size_t *out_total_len) {
+	if(!s || !pos || *pos >= len) return false;
+	const char nul= '\0';
+	for(;;) {
+		if(*pos >= len) return false;
+		const char *hit= sz_find_byte(s + *pos, len - *pos, &nul);
+		if(!hit) return false;
+		size_t i= (size_t)(hit - s);
+		size_t j= i + 1;
+		if(j >= len || !(s[j] >= '0' && s[j] <= '9')) {
+			*pos= i + 1;
+			continue;
+		}
+		size_t n= 0;
+		while(j < len && s[j] >= '0' && s[j] <= '9') {
+			n= n * 10 + (size_t)(s[j] - '0');
+			j++;
+		}
+		if(j + 1 >= len || (unsigned char)s[j + 1] != 0x7F) {
+			*pos= i + 1;
+			continue;
+		}
+		if(out_n) *out_n= n;
+		if(out_type) *out_type= s[j];
+		if(out_total_len) *out_total_len= (j + 2) - i;
+		*pos= j + 2;
+		return true;
+	}
 }
 
 /* Forward declaration for helper defined later in this file. */
@@ -587,24 +611,14 @@ static void img_scan_link_sentinels(const char *val, size_t val_len,
 	if(has_invalid) *has_invalid= false;
 	if(!val || val_len == 0) return;
 
-	for(size_t i= 0; i < val_len;) {
-		if((unsigned char)val[i] != '\0') {
-			i++;
-			continue;
-		}
-
-		size_t j= i + 1;
-		if(j >= val_len || !(val[j] >= '0' && val[j] <= '9')) {
-			i++;
-			continue;
-		}
-		while(j < val_len && val[j] >= '0' && val[j] <= '9') j++;
-		if(j >= val_len || j + 1 >= val_len || (unsigned char)val[j + 1] != 0x7F) {
-			i++;
-			continue;
-		}
-
-		char t= val[j];
+	size_t pos= 0;
+	for(;;) {
+		size_t n= 0;
+		char t= '\0';
+		size_t total= 0;
+		if(!scan_next_sentinel_any(val, val_len, &pos, &n, &t, &total)) break;
+		(void)n;
+		(void)total;
 		bool stripped= (t == 'c' || t == 't' || (strip_quotes && t == 'q'));
 		if(!stripped) {
 			if(t == 'm' || t == 'w') {
@@ -615,7 +629,6 @@ static void img_scan_link_sentinels(const char *val, size_t val_len,
 				if(has_invalid) *has_invalid= true;
 			}
 		}
-		i= j + 2;
 	}
 }
 
