@@ -580,6 +580,25 @@ static void json_write_escaped_len(const char *s, size_t len, FILE *fp) {
 
 static void stage_json_write_token(const Token *t, FILE *fp, const Accum *accum);
 
+static bool parse_sentinel_shape(const char *s, size_t len, size_t pos,
+								 char *type_out, size_t *idx_out, size_t *next_pos_out) {
+	if(!s || pos >= len || (unsigned char)s[pos] != '\0') return false;
+	size_t p = pos + 1;
+	if(p >= len || !isdigit((unsigned char)s[p])) return false;
+	const char *not_digit = sz_find_byte_not_from(s + p, len - p, "0123456789", 10);
+	size_t type_pos = not_digit ? (size_t)(not_digit - s) : len;
+	if(type_pos >= len || type_pos <= p) return false;
+	if(type_pos + 1 >= len || (unsigned char)s[type_pos + 1] != 0x7F) return false;
+	size_t idx = 0;
+	for(size_t i = p; i < type_pos; i++) {
+		idx = idx * 10 + (size_t)(s[i] - '0');
+	}
+	if(idx_out) *idx_out = idx;
+	if(type_out) *type_out = s[type_pos];
+	if(next_pos_out) *next_pos_out = type_pos + 2;
+	return true;
+}
+
 static bool stage_json_parse_sentinel(const char *s, size_t len, size_t *pos, size_t *idx_out) {
 	if(!s || !pos || !idx_out) {
 		log_debug_env_token("WTC_DEBUG_STAGE_1", NULL,
@@ -591,54 +610,18 @@ static bool stage_json_parse_sentinel(const char *s, size_t len, size_t *pos, si
 			"[C stage_json_parse_sentinel] pos >= len: pos=%zu len=%zu", *pos, len);
 		return false;
 	}
-	if((unsigned char)s[*pos] != '\0') {
+	char type_ch = '\0';
+	size_t next_pos = 0;
+	if(!parse_sentinel_shape(s, len, *pos, &type_ch, idx_out, &next_pos)) {
 		log_debug_env_token("WTC_DEBUG_STAGE_1", NULL,
-			"[C stage_json_parse_sentinel] not NUL at pos=%zu byte=%02X", *pos, (unsigned char)s[*pos]);
-		return false;
-	}
-
-	size_t p = *pos + 1; /* first digit */
-	if(p >= len) {
-		log_debug_env_token("WTC_DEBUG_STAGE_1", NULL,
-			"[C stage_json_parse_sentinel] no room for digit at p=%zu len=%zu", p, len);
-		return false;
-	}
-	if(!isdigit((unsigned char)s[p])) {
-		log_debug_env_token("WTC_DEBUG_STAGE_1", NULL,
-			"[C stage_json_parse_sentinel] first char after NUL not digit p=%zu byte=%02X", p, (unsigned char)s[p]);
-		return false;
-	}
-
-	size_t idx = 0;
-	while(p < len && isdigit((unsigned char)s[p])) {
-		idx = idx * 10 + (size_t)(s[p] - '0');
-		p++;
-	}
-
-	/* p now points at the type char (should exist) */
-	if(p >= len) {
-		log_debug_env_token("WTC_DEBUG_STAGE_1", NULL,
-			"[C stage_json_parse_sentinel] ran off end after digits p=%zu len=%zu", p, len);
-		return false;
-	}
-
-	unsigned char type_ch = (unsigned char)s[p];
-	if(p + 1 >= len) {
-		log_debug_env_token("WTC_DEBUG_STAGE_1", NULL,
-			"[C stage_json_parse_sentinel] missing DEL after type at p=%zu type=%02X len=%zu", p, type_ch, len);
-		return false;
-	}
-	if((unsigned char)s[p + 1] != 0x7F) {
-		log_debug_env_token("WTC_DEBUG_STAGE_1", NULL,
-			"[C stage_json_parse_sentinel] trailing byte not DEL at del_idx=%zu byte=%02X", p + 1, (unsigned char)s[p + 1]);
+			"[C stage_json_parse_sentinel] invalid sentinel shape at pos=%zu", *pos);
 		return false;
 	}
 
 	/* Success: advance pos to after the DEL */
-	*idx_out = idx;
-	*pos = p + 2;
+	*pos = next_pos;
 	log_debug_env_token("WTC_DEBUG_STAGE_1", NULL,
-		"[C stage_json_parse_sentinel] OK parsed idx=%zu type=%02X next_pos=%zu", idx, type_ch, *pos);
+		"[C stage_json_parse_sentinel] OK parsed idx=%zu type=%02X next_pos=%zu", *idx_out, (unsigned char)type_ch, *pos);
 	return true;
 }
 
@@ -648,15 +631,11 @@ static bool thread_buf_has_sentinel_type(const ThreadBuf *tb, char type_ch) {
 	if(!tb || !tb->buf || tb->len < 4) return false;
 
 	for(size_t i= 0; i + 3 < tb->len; i++) {
-		if((unsigned char)tb->buf[i] != '\0') continue;
-
-		size_t p= i + 1;
-		if(p >= tb->len || !isdigit((unsigned char)tb->buf[p])) continue;
-
-		while(p < tb->len && isdigit((unsigned char)tb->buf[p])) p++;
-		if(p + 1 >= tb->len) continue;
-
-		if(tb->buf[p] == type_ch && (unsigned char)tb->buf[p + 1] == 0x7F) {
+		char parsed_type = '\0';
+		size_t idx = 0;
+		size_t next_pos = 0;
+		if(!parse_sentinel_shape(tb->buf, tb->len, i, &parsed_type, &idx, &next_pos)) continue;
+		if(parsed_type == type_ch) {
 			return true;
 		}
 	}
