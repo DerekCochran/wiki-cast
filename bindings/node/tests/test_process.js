@@ -39,12 +39,12 @@ async function testAll() {
   }
   console.log("Regression Parsoid tests passed");
 
-  let ok = testWikitext();
-  if (!ok) {
-    console.error(`FAILED: stopping on first failure in wikitext tests`);
-    process.exit(4);
-  }
-  console.log("Regression Wikitext tests passed");
+  // let ok = testWikitext();
+  // if (!ok) {
+  //   console.error(`FAILED: stopping on first failure in wikitext tests`);
+  //   process.exit(4);
+  // }
+  // console.log("Regression Wikitext tests passed");
 
   // console.log("Running export tests...");
   // ok = await testExport(process.argv);

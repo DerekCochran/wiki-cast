@@ -150,7 +150,7 @@ static Token *make_html_attr_key(const char *key, size_t key_len, Accum *accum) 
 static char *html_normalize_equal(const char *equal, size_t equal_len, Accum *accum) {
 	if(!equal || equal_len == 0) return NULL;
 
-	if(memchr(equal, '\0', equal_len) == NULL) {
+	if(sz_find_byte(equal, equal_len, "\0") == NULL) {
 		char *out= malloc(equal_len + 1);
 		if(!out) return NULL;
 		sz_copy(out, equal, equal_len);

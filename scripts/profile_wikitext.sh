@@ -41,7 +41,7 @@ echo "Mode: $MODE"
 echo "Config: $CONFIG"
 echo "Tests dir: $TESTSDIR"
 
-rm -rf "$BUILD_DIR"
+# rm -rf "$BUILD_DIR"
 mkdir -p "$BUILD_DIR"
 pushd "$BUILD_DIR" >/dev/null
 

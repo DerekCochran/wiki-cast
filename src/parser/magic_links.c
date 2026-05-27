@@ -106,15 +106,15 @@ static size_t consume_magic_space(const char *s, size_t len, size_t i) {
     if (s[i] == '\t') return 1;
     size_t zs = consume_js_zs_magic(s, len, i);
     if (zs > 0) return zs;
-    if (i + 6 <= len && strncasecmp(s + i, "&nbsp;", 6) == 0) return 6;
+    if (i + 6 <= len && str_ci_eq_n(s + i, "&nbsp;", 6)) return 6;
     if (i + 4 < len && s[i] == '&' && s[i + 1] == '#') {
         size_t j = i + 2;
         if (j < len && (s[j] == 'x' || s[j] == 'X')) {
             j++;
             while (j < len && s[j] == '0') j++;
             if (j + 2 < len && s[j + 2] == ';') {
-                char a = (char)tolower((unsigned char)s[j]);
-                char b = (char)tolower((unsigned char)s[j + 1]);
+                char a = (char)fast_tolower((unsigned char)s[j]);
+                char b = (char)fast_tolower((unsigned char)s[j + 1]);
                 if (a == 'a' && b == '0') return (j + 3) - i;
             }
             return 0;
@@ -366,13 +366,13 @@ void parse_magic_links(ThreadBuf *tb, const ParserConfig *cfg, Accum *accum) {
 
                 /* &lt; or &gt; */
                 if (rem >= 4 && url_ptr[k + 3] == ';' &&
-                    ((strncasecmp(url_ptr + k + 1, "lt", 2) == 0) ||
-                     (strncasecmp(url_ptr + k + 1, "gt", 2) == 0))) {
+                    (str_ci_eq_n(url_ptr + k + 1, "lt", 2) ||
+                     str_ci_eq_n(url_ptr + k + 1, "gt", 2))) {
                     entity_at = k;
                     break;
                 }
                 /* &nbsp; */
-                if (rem >= 6 && strncasecmp(url_ptr + k, "&nbsp;", 6) == 0) {
+                if (rem >= 6 && str_ci_eq_n(url_ptr + k, "&nbsp;", 6)) {
                     entity_at = k;
                     break;
                 }
@@ -382,9 +382,8 @@ void parse_magic_links(ThreadBuf *tb, const ParserConfig *cfg, Accum *accum) {
                     while (j < url_len && url_ptr[j] == '0') j++;
                     bool ok = false;
                     if (j + 2 < url_len && url_ptr[j + 2] == ';') {
-                        char h0 = url_ptr[j], h1 = url_ptr[j + 1];
-                        if (h0 >= 'A' && h0 <= 'Z') h0 += 32;
-                        if (h1 >= 'A' && h1 <= 'Z') h1 += 32;
+                        char h0 = (char)fast_tolower((unsigned char)url_ptr[j]);
+                        char h1 = (char)fast_tolower((unsigned char)url_ptr[j + 1]);
                         ok = (h0 == '3' && (h1 == 'c' || h1 == 'e')) ||
                              (h0 == 'a' && h1 == '0');
                     }
@@ -491,9 +490,9 @@ void parse_magic_links(ThreadBuf *tb, const ParserConfig *cfg, Accum *accum) {
             size_t inner_len = (mend > lead_e) ? (mend - lead_e) : 0;
 
             bool is_magic =
-                (inner_len >= 3 && strncmp(inner_ptr, "RFC", 3) == 0) ||
-                (inner_len >= 4 && strncmp(inner_ptr, "PMID", 4) == 0) ||
-                (inner_len >= 4 && strncmp(inner_ptr, "ISBN", 4) == 0);
+                (inner_len >= 3 && sz_equal(inner_ptr, "RFC", 3) == sz_true_k) ||
+                (inner_len >= 4 && sz_equal(inner_ptr, "PMID", 4) == sz_true_k) ||
+                (inner_len >= 4 && sz_equal(inner_ptr, "ISBN", 4) == sz_true_k);
             if (!is_magic) {
                 size_t rest_len = mend - lead_e;
                 ENSURE_CAP(rest_len + 1);

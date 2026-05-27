@@ -38,10 +38,10 @@ char *build_normalize_attr_equal(const char *equal, size_t equal_len,
 													 Accum *accum) {
 	if(!equal || equal_len == 0) return NULL;
 
-	if(memchr(equal, '\0', equal_len) == NULL) {
+	if(sz_find_byte(equal, equal_len, "\0") == NULL) {
 		char *out= malloc(equal_len + 1);
 		if(!out) return NULL;
-		memcpy(out, equal, equal_len);
+		sz_copy(out, equal, equal_len);
 		out[equal_len]= '\0';
 		return out;
 	}
@@ -60,7 +60,7 @@ char *build_normalize_attr_equal(const char *equal, size_t equal_len,
 	size_t slen= scratch->len;
 	char *out= malloc(slen + 1);
 	if(out) {
-		if(slen > 0 && s) memcpy(out, s, slen);
+		if(slen > 0 && s) sz_copy(out, s, slen);
 		out[slen]= '\0';
 	}
 

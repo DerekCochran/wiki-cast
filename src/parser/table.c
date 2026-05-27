@@ -46,6 +46,12 @@ static Token *make_attr_value(const char *val, size_t val_len, Accum *accum) {
 
 static size_t sentinel_at(const char *buf, size_t len, size_t i, char type);
 
+static bool table_attr_key_is_dynamic(const char *key, size_t key_len) {
+	return sz_find_byte(key, key_len, "\0") != NULL ||
+		(key_len >= 2 && key[0] == '{' && key[1] == '{') ||
+		(key_len >= 2 && key[0] == '-' && key[1] == '{');
+}
+
 static size_t table_attr_gap_len_at(const char *s, size_t len, size_t i) {
 	if(i >= len) return 0;
 	size_t ws= 0;
@@ -532,7 +538,7 @@ static void td_inner_sep_cb_bridge(bool is_sentinel, size_t pos, size_t sep_len,
 
 static bool table_attr_has_equal_marker(const char *s, size_t len) {
 	if(!s || len == 0) return false;
-	if(memchr(s, '=', len) != NULL) return true;
+	if(sz_find_byte(s, len, "=") != NULL) return true;
 	for(size_t i= 0; i < len; i++) {
 		size_t sl= sentinel_at(s, len, i, '~');
 		if(sl) return true;
@@ -598,7 +604,7 @@ static void parse_table_attrs(Token *attrs_tok, const char *attr_str, size_t att
 					break;
 				}
 			}
-			bool dynamic_key= memchr(k, '\0', klen) != NULL || (klen >= 2 && k[0] == '{' && k[1] == '{') || (klen >= 2 && k[0] == '-' && k[1] == '{');
+			bool dynamic_key= table_attr_key_is_dynamic(k, klen);
 			if(dynamic_key && !has_space) {
 				/* JS parity: only create table-attr for keys that pass the JS
                  * validity test /^(?:[\w:]|\0\d+t\x7F)(?:[\w:.-]|\0\d+t\x7F)*$/u.
@@ -693,7 +699,7 @@ static void parse_table_attrs(Token *attrs_tok, const char *attr_str, size_t att
 			valid_key= ((kc >= 'A' && kc <= 'Z') || (kc >= 'a' && kc <= 'z') || (kc >= '0' && kc <= '9') || kc == ':' || kc == '.' || kc == '_' || kc == '-');
 		}
 		if(!valid_key) {
-			bool dynamic_key= memchr(key, '\0', key_len) != NULL || (key_len >= 2 && key[0] == '{' && key[1] == '{') || (key_len >= 2 && key[0] == '-' && key[1] == '{');
+			bool dynamic_key= table_attr_key_is_dynamic(key, key_len);
 			if(!dynamic_key || !is_valid_attr_key_after_comment_trim(key, key_len)) {
 				for(size_t k= 0; k < key_len; k++) dirty_buf[dirty_len++]= key[k];
 				/* JS parity: when an invalid key is immediately followed by '=value',
