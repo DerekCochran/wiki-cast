@@ -246,11 +246,12 @@ void sentinel_scan(const char *buf, size_t len, SentinelScanCb cb, void *user_da
 /* ── trimLc ─────────────────────────────────────────────────────────────── */
 
 char *str_trim_lc(const char *s, size_t len) {
-	/* Trim leading whitespace */
-	size_t start= 0;
-	while(start < len && isspace((unsigned char)s[start])) start++;
-	/* Trim trailing whitespace */
-	size_t end= len;
+	/* Trim leading whitespace using Stringzilla byte-set search */
+	static const char ws_chars[] = " \t\n\v\f\r";
+	const char *lead = sz_find_byte_not_from(s, len, ws_chars, sizeof(ws_chars) - 1);
+	size_t start = lead ? (size_t)(lead - s) : len;
+	/* Trim trailing whitespace (backward manual scan — no sz_rfind_byte_not_from) */
+	size_t end = len;
 	while(end > start && isspace((unsigned char)s[end - 1])) end--;
 
 	size_t out_len= end - start;
@@ -580,7 +581,7 @@ char *str_extract_interwiki(const char *s, size_t len, const ParserConfig *cfg, 
 			if(out) {
 				sz_copy(out, iw, iwlen);
 				out[iwlen]= '\0';
-				for(char *p= out; *p; ++p) *p= (char)tolower((unsigned char)*p);
+				if(iwlen > 0) sz_lookup(out, iwlen, out, (const char *)s_tolower_lut);
 			}
 			free(temp);
 			free(pos_map);

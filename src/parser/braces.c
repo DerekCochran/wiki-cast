@@ -27,9 +27,10 @@ typedef enum {
 	BRACE_EVT_WIKILINK_CLOSE= 9,
 } BraceEventKind;
 
-/* Returns true and fills *out_len if buf[pos..] is a \0<digits><allowed_type>\x7F sentinel. */
+/* Returns true and fills *out_len if buf[pos..] is a \0<digits><allowed_type>\x7F sentinel.
+ * allowed_len is the length of allowed_types (known at all call sites, avoids repeated strlen). */
 static bool parse_sentinel_at_allowed(const char *buf, size_t len, size_t pos,
-												  const char *allowed_types, size_t *out_len) {
+											   const char *allowed_types, size_t allowed_len, size_t *out_len) {
 	if(!buf || pos >= len) return false;
 	if((unsigned char)buf[pos] != 0) return false;
 	size_t j= pos + 1;
@@ -37,12 +38,16 @@ static bool parse_sentinel_at_allowed(const char *buf, size_t len, size_t pos,
 	while(j < len && buf[j] >= '0' && buf[j] <= '9') j++;
 	if(j >= len) return false;
 	char t= buf[j];
-	if(allowed_types && strchr(allowed_types, t) == NULL) return false;
+	if(allowed_types && sz_find_byte(allowed_types, allowed_len, &t) == NULL) return false;
 	if(j + 1 >= len) return false;
 	if((unsigned char)buf[j + 1] != (unsigned char)0x7F) return false;
 	if(out_len) *out_len= (j + 2) - pos;
 	return true;
 }
+
+/* Returns true and fills *out_len if buf[pos..] is a \0<digits><allowed_type>\x7F sentinel. */
+/* Returns true and fills *out_len if buf[pos..] is a \0<digits><allowed_type>\x7F sentinel.
+ * allowed_len is the length of the allowed_types string (known at all call sites). */
 
 /*
  * Heading line result for the validator used in stage 4.
@@ -165,7 +170,7 @@ brace_event_next(const char *buf, size_t len, size_t *pos,
 
 		if(ch == '\0') {
 			size_t cur= p, total_sl= 0, sl= 0;
-			while(cur < len && parse_sentinel_at_allowed(buf, len, cur, "cno", &sl)) {
+							while(cur < len && parse_sentinel_at_allowed(buf, len, cur, "cno", 3, &sl)) {
 				total_sl+= sl;
 				cur+= sl;
 			}
@@ -239,7 +244,7 @@ brace_event_next(const char *buf, size_t len, size_t *pos,
 				unsigned char cj= (unsigned char)buf[j];
 				if(cj == '\0') {
 					size_t sl= 0;
-					if(parse_sentinel_at_allowed(buf, len, j, "cn", &sl)) {
+											if(parse_sentinel_at_allowed(buf, len, j, "cn", 2, &sl)) {
 						j+= sl;
 						continue;
 					}
@@ -609,7 +614,7 @@ static char *build_transclude_modifier(const char *title_part, size_t title_part
 	size_t i = 0;
 	while(i < mod_len) {
 		size_t sl = 0;
-		if(parse_sentinel_at_allowed(title_part, mod_len, i, "cns", &sl)) {
+					if(parse_sentinel_at_allowed(title_part, mod_len, i, "cns", 3, &sl)) {
 			size_t j = i + 1;
 			size_t idx = 0;
 			while(j < mod_len && title_part[j] >= '0' && title_part[j] <= '9') {
@@ -735,14 +740,14 @@ static Token *build_template_token(const char **parts_restored, const size_t *pa
 				continue;
 			}
 			size_t sl = 0;
-			if(parse_sentinel_at_allowed(title_part, title_part_len, lead, "cn", &sl)) {
+							if(parse_sentinel_at_allowed(title_part, title_part_len, lead, "cn", 2, &sl)) {
 				lead += sl;
 				continue;
 			}
 			break;
 		}
 		size_t s_sl = 0;
-		if(lead < title_part_len && parse_sentinel_at_allowed(title_part, title_part_len, lead, "s", &s_sl)) {
+					if(lead < title_part_len && parse_sentinel_at_allowed(title_part, title_part_len, lead, "s", 1, &s_sl)) {
 			size_t mod_len = lead + s_sl;
 			t->data.transclude.modifier = build_transclude_modifier(title_part, title_part_len, mod_len, accum);
 			title_part += mod_len;
@@ -766,7 +771,7 @@ static Token *build_template_token(const char **parts_restored, const size_t *pa
 							continue;
 						}
 						size_t sl= 0;
-						if(parse_sentinel_at_allowed(title_part, title_part_len, p, "cn", &sl)) {
+													if(parse_sentinel_at_allowed(title_part, title_part_len, p, "cn", 2, &sl)) {
 							mt_len+= sl;
 							continue;
 						}
