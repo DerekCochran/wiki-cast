@@ -3,7 +3,6 @@
 #include "util/string_util.h"
 #include "stringzilla/stringzilla.h"
 #include "token.h"
-#include "util/thread_buffer.h"
 #include <assert.h>
 #include <stdlib.h>
 #include <string.h>
@@ -22,8 +21,7 @@ static Token *make_attr_key(const char *key, size_t key_len, Accum *accum) {
 	Token *t= token_new(TOKEN_ATTR_KEY, "attr-key");
 	if(!t) return NULL;
 	if(key_len > 0) {
-		const char *key_view = wiki_thread_buf_append_to_tokens(key, key_len);
-		if(key_view) token_append_text_n(t, key_view, key_len);
+		token_append_text_n(t, key, key_len);
 	} else {
 		token_append_text_n(t, NULL, 0);
 	}
@@ -35,8 +33,7 @@ static Token *make_attr_value(const char *val, size_t val_len, Accum *accum) {
 	Token *t= token_new(TOKEN_ATTR_VALUE, "attr-value");
 	if(!t) return NULL;
 	if(val_len > 0) {
-		const char *val_view = wiki_thread_buf_append_to_tokens(val, val_len);
-		if(val_view) token_append_text_n(t, val_view, val_len);
+		token_append_text_n(t, val, val_len);
 	} else {
 		token_append_text_n(t, NULL, 0);
 	}
@@ -48,8 +45,7 @@ static Token *make_table_attr_dirty(const char *text, size_t text_len, Accum *ac
 	Token *t= token_new(TOKEN_ATOM, "table-attr-dirty");
 	if(!t) return NULL;
 	if(text_len > 0) {
-		const char *text_view = wiki_thread_buf_append_to_tokens(text, text_len);
-		if(text_view) token_append_text_n(t, text_view, text_len);
+		token_append_text_n(t, text, text_len);
 	} else {
 		token_append_text_n(t, NULL, 0);
 	}
@@ -492,8 +488,7 @@ Token *create_td_token(const char *syntax,
 	Token *syn= token_new(TOKEN_SYNTAX, "table-syntax");
 	if(!syn) return td;
 	if(syntax && syntax_len > 0) {
-		const char *syn_view = wiki_thread_buf_append_to_tokens(syntax, syntax_len);
-		if(syn_view) token_append_text_n(syn, syn_view, syntax_len);
+		token_append_text_n(syn, syntax, syntax_len);
 	}
 	accum_push(accum, syn);
 	token_append_child(td, syn);
@@ -525,8 +520,7 @@ Token *create_td_token(const char *syntax,
 	Token *inner_tok= token_new(TOKEN_PLAIN, "td-inner");
 	if(!inner_tok) return td;
 	if(inner && inner_len > 0) {
-		const char *inner_view = wiki_thread_buf_append_to_tokens(inner, inner_len);
-		if(inner_view) token_append_text_n(inner_tok, inner_view, inner_len);
+		token_append_text_n(inner_tok, inner, inner_len);
 	} else {
 		token_append_text_n(inner_tok, NULL, 0);
 	}
