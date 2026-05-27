@@ -89,6 +89,11 @@ typedef struct {
 	size_t count;
 } TokenPtrSet;
 
+typedef struct {
+	Token *token;
+	bool in_context;
+} TokenContextFrame;
+
 static bool token_vec_push(TokenVec *v, Token *t) {
 	if(!v) return false;
 	if(v->count >= v->cap) {
@@ -186,6 +191,101 @@ static bool token_ptr_set_insert(TokenPtrSet *set, Token *t) {
 		if(cur == t) return true;
 		pos= (pos + 1) & mask;
 	}
+}
+
+static bool token_is_ext_inner(const Token *t) {
+	return t && t->type == TOKEN_EXT_INNER && t->type_name && strcmp(t->type_name, "ext-inner") == 0;
+}
+
+static bool token_context_frames_push(TokenContextFrame **frames, size_t *count, size_t *cap,
+												 Token *token, bool in_context) {
+	if(!token || !frames || !count || !cap) return false;
+	if(*count >= *cap) {
+		size_t next_cap= *cap ? *cap * 2 : 64;
+		TokenContextFrame *grown= realloc(*frames, next_cap * sizeof(TokenContextFrame));
+		if(!grown) return false;
+		*frames= grown;
+		*cap= next_cap;
+	}
+	(*frames)[(*count)++]= (TokenContextFrame){ .token= token, .in_context= in_context };
+	return true;
+}
+
+static void mark_ext_inner_descendants(Token *seed, TokenPtrSet *visited) {
+	if(!seed || !visited) return;
+	TokenVec stack= {0};
+	if(!token_vec_push(&stack, seed)) {
+		free(stack.items);
+		return;
+	}
+	while(stack.count > 0) {
+		Token *cur= stack.items[--stack.count];
+		if(!cur || token_ptr_set_contains(visited, cur)) continue;
+		if(!token_ptr_set_insert(visited, cur)) {
+			free(stack.items);
+			return;
+		}
+		cur->ext_inner_context= true;
+		for(size_t i= 0; i < cur->child_count; i++) {
+			if(!cur->children[i].is_text && cur->children[i].token) {
+				if(!token_vec_push(&stack, cur->children[i].token)) {
+					free(stack.items);
+					return;
+				}
+			}
+		}
+	}
+	free(stack.items);
+}
+
+static void refresh_accum_ext_inner_context(Accum *accum) {
+	if(!accum) return;
+	for(size_t i= 0; i < accum->count; i++) {
+		if(accum->tokens[i]) accum->tokens[i]->ext_inner_context= false;
+	}
+	if(accum->count == 0) return;
+
+	TokenPtrSet visited;
+	if(!token_ptr_set_init(&visited, accum->count * 2 + 16)) return;
+	for(size_t i= 0; i < accum->count; i++) {
+		Token *tok= accum->tokens[i];
+		if(!tok || !token_is_ext_inner(tok)) continue;
+		for(size_t j= 0; j < tok->child_count; j++) {
+			if(!tok->children[j].is_text && tok->children[j].token) {
+				mark_ext_inner_descendants(tok->children[j].token, &visited);
+			}
+		}
+	}
+	token_ptr_set_destroy(&visited);
+}
+
+static void refresh_tree_ext_inner_context(Token *root) {
+	if(!root) return;
+	TokenContextFrame *frames= NULL;
+	size_t count= 0;
+	size_t cap= 0;
+	if(!token_context_frames_push(&frames, &count, &cap, root, false)) {
+		free(frames);
+		return;
+	}
+
+	while(count > 0) {
+		TokenContextFrame frame= frames[--count];
+		Token *tok= frame.token;
+		if(!tok) continue;
+		tok->ext_inner_context= frame.in_context;
+		bool next_in_context= frame.in_context || token_is_ext_inner(tok);
+		for(size_t i= 0; i < tok->child_count; i++) {
+			if(!tok->children[i].is_text && tok->children[i].token) {
+				if(!token_context_frames_push(&frames, &count, &cap, tok->children[i].token, next_in_context)) {
+					free(frames);
+					return;
+				}
+			}
+		}
+	}
+
+	free(frames);
 }
 
 static int cmp_accum_slot_ref_ptr(const void *a, const void *b) {
@@ -1759,6 +1859,7 @@ static AttrValueParseMode classify_attr_value_parse_mode(const Token *parent,
 
 static bool token_has_ext_inner_ancestor(const Token *target, const Accum *accum) {
 	if(!target || !accum || accum->count == 0) return false;
+	if(target->ext_inner_context) return true;
 
 	size_t cap= accum->count;
 	const Token **stack= malloc(cap * sizeof(*stack));
@@ -2228,7 +2329,10 @@ static void postprocess_parameter_value_inline_impl(Token *t, const ParserConfig
 static void postprocess_parameter_value_inline(Token *t, const ParserConfig *cfg, Accum *accum,
 																																		const char *page,
 																																		bool recurse_existing_children) {
-	bool inferred_in_ext_context= token_has_ext_inner_ancestor(t, accum);
+	bool inferred_in_ext_context= t && t->ext_inner_context;
+	if(!inferred_in_ext_context) {
+		inferred_in_ext_context= token_has_ext_inner_ancestor(t, accum);
+	}
 	postprocess_parameter_value_inline_impl(t, cfg, accum, page, NULL, NULL, inferred_in_ext_context, recurse_existing_children);
 }
 
@@ -2554,6 +2658,7 @@ Token *wiki_parse_with_page(const char *wikitext, size_t input_len, const Parser
 		size_t scan_start= 0;
 
 		while(scan_start < accum.count && pass < max_inline_passes && scan_start < max_inline_tokens) {
+			refresh_accum_ext_inner_context(&accum);
 			size_t scan_end= accum.count;
 			if(scan_end > max_inline_tokens) scan_end= max_inline_tokens;
 
@@ -2571,6 +2676,7 @@ Token *wiki_parse_with_page(const char *wikitext, size_t input_len, const Parser
 
 	/* ── build phase 2: recursively expand remaining sentinels ───────────── */
 	build_token_recursive(root, &accum, cfg);
+	refresh_tree_ext_inner_context(root);
 
 	/* JS parity: AttributesToken.afterBuild() sets table-attrs name to the
      * cell subtype (td/th/caption), including sibling inheritance for inline

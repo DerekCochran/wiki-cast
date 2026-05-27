@@ -389,6 +389,7 @@ static bool build_protocol_items(ParserConfig *cfg) {
 	/* Reset before (re)building so config reload is safe. */
 	protocol_items_free(&cfg->protocol_items);
 	protocol_buffer_free(cfg);
+	memset(cfg->protocol_initials, 0, sizeof(cfg->protocol_initials));
 	cfg->protocol_items_valid = false;
 
 	/* Initialize protocol buffer */
@@ -446,6 +447,9 @@ static bool build_protocol_items(ParserConfig *cfg) {
 		}
 		const char *proto_start = (const char *)cfg->protocol_items.items[i].protocol.start;
 		sz_lookup((sz_ptr_t)lower_ptr, len, proto_start, (const char *)fast_tolower_table());
+		if(len > 0) {
+			cfg->protocol_initials[(unsigned char)fast_tolower((unsigned char)proto_start[0])] = 1;
+		}
 	}
 	cfg->protocol_items_valid = true;
 	return true;

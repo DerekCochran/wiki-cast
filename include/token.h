@@ -149,6 +149,7 @@ typedef struct Token {
     int        stage;       /* last parseOnce stage executed */
     bool       include;     /* includeOnly mode */
     bool       built;       /* build() has been called */
+    bool       ext_inner_context; /* cached: token is nested under ext-inner */
 } Token;
 
 /* ── Lifecycle ────────────────────────────────────────────────────────────── */

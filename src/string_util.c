@@ -613,6 +613,9 @@ size_t match_proto_prefix(const char *s, size_t len, const ParserConfig *cfg) {
 	if(!cfg || !cfg->protocol_items_valid || cfg->protocol_items.count == 0) {
 	    return 0;
 	}
+	if(len == 0) return 0;
+	unsigned char first = (unsigned char)fast_tolower((unsigned char)s[0]);
+	if(!cfg->protocol_initials[first]) return 0;
 
 	for(size_t pi = 0; pi < cfg->protocol_items.count; pi++) {
 		const ProtocolItem *proto = &cfg->protocol_items.items[pi];
