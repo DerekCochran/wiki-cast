@@ -82,21 +82,13 @@ static bool cae_match_open_named(const char *s, size_t len, size_t i,
     if(isspace((unsigned char)s[p])) {
         out->has_attr = true;
         out->attr_s = p;
-        for(size_t q = p + 1; q < len; q++) {
-            if(s[q] == '/' && q + 1 < len && s[q + 1] == '>') {
-                out->attr_e = q;
-                out->self_closing = true;
-                out->open_end = q + 2;
-                return true;
-            }
-            if(s[q] == '>') {
-                out->attr_e = q;
-                out->self_closing = false;
-                out->open_end = q + 1;
-                return true;
-            }
-        }
-        return false;
+		const char *close = sz_find_byte(s + p + 1, len - (p + 1), ">");
+		if(!close) return false;
+		size_t q = (size_t)(close - s);
+		out->self_closing = (q > p && s[q - 1] == '/');
+		out->attr_e = out->self_closing ? q - 1 : q;
+		out->open_end = q + 1;
+		return true;
     }
 
     if(s[p] == '/' && p + 1 < len && s[p + 1] == '>') {
@@ -139,10 +131,21 @@ static bool cae_find_close_named(const char *s, size_t len, size_t from,
     if(!s || !name || !close_tag_s || !close_name_s || !close_name_e || !close_tag_e)
         return false;
 
-    for(size_t q = from; q + 2 + name_len <= len; q++) {
-        if(s[q] != '<' || s[q + 1] != '/') continue;
-        size_t n0 = q + 2;
-        if(!str_ci_eq_n(s + n0, name, name_len)) continue;
+	const char lt = '<';
+	size_t q = from;
+	while(q + 2 + name_len <= len) {
+		const char *cand = sz_find_byte(s + q, len - q, &lt);
+		if(!cand) return false;
+		q = (size_t)(cand - s);
+		if(q + 2 + name_len > len || s[q + 1] != '/') {
+			q++;
+			continue;
+		}
+		size_t n0 = q + 2;
+		if(!str_ci_eq_n(s + n0, name, name_len)) {
+			q++;
+			continue;
+		}
 
         size_t r = n0 + name_len;
         while(r < len && isspace((unsigned char)s[r])) r++;
@@ -153,6 +156,7 @@ static bool cae_find_close_named(const char *s, size_t len, size_t from,
             *close_tag_e = r + 1;
             return true;
         }
+		q++;
     }
     return false;
 }
