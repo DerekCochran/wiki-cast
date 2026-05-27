@@ -375,10 +375,10 @@ void parse_list(ThreadBuf *tb, const ParserConfig *cfg, Accum *accum) {
 				char **new_parts= malloc(new_count * sizeof(char *));
 				assert(new_parts);
 				size_t pi= 0;
-				for(size_t k= 0; k < cp_parts; k++) new_parts[pi++]= strdup(cp_list[k]);
-				for(size_t k= 0; k < parts_count; k++) new_parts[pi++]= strdup(parts[k]);
-				free_parts(cp_list, cp_parts);
-				free_parts(parts, parts_count);
+				for(size_t k= 0; k < cp_parts; k++) new_parts[pi++]= cp_list[k];
+				for(size_t k= 0; k < parts_count; k++) new_parts[pi++]= parts[k];
+				free(cp_list);
+				free(parts);
 				parts= new_parts;
 				parts_count= new_count;
 				if(strchr(commonPrefix, ';')) dt+= (int)cp_parts;
