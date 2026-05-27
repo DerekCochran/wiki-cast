@@ -342,24 +342,24 @@ brace_event_next(const char *buf, size_t len, size_t *pos,
 	return false;
 }
 
-static bool str_list_contains_ci(const StrList *sl, const char *needle) {
+static bool str_list_contains_ci(const StrList *sl, const char *needle, size_t needle_len) {
 	if(!sl || !needle) return false;
 	for(size_t i= 0; i < sl->count; i++) {
 		sz_ptr_t start;
 		sz_size_t len;
 		sz_string_range(&sl->items[i], &start, &len);
-		if(start && len == strlen(needle) && str_ci_eq_n((const char *)start, needle, len)) return true;
+		if(start && len == needle_len && str_ci_eq_n((const char *)start, needle, len)) return true;
 	}
 	return false;
 }
 
-static const char *str_map_get_exact(const StrMap *m, const char *key) {
+static const char *str_map_get_exact(const StrMap *m, const char *key, size_t key_cmp_len) {
 	if(!m || !key) return NULL;
 	for(size_t i= 0; i < m->count; i++) {
 		sz_ptr_t key_start, val_start;
 		sz_size_t key_len, val_len;
 		sz_string_range(&m->keys[i], &key_start, &key_len);
-		if(key_start && key_len == strlen(key) && sz_equal(key_start, key, key_len) == sz_true_k) {
+		if(key_start && key_len == key_cmp_len && sz_equal(key_start, key, key_cmp_len) == sz_true_k) {
 			sz_string_range(&m->values[i], &val_start, &val_len);
 			return (const char *)val_start;
 		}
@@ -456,54 +456,54 @@ static char braces_get_symbol(const char *name, size_t len,
 	}
 
 	if(cfg) {
-		canonical= str_map_get_exact(&cfg->parser_function_sensitive, trimmed);
+		canonical= str_map_get_exact(&cfg->parser_function_sensitive, trimmed, n);
 		if(!canonical) {
-			canonical= str_map_get_exact(&cfg->parser_function_insensitive, lc);
+			canonical= str_map_get_exact(&cfg->parser_function_insensitive, lc, n);
 		}
 		if(!canonical && base_orig && base_orig[0]) {
-			canonical= str_map_get_exact(&cfg->parser_function_sensitive, base_orig);
+			canonical= str_map_get_exact(&cfg->parser_function_sensitive, base_orig, base_orig_len);
 		}
 		if(!canonical && base_lc && base_lc[0]) {
-			canonical= str_map_get_exact(&cfg->parser_function_insensitive, base_lc);
+			canonical= str_map_get_exact(&cfg->parser_function_insensitive, base_lc, base_lc_len);
 		}
 	}
 
 	char out= 't';
-	if(strcmp(lc, "!") == 0) {
+	if(n == 1 && lc[0] == '!') {
 		out= '!';
 		if(is_magic_out) *is_magic_out= true;
-	} else if(strcmp(lc, "!!") == 0) {
+	} else if(n == 2 && lc[0] == '!' && lc[1] == '!') {
 		out= '+';
-	} else if(strcmp(lc, "(!") == 0) {
+	} else if(n == 2 && lc[0] == '(' && lc[1] == '!') {
 		out= '{';
-	} else if(strcmp(lc, "!)") == 0) {
+	} else if(n == 2 && lc[0] == '!' && lc[1] == ')') {
 		out= '}';
-	} else if(strcmp(lc, "!-") == 0) {
+	} else if(n == 2 && lc[0] == '!' && lc[1] == '-') {
 		out= '-';
-	} else if(strcmp(lc, "=") == 0) {
+	} else if(n == 1 && lc[0] == '=') {
 		out= '~';
 		if(is_magic_out) *is_magic_out= true;
-	} else if(strcmp(lc, "server") == 0) {
+	} else if(n == 6 && sz_equal(lc, "server", 6) == sz_true_k) {
 		out= 'm';
 		if(is_magic_out) *is_magic_out= true;
-	} else if((strncmp(lc, "filepath:", 9) == 0 && n > 9) || (strncmp(lc, "fullurl:", 8) == 0 && n > 8) || (strncmp(lc, "fullurle:", 9) == 0 && n > 9) || (strncmp(lc, "canonicalurl:", 13) == 0 && n > 13) || (strncmp(lc, "canonicalurle:", 14) == 0 && n > 14)) {
+	} else if((n > 9 && sz_equal(lc, "filepath:", 9) == sz_true_k) || (n > 8 && sz_equal(lc, "fullurl:", 8) == sz_true_k) || (n > 9 && sz_equal(lc, "fullurle:", 9) == sz_true_k) || (n > 13 && sz_equal(lc, "canonicalurl:", 13) == sz_true_k) || (n > 14 && sz_equal(lc, "canonicalurle:", 14) == sz_true_k)) {
 		out= 'm';
 		if(is_magic_out) *is_magic_out= true;
-	} else if(strncmp(lc, "#vardefine:", 11) == 0 && n > 11) {
+	} else if(n > 11 && sz_equal(lc, "#vardefine:", 11) == sz_true_k) {
 		out= 'n';
 		if(is_magic_out) *is_magic_out= true;
 	} else if(lc[0] == '#') {
 		if(is_magic_out) {
-			bool is_var_hash = (cfg && canonical && canonical[0] && str_list_contains_ci(&cfg->variable, canonical));
+			bool is_var_hash = (cfg && canonical && canonical[0] && str_list_contains_ci(&cfg->variable, canonical, strlen(canonical)));
 			if(has_function_colon || is_var_hash) *is_magic_out= true;
 		}
 	} else if(cfg && canonical && canonical[0]) {
-		bool is_var= str_list_contains_ci(&cfg->variable, canonical);
+		bool is_var= str_list_contains_ci(&cfg->variable, canonical, strlen(canonical));
 		if((has_function_colon || is_var) && is_magic_out) *is_magic_out= true;
 	} else if(cfg && base_lc && base_lc[0]) {
-		const char *base_canonical= str_map_get_exact(&cfg->parser_function_insensitive, base_lc);
+		const char *base_canonical= str_map_get_exact(&cfg->parser_function_insensitive, base_lc, base_lc_len);
 		if(base_canonical) {
-			bool is_var= str_list_contains_ci(&cfg->variable, base_canonical);
+			bool is_var= str_list_contains_ci(&cfg->variable, base_canonical, strlen(base_canonical));
 			if((has_function_colon || is_var) && is_magic_out) *is_magic_out= true;
 		}
 	}
@@ -540,8 +540,22 @@ static char *trim_copy(const char *s, size_t len) {
 	size_t n= j - i;
 	char *out= malloc(n + 1);
 	if(!out) return NULL;
-	sz_copy(out, s + i, n);
+	if(n > 0) sz_copy(out, s + i, n);
 	out[n]= '\0';
+	return out;
+}
+
+static char *trim_copy_n(const char *s, size_t len, size_t *out_n) {
+	if(!s) { if(out_n) *out_n = 0; return NULL; }
+	size_t i= 0, j= len;
+	while(i < j && isspace((unsigned char)s[i])) i++;
+	while(j > i && isspace((unsigned char)s[j - 1])) j--;
+	size_t n= j - i;
+	char *out= malloc(n + 1);
+	if(!out) { if(out_n) *out_n = 0; return NULL; }
+	if(n > 0) sz_copy(out, s + i, n);
+	out[n]= '\0';
+	if(out_n) *out_n = n;
 	return out;
 }
 
@@ -562,17 +576,18 @@ static char *lower_copy(const char *s, size_t len) {
 static const char *parser_function_canonical(const ParserConfig *cfg, const char *name, size_t len) {
 	if(!cfg || !name || len == 0) return NULL;
 
-	char *trimmed= trim_copy(name, len);
-	if(!trimmed || trimmed[0] == '\0') {
+	size_t trimmed_len = 0;
+	char *trimmed= trim_copy_n(name, len, &trimmed_len);
+	if(!trimmed || trimmed_len == 0) {
 		free(trimmed);
 		return NULL;
 	}
 
-	const char *canonical= str_map_get_exact(&cfg->parser_function_sensitive, trimmed);
+	const char *canonical= str_map_get_exact(&cfg->parser_function_sensitive, trimmed, trimmed_len);
 	if(!canonical) {
-		char *lc= lower_copy(trimmed, strlen(trimmed));
+		char *lc= lower_copy(trimmed, trimmed_len);
 		if(lc) {
-			canonical= str_map_get_exact(&cfg->parser_function_insensitive, lc);
+			canonical= str_map_get_exact(&cfg->parser_function_insensitive, lc, trimmed_len);
 			free(lc);
 		}
 	}
@@ -737,9 +752,10 @@ static Token *build_template_token(const char **parts_restored, const size_t *pa
 			const char *colon= sz_find_byte(title_part, title_part_len, &colon_ch);
 			if(colon) {
 				size_t prefix_len= (size_t)(colon - title_part);
-				char *prefix= trim_copy(title_part, prefix_len);
-				if(prefix && (str_list_contains_ci(&cfg->parser_function_subst, prefix)
-								 || str_list_contains_ci(&cfg->parser_function_raw, prefix))) {
+				size_t prefix_str_len = 0;
+				char *prefix= trim_copy_n(title_part, prefix_len, &prefix_str_len);
+				if(prefix && prefix_str_len > 0 && (str_list_contains_ci(&cfg->parser_function_subst, prefix, prefix_str_len)
+								 || str_list_contains_ci(&cfg->parser_function_raw, prefix, prefix_str_len))) {
 					/* JS parity: consume leading whitespace and c/n sentinels from the
 					 * first argument after the modifier colon into the modifier slice. */
 					size_t mt_len= 0;
@@ -1861,7 +1877,7 @@ static char braces_arg_symbol(const char *inner, size_t inner_len, const ParserC
 		sz_size_t s_len;
 		sz_string_range(&cfg->parser_function_subst.items[n], &s, &s_len);
 		if(!s) continue;
-		if(s_len == strlen(base) && sz_equal(s, base, s_len) == sz_true_k) {
+		if(s_len == base_len && sz_equal(s, base, base_len) == sz_true_k) {
 			sym= 's';
 			break;
 		}
