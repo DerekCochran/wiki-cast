@@ -2061,7 +2061,7 @@ static void postprocess_parameter_value_inline_impl(Token *t, const ParserConfig
 	size_t new_cap= old_count ? old_count : 1;
 	Child *new_children= malloc(new_cap * sizeof(Child));
 	if(!new_children) {
-		wiki_thread_buf_release_scratch(scratch);
+		if(scratch) wiki_thread_buf_release_scratch(scratch);
 		return;
 	}
 	size_t new_count= 0;
@@ -2091,6 +2091,15 @@ static void postprocess_parameter_value_inline_impl(Token *t, const ParserConfig
 			}
 			new_children[new_count++]= cur;
 			continue;
+		}
+
+		if(!scratch) {
+			scratch= wiki_thread_buf_acquire_scratch();
+			if(!scratch) {
+				free(new_children);
+				log_fatal("postprocess_parameter_value_inline_impl: failed to acquire scratch");
+				abort();
+			}
 		}
 
 		wiki_thread_buf_set(scratch, txt, txt_len);
@@ -2190,7 +2199,7 @@ static void postprocess_parameter_value_inline_impl(Token *t, const ParserConfig
 	t->children= new_children;
 	t->child_count= new_count;
 	t->child_cap= new_cap;
-	wiki_thread_buf_release_scratch(scratch);
+	if(scratch) wiki_thread_buf_release_scratch(scratch);
 
 	if(transformed_children) {
 		/* Recurse after replacement: transforming this token may have created
