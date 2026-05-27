@@ -1815,6 +1815,27 @@ static bool token_has_ext_inner_ancestor(const Token *target, const Accum *accum
 	return false;
 }
 
+static bool param_value_text_may_need_pipeline(const char *s, size_t n) {
+	if(!s || n == 0) return false;
+
+	const char zn= '\0';
+	if(sz_find_byte(s, n, &zn) != NULL) return true;
+
+	/* Superset of stage trigger bytes for inline parameter/attr parsing. */
+	sz_byteset_t set;
+	sz_byteset_init(&set);
+	static const char trigger_set[] = "<>{}[]'|!=#*;:-_/&\n\r";
+	for(size_t i= 0; i < sizeof(trigger_set) - 1; i++) {
+		sz_byteset_add(&set, (unsigned char)trigger_set[i]);
+	}
+	for(unsigned char d= '0'; d <= '9'; d++) {
+		sz_byteset_add(&set, d);
+	}
+	if(sz_find_byteset(s, n, &set) != NULL) return true;
+
+	return false;
+}
+
 static void postprocess_parameter_value_inline_impl(Token *t, const ParserConfig *cfg, Accum *accum,
 																				const char *page, const Token *parent,
 																						const Token *grandparent,
@@ -2061,6 +2082,17 @@ static void postprocess_parameter_value_inline_impl(Token *t, const ParserConfig
 
 		const char *txt= cur.text;
 		size_t txt_len= cur.text_len;
+		if(!param_value_text_may_need_pipeline(txt, txt_len)) {
+			if(new_count >= new_cap) {
+				new_cap*= 2;
+				Child *grown= realloc(new_children, new_cap * sizeof(Child));
+				assert(grown);
+				new_children= grown;
+			}
+			new_children[new_count++]= cur;
+			continue;
+		}
+
 		wiki_thread_buf_set(scratch, txt, txt_len);
 
 		if(is_attr_value) {
