@@ -198,7 +198,9 @@ bool sentinel_scan_next(const char *buf, size_t len, size_t *pos,
 		size_t j = p + 1;
 		if(j >= len || !(buf[j] >= '0' && buf[j] <= '9')) { i = p + 1; continue; }
 		size_t k = j;
-		while(k < len && buf[k] >= '0' && buf[k] <= '9') k++;
+		const char *not_digit = sz_find_byte_not_from(buf + j, len - j, "0123456789", 10);
+		if(not_digit) k = (size_t)(not_digit - buf);
+		else k = len;
 		if(k >= len) { i = p + 1; continue; }
 		char t = buf[k];
 		if(sz_find_byte(SENTINEL_TYPES, sizeof(SENTINEL_TYPES) - 1, &t) == NULL) { i = p + 1; continue; }
@@ -229,7 +231,9 @@ void sentinel_scan(const char *buf, size_t len, SentinelScanCb cb, void *user_da
 		size_t j = p + 1;
 		if(j >= len || !(buf[j] >= '0' && buf[j] <= '9')) { i = p + 1; continue; }
 		size_t k = j;
-		while(k < len && buf[k] >= '0' && buf[k] <= '9') k++;
+		const char *not_digit = sz_find_byte_not_from(buf + j, len - j, "0123456789", 10);
+		if(not_digit) k = (size_t)(not_digit - buf);
+		else k = len;
 		if(k >= len) { i = p + 1; continue; }
 		char t = buf[k];
 		if(sz_find_byte(SENTINEL_TYPES, sizeof(SENTINEL_TYPES) - 1, &t) == NULL) { i = p + 1; continue; }
