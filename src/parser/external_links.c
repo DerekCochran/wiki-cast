@@ -24,9 +24,8 @@ static size_t skip_typed_sentinel(const char *s, size_t len, size_t i, char type
     if(del_pos <= j) return 0;
     size_t type_pos = del_pos - 1;
     if(s[type_pos] != type) return 0;
-    for(size_t k = j; k < type_pos; k++) {
-        if((unsigned char)s[k] < '0' || (unsigned char)s[k] > '9') return 0;
-    }
+    const char *not_digit = sz_find_byte_not_from(s + j, type_pos - j, "0123456789", 10);
+    if(not_digit) return 0;
     return del_pos + 1 - i;
 }
 
