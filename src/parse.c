@@ -1837,62 +1837,8 @@ static AttrValueParseMode classify_attr_value_parse_mode(const Token *parent,
 }
 
 static bool token_has_ext_inner_ancestor(const Token *target, const Accum *accum) {
-	if(!target || !accum || accum->count == 0) return false;
-	if(target->ext_inner_context) return true;
-
-	size_t cap= accum->count;
-	const Token **stack= malloc(cap * sizeof(*stack));
-	const Token **seen= malloc(cap * sizeof(*seen));
-	if(!stack || !seen) {
-		free((void *)stack);
-		free((void *)seen);
-		return false;
-	}
-
-	size_t sp= 0;
-	size_t seen_n= 0;
-	stack[sp++]= target;
-	seen[seen_n++]= target;
-
-	while(sp > 0) {
-		const Token *cur= stack[--sp];
-		for(size_t ai= 0; ai < accum->count; ai++) {
-			Token *parent= accum->tokens[ai];
-			if(!parent || parent == cur) continue;
-
-			bool is_parent= false;
-			for(size_t ci= 0; ci < parent->child_count; ci++) {
-				if(parent->children[ci].is_text) continue;
-				if(parent->children[ci].token == cur) {
-					is_parent= true;
-					break;
-				}
-			}
-			if(!is_parent) continue;
-
-			if(parent->type == TOKEN_EXT_INNER && parent->type_name && strcmp(parent->type_name, "ext-inner") == 0) {
-				free((void *)stack);
-				free((void *)seen);
-				return true;
-			}
-
-			bool already_seen= false;
-			for(size_t si= 0; si < seen_n; si++) {
-				if(seen[si] == parent) {
-					already_seen= true;
-					break;
-				}
-			}
-			if(!already_seen && seen_n < cap && sp < cap) {
-				seen[seen_n++]= parent;
-				stack[sp++]= parent;
-			}
-		}
-	}
-
-	free((void *)stack);
-	free((void *)seen);
-	return false;
+	(void)accum;
+	return target && target->ext_inner_context;
 }
 
 static bool param_value_text_may_need_pipeline(const char *s, size_t n) {
@@ -2310,7 +2256,7 @@ static void postprocess_parameter_value_inline(Token *t, const ParserConfig *cfg
 																																		bool recurse_existing_children) {
 	bool inferred_in_ext_context= t && t->ext_inner_context;
 	if(!inferred_in_ext_context) {
-		inferred_in_ext_context= token_has_ext_inner_ancestor(t, accum);
+		inferred_in_ext_context = token_has_ext_inner_ancestor(t, accum);
 	}
 	postprocess_parameter_value_inline_impl(t, cfg, accum, page, NULL, NULL, inferred_in_ext_context, recurse_existing_children);
 }
