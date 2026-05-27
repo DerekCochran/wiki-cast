@@ -183,7 +183,7 @@ static napi_value token_to_js(napi_env env, const Token *token, bool wrap_root) 
     // children
     if (token->child_count > 0) {
         napi_value children_array;
-        napi_create_array(env, &children_array);
+        napi_create_array_with_length(env, token->child_count, &children_array);
         for (size_t i = 0; i < token->child_count; i++) {
             Child *child = &token->children[i];
             if (child->is_text) {
