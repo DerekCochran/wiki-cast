@@ -67,9 +67,10 @@ static void str_list_from_json_array(StrList *sl, const cJSON *arr) {
 	const cJSON *item;
 	cJSON_ArrayForEach(item, arr) {
 		if(cJSON_IsString(item) && item->valuestring) {
-			size_t slen = strlen(item->valuestring);
+			const char *value = item->valuestring;
+			size_t slen = strlen(value);
 			sz_ptr_t ptr = sz_string_init_length(&sl->items[k], slen, &allocator_default);
-			sz_copy(ptr, (sz_ptr_t)item->valuestring, slen);
+			sz_copy(ptr, (sz_ptr_t)value, slen);
 			k++;
 		}
 	}
@@ -88,9 +89,10 @@ static void str_list_from_json_object_keys(StrList *sl, const cJSON *obj) {
 
 	cJSON_ArrayForEach(item, obj) {
 		if(item->string) {
-			size_t slen = strlen(item->string);
+			const char *key = item->string;
+			size_t slen = strlen(key);
 			sz_ptr_t ptr = sz_string_init_length(&sl->items[k], slen, &allocator_default);
-			sz_copy(ptr, (sz_ptr_t)item->string, slen);
+			sz_copy(ptr, (sz_ptr_t)key, slen);
 			k++;
 		}
 	}
@@ -131,12 +133,14 @@ static void str_map_from_json_object(StrMap *m, const cJSON *obj) {
 
 	cJSON_ArrayForEach(item, obj) {
 		if(item->string && cJSON_IsString(item) && item->valuestring) {
-			size_t klen = strlen(item->string);
-			size_t vlen = strlen(item->valuestring);
+			const char *key = item->string;
+			const char *value = item->valuestring;
+			size_t klen = strlen(key);
+			size_t vlen = strlen(value);
 			sz_ptr_t key_ptr = sz_string_init_length(&m->keys[k], klen, &allocator_default);
-			sz_copy(key_ptr, (sz_ptr_t)item->string, klen);
+			sz_copy(key_ptr, (sz_ptr_t)key, klen);
 			sz_ptr_t val_ptr = sz_string_init_length(&m->values[k], vlen, &allocator_default);
-			sz_copy(val_ptr, (sz_ptr_t)item->valuestring, vlen);
+			sz_copy(val_ptr, (sz_ptr_t)value, vlen);
 			k++;
 		}
 	}
@@ -495,18 +499,20 @@ static ParserConfig *config_from_cjson(const cJSON *root) {
 			const cJSON *item;
 			cJSON_ArrayForEach(item, ns) {
 				if(item->string && cJSON_IsNumber(item)) {
-				size_t nlen = strlen(item->string);
-				sz_ptr_t name_ptr = sz_string_init_length(&cfg->namespaces[k].name, nlen, &allocator_default);
-				sz_copy(name_ptr, (sz_ptr_t)item->string, nlen);
+					const char *name = item->string;
+					size_t nlen = strlen(name);
+					sz_ptr_t name_ptr = sz_string_init_length(&cfg->namespaces[k].name, nlen, &allocator_default);
+					sz_copy(name_ptr, (sz_ptr_t)name, nlen);
 					cfg->namespaces[k].num= (int)item->valuedouble;
 					k++;
 				} else if(item->string && cJSON_IsString(item) && item->valuestring) {
 					char *endp= NULL;
 					long nsnum= strtol(item->string, &endp, 10);
 					if(endp && *endp == '\0') {
-					size_t vlen = strlen(item->valuestring);
-					sz_ptr_t name_ptr = sz_string_init_length(&cfg->namespaces[k].name, vlen, &allocator_default);
-					sz_copy(name_ptr, (sz_ptr_t)item->valuestring, vlen);
+						const char *name = item->valuestring;
+						size_t vlen = strlen(name);
+						sz_ptr_t name_ptr = sz_string_init_length(&cfg->namespaces[k].name, vlen, &allocator_default);
+						sz_copy(name_ptr, (sz_ptr_t)name, vlen);
 						cfg->namespaces[k].num= (int)nsnum;
 						k++;
 					}
@@ -533,9 +539,10 @@ static ParserConfig *config_from_cjson(const cJSON *root) {
 					cfg->namespaces, cfg->ns_count, cfg->ns_count + 1);
 				assert(grown);
 				cfg->namespaces= grown;
-				size_t nslen= strlen(item->string);
+				const char *name = item->string;
+				size_t nslen= strlen(name);
 			sz_ptr_t ptr = sz_string_init_length(&cfg->namespaces[cfg->ns_count].name, nslen, &allocator_default);
-			sz_copy(ptr, (sz_ptr_t)item->string, nslen);
+			sz_copy(ptr, (sz_ptr_t)name, nslen);
 				cfg->namespaces[cfg->ns_count].num= nsnum;
 				cfg->ns_count++;
 			}
