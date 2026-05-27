@@ -36,6 +36,7 @@ so ICU is required for both CMake and Node addon builds.
 **Build**
 
 ```bash
+rm -rf build
 mkdir -p build
 ```
 The project defaults to a Release build for single-config generators. Examples:
@@ -149,10 +150,12 @@ sudo chown djc:djc -R build_profile
 sudo ./scripts/profile_wikitext.sh --callgrind --config node_modules/wikiparser-node/config/enwiki.json --testsdir tests/wikitext
 callgrind_annotate /home/djc/git/wiki-cast/build_profile/callgrind.out --auto=yes
 sudo chown djc:djc -R bindings/node/build
+sudo chown djc:djc -R build_profile
 
 # run gprof
 sudo ./scripts/profile_wikitext.sh --gprof --config node_modules/wikiparser-node/config/enwiki.json --testsdir tests/wikitext
 sudo chown djc:djc -R bindings/node/build
+sudo chown djc:djc -R build_profile
 
 ```
 
