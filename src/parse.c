@@ -1818,7 +1818,8 @@ static bool token_has_ext_inner_ancestor(const Token *target, const Accum *accum
 static void postprocess_parameter_value_inline_impl(Token *t, const ParserConfig *cfg, Accum *accum,
 																				const char *page, const Token *parent,
 																						const Token *grandparent,
-																						bool in_ext_context) {
+																																						bool in_ext_context,
+																																						bool recurse_existing_children) {
 	if(!t) return;
 
 	log_debug_env_token("DEBUG_PARAM_VALUE", t, "postprocess_parameter_value_inline_impl start");
@@ -1826,9 +1827,11 @@ static void postprocess_parameter_value_inline_impl(Token *t, const ParserConfig
 	bool self_is_ext_inner= (t->type == TOKEN_EXT_INNER && t->type_name && strcmp(t->type_name, "ext-inner") == 0);
 	bool current_in_ext_context= in_ext_context || self_is_ext_inner;
 
-	for(size_t i= 0; i < t->child_count; i++) {
-		if(!t->children[i].is_text && t->children[i].token) {
-			postprocess_parameter_value_inline_impl(t->children[i].token, cfg, accum, page, t, parent, current_in_ext_context);
+	if(recurse_existing_children) {
+		for(size_t i= 0; i < t->child_count; i++) {
+			if(!t->children[i].is_text && t->children[i].token) {
+				postprocess_parameter_value_inline_impl(t->children[i].token, cfg, accum, page, t, parent, current_in_ext_context, true);
+			}
 		}
 	}
 
@@ -2002,7 +2005,7 @@ static void postprocess_parameter_value_inline_impl(Token *t, const ParserConfig
 
 						for(size_t i= 0; i < t->child_count; i++) {
 							if(!t->children[i].is_text && t->children[i].token) {
-								postprocess_parameter_value_inline_impl(t->children[i].token, cfg, accum, page, t, parent, current_in_ext_context);
+								postprocess_parameter_value_inline_impl(t->children[i].token, cfg, accum, page, t, parent, current_in_ext_context, true);
 							}
 						}
 
@@ -2164,7 +2167,7 @@ static void postprocess_parameter_value_inline_impl(Token *t, const ParserConfig
 		 * recursion at function entry. */
 		for(size_t i= 0; i < t->child_count; i++) {
 			if(!t->children[i].is_text && t->children[i].token) {
-				postprocess_parameter_value_inline_impl(t->children[i].token, cfg, accum, page, t, parent, current_in_ext_context);
+				postprocess_parameter_value_inline_impl(t->children[i].token, cfg, accum, page, t, parent, current_in_ext_context, true);
 			}
 		}
 
@@ -2182,9 +2185,10 @@ static void postprocess_parameter_value_inline_impl(Token *t, const ParserConfig
 }
 
 static void postprocess_parameter_value_inline(Token *t, const ParserConfig *cfg, Accum *accum,
-																			const char *page) {
+																																		const char *page,
+																																		bool recurse_existing_children) {
 	bool inferred_in_ext_context= token_has_ext_inner_ancestor(t, accum);
-	postprocess_parameter_value_inline_impl(t, cfg, accum, page, NULL, NULL, inferred_in_ext_context);
+	postprocess_parameter_value_inline_impl(t, cfg, accum, page, NULL, NULL, inferred_in_ext_context, recurse_existing_children);
 }
 
 static void finalize_gallery_and_link_names(Token *t, const ParserConfig *cfg,
@@ -2514,7 +2518,7 @@ Token *wiki_parse_with_page(const char *wikitext, size_t input_len, const Parser
 
 			for(size_t _ai= scan_start; _ai < scan_end; _ai++) {
 				if(accum.tokens[_ai]) {
-					postprocess_parameter_value_inline(accum.tokens[_ai], cfg, &accum, page);
+					postprocess_parameter_value_inline(accum.tokens[_ai], cfg, &accum, page, true);
 				}
 			}
 
@@ -2538,7 +2542,7 @@ Token *wiki_parse_with_page(const char *wikitext, size_t input_len, const Parser
 
 	/* JS parity: run inline stages again for any new text children created
      * during build_token_recursive (e.g. ext-inner content). */
-	postprocess_parameter_value_inline(root, cfg, &accum, page);
+	postprocess_parameter_value_inline(root, cfg, &accum, page, true);
 	finalize_gallery_and_link_names(root, cfg, page);
 
 	/* ── Debug: log the final token tree as JSON ─────────────────────────── */
