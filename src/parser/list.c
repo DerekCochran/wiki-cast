@@ -186,9 +186,8 @@ static bool list_prefix_parse(const char *line, size_t len, ListPrefixResult *ou
 }
 
 /* Helper: compute common prefix length as per JS util/html.getCommon */
-static size_t get_common_prefix_len(const char *prefix, size_t plen, const char *last) {
+static size_t get_common_prefix_len(const char *prefix, size_t plen, const char *last, size_t last_len) {
 	if(!last) return 0;
-	size_t last_len= strlen(last);
 	if(last_len == 0) return 0;
 	if(plen >= last_len && sz_equal(prefix, last, last_len) == sz_true_k) return last_len;
 	for(size_t i= 0; i < last_len; i++) {
@@ -203,13 +202,10 @@ static Token *make_list_token(const char *part, size_t part_len, Accum *accum) {
 	Token *t= token_new(TOKEN_LIST, "list");
 	if(!t) return NULL;
 	if(part_len > 0) {
-		const char *part_view = wiki_thread_buf_append_to_tokens(part, part_len);
-		if(part_view) token_append_text_n(t, part_view, part_len);
+		token_append_text_n(t, part, part_len);
 	} else {
 		token_append_text_n(t, NULL, 0);
 	}
-	accum_push(accum, t);
-	return t;
 	accum_push(accum, t);
 	return t;
 }
@@ -219,8 +215,7 @@ static Token *make_dd_token(const char *syntax, size_t syntax_len, Accum *accum)
 	Token *t= token_new(TOKEN_DD, "dd");
 	if(!t) return NULL;
 	if(syntax_len > 0) {
-		const char *syn_view = wiki_thread_buf_append_to_tokens(syntax, syntax_len);
-		if(syn_view) token_append_text_n(t, syn_view, syntax_len);
+		token_append_text_n(t, syntax, syntax_len);
 	} else {
 		token_append_text_n(t, NULL, 0);
 	}
@@ -314,6 +309,7 @@ void parse_list(ThreadBuf *tb, const ParserConfig *cfg, Accum *accum) {
 
 	/* State: lastPrefix string (malloc'd when set) */
 	char *lastPrefix= NULL;
+	size_t lastPrefixLen= 0;
 
 	/* Process each line (root: start at 0) */
 	for(size_t li= 0; li < line_count; li++) {
@@ -326,7 +322,8 @@ void parse_list(ThreadBuf *tb, const ParserConfig *cfg, Accum *accum) {
 			/* No match: reset lastPrefix and keep line unchanged */
 			if(lastPrefix) {
 				free(lastPrefix);
-				lastPrefix= strdup("");
+				lastPrefix= NULL;
+				lastPrefixLen= 0;
 			}
 			continue;
 		}
@@ -345,7 +342,7 @@ void parse_list(ThreadBuf *tb, const ParserConfig *cfg, Accum *accum) {
 		for(size_t i= 0; i < prefix_len; i++) prefix2[i]= (prefix[i] == ';') ? ':' : prefix[i];
 		prefix2[prefix_len]= '\0';
 
-		size_t common= get_common_prefix_len(prefix2, prefix_len, lastPrefix ? lastPrefix : "");
+		size_t common= get_common_prefix_len(prefix2, prefix_len, lastPrefix, lastPrefixLen);
 
 		/* Build combined = ((common>1)?prefix.slice(common-1):prefix) + space */
 		size_t start_slice= (common > 1) ? (common - 1) : 0;
@@ -402,6 +399,7 @@ void parse_list(ThreadBuf *tb, const ParserConfig *cfg, Accum *accum) {
 		/* Update lastPrefix */
 		if(lastPrefix) free(lastPrefix);
 		lastPrefix= prefix2; /* ownership transferred */
+		lastPrefixLen= prefix_len;
 
 		/* Build text = comment + sentinel markers for each part + rest-of-line */
 		size_t base_idx= accum->count;
