@@ -67,9 +67,9 @@ static void str_list_from_json_array(StrList *sl, const cJSON *arr) {
 	const cJSON *item;
 	cJSON_ArrayForEach(item, arr) {
 		if(cJSON_IsString(item) && item->valuestring) {
-
-			sz_ptr_t ptr = sz_string_init_length(&sl->items[k], strlen(item->valuestring), &allocator_default);
-			sz_copy(ptr, (sz_ptr_t)item->valuestring, strlen(item->valuestring));
+			size_t slen = strlen(item->valuestring);
+			sz_ptr_t ptr = sz_string_init_length(&sl->items[k], slen, &allocator_default);
+			sz_copy(ptr, (sz_ptr_t)item->valuestring, slen);
 			k++;
 		}
 	}
@@ -88,9 +88,9 @@ static void str_list_from_json_object_keys(StrList *sl, const cJSON *obj) {
 
 	cJSON_ArrayForEach(item, obj) {
 		if(item->string) {
-
-			sz_ptr_t ptr = sz_string_init_length(&sl->items[k], strlen(item->string), &allocator_default);
-			sz_copy(ptr, (sz_ptr_t)item->string, strlen(item->string));
+			size_t slen = strlen(item->string);
+			sz_ptr_t ptr = sz_string_init_length(&sl->items[k], slen, &allocator_default);
+			sz_copy(ptr, (sz_ptr_t)item->string, slen);
 			k++;
 		}
 	}
@@ -131,10 +131,12 @@ static void str_map_from_json_object(StrMap *m, const cJSON *obj) {
 
 	cJSON_ArrayForEach(item, obj) {
 		if(item->string && cJSON_IsString(item) && item->valuestring) {
-		sz_ptr_t key_ptr = sz_string_init_length(&m->keys[k], strlen(item->string), &allocator_default);
-		sz_copy(key_ptr, (sz_ptr_t)item->string, strlen(item->string));
-			sz_ptr_t val_ptr = sz_string_init_length(&m->values[k], strlen(item->valuestring), &allocator_default);
-			sz_copy(val_ptr, (sz_ptr_t)item->valuestring, strlen(item->valuestring));
+			size_t klen = strlen(item->string);
+			size_t vlen = strlen(item->valuestring);
+			sz_ptr_t key_ptr = sz_string_init_length(&m->keys[k], klen, &allocator_default);
+			sz_copy(key_ptr, (sz_ptr_t)item->string, klen);
+			sz_ptr_t val_ptr = sz_string_init_length(&m->values[k], vlen, &allocator_default);
+			sz_copy(val_ptr, (sz_ptr_t)item->valuestring, vlen);
 			k++;
 		}
 	}
@@ -148,13 +150,12 @@ static NsEntry *realloc_ns_entry_array_preserve_small(
 
 static bool str_list_contains_exact(const StrList *sl, const char *needle) {
 	if(!sl || !needle) return false;
-
-
+	size_t needle_len = strlen(needle);
 	for(size_t i= 0; i < sl->count; i++) {
 		sz_ptr_t start;
 		sz_size_t len;
 		sz_string_range(&sl->items[i], &start, &len);
-		if(start && len == strlen(needle) && sz_equal(start, needle, len) == sz_true_k) return true;
+		if(start && len == needle_len && sz_equal(start, needle, needle_len) == sz_true_k) return true;
 	}
 	return false;
 }
@@ -166,18 +167,20 @@ static void str_list_append_dup(StrList *sl, const char *s) {
 		sl->items, sl->count, sl->count + 1);
 	assert(grown);
 	sl->items= grown;
-	sz_ptr_t ptr = sz_string_init_length(&sl->items[sl->count], strlen(s), &allocator_default);
-	sz_copy(ptr, (sz_ptr_t)s, strlen(s));
+	size_t slen = strlen(s);
+	sz_ptr_t ptr = sz_string_init_length(&sl->items[sl->count], slen, &allocator_default);
+	sz_copy(ptr, (sz_ptr_t)s, slen);
 	sl->count++;
 }
 
 static bool str_map_contains_key(const StrMap *m, const char *key) {
 	if(!m || !key) return false;
+	size_t key_len = strlen(key);
 	for(size_t i= 0; i < m->count; i++) {
 		sz_ptr_t start;
 		sz_size_t len;
 		sz_string_range(&m->keys[i], &start, &len);
-		if(start && len == strlen(key) && sz_equal(start, key, len) == sz_true_k) return true;
+		if(start && len == key_len && sz_equal(start, key, key_len) == sz_true_k) return true;
 	}
 	return false;
 }
@@ -185,11 +188,12 @@ static bool str_map_contains_key(const StrMap *m, const char *key) {
 static bool ns_entry_exists_ci(const NsEntry *arr, size_t count,
 															 const char *name, int num) {
 	if(!arr || !name) return false;
+	size_t name_len = strlen(name);
 	for(size_t i= 0; i < count; i++) {
 		sz_ptr_t entry_name;
 		sz_size_t entry_len;
 		sz_string_range(&arr[i].name, &entry_name, &entry_len);
-		if(arr[i].num == num && entry_name && entry_len == strlen(name) && str_ci_eq_n((const char *)entry_name, name, entry_len)) {
+		if(arr[i].num == num && entry_name && entry_len == name_len && str_ci_eq_n((const char *)entry_name, name, entry_len)) {
 			return true;
 		}
 	}
@@ -258,10 +262,16 @@ static void str_map_append_dup(StrMap *m, const char *key, const char *value) {
 	assert(grown_keys && grown_vals);
 	m->keys= grown_keys;
 	m->values= grown_vals;
-	sz_ptr_t key_ptr = sz_string_init_length(&m->keys[m->count], strlen(key), &allocator_default);
-	sz_copy(key_ptr, (sz_ptr_t)key, strlen(key));
-	sz_ptr_t val_ptr = sz_string_init_length(&m->values[m->count], strlen(value), &allocator_default);
-	sz_copy(val_ptr, (sz_ptr_t)value, strlen(value));
+	{
+	size_t klen = strlen(key);
+	sz_ptr_t key_ptr = sz_string_init_length(&m->keys[m->count], klen, &allocator_default);
+	sz_copy(key_ptr, (sz_ptr_t)key, klen);
+	}
+	{
+	size_t vlen = strlen(value);
+	sz_ptr_t val_ptr = sz_string_init_length(&m->values[m->count], vlen, &allocator_default);
+	sz_copy(val_ptr, (sz_ptr_t)value, vlen);
+	}
 	m->count++;
 }
 
@@ -483,18 +493,18 @@ static ParserConfig *config_from_cjson(const cJSON *root) {
 			const cJSON *item;
 			cJSON_ArrayForEach(item, ns) {
 				if(item->string && cJSON_IsNumber(item)) {
-
-				sz_ptr_t name_ptr = sz_string_init_length(&cfg->namespaces[k].name, strlen(item->string), &allocator_default);
-				sz_copy(name_ptr, (sz_ptr_t)item->string, strlen(item->string));
+				size_t nlen = strlen(item->string);
+				sz_ptr_t name_ptr = sz_string_init_length(&cfg->namespaces[k].name, nlen, &allocator_default);
+				sz_copy(name_ptr, (sz_ptr_t)item->string, nlen);
 					cfg->namespaces[k].num= (int)item->valuedouble;
 					k++;
 				} else if(item->string && cJSON_IsString(item) && item->valuestring) {
 					char *endp= NULL;
 					long nsnum= strtol(item->string, &endp, 10);
 					if(endp && *endp == '\0') {
-
-						sz_ptr_t name_ptr = sz_string_init_length(&cfg->namespaces[k].name, strlen(item->valuestring), &allocator_default);
-						sz_copy(name_ptr, (sz_ptr_t)item->valuestring, strlen(item->valuestring));
+					size_t vlen = strlen(item->valuestring);
+					sz_ptr_t name_ptr = sz_string_init_length(&cfg->namespaces[k].name, vlen, &allocator_default);
+					sz_copy(name_ptr, (sz_ptr_t)item->valuestring, vlen);
 						cfg->namespaces[k].num= (int)nsnum;
 						k++;
 					}

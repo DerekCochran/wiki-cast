@@ -267,22 +267,23 @@ char *str_trim_lc(const char *s, size_t len) {
 /* Named HTML entities we handle (mirrors JS names object) */
 static const struct {
 	const char *name;
+	size_t      name_len;
 	uint32_t cp;
 } HTML_NAMES[]= {
-{"lt", '<'},
-{"gt", '>'},
-{"lbrack", '['},
-{"rbrack", ']'},
-{"lbrace", '{'},
-{"rbrace", '}'},
-{"nbsp", ' '},  /* JS title normalization later canonicalizes NBSP to space */
-{"amp", '&'},
-{"quot", '"'},
-{"apos", '\''},
-{"prime", 0x2032},
-{"ndash", 0x2013},
-{"mdash", 0x2014},
-{"minus", 0x2212},
+{"lt",           2, '<'},
+{"gt",           2, '>'},
+{"lbrack",       6, '['},
+{"rbrack",       6, ']'},
+{"lbrace",       6, '{'},
+{"rbrace",       6, '}'},
+{"nbsp",         4, ' '},  /* JS title normalization later canonicalizes NBSP to space */
+{"amp",          3, '&'},
+{"quot",         4, '"'},
+{"apos",          4, '\''},
+{"prime",         5, 0x2032},
+{"ndash",         5, 0x2013},
+{"mdash",         5, 0x2014},
+{"minus",         5, 0x2212},
 };
 #define HTML_NAMES_COUNT ((int)(sizeof(HTML_NAMES) / sizeof(HTML_NAMES[0])))
 
@@ -386,7 +387,8 @@ char *str_decode_html_basic(const char *s, size_t len, size_t *out_len) {
 
 			bool found= false;
 			for(int n= 0; n < HTML_NAMES_COUNT; n++) {
-				if(strcmp(lower_ref, HTML_NAMES[n].name) == 0) {
+				if(HTML_NAMES[n].name_len == copy_len &&
+				   sz_equal(lower_ref, HTML_NAMES[n].name, copy_len) == sz_true_k) {
 					char tmp[4];
 					int nb= 0;
 					encode_codepoint(HTML_NAMES[n].cp, tmp, &nb);

@@ -37,28 +37,40 @@ static int strlist_has_exact(const StrList *sl, const char *s, size_t len);
 static int strlist_has_lower(const StrList *sl, const char *s, size_t len);
 static const char *strmap_get_exact(const StrMap *m, const char *key, size_t key_len);
 
-/* Skip a CNO sentinel: \0\d+[cn]\x7F */
+/* Skip a CNO sentinel: \0\d+[cno]\x7F
+ * Uses sz_find_byte to jump to the \x7F terminal, then validates backward. */
 static size_t skip_cno_sentinel(const char *p, size_t rem) {
 	if(!p || rem < 4 || (unsigned char)p[0] != 0) return 0;
-	size_t j = 1;
-	if(j >= rem || p[j] < '0' || p[j] > '9') return 0;
-	while(j < rem && p[j] >= '0' && p[j] <= '9') j++;
-	if(j + 1 >= rem) return 0;
-	if((p[j] != 'c' && p[j] != 'n' && p[j] != 'o') || (unsigned char)p[j + 1] != 0x7F) return 0;
-	return j + 2;
+	if(p[1] < '0' || p[1] > '9') return 0;
+	static const char del_ch = '\x7F';
+	const char *del = sz_find_byte(p + 1, rem - 1, &del_ch);
+	if(!del) return 0;
+	size_t end_pos = (size_t)(del - p); /* position of \x7F */
+	if(end_pos < 3) return 0;           /* need: NUL digit+ type DEL */
+	char type = p[end_pos - 1];
+	if(type != 'c' && type != 'n' && type != 'o') return 0;
+	for(size_t k = 1; k < end_pos - 1; k++) {
+		if(p[k] < '0' || p[k] > '9') return 0;
+	}
+	return end_pos + 1;
 }
 
-/* Returns bytes consumed if *p starts a \x00\d+[cn]\x7F sentinel, else 0. */
+/* Returns bytes consumed if *p starts a \x00\d+[cn]\x7F sentinel, else 0.
+ * Uses sz_find_byte to jump to the \x7F terminal, then validates backward. */
 static size_t skip_cn_sentinel(const char *p, size_t remaining) {
-    if(!p || remaining < 4 || (unsigned char)p[0] != 0) return 0;
-    size_t j = 1;
-    if(j >= remaining || p[j] < '0' || p[j] > '9') return 0;
-    while(j < remaining && p[j] >= '0' && p[j] <= '9') j++;
-    if(j >= remaining) return 0;
-    char t = p[j];
-    if(t != 'c' && t != 'n') return 0;
-    if(j + 1 >= remaining || (unsigned char)p[j + 1] != 0x7F) return 0;
-    return j + 2;
+	if(!p || remaining < 4 || (unsigned char)p[0] != 0) return 0;
+	if(p[1] < '0' || p[1] > '9') return 0;
+	static const char del_ch = '\x7F';
+	const char *del = sz_find_byte(p + 1, remaining - 1, &del_ch);
+	if(!del) return 0;
+	size_t end_pos = (size_t)(del - p); /* position of \x7F */
+	if(end_pos < 3) return 0;
+	char type = p[end_pos - 1];
+	if(type != 'c' && type != 'n') return 0;
+	for(size_t k = 1; k < end_pos - 1; k++) {
+		if(p[k] < '0' || p[k] > '9') return 0;
+	}
+	return end_pos + 1;
 }
 
 typedef struct {
