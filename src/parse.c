@@ -1311,11 +1311,11 @@ static void postprocess_gallery_ext_inner(Token *t, const ParserConfig *cfg, Acc
 			line_start= eol ? (size_t)(eol - tmp->buf) + 1 : tmp->len;
 		}
 
-		for(size_t i= 0; i < t->child_count; i++) {
-			if(!t->children[i].is_text && t->children[i].token) {
-				postprocess_nested_plain(t->children[i].token, cfg, accum, page);
-			}
-		}
+		// for(size_t i= 0; i < t->child_count; i++) {
+		// 	if(!t->children[i].is_text && t->children[i].token) {
+		// 		postprocess_nested_plain(t->children[i].token, cfg, accum, page);
+		// 	}
+		// }
 
 		wiki_thread_buf_release_scratch(tmp);
 		return;
