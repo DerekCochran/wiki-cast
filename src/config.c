@@ -148,9 +148,8 @@ static sz_string_t *realloc_sz_string_array_preserve_small(
 static NsEntry *realloc_ns_entry_array_preserve_small(
 		NsEntry *arr, size_t old_count, size_t new_count);
 
-static bool str_list_contains_exact(const StrList *sl, const char *needle) {
+static bool str_list_contains_exact_n(const StrList *sl, const char *needle, size_t needle_len) {
 	if(!sl || !needle) return false;
-	size_t needle_len = strlen(needle);
 	for(size_t i= 0; i < sl->count; i++) {
 		sz_ptr_t start;
 		sz_size_t len;
@@ -173,9 +172,8 @@ static void str_list_append_dup(StrList *sl, const char *s) {
 	sl->count++;
 }
 
-static bool str_map_contains_key(const StrMap *m, const char *key) {
+static bool str_map_contains_key_n(const StrMap *m, const char *key, size_t key_len) {
 	if(!m || !key) return false;
-	size_t key_len = strlen(key);
 	for(size_t i= 0; i < m->count; i++) {
 		sz_ptr_t start;
 		sz_size_t len;
@@ -640,10 +638,11 @@ static ParserConfig *config_from_cjson(const cJSON *root) {
      *   parserFunction[1]["TRANSLATIONLANGUAGE"] = "translationlanguage";
      * }
      */
-	if(str_list_contains_exact(&cfg->ext, "translate") &&
-		 !str_list_contains_exact(&cfg->variable, "translationlanguage")) {
+	if(str_list_contains_exact_n(&cfg->ext, "translate", sizeof("translate") - 1) &&
+		 !str_list_contains_exact_n(&cfg->variable, "translationlanguage", sizeof("translationlanguage") - 1)) {
 		str_list_append_dup(&cfg->variable, "translationlanguage");
-		if(!str_map_contains_key(&cfg->parser_function_sensitive, "TRANSLATIONLANGUAGE")) {
+		if(!str_map_contains_key_n(&cfg->parser_function_sensitive,
+				"TRANSLATIONLANGUAGE", sizeof("TRANSLATIONLANGUAGE") - 1)) {
 			str_map_append_dup(&cfg->parser_function_sensitive,
 												 "TRANSLATIONLANGUAGE",
 												 "translationlanguage");
