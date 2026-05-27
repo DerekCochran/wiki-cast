@@ -11,11 +11,7 @@ static Token *make_text_token(TokenType type, const char *type_name, const char 
 	if(!t) return NULL;
 	if(text) {
 		size_t tlen = strlen(text);
-		if(tlen > 0) {
-			token_append_text_n(t, text, tlen);
-		} else {
-			token_append_text_n(t, "", 0);
-		}
+		token_append_text_n(t, text, tlen);
 	}
 	accum_push(accum, t);
 	return t;
@@ -44,11 +40,7 @@ Token *table_token_create(const char *syntax, const char *attr, const char *inne
 	if(!inner_tok) return table;
 	if(inner) {
 		size_t ilen = strlen(inner);
-		if(ilen > 0) {
-			token_append_text_n(inner_tok, inner, ilen);
-		} else {
-			token_append_text_n(inner_tok, "", 0);
-		}
+		token_append_text_n(inner_tok, inner, ilen);
 	}
 	accum_push(accum, inner_tok);
 	token_append_child(table, inner_tok);
