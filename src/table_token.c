@@ -5,8 +5,6 @@
 #include <stdlib.h>
 #include <string.h>
 
-#include "util/thread_buffer.h"
-
 /* Helper: create a simple text child token */
 static Token *make_text_token(TokenType type, const char *type_name, const char *text, Accum *accum) {
 	Token *t= token_new(type, type_name);
@@ -14,13 +12,10 @@ static Token *make_text_token(TokenType type, const char *type_name, const char 
 	if(text) {
 		size_t tlen = strlen(text);
 		if(tlen > 0) {
-			const char *view = wiki_thread_buf_append_to_tokens(text, tlen);
-			token_append_text_n(t, view, tlen);
+			token_append_text_n(t, text, tlen);
 		} else {
 			token_append_text_n(t, "", 0);
 		}
-	} else if (text) {
-		token_append_text_n(t, "", 0);
 	}
 	accum_push(accum, t);
 	return t;
@@ -50,8 +45,7 @@ Token *table_token_create(const char *syntax, const char *attr, const char *inne
 	if(inner) {
 		size_t ilen = strlen(inner);
 		if(ilen > 0) {
-			const char *view = wiki_thread_buf_append_to_tokens(inner, ilen);
-			token_append_text_n(inner_tok, view, ilen);
+			token_append_text_n(inner_tok, inner, ilen);
 		} else {
 			token_append_text_n(inner_tok, "", 0);
 		}

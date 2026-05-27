@@ -21,8 +21,7 @@ static Token *make_attr_key(const char *key, size_t key_len, Accum *accum) {
 	Token *t= token_new(TOKEN_ATTR_KEY, "attr-key");
 	if(!t) return NULL;
 	if(key_len > 0) {
-		const char *key_view = wiki_thread_buf_append_to_tokens(key, key_len);
-		if(key_view) token_append_text_n(t, key_view, key_len);
+		token_append_text_n(t, key, key_len);
 	} else {
 		token_append_text_n(t, NULL, 0);
 	}
@@ -34,8 +33,7 @@ static Token *make_attr_value(const char *val, size_t val_len, Accum *accum) {
 	Token *t= token_new(TOKEN_ATTR_VALUE, "attr-value");
 	if(!t) return NULL;
 	if(val_len > 0) {
-		const char *val_view = wiki_thread_buf_append_to_tokens(val, val_len);
-		if(val_view) token_append_text_n(t, val_view, val_len);
+		token_append_text_n(t, val, val_len);
 	} else {
 		token_append_text_n(t, NULL, 0);
 	}
@@ -91,8 +89,7 @@ static Token *make_table_attr_dirty(const char *text, size_t text_len, Accum *ac
 	Token *t= token_new(TOKEN_ATOM, "table-attr-dirty");
 	if(!t) return NULL;
 	if(text_len > 0) {
-		const char *text_view = wiki_thread_buf_append_to_tokens(text, text_len);
-		if(text_view) token_append_text_n(t, text_view, text_len);
+		token_append_text_n(t, text, text_len);
 	} else {
 		token_append_text_n(t, NULL, 0);
 	}
@@ -924,8 +921,7 @@ static void push_text_like_js(char **out_buf, size_t *out_len, size_t *out_cap,
 		if(!inter) return;
 		inter->stage= 3;
 		if(n > 0) {
-			const char *view = wiki_thread_buf_append_to_tokens(s, n);
-			if(view) token_append_text_n(inter, view, n);
+			token_append_text_n(inter, s, n);
 		} else {
 			token_append_text_n(inter, NULL, 0);
 		}
@@ -963,8 +959,7 @@ static void push_text_like_js(char **out_buf, size_t *out_len, size_t *out_cap,
 				}
 			}
 			if(n > 0) {
-				const char *view = wiki_thread_buf_append_to_tokens(s, n);
-				if(view) token_append_text_n(inner, view, n);
+				token_append_text_n(inner, s, n);
 			} else {
 				token_append_text_n(inner, NULL, 0);
 			}
@@ -973,8 +968,7 @@ static void push_text_like_js(char **out_buf, size_t *out_len, size_t *out_cap,
 	}
 
 		if(n > 0) {
-			const char *view = wiki_thread_buf_append_to_tokens(s, n);
-			if(view) token_append_text_n(top, view, n);
+			token_append_text_n(top, s, n);
 		} else {
 			token_append_text_n(top, NULL, 0);
 		}
@@ -990,8 +984,7 @@ static Token *create_table_token(const char *syntax, size_t syntax_len,
 	Token *syn= token_new(TOKEN_SYNTAX, "table-syntax");
 	if(syn) {
 		if(syntax_len > 0) {
-			const char *syn_view = wiki_thread_buf_append_to_tokens(syntax, syntax_len);
-			if(syn_view) token_append_text_n(syn, syn_view, syntax_len);
+			token_append_text_n(syn, syntax, syntax_len);
 		} else {
 			token_append_text_n(syn, NULL, 0);
 		}
@@ -1070,8 +1063,7 @@ void parse_table(ThreadBuf *tb, const ParserConfig *cfg, Accum *accum) {
 				Token *dd= token_new(TOKEN_DD, "dd");
 				if(dd) {
 					if(indent_len > 0) {
-						const char *dd_view = wiki_thread_buf_append_to_tokens(indent, indent_len);
-						if(dd_view) token_append_text_n(dd, dd_view, indent_len);
+						token_append_text_n(dd, indent, indent_len);
 					} else {
 						token_append_text_n(dd, NULL, 0);
 					}
@@ -1153,8 +1145,7 @@ void parse_table(ThreadBuf *tb, const ParserConfig *cfg, Accum *accum) {
 				Token *clos = token_new(TOKEN_SYNTAX, "table-syntax");
 				if(clos) {
 					if(syn_len > 0) {
-						const char *clos_view = wiki_thread_buf_append_to_tokens(syn, syn_len);
-						if(clos_view) token_append_text_n(clos, clos_view, syn_len);
+						token_append_text_n(clos, syn, syn_len);
 					} else {
 						token_append_text_n(clos, NULL, 0);
 					}
