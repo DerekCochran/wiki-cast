@@ -12,8 +12,7 @@
 #include <stdlib.h>
 #include <string.h>
 
-static int contains_literal_seq(const char *s, size_t len, const char *needle) {
-	size_t nlen= strlen(needle);
+static int contains_literal_seq(const char *s, size_t len, const char *needle, size_t nlen) {
 	if(nlen == 0 || len < nlen) return 0;
 	return sz_find(s, len, needle, nlen) != NULL;
 }
@@ -1221,7 +1220,8 @@ void parse_table(ThreadBuf *tb, const ParserConfig *cfg, Accum *accum) {
 					inner = seg + ic.pos + ic.sep_len;
 					inner_len = seg_len - (ic.pos + ic.sep_len);
 
-					if(contains_literal_seq(cell_attrs, cell_attrs_len, "[[") || contains_literal_seq(cell_attrs, cell_attrs_len, "-{")) {
+					
+										if(contains_literal_seq(cell_attrs, cell_attrs_len, "[[", 2) || contains_literal_seq(cell_attrs, cell_attrs_len, "-{", 2)) {
 						cell_attrs = "";
 						cell_attrs_len = 0;
 						inner_syntax = "";

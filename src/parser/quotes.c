@@ -33,16 +33,17 @@ static Token *build_quote_token(const char *txt, size_t txt_len, Accum *accum) {
 	return t;
 }
 
-/* Append raw bytes (not necessarily NUL-terminated) to a Part's string. */
-static int part_append_bytes(Part *p, const char *add, size_t addlen) {	if(!p) return -1;
-	char *newbuf= malloc(p->len + addlen + 1);
+/* Append raw bytes (not necessarily NUL-terminated) to a Part's string.
+ * Uses realloc to potentially extend in place, avoiding a fresh malloc+copy+free cycle. */
+static int part_append_bytes(Part *p, const char *add, size_t addlen) {
+	if(!p) return -1;
+	size_t new_len = p->len + addlen;
+	char *newbuf = realloc(p->s, new_len + 1);
 	if(!newbuf) return -1;
-	if(p->s && p->len > 0) sz_copy(newbuf, p->s, p->len);
 	if(add && addlen > 0) sz_copy(newbuf + p->len, add, addlen);
-	newbuf[p->len + addlen]= '\0';
-	free(p->s);
+	newbuf[new_len]= '\0';
 	p->s= newbuf;
-	p->len+= addlen;
+	p->len= new_len;
 	return 0;
 }
 

@@ -548,19 +548,21 @@ void parse_list(ThreadBuf *tb, const ParserConfig *cfg, Accum *accum) {
 					const char *name = ht ? ht->name : NULL;
 					bool closing = ht ? ht->data.html.closing : false;
 					bool selfClosing = ht ? ht->data.html.self_closing : false;
+
+					size_t name_len = name ? strlen(name) : 0;
 					bool is_normal = false;
 				for(size_t ni =0; ni < cfg->html[0].count; ni++) {
 					sz_ptr_t html_name;
 					sz_size_t html_len;
 					sz_string_range(&cfg->html[0].items[ni], &html_name, &html_len);
-								if(html_name && name && html_len == strlen(name) && sz_equal((const char *)html_name, name, html_len) == sz_true_k) { is_normal = true; break; }
+								if(html_name && name && html_len == name_len && sz_equal((const char *)html_name, name, name_len) == sz_true_k) { is_normal = true; break; }
 				}
 				bool is_void = false;
 				for(size_t vi =0; vi < cfg->html[2].count; vi++) {
 					sz_ptr_t html_name2;
 					sz_size_t html_len2;
 					sz_string_range(&cfg->html[2].items[vi], &html_name2, &html_len2);
-								if(html_name2 && name && html_len2 == strlen(name) && sz_equal((const char *)html_name2, name, html_len2) == sz_true_k) { is_void = true; break; }
+								if(html_name2 && name && html_len2 == name_len && sz_equal((const char *)html_name2, name, name_len) == sz_true_k) { is_void = true; break; }
 				}
 					if(is_normal || (!selfClosing && !is_void)) {
 						if(!closing) lt++; else if(lt) lt--;
