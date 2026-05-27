@@ -24,6 +24,35 @@ static void ensure_tolower_lut(void) {
 	}
 }
 
+static bool sentinel_type_is_valid(char t, const char *types, size_t types_len) {
+	const char *found = sz_find_byte(types, types_len, &t);
+	return found != NULL;
+}
+
+static bool scan_sentinel_marker(const char *buf, size_t len, size_t pos,
+								 const char *types, size_t types_len,
+								 size_t *out_n, char *out_type, size_t *out_total_len) {
+	if(!buf || pos >= len || buf[pos] != '\0') return false;
+	size_t j = pos + 1;
+	if(j >= len || !isdigit((unsigned char)buf[j])) return false;
+	const char *not_digit = sz_find_byte_not_from(buf + j, len - j, "0123456789", 10);
+	size_t k = not_digit ? (size_t)(not_digit - buf) : len;
+	if(k >= len) return false;
+	char t = buf[k];
+	if(!sentinel_type_is_valid(t, types, types_len)) return false;
+	if(k + 1 >= len || (unsigned char)buf[k + 1] != '\x7F') return false;
+
+	size_t n = 0;
+	for(size_t d = j; d < k; ++d) {
+		n = n * 10 + (size_t)(buf[d] - '0');
+	}
+	size_t total = (k + 2) - pos;
+	if(out_n) *out_n = n;
+	if(out_type) *out_type = t;
+	if(out_total_len) *out_total_len = total;
+	return true;
+}
+
 unsigned char fast_tolower(unsigned char c) {
     ensure_tolower_lut();
     return s_tolower_lut[c];
@@ -166,13 +195,13 @@ char *str_remove_comment(const char *s, size_t len, size_t *out_len) {
 		j += seg;
 
 		/* Look for sentinel: \0 <digits> [cn] \x7F */
-		const char *k = found + 1;
-		const char *not_digit = sz_find_byte_not_from(k, (size_t)(end - k), "0123456789", 10);
-		if(not_digit == NULL) k = end; else k = not_digit;
-		if(k < end && (k > found + 1) && (*k == 'c' || *k == 'n') &&
-		   (k + 1 < end && (unsigned char)*(k + 1) == '\x7F')) {
+		size_t n = 0;
+		char t = '\0';
+		size_t total = 0;
+		if(scan_sentinel_marker(found, (size_t)(end - found), 0, "cn", 2, &n, &t, &total) &&
+		   (t == 'c' || t == 'n')) {
 			/* Skip the entire marker */
-			p = k + 2;
+			p = found + total;
 			continue;
 		}
 
@@ -195,23 +224,12 @@ bool sentinel_scan_next(const char *buf, size_t len, size_t *pos,
 		const char *found = sz_find_byte(buf + i, len - i, "\0");
 		if(!found) return false;
 		size_t p = (size_t)(found - buf);
-		size_t j = p + 1;
-		if(j >= len || !(buf[j] >= '0' && buf[j] <= '9')) { i = p + 1; continue; }
-		size_t k = j;
-		const char *not_digit = sz_find_byte_not_from(buf + j, len - j, "0123456789", 10);
-		if(not_digit) k = (size_t)(not_digit - buf);
-		else k = len;
-		if(k >= len) { i = p + 1; continue; }
-		char t = buf[k];
-		if(sz_find_byte(SENTINEL_TYPES, sizeof(SENTINEL_TYPES) - 1, &t) == NULL) { i = p + 1; continue; }
-		if(k + 1 >= len || (unsigned char)buf[k + 1] != '\x7F') { i = p + 1; continue; }
-
-		/* parse decimal */
 		size_t n = 0;
-		for(size_t d = j; d < k; ++d) {
-			n = n * 10 + (size_t)(buf[d] - '0');
-		}
-		size_t total = (k + 2) - p; /* includes NUL .. DEL */
+		char t = '\0';
+		size_t total = 0;
+		if(!scan_sentinel_marker(buf, len, p, SENTINEL_TYPES, sizeof(SENTINEL_TYPES) - 1, &n, &t, &total)) { i = p + 1; continue; }
+
+		/* includes NUL .. DEL */
 		*pos = p + total;
 		if(out_n) *out_n = n;
 		if(out_type) *out_type = t;
@@ -228,20 +246,10 @@ void sentinel_scan(const char *buf, size_t len, SentinelScanCb cb, void *user_da
 		const char *found = sz_find_byte(buf + i, len - i, "\0");
 		if(!found) return;
 		size_t p = (size_t)(found - buf);
-		size_t j = p + 1;
-		if(j >= len || !(buf[j] >= '0' && buf[j] <= '9')) { i = p + 1; continue; }
-		size_t k = j;
-		const char *not_digit = sz_find_byte_not_from(buf + j, len - j, "0123456789", 10);
-		if(not_digit) k = (size_t)(not_digit - buf);
-		else k = len;
-		if(k >= len) { i = p + 1; continue; }
-		char t = buf[k];
-		if(sz_find_byte(SENTINEL_TYPES, sizeof(SENTINEL_TYPES) - 1, &t) == NULL) { i = p + 1; continue; }
-		if(k + 1 >= len || (unsigned char)buf[k + 1] != '\x7F') { i = p + 1; continue; }
-
 		size_t n = 0;
-		for(size_t d = j; d < k; ++d) n = n * 10 + (size_t)(buf[d] - '0');
-		size_t total = (k + 2) - p;
+		char t = '\0';
+		size_t total = 0;
+		if(!scan_sentinel_marker(buf, len, p, SENTINEL_TYPES, sizeof(SENTINEL_TYPES) - 1, &n, &t, &total)) { i = p + 1; continue; }
 		cb(p, total, n, t, user_data);
 		i = p + total;
 	}
