@@ -176,8 +176,8 @@ static bool cae_match_noinclude_single(const char *s, size_t len, size_t i,
                                        bool include_only, CaeScanMatch *m) {
     const char *n1 = include_only ? "includeonly" : "noinclude";
     const char *n2 = include_only ? NULL : "onlyinclude";
-    size_t n1_len = strlen(n1);
-    size_t n2_len = n2 ? strlen(n2) : 0;
+	size_t n1_len = include_only ? 11 : 9;
+	size_t n2_len = n2 ? 11 : 0;
 
     CaeOpenTag ot;
     size_t mend = 0;
@@ -250,7 +250,7 @@ static bool cae_match_ext(const char *s, size_t len, size_t i,
 static bool cae_match_include(const char *s, size_t len, size_t i,
                               bool include_only, CaeScanMatch *m) {
     const char *name = include_only ? "noinclude" : "includeonly";
-    size_t name_len = strlen(name);
+	size_t name_len = include_only ? 9 : 11;
 
     CaeOpenTag ot;
     if(!cae_match_open_named(s, len, i, name, name_len, &ot)) return false;
@@ -296,7 +296,13 @@ static bool cae_find_next_match(const char *s, size_t len, size_t at,
                                 bool has_translate, CaeScanMatch *m) {
     if(!s || !cfg || !m) return false;
 
-    for(size_t i = at; i < len; i++) {
+	size_t i = at;
+	const char lt = '<';
+	while(i < len) {
+		const char *cand = sz_find_byte(s + i, len - i, &lt);
+		if(!cand) return false;
+		i = (size_t)(cand - s);
+
         /* Keep JS alternation order exactly:
          * 1) comment
          * 2) noincludeRegex single-tag
@@ -307,6 +313,8 @@ static bool cae_find_next_match(const char *s, size_t len, size_t at,
         if(cae_match_noinclude_single(s, len, i, include_only, m)) return true;
         if(cae_match_ext(s, len, i, cfg, has_translate, m)) return true;
         if(cae_match_include(s, len, i, include_only, m)) return true;
+
+		i++;
     }
     return false;
 }
@@ -2743,7 +2751,7 @@ void parse_comment_and_ext(ThreadBuf *tb, const ParserConfig *cfg,
 
     if(include_only) {
         const char *oi_open = "<onlyinclude>";
-        if(find_substr_cs(tb->buf, tb->len, oi_open, strlen(oi_open))) {
+		if(find_substr_cs(tb->buf, tb->len, oi_open, 13)) {
             if(handle_onlyinclude(tb, cfg, accum)) {
                 return;
             }

@@ -23,8 +23,7 @@ static Token *build_quote_token(const char *txt, size_t txt_len, Accum *accum) {
 	t->data.quote.italic= txt_len != 3;
 
 	if(txt && txt_len > 0) {
-		const char *view = wiki_thread_buf_append_to_tokens(txt, txt_len);
-		token_append_text_n(t, view, txt_len);
+		token_append_text_n(t, txt, txt_len);
 	} else {
 		token_append_text_n(t, "", 0);
 	}
