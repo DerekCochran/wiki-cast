@@ -126,12 +126,13 @@ bool html_tag_parse(const char        *buf,
 /* Helper: whether a tag name (lowercase) is in any of cfg->html lists */
 static bool html_tag_allowed(const ParserConfig *cfg, const char *lcname) {
 	if(!cfg || !lcname) return false;
+	size_t lcname_len= strlen(lcname);
 	for(int grp= 0; grp < 3; grp++) {
 		for(size_t i= 0; i < cfg->html[grp].count; i++) {
 			sz_ptr_t html_name;
 			sz_size_t html_len;
 			sz_string_range(&cfg->html[grp].items[i], &html_name, &html_len);
-			if(html_name && html_len == strlen(lcname) && str_ci_eq_n(html_name, lcname, html_len)) return true;
+			if(html_name && html_len == lcname_len && str_ci_eq_n(html_name, lcname, html_len)) return true;
 		}
 	}
 	return false;
@@ -140,9 +141,7 @@ static bool html_tag_allowed(const ParserConfig *cfg, const char *lcname) {
 static Token *make_html_attr_key(const char *key, size_t key_len, Accum *accum) {
 	Token *t= token_new(TOKEN_ATTR_KEY, "attr-key");
 	if(!t) return NULL;
-	/* Ensure key text is stored in the persistent tokens arena */
-	const char *key_view = wiki_thread_buf_append_to_tokens(key, key_len);
-	token_append_text_n(t, key_view, key_len);
+	token_append_text_n(t, key, key_len);
 	accum_push(accum, t);
 	return t;
 }
@@ -185,9 +184,7 @@ static Token *make_html_attr_value(const char *val, size_t val_len, Accum *accum
 	Token *t= token_new(TOKEN_ATTR_VALUE, "attr-value");
 	if(!t) return NULL;
 	if(val_len > 0) {
-		/* Ensure value text is stored in the persistent tokens arena */
-		const char *val_view = wiki_thread_buf_append_to_tokens(val, val_len);
-		token_append_text_n(t, val_view, val_len);
+		token_append_text_n(t, val, val_len);
 	} else {
 		/* Explicit empty value (`=` present) keeps an empty text child in JS. */
 		token_append_text_n(t, "", 0);
@@ -199,9 +196,7 @@ static Token *make_html_attr_value(const char *val, size_t val_len, Accum *accum
 static Token *make_html_attr_dirty(const char *text, size_t text_len, Accum *accum) {
 	Token *t= token_new(TOKEN_EXT_ATTR_DIRTY, "html-attr-dirty");
 	if(!t) return NULL;
-	/* Dirty buffer is stack-local; copy into tokens arena to obtain stable view */
-	const char *text_view = wiki_thread_buf_append_to_tokens(text, text_len);
-	token_append_text_n(t, text_view, text_len);
+	token_append_text_n(t, text, text_len);
 	accum_push(accum, t);
 	return t;
 }
@@ -462,12 +457,14 @@ static Token *build_html_attrs(const char *tag_name, const char *attr_str, size_
 
 static bool html_attrs_has_attr(const Token *attrs, const char *attr_name) {
 	if(!attrs || !attr_name) return false;
+	size_t attr_len= strlen(attr_name);
 	for(size_t i= 0; i < attrs->child_count; i++) {
 		const Child *c= &attrs->children[i];
 		if(c->is_text || !c->token) continue;
 		const Token *a= c->token;
-		if(a->type == TOKEN_EXT_ATTR && a->name && strcasecmp(a->name, attr_name) == 0) {
-			return true;
+		if(a->type == TOKEN_EXT_ATTR && a->name) {
+			size_t nlen= strlen(a->name);
+			if(nlen == attr_len && str_ci_eq_n(a->name, attr_name, attr_len)) return true;
 		}
 	}
 	return false;
