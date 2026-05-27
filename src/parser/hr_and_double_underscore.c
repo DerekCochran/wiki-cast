@@ -177,8 +177,7 @@ static void parse_hr_pass(ThreadBuf *tb, Accum *accum) {
 		if(dash - p >= 4) {
 			Token *t = token_new(TOKEN_HR, "hr");
 			if(t) {
-				const char *v = wiki_thread_buf_append_to_tokens(tb->buf + p, dash - p);
-				if(v) token_append_text_n(t, v, dash - p);
+				token_append_text_n(t, tb->buf + p, dash - p);
 				accum_push(accum, t);
 				char sent[64]; size_t slen = 0;
 				work_str_sentinel(accum->count - 1, 'r', sent, &slen);
@@ -261,8 +260,7 @@ static void dunder_cb(const char *seg, size_t len, ParserSegmentKind kind, void 
 	}
 
 	if(len > 0) {
-		const char *view = wiki_thread_buf_append_to_tokens(seg, len);
-		if(view) token_append_text_n(t, view, len);
+		token_append_text_n(t, seg, len);
 	}
 
 	accum_push(ctx->accum, t);
@@ -450,8 +448,7 @@ void parse_hr_and_double_underscore(ThreadBuf *tb, const ParserConfig *cfg, Accu
 					Token *title_tok = token_new(TOKEN_PLAIN, "heading-title");
 					if(title_tok) {
 						if(h_inner_len > 0) {
-							const char *title_view = wiki_thread_buf_append_to_tokens(h_inner, h_inner_len);
-							if(title_view) token_append_text_n(title_tok, title_view, h_inner_len);
+							token_append_text_n(title_tok, h_inner, h_inner_len);
 						} else {
 							token_append_text_n(title_tok, "", 0);
 						}
@@ -468,18 +465,12 @@ void parse_hr_and_double_underscore(ThreadBuf *tb, const ParserConfig *cfg, Accu
 								tmp_trail->len = 0;
 								wiki_thread_buf_append(tmp_trail, (sz_string_view_t){ .start = h_trail, .length = h_trail_len });
 								wiki_thread_buf_append(tmp_trail, (sz_string_view_t){ .start = buf2 + line_end, .length = extra_trail_len });
-								const char *trail_view = wiki_thread_buf_append_to_tokens(tmp_trail->buf, tmp_trail->len);
-								if(trail_view) token_append_text_n(trail_tok, trail_view, tmp_trail->len);
-								else token_append_text_n(trail_tok, "", 0);
+								token_append_text_n(trail_tok, tmp_trail->buf, tmp_trail->len);
 								wiki_thread_buf_release_scratch(tmp_trail);
 							} else if(h_trail_len > 0) {
-								const char *trail_view = wiki_thread_buf_append_to_tokens(h_trail, h_trail_len);
-								if(trail_view) token_append_text_n(trail_tok, trail_view, h_trail_len);
-								else token_append_text_n(trail_tok, "", 0);
+								token_append_text_n(trail_tok, h_trail, h_trail_len);
 							} else {
-								const char *trail_view = wiki_thread_buf_append_to_tokens(buf2 + line_end, extra_trail_len);
-								if(trail_view) token_append_text_n(trail_tok, trail_view, extra_trail_len);
-								else token_append_text_n(trail_tok, "", 0);
+								token_append_text_n(trail_tok, buf2 + line_end, extra_trail_len);
 							}
 						} else {
 							token_append_text_n(trail_tok, "", 0);

@@ -15,10 +15,19 @@ static size_t skip_typed_sentinel(const char *s, size_t len, size_t i, char type
     if(i + 3 >= len || (unsigned char)s[i] != 0) return 0;
     size_t j = i + 1;
     if((unsigned char)s[j] < '0' || (unsigned char)s[j] > '9') return 0;
-    while(j < len && (unsigned char)s[j] >= '0' && (unsigned char)s[j] <= '9') j++;
-    if(j + 1 >= len) return 0;
-    if(s[j] != type || (unsigned char)s[j + 1] != 0x7F) return 0;
-    return j + 2 - i;
+
+    static const char del_ch = '\x7F';
+    const char *del = sz_find_byte(s + j, len - j, &del_ch);
+    if(!del) return 0;
+
+    size_t del_pos = (size_t)(del - s);
+    if(del_pos <= j) return 0;
+    size_t type_pos = del_pos - 1;
+    if(s[type_pos] != type) return 0;
+    for(size_t k = j; k < type_pos; k++) {
+        if((unsigned char)s[k] < '0' || (unsigned char)s[k] > '9') return 0;
+    }
+    return del_pos + 1 - i;
 }
 
 static size_t skip_cn_sentinel(const char *s, size_t len, size_t i) {
@@ -103,9 +112,7 @@ static bool ext_text_is_valid(const char *s, size_t len) {
 static Token *build_magic_link_token(const char *url, size_t url_len, Accum *accum) {
 	Token *t= token_new(TOKEN_MAGIC_LINK, "ext-link-url");
 	if(!t) return NULL;
-	/* Append URL into the persistent tokens arena and use a stable view */
-	const char *url_view = wiki_thread_buf_append_to_tokens(url, url_len);
-	token_append_text_n(t, url_view, url_len);
+    token_append_text_n(t, url, url_len);
 	accum_push(accum, t);
 	return t;
 }
@@ -134,9 +141,7 @@ static Token *build_ext_link_token(Token *url_tok,
 			token_free(ext);
 			return NULL;
 		}
-		/* Ensure the ext-link-text points into the persistent tokens arena */
-		const char *text_view = wiki_thread_buf_append_to_tokens(text, text_len);
-		token_append_text_n(inner, text_view, text_len);
+        token_append_text_n(inner, text, text_len);
 		accum_push(accum, inner);
 		token_append_child(ext, inner);
 	}
