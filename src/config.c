@@ -531,8 +531,9 @@ static ParserConfig *config_from_cjson(const cJSON *root) {
 					cfg->namespaces, cfg->ns_count, cfg->ns_count + 1);
 				assert(grown);
 				cfg->namespaces= grown;
-			sz_ptr_t ptr = sz_string_init_length(&cfg->namespaces[cfg->ns_count].name, strlen(item->string), &allocator_default);
-			sz_copy(ptr, (sz_ptr_t)item->string, strlen(item->string));
+				size_t nslen= strlen(item->string);
+			sz_ptr_t ptr = sz_string_init_length(&cfg->namespaces[cfg->ns_count].name, nslen, &allocator_default);
+			sz_copy(ptr, (sz_ptr_t)item->string, nslen);
 				cfg->namespaces[cfg->ns_count].num= nsnum;
 				cfg->ns_count++;
 			}
@@ -743,23 +744,25 @@ void config_free(ParserConfig *cfg) {
 
 bool config_excluded(const ParserConfig *cfg, const char *name) {
 	if(!cfg || !name) return false;
+	size_t name_len= strlen(name);
 	for(size_t i= 0; i < cfg->excludes.count; i++) {
 		sz_ptr_t start;
 		sz_size_t len;
 		sz_string_range(&cfg->excludes.items[i], &start, &len);
-		if(start && len == strlen(name) && sz_equal(start, name, len) == sz_true_k) return true;
+		if(start && len == name_len && sz_equal(start, name, len) == sz_true_k) return true;
 	}
 	return false;
 }
 
 bool config_has_ext(const ParserConfig *cfg, const char *name) {
 	if(!cfg || !name) return false;
+	size_t name_len= strlen(name);
 
 	for(size_t i= 0; i < cfg->ext.count; i++) {
 		sz_ptr_t start;
 		sz_size_t len;
 		sz_string_range(&cfg->ext.items[i], &start, &len);
-		if(start && len == strlen(name) && str_ci_eq_n((const char *)start, name, len)) return true;
+		if(start && len == name_len && str_ci_eq_n((const char *)start, name, len)) return true;
 	}
 	return false;
 }
