@@ -80,7 +80,9 @@ static size_t parse_cnht_sentinel(const char *s, size_t len, size_t i) {
     if (i + 3 >= len || (unsigned char)s[i] != 0) return 0;
     size_t j = i + 1;
     if (s[j] < '0' || s[j] > '9') return 0;
-    while (j < len && s[j] >= '0' && s[j] <= '9') j++;
+	const char *not_digit = sz_find_byte_not_from(s + j, len - j, "0123456789", 10);
+	if (not_digit) j = (size_t)(not_digit - s);
+	else j = len;
     if (j + 1 >= len) return 0;
     char t = s[j];
     bool is_url_sentinel = (t == 'c' || t == 'n' || t == '!' || t == '~');
