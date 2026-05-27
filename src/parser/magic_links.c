@@ -26,11 +26,10 @@ static Token *build_magic_link(const char *s, size_t len,
 
 /* ── Helpers for forward scanning ───────────────────────────────────────── */
 
-static bool ci_eq_lit(const char *s, size_t slen, const char *lit) {
-    size_t n = strlen(lit);
-    if (n > slen) return false;
-    return str_ci_eq_n(s, lit, n);
-}
+    static bool ci_eq_lit(const char *s, size_t slen, const char *lit, size_t litlen) {
+        if (litlen > slen) return false;
+        return str_ci_eq_n(s, lit, litlen);
+    }
 
 static bool utf8_prev_cp(const char *s, size_t len, size_t pos, UChar32 *out_cp) {
     if (!s || !out_cp || pos == 0 || pos > len) return false;
@@ -128,8 +127,8 @@ static size_t consume_magic_space(const char *s, size_t len, size_t i) {
 
 static bool parse_rfc_or_pmid(const char *s, size_t len, size_t i, size_t *out_end) {
     size_t p = i;
-    if (ci_eq_lit(s + p, len - p, "RFC")) p += 3;
-    else if (ci_eq_lit(s + p, len - p, "PMID")) p += 4;
+        if (ci_eq_lit(s + p, len - p, "RFC", 3)) p += 3;
+        else if (ci_eq_lit(s + p, len - p, "PMID", 4)) p += 4;
     else return false;
 
     size_t sp = consume_magic_space(s, len, p);
@@ -177,7 +176,7 @@ static bool parse_isbn_core_10(const char *s, size_t len, size_t p, size_t *core
 
 static bool parse_isbn(const char *s, size_t len, size_t i, size_t *out_end) {
     size_t p = i;
-    if (!ci_eq_lit(s + p, len - p, "ISBN")) return false;
+        if (!ci_eq_lit(s + p, len - p, "ISBN", 4)) return false;
     p += 4;
 
     size_t sp = consume_magic_space(s, len, p);
