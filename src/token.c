@@ -382,6 +382,8 @@ static void token_to_string_rec(const Token *t, ThreadBuf *tb) {
 		/* External link: [url label] or [url] */
 		thread_buf_append_char(tb, '[');
 		if(t->child_count > 0) {
+			const char *space= t->data.ext_link.space;
+			size_t space_len= space ? strlen(space) : 0;
 			const Child *c= &t->children[0];
 			if(c->is_text)
 				thread_buf_append(tb, c->text, c->text_len);
@@ -389,12 +391,12 @@ static void token_to_string_rec(const Token *t, ThreadBuf *tb) {
 				token_to_string_rec(c->token, tb);
 
 			if(t->child_count == 1) {
-				if(t->data.ext_link.space) {
-					thread_buf_append(tb, t->data.ext_link.space, strlen(t->data.ext_link.space));
+				if(space) {
+					thread_buf_append(tb, space, space_len);
 				}
 			} else {
-				if(t->data.ext_link.space) {
-					thread_buf_append(tb, t->data.ext_link.space, strlen(t->data.ext_link.space));
+				if(space) {
+					thread_buf_append(tb, space, space_len);
 				} else {
 					thread_buf_append_char(tb, ' ');
 				}
@@ -884,9 +886,12 @@ void json_stringify_wikiparser_node(const Token *t, ThreadBuf *tb) {
 		}
 		thread_buf_append_char(tb, ']');
 	}
-	if(t->name && strlen(t->name) > 0) {
-		thread_buf_append(tb, ",\"name\":", 8);
-		json_string(tb, t->name);
+	if(t->name) {
+		size_t name_len= strlen(t->name);
+		if(name_len > 0) {
+			thread_buf_append(tb, ",\"name\":", 8);
+			json_string(tb, t->name);
+		}
 	}
 
 	thread_buf_append_char(tb, '}');

@@ -253,7 +253,7 @@ static char *title_compose_resolved(const Title *t, const char *page) {
 				keep--;
 				if(page[keep] == '/') drops--;
 			}
-			size_t sub_len= strlen(sub);
+			size_t sub_len= pos - (size_t)(sub - base);
 			char *resolved= malloc(keep + (sub_len ? 1 : 0) + sub_len + 1);
 			if(!resolved) {
 				free(base);
@@ -656,7 +656,10 @@ char *title_normalize(const char *raw, size_t raw_len) {
 	size_t decoded_len= strlen(decoded);
 
 	char *result= malloc(decoded_len + 1);
-	if(!result) return NULL;
+	if(!result) {
+		free(decoded);
+		return NULL;
+	}
 
 	/* Replace spaces with underscores via SIMD-friendly lookup table */
 	sz_lookup(result, decoded_len, decoded, (const char *)s_spc2under_lut);

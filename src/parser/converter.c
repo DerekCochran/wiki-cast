@@ -61,14 +61,13 @@ static bool token_append_text_decoded_nul(Token *t, const char *s, size_t len) {
 		token_append_text_n(t, NULL, 0);
 		return true;
 	}
-	ThreadBuf *scratch = wiki_thread_buf_acquire_scratch();
-	wiki_thread_buf_set(scratch, s, len);
-	/* decode placeholder into NUL bytes in scratch (safe: tokens must not reference scratch) */
+	char *decoded= malloc(len);
+	if(!decoded) return false;
 	for(size_t i= 0; i < len; i++) {
-		if(scratch->buf[i] == CONVERTER_ESC_NUL) scratch->buf[i]= '\0';
+		decoded[i]= (s[i] == CONVERTER_ESC_NUL) ? '\0' : s[i];
 	}
-	token_append_text_n(t, scratch->buf, len);
-	wiki_thread_buf_release_scratch(scratch);
+	token_append_text_n(t, decoded, len);
+	free(decoded);
 	return true;
 }
 
@@ -171,8 +170,7 @@ static Token *build_converter_token(char **flags, char **rules, const ParserConf
 		}
 		size_t flen = strlen(flags[i]);
 		if(flen > 0) {
-			const char *fview = wiki_thread_buf_append_to_tokens(flags[i], flen);
-			if(fview) token_append_text_n(f, fview, flen);
+			token_append_text_n(f, flags[i], flen);
 		} else {
 			token_append_text_n(f, NULL, 0);
 		}
