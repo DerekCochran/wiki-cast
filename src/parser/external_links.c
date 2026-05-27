@@ -11,7 +11,8 @@
 #include <string.h>
 
 /* JS parity helpers for external-links URL grammar */
-static size_t skip_typed_sentinel(const char *s, size_t len, size_t i, char type) {
+static size_t skip_typed_sentinel_any(const char *s, size_t len, size_t i,
+								 const char *types, size_t types_len) {
     if(i + 3 >= len || (unsigned char)s[i] != 0) return 0;
     size_t j = i + 1;
     if((unsigned char)s[j] < '0' || (unsigned char)s[j] > '9') return 0;
@@ -23,27 +24,23 @@ static size_t skip_typed_sentinel(const char *s, size_t len, size_t i, char type
     size_t del_pos = (size_t)(del - s);
     if(del_pos <= j) return 0;
     size_t type_pos = del_pos - 1;
-    if(s[type_pos] != type) return 0;
+    if(sz_find_byte(types, types_len, &s[type_pos]) == NULL) return 0;
     const char *not_digit = sz_find_byte_not_from(s + j, type_pos - j, "0123456789", 10);
     if(not_digit) return 0;
     return del_pos + 1 - i;
 }
 
+static size_t skip_typed_sentinel(const char *s, size_t len, size_t i, char type) {
+	return skip_typed_sentinel_any(s, len, i, &type, 1);
+}
+
 static size_t skip_cn_sentinel(const char *s, size_t len, size_t i) {
-    size_t sc = skip_typed_sentinel(s, len, i, 'c');
-    if(sc > 0) return sc;
-    return skip_typed_sentinel(s, len, i, 'n');
+    return skip_typed_sentinel_any(s, len, i, "cn", 2);
 }
 
 /* extUrlChar allows only \x00\d+[cn!~]\x7F */
 static size_t skip_exturl_sentinel(const char *s, size_t len, size_t i) {
-    size_t sc = skip_typed_sentinel(s, len, i, 'c');
-    if(sc > 0) return sc;
-    sc = skip_typed_sentinel(s, len, i, 'n');
-    if(sc > 0) return sc;
-    sc = skip_typed_sentinel(s, len, i, '!');
-    if(sc > 0) return sc;
-    return skip_typed_sentinel(s, len, i, '~');
+    return skip_typed_sentinel_any(s, len, i, "cn!~", 4);
 }
 
 /* JS zs = " \xA0\u1680\u2000-\u200A\u202F\u205F\u3000" */
