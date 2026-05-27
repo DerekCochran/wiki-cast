@@ -1,4 +1,5 @@
 #include "util/log.h"
+#include "util/env_cache.h"
 #include "parser/hr_and_double_underscore.h"
 #include "util/string_util.h"
 #include "util/thread_buffer.h"
@@ -34,7 +35,7 @@ static char *lower_copy(const char *s, size_t len) {
 /* Forward declarations for helper functions used in dunder_cb */
 static int strlist_has_exact(const StrList *sl, const char *s, size_t len);
 static int strlist_has_lower(const StrList *sl, const char *s, size_t len);
-static const char *strmap_get_exact(const StrMap *m, const char *key);
+static const char *strmap_get_exact(const StrMap *m, const char *key, size_t key_len);
 
 /* Skip a CNO sentinel: \0\d+[cn]\x7F */
 static size_t skip_cno_sentinel(const char *p, size_t rem) {
@@ -140,22 +141,12 @@ static bool heading_line_parse_full(const char *s, size_t len, HdLineResult *out
 /* ── HR pass: detect lines with 4+ dashes after optional CNO sentinels ──── */
 
 static void parse_hr_pass(ThreadBuf *tb, Accum *accum) {
-	size_t out_cap = tb->len * 2 + 64;
-	char *out = malloc(out_cap);
+	ThreadBuf *out = wiki_thread_buf_acquire_scratch();
 	if(!out) { log_fatal("OOM in parse_hr_pass"); abort(); }
-	size_t out_len = 0;
+	out->len = 0;
+	wiki_thread_buf_reserve(out, tb->len * 2 + 64);
+
 	size_t i = 0;
-
-#define ENSURE_OUT(N) do { \
-	while(out_len + (N) + 1 >= out_cap) { \
-		if(out_cap > SIZE_MAX / 2) { log_fatal("buffer size overflow in parse_hr_pass"); abort(); } \
-		out_cap *= 2; \
-		char *_hr_tmp = realloc(out, out_cap); \
-		if(!_hr_tmp) { free(out); log_fatal("OOM in realloc"); abort(); } \
-		out = _hr_tmp; \
-	} \
-} while(0)
-
 	while(i < tb->len) {
 		size_t line_start = i;
 		size_t line_end = i;
@@ -165,9 +156,7 @@ static void parse_hr_pass(ThreadBuf *tb, Accum *accum) {
 		while(p < line_end) {
 			size_t sc = skip_cno_sentinel(tb->buf + p, line_end - p);
 			if(sc == 0) break;
-			ENSURE_OUT(sc);
-			sz_copy(out + out_len, tb->buf + p, sc);
-			out_len += sc;
+			wiki_thread_buf_append(out, (sz_string_view_t){ tb->buf + p, sc });
 			p += sc;
 		}
 
@@ -181,24 +170,22 @@ static void parse_hr_pass(ThreadBuf *tb, Accum *accum) {
 				accum_push(accum, t);
 				char sent[64]; size_t slen = 0;
 				work_str_sentinel(accum->count - 1, 'r', sent, &slen);
-				ENSURE_OUT(slen + (line_end - dash));
-				sz_copy(out + out_len, sent, slen); out_len += slen;
-				if(line_end > dash) { sz_copy(out + out_len, tb->buf + dash, line_end - dash); out_len += line_end - dash; }
+				wiki_thread_buf_append(out, (sz_string_view_t){ sent, slen });
+				if(line_end > dash) {
+					wiki_thread_buf_append(out, (sz_string_view_t){ tb->buf + dash, line_end - dash });
+				}
 			}
 		} else {
-			ENSURE_OUT(line_end - p);
-			sz_copy(out + out_len, tb->buf + p, line_end - p);
-			out_len += line_end - p;
+			wiki_thread_buf_append(out, (sz_string_view_t){ tb->buf + p, line_end - p });
 		}
 
-		if(line_end < tb->len) { ENSURE_OUT(1); out[out_len++] = '\n'; }
+		if(line_end < tb->len) wiki_thread_buf_putc(out, '\n');
 		i = (line_end < tb->len) ? (line_end + 1) : line_end;
 	}
 
-	out[out_len] = '\0';
-	wiki_thread_buf_set(tb, out, out_len);
-	free(out);
-#undef ENSURE_OUT
+	out->buf[out->len] = '\0';
+	wiki_thread_buf_set(tb, out->buf, out->len);
+	wiki_thread_buf_release_scratch(out);
 }
 
 /* ── Double-underscore pass ──────────────────────────────────────────────── */
@@ -245,22 +232,20 @@ static void dunder_cb(const char *seg, size_t len, ParserSegmentKind kind, void 
 	char *lc = lower_copy(seg, len);
 	const char *alias = NULL;
 	if(case_sensitive) {
-		char *raw = malloc(len + 1);
-		if(!raw) { log_fatal("OOM in dunder_cb"); abort(); }
-		sz_copy(raw, seg, len);
-		raw[len] = '\0';
-		alias = strmap_get_exact(&ctx->cfg->double_underscore_alias[1], raw);
-		free(raw);
+		/* Pass seg and len directly — avoids malloc+copy just for the key lookup */
+		alias = strmap_get_exact(&ctx->cfg->double_underscore_alias[1], seg, len);
 	} else if(lc) {
-		alias = strmap_get_exact(&ctx->cfg->double_underscore_alias[0], lc);
+		alias = strmap_get_exact(&ctx->cfg->double_underscore_alias[0], lc, len);
 	}
 
 	if(alias && alias[0]) {
 		size_t alen = strlen(alias);
 		t->name = lower_copy(alias, alen);
 		free(lc);
+		lc = NULL;
 	} else {
 		t->name = lc;
+		lc = NULL;
 	}
 
 	if(len > 0) {
@@ -318,9 +303,8 @@ static int strlist_has_lower(const StrList *sl, const char *s, size_t len) {
 	return 0;
 }
 
-static const char *strmap_get_exact(const StrMap *m, const char *key) {
+static const char *strmap_get_exact(const StrMap *m, const char *key, size_t key_cmp_len) {
 	if(!m || !key) return NULL;
-	size_t key_cmp_len = strlen(key);
 	for(size_t i= 0; i < m->count; i++) {
 		sz_ptr_t key_start;
 		sz_size_t key_len;
@@ -342,14 +326,12 @@ void parse_hr_and_double_underscore(ThreadBuf *tb, const ParserConfig *cfg, Accu
 	bool poem_ctx= root_name && strcmp(root_name, "poem") == 0;
 	bool prefixed= root_type != TOKEN_ROOT && !(root_type == TOKEN_EXT_INNER && poem_ctx);
 	if(prefixed) {
-		char *pref= malloc(tb->len + 1);
-		assert(pref);
-		pref[0]= '\0';
-		if(tb->len > 0) {
-			sz_copy(pref + 1, tb->buf, tb->len);
-		}
-		wiki_thread_buf_set(tb, pref, tb->len + 1);
-		free(pref);
+		/* Prepend a NUL byte in-place with memmove — avoids malloc+copy+free */
+		wiki_thread_buf_reserve(tb, tb->len + 1);
+		if(tb->len > 0) memmove(tb->buf + 1, tb->buf, tb->len);
+		tb->buf[0]= '\0';
+		tb->len += 1;
+		tb->buf[tb->len]= '\0';
 	}
 
 	/* New callback-based passes for HR and double-underscore */
@@ -365,19 +347,11 @@ void parse_hr_and_double_underscore(ThreadBuf *tb, const ParserConfig *cfg, Accu
 
 	/* Heading finalization: line-at-a-time forward scan */
 	if(!config_excluded(cfg, "heading") && !skip_heading_for_param_ctx && !poem_ctx) {
-		size_t out_cap2 = tb->len * 2 + 64;
-		char *out2 = malloc(out_cap2);
-		if(!out2) { log_fatal("OOM in heading finalization"); abort(); }
-		size_t out2_len = 0;
-#define GROW_OUT2(need) do { \
-		while(out2_len + (need) >= out_cap2) { \
-			if(out_cap2 > SIZE_MAX / 2) { log_fatal("buffer size overflow in heading finalization"); abort(); } \
-			out_cap2 *= 2; \
-			char *_grow_tmp = realloc(out2, out_cap2); \
-			if(!_grow_tmp) { free(out2); log_fatal("OOM in realloc"); abort(); } \
-			out2 = _grow_tmp; \
-		} \
-	} while(0)
+		ThreadBuf *out2_tb = wiki_thread_buf_acquire_scratch();
+		if(!out2_tb) { log_fatal("OOM in heading finalization"); abort(); }
+		out2_tb->len = 0;
+		wiki_thread_buf_reserve(out2_tb, tb->len * 2 + 64);
+#define GROW_OUT2_APPEND(ptr, n) wiki_thread_buf_append(out2_tb, (sz_string_view_t){ (ptr), (n) })
 		const char *buf2 = tb->buf;
 		size_t buf2_len  = tb->len;
 		size_t cursor = 0;
@@ -391,7 +365,7 @@ void parse_hr_and_double_underscore(ThreadBuf *tb, const ParserConfig *cfg, Accu
 
 			HdLineResult hr;
 			if(heading_line_parse_full(line, line_len, &hr)) {
-				if(getenv("WTC_DEBUG_STAGE_4")) {
+				if(env_set("WTC_DEBUG_STAGE_4")) {
 					size_t preview_n = line_len < 96 ? line_len : 96;
 					char preview[256];
 					size_t pp = 0;
@@ -441,9 +415,7 @@ void parse_hr_and_double_underscore(ThreadBuf *tb, const ParserConfig *cfg, Accu
 
 				/* 1. Emit lead sentinels verbatim */
 				if(hr.lead_len > 0) {
-					GROW_OUT2(hr.lead_len);
-					sz_copy(out2 + out2_len, hr.lead, hr.lead_len);
-					out2_len += hr.lead_len;
+					GROW_OUT2_APPEND(hr.lead, hr.lead_len);
 				}
 
 				/* 2. Map hr.* to buf2-relative offsets (same variable names as old ov[]) */
@@ -507,9 +479,7 @@ void parse_hr_and_double_underscore(ThreadBuf *tb, const ParserConfig *cfg, Accu
 					char sent[64];
 					size_t slen = 0;
 					work_str_sentinel(accum->count - 1, 'h', sent, &slen);
-					GROW_OUT2(slen);
-					sz_copy(out2 + out2_len, sent, slen);
-					out2_len += slen;
+					GROW_OUT2_APPEND(sent, slen);
 
 					/* Continue from match end (newline boundary char is not consumed). */
 					cursor = match_end;
@@ -518,35 +488,27 @@ void parse_hr_and_double_underscore(ThreadBuf *tb, const ParserConfig *cfg, Accu
 
 				/* OOM fallback: leave current line unchanged */
 				size_t copy_len = (line_end < buf2_len) ? line_len + 1 : line_len;
-				GROW_OUT2(copy_len);
-				sz_copy(out2 + out2_len, buf2 + line_start, copy_len);
-				out2_len += copy_len;
+				GROW_OUT2_APPEND(buf2 + line_start, copy_len);
 				cursor = (line_end < buf2_len) ? (line_end + 1) : line_end;
 				continue;
 			}
 
 			/* Not a heading: copy line + optional '\n' verbatim */
 			size_t copy_len = (line_end < buf2_len) ? line_len + 1 : line_len;
-			GROW_OUT2(copy_len);
-			sz_copy(out2 + out2_len, buf2 + line_start, copy_len);
-			out2_len += copy_len;
+			GROW_OUT2_APPEND(buf2 + line_start, copy_len);
 			cursor = (line_end < buf2_len) ? (line_end + 1) : line_end;
 		}
-		out2[out2_len] = '\0';
-		wiki_thread_buf_set(tb, out2, out2_len);
-		free(out2);
-#undef GROW_OUT2
+		out2_tb->buf[out2_tb->len] = '\0';
+		wiki_thread_buf_set(tb, out2_tb->buf, out2_tb->len);
+		wiki_thread_buf_release_scratch(out2_tb);
+#undef GROW_OUT2_APPEND
 	}
 
 	if(prefixed && tb->len > 0) {
+		/* Remove the NUL prefix in-place with memmove — avoids malloc+copy+free */
 		size_t unpref_len= tb->len - 1;
-		char *tmp= malloc(unpref_len + 1);
-		assert(tmp);
-		if(unpref_len > 0) {
-			sz_copy(tmp, tb->buf + 1, unpref_len);
-		}
-		tmp[unpref_len]= '\0';
-		wiki_thread_buf_set(tb, tmp, unpref_len);
-		free(tmp);
+		if(unpref_len > 0) memmove(tb->buf, tb->buf + 1, unpref_len);
+		tb->len= unpref_len;
+		tb->buf[tb->len]= '\0';
 	}
 }

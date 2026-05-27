@@ -707,15 +707,15 @@ void build_token_recursive(Token *t, Accum *accum,
 	/* JS AttributeToken.afterBuild parity: recompute name from attr-key text,
      * so keys that were sentinel-expanded (for example {{green}}) get the
      * correct final attribute name. */
-	refresh_attribute_name(t);
+	if(t->type == TOKEN_EXT_ATTR) refresh_attribute_name(t);
 
 	/* JS ParameterToken.afterBuild parity: update parameter name from the
 	 * expanded parameter-key token after build recursion completes. */
-	refresh_parameter_name(t);
+	if(t->type == TOKEN_PARAMETER) refresh_parameter_name(t);
 
 	/* JS TranscludeToken.afterBuild parity: template name is set after build,
      * not during parseBraces, so it is absent from stage-log snapshots. */
-	refresh_template_name(t, cfg);
+	if(t->type == TOKEN_TRANSCLUDE) refresh_template_name(t, cfg);
 }
 
 /* Get the syntax last-character and independence flag from a TOKEN_TD.
