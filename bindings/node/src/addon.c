@@ -1,17 +1,44 @@
+#ifndef _POSIX_C_SOURCE
+#define _POSIX_C_SOURCE 200809L
+#endif
 #include <node_api.h>
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
 #include <assert.h>
+#include <time.h>
 
 /* extern_tokenizer headers */
 #include "parse.h"
 #include "token.h"
 #include "config.h"
+#include "util/token_to_json.h"
 
 // Cache for config
 static char* cached_config_path = NULL;
 static ParserConfig* cached_config = NULL;
+
+static double now_ms_monotonic(void) {
+#ifdef CLOCK_MONOTONIC
+    struct timespec ts;
+    if (clock_gettime(CLOCK_MONOTONIC, &ts) == 0) {
+        return (double)ts.tv_sec * 1000.0 + (double)ts.tv_nsec / 1000000.0;
+    }
+#endif
+    struct timespec ts_fallback;
+    timespec_get(&ts_fallback, TIME_UTC);
+    return (double)ts_fallback.tv_sec * 1000.0 + (double)ts_fallback.tv_nsec / 1000000.0;
+}
+
+static double now_ms_thread_cpu(void) {
+#ifdef CLOCK_THREAD_CPUTIME_ID
+    struct timespec ts;
+    if (clock_gettime(CLOCK_THREAD_CPUTIME_ID, &ts) == 0) {
+        return (double)ts.tv_sec * 1000.0 + (double)ts.tv_nsec / 1000000.0;
+    }
+#endif
+    return -1.0;
+}
 
 static void token_finalizer(napi_env env, void *finalize_data, void *finalize_context) {
     Token *token = (Token *)finalize_data;
@@ -41,10 +68,20 @@ static napi_value free_wrapper(napi_env env, napi_callback_info info) {
 }
 
 static napi_value toString_wrapper(napi_env env, napi_callback_info info) {
-    void *data;
-    napi_get_cb_info(env, info, NULL, NULL, NULL, &data);
-    
-    Token *token = (Token *)data;
+    napi_value this_arg;
+    napi_status status = napi_get_cb_info(env, info, NULL, NULL, &this_arg, NULL);
+    if (status != napi_ok) {
+        return NULL;
+    }
+
+    void *wrapped = NULL;
+    status = napi_unwrap(env, this_arg, &wrapped);
+    if (status != napi_ok) {
+        napi_throw_error(env, NULL, "Failed to unwrap root token");
+        return NULL;
+    }
+
+    Token *token = (Token *)wrapped;
     if (!token) {
         napi_throw_error(env, NULL, "Token pointer is NULL");
         return NULL;
@@ -60,12 +97,54 @@ static napi_value toString_wrapper(napi_env env, napi_callback_info info) {
     }
 
     napi_value result;
-    napi_status status = napi_create_string_utf8(env, str, scratch->len, &result);
+    status = napi_create_string_utf8(env, str, scratch->len, &result);
     
     wiki_thread_buf_release_scratch(scratch);
     
     if (status != napi_ok) return NULL;
     return result; 
+}
+
+static napi_value toJson_wrapper(napi_env env, napi_callback_info info) {
+    napi_value this_arg;
+    napi_status status = napi_get_cb_info(env, info, NULL, NULL, &this_arg, NULL);
+    if (status != napi_ok) {
+        return NULL;
+    }
+
+    void *wrapped = NULL;
+    status = napi_unwrap(env, this_arg, &wrapped);
+    if (status != napi_ok) {
+        napi_throw_error(env, NULL, "Failed to unwrap root token");
+        return NULL;
+    }
+
+    Token *token = (Token *)wrapped;
+    if (!token) {
+        napi_throw_error(env, NULL, "Token pointer is NULL");
+        return NULL;
+    }
+
+    cJSON *json = token_to_json(token);
+    if (!json) {
+        napi_throw_error(env, NULL, "Failed to encode token as JSON");
+        return NULL;
+    }
+
+    char *json_text = cJSON_PrintUnformatted(json);
+    cJSON_Delete(json);
+    if (!json_text) {
+        napi_throw_error(env, NULL, "Failed to stringify token JSON");
+        return NULL;
+    }
+
+    napi_value result;
+    status = napi_create_string_utf8(env, json_text, NAPI_AUTO_LENGTH, &result);
+    cJSON_free(json_text);
+    if (status != napi_ok) {
+        return NULL;
+    }
+    return result;
 }
 
 static ParserConfig* get_token_config_json(napi_env env, napi_value token) {
@@ -129,10 +208,7 @@ static ParserConfig* get_token_config_json(napi_env env, napi_value token) {
     return cfg;
 }
 
-/**
- * Recursively converts a Token tree into a JavaScript object.
- * This mirrors the structure of the JS Token class.
- */
+/* Create the JS root wrapper; token data is accessed via root methods. */
 static napi_value token_to_js(napi_env env, const Token *token, bool wrap_root) {
     napi_value js_token;
     napi_create_object(env, &js_token);
@@ -141,244 +217,40 @@ static napi_value token_to_js(napi_env env, const Token *token, bool wrap_root) 
         napi_wrap(env, js_token, (void *)token, token_finalizer, NULL, NULL);
     }
 
-    // Attach toString directly to this token object
-    napi_property_descriptor toString_desc = {
-        "toString",
-        NULL,
-        toString_wrapper,
-        NULL,
-        NULL,
-        NULL,
-        napi_default,
-        (void *)token
-    };
-    napi_define_properties(env, js_token, 1, &toString_desc);
-
     if (wrap_root) {
-        napi_property_descriptor free_desc = {
-            "_freeNative",
-            NULL,
-            free_wrapper,
-            NULL,
-            NULL,
-            NULL,
-            napi_default,
-            NULL
+        napi_property_descriptor root_methods[] = {
+            {
+                "toString",
+                NULL,
+                toString_wrapper,
+                NULL,
+                NULL,
+                NULL,
+                napi_default,
+                NULL
+            },
+            {
+                "toJson",
+                NULL,
+                toJson_wrapper,
+                NULL,
+                NULL,
+                NULL,
+                napi_default,
+                NULL
+            },
+            {
+                "_freeNative",
+                NULL,
+                free_wrapper,
+                NULL,
+                NULL,
+                NULL,
+                napi_default,
+                NULL
+            }
         };
-        napi_define_properties(env, js_token, 1, &free_desc);
-    }
-
-    // type
-    napi_value type_val;
-    napi_create_string_utf8(env, token->type_name, NAPI_AUTO_LENGTH, &type_val);
-    napi_set_named_property(env, js_token, "type", type_val);
-
-    // name (optional)
-    if (token->name) {
-        napi_value name_val;
-        napi_create_string_utf8(env, token->name, NAPI_AUTO_LENGTH, &name_val);
-        napi_set_named_property(env, js_token, "name", name_val);
-    }
-
-    // children
-    if (token->child_count > 0) {
-        napi_value children_array;
-        napi_create_array_with_length(env, token->child_count, &children_array);
-        for (size_t i = 0; i < token->child_count; i++) {
-            Child *child = &token->children[i];
-            if (child->is_text) {
-                napi_value text_val;
-                napi_create_string_utf8(env, child->text, child->text_len, &text_val);
-                napi_set_element(env, children_array, i, text_val);
-            } else {
-                napi_value child_js = token_to_js(env, child->token, false);
-                napi_set_element(env, children_array, i, child_js);
-            }
-        }
-        napi_set_named_property(env, js_token, "childNodes", children_array);
-    }
-
-    // Type-specific properties
-    switch (token->type) {
-        case TOKEN_HEADING: {
-            napi_value level_val;
-            napi_create_int32(env, token->data.heading.level, &level_val);
-            napi_set_named_property(env, js_token, "level", level_val);
-            break;
-        }
-        case TOKEN_COMMENT: {
-            napi_value closed_val;
-            napi_get_boolean(env, token->data.comment.closed, &closed_val);
-            napi_set_named_property(env, js_token, "closed", closed_val);
-            break;
-        }
-        case TOKEN_HTML: {
-            napi_value self_closing_val;
-            napi_get_boolean(env, token->data.html.self_closing, &self_closing_val);
-            napi_set_named_property(env, js_token, "selfClosing", self_closing_val);
-            napi_value closing_val;
-            napi_get_boolean(env, token->data.html.closing, &closing_val);
-            napi_set_named_property(env, js_token, "closing", closing_val);
-            if (token->data.html.orig_tag) {
-                napi_value orig_tag_val;
-                napi_create_string_utf8(env, token->data.html.orig_tag, NAPI_AUTO_LENGTH, &orig_tag_val);
-                napi_set_named_property(env, js_token, "origTag", orig_tag_val);
-            }
-            break;
-        }
-        case TOKEN_TD: {
-            if (token->data.td.inner_syntax) {
-                napi_value inner_syntax_val;
-                napi_create_string_utf8(env, token->data.td.inner_syntax, NAPI_AUTO_LENGTH, &inner_syntax_val);
-                napi_set_named_property(env, js_token, "innerSyntax", inner_syntax_val);
-            }
-            break;
-        }
-        case TOKEN_DOUBLE_UNDERSCORE: {
-            napi_value case_sensitive_val;
-            napi_get_boolean(env, token->data.dunder.case_sensitive, &case_sensitive_val);
-            napi_set_named_property(env, js_token, "caseSensitive", case_sensitive_val);
-            napi_value fullwidth_val;
-            napi_get_boolean(env, token->data.dunder.fullwidth, &fullwidth_val);
-            napi_set_named_property(env, js_token, "fullwidth", fullwidth_val);
-            break;
-        }
-        case TOKEN_QUOTE: {
-            napi_value bold_val;
-            napi_get_boolean(env, token->data.quote.bold, &bold_val);
-            napi_set_named_property(env, js_token, "bold", bold_val);
-            napi_value italic_val;
-            napi_get_boolean(env, token->data.quote.italic, &italic_val);
-            napi_set_named_property(env, js_token, "italic", italic_val);
-            break;
-        }
-        case TOKEN_REDIRECT: {
-            // if (token->data.redirect.pre) {
-            //     napi_value pre_val;
-            //     napi_create_string_utf8(env, token->data.redirect.pre, NAPI_AUTO_LENGTH, &pre_val);
-            //     napi_set_named_property(env, js_token, "pre", pre_val);
-            // }
-            // if (token->data.redirect.post) {
-            //     napi_value post_val;
-            //     napi_create_string_utf8(env, token->data.redirect.post, NAPI_AUTO_LENGTH, &post_val);
-            //     napi_set_named_property(env, js_token, "post", post_val);
-            // }
-            // if (token->data.redirect.link) {
-            //     napi_value link_val;
-            //     napi_create_string_utf8(env, token->data.redirect.link, NAPI_AUTO_LENGTH, &link_val);
-            //     napi_set_named_property(env, js_token, "link", link_val);
-            // }
-            if (token->data.redirect.display) {
-                napi_value display_val;
-                napi_create_string_utf8(env, token->data.redirect.display, NAPI_AUTO_LENGTH, &display_val);
-                napi_set_named_property(env, js_token, "display", display_val);
-            }
-            break;
-        }
-        case TOKEN_EXT: {
-            if (token->data.ext.name) {
-                napi_value name_val;
-                napi_create_string_utf8(env, token->data.ext.name, NAPI_AUTO_LENGTH, &name_val);
-                napi_set_named_property(env, js_token, "extName", name_val);
-            }
-            if (token->data.ext.attr) {
-                napi_value attr_val;
-                napi_create_string_utf8(env, token->data.ext.attr, NAPI_AUTO_LENGTH, &attr_val);
-                napi_set_named_property(env, js_token, "extAttr", attr_val);
-            }
-            if (token->data.ext.inner) {
-                napi_value inner_val;
-                napi_create_string_utf8(env, token->data.ext.inner, NAPI_AUTO_LENGTH, &inner_val);
-                napi_set_named_property(env, js_token, "extInner", inner_val);
-            }
-            if (token->data.ext.closing) {
-                napi_value closing_val;
-                napi_create_string_utf8(env, token->data.ext.closing, NAPI_AUTO_LENGTH, &closing_val);
-                napi_set_named_property(env, js_token, "extClosing", closing_val);
-            }
-            napi_value self_closing_val;
-            napi_get_boolean(env, token->data.ext.self_closing, &self_closing_val);
-            napi_set_named_property(env, js_token, "extSelfClosing", self_closing_val);
-            break;
-        }
-        case TOKEN_NOINCLUDE:
-        case TOKEN_INCLUDE:
-        case TOKEN_ONLYINCLUDE:
-        case TOKEN_TRANSLATE: {
-            if (token->data.include.tag) {
-                napi_value tag_val;
-                napi_create_string_utf8(env, token->data.include.tag, NAPI_AUTO_LENGTH, &tag_val);
-                napi_set_named_property(env, js_token, "tag", tag_val);
-            }
-            if (token->data.include.attr) {
-                napi_value attr_val;
-                napi_create_string_utf8(env, token->data.include.attr, NAPI_AUTO_LENGTH, &attr_val);
-                napi_set_named_property(env, js_token, "includeAttr", attr_val);
-            }
-            if (token->data.include.inner) {
-                napi_value inner_val;
-                napi_create_string_utf8(env, token->data.include.inner, NAPI_AUTO_LENGTH, &inner_val);
-                napi_set_named_property(env, js_token, "includeInner", inner_val);
-            }
-            if (token->data.include.closing) {
-                napi_value closing_val;
-                napi_create_string_utf8(env, token->data.include.closing, NAPI_AUTO_LENGTH, &closing_val);
-                napi_set_named_property(env, js_token, "includeClosing", closing_val);
-            }
-            break;
-        }
-        case TOKEN_EXT_ATTR: {
-            if (token->data.ext_attr.equal) {
-                napi_value equal_val;
-                napi_create_string_utf8(env, token->data.ext_attr.equal, NAPI_AUTO_LENGTH, &equal_val);
-                napi_set_named_property(env, js_token, "equal", equal_val);
-            }
-            napi_value quote_open_val;
-            char quote_open_str[2] = {token->data.ext_attr.quote_open, '\0'};
-            napi_create_string_utf8(env, quote_open_str, NAPI_AUTO_LENGTH, &quote_open_val);
-            napi_set_named_property(env, js_token, "quoteOpen", quote_open_val);
-            napi_value quote_close_val;
-            char quote_close_str[2] = {token->data.ext_attr.quote_close, '\0'};
-            napi_create_string_utf8(env, quote_close_str, NAPI_AUTO_LENGTH, &quote_close_val);
-            napi_set_named_property(env, js_token, "quoteClose", quote_close_val);
-            break;
-        }
-        case TOKEN_PARAMETER: {
-            if (token->data.image_param.raw_syntax) {
-                napi_value raw_syntax_val;
-                napi_create_string_utf8(env, token->data.image_param.raw_syntax, NAPI_AUTO_LENGTH, &raw_syntax_val);
-                napi_set_named_property(env, js_token, "rawSyntax", raw_syntax_val);
-            }
-            break;
-        }
-        case TOKEN_EXT_LINK:
-        case TOKEN_MAGIC_LINK: {
-            if (token->data.ext_link.space) {
-                napi_value space_val;
-                napi_create_string_utf8(env, token->data.ext_link.space, NAPI_AUTO_LENGTH, &space_val);
-                napi_set_named_property(env, js_token, "space", space_val);
-            }
-            break;
-        }
-        case TOKEN_LINK:
-        case TOKEN_FILE:
-        case TOKEN_CATEGORY: {
-            napi_value magic_pipe_val;
-            napi_get_boolean(env, token->data.link.magic_pipe, &magic_pipe_val);
-            napi_set_named_property(env, js_token, "magicPipe", magic_pipe_val);
-            break;
-        }
-        case TOKEN_TRANSCLUDE:
-        case TOKEN_ARG: {
-            if (token->data.transclude.modifier) {
-                napi_value modifier_val;
-                napi_create_string_utf8(env, token->data.transclude.modifier, NAPI_AUTO_LENGTH, &modifier_val);
-                napi_set_named_property(env, js_token, "modifier", modifier_val);
-            }
-            break;
-        }
-        default:
-            break;
+        napi_define_properties(env, js_token, 3, root_methods);
     }
 
     return js_token;
@@ -436,7 +308,21 @@ static napi_value parse(napi_env env, napi_callback_info info) {
     }
 
     // 3. Call the C parser
+    //double parse_t0_ms = now_ms_monotonic();
+    //double parse_cpu_t0_ms = now_ms_thread_cpu();
     Token *root = wiki_parse(wikitext, byte_length, cfg, false, 10);
+    //double parse_ms = now_ms_monotonic() - parse_t0_ms;
+    //double parse_cpu_ms = -1.0;
+    //double parse_cpu_t1_ms = now_ms_thread_cpu();
+    // if (parse_cpu_t0_ms >= 0.0 && parse_cpu_t1_ms >= 0.0) {
+    //     parse_cpu_ms = parse_cpu_t1_ms - parse_cpu_t0_ms;
+    // }
+    // if (parse_cpu_ms >= 0.0) {
+    //     fprintf(stderr, "[wiki-cast.node] wiki_parse elapsed_ms=%.3f cpu_thread_ms=%.3f bytes=%zu\n",
+    //             parse_ms, parse_cpu_ms, byte_length);
+    // } else {
+    //     fprintf(stderr, "[wiki-cast.node] wiki_parse elapsed_ms=%.3f bytes=%zu\n", parse_ms, byte_length);
+    // }
     
     if (root == NULL) {
         napi_throw_error(env, NULL, "Wiki parse failed.");

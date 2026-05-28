@@ -155,7 +155,7 @@ function getWikiTextSmallesDiff(jsToken, ncToken, parents) {
   }
 
   const textOk = jsResult.text === nativeResult.text;
-  const cmp = compareAST(jsResult.root, nativeResult.root);
+  const cmp = compareAST(jsResult.root, JSON.parse(nativeResult.root));
   ok = textOk && cmp.success;
   if( !ok ) {
     return testStr;
@@ -207,11 +207,18 @@ function compareSample(wikitext, { include = false, tidy = false, name = 'sample
   const label = sampleLabel == null ? JSON.stringify(wikitext.slice(0, 70)) : String(sampleLabel);
 
   let jsResult, nativeResult;
-  const stageDir = path.join(os.tmpdir(), `wiki_stage_${Date.now()}_${process.pid}_${Math.random().toString(36).slice(2,8)}`);
-  ensureDir(stageDir);
+  const enableStageLog = Boolean(process.env.WIKI_STAGE_LOG);
+  const stageDir = enableStageLog
+    ? path.join(os.tmpdir(), `wiki_stage_${Date.now()}_${process.pid}_${Math.random().toString(36).slice(2,8)}`)
+    : null;
+  if (stageDir) {
+    ensureDir(stageDir);
+  }
   const prevStageDir = process.env.WIKI_STAGE_LOG_DIR;
   const prevStageFlag = process.env.WIKI_STAGE_LOG;
-  process.env.WIKI_STAGE_LOG_DIR = stageDir;
+  if (stageDir) {
+    process.env.WIKI_STAGE_LOG_DIR = stageDir;
+  }
 
   try {
     try {
@@ -238,7 +245,7 @@ function compareSample(wikitext, { include = false, tidy = false, name = 'sample
   // fs.appendFileSync(path.join(__dirname, name+'_ast.txt'), "'"+ wikitext + "'\t'" + JSON.stringify(nativeResult.root) + "'\n", { flag: 'a' });
 
   const textOk = jsResult.text === nativeResult.text;
-  const cmp = compareAST(jsResult.root, nativeResult.root);
+  const cmp = compareAST(jsResult.root, JSON.parse(nativeResult.root.toJson()));
   const ok = textOk && cmp.success;
 
   if (!ok) {
@@ -299,15 +306,17 @@ function compareSample(wikitext, { include = false, tidy = false, name = 'sample
 
         // Copy any stage logs collected into the suite artifact directory
         ensureDir(suiteDir);
-        const files = fs.readdirSync(stageDir || os.tmpdir());
-        for (const f of files) {
-          const src = path.join(stageDir, f);
-          const dst = path.join(suiteDir, f);
-          console.log(`  stage log    : ${dst}`);
-          try { fs.copyFileSync(src, dst); } catch (e) { /* ignore */ }
+        if (stageDir) {
+          const files = fs.readdirSync(stageDir);
+          for (const f of files) {
+            const src = path.join(stageDir, f);
+            const dst = path.join(suiteDir, f);
+            console.log(`  stage log    : ${dst}`);
+            try { fs.copyFileSync(src, dst); } catch (e) { /* ignore */ }
+          }
         }
         // Read the js-stage.log and native-stage.log.  Match each on stage names and print which stage they do not match on.
-        if( ! name.startsWith('export') && ! name.startsWith('wikitext')) {
+        if(stageDir && ! name.startsWith('export') && ! name.startsWith('wikitext')) {
           const jsStageLogPath = path.join(stageDir, 'js-stage.log');
           const nativeStageLogPath = path.join(stageDir, 'native-stage.log');
           if (fs.existsSync(jsStageLogPath) && fs.existsSync(nativeStageLogPath)) {
