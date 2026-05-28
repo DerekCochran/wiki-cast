@@ -810,17 +810,12 @@ static Token *build_ext_attrs(const char *tag_name,
 /* ── ext-inner token builder ─────────────────────────────────────────────── */
 
 static bool is_multiline_tag(const char *tag_name) {
-	static const char *const ML_TAGS[]= {
-	"gallery",
-	"imagemap",
-	"dynamicpagelist",
-	"inputbox",
-	NULL,
-	};
-	for(int i= 0; ML_TAGS[i]; i++) {
-		if(strcmp(tag_name, ML_TAGS[i]) == 0) return true;
-	}
-	return false;
+	if(!tag_name) return false;
+	size_t nlen = strlen(tag_name);
+	return (nlen == 7  && sz_equal(tag_name, "gallery", 7) == sz_true_k)
+		|| (nlen == 8  && sz_equal(tag_name, "imagemap", 8) == sz_true_k)
+		|| (nlen == 8  && sz_equal(tag_name, "inputbox", 8) == sz_true_k)
+		|| (nlen == 15 && sz_equal(tag_name, "dynamicpagelist", 15) == sz_true_k);
 }
 
 static bool ext_attr_is_format_wikitext(const char *attr, size_t attr_len) {
@@ -975,30 +970,31 @@ static Token *build_pre_inner_token(const char *inner_str, size_t inner_len, Acc
 
 static bool ext_self_closing_inner_has_no_children(const char *tag_name) {
 	if(!tag_name) return false;
+	size_t nlen = strlen(tag_name);
 
 	/* JS ExtToken parity: these tags use Token/Nested/Param/Pre-like constructors,
 	 * which receive `inner=undefined` for self-closing tags and therefore keep an
 	 * empty ext-inner with no text child.
 	 */
-	return strcmp(tag_name, "pre") == 0
-		|| strcmp(tag_name, "indicator") == 0
-		|| strcmp(tag_name, "poem") == 0
-		|| strcmp(tag_name, "ref") == 0
-		|| strcmp(tag_name, "option") == 0
-		|| strcmp(tag_name, "combooption") == 0
-		|| strcmp(tag_name, "tab") == 0
-		|| strcmp(tag_name, "tabs") == 0
-		|| strcmp(tag_name, "poll") == 0
-		|| strcmp(tag_name, "seo") == 0
-		|| strcmp(tag_name, "langconvert") == 0
-		|| strcmp(tag_name, "phonos") == 0
-		|| strcmp(tag_name, "references") == 0
-		|| strcmp(tag_name, "choose") == 0
-		|| strcmp(tag_name, "combobox") == 0
-		|| strcmp(tag_name, "dynamicpagelist") == 0
-		|| strcmp(tag_name, "inputbox") == 0
-		|| strcmp(tag_name, "gallery") == 0
-		|| strcmp(tag_name, "imagemap") == 0;
+	return (nlen == 3  && sz_equal(tag_name, "pre", 3) == sz_true_k)
+		|| (nlen == 9  && sz_equal(tag_name, "indicator", 9) == sz_true_k)
+		|| (nlen == 4  && sz_equal(tag_name, "poem", 4) == sz_true_k)
+		|| (nlen == 3  && sz_equal(tag_name, "ref", 3) == sz_true_k)
+		|| (nlen == 6  && sz_equal(tag_name, "option", 6) == sz_true_k)
+		|| (nlen == 11 && sz_equal(tag_name, "combooption", 11) == sz_true_k)
+		|| (nlen == 3  && sz_equal(tag_name, "tab", 3) == sz_true_k)
+		|| (nlen == 4  && sz_equal(tag_name, "tabs", 4) == sz_true_k)
+		|| (nlen == 4  && sz_equal(tag_name, "poll", 4) == sz_true_k)
+		|| (nlen == 3  && sz_equal(tag_name, "seo", 3) == sz_true_k)
+		|| (nlen == 11 && sz_equal(tag_name, "langconvert", 11) == sz_true_k)
+		|| (nlen == 6  && sz_equal(tag_name, "phonos", 6) == sz_true_k)
+		|| (nlen == 10 && sz_equal(tag_name, "references", 10) == sz_true_k)
+		|| (nlen == 6  && sz_equal(tag_name, "choose", 6) == sz_true_k)
+		|| (nlen == 8  && sz_equal(tag_name, "combobox", 8) == sz_true_k)
+		|| (nlen == 15 && sz_equal(tag_name, "dynamicpagelist", 15) == sz_true_k)
+		|| (nlen == 8  && sz_equal(tag_name, "inputbox", 8) == sz_true_k)
+		|| (nlen == 7  && sz_equal(tag_name, "gallery", 7) == sz_true_k)
+		|| (nlen == 8  && sz_equal(tag_name, "imagemap", 8) == sz_true_k);
 }
 
 static Token *build_ext_inner(const char *tag_name,
