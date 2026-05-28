@@ -83,7 +83,8 @@ typedef union {
         char *orig_tag;                /* original-case tag name for toString */
     } html;
     struct {
-        char *inner_syntax;            /* TdToken separator between attrs and inner */
+        char *inner_syntax;             /* TdToken separator between attrs and inner */
+        size_t inner_syntax_len;        /* Cached length to avoid repeated strlen() during serialization */
     } td;
     struct {
         bool case_sensitive;           /* DoubleUnderscoreToken */

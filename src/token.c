@@ -570,7 +570,7 @@ static void token_to_string_rec(const Token *t, ThreadBuf *tb) {
 			}
 		}
 		if(t->data.td.inner_syntax) {
-			thread_buf_append(tb, t->data.td.inner_syntax, strlen(t->data.td.inner_syntax));
+			thread_buf_append(tb, t->data.td.inner_syntax, t->data.td.inner_syntax_len);  /* Use cached length */
 		}
 		if(t->child_count > 2) {
 			const Child *c= &t->children[2];

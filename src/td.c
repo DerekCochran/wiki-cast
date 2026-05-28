@@ -512,9 +512,11 @@ Token *create_td_token(const char *syntax,
 		assert(td->data.td.inner_syntax);
 		sz_copy(td->data.td.inner_syntax, norm_syn, norm_len);
 		td->data.td.inner_syntax[norm_len]= '\0';
+		td->data.td.inner_syntax_len= norm_len;  /* Cache length */
 	} else {
 		td->data.td.inner_syntax= strdup("");
 		assert(td->data.td.inner_syntax);
+		td->data.td.inner_syntax_len= 0;  /* Cache length for empty string */
 	}
 
 	Token *inner_tok= token_new(TOKEN_PLAIN, "td-inner");
