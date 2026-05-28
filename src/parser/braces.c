@@ -690,7 +690,7 @@ static Token *build_template_token(const char **parts_restored, const size_t *pa
 			token_append_child(t, name_tok);
 
 			char *nm= trim_copy(parts_restored[0], parts_lens[0]);
-			if(nm) t->name.start= nm;
+					if(nm) t->name= nm;
 		}
 
 		if(parts_count > 1 && parts_restored[1]) {
@@ -839,17 +839,17 @@ static Token *build_template_token(const char **parts_restored, const size_t *pa
 				return NULL;
 			}
 			if(canonical) {
-				t->name.start= strdup(canonical);
+							t->name= strdup(canonical);
 			} else {
 				char *nm= magic_raw_name;
 					if(nm) {
 						size_t nm_len= strlen(nm);
 						sz_lookup(nm, nm_len, nm, (const char *)fast_tolower_table());
-						t->name.start= nm;
+										t->name= nm;
 					}
 			}
 			if(canonical && magic_raw_name) free(magic_raw_name);
-			if(t->name.start && strcmp(t->name.start, "invoke") == 0) invoke_magic= true;
+					if(t->name && strcmp(t->name, "invoke") == 0) invoke_magic= true;
 
 			Token *mw_name= token_new(TOKEN_SYNTAX, "magic-word-name");
 			if(mw_name) {
@@ -960,7 +960,7 @@ static Token *build_template_token(const char **parts_restored, const size_t *pa
 					token_append_child(param, val_tok);
 
 					char *pname= strdup("1");
-					if(pname) param->name.start= pname;
+								if(pname) param->name= pname;
 					positional= 2;
 					token_append_child(t, param);
 				} else {
@@ -987,14 +987,14 @@ static Token *build_template_token(const char **parts_restored, const size_t *pa
 		 *   - #tag: params with j>1 may be key=value
 		 * Here k maps to j with an offset of params_start_idx. */
 		bool allow_named_split= true;
-		if(transclude_is_magic && t->name.start) {
-			if(strcmp(t->name.start, "invoke") == 0) {
+			if(transclude_is_magic && t->name) {
+				if(strcmp(t->name, "invoke") == 0) {
 				/* JS parity: #invoke behaves template-like for remaining args,
 				 * so key=value stays named (for example x=y). */
 				allow_named_split= true;
-			} else if(strcmp(t->name.start, "switch") == 0) {
+				} else if(strcmp(t->name, "switch") == 0) {
 				allow_named_split= (k >= params_start_idx);
-			} else if(strcmp(t->name.start, "tag") == 0) {
+				} else if(strcmp(t->name, "tag") == 0) {
 				allow_named_split= (k > params_start_idx);
 			} else {
 				allow_named_split= false;
@@ -1049,7 +1049,7 @@ static Token *build_template_token(const char **parts_restored, const size_t *pa
 			char *key_clean= str_remove_comment(part, key_len, &key_clean_len);
 			char *pname= key_clean ? trim_copy(key_clean, key_clean_len) : NULL;
 			free(key_clean);
-			if(pname) param->name.start= pname;
+				   if(pname) param->name= pname;
 		} else {
 			token_append_child(param, key_tok);
 			token_append_text_n(val_tok, part, part_len);
@@ -1062,7 +1062,7 @@ static Token *build_template_token(const char **parts_restored, const size_t *pa
 				// It is safe because it only copies the exact length of the string.
 				char *pname= strdup(idx_buf);
 				if(pname) {
-					param->name.start= pname;
+								param->name= pname;
 				}
 			}
 		}

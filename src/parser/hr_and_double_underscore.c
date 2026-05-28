@@ -253,11 +253,11 @@ static void dunder_cb(const char *seg, size_t len, ParserSegmentKind kind, void 
 
 	if(alias && alias[0]) {
 		size_t alen = strlen(alias);
-		t->name.start = lower_copy(alias, alen);
+			t->name = lower_copy(alias, alen);
 		free(lc);
 		lc = NULL;
 	} else {
-		t->name.start = lc;
+			t->name = lc;
 		lc = NULL;
 	}
 
@@ -268,7 +268,7 @@ static void dunder_cb(const char *seg, size_t len, ParserSegmentKind kind, void 
 	accum_push(ctx->accum, t);
 
 	char ch = 'n';
-	if(case_insensitive && t->name.start && strcmp(t->name.start, "toc") == 0) ch = 'u';
+	if(case_insensitive && t->name && strcmp(t->name, "toc") == 0) ch = 'u';
 
 	char sent[64]; size_t slen = 0;
 	work_str_sentinel(ctx->accum->count - 1, ch, sent, &slen);

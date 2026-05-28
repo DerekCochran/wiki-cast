@@ -14,8 +14,8 @@
 #define CHILD_INIT_CAP 4
 
 static inline size_t token_name_len(const Token *t) {
-	if(!t || !t->name.start) return 0;
-	return t->name.length ? t->name.length : strlen(t->name.start);
+	if(!t || !t->name) return 0;
+	return strlen(t->name);
 }
 
 typedef struct {
@@ -184,16 +184,14 @@ void token_set_name_owned(Token *t, char *name) {
 		free(name);
 		return;
 	}
-	free((void *)t->name.start);
-	t->name.start= name;
-	t->name.length= name ? strlen(name) : 0;
+	free(t->name);
+	t->name= name;
 }
 
 void token_clear_name(Token *t) {
 	if(!t) return;
-	free((void *)t->name.start);
-	t->name.start= NULL;
-	t->name.length= 0;
+	free(t->name);
+	t->name= NULL;
 }
 
 // TODO:  Should these be freed or can they use the thread buffer?
@@ -260,7 +258,7 @@ static void token_free_graph(Token *node, unsigned epoch) {
 
 	free(node->children);
 	free_token_data(node);
-	free((void*)node->name.start);
+	free(node->name);
 	free(node);
 }
 
@@ -286,7 +284,7 @@ void token_free_shallow(Token *t) {
 	}
 	free(t->children);
 	free_token_data(t);
-	free((void*)t->name.start);
+	free(t->name);
 	free(t);
 }
 
@@ -326,7 +324,7 @@ static void token_to_string_rec(const Token *t, ThreadBuf *tb) {
 
 	case TOKEN_EXT: {
 		/* Use original-cased tag name for serialization (JS parity) */
-		const char *ext_tag= t->data.ext.name.start ? t->data.ext.name.start : t->name.start;
+		const char *ext_tag= t->data.ext.name.start ? t->data.ext.name.start : t->name;
 		size_t ext_tag_len= t->data.ext.name.start ? t->data.ext.name.length : token_name_len(t);
 		const char *ext_closing= t->data.ext.closing.start ? t->data.ext.closing.start : ext_tag;
 		size_t ext_closing_len= t->data.ext.closing.start ? t->data.ext.closing.length : ext_tag_len;
@@ -491,7 +489,7 @@ static void token_to_string_rec(const Token *t, ThreadBuf *tb) {
 						}
 						thread_buf_append(tb, slot + 2, post_len);
 					}
-							} else if(p->name.start && strcmp(p->name.start, "caption") == 0) {
+							} else if(p->name && strcmp(p->name, "caption") == 0) {
 					for(size_t pi= 0; pi < p->child_count; pi++) {
 						const Child *pc= &p->children[pi];
 						if(pc->is_text)
@@ -499,8 +497,8 @@ static void token_to_string_rec(const Token *t, ThreadBuf *tb) {
 						else
 							token_to_string_rec(pc->token, tb);
 					}
-							} else if(p->name.start) {
-									thread_buf_append(tb, p->name.start, token_name_len(p));
+							} else if(p->name) {
+									thread_buf_append(tb, p->name, token_name_len(p));
 				} else {
 					token_to_string_rec(c->token, tb);
 				}
@@ -629,7 +627,7 @@ static void token_to_string_rec(const Token *t, ThreadBuf *tb) {
 	case TOKEN_HTML: {
 		/* HTML tags: opening, attrs, self-closing, or closing */
 		/* Use orig_tag (original case) for round-trip toString, like JS this.tag */
-			const char *tag_str= t->data.html.orig_tag.start ? t->data.html.orig_tag.start : t->name.start;
+			const char *tag_str= t->data.html.orig_tag.start ? t->data.html.orig_tag.start : t->name;
 			size_t tag_len= t->data.html.orig_tag.start ? t->data.html.orig_tag.length : token_name_len(t);
 		if(t->data.html.closing) {
 			thread_buf_append(tb, "</", 2);
@@ -721,7 +719,7 @@ static void token_to_string_rec(const Token *t, ThreadBuf *tb) {
 
 	case TOKEN_INCLUDE:
 		thread_buf_append_char(tb, '<');
-		if(t->name.start) thread_buf_append(tb, t->name.start, token_name_len(t));
+		if(t->name) thread_buf_append(tb, t->name, token_name_len(t));
 		if(t->child_count > 0) {
 			const Child *c= &t->children[0];
 			if(c->is_text)
@@ -1023,11 +1021,11 @@ void json_stringify_wikiparser_node(const Token *t, ThreadBuf *tb) {
 		}
 		thread_buf_append_char(tb, ']');
 	}
-	if(t->name.start) {
+	if(t->name) {
 		size_t name_len= token_name_len(t);
 		if(name_len > 0) {
 			thread_buf_append(tb, ",\"name\":", 8);
-			json_string(tb, t->name.start);
+			json_string(tb, t->name);
 		}
 	}
 

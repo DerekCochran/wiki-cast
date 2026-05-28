@@ -209,7 +209,7 @@ static Token *make_html_attr(const char *key, size_t key_len,
 	Token *t= token_new(TOKEN_EXT_ATTR, "html-attr");
 	if(!t) return NULL;
 
-	t->name.start= str_trim_lc(key, key_len);
+	 t->name= str_trim_lc(key, key_len);
 	if(equal && equal_len > 0) {
 		char *equal_owned= html_normalize_equal(equal, equal_len, accum);
 		assert(equal_owned);
@@ -434,7 +434,7 @@ static void parse_html_attrs(Token *attrs_tok, const char *attr_str, size_t attr
 static Token *build_html_attrs(const char *tag_name, const char *attr_str, size_t attr_len, Accum *accum) {
 	Token *t= token_new(TOKEN_ATTRIBUTES, "html-attrs");
 	if(!t) return NULL;
-	t->name.start= strdup(tag_name);
+	 t->name= strdup(tag_name);
 	accum_push(accum, t);
 
 	if(attr_str && attr_len > 0 && !isspace((unsigned char)attr_str[0]) && attr_str[0] != '/') {
@@ -463,9 +463,9 @@ static bool html_attrs_has_attr(const Token *attrs, const char *attr_name) {
 		const Child *c= &attrs->children[i];
 		if(c->is_text || !c->token) continue;
 		const Token *a= c->token;
-		if(a->type == TOKEN_EXT_ATTR && a->name.start) {
-			size_t nlen= strlen(a->name.start);
-			if(nlen == attr_len && str_ci_eq_n(a->name.start, attr_name, attr_len)) return true;
+			if(a->type == TOKEN_EXT_ATTR && a->name) {
+					size_t nlen= strlen(a->name);
+					if(nlen == attr_len && str_ci_eq_n(a->name, attr_name, attr_len)) return true;
 		}
 	}
 	return false;
@@ -609,7 +609,7 @@ void parse_html(ThreadBuf *tb, const ParserConfig *cfg, Accum *accum) {
 							/* Now create HtmlToken and push it (matching JS order) */
 							Token *ht = token_new(TOKEN_HTML, "html");
 							if(ht) {
-								ht->name.start = strdup(lcname);
+													ht->name = strdup(lcname);
 								/* orig_tag: original-case name for toString round-trip */
 								char *orig_tag = malloc(htc.tag_name_len + 1);
 								if(orig_tag) {

@@ -15,9 +15,9 @@ static cJSON *token_text_to_json_string(const char *text, size_t text_len) {
     return s ? s : cJSON_CreateString("");
 }
 
-static void json_add_view_to_object(cJSON *root, const char *key, sz_string_view_t view) {
-	if (!root || !key || !view.start) return;
-	cJSON_AddItemToObject(root, key, token_text_to_json_string(view.start, view.length));
+static void json_add_cstr_to_object(cJSON *root, const char *key, const char *value) {
+	if (!root || !key || !value) return;
+	cJSON_AddItemToObject(root, key, token_text_to_json_string(value, strlen(value)));
 }
 
 cJSON* token_to_json(const Token *token) {
@@ -25,14 +25,10 @@ cJSON* token_to_json(const Token *token) {
 
     cJSON *root = cJSON_CreateObject();
 	sz_string_view_t subtype_name = token_subtype_name(token->subtype);
-	sz_string_view_t name_view = token->name;
-	if (name_view.start && name_view.length == 0) {
-		name_view.length = strlen(name_view.start);
-	}
 
     // Basic metadata
 	cJSON_AddItemToObject(root, "type", token_text_to_json_string(subtype_name.start ? subtype_name.start : "", subtype_name.length));
-	if (name_view.start) json_add_view_to_object(root, "name", name_view);
+	if (token->name) json_add_cstr_to_object(root, "name", token->name);
 
 	switch (token->type) {
 		case TOKEN_HEADING:

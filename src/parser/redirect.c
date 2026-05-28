@@ -128,7 +128,7 @@ Accum *accum) {
 	}
 	Title *parsed= title_parse_half_parsed(link, link_main_len, 0, cfg, true, "");
 	if(parsed && parsed->title) {
-		target_tok->name.start= strdup(parsed->title);
+			target_tok->name= strdup(parsed->title);
 	}
 	title_free(parsed);
 	token_append_child(target_tok, link_atom);

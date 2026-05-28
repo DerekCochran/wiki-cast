@@ -223,7 +223,7 @@ typedef union {
 typedef struct Token {
     TokenType  type;
     TokenSubType subtype;
-    sz_string_view_t name;  /* tag/template name where applicable; owned or borrowed */
+    char      *name;        /* tag/template name where applicable; always owned */
     char       sep;         /* separator for token_to_string(): '\0' or '\n' */
 
     Child     *children;

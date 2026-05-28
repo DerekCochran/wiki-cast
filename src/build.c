@@ -79,8 +79,8 @@ static void append_key_token_repr_tb(const Token *t, ThreadBuf *tb) {
 	}
 
 	if(t->type == TOKEN_EXT) {
-		const char *ext_tag= t->data.ext.name.start ? t->data.ext.name.start : t->name.start;
-		size_t ext_tag_len= t->data.ext.name.start ? t->data.ext.name.length : (t->name.start ? strlen(t->name.start) : 0);
+		const char *ext_tag= t->data.ext.name.start ? t->data.ext.name.start : t->name;
+		size_t ext_tag_len= t->data.ext.name.start ? t->data.ext.name.length : (t->name ? strlen(t->name) : 0);
 		const char *ext_closing= t->data.ext.closing.start ? t->data.ext.closing.start : ext_tag;
 		size_t ext_closing_len= t->data.ext.closing.start ? t->data.ext.closing.length : ext_tag_len;
 
@@ -181,8 +181,8 @@ static void append_key_token_repr_tb(const Token *t, ThreadBuf *tb) {
 	}
 
 	if(t->type == TOKEN_HTML) {
-		const char *tag= t->data.html.orig_tag.start ? t->data.html.orig_tag.start : t->name.start;
-		size_t tag_len= t->data.html.orig_tag.start ? t->data.html.orig_tag.length : (t->name.start ? strlen(t->name.start) : 0);
+		const char *tag= t->data.html.orig_tag.start ? t->data.html.orig_tag.start : t->name;
+		size_t tag_len= t->data.html.orig_tag.start ? t->data.html.orig_tag.length : (t->name ? strlen(t->name) : 0);
 		if(t->data.html.closing) {
 			wiki_thread_buf_putc(tb, '<');
 			wiki_thread_buf_putc(tb, '/');

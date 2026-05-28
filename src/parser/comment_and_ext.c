@@ -562,7 +562,7 @@ static Token *make_ext_attr(const char *tag_name,
 	if(!t) return NULL;
 	/* Lowercase the key for .name */
 	char *lkey= str_trim_lc(key, key_len);
-	t->name.start= lkey; /* ownership transferred */
+	 t->name= lkey; /* ownership transferred */
 	(void)tag_name;
 
 	/* Store equal and quote chars (JS AttributeToken #equal / #quotes) */
@@ -785,7 +785,7 @@ static Token *build_ext_attrs(const char *tag_name,
 															Accum *accum) {
 	Token *t= token_new(TOKEN_EXT_ATTRS, "ext-attrs");
 	if(!t) return NULL;
-	t->name.start= strdup(tag_name);
+	 t->name= strdup(tag_name);
 	accum_push(accum, t);
 
 	/* Ensure attr starts with whitespace (JS always ensures this by prepending ' '
@@ -898,7 +898,7 @@ static bool find_ci_lit(const char *s, size_t len, size_t from,
 static Token *build_pre_inner_token(const char *inner_str, size_t inner_len, Accum *accum) {
 	Token *t= token_new(TOKEN_EXT_INNER, "ext-inner");
 	if(!t) return NULL;
-	t->name.start= strdup("pre");
+	 t->name= strdup("pre");
 	accum_push(accum, t);
 
 	if(!inner_str || inner_len == 0) {
@@ -1004,7 +1004,7 @@ static Token *build_ext_inner(const char *tag_name,
 															Accum *accum) {
 	Token *t= token_new(TOKEN_EXT_INNER, "ext-inner");
 	if(!t) return NULL;
-	t->name.start= strdup(tag_name);
+	 t->name= strdup(tag_name);
 	if(is_multiline_tag(tag_name)) {
 		t->sep= '\n';
 	}
@@ -1034,7 +1034,7 @@ static Token *build_param_tag_inner_token(const char *tag_name,
 														bool inputbox_mode) {
 	Token *t= token_new(TOKEN_EXT_INNER, "ext-inner");
 	if(!t) return NULL;
-	t->name.start= strdup(tag_name);
+	 t->name= strdup(tag_name);
 	t->sep= '\n';
 	accum_push(accum, t);
 
@@ -1081,7 +1081,7 @@ static Token *build_param_tag_inner_token(const char *tag_name,
 
 		Token *pl= token_new(TOKEN_PLAIN, "param-line");
 		if(pl) {
-			pl->name.start= strdup(tag_name);
+				   pl->name= strdup(tag_name);
 			if(line_emit_len > 0) {
 				const char *line_view= wiki_thread_buf_append_to_tokens(line_emit, line_emit_len);
 				token_append_text_n(pl, line_view, line_emit_len);
@@ -1111,7 +1111,7 @@ static Token *build_references_inner_token(const char *inner_str, size_t inner_l
 																				 Accum *accum) {
 	Token *t= token_new(TOKEN_EXT_INNER, "ext-inner");
 	if(!t) return NULL;
-	t->name.start= strdup("references");
+	 t->name= strdup("references");
 	accum_push(accum, t);
 
 	if(!inner_str || inner_len == 0) {
@@ -1196,8 +1196,8 @@ static Token *make_gallery_caption_param_local(const char *txt, size_t tlen,
 
 	Token *cap= token_new(TOKEN_PLAIN, "image-parameter");
 	if(cap) {
-		cap->name.start= strdup("caption");
-		if(!cap->name.start) {
+			cap->name= strdup("caption");
+			if(!cap->name) {
 			token_free(cap);
 			cap= NULL;
 		} else {
@@ -1273,7 +1273,7 @@ static void split_gallery_unclosed_caption_local(Token *img,
 		if(img->children[ci].is_text || !img->children[ci].token) continue;
 		Token *cap= img->children[ci].token;
 		if(cap->type != TOKEN_PLAIN || cap->subtype != TOKEN_SUBTYPE_IMAGE_PARAMETER) continue;
-		if(!cap->name.start || strcmp(cap->name.start, "caption") != 0) continue;
+			if(!cap->name || strcmp(cap->name, "caption") != 0) continue;
 
 		bool split_mixed= false;
 		if(cap->child_count > 1) {
@@ -1460,7 +1460,7 @@ static void normalize_gallery_thumb_caption_local(Token *img, Accum *accum) {
 		if(img->children[ci].is_text || !img->children[ci].token) continue;
 		Token *param= img->children[ci].token;
 		if(param->type != TOKEN_PLAIN || param->subtype != TOKEN_SUBTYPE_IMAGE_PARAMETER) continue;
-		if(!param->name.start || strcmp(param->name.start, "caption") != 0) continue;
+			if(!param->name || strcmp(param->name, "caption") != 0) continue;
 		if(param->child_count == 0 || !param->children[0].is_text || !param->children[0].text) continue;
 
 		const char *txt= param->children[0].text;
@@ -1476,8 +1476,8 @@ static void normalize_gallery_thumb_caption_local(Token *img, Accum *accum) {
 
 		Token *thumb= token_new(TOKEN_PLAIN, "image-parameter");
 		if(!thumb) return;
-		thumb->name.start= strdup("thumbnail");
-		if(!thumb->name.start) {
+			thumb->name= strdup("thumbnail");
+			if(!thumb->name) {
 			token_free(thumb);
 			return;
 		}
@@ -1719,7 +1719,7 @@ static Token *parse_gallery_image_line_local(const char *line, size_t line_len,
 		out= tmp->children[0].token;
 		tmp->children[0].token= NULL;
 		out->subtype= TOKEN_SUBTYPE_GALLERY_IMAGE;
-		if(out->name.start) {
+		if(out->name) {
 			token_clear_name(out);
 		}
 		/* JS parity: gallery-image uses GalleryImageToken, where link=... always
@@ -1728,7 +1728,7 @@ static Token *parse_gallery_image_line_local(const char *line, size_t line_len,
 			if(out->children[ci].is_text || !out->children[ci].token) continue;
 			Token *param= out->children[ci].token;
 			if(param->type != TOKEN_PLAIN || param->subtype != TOKEN_SUBTYPE_IMAGE_PARAMETER) continue;
-			if(!param->name.start || strcmp(param->name.start, "caption") != 0 || param->child_count == 0) continue;
+			if(!param->name || strcmp(param->name, "caption") != 0 || param->child_count == 0) continue;
 			Child *first= &param->children[0];
 			if(!first->is_text || !first->text || first->text_len < 5) continue;
 
@@ -1766,13 +1766,13 @@ static Token *parse_gallery_image_line_local(const char *line, size_t line_len,
 		for(size_t ci= 0; ci < out->child_count; ci++) {
 			if(out->children[ci].is_text || !out->children[ci].token) continue;
 			Token *child= out->children[ci].token;
-			if((child->type == TOKEN_LINK || child->type == TOKEN_FILE || child->type == TOKEN_CATEGORY) && child->name.start) {
+			if((child->type == TOKEN_LINK || child->type == TOKEN_FILE || child->type == TOKEN_CATEGORY) && child->name) {
 				token_clear_name(child);
 			}
 			for(size_t cj= 0; cj < child->child_count; cj++) {
 				if(child->children[cj].is_text || !child->children[cj].token) continue;
 				Token *g= child->children[cj].token;
-				if((g->type == TOKEN_LINK || g->type == TOKEN_FILE || g->type == TOKEN_CATEGORY) && g->name.start) {
+				if((g->type == TOKEN_LINK || g->type == TOKEN_FILE || g->type == TOKEN_CATEGORY) && g->name) {
 					token_clear_name(g);
 				}
 			}
@@ -1832,7 +1832,7 @@ static Token *parse_gallery_image_line_local(const char *line, size_t line_len,
 						if(fallback->child_count == 1) {
 							Token *cap= token_new(TOKEN_PLAIN, "image-parameter");
 							if(cap) {
-								cap->name.start= strdup("caption");
+													cap->name= strdup("caption");
 								const char *rhs_view= wiki_thread_buf_append_to_tokens(pipe_ptr2 + 1, rhs_len);
 								token_append_text_n(cap, rhs_view, rhs_len);
 								accum_push(accum, cap);
@@ -2021,7 +2021,7 @@ static Token *parse_imagemap_image_line_local(const char *line, size_t line_len,
 	if(!out || out->type != TOKEN_FILE) return NULL;
 
 	out->subtype= TOKEN_SUBTYPE_IMAGEMAP_IMAGE;
-	if(out->name.start) {
+	if(out->name) {
 		token_clear_name(out);
 	}
 
@@ -2029,13 +2029,13 @@ static Token *parse_imagemap_image_line_local(const char *line, size_t line_len,
 	for(size_t ci= 0; ci < out->child_count; ci++) {
 		if(out->children[ci].is_text || !out->children[ci].token) continue;
 		Token *child= out->children[ci].token;
-		if((child->type == TOKEN_LINK || child->type == TOKEN_FILE || child->type == TOKEN_CATEGORY) && child->name.start) {
+		if((child->type == TOKEN_LINK || child->type == TOKEN_FILE || child->type == TOKEN_CATEGORY) && child->name) {
 			token_clear_name(child);
 		}
 		for(size_t cj= 0; cj < child->child_count; cj++) {
 			if(child->children[cj].is_text || !child->children[cj].token) continue;
 			Token *g= child->children[cj].token;
-			if((g->type == TOKEN_LINK || g->type == TOKEN_FILE || g->type == TOKEN_CATEGORY) && g->name.start) {
+			if((g->type == TOKEN_LINK || g->type == TOKEN_FILE || g->type == TOKEN_CATEGORY) && g->name) {
 				token_clear_name(g);
 			}
 		}
@@ -2139,7 +2139,7 @@ static Token *build_imagemap_inner_token(const char *inner_str, size_t inner_len
 													 Accum *accum) {
 	Token *t= token_new(TOKEN_EXT_INNER, "ext-inner");
 	if(!t) return NULL;
-	t->name.start= strdup("imagemap");
+	 t->name= strdup("imagemap");
 	t->sep= '\n';
 	accum_push(accum, t);
 
@@ -2225,7 +2225,7 @@ static Token *build_gallery_inner_token(const char *inner_str, size_t inner_len,
 																			Accum *accum) {
 	Token *t= token_new(TOKEN_EXT_INNER, "ext-inner");
 	if(!t) return NULL;
-	t->name.start= strdup("gallery");
+	 t->name= strdup("gallery");
 	t->sep= '\n';
 	accum_push(accum, t);
 
@@ -2270,7 +2270,7 @@ static Token *build_categorytree_inner_token(const char *inner_str, size_t inner
 																												Accum *accum) {
 	Token *t= token_new(TOKEN_EXT_INNER, "ext-inner");
 	if(!t) return NULL;
-	t->name.start= strdup("categorytree");
+	 t->name= strdup("categorytree");
 	accum_push(accum, t);
 
 	Token *target= token_new(TOKEN_ATOM, "link-target");
@@ -2344,7 +2344,7 @@ static Token *build_ext_token(const char *name, size_t name_len,
 		free(lcname);
 		return NULL;
 	}
-	t->name.start= strdup(lcname);
+	 t->name= strdup(lcname);
 	/* Store original-cased tag name for toString() parity with JS */
 	char *ext_name = strndup(name, name_len);
 	t->data.ext.name = (sz_string_view_t){ .start = ext_name, .length = ext_name ? name_len : 0 };
@@ -2430,7 +2430,7 @@ static Token *build_include_token(const char *tag_name, size_t tag_name_len,
 	Token *t= token_new(TOKEN_INCLUDE, "include");
 	if(!t) return NULL;
 	char *lcname= str_trim_lc(tag_name, tag_name_len);
-	t->name.start= lcname;
+	 t->name= lcname;
 
 	/* attr text (may be NULL for self-closing or no attributes) */
 	const char *attr_src= attr ? attr : "";
@@ -2466,7 +2466,7 @@ static Token *build_translate_token(const char *attr, size_t attr_len,
 																		Accum *accum) {
 	Token *t= token_new(TOKEN_TRANSLATE, "translate");
 	if(!t) return NULL;
-	t->name.start= strdup("translate");
+	 t->name= strdup("translate");
 	if(attr && attr_len > 0) {
 		const char *attr_view = wiki_thread_buf_append_to_tokens(attr, attr_len);
 		token_append_text_n(t, attr_view, attr_len);

@@ -61,7 +61,7 @@ static Token *make_table_attr(const char *key, size_t key_len,
 	Token *t= token_new(TOKEN_EXT_ATTR, "table-attr");
 	if(!t) return NULL;
 
-	t->name.start= str_trim_lc(key, key_len);
+	 t->name= str_trim_lc(key, key_len);
 	if(equal && equal_len > 0) {
 		char *equal_owned= build_normalize_attr_equal(equal, equal_len, accum);
 		assert(equal_owned);
@@ -496,7 +496,7 @@ Token *create_td_token(const char *syntax,
 
 	Token *attrs= token_new(TOKEN_ATTRIBUTES, "table-attrs");
 	if(!attrs) return td;
-	attrs->name.start= strdup(cell_attr_name(syntax, syntax_len));
+	attrs->name= strdup(cell_attr_name(syntax, syntax_len));
 	parse_table_attrs(attrs, attr, attr_len, accum);
 	accum_push(accum, attrs);
 	token_append_child(td, attrs);
