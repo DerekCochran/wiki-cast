@@ -192,11 +192,10 @@ static size_t get_common_prefix_len(const char *prefix, size_t plen, const char 
 	if(last_len == 0) return 0;
 	size_t common_len = plen < last_len ? plen : last_len;
 	if(common_len > 0 && sz_equal(prefix, last, common_len) == sz_true_k) return common_len;
-	for(size_t i= 0; i < last_len; i++) {
-		if(i >= plen) return i;
+	for(size_t i= 0; i < common_len; i++) {
 		if(prefix[i] != last[i]) return i;
 	}
-	return last_len;
+	return common_len;
 }
 
 /* Build a simple list token: stores the raw part text as a single text child */
