@@ -243,9 +243,29 @@ static bool parse_protocol_url(const char *s, size_t len, size_t i,
         p++;
     }
 
+    static const char url_stop_bytes[] =
+        "\x00\x01\x02\x03\x04\x05\x06\x07\x08\x09\x0A\x0B\x0C\x0D\x0E\x0F"
+        "\x10\x11\x12\x13\x14\x15\x16\x17\x18\x19\x1A\x1B\x1C\x1D\x1E\x1F\x20"
+        "[]<>\"\x7F\xC2\xE1\xE2\xE3\xEF";
     while (p < len) {
         size_t sc = parse_cnht_sentinel(s, len, p);
-        if (sc > 0) { p += sc; continue; }
+        if (sc > 0) {
+            p += sc;
+            continue;
+        }
+
+        const char *stop = sz_find_byte_from(s + p, len - p,
+                                             url_stop_bytes, sizeof(url_stop_bytes) - 1);
+        if (!stop) {
+            p = len;
+            break;
+        }
+        size_t stop_p = (size_t)(stop - s);
+        if (stop_p > p) {
+            p = stop_p;
+            continue;
+        }
+
         if (consume_js_zs_magic(s, len, p) > 0) break;
         if (p + 2 < len && (unsigned char)s[p] == 0xEF &&
             (unsigned char)s[p + 1] == 0xBF && (unsigned char)s[p + 2] == 0xBD) break;
