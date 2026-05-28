@@ -140,11 +140,11 @@ static bool parse_rfc_or_pmid(const char *s, size_t len, size_t i, size_t *out_e
         p += nsp;
     }
 
-    size_t d0 = p;
-    while (p < len && isdigit((unsigned char)s[p])) p++;
-    if (p == d0) return false;
-    if (p < len && utf8_cp_at_is_word(s, len, p)) return false;
-    *out_end = p;
+    const char *not_digit = sz_find_byte_not_from(s + p, len - p, "0123456789", 10);
+    size_t end = not_digit ? (size_t)(not_digit - s) : len;
+    if (end == p) return false;
+    if (end < len && utf8_cp_at_is_word(s, len, end)) return false;
+    *out_end = end;
     return true;
 }
 
