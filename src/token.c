@@ -13,6 +13,25 @@
 /* Initial capacity for children array */
 #define CHILD_INIT_CAP 4
 
+static size_t token_name_len_cached(const Token *t) {
+	if(!t || !t->name) return 0;
+	switch(t->type) {
+	case TOKEN_EXT:
+		if(t->data.ext.name.start) return t->data.ext.name.length;
+		break;
+	case TOKEN_HTML:
+		if(t->data.html.orig_tag.start) return t->data.html.orig_tag.length;
+		break;
+	case TOKEN_INCLUDE:
+	case TOKEN_NOINCLUDE:
+		if(t->data.include.tag.start) return t->data.include.tag.length;
+		break;
+	default:
+		break;
+	}
+	return strlen(t->name);
+}
+
 Token *token_new(TokenType type, const char *type_name) {
 	Token *t= calloc(1, sizeof(Token));
 	if(!t) return NULL;
@@ -588,7 +607,7 @@ static void token_to_string_rec(const Token *t, ThreadBuf *tb) {
 
 	case TOKEN_INCLUDE:
 		thread_buf_append_char(tb, '<');
-		if(t->name) thread_buf_append(tb, t->name, strlen(t->name));
+		if(t->name) thread_buf_append(tb, t->name, token_name_len_cached(t));
 		if(t->child_count > 0) {
 			const Child *c= &t->children[0];
 			if(c->is_text)
@@ -891,7 +910,7 @@ void json_stringify_wikiparser_node(const Token *t, ThreadBuf *tb) {
 		thread_buf_append_char(tb, ']');
 	}
 	if(t->name) {
-		size_t name_len= strlen(t->name);
+		size_t name_len= token_name_len_cached(t);
 		if(name_len > 0) {
 			thread_buf_append(tb, ",\"name\":", 8);
 			json_string(tb, t->name);
