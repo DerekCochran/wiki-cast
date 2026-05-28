@@ -285,17 +285,22 @@ static void ext_cb(const char *seg, size_t len, ParserSegmentKind kind, void *ud
         bool is_gt = (url[i + 1] == 'g' && url[i + 2] == 't' && url[i + 3] == ';');
         if(!is_lt && !is_gt) continue;
 
-        entity_text = wiki_thread_buf_acquire_scratch();
-        if(!entity_text) { log_fatal("thread_buffer: failed to acquire scratch in ext_cb"); abort(); }
-        entity_text->len = 0;
-        wiki_thread_buf_append(entity_text, (sz_string_view_t){ .start = url + i, .length = ulen - i });
-        if(tlen > 0) wiki_thread_buf_append(entity_text, (sz_string_view_t){ .start = txt, .length = tlen });
+        if(tlen > 0) {
+            entity_text = wiki_thread_buf_acquire_scratch();
+            if(!entity_text) { log_fatal("thread_buffer: failed to acquire scratch in ext_cb"); abort(); }
+            entity_text->len = 0;
+            wiki_thread_buf_append(entity_text, (sz_string_view_t){ .start = url + i, .length = ulen - i });
+            wiki_thread_buf_append(entity_text, (sz_string_view_t){ .start = txt, .length = tlen });
+            txt = entity_text->buf;
+            tlen = entity_text->len;
+        } else {
+            txt = url + i;
+            tlen = ulen - i;
+        }
 
         ulen = i;
         sp = "";
         splen = 0;
-        txt = entity_text->buf;
-        tlen = entity_text->len;
         break;
     }
 
