@@ -1,6 +1,7 @@
 #include "util/log.h"
 #include "parser/converter.h"
 #include "util/string_util.h"
+#include "stringzilla/stringzilla.h"
 #include "token.h"
 #include "util/thread_buffer.h"
 #include <assert.h>
@@ -30,7 +31,7 @@ static char *trim_copy(const char *s, size_t len) {
 	size_t n= j - i;
 	char *r= malloc(n + 1);
 	assert(r);
-	memcpy(r, s + i, n);
+	if(n > 0) sz_copy(r, s + i, n);
 	r[n]= '\0';
 	return r;
 }
@@ -39,12 +40,13 @@ static bool variant_in_config(const ParserConfig *cfg, const char *s, size_t len
 	if(!cfg || !s) return false;
 	char *trimmed= trim_copy(s, len);
 	if(!trimmed) return false;
+	size_t tlen= strlen(trimmed);
 
 	for(size_t i= 0; i < cfg->variants.count; i++) {
 		sz_ptr_t start;
-		sz_size_t len;
-		sz_string_range(&cfg->variants.items[i], &start, &len);
-		if(start && len == strlen(trimmed) && strncasecmp(trimmed, (const char *)start, len) == 0) {
+		sz_size_t vlen;
+		sz_string_range(&cfg->variants.items[i], &start, &vlen);
+		if(start && vlen == tlen && str_ci_eq_n(trimmed, (const char *)start, vlen)) {
 			free(trimmed);
 			return true;
 		}
@@ -59,14 +61,13 @@ static bool token_append_text_decoded_nul(Token *t, const char *s, size_t len) {
 		token_append_text_n(t, NULL, 0);
 		return true;
 	}
-	ThreadBuf *scratch = wiki_thread_buf_acquire_scratch();
-	wiki_thread_buf_set(scratch, s, len);
-	/* decode placeholder into NUL bytes in scratch (safe: tokens must not reference scratch) */
+	char *decoded= malloc(len);
+	if(!decoded) return false;
 	for(size_t i= 0; i < len; i++) {
-		if(scratch->buf[i] == CONVERTER_ESC_NUL) scratch->buf[i]= '\0';
+		decoded[i]= (s[i] == CONVERTER_ESC_NUL) ? '\0' : s[i];
 	}
-	token_append_text_n(t, scratch->buf, len);
-	wiki_thread_buf_release_scratch(scratch);
+	token_append_text_n(t, decoded, len);
+	free(decoded);
 	return true;
 }
 
@@ -169,8 +170,7 @@ static Token *build_converter_token(char **flags, char **rules, const ParserConf
 		}
 		size_t flen = strlen(flags[i]);
 		if(flen > 0) {
-			const char *fview = wiki_thread_buf_append_to_tokens(flags[i], flen);
-			if(fview) token_append_text_n(f, fview, flen);
+			token_append_text_n(f, flags[i], flen);
 		} else {
 			token_append_text_n(f, NULL, 0);
 		}
@@ -215,8 +215,9 @@ static char *mask_entities(const char *s, size_t len, size_t *out_len) {
 						out= realloc(out, cap);
 						assert(out);
 					}
-					memcpy(out + j, s + i, k - i);
-					j+= (k - i);
+				size_t span= k - i;
+				if(span > 0) sz_copy(out + j, s + i, span);
+				j+= span;
 					out[j++]= '\x01'; /* placeholder for ';' */
 					i= k + 1;
 					continue;
@@ -240,8 +241,10 @@ static char *mask_entities(const char *s, size_t len, size_t *out_len) {
 static char *unmask_entities(const char *s, size_t len) {
 	char *r= malloc(len + 1);
 	assert(r);
-	for(size_t i= 0; i < len; i++) r[i]= s[i] == '\x01' ? ';' : s[i];
+	if(len > 0) sz_copy(r, s, len);
 	r[len]= '\0';
+	/* Replace \x01 placeholders back to ';' */
+	for(size_t i= 0; i < len; i++) if(r[i] == '\x01') r[i]= ';';
 	return r;
 }
 
@@ -291,9 +294,7 @@ static bool converter_rule_looks_like_variant(const char *s, size_t len,
 		if(!v) continue;
 		if(i + vlen >= len) continue;
 		bool ok = true;
-		for(size_t k = 0; k < vlen; k++) {
-			if(tolower((unsigned char)s[i + k]) != tolower((unsigned char)((const char *)v)[k])) { ok = false; break; }
-		}
+		if(!str_ci_eq_n(s + i, (const char *)v, vlen)) ok = false;
 		if(ok) {
 			size_t p = i + vlen;
 			while(p < len && isspace((unsigned char)s[p])) p++;
@@ -320,18 +321,17 @@ void parse_converter(ThreadBuf *tb, const ParserConfig *cfg, Accum *accum) {
 		bool is_close= false;
 		size_t index= 0;
 
-		for(size_t i= cursor; i + 1 < tb->len; i++) {
-			if(tb->buf[i] == '-' && tb->buf[i + 1] == '{') {
-				found= true;
-				is_close= false;
-				index= i;
-				break;
-			}
-			if(scan_closes && tb->buf[i] == '}' && tb->buf[i + 1] == '-') {
-				found= true;
-				is_close= true;
-				index= i;
-				break;
+		{
+			const char *search= tb->buf + cursor;
+			size_t rem= tb->len - cursor;
+			sz_cptr_t open_pos= (rem >= 2) ? sz_find(search, rem, "-{", 2) : NULL;
+			sz_cptr_t close_pos= (scan_closes && rem >= 2) ? sz_find(search, rem, "}-", 2) : NULL;
+			if(open_pos && (!close_pos || open_pos <= close_pos)) {
+				found= true; is_close= false;
+				index= (size_t)(open_pos - tb->buf);
+			} else if(close_pos) {
+				found= true; is_close= true;
+				index= (size_t)(close_pos - tb->buf);
 			}
 		}
 
@@ -362,11 +362,10 @@ void parse_converter(ThreadBuf *tb, const ParserConfig *cfg, Accum *accum) {
 		const char *inner_ptr= tb->buf + inner_start;
 
 		ssize_t pipe_at= -1;
-		for(size_t k= 0; k < inner_len; k++) {
-			if(inner_ptr[k] == '|') {
-				pipe_at= (ssize_t)k;
-				break;
-			}
+		{
+			char pipe_ch= '|';
+			sz_cptr_t pp= sz_find_byte(inner_ptr, inner_len, &pipe_ch);
+			if(pp) pipe_at= (ssize_t)(pp - inner_ptr);
 		}
 
 		char **flags= NULL;
@@ -385,7 +384,7 @@ void parse_converter(ThreadBuf *tb, const ParserConfig *cfg, Accum *accum) {
 					size_t n= k - start;
 					char *seg= malloc(n + 1);
 					assert(seg);
-					if(n > 0) memcpy(seg, inner_ptr + start, n);
+					if(n > 0) sz_copy(seg, inner_ptr + start, n);
 					seg[n]= '\0';
 					flags[flags_count++]= seg;
 					start= k + 1;
@@ -422,7 +421,7 @@ void parse_converter(ThreadBuf *tb, const ParserConfig *cfg, Accum *accum) {
 			size_t seg_len = k - split_cur;
 			char *seg = malloc(seg_len + 1);
 			if(!seg) { log_fatal("OOM in converter split"); abort(); }
-			if(seg_len) memcpy(seg, masked + split_cur, seg_len);
+			if(seg_len) sz_copy(seg, masked + split_cur, seg_len);
 			seg[seg_len] = '\0';
 			char *restored = unmask_entities(seg, seg_len);
 			free(seg);
@@ -455,9 +454,9 @@ void parse_converter(ThreadBuf *tb, const ParserConfig *cfg, Accum *accum) {
 
 	char *new_buf= malloc(new_len + 1);
 	assert(new_buf);
-	if(prefix_len > 0) memcpy(new_buf, tb->buf, prefix_len);
-	memcpy(new_buf + prefix_len, marker, marker_len);
-	if(suffix_len > 0) memcpy(new_buf + prefix_len + marker_len, tb->buf + suffix_start, suffix_len);
+	if(prefix_len > 0) sz_copy(new_buf, tb->buf, prefix_len);
+	sz_copy(new_buf + prefix_len, marker, marker_len);
+	if(suffix_len > 0) sz_copy(new_buf + prefix_len + marker_len, tb->buf + suffix_start, suffix_len);
 	new_buf[new_len]= '\0';
 
 	wiki_thread_buf_set(tb, new_buf, new_len);

@@ -3,7 +3,6 @@
 #include "util/string_util.h"
 #include "stringzilla/stringzilla.h"
 #include "token.h"
-#include "util/thread_buffer.h"
 #include <assert.h>
 #include <stdlib.h>
 #include <string.h>
@@ -12,8 +11,7 @@ static Token *make_attr_key(const char *key, size_t key_len, Accum *accum) {
 	Token *t= token_new(TOKEN_ATTR_KEY, "attr-key");
 	if(!t) return NULL;
 	if(key_len > 0) {
-		const char *key_view = wiki_thread_buf_append_to_tokens(key, key_len);
-		if(key_view) token_append_text_n(t, key_view, key_len);
+		token_append_text_n(t, key, key_len);
 	} else {
 		token_append_text_n(t, NULL, 0);
 	}
@@ -25,8 +23,7 @@ static Token *make_attr_value(const char *val, size_t val_len, Accum *accum) {
 	Token *t= token_new(TOKEN_ATTR_VALUE, "attr-value");
 	if(!t) return NULL;
 	if(val_len > 0) {
-		const char *val_view = wiki_thread_buf_append_to_tokens(val, val_len);
-		if(val_view) token_append_text_n(t, val_view, val_len);
+		token_append_text_n(t, val, val_len);
 	} else {
 		token_append_text_n(t, NULL, 0);
 	}
@@ -38,8 +35,7 @@ static Token *make_table_attr_dirty(const char *text, size_t text_len, Accum *ac
 	Token *t= token_new(TOKEN_ATOM, "table-attr-dirty");
 	if(!t) return NULL;
 	if(text_len > 0) {
-		const char *text_view = wiki_thread_buf_append_to_tokens(text, text_len);
-		if(text_view) token_append_text_n(t, text_view, text_len);
+		token_append_text_n(t, text, text_len);
 	} else {
 		token_append_text_n(t, NULL, 0);
 	}
@@ -159,6 +155,12 @@ static size_t table_ws_len_at(const char *s, size_t len, size_t i) {
 
 static size_t sentinel_at(const char *buf, size_t len, size_t i, char type);
 
+static bool table_attr_key_is_dynamic(const char *key, size_t key_len) {
+	return sz_find_byte(key, key_len, "\0") != NULL ||
+		(key_len >= 2 && key[0] == '{' && key[1] == '{') ||
+		(key_len >= 2 && key[0] == '-' && key[1] == '{');
+}
+
 static size_t table_attr_gap_len_at(const char *s, size_t len, size_t i) {
 	size_t ws= table_ws_len_at(s, len, i);
 	if(ws > 0) return ws;
@@ -198,7 +200,7 @@ static size_t sentinel_at(const char *buf, size_t len, size_t i, char type) {
 
 static bool table_attr_has_equal_marker(const char *s, size_t len) {
 	if(!s || len == 0) return false;
-	if(memchr(s, '=', len) != NULL) return true;
+	if(sz_find_byte(s, len, "=") != NULL) return true;
 	for(size_t i= 0; i < len; i++) {
 		size_t sl= sentinel_at(s, len, i, '~');
 		if(sl) return true;
@@ -228,7 +230,7 @@ static char *table_attr_normalize_equal_syntax(const char *eq, size_t eq_len, si
 	for(size_t i= 0; i < eq_len;) {
 		size_t sl= sentinel_at(eq, eq_len, i, '~');
 		if(sl) {
-			memcpy(out + p, "{{=}}", 5);
+			sz_copy(out + p, "{{=}}", 5);
 			p+= 5;
 			i+= sl;
 			continue;
@@ -264,7 +266,7 @@ static void parse_table_attrs(Token *attrs_tok, const char *attr_str, size_t att
 					break;
 				}
 			}
-			bool dynamic_key= memchr(k, '\0', klen) != NULL || (klen >= 2 && k[0] == '{' && k[1] == '{') || (klen >= 2 && k[0] == '-' && k[1] == '{');
+			bool dynamic_key= table_attr_key_is_dynamic(k, klen);
 			if(dynamic_key && !has_space && is_valid_attr_key_after_comment_trim(k, klen)) {
 				if(first > 0) {
 					Token *d0= make_table_attr_dirty(attr_str, first, accum);
@@ -298,7 +300,7 @@ static void parse_table_attrs(Token *attrs_tok, const char *attr_str, size_t att
 		size_t ws_take= table_ws_len_at(attr_str, attr_len, i);
 		if(attr_str[i] == '/' || ws_take > 0) {
 			if(ws_take > 0) {
-				memcpy(dirty_buf + dirty_len, attr_str + i, ws_take);
+				sz_copy(dirty_buf + dirty_len, attr_str + i, ws_take);
 				dirty_len+= ws_take;
 				i+= ws_take;
 			} else {
@@ -321,7 +323,7 @@ static void parse_table_attrs(Token *attrs_tok, const char *attr_str, size_t att
 			size_t eq_take= sentinel_at(attr_str, attr_len, i, '~');
 			if(i < attr_len && (attr_str[i] == '=' || eq_take > 0)) {
 				if(eq_take == 0) eq_take= 1;
-				memcpy(dirty_buf + dirty_len, attr_str + i, eq_take);
+				sz_copy(dirty_buf + dirty_len, attr_str + i, eq_take);
 				dirty_len+= eq_take;
 				i+= eq_take;
 				if(i < attr_len && (attr_str[i] == '"' || attr_str[i] == '\'')) {
@@ -351,7 +353,7 @@ static void parse_table_attrs(Token *attrs_tok, const char *attr_str, size_t att
 			valid_key= ((kc >= 'A' && kc <= 'Z') || (kc >= 'a' && kc <= 'z') || (kc >= '0' && kc <= '9') || kc == ':' || kc == '.' || kc == '_' || kc == '-');
 		}
 		if(!valid_key) {
-			bool dynamic_key= memchr(key, '\0', key_len) != NULL || (key_len >= 2 && key[0] == '{' && key[1] == '{') || (key_len >= 2 && key[0] == '-' && key[1] == '{');
+			bool dynamic_key= table_attr_key_is_dynamic(key, key_len);
 			if(!dynamic_key || !is_valid_attr_key_after_comment_trim(key, key_len)) {
 				for(size_t k= 0; k < key_len; k++) dirty_buf[dirty_len++]= key[k];
 				/* JS parity: when an invalid key is immediately followed by '=value',
@@ -359,7 +361,7 @@ static void parse_table_attrs(Token *attrs_tok, const char *attr_str, size_t att
 				size_t eq_sl= (i < attr_len) ? sentinel_at(attr_str, attr_len, i, '~') : 0;
 				if(i < attr_len && (attr_str[i] == '=' || eq_sl > 0)) {
 					size_t eq_take= (attr_str[i] == '=') ? 1 : eq_sl;
-					memcpy(dirty_buf + dirty_len, attr_str + i, eq_take);
+					sz_copy(dirty_buf + dirty_len, attr_str + i, eq_take);
 					dirty_len+= eq_take;
 					i+= eq_take;
 					if(i < attr_len && (attr_str[i] == '"' || attr_str[i] == '\'')) {
@@ -461,8 +463,7 @@ Token *create_tr_token(const char *syntax, size_t syntax_len,
 	Token *syn= token_new(TOKEN_SYNTAX, "table-syntax");
 	if(!syn) return tr;
 	if(syntax && syntax_len > 0) {
-		const char *syn_view = wiki_thread_buf_append_to_tokens(syntax, syntax_len);
-		if(syn_view) token_append_text_n(syn, syn_view, syntax_len);
+		token_append_text_n(syn, syntax, syntax_len);
 	}
 	accum_push(accum, syn);
 	token_append_child(tr, syn);

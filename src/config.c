@@ -16,6 +16,8 @@
 #include "util/thread_buffer.h"
 #include "util/callback_parser.h"
 #include "util/wiki_parser_rules.h"
+#include "util/string_util.h"
+#include <stringzilla/stringzilla.h>
 #include <assert.h>
 #include <ctype.h>
 #include <cjson/cJSON.h>
@@ -65,9 +67,9 @@ static void str_list_from_json_array(StrList *sl, const cJSON *arr) {
 	const cJSON *item;
 	cJSON_ArrayForEach(item, arr) {
 		if(cJSON_IsString(item) && item->valuestring) {
-
-			sz_ptr_t ptr = sz_string_init_length(&sl->items[k], strlen(item->valuestring), &allocator_default);
-			sz_copy(ptr, (sz_ptr_t)item->valuestring, strlen(item->valuestring));
+			size_t slen = strlen(item->valuestring);
+			sz_ptr_t ptr = sz_string_init_length(&sl->items[k], slen, &allocator_default);
+			sz_copy(ptr, (sz_ptr_t)item->valuestring, slen);
 			k++;
 		}
 	}
@@ -86,9 +88,9 @@ static void str_list_from_json_object_keys(StrList *sl, const cJSON *obj) {
 
 	cJSON_ArrayForEach(item, obj) {
 		if(item->string) {
-
-			sz_ptr_t ptr = sz_string_init_length(&sl->items[k], strlen(item->string), &allocator_default);
-			sz_copy(ptr, (sz_ptr_t)item->string, strlen(item->string));
+			size_t slen = strlen(item->string);
+			sz_ptr_t ptr = sz_string_init_length(&sl->items[k], slen, &allocator_default);
+			sz_copy(ptr, (sz_ptr_t)item->string, slen);
 			k++;
 		}
 	}
@@ -129,10 +131,12 @@ static void str_map_from_json_object(StrMap *m, const cJSON *obj) {
 
 	cJSON_ArrayForEach(item, obj) {
 		if(item->string && cJSON_IsString(item) && item->valuestring) {
-		sz_ptr_t key_ptr = sz_string_init_length(&m->keys[k], strlen(item->string), &allocator_default);
-		sz_copy(key_ptr, (sz_ptr_t)item->string, strlen(item->string));
-			sz_ptr_t val_ptr = sz_string_init_length(&m->values[k], strlen(item->valuestring), &allocator_default);
-			sz_copy(val_ptr, (sz_ptr_t)item->valuestring, strlen(item->valuestring));
+			size_t klen = strlen(item->string);
+			size_t vlen = strlen(item->valuestring);
+			sz_ptr_t key_ptr = sz_string_init_length(&m->keys[k], klen, &allocator_default);
+			sz_copy(key_ptr, (sz_ptr_t)item->string, klen);
+			sz_ptr_t val_ptr = sz_string_init_length(&m->values[k], vlen, &allocator_default);
+			sz_copy(val_ptr, (sz_ptr_t)item->valuestring, vlen);
 			k++;
 		}
 	}
@@ -146,13 +150,12 @@ static NsEntry *realloc_ns_entry_array_preserve_small(
 
 static bool str_list_contains_exact(const StrList *sl, const char *needle) {
 	if(!sl || !needle) return false;
-
-
+	size_t needle_len = strlen(needle);
 	for(size_t i= 0; i < sl->count; i++) {
 		sz_ptr_t start;
 		sz_size_t len;
 		sz_string_range(&sl->items[i], &start, &len);
-		if(start && len == strlen(needle) && memcmp(start, needle, len) == 0) return true;
+		if(start && len == needle_len && sz_equal(start, needle, needle_len) == sz_true_k) return true;
 	}
 	return false;
 }
@@ -164,18 +167,20 @@ static void str_list_append_dup(StrList *sl, const char *s) {
 		sl->items, sl->count, sl->count + 1);
 	assert(grown);
 	sl->items= grown;
-	sz_ptr_t ptr = sz_string_init_length(&sl->items[sl->count], strlen(s), &allocator_default);
-	sz_copy(ptr, (sz_ptr_t)s, strlen(s));
+	size_t slen = strlen(s);
+	sz_ptr_t ptr = sz_string_init_length(&sl->items[sl->count], slen, &allocator_default);
+	sz_copy(ptr, (sz_ptr_t)s, slen);
 	sl->count++;
 }
 
 static bool str_map_contains_key(const StrMap *m, const char *key) {
 	if(!m || !key) return false;
+	size_t key_len = strlen(key);
 	for(size_t i= 0; i < m->count; i++) {
 		sz_ptr_t start;
 		sz_size_t len;
 		sz_string_range(&m->keys[i], &start, &len);
-		if(start && len == strlen(key) && memcmp(start, key, len) == 0) return true;
+		if(start && len == key_len && sz_equal(start, key, key_len) == sz_true_k) return true;
 	}
 	return false;
 }
@@ -183,11 +188,12 @@ static bool str_map_contains_key(const StrMap *m, const char *key) {
 static bool ns_entry_exists_ci(const NsEntry *arr, size_t count,
 															 const char *name, int num) {
 	if(!arr || !name) return false;
+	size_t name_len = strlen(name);
 	for(size_t i= 0; i < count; i++) {
 		sz_ptr_t entry_name;
 		sz_size_t entry_len;
 		sz_string_range(&arr[i].name, &entry_name, &entry_len);
-		if(arr[i].num == num && entry_name && entry_len == strlen(name) && strncasecmp(entry_name, name, entry_len) == 0) {
+		if(arr[i].num == num && entry_name && entry_len == name_len && str_ci_eq_n((const char *)entry_name, name, entry_len)) {
 			return true;
 		}
 	}
@@ -256,10 +262,16 @@ static void str_map_append_dup(StrMap *m, const char *key, const char *value) {
 	assert(grown_keys && grown_vals);
 	m->keys= grown_keys;
 	m->values= grown_vals;
-	sz_ptr_t key_ptr = sz_string_init_length(&m->keys[m->count], strlen(key), &allocator_default);
-	sz_copy(key_ptr, (sz_ptr_t)key, strlen(key));
-	sz_ptr_t val_ptr = sz_string_init_length(&m->values[m->count], strlen(value), &allocator_default);
-	sz_copy(val_ptr, (sz_ptr_t)value, strlen(value));
+	{
+	size_t klen = strlen(key);
+	sz_ptr_t key_ptr = sz_string_init_length(&m->keys[m->count], klen, &allocator_default);
+	sz_copy(key_ptr, (sz_ptr_t)key, klen);
+	}
+	{
+	size_t vlen = strlen(value);
+	sz_ptr_t val_ptr = sz_string_init_length(&m->values[m->count], vlen, &allocator_default);
+	sz_copy(val_ptr, (sz_ptr_t)value, vlen);
+	}
 	m->count++;
 }
 
@@ -435,9 +447,7 @@ static bool build_protocol_items(ParserConfig *cfg) {
 			return false;
 		}
 		const char *proto_start = (const char *)cfg->protocol_items.items[i].protocol.start;
-		for(size_t j = 0; j < len; j++) {
-			lower_ptr[j] = (char)tolower((unsigned char)proto_start[j]);
-		}
+		sz_lookup((sz_ptr_t)lower_ptr, len, proto_start, (const char *)fast_tolower_table());
 	}
 	cfg->protocol_items_valid = true;
 	return true;
@@ -483,18 +493,18 @@ static ParserConfig *config_from_cjson(const cJSON *root) {
 			const cJSON *item;
 			cJSON_ArrayForEach(item, ns) {
 				if(item->string && cJSON_IsNumber(item)) {
-
-				sz_ptr_t name_ptr = sz_string_init_length(&cfg->namespaces[k].name, strlen(item->string), &allocator_default);
-				sz_copy(name_ptr, (sz_ptr_t)item->string, strlen(item->string));
+				size_t nlen = strlen(item->string);
+				sz_ptr_t name_ptr = sz_string_init_length(&cfg->namespaces[k].name, nlen, &allocator_default);
+				sz_copy(name_ptr, (sz_ptr_t)item->string, nlen);
 					cfg->namespaces[k].num= (int)item->valuedouble;
 					k++;
 				} else if(item->string && cJSON_IsString(item) && item->valuestring) {
 					char *endp= NULL;
 					long nsnum= strtol(item->string, &endp, 10);
 					if(endp && *endp == '\0') {
-
-						sz_ptr_t name_ptr = sz_string_init_length(&cfg->namespaces[k].name, strlen(item->valuestring), &allocator_default);
-						sz_copy(name_ptr, (sz_ptr_t)item->valuestring, strlen(item->valuestring));
+					size_t vlen = strlen(item->valuestring);
+					sz_ptr_t name_ptr = sz_string_init_length(&cfg->namespaces[k].name, vlen, &allocator_default);
+					sz_copy(name_ptr, (sz_ptr_t)item->valuestring, vlen);
 						cfg->namespaces[k].num= (int)nsnum;
 						k++;
 					}
@@ -521,8 +531,9 @@ static ParserConfig *config_from_cjson(const cJSON *root) {
 					cfg->namespaces, cfg->ns_count, cfg->ns_count + 1);
 				assert(grown);
 				cfg->namespaces= grown;
-			sz_ptr_t ptr = sz_string_init_length(&cfg->namespaces[cfg->ns_count].name, strlen(item->string), &allocator_default);
-			sz_copy(ptr, (sz_ptr_t)item->string, strlen(item->string));
+				size_t nslen= strlen(item->string);
+			sz_ptr_t ptr = sz_string_init_length(&cfg->namespaces[cfg->ns_count].name, nslen, &allocator_default);
+			sz_copy(ptr, (sz_ptr_t)item->string, nslen);
 				cfg->namespaces[cfg->ns_count].num= nsnum;
 				cfg->ns_count++;
 			}
@@ -733,23 +744,25 @@ void config_free(ParserConfig *cfg) {
 
 bool config_excluded(const ParserConfig *cfg, const char *name) {
 	if(!cfg || !name) return false;
+	size_t name_len= strlen(name);
 	for(size_t i= 0; i < cfg->excludes.count; i++) {
 		sz_ptr_t start;
 		sz_size_t len;
 		sz_string_range(&cfg->excludes.items[i], &start, &len);
-		if(start && len == strlen(name) && memcmp(start, name, len) == 0) return true;
+		if(start && len == name_len && sz_equal(start, name, len) == sz_true_k) return true;
 	}
 	return false;
 }
 
 bool config_has_ext(const ParserConfig *cfg, const char *name) {
 	if(!cfg || !name) return false;
+	size_t name_len= strlen(name);
 
 	for(size_t i= 0; i < cfg->ext.count; i++) {
 		sz_ptr_t start;
 		sz_size_t len;
 		sz_string_range(&cfg->ext.items[i], &start, &len);
-		if(start && len == strlen(name) && strncasecmp(start, name, len) == 0) return true;
+		if(start && len == name_len && str_ci_eq_n((const char *)start, name, len)) return true;
 	}
 	return false;
 }

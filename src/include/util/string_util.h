@@ -81,6 +81,12 @@ uint32_t utf8_tolower_codepoint(uint32_t cp);
  */
 unsigned char fast_tolower(unsigned char c);
 
+/**
+ * Returns a pointer to the 256-byte ASCII lowercase lookup table.
+ * Suitable for use with sz_lookup() for bulk lowercasing.
+ */
+const unsigned char *fast_tolower_table(void);
+
 /* ── Uppercase a single UTF-8 codepoint (ASCII + Latin-1 support) ─────────── */
 uint32_t utf8_toupper_codepoint(uint32_t cp);
 

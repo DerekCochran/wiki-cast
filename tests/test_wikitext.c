@@ -9,6 +9,7 @@
 #include <dirent.h>
 #include <sys/stat.h>
 #include <unistd.h>
+#include <time.h>
 #include "parse.h"
 #include "token.h"
 #include "config.h"
@@ -328,12 +329,25 @@ int main(int argc, char **argv)
         return 1;
     }
 
+
     size_t total_failed = 0;
     bool debug_mem = getenv("WTC_DEBUG_RSS_EACH") != NULL;
     for (size_t i = 0; i < sample_count; ++i) {
         const char *single_sample = samples[i];
+        // Get the current time for logging of how long it took.
+        struct timespec start_time, end_time;
+        clock_gettime(CLOCK_MONOTONIC, &start_time);
+
         size_t failed = run_parser_samples("wikitext", &single_sample, 1, cfg, false, 10);
+        // Get elapsed time in ms
+        clock_gettime(CLOCK_MONOTONIC, &end_time);
+        long elapsed_ms = (end_time.tv_sec - start_time.tv_sec) * 1000 +
+                          (end_time.tv_nsec - start_time.tv_nsec) / 1000000;
+
         if (debug_mem) {
+            // Add timing output for how long the single sample took.
+            printf("TIME sample=%zu name=%s elapsed_ms=%ld\n",
+                   i + 1, names[i], elapsed_ms);
             log_thread_buffer_stats(names[i], i);
         }
         if (failed > 0) {

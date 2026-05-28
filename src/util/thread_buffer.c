@@ -13,6 +13,7 @@
 #include <string.h>
 #include <ctype.h>
 #include <stdint.h>
+#include <stringzilla/stringzilla.h>
 
 static size_t align_up_64(size_t n) {
 	return (n + 63u) & ~(size_t)63u;
@@ -519,7 +520,7 @@ static void build_sentinel_repr(const char *buf, size_t len, char *out, size_t o
 					size_t dlen = p - digits_start;
 					if(dlen < 64) {
 						char idxbuf[80];
-						memcpy(idxbuf, buf + digits_start, dlen);
+						sz_copy(idxbuf, buf + digits_start, dlen);
 						idxbuf[dlen] = '\0';
 						if(type_ch >= 32 && type_ch < 127) {
 							int n = snprintf(out + op, out_cap - op, "[#%s:%c]", idxbuf, (char)type_ch);
@@ -635,7 +636,7 @@ void wiki_thread_buf_reserve_ex(ThreadBuf *tb, size_t need, bool sso_allowed) {
 		void *new_ptr= aligned_alloc(64, new_cap);
 		assert(new_ptr);
 		if(tb->len > 0) {
-			memcpy(new_ptr, tb->buf, tb->len);
+			sz_copy(new_ptr, tb->buf, tb->len);
 		}
 		tb->buf = (char *)new_ptr;
 		tb->cap = new_cap;
@@ -693,7 +694,7 @@ void wiki_thread_buf_reserve_ex(ThreadBuf *tb, size_t need, bool sso_allowed) {
         assert(new_ptr);
 
         if (tb->len > 0) {
-            memcpy(new_ptr, tb->buf, tb->len);
+			sz_copy(new_ptr, tb->buf, tb->len);
         }
 
         if (tb->is_on_heap) {
@@ -839,7 +840,7 @@ void wiki_thread_buf_append(ThreadBuf *tb, sz_string_view_t view) {
 	/* Ensure capacity for existing content + view.length bytes */
 	wiki_thread_buf_reserve(tb, tb->len + view.length);
 
-	if(view.start) memcpy(tb->buf + tb->len, view.start, view.length);
+	if(view.start) sz_copy(tb->buf + tb->len, view.start, view.length);
 	tb->len += view.length;
 	tb->buf[tb->len] = '\0';
 }

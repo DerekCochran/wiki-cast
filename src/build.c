@@ -38,10 +38,10 @@ char *build_normalize_attr_equal(const char *equal, size_t equal_len,
 													 Accum *accum) {
 	if(!equal || equal_len == 0) return NULL;
 
-	if(memchr(equal, '\0', equal_len) == NULL) {
+	if(sz_find_byte(equal, equal_len, "\0") == NULL) {
 		char *out= malloc(equal_len + 1);
 		if(!out) return NULL;
-		memcpy(out, equal, equal_len);
+		sz_copy(out, equal, equal_len);
 		out[equal_len]= '\0';
 		return out;
 	}
@@ -60,7 +60,7 @@ char *build_normalize_attr_equal(const char *equal, size_t equal_len,
 	size_t slen= scratch->len;
 	char *out= malloc(slen + 1);
 	if(out) {
-		if(slen > 0 && s) memcpy(out, s, slen);
+		if(slen > 0 && s) sz_copy(out, s, slen);
 		out[slen]= '\0';
 	}
 
@@ -519,7 +519,7 @@ void build_from_str(Token *parent, const char *str, size_t str_len,
 					log_fatal("build_from_str: malloc failed while copying aliased input");
 					abort();
 				}
-				if(str_len > 0) memcpy(src_copy, str, str_len);
+				if(str_len > 0) sz_copy(src_copy, str, str_len);
 				src_copy[str_len]= '\0';
 				s= src_copy;
 			}
@@ -544,109 +544,95 @@ void build_from_str(Token *parent, const char *str, size_t str_len,
      *   Odd segments (between \0 and \x7F, i.e. "N<ch>"): token reference
      */
 	size_t seg_start= 0;
-	bool in_marker= false;
 
-	for(size_t i= 0; i <= str_len;) {
-		unsigned char c= (i < str_len) ? (unsigned char)s[i] : 0;
-
-		if(!in_marker) {
-			if(c == '\0' || i == str_len) {
-				/* Emit text segment [seg_start, i) */
-				size_t text_len= i - seg_start;
-				if(text_len > 0) {
-					const char *p = wiki_thread_buf_append_to_tokens(s + seg_start, text_len);
-					token_append_text_n(parent, p, text_len);
-				}
-				if(c == '\0') {
-					seg_start= i + 1;
-					in_marker= true;
-				}
-				i++;
-			} else {
-				i++;
+	for(size_t i= 0; i < str_len;) {
+		/* Jump to the next \0 marker using SIMD search */
+		char nul_needle = '\0';
+		const char *nul_ptr = sz_find_byte(s + i, str_len - i, &nul_needle);
+		if(!nul_ptr) {
+			/* No more markers — emit remaining text as a single segment */
+			size_t text_len = str_len - seg_start;
+			if(text_len > 0) {
+				token_append_text_n(parent, s + seg_start, text_len);
 			}
-		} else {
-			/* Inside marker — find the \x7F */
-			if(c == '\x7F' || i == str_len) {
-				/* Segment is "N<type_ch>" where N is decimal */
-				const char *marker_content= s + seg_start;
-				size_t marker_len= i - seg_start;
-				bool missing_terminator= (c != '\x7F');
+			break;
+		}
+		size_t nul_off = (size_t)(nul_ptr - s);
 
-				if(missing_terminator || marker_len < 2) {
+		/* Emit text segment [seg_start, nul_off) */
+		{
+			size_t text_len = nul_off - seg_start;
+			if(text_len > 0) {
+				token_append_text_n(parent, s + seg_start, text_len);
+			}
+		}
+
+		/* Now jump to the matching \x7F marker delimiter */
+		i = nul_off + 1; /* skip past the \0 */
+		{
+			char del_needle = '\x7F';
+			const char *del_ptr = sz_find_byte(s + i, str_len - i, &del_needle);
+			size_t del_off = del_ptr ? (size_t)(del_ptr - s) : str_len;
+			bool missing_terminator = (del_ptr == NULL);
+
+			/* marker_content = s+i, marker_len = del_off - i */
+			const char *marker_content = s + i;
+			size_t marker_len = del_off - i;
+
+			if(missing_terminator || marker_len < 1) {
+				fprintf(stderr,
+				        "DEBUG build_from_str: INVALID sentinel at parent=%p, reason=%s, marker_len=%zu, seg_start=%zu, cursor=%zu\n",
+				        (void*)parent,
+				        missing_terminator ? "missing DEL terminator" : "marker too short",
+				        marker_len,
+				        i,
+				        i);
+				fprintf(stderr, "DEBUG build_from_str: INVALID sentinel raw bytes: ");
+				for(size_t dbg= 0; dbg < marker_len; dbg++) {
+					unsigned char ch= (unsigned char)marker_content[dbg];
+					fprintf(stderr, "[%zu]=0x%02x '%c' ", dbg, ch,
+					        (ch >= 0x20 && ch < 0x7f) ? ch : '?');
+				}
+				fprintf(stderr, "\n");
+				log_fatal("build_from_str: invalid sentinel (missing_terminator=%d, marker_len=%zu)",
+				          (int)missing_terminator, marker_len);
+				abort();
+			}
+
+			/* Parse decimal index (all but last char). */
+			size_t idx= 0;
+			for(size_t d= 0; d < marker_len - 1; d++) {
+				unsigned char dc= (unsigned char)marker_content[d];
+				if(dc < '0' || dc > '9') {
 					fprintf(stderr,
-					        "DEBUG build_from_str: INVALID sentinel at parent=%p, reason=%s, marker_len=%zu, seg_start=%zu, cursor=%zu\n",
+					        "DEBUG build_from_str: INVALID sentinel at parent=%p, marker_len=%zu, failed_at=%zu, byte=0x%02x\n",
 					        (void*)parent,
-					        missing_terminator ? "missing DEL terminator" : "marker too short",
 					        marker_len,
-					        seg_start,
-					        i);
-					fprintf(stderr, "DEBUG build_from_str: INVALID sentinel raw bytes: ");
-					for(size_t dbg= 0; dbg < marker_len; dbg++) {
-						unsigned char ch= (unsigned char)marker_content[dbg];
-						fprintf(stderr, "[%zu]=0x%02x '%c' ", dbg, ch,
-						        (ch >= 0x20 && ch < 0x7f) ? ch : '?');
-					}
-					fprintf(stderr, "\n");
-					log_fatal("build_from_str: invalid sentinel (reason=%s, marker_len=%zu, seg_start=%zu, cursor=%zu)",
-					          missing_terminator ? "missing DEL terminator" : "marker too short",
-					          marker_len,
-					          seg_start,
-					          i);
+					        d,
+					        dc);
+					log_fatal("build_from_str: invalid sentinel digit at offset=%zu (byte=0x%02x)", d, dc);
 					abort();
 				}
-
-				/* Parse decimal index (all but last char). */
-				size_t idx= 0;
-				for(size_t d= 0; d < marker_len - 1; d++) {
-					unsigned char dc= (unsigned char)marker_content[d];
-					if(dc < '0' || dc > '9') {
-						fprintf(stderr,
-						        "DEBUG build_from_str: INVALID sentinel at parent=%p, marker_len=%zu, failed_at=%zu, byte=0x%02x\n",
-						        (void*)parent,
-						        marker_len,
-						        d,
-						        dc);
-						fprintf(stderr, "DEBUG build_from_str: INVALID sentinel raw bytes: ");
-						for(size_t dbg= 0; dbg < marker_len; dbg++) {
-							unsigned char ch= (unsigned char)marker_content[dbg];
-							fprintf(stderr, "[%zu]=0x%02x '%c' ", dbg, ch,
-							        (ch >= 0x20 && ch < 0x7f) ? ch : '?');
-						}
-						fprintf(stderr, "\n");
-						log_fatal("build_from_str: invalid sentinel digit at offset=%zu (byte=0x%02x)", d, dc);
-						abort();
-					}
-					idx= idx * 10 + (size_t)(dc - '0');
-				}
-
-				Token *child= accum_get(accum, idx);
-				if(!child) {
-					unsigned char type_ch= (unsigned char)marker_content[marker_len - 1];
-					fprintf(stderr,
-					        "DEBUG build_from_str: INVALID sentinel unresolved idx=%zu type=0x%02x '%c' marker_len=%zu\n",
-					        idx,
-					        type_ch,
-					        (type_ch >= 0x20 && type_ch < 0x7f) ? type_ch : '?',
-					        marker_len);
-					fprintf(stderr, "DEBUG build_from_str: INVALID sentinel raw bytes: ");
-					for(size_t dbg= 0; dbg < marker_len; dbg++) {
-						unsigned char ch= (unsigned char)marker_content[dbg];
-						fprintf(stderr, "[%zu]=0x%02x '%c' ", dbg, ch,
-						        (ch >= 0x20 && ch < 0x7f) ? ch : '?');
-					}
-					fprintf(stderr, "\n");
-					log_fatal("build_from_str: sentinel points to missing accum index=%zu", idx);
-					abort();
-				}
-				token_append_child(parent, child);
-
-				seg_start= i + 1;
-				in_marker= false;
-				i++;
-			} else {
-				i++;
+				idx= idx * 10 + (size_t)(dc - '0');
 			}
+
+			Token *child= accum_get(accum, idx);
+			if(!child) {
+				unsigned char type_ch= (unsigned char)marker_content[marker_len - 1];
+				fprintf(stderr,
+				        "DEBUG build_from_str: INVALID sentinel unresolved idx=%zu type=0x%02x '%c' marker_len=%zu\n",
+				        idx,
+				        type_ch,
+				        (type_ch >= 0x20 && type_ch < 0x7f) ? type_ch : '?',
+				        marker_len);
+				log_fatal("build_from_str: sentinel points to missing accum index=%zu", idx);
+				abort();
+			}
+			token_append_child(parent, child);
+
+			/* Advance past the \x7F */
+			i = del_off + 1;
+			seg_start = i;
 		}
 	}
 
@@ -719,15 +705,15 @@ void build_token_recursive(Token *t, Accum *accum,
 	/* JS AttributeToken.afterBuild parity: recompute name from attr-key text,
      * so keys that were sentinel-expanded (for example {{green}}) get the
      * correct final attribute name. */
-	refresh_attribute_name(t);
+	if(t->type == TOKEN_EXT_ATTR) refresh_attribute_name(t);
 
 	/* JS ParameterToken.afterBuild parity: update parameter name from the
 	 * expanded parameter-key token after build recursion completes. */
-	refresh_parameter_name(t);
+	if(t->type == TOKEN_PARAMETER) refresh_parameter_name(t);
 
 	/* JS TranscludeToken.afterBuild parity: template name is set after build,
      * not during parseBraces, so it is absent from stage-log snapshots. */
-	refresh_template_name(t, cfg);
+	if(t->type == TOKEN_TRANSCLUDE) refresh_template_name(t, cfg);
 }
 
 /* Get the syntax last-character and independence flag from a TOKEN_TD.
@@ -753,7 +739,7 @@ static void set_td_attrs_name(Token *td, const char *name) {
 		size_t nlen = strlen(name);
 		dup = malloc(nlen + 1);
 		if(dup) {
-			memcpy(dup, name, nlen);
+			sz_copy(dup, name, nlen);
 			dup[nlen] = '\0';
 		}
 	}

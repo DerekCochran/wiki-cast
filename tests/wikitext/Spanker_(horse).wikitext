@@ -1,0 +1,36 @@
+{{Short description|British-bred Thoroughbred racehorse}}
+
+'''Spanker''' (foaled 1678),<ref name=TBH/> sometimes called '''Old Spanker''' or the '''Pelham Arabian''', was a British [[Thoroughbred]] [[racehorse]] who sired many important horses in the history of the breed.  He was said to be the best horse in [[Newmarket, Suffolk|Newmarket]], the home of British racing, during the reign of [[Charles II of England|Charles II]].<ref name=TBH/>
+
+==History==
+
+Spanker was a [[Bay (horse)|bay]] horse.  His [[sire]] and [[dam]] were [[D'Arcy Yellow Turk]] and the ''Old Morocco Mare'' (by [[Fairfax Morocco Barb]]). He was bred at Brocklesby, [[Lincolnshire]] by Charles Pelham,{{sfn|Whyte|1840|p=423}} although some accounts have him bred by [[George Villiers, 2nd Duke of Buckingham]] and only later passing into Pelham's hands.<ref name=TBH/>
+
+He went on to sire some important horses in the breed including [[Careless (horse)|Careless]], [[St. Martin (horse)|St. Martin]], and [[Young Spanker]], who went on to sire the dam of [[Basto (horse)|Basto]].<ref name=TBH/>
+
+==Sire line tree==
+{{tree list}}
+*'''Spanker'''<!--b. 1675--><ref name="Historic">[https://web.archive.org/web/20250209073418/https://www.bloodlines.net/TB/Sirelines/HistoricSirelines.htm Historic Sire Lines: D'Arcy Yellow Turk]</ref><ref>[https://web.archive.org/web/20200218013959/http://www.bloodlines.net/TB/Summaries/DarcysYellowTurk.htm#Governor Biography: 	Darcy's Yellow Turk]</ref>
+**Old Careless<!--b. 1693-->
+**St Martin<!--b. 1695-->
+***Governor<!--b. 1709-->
+**Young Spanker<!--b. 1695-->
+{{tree list/end}}
+
+==See also==
+* [[List of historical horses]]
+
+==References==
+<references>
+
+<ref name=TBH>{{cite web |url=http://www.tbheritage.com/HistoricSires/FoundationSires/FoundSiresS.html|title=Foundation Sires of the Thoroughbred|publisher=Thoroughbred Heritage|access-date=2 May 2013}}</ref>
+
+==Bibliography==
+*{{cite book |last=Whyte|first=James Christie|title=History of the British Turf, from the earliest period to the present day, Volume I|year=1840|publisher=H. Colburn|location=[[London]]|ol=6544990M}}
+
+</references>
+
+[[Category:Racehorses bred in the United Kingdom]]
+
+
+{{racehorse-stub}}

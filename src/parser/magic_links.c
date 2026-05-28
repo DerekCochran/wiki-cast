@@ -3,6 +3,7 @@
 #include "util/log.h"
 #include "parser/magic_links.h"
 #include "util/string_util.h"
+#include "stringzilla/stringzilla.h"
 #include "token.h"
 #include "util/wiki_parser_rules.h"
 #include <assert.h>
@@ -16,23 +17,17 @@ static Token *build_magic_link(const char *s, size_t len,
                                const char *type_name, Accum *accum) {
     Token *t = token_new(TOKEN_MAGIC_LINK, type_name);
     if (!t) return NULL;
-    /* Append text into the persistent tokens arena and use a stable view */
-    const char *view = wiki_thread_buf_append_to_tokens(s, len);
-    token_append_text_n(t, view, len);
+    token_append_text_n(t, s, len);
     accum_push(accum, t);
     return t;
 }
 
 /* ── Helpers for forward scanning ───────────────────────────────────────── */
 
-static bool ci_eq_lit(const char *s, size_t slen, const char *lit) {
-    size_t n = strlen(lit);
-    if (n > slen) return false;
-    for (size_t i = 0; i < n; i++) {
-        if (tolower((unsigned char)s[i]) != tolower((unsigned char)lit[i])) return false;
+    static bool ci_eq_lit(const char *s, size_t slen, const char *lit, size_t litlen) {
+        if (litlen > slen) return false;
+        return str_ci_eq_n(s, lit, litlen);
     }
-    return true;
-}
 
 static bool utf8_prev_cp(const char *s, size_t len, size_t pos, UChar32 *out_cp) {
     if (!s || !out_cp || pos == 0 || pos > len) return false;
@@ -108,15 +103,15 @@ static size_t consume_magic_space(const char *s, size_t len, size_t i) {
     if (s[i] == '\t') return 1;
     size_t zs = consume_js_zs_magic(s, len, i);
     if (zs > 0) return zs;
-    if (i + 6 <= len && strncasecmp(s + i, "&nbsp;", 6) == 0) return 6;
+    if (i + 6 <= len && str_ci_eq_n(s + i, "&nbsp;", 6)) return 6;
     if (i + 4 < len && s[i] == '&' && s[i + 1] == '#') {
         size_t j = i + 2;
         if (j < len && (s[j] == 'x' || s[j] == 'X')) {
             j++;
             while (j < len && s[j] == '0') j++;
             if (j + 2 < len && s[j + 2] == ';') {
-                char a = (char)tolower((unsigned char)s[j]);
-                char b = (char)tolower((unsigned char)s[j + 1]);
+                char a = (char)fast_tolower((unsigned char)s[j]);
+                char b = (char)fast_tolower((unsigned char)s[j + 1]);
                 if (a == 'a' && b == '0') return (j + 3) - i;
             }
             return 0;
@@ -130,8 +125,8 @@ static size_t consume_magic_space(const char *s, size_t len, size_t i) {
 
 static bool parse_rfc_or_pmid(const char *s, size_t len, size_t i, size_t *out_end) {
     size_t p = i;
-    if (ci_eq_lit(s + p, len - p, "RFC")) p += 3;
-    else if (ci_eq_lit(s + p, len - p, "PMID")) p += 4;
+        if (ci_eq_lit(s + p, len - p, "RFC", 3)) p += 3;
+        else if (ci_eq_lit(s + p, len - p, "PMID", 4)) p += 4;
     else return false;
 
     size_t sp = consume_magic_space(s, len, p);
@@ -179,7 +174,7 @@ static bool parse_isbn_core_10(const char *s, size_t len, size_t p, size_t *core
 
 static bool parse_isbn(const char *s, size_t len, size_t i, size_t *out_end) {
     size_t p = i;
-    if (!ci_eq_lit(s + p, len - p, "ISBN")) return false;
+        if (!ci_eq_lit(s + p, len - p, "ISBN", 4)) return false;
     p += 4;
 
     size_t sp = consume_magic_space(s, len, p);
@@ -337,7 +332,7 @@ void parse_magic_links(ThreadBuf *tb, const ParserConfig *cfg, Accum *accum) {
         if (mm.mstart > search_at) {
             size_t before = mm.mstart - search_at;
             ENSURE_CAP(before + 1);
-            memcpy(out_buf + out_len, tb->buf + search_at, before);
+            sz_copy(out_buf + out_len, tb->buf + search_at, before);
             out_len += before;
         }
 
@@ -350,7 +345,7 @@ void parse_magic_links(ThreadBuf *tb, const ParserConfig *cfg, Accum *accum) {
         if (lead_e > lead_s) {
             size_t llen = lead_e - lead_s;
             ENSURE_CAP(llen + 2);
-            memcpy(out_buf + out_len, tb->buf + lead_s, llen);
+            sz_copy(out_buf + out_len, tb->buf + lead_s, llen);
             out_len += llen;
         }
 
@@ -368,13 +363,13 @@ void parse_magic_links(ThreadBuf *tb, const ParserConfig *cfg, Accum *accum) {
 
                 /* &lt; or &gt; */
                 if (rem >= 4 && url_ptr[k + 3] == ';' &&
-                    ((strncasecmp(url_ptr + k + 1, "lt", 2) == 0) ||
-                     (strncasecmp(url_ptr + k + 1, "gt", 2) == 0))) {
+                    (str_ci_eq_n(url_ptr + k + 1, "lt", 2) ||
+                     str_ci_eq_n(url_ptr + k + 1, "gt", 2))) {
                     entity_at = k;
                     break;
                 }
                 /* &nbsp; */
-                if (rem >= 6 && strncasecmp(url_ptr + k, "&nbsp;", 6) == 0) {
+                if (rem >= 6 && str_ci_eq_n(url_ptr + k, "&nbsp;", 6)) {
                     entity_at = k;
                     break;
                 }
@@ -384,9 +379,8 @@ void parse_magic_links(ThreadBuf *tb, const ParserConfig *cfg, Accum *accum) {
                     while (j < url_len && url_ptr[j] == '0') j++;
                     bool ok = false;
                     if (j + 2 < url_len && url_ptr[j + 2] == ';') {
-                        char h0 = url_ptr[j], h1 = url_ptr[j + 1];
-                        if (h0 >= 'A' && h0 <= 'Z') h0 += 32;
-                        if (h1 >= 'A' && h1 <= 'Z') h1 += 32;
+                        char h0 = (char)fast_tolower((unsigned char)url_ptr[j]);
+                        char h1 = (char)fast_tolower((unsigned char)url_ptr[j + 1]);
                         ok = (h0 == '3' && (h1 == 'c' || h1 == 'e')) ||
                              (h0 == 'a' && h1 == '0');
                     }
@@ -416,7 +410,7 @@ void parse_magic_links(ThreadBuf *tb, const ParserConfig *cfg, Accum *accum) {
 
             if (entity_at < url_len) {
                 trail_len = url_len - entity_at;
-                memcpy(trail, url_ptr + entity_at, trail_len);
+                sz_copy(trail, url_ptr + entity_at, trail_len);
                 url_len = entity_at;
             }
 
@@ -459,7 +453,7 @@ void parse_magic_links(ThreadBuf *tb, const ParserConfig *cfg, Accum *accum) {
                 /* Bail out - emit original match */
                 size_t rest_len = mend - lead_e;
                 ENSURE_CAP(rest_len + 1);
-                memcpy(out_buf + out_len, tb->buf + lead_e, rest_len);
+                sz_copy(out_buf + out_len, tb->buf + lead_e, rest_len);
                 out_len += rest_len;
                 free(trail);
                 search_at = mend + (mend == mstart ? 1 : 0);
@@ -474,16 +468,16 @@ void parse_magic_links(ThreadBuf *tb, const ParserConfig *cfg, Accum *accum) {
                 size_t slen;
                 work_str_sentinel(idx, 'w', sent, &slen);
                 ENSURE_CAP(slen + trail_len + 1);
-                memcpy(out_buf + out_len, sent, slen);
+                sz_copy(out_buf + out_len, sent, slen);
                 out_len += slen;
                 if (trail_len > 0) {
-                    memcpy(out_buf + out_len, trail, trail_len);
+                    sz_copy(out_buf + out_len, trail, trail_len);
                     out_len += trail_len;
                 }
             } else {
                 size_t rest_len = mend - lead_e;
                 ENSURE_CAP(rest_len + 1);
-                memcpy(out_buf + out_len, tb->buf + lead_e, rest_len);
+                sz_copy(out_buf + out_len, tb->buf + lead_e, rest_len);
                 out_len += rest_len;
             }
             free(trail);
@@ -493,13 +487,13 @@ void parse_magic_links(ThreadBuf *tb, const ParserConfig *cfg, Accum *accum) {
             size_t inner_len = (mend > lead_e) ? (mend - lead_e) : 0;
 
             bool is_magic =
-                (inner_len >= 3 && strncmp(inner_ptr, "RFC", 3) == 0) ||
-                (inner_len >= 4 && strncmp(inner_ptr, "PMID", 4) == 0) ||
-                (inner_len >= 4 && strncmp(inner_ptr, "ISBN", 4) == 0);
+                (inner_len >= 3 && sz_equal(inner_ptr, "RFC", 3) == sz_true_k) ||
+                (inner_len >= 4 && sz_equal(inner_ptr, "PMID", 4) == sz_true_k) ||
+                (inner_len >= 4 && sz_equal(inner_ptr, "ISBN", 4) == sz_true_k);
             if (!is_magic) {
                 size_t rest_len = mend - lead_e;
                 ENSURE_CAP(rest_len + 1);
-                memcpy(out_buf + out_len, tb->buf + lead_e, rest_len);
+                sz_copy(out_buf + out_len, tb->buf + lead_e, rest_len);
                 out_len += rest_len;
             } else {
                 Token *ml = build_magic_link(inner_ptr, inner_len, "magic-link", accum);
@@ -509,12 +503,12 @@ void parse_magic_links(ThreadBuf *tb, const ParserConfig *cfg, Accum *accum) {
                     size_t slen;
                     work_str_sentinel(idx, 'i', sent, &slen);
                     ENSURE_CAP(slen + 1);
-                    memcpy(out_buf + out_len, sent, slen);
+                    sz_copy(out_buf + out_len, sent, slen);
                     out_len += slen;
                 } else {
                     size_t rest_len = mend - lead_e;
                     ENSURE_CAP(rest_len + 1);
-                    memcpy(out_buf + out_len, tb->buf + lead_e, rest_len);
+                    sz_copy(out_buf + out_len, tb->buf + lead_e, rest_len);
                     out_len += rest_len;
                 }
             }
@@ -527,7 +521,7 @@ void parse_magic_links(ThreadBuf *tb, const ParserConfig *cfg, Accum *accum) {
     if (search_at < tb->len) {
         size_t rest = tb->len - search_at;
         ENSURE_CAP(rest + 1);
-        memcpy(out_buf + out_len, tb->buf + search_at, rest);
+        sz_copy(out_buf + out_len, tb->buf + search_at, rest);
         out_len += rest;
     }
 

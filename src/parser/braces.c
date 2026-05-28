@@ -27,9 +27,10 @@ typedef enum {
 	BRACE_EVT_WIKILINK_CLOSE= 9,
 } BraceEventKind;
 
-/* Returns true and fills *out_len if buf[pos..] is a \0<digits><allowed_type>\x7F sentinel. */
+/* Returns true and fills *out_len if buf[pos..] is a \0<digits><allowed_type>\x7F sentinel.
+ * allowed_len is the length of allowed_types (known at all call sites, avoids repeated strlen). */
 static bool parse_sentinel_at_allowed(const char *buf, size_t len, size_t pos,
-												  const char *allowed_types, size_t *out_len) {
+											   const char *allowed_types, size_t allowed_len, size_t *out_len) {
 	if(!buf || pos >= len) return false;
 	if((unsigned char)buf[pos] != 0) return false;
 	size_t j= pos + 1;
@@ -37,12 +38,16 @@ static bool parse_sentinel_at_allowed(const char *buf, size_t len, size_t pos,
 	while(j < len && buf[j] >= '0' && buf[j] <= '9') j++;
 	if(j >= len) return false;
 	char t= buf[j];
-	if(allowed_types && strchr(allowed_types, t) == NULL) return false;
+	if(allowed_types && sz_find_byte(allowed_types, allowed_len, &t) == NULL) return false;
 	if(j + 1 >= len) return false;
 	if((unsigned char)buf[j + 1] != (unsigned char)0x7F) return false;
 	if(out_len) *out_len= (j + 2) - pos;
 	return true;
 }
+
+/* Returns true and fills *out_len if buf[pos..] is a \0<digits><allowed_type>\x7F sentinel. */
+/* Returns true and fills *out_len if buf[pos..] is a \0<digits><allowed_type>\x7F sentinel.
+ * allowed_len is the length of the allowed_types string (known at all call sites). */
 
 /*
  * Heading line result for the validator used in stage 4.
@@ -165,7 +170,7 @@ brace_event_next(const char *buf, size_t len, size_t *pos,
 
 		if(ch == '\0') {
 			size_t cur= p, total_sl= 0, sl= 0;
-			while(cur < len && parse_sentinel_at_allowed(buf, len, cur, "cno", &sl)) {
+							while(cur < len && parse_sentinel_at_allowed(buf, len, cur, "cno", 3, &sl)) {
 				total_sl+= sl;
 				cur+= sl;
 			}
@@ -239,7 +244,7 @@ brace_event_next(const char *buf, size_t len, size_t *pos,
 				unsigned char cj= (unsigned char)buf[j];
 				if(cj == '\0') {
 					size_t sl= 0;
-					if(parse_sentinel_at_allowed(buf, len, j, "cn", &sl)) {
+											if(parse_sentinel_at_allowed(buf, len, j, "cn", 2, &sl)) {
 						j+= sl;
 						continue;
 					}
@@ -342,24 +347,24 @@ brace_event_next(const char *buf, size_t len, size_t *pos,
 	return false;
 }
 
-static bool str_list_contains_ci(const StrList *sl, const char *needle) {
+static bool str_list_contains_ci(const StrList *sl, const char *needle, size_t needle_len) {
 	if(!sl || !needle) return false;
 	for(size_t i= 0; i < sl->count; i++) {
 		sz_ptr_t start;
 		sz_size_t len;
 		sz_string_range(&sl->items[i], &start, &len);
-		if(start && len == strlen(needle) && strncasecmp(start, needle, len) == 0) return true;
+		if(start && len == needle_len && str_ci_eq_n((const char *)start, needle, len)) return true;
 	}
 	return false;
 }
 
-static const char *str_map_get_exact(const StrMap *m, const char *key) {
+static const char *str_map_get_exact(const StrMap *m, const char *key, size_t key_cmp_len) {
 	if(!m || !key) return NULL;
 	for(size_t i= 0; i < m->count; i++) {
 		sz_ptr_t key_start, val_start;
 		sz_size_t key_len, val_len;
 		sz_string_range(&m->keys[i], &key_start, &key_len);
-		if(key_start && key_len == strlen(key) && memcmp(key_start, key, key_len) == 0) {
+		if(key_start && key_len == key_cmp_len && sz_equal(key_start, key, key_cmp_len) == sz_true_k) {
 			sz_string_range(&m->values[i], &val_start, &val_len);
 			return (const char *)val_start;
 		}
@@ -456,54 +461,54 @@ static char braces_get_symbol(const char *name, size_t len,
 	}
 
 	if(cfg) {
-		canonical= str_map_get_exact(&cfg->parser_function_sensitive, trimmed);
+		canonical= str_map_get_exact(&cfg->parser_function_sensitive, trimmed, n);
 		if(!canonical) {
-			canonical= str_map_get_exact(&cfg->parser_function_insensitive, lc);
+			canonical= str_map_get_exact(&cfg->parser_function_insensitive, lc, n);
 		}
 		if(!canonical && base_orig && base_orig[0]) {
-			canonical= str_map_get_exact(&cfg->parser_function_sensitive, base_orig);
+			canonical= str_map_get_exact(&cfg->parser_function_sensitive, base_orig, base_orig_len);
 		}
 		if(!canonical && base_lc && base_lc[0]) {
-			canonical= str_map_get_exact(&cfg->parser_function_insensitive, base_lc);
+			canonical= str_map_get_exact(&cfg->parser_function_insensitive, base_lc, base_lc_len);
 		}
 	}
 
 	char out= 't';
-	if(strcmp(lc, "!") == 0) {
+	if(n == 1 && lc[0] == '!') {
 		out= '!';
 		if(is_magic_out) *is_magic_out= true;
-	} else if(strcmp(lc, "!!") == 0) {
+	} else if(n == 2 && lc[0] == '!' && lc[1] == '!') {
 		out= '+';
-	} else if(strcmp(lc, "(!") == 0) {
+	} else if(n == 2 && lc[0] == '(' && lc[1] == '!') {
 		out= '{';
-	} else if(strcmp(lc, "!)") == 0) {
+	} else if(n == 2 && lc[0] == '!' && lc[1] == ')') {
 		out= '}';
-	} else if(strcmp(lc, "!-") == 0) {
+	} else if(n == 2 && lc[0] == '!' && lc[1] == '-') {
 		out= '-';
-	} else if(strcmp(lc, "=") == 0) {
+	} else if(n == 1 && lc[0] == '=') {
 		out= '~';
 		if(is_magic_out) *is_magic_out= true;
-	} else if(strcmp(lc, "server") == 0) {
+	} else if(n == 6 && sz_equal(lc, "server", 6) == sz_true_k) {
 		out= 'm';
 		if(is_magic_out) *is_magic_out= true;
-	} else if((strncmp(lc, "filepath:", 9) == 0 && n > 9) || (strncmp(lc, "fullurl:", 8) == 0 && n > 8) || (strncmp(lc, "fullurle:", 9) == 0 && n > 9) || (strncmp(lc, "canonicalurl:", 13) == 0 && n > 13) || (strncmp(lc, "canonicalurle:", 14) == 0 && n > 14)) {
+	} else if((n > 9 && sz_equal(lc, "filepath:", 9) == sz_true_k) || (n > 8 && sz_equal(lc, "fullurl:", 8) == sz_true_k) || (n > 9 && sz_equal(lc, "fullurle:", 9) == sz_true_k) || (n > 13 && sz_equal(lc, "canonicalurl:", 13) == sz_true_k) || (n > 14 && sz_equal(lc, "canonicalurle:", 14) == sz_true_k)) {
 		out= 'm';
 		if(is_magic_out) *is_magic_out= true;
-	} else if(strncmp(lc, "#vardefine:", 11) == 0 && n > 11) {
+	} else if(n > 11 && sz_equal(lc, "#vardefine:", 11) == sz_true_k) {
 		out= 'n';
 		if(is_magic_out) *is_magic_out= true;
 	} else if(lc[0] == '#') {
 		if(is_magic_out) {
-			bool is_var_hash = (cfg && canonical && canonical[0] && str_list_contains_ci(&cfg->variable, canonical));
+			bool is_var_hash = (cfg && canonical && canonical[0] && str_list_contains_ci(&cfg->variable, canonical, strlen(canonical)));
 			if(has_function_colon || is_var_hash) *is_magic_out= true;
 		}
 	} else if(cfg && canonical && canonical[0]) {
-		bool is_var= str_list_contains_ci(&cfg->variable, canonical);
+		bool is_var= str_list_contains_ci(&cfg->variable, canonical, strlen(canonical));
 		if((has_function_colon || is_var) && is_magic_out) *is_magic_out= true;
 	} else if(cfg && base_lc && base_lc[0]) {
-		const char *base_canonical= str_map_get_exact(&cfg->parser_function_insensitive, base_lc);
+		const char *base_canonical= str_map_get_exact(&cfg->parser_function_insensitive, base_lc, base_lc_len);
 		if(base_canonical) {
-			bool is_var= str_list_contains_ci(&cfg->variable, base_canonical);
+			bool is_var= str_list_contains_ci(&cfg->variable, base_canonical, strlen(base_canonical));
 			if((has_function_colon || is_var) && is_magic_out) *is_magic_out= true;
 		}
 	}
@@ -540,8 +545,22 @@ static char *trim_copy(const char *s, size_t len) {
 	size_t n= j - i;
 	char *out= malloc(n + 1);
 	if(!out) return NULL;
-	sz_copy(out, s + i, n);
+	if(n > 0) sz_copy(out, s + i, n);
 	out[n]= '\0';
+	return out;
+}
+
+static char *trim_copy_n(const char *s, size_t len, size_t *out_n) {
+	if(!s) { if(out_n) *out_n = 0; return NULL; }
+	size_t i= 0, j= len;
+	while(i < j && isspace((unsigned char)s[i])) i++;
+	while(j > i && isspace((unsigned char)s[j - 1])) j--;
+	size_t n= j - i;
+	char *out= malloc(n + 1);
+	if(!out) { if(out_n) *out_n = 0; return NULL; }
+	if(n > 0) sz_copy(out, s + i, n);
+	out[n]= '\0';
+	if(out_n) *out_n = n;
 	return out;
 }
 
@@ -551,13 +570,7 @@ static char *lower_copy(const char *s, size_t len) {
 	/* Use a precomputed lookup table + Stringzilla's sz_lookup for faster
 	 * bulk lowercase transformation. This preserves the byte-wise tolower()
 	 * semantics used previously (C locale/unsigned-char based). */
-	static unsigned char lut[256];
-	static int lut_inited= 0;
-	if(!lut_inited) {
-		for(int i= 0; i < 256; ++i) lut[i]= (unsigned char)tolower((unsigned char)i);
-		lut_inited= 1;
-	}
-
+	const unsigned char *lut = fast_tolower_table();
 	char *out= malloc(len + 1);
 	if(!out) return NULL;
 	sz_lookup(out, len, s, (const char *)lut);
@@ -568,17 +581,18 @@ static char *lower_copy(const char *s, size_t len) {
 static const char *parser_function_canonical(const ParserConfig *cfg, const char *name, size_t len) {
 	if(!cfg || !name || len == 0) return NULL;
 
-	char *trimmed= trim_copy(name, len);
-	if(!trimmed || trimmed[0] == '\0') {
+	size_t trimmed_len = 0;
+	char *trimmed= trim_copy_n(name, len, &trimmed_len);
+	if(!trimmed || trimmed_len == 0) {
 		free(trimmed);
 		return NULL;
 	}
 
-	const char *canonical= str_map_get_exact(&cfg->parser_function_sensitive, trimmed);
+	const char *canonical= str_map_get_exact(&cfg->parser_function_sensitive, trimmed, trimmed_len);
 	if(!canonical) {
-		char *lc= lower_copy(trimmed, strlen(trimmed));
+		char *lc= lower_copy(trimmed, trimmed_len);
 		if(lc) {
-			canonical= str_map_get_exact(&cfg->parser_function_insensitive, lc);
+			canonical= str_map_get_exact(&cfg->parser_function_insensitive, lc, trimmed_len);
 			free(lc);
 		}
 	}
@@ -600,7 +614,7 @@ static char *build_transclude_modifier(const char *title_part, size_t title_part
 	size_t i = 0;
 	while(i < mod_len) {
 		size_t sl = 0;
-		if(parse_sentinel_at_allowed(title_part, mod_len, i, "cns", &sl)) {
+					if(parse_sentinel_at_allowed(title_part, mod_len, i, "cns", 3, &sl)) {
 			size_t j = i + 1;
 			size_t idx = 0;
 			while(j < mod_len && title_part[j] >= '0' && title_part[j] <= '9') {
@@ -662,9 +676,7 @@ static Token *build_template_token(const char **parts_restored, const size_t *pa
 				return NULL;
 			}
 
-			/* Persist the name into the tokens arena to avoid dangling views */
-			const char *name_view= wiki_thread_buf_append_to_tokens(parts_restored[0], parts_lens[0]);
-			token_append_text_n(name_tok, name_view, parts_lens[0]);
+			token_append_text_n(name_tok, parts_restored[0], parts_lens[0]);
 			token_append_child(t, name_tok);
 
 			char *nm= trim_copy(parts_restored[0], parts_lens[0]);
@@ -674,9 +686,7 @@ static Token *build_template_token(const char **parts_restored, const size_t *pa
 		if(parts_count > 1 && parts_restored[1]) {
 			Token *def_tok= token_new(TOKEN_PLAIN, "arg-default");
 			if(def_tok) {
-				/* Persist default text into tokens arena */
-				const char *def_view= wiki_thread_buf_append_to_tokens(parts_restored[1], parts_lens[1]);
-				token_append_text_n(def_tok, def_view, parts_lens[1]);
+				token_append_text_n(def_tok, parts_restored[1], parts_lens[1]);
 				token_append_child(t, def_tok);
 			}
 		}
@@ -685,9 +695,7 @@ static Token *build_template_token(const char **parts_restored, const size_t *pa
 			if(!parts_restored[k]) continue;
 			Token *hidden= token_new(TOKEN_HIDDEN, "hidden");
 			if(!hidden) continue;
-			/* Persist hidden part into tokens arena */
-			const char *hid_view= wiki_thread_buf_append_to_tokens(parts_restored[k], parts_lens[k]);
-			token_append_text_n(hidden, hid_view, parts_lens[k]);
+			token_append_text_n(hidden, parts_restored[k], parts_lens[k]);
 			token_append_child(t, hidden);
 		}
 		accum_push(accum, t);
@@ -726,14 +734,14 @@ static Token *build_template_token(const char **parts_restored, const size_t *pa
 				continue;
 			}
 			size_t sl = 0;
-			if(parse_sentinel_at_allowed(title_part, title_part_len, lead, "cn", &sl)) {
+							if(parse_sentinel_at_allowed(title_part, title_part_len, lead, "cn", 2, &sl)) {
 				lead += sl;
 				continue;
 			}
 			break;
 		}
 		size_t s_sl = 0;
-		if(lead < title_part_len && parse_sentinel_at_allowed(title_part, title_part_len, lead, "s", &s_sl)) {
+					if(lead < title_part_len && parse_sentinel_at_allowed(title_part, title_part_len, lead, "s", 1, &s_sl)) {
 			size_t mod_len = lead + s_sl;
 			t->data.transclude.modifier = build_transclude_modifier(title_part, title_part_len, mod_len, accum);
 			title_part += mod_len;
@@ -743,9 +751,10 @@ static Token *build_template_token(const char **parts_restored, const size_t *pa
 			const char *colon= sz_find_byte(title_part, title_part_len, &colon_ch);
 			if(colon) {
 				size_t prefix_len= (size_t)(colon - title_part);
-				char *prefix= trim_copy(title_part, prefix_len);
-				if(prefix && (str_list_contains_ci(&cfg->parser_function_subst, prefix)
-								 || str_list_contains_ci(&cfg->parser_function_raw, prefix))) {
+				size_t prefix_str_len = 0;
+				char *prefix= trim_copy_n(title_part, prefix_len, &prefix_str_len);
+				if(prefix && prefix_str_len > 0 && (str_list_contains_ci(&cfg->parser_function_subst, prefix, prefix_str_len)
+								 || str_list_contains_ci(&cfg->parser_function_raw, prefix, prefix_str_len))) {
 					/* JS parity: consume leading whitespace and c/n sentinels from the
 					 * first argument after the modifier colon into the modifier slice. */
 					size_t mt_len= 0;
@@ -756,7 +765,7 @@ static Token *build_template_token(const char **parts_restored, const size_t *pa
 							continue;
 						}
 						size_t sl= 0;
-						if(parse_sentinel_at_allowed(title_part, title_part_len, p, "cn", &sl)) {
+													if(parse_sentinel_at_allowed(title_part, title_part_len, p, "cn", 2, &sl)) {
 							mt_len+= sl;
 							continue;
 						}
@@ -820,21 +829,18 @@ static Token *build_template_token(const char **parts_restored, const size_t *pa
 				t->name= strdup(canonical);
 			} else {
 				char *nm= magic_raw_name;
-				if(nm) {
-					for(char *p= nm; *p; p++) {
-						*p= (char)tolower((unsigned char)*p);
+					if(nm) {
+						size_t nm_len= strlen(nm);
+						sz_lookup(nm, nm_len, nm, (const char *)fast_tolower_table());
+						t->name= nm;
 					}
-					t->name= nm;
-				}
 			}
 			if(canonical && magic_raw_name) free(magic_raw_name);
 			if(t->name && strcmp(t->name, "invoke") == 0) invoke_magic= true;
 
 			Token *mw_name= token_new(TOKEN_SYNTAX, "magic-word-name");
 			if(mw_name) {
-				/* Persist magic-word name into tokens arena */
-				const char *mw_view= wiki_thread_buf_append_to_tokens(title_part, magic_title_len);
-				token_append_text_n(mw_name, mw_view, magic_title_len);
+				token_append_text_n(mw_name, title_part, magic_title_len);
 				token_append_child(t, mw_name);
 			}
 		} else {
@@ -898,9 +904,7 @@ static Token *build_template_token(const char **parts_restored, const size_t *pa
 
 			Token *tpl_name= token_new(TOKEN_ATOM, "template-name");
 			if(tpl_name) {
-				/* Persist template name into tokens arena */
-				const char *tpl_view= wiki_thread_buf_append_to_tokens(title_part, p0_len);
-				token_append_text_n(tpl_name, tpl_view, p0_len);
+				token_append_text_n(tpl_name, title_part, p0_len);
 				token_append_child(t, tpl_name);
 			}
 
@@ -914,17 +918,13 @@ static Token *build_template_token(const char **parts_restored, const size_t *pa
 		if(invoke_magic) {
 			Token *mod_tok= token_new(TOKEN_ATOM, "invoke-module");
 			if(mod_tok) {
-				/* Persist module name into tokens arena */
-				const char *mod_view= wiki_thread_buf_append_to_tokens(magic_first_arg, magic_first_arg_len);
-				token_append_text_n(mod_tok, mod_view, magic_first_arg_len);
+				token_append_text_n(mod_tok, magic_first_arg, magic_first_arg_len);
 				token_append_child(t, mod_tok);
 			}
 			if(parts_count > 1 && parts_restored[1]) {
 				Token *fn_tok= token_new(TOKEN_ATOM, "invoke-function");
 				if(fn_tok) {
-					/* Persist invoke-function into tokens arena */
-					const char *fn_view= wiki_thread_buf_append_to_tokens(parts_restored[1], parts_lens[1]);
-					token_append_text_n(fn_tok, fn_view, parts_lens[1]);
+					token_append_text_n(fn_tok, parts_restored[1], parts_lens[1]);
 					token_append_child(t, fn_tok);
 				}
 				params_start_idx= 2;
@@ -943,9 +943,7 @@ static Token *build_template_token(const char **parts_restored, const size_t *pa
 					/* JS parity: the first parser-function argument after ':' is
 					 * always positional, even if it contains '='. */
 					token_append_child(param, key_tok);
-					/* Persist positional magic argument into tokens arena */
-					const char *val_view= wiki_thread_buf_append_to_tokens(part, part_len);
-					token_append_text_n(val_tok, val_view, part_len);
+					token_append_text_n(val_tok, part, part_len);
 					token_append_child(param, val_tok);
 
 					char *pname= strdup("1");
@@ -1012,9 +1010,8 @@ static Token *build_template_token(const char **parts_restored, const size_t *pa
 		if(eq) {
 			size_t key_len= (size_t)(eq - part);
 			size_t val_len= part_len - key_len - 1;
-			/* Persist key and value into tokens arena */
-			const char *key_view= wiki_thread_buf_append_to_tokens(part, key_len);
-			const char *val_view= wiki_thread_buf_append_to_tokens(eq + 1, val_len);
+			const char *key_view= part;
+			const char *val_view= eq + 1;
 			{
 				char _vhbuf[128];
 				size_t _vhp= 0;
@@ -1041,10 +1038,8 @@ static Token *build_template_token(const char **parts_restored, const size_t *pa
 			free(key_clean);
 			if(pname) param->name= pname;
 		} else {
-			/* Persist positional parameter value into tokens arena */
-			const char *val_view= wiki_thread_buf_append_to_tokens(part, part_len);
 			token_append_child(param, key_tok);
-			token_append_text_n(val_tok, val_view, part_len);
+			token_append_text_n(val_tok, part, part_len);
 			token_append_child(param, val_tok);
 
 			char idx_buf[32];
@@ -1484,16 +1479,12 @@ static bool braces_state_machine(ThreadBuf *tb, const ParserConfig *cfg,
 								heading_tok->data.heading.level= (int)hr.eq_count;
 								Token *title_tok= token_new(TOKEN_PLAIN, "heading-title");
 								if(title_tok) {
-									/* Persist heading title into tokens arena */
-									const char *title_view= wiki_thread_buf_append_to_tokens(title, title_len);
-									token_append_text_n(title_tok, title_view, title_len);
+										token_append_text_n(title_tok, title, title_len);
 									token_append_child(heading_tok, title_tok);
 									Token *trail_tok= token_new(TOKEN_SYNTAX, "heading-trail");
 									if(trail_tok) {
 										if(trail_len > 0) {
-											/* Persist heading trail into tokens arena */
-											const char *trail_view= wiki_thread_buf_append_to_tokens(slice + trail_start, trail_len);
-											token_append_text_n(trail_tok, trail_view, trail_len);
+												token_append_text_n(trail_tok, slice + trail_start, trail_len);
 										} else {
 											token_append_text_n(trail_tok, "", 0);
 										}
@@ -1519,10 +1510,10 @@ static bool braces_state_machine(ThreadBuf *tb, const ParserConfig *cfg,
 									}
 									ENSURE_OUT_CAP((top.index > next_write ? top.index - next_write : 0) + slen);
 									if(top.index > next_write) {
-										memcpy(out + out_len, tb->buf + next_write, top.index - next_write);
+										sz_copy(out + out_len, tb->buf + next_write, top.index - next_write);
 										out_len+= top.index - next_write;
 									}
-									memcpy(out + out_len, sent, slen);
+									sz_copy(out + out_len, sent, slen);
 									out_len+= slen;
 									next_write= cur_index;
 								} else {
@@ -1619,7 +1610,7 @@ static bool braces_state_machine(ThreadBuf *tb, const ParserConfig *cfg,
 							next_write= top.index;
 							if(rep_start > next_write) {
 								ENSURE_OUT_CAP(rep_start - next_write);
-								memcpy(out + out_len, tb->buf + next_write, rep_start - next_write);
+								sz_copy(out + out_len, tb->buf + next_write, rep_start - next_write);
 								out_len+= rep_start - next_write;
 								next_write= rep_start;
 							} else {
@@ -1629,10 +1620,10 @@ static bool braces_state_machine(ThreadBuf *tb, const ParserConfig *cfg,
 
 						ENSURE_OUT_CAP((rep_start > next_write ? rep_start - next_write : 0) + slen);
 						if(rep_start > next_write) {
-							memcpy(out + out_len, tb->buf + next_write, rep_start - next_write);
+							sz_copy(out + out_len, tb->buf + next_write, rep_start - next_write);
 							out_len+= rep_start - next_write;
 						}
-						memcpy(out + out_len, sent, slen);
+						sz_copy(out + out_len, sent, slen);
 						out_len+= slen;
 						next_write= rep_end;
 						if(rest > 1) {
@@ -1669,7 +1660,7 @@ static bool braces_state_machine(ThreadBuf *tb, const ParserConfig *cfg,
 						size_t rep_end= cur_index + close_consume;
 						if(rep_end > next_write) {
 							ENSURE_OUT_CAP(rep_end - next_write);
-							memcpy(out + out_len, tb->buf + next_write, rep_end - next_write);
+							sz_copy(out + out_len, tb->buf + next_write, rep_end - next_write);
 							out_len+= rep_end - next_write;
 						}
 						next_write= rep_end;
@@ -1686,7 +1677,7 @@ static bool braces_state_machine(ThreadBuf *tb, const ParserConfig *cfg,
 			if(matched && evkind == BRACE_EVT_BRACE_OPEN) {
 				if(cur_index > next_write) {
 					ENSURE_OUT_CAP(cur_index - next_write);
-					memcpy(out + out_len, tb->buf + next_write, cur_index - next_write);
+					sz_copy(out + out_len, tb->buf + next_write, cur_index - next_write);
 					out_len+= cur_index - next_write;
 					next_write= cur_index;
 				}
@@ -1801,7 +1792,7 @@ static bool braces_state_machine(ThreadBuf *tb, const ParserConfig *cfg,
 
 	if(next_write < tb->len) {
 		ENSURE_OUT_CAP(tb->len - next_write + 1);
-		memcpy(out + out_len, tb->buf + next_write, tb->len - next_write);
+		sz_copy(out + out_len, tb->buf + next_write, tb->len - next_write);
 		out_len+= tb->len - next_write;
 	}
 	out[out_len]= '\0';
@@ -1858,9 +1849,7 @@ static char braces_arg_symbol(const char *inner, size_t inner_len, const ParserC
 		free(cleaned);
 		return 'a';
 	}
-	for(size_t k= 0; k < base_len; k++) {
-		base[k]= (char)tolower((unsigned char)cleaned[i + k]);
-	}
+	sz_lookup(base, base_len, cleaned + i, (const char *)fast_tolower_table());
 	base[base_len]= '\0';
 	free(cleaned);
 
@@ -1870,7 +1859,7 @@ static char braces_arg_symbol(const char *inner, size_t inner_len, const ParserC
 		sz_size_t s_len;
 		sz_string_range(&cfg->parser_function_subst.items[n], &s, &s_len);
 		if(!s) continue;
-		if(s_len == strlen(base) && memcmp(s, base, s_len) == 0) {
+		if(s_len == base_len && sz_equal(s, base, base_len) == sz_true_k) {
 			sym= 's';
 			break;
 		}
@@ -2068,9 +2057,9 @@ static void main_braces_park_cb(const char *segment, size_t len,
 	size_t full_len= r->open_len + len + r->close_len;
 	char *tmp= malloc(full_len + 1);
 	assert(tmp);
-	memcpy(tmp, r->open_delim, r->open_len);
-	memcpy(tmp + r->open_len, segment, len);
-	memcpy(tmp + r->open_len + len, r->close_delim, r->close_len);
+	sz_copy(tmp, r->open_delim, r->open_len);
+	sz_copy(tmp + r->open_len, segment, len);
+	sz_copy(tmp + r->open_len + len, r->close_delim, r->close_len);
 	tmp[full_len]= '\0';
 	main_braces_push_link_stack(ctx, tmp, full_len);
 	free(tmp);

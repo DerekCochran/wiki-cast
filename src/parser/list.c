@@ -186,11 +186,10 @@ static bool list_prefix_parse(const char *line, size_t len, ListPrefixResult *ou
 }
 
 /* Helper: compute common prefix length as per JS util/html.getCommon */
-static size_t get_common_prefix_len(const char *prefix, size_t plen, const char *last) {
+static size_t get_common_prefix_len(const char *prefix, size_t plen, const char *last, size_t last_len) {
 	if(!last) return 0;
-	size_t last_len= strlen(last);
 	if(last_len == 0) return 0;
-	if(plen >= last_len && strncmp(prefix, last, last_len) == 0) return last_len;
+	if(plen >= last_len && sz_equal(prefix, last, last_len) == sz_true_k) return last_len;
 	for(size_t i= 0; i < last_len; i++) {
 		if(i >= plen) return i;
 		if(prefix[i] != last[i]) return i;
@@ -203,13 +202,10 @@ static Token *make_list_token(const char *part, size_t part_len, Accum *accum) {
 	Token *t= token_new(TOKEN_LIST, "list");
 	if(!t) return NULL;
 	if(part_len > 0) {
-		const char *part_view = wiki_thread_buf_append_to_tokens(part, part_len);
-		if(part_view) token_append_text_n(t, part_view, part_len);
+		token_append_text_n(t, part, part_len);
 	} else {
 		token_append_text_n(t, NULL, 0);
 	}
-	accum_push(accum, t);
-	return t;
 	accum_push(accum, t);
 	return t;
 }
@@ -219,8 +215,7 @@ static Token *make_dd_token(const char *syntax, size_t syntax_len, Accum *accum)
 	Token *t= token_new(TOKEN_DD, "dd");
 	if(!t) return NULL;
 	if(syntax_len > 0) {
-		const char *syn_view = wiki_thread_buf_append_to_tokens(syntax, syntax_len);
-		if(syn_view) token_append_text_n(t, syn_view, syntax_len);
+		token_append_text_n(t, syntax, syntax_len);
 	} else {
 		token_append_text_n(t, NULL, 0);
 	}
@@ -242,7 +237,7 @@ static char **split_on_semicolon_lookahead(const char *s, size_t len, size_t *ou
 			size_t plen= i - start;
 			char *p= malloc(plen + 1);
 			assert(p);
-			memcpy(p, s + start, plen);
+			sz_copy(p, s + start, plen);
 			p[plen]= '\0';
 			if(count >= cap) {
 				cap*= 2;
@@ -257,7 +252,7 @@ static char **split_on_semicolon_lookahead(const char *s, size_t len, size_t *ou
 	size_t plen= (len >= start) ? (len - start) : 0;
 	char *p= malloc(plen + 1);
 	assert(p);
-	if(plen > 0) memcpy(p, s + start, plen);
+	if(plen > 0) sz_copy(p, s + start, plen);
 	p[plen]= '\0';
 	if(count >= cap) {
 		cap*= 2;
@@ -297,7 +292,7 @@ void parse_list(ThreadBuf *tb, const ParserConfig *cfg, Accum *accum) {
 		size_t llen= next - pos;
 		char *line= malloc(llen + 1);
 		assert(line);
-		if(llen) memcpy(line, buf + pos, llen);
+		if(llen) sz_copy(line, buf + pos, llen);
 		line[llen]= '\0';
 		if(line_count >= line_cap) {
 			line_cap*= 2;
@@ -314,6 +309,7 @@ void parse_list(ThreadBuf *tb, const ParserConfig *cfg, Accum *accum) {
 
 	/* State: lastPrefix string (malloc'd when set) */
 	char *lastPrefix= NULL;
+	size_t lastPrefixLen= 0;
 
 	/* Process each line (root: start at 0) */
 	for(size_t li= 0; li < line_count; li++) {
@@ -326,7 +322,8 @@ void parse_list(ThreadBuf *tb, const ParserConfig *cfg, Accum *accum) {
 			/* No match: reset lastPrefix and keep line unchanged */
 			if(lastPrefix) {
 				free(lastPrefix);
-				lastPrefix= strdup("");
+				lastPrefix= NULL;
+				lastPrefixLen= 0;
 			}
 			continue;
 		}
@@ -345,15 +342,15 @@ void parse_list(ThreadBuf *tb, const ParserConfig *cfg, Accum *accum) {
 		for(size_t i= 0; i < prefix_len; i++) prefix2[i]= (prefix[i] == ';') ? ':' : prefix[i];
 		prefix2[prefix_len]= '\0';
 
-		size_t common= get_common_prefix_len(prefix2, prefix_len, lastPrefix ? lastPrefix : "");
+		size_t common= get_common_prefix_len(prefix2, prefix_len, lastPrefix, lastPrefixLen);
 
 		/* Build combined = ((common>1)?prefix.slice(common-1):prefix) + space */
 		size_t start_slice= (common > 1) ? (common - 1) : 0;
 		size_t combined_len= (prefix_len > start_slice ? prefix_len - start_slice : 0) + space_len;
 		char *combined= malloc(combined_len + 1);
 		assert(combined);
-		if(prefix_len > start_slice) memcpy(combined, prefix + start_slice, prefix_len - start_slice);
-		if(space_len) memcpy(combined + (prefix_len > start_slice ? prefix_len - start_slice : 0), space, space_len);
+		if(prefix_len > start_slice) sz_copy(combined, prefix + start_slice, prefix_len - start_slice);
+		if(space_len) sz_copy(combined + (prefix_len > start_slice ? prefix_len - start_slice : 0), space, space_len);
 		combined[combined_len]= '\0';
 
 		/* Split combined into parts using lookahead semicolon split */
@@ -368,7 +365,7 @@ void parse_list(ThreadBuf *tb, const ParserConfig *cfg, Accum *accum) {
 			size_t cp_len= common - 1;
 			char *commonPrefix= malloc(cp_len + 1);
 			assert(commonPrefix);
-			memcpy(commonPrefix, prefix, cp_len);
+			sz_copy(commonPrefix, prefix, cp_len);
 			commonPrefix[cp_len]= '\0';
 			if(isDt) {
 				size_t cp_parts= 0;
@@ -390,8 +387,8 @@ void parse_list(ThreadBuf *tb, const ParserConfig *cfg, Accum *accum) {
 				size_t a_len= strlen(parts[0]);
 				char *merged= malloc(cp_len + a_len + 1);
 				assert(merged);
-				memcpy(merged, commonPrefix, cp_len);
-				memcpy(merged + cp_len, parts[0], a_len);
+				sz_copy(merged, commonPrefix, cp_len);
+				sz_copy(merged + cp_len, parts[0], a_len);
 				merged[cp_len + a_len]= '\0';
 				free(parts[0]);
 				parts[0]= merged;
@@ -402,6 +399,7 @@ void parse_list(ThreadBuf *tb, const ParserConfig *cfg, Accum *accum) {
 		/* Update lastPrefix */
 		if(lastPrefix) free(lastPrefix);
 		lastPrefix= prefix2; /* ownership transferred */
+		lastPrefixLen= prefix_len;
 
 		/* Build text = comment + sentinel markers for each part + rest-of-line */
 		size_t base_idx= accum->count;
@@ -411,7 +409,7 @@ void parse_list(ThreadBuf *tb, const ParserConfig *cfg, Accum *accum) {
 		assert(out);
 		size_t out_len= 0;
 		if(comment_len) {
-			memcpy(out + out_len, comment, comment_len);
+			sz_copy(out + out_len, comment, comment_len);
 			out_len+= comment_len;
 		}
 
@@ -425,7 +423,7 @@ void parse_list(ThreadBuf *tb, const ParserConfig *cfg, Accum *accum) {
 				out= realloc(out, out_cap);
 				assert(out);
 			}
-			memcpy(out + out_len, marker, mlen);
+			sz_copy(out + out_len, marker, mlen);
 			out_len+= mlen;
 		}
 		/* Append rest of line after the matched prefix */
@@ -435,7 +433,7 @@ void parse_list(ThreadBuf *tb, const ParserConfig *cfg, Accum *accum) {
 			out= realloc(out, out_cap);
 			assert(out);
 		}
-		if(rest_len) memcpy(out + out_len, line + match_end, rest_len);
+		if(rest_len) sz_copy(out + out_len, line + match_end, rest_len);
 		out_len+= rest_len;
 		out[out_len]= '\0';
 
@@ -444,7 +442,6 @@ void parse_list(ThreadBuf *tb, const ParserConfig *cfg, Accum *accum) {
 			make_list_token(parts[i], strlen(parts[i]), accum);
 		}
 
-		/* If no dt (definition count), replace line with out and continue */
 		if(dt == 0) {
 			free(line);
 			lines[li]= out; /* adopt out as new line */
@@ -549,19 +546,21 @@ void parse_list(ThreadBuf *tb, const ParserConfig *cfg, Accum *accum) {
 					const char *name = ht ? ht->name : NULL;
 					bool closing = ht ? ht->data.html.closing : false;
 					bool selfClosing = ht ? ht->data.html.self_closing : false;
+
+					size_t name_len = name ? strlen(name) : 0;
 					bool is_normal = false;
 				for(size_t ni =0; ni < cfg->html[0].count; ni++) {
 					sz_ptr_t html_name;
 					sz_size_t html_len;
 					sz_string_range(&cfg->html[0].items[ni], &html_name, &html_len);
-					if(html_name && name && html_len == strlen(name) && memcmp(html_name, name, html_len) == 0) { is_normal = true; break; }
+								if(html_name && name && html_len == name_len && sz_equal((const char *)html_name, name, name_len) == sz_true_k) { is_normal = true; break; }
 				}
 				bool is_void = false;
 				for(size_t vi =0; vi < cfg->html[2].count; vi++) {
 					sz_ptr_t html_name2;
 					sz_size_t html_len2;
 					sz_string_range(&cfg->html[2].items[vi], &html_name2, &html_len2);
-					if(html_name2 && name && html_len2 == strlen(name) && memcmp(html_name2, name, html_len2) == 0) { is_void = true; break; }
+								if(html_name2 && name && html_len2 == name_len && sz_equal((const char *)html_name2, name, name_len) == sz_true_k) { is_void = true; break; }
 				}
 					if(is_normal || (!selfClosing && !is_void)) {
 						if(!closing) lt++; else if(lt) lt--;
@@ -597,9 +596,9 @@ void parse_list(ThreadBuf *tb, const ParserConfig *cfg, Accum *accum) {
 					size_t new_len = mstart + mlen + (out_len - (mstart + take));
 					char *new_out = malloc(new_len + 1);
 					assert(new_out);
-					memcpy(new_out, out, mstart);
-					memcpy(new_out + mstart, mark, mlen);
-					memcpy(new_out + mstart + mlen, out + mstart + take, out_len - (mstart + take));
+					sz_copy(new_out, out, mstart);
+					sz_copy(new_out + mstart, mark, mlen);
+					sz_copy(new_out + mstart + mlen, out + mstart + take, out_len - (mstart + take));
 					new_out[new_len] = '\0';
 					free(out);
 					free(line);
@@ -621,7 +620,7 @@ void parse_list(ThreadBuf *tb, const ParserConfig *cfg, Accum *accum) {
 						out_cap = new_len + 1;
 					}
 					memmove(out + mstart + mlen, out + mend, out_len - mend);
-					memcpy(out + mstart, mark, mlen);
+					sz_copy(out + mstart, mark, mlen);
 					out_len = new_len;
 					dt -= (int)slen;
 					search_at = mstart + mlen;
@@ -649,7 +648,7 @@ void parse_list(ThreadBuf *tb, const ParserConfig *cfg, Accum *accum) {
 	assert(joined);
 	size_t p= 0;
 	for(size_t i= 0; i < line_count; i++) {
-		if(lines_len[i] > 0) memcpy(joined + p, lines[i], lines_len[i]);
+		if(lines_len[i] > 0) sz_copy(joined + p, lines[i], lines_len[i]);
 		p+= lines_len[i];
 		if(i + 1 < line_count) {
 			joined[p++]= '\n';

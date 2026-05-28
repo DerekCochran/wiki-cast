@@ -126,12 +126,13 @@ bool html_tag_parse(const char        *buf,
 /* Helper: whether a tag name (lowercase) is in any of cfg->html lists */
 static bool html_tag_allowed(const ParserConfig *cfg, const char *lcname) {
 	if(!cfg || !lcname) return false;
+	size_t lcname_len= strlen(lcname);
 	for(int grp= 0; grp < 3; grp++) {
 		for(size_t i= 0; i < cfg->html[grp].count; i++) {
 			sz_ptr_t html_name;
 			sz_size_t html_len;
 			sz_string_range(&cfg->html[grp].items[i], &html_name, &html_len);
-			if(html_name && html_len == strlen(lcname) && strncasecmp(html_name, lcname, html_len) == 0) return true;
+			if(html_name && html_len == lcname_len && str_ci_eq_n(html_name, lcname, html_len)) return true;
 		}
 	}
 	return false;
@@ -140,9 +141,7 @@ static bool html_tag_allowed(const ParserConfig *cfg, const char *lcname) {
 static Token *make_html_attr_key(const char *key, size_t key_len, Accum *accum) {
 	Token *t= token_new(TOKEN_ATTR_KEY, "attr-key");
 	if(!t) return NULL;
-	/* Ensure key text is stored in the persistent tokens arena */
-	const char *key_view = wiki_thread_buf_append_to_tokens(key, key_len);
-	token_append_text_n(t, key_view, key_len);
+	token_append_text_n(t, key, key_len);
 	accum_push(accum, t);
 	return t;
 }
@@ -150,10 +149,10 @@ static Token *make_html_attr_key(const char *key, size_t key_len, Accum *accum) 
 static char *html_normalize_equal(const char *equal, size_t equal_len, Accum *accum) {
 	if(!equal || equal_len == 0) return NULL;
 
-	if(memchr(equal, '\0', equal_len) == NULL) {
+	if(sz_find_byte(equal, equal_len, "\0") == NULL) {
 		char *out= malloc(equal_len + 1);
 		if(!out) return NULL;
-		memcpy(out, equal, equal_len);
+		sz_copy(out, equal, equal_len);
 		out[equal_len]= '\0';
 		return out;
 	}
@@ -172,7 +171,7 @@ static char *html_normalize_equal(const char *equal, size_t equal_len, Accum *ac
 	size_t slen= scratch->len;
 	char *out= malloc(slen + 1);
 	if(out) {
-		if(slen > 0 && s) memcpy(out, s, slen);
+		if(slen > 0 && s) sz_copy(out, s, slen);
 		out[slen]= '\0';
 	}
 
@@ -185,9 +184,7 @@ static Token *make_html_attr_value(const char *val, size_t val_len, Accum *accum
 	Token *t= token_new(TOKEN_ATTR_VALUE, "attr-value");
 	if(!t) return NULL;
 	if(val_len > 0) {
-		/* Ensure value text is stored in the persistent tokens arena */
-		const char *val_view = wiki_thread_buf_append_to_tokens(val, val_len);
-		token_append_text_n(t, val_view, val_len);
+		token_append_text_n(t, val, val_len);
 	} else {
 		/* Explicit empty value (`=` present) keeps an empty text child in JS. */
 		token_append_text_n(t, "", 0);
@@ -199,9 +196,7 @@ static Token *make_html_attr_value(const char *val, size_t val_len, Accum *accum
 static Token *make_html_attr_dirty(const char *text, size_t text_len, Accum *accum) {
 	Token *t= token_new(TOKEN_EXT_ATTR_DIRTY, "html-attr-dirty");
 	if(!t) return NULL;
-	/* Dirty buffer is stack-local; copy into tokens arena to obtain stable view */
-	const char *text_view = wiki_thread_buf_append_to_tokens(text, text_len);
-	token_append_text_n(t, text_view, text_len);
+	token_append_text_n(t, text, text_len);
 	accum_push(accum, t);
 	return t;
 }
@@ -449,7 +444,7 @@ static Token *build_html_attrs(const char *tag_name, const char *attr_str, size_
 		}
 		wiki_thread_buf_reserve(tmp, attr_len + 2);
 		tmp->buf[0]= ' ';
-		memcpy(tmp->buf + 1, attr_str, attr_len);
+		sz_copy(tmp->buf + 1, attr_str, attr_len);
 		tmp->len = attr_len + 1;
 		parse_html_attrs(t, tmp->buf, tmp->len, accum);
 		wiki_thread_buf_release_scratch(tmp);
@@ -462,12 +457,14 @@ static Token *build_html_attrs(const char *tag_name, const char *attr_str, size_
 
 static bool html_attrs_has_attr(const Token *attrs, const char *attr_name) {
 	if(!attrs || !attr_name) return false;
+	size_t attr_len= strlen(attr_name);
 	for(size_t i= 0; i < attrs->child_count; i++) {
 		const Child *c= &attrs->children[i];
 		if(c->is_text || !c->token) continue;
 		const Token *a= c->token;
-		if(a->type == TOKEN_EXT_ATTR && a->name && strcasecmp(a->name, attr_name) == 0) {
-			return true;
+		if(a->type == TOKEN_EXT_ATTR && a->name) {
+			size_t nlen= strlen(a->name);
+			if(nlen == attr_len && str_ci_eq_n(a->name, attr_name, attr_len)) return true;
 		}
 	}
 	return false;
@@ -507,7 +504,7 @@ void parse_html(ThreadBuf *tb, const ParserConfig *cfg, Accum *accum) {
 		if(!lt) {
 			size_t rest= len - pos;
 			ENSURE_OUT_CAP(rest + 1);
-			memcpy(out_tb->buf + out_tb->len, buf + pos, rest);
+			sz_copy(out_tb->buf + out_tb->len, buf + pos, rest);
 			out_tb->len+= rest;
 			break;
 		}
@@ -515,7 +512,7 @@ void parse_html(ThreadBuf *tb, const ParserConfig *cfg, Accum *accum) {
 		/* copy text before '<' */
 		size_t before= (size_t)(lt - (buf + pos));
 		ENSURE_OUT_CAP(before + 1);
-		memcpy(out_tb->buf + out_tb->len, buf + pos, before);
+		sz_copy(out_tb->buf + out_tb->len, buf + pos, before);
 		out_tb->len+= before;
 
 		/* define segment between this '<' and the next '<' (or end) */
@@ -532,7 +529,7 @@ void parse_html(ThreadBuf *tb, const ParserConfig *cfg, Accum *accum) {
 			ENSURE_OUT_CAP(1 + seg_len + 1);
 			out_tb->buf[out_tb->len++]= '<';
 			if(seg_len > 0) {
-				memcpy(out_tb->buf + out_tb->len, seg_start, seg_len);
+				sz_copy(out_tb->buf + out_tb->len, seg_start, seg_len);
 				out_tb->len+= seg_len;
 			}
 		} else {
@@ -541,7 +538,7 @@ void parse_html(ThreadBuf *tb, const ParserConfig *cfg, Accum *accum) {
 				ENSURE_OUT_CAP(1 + seg_len + 1);
 				out_tb->buf[out_tb->len++]= '<';
 				if(seg_len > 0) {
-					memcpy(out_tb->buf + out_tb->len, seg_start, seg_len);
+					sz_copy(out_tb->buf + out_tb->len, seg_start, seg_len);
 					out_tb->len+= seg_len;
 				}
 			} else {
@@ -550,7 +547,7 @@ void parse_html(ThreadBuf *tb, const ParserConfig *cfg, Accum *accum) {
 					ENSURE_OUT_CAP(1 + seg_len + 1);
 					out_tb->buf[out_tb->len++]= '<';
 					if(seg_len > 0) {
-						memcpy(out_tb->buf + out_tb->len, seg_start, seg_len);
+						sz_copy(out_tb->buf + out_tb->len, seg_start, seg_len);
 						out_tb->len+= seg_len;
 					}
 				} else {
@@ -559,7 +556,7 @@ void parse_html(ThreadBuf *tb, const ParserConfig *cfg, Accum *accum) {
 						ENSURE_OUT_CAP(1 + seg_len + 1);
 						out_tb->buf[out_tb->len++]= '<';
 						if(seg_len > 0) {
-							memcpy(out_tb->buf + out_tb->len, seg_start, seg_len);
+							sz_copy(out_tb->buf + out_tb->len, seg_start, seg_len);
 							out_tb->len+= seg_len;
 						}
 						free(lcname);
@@ -587,7 +584,7 @@ void parse_html(ThreadBuf *tb, const ParserConfig *cfg, Accum *accum) {
 							ENSURE_OUT_CAP(1 + seg_len + 1);
 							out_tb->buf[out_tb->len++]= '<';
 							if(seg_len > 0) {
-								memcpy(out_tb->buf + out_tb->len, seg_start, seg_len);
+								sz_copy(out_tb->buf + out_tb->len, seg_start, seg_len);
 								out_tb->len+= seg_len;
 							}
 							free(lcname);
@@ -601,10 +598,10 @@ void parse_html(ThreadBuf *tb, const ParserConfig *cfg, Accum *accum) {
 							work_str_sentinel(html_idx, 'x', sent_buf, &sent_len);
 
 							ENSURE_OUT_CAP(sent_len + rest_len + 1);
-							memcpy(out_tb->buf + out_tb->len, sent_buf, sent_len);
+							sz_copy(out_tb->buf + out_tb->len, sent_buf, sent_len);
 							out_tb->len+= sent_len;
 							if(rest_len > 0) {
-								memcpy(out_tb->buf + out_tb->len, rest_ptr, rest_len);
+								sz_copy(out_tb->buf + out_tb->len, rest_ptr, rest_len);
 								out_tb->len+= rest_len;
 							}
 
@@ -615,7 +612,7 @@ void parse_html(ThreadBuf *tb, const ParserConfig *cfg, Accum *accum) {
 								/* orig_tag: original-case name for toString round-trip */
 								char *orig_tag = malloc(htc.tag_name_len + 1);
 								if(orig_tag) {
-									memcpy(orig_tag, htc.tag_name, htc.tag_name_len);
+									sz_copy(orig_tag, htc.tag_name, htc.tag_name_len);
 									orig_tag[htc.tag_name_len] = '\0';
 								}
 								ht->data.html.orig_tag = orig_tag;

@@ -52,6 +52,9 @@ static bool proto_token_match_ci_n(const char *s, size_t slen,
     return true;
 }
 
+static bool scan_next_sentinel_any(const char *s, size_t len, size_t *pos,
+																size_t *out_n, char *out_type, size_t *out_total_len);
+
 /* PARITY: links.js uses /^\s*(?:${config.protocol}|\/\/)/iu.
  * Leading whitespace includes Unicode Zs + ASCII whitespace.
  * Protocol alternatives come from cfg->protocol_items (validated in Phase A.1). */
@@ -89,42 +92,63 @@ static bool starts_with_proto(const char *s, size_t len, const ParserConfig *cfg
  * reject targets containing \0\d+[eh!+-]\x7F. */
 static bool has_invalid_title_sentinel(const char *s, size_t len) {
 	if(!s || len == 0) return false;
-	for(size_t i = 0; i < len; i++) {
-		if((unsigned char)s[i] != 0x00) continue;
-		size_t j = i + 1;
-		if(j >= len || !(s[j] >= '0' && s[j] <= '9')) continue;
-		while(j < len && s[j] >= '0' && s[j] <= '9') j++;
-		if(j + 1 >= len) continue;
-		char t = s[j];
-		if((t == 'e' || t == 'h' || t == '!' || t == '+' || t == '-') &&
-		   (unsigned char)s[j + 1] == 0x7F) {
-			return true;
-		}
+	size_t pos= 0;
+	for(;;) {
+		size_t n= 0;
+		char t= '\0';
+		size_t total= 0;
+		if(!scan_next_sentinel_any(s, len, &pos, &n, &t, &total)) break;
+		(void)n;
+		(void)total;
+		if(t == 'e' || t == 'h' || t == '!' || t == '+' || t == '-') return true;
 	}
 	return false;
 }
 
 static bool has_sentinel_type_in_view(const char *s, size_t len, char want) {
 	if(!s || len == 0) return false;
-	for(size_t i= 0; i < len;) {
-		if((unsigned char)s[i] != '\0') {
-			i++;
-			continue;
-		}
-		size_t j= i + 1;
-		if(j >= len || !(s[j] >= '0' && s[j] <= '9')) {
-			i++;
-			continue;
-		}
-		while(j < len && s[j] >= '0' && s[j] <= '9') j++;
-		if(j + 1 < len && (unsigned char)s[j + 1] == 0x7F) {
-			if(s[j] == want) return true;
-			i= j + 2;
-			continue;
-		}
-		i++;
+	size_t pos= 0;
+	for(;;) {
+		size_t n= 0;
+		char t= '\0';
+		size_t total= 0;
+		if(!scan_next_sentinel_any(s, len, &pos, &n, &t, &total)) break;
+		(void)n;
+		(void)total;
+		if(t == want) return true;
 	}
 	return false;
+}
+
+static bool scan_next_sentinel_any(const char *s, size_t len, size_t *pos,
+																size_t *out_n, char *out_type, size_t *out_total_len) {
+	if(!s || !pos || *pos >= len) return false;
+	const char nul= '\0';
+	for(;;) {
+		if(*pos >= len) return false;
+		const char *hit= sz_find_byte(s + *pos, len - *pos, &nul);
+		if(!hit) return false;
+		size_t i= (size_t)(hit - s);
+		size_t j= i + 1;
+		if(j >= len || !(s[j] >= '0' && s[j] <= '9')) {
+			*pos= i + 1;
+			continue;
+		}
+		size_t n= 0;
+		while(j < len && s[j] >= '0' && s[j] <= '9') {
+			n= n * 10 + (size_t)(s[j] - '0');
+			j++;
+		}
+		if(j + 1 >= len || (unsigned char)s[j + 1] != 0x7F) {
+			*pos= i + 1;
+			continue;
+		}
+		if(out_n) *out_n= n;
+		if(out_type) *out_type= s[j];
+		if(out_total_len) *out_total_len= (j + 2) - i;
+		*pos= j + 2;
+		return true;
+	}
 }
 
 /* Forward declaration for helper defined later in this file. */
@@ -137,7 +161,7 @@ static void trim_view(const char **ptr, size_t *len);
 static int eq_n(const char *a, size_t alen, const char *b) {
 	size_t blen= strlen(b);
 	if(alen != blen) return 0;
-	return memcmp(a, b, alen) == 0;
+	return sz_equal(a, b, alen) == sz_true_k;
 }
 
 static Token *make_image_param_token(const char *name, Accum *accum) {
@@ -180,8 +204,8 @@ static bool match_img_syntax(const char *seg, size_t seg_len,
 	size_t pre_len= (size_t)(slot - syntax);
 	size_t suf_len= strlen(slot + 2);
 	if(seg_len < pre_len + suf_len) return false;
-	if(pre_len > 0 && memcmp(seg, syntax, pre_len) != 0) return false;
-	if(suf_len > 0 && memcmp(seg + seg_len - suf_len, slot + 2, suf_len) != 0) return false;
+	if(pre_len > 0 && sz_equal(seg, syntax, pre_len) != sz_true_k) return false;
+	if(suf_len > 0 && sz_equal(seg + seg_len - suf_len, slot + 2, suf_len) != sz_true_k) return false;
 
 	if(has_cap) *has_cap= true;
 	size_t captured_len= seg_len - pre_len - suf_len;
@@ -212,11 +236,10 @@ static char *build_img_syntax_template(const char *seg_ptr, size_t seg_len,
 	size_t out_len= lead_ws_len + syntax_len + tmpl_trail_ws_len;
 	char *out= malloc(out_len + 1);
 	if(!out) return NULL;
-	if(lead_ws_len > 0) memcpy(out, seg_ptr, lead_ws_len);
 	if(lead_ws_len > 0) sz_copy(out, seg_ptr, lead_ws_len);
 	sz_copy(out + lead_ws_len, syntax, syntax_len);
 	if(tmpl_trail_ws_len > 0) {
-		memcpy(out + lead_ws_len + syntax_len,
+		sz_copy(out + lead_ws_len + syntax_len,
 				 seg_ptr + seg_len - trail_ws_len + trail_prefix_skip,
 					 tmpl_trail_ws_len);
 	}
@@ -588,24 +611,14 @@ static void img_scan_link_sentinels(const char *val, size_t val_len,
 	if(has_invalid) *has_invalid= false;
 	if(!val || val_len == 0) return;
 
-	for(size_t i= 0; i < val_len;) {
-		if((unsigned char)val[i] != '\0') {
-			i++;
-			continue;
-		}
-
-		size_t j= i + 1;
-		if(j >= val_len || !(val[j] >= '0' && val[j] <= '9')) {
-			i++;
-			continue;
-		}
-		while(j < val_len && val[j] >= '0' && val[j] <= '9') j++;
-		if(j >= val_len || j + 1 >= val_len || (unsigned char)val[j + 1] != 0x7F) {
-			i++;
-			continue;
-		}
-
-		char t= val[j];
+	size_t pos= 0;
+	for(;;) {
+		size_t n= 0;
+		char t= '\0';
+		size_t total= 0;
+		if(!scan_next_sentinel_any(val, val_len, &pos, &n, &t, &total)) break;
+		(void)n;
+		(void)total;
 		bool stripped= (t == 'c' || t == 't' || (strip_quotes && t == 'q'));
 		if(!stripped) {
 			if(t == 'm' || t == 'w') {
@@ -616,7 +629,6 @@ static void img_scan_link_sentinels(const char *val, size_t val_len,
 				if(has_invalid) *has_invalid= true;
 			}
 		}
-		i= j + 2;
 	}
 }
 

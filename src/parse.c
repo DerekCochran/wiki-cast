@@ -990,8 +990,8 @@ static Token *parse_gallery_image_line(const char *line, size_t line_len,
 			free(param->data.image_param.raw_syntax);
 			param->data.image_param.raw_syntax= malloc(p + 8);
 			if(param->data.image_param.raw_syntax) {
-				if(p > 0) memcpy(param->data.image_param.raw_syntax, first->text, p);
-				memcpy(param->data.image_param.raw_syntax + p, "link=$1", 7);
+				if(p > 0) sz_copy(param->data.image_param.raw_syntax, first->text, p);
+				sz_copy(param->data.image_param.raw_syntax + p, "link=$1", 7);
 				param->data.image_param.raw_syntax[p + 7]= '\0';
 			}
 
@@ -999,7 +999,7 @@ static Token *parse_gallery_image_line(const char *line, size_t line_len,
 			size_t new_len= first->text_len - prefix_len;
 			char *owned= malloc(new_len + 1);
 			if(!owned) continue;
-			if(new_len > 0) memcpy(owned, first->text + prefix_len, new_len);
+			if(new_len > 0) sz_copy(owned, first->text + prefix_len, new_len);
 			owned[new_len]= '\0';
 			if(first->text_owned && first->text) free((void *)first->text);
 			first->text= owned;
@@ -1056,8 +1056,7 @@ static Token *parse_gallery_image_line(const char *line, size_t line_len,
 				if(fallback) {
 					Token *target= token_new(TOKEN_ATOM, "link-target");
 					if(target) {
-						const char *file_view= wiki_thread_buf_append_to_tokens(file_ptr, file_len);
-						token_append_text_n(target, file_view, file_len);
+						token_append_text_n(target, file_ptr, file_len);
 						accum_push(accum, target);
 						token_append_child(fallback, target);
 					}
@@ -1066,8 +1065,7 @@ static Token *parse_gallery_image_line(const char *line, size_t line_len,
 						Token *cap= token_new(TOKEN_PLAIN, "image-parameter");
 						if(cap) {
 							cap->name= strdup("caption");
-							const char *alt_view= wiki_thread_buf_append_to_tokens(alt_ptr, alt_len);
-							token_append_text_n(cap, alt_view, alt_len);
+							token_append_text_n(cap, alt_ptr, alt_len);
 							accum_push(accum, cap);
 							token_append_child(fallback, cap);
 						}
@@ -1083,8 +1081,7 @@ static Token *parse_gallery_image_line(const char *line, size_t line_len,
 					"[C gallery_line] fallback creates noinclude");
 				Token *comment_line= token_new(TOKEN_NOINCLUDE, "noinclude");
 				if(comment_line) {
-					const char *line_view= wiki_thread_buf_append_to_tokens(line, line_len);
-					token_append_text_n(comment_line, line_view, line_len);
+					token_append_text_n(comment_line, line, line_len);
 					accum_push(accum, comment_line);
 					out= comment_line;
 				}
@@ -1108,7 +1105,7 @@ static Token *parse_imagemap_image_line(const char *line, size_t line_len,
 	wiki_thread_buf_reserve(scratch, line_len + 4);
 	scratch->buf[0]= '[';
 	scratch->buf[1]= '[';
-	memcpy(scratch->buf + 2, line, line_len);
+	sz_copy(scratch->buf + 2, line, line_len);
 	scratch->buf[2 + line_len]= ']';
 	scratch->buf[3 + line_len]= ']';
 	scratch->buf[4 + line_len]= '\0';
@@ -1160,8 +1157,7 @@ static Token *parse_imagemap_link_line(const char *line, size_t line_len,
 	accum_push(accum, t);
 
 	if(open > 0) {
-			const char *view = wiki_thread_buf_append_to_tokens(line, open);
-			token_append_text_n(t, view, open);
+			token_append_text_n(t, line, open);
 	} else {
 		token_append_text_n(t, "", 0);
 	}
@@ -1172,13 +1168,11 @@ static Token *parse_imagemap_link_line(const char *line, size_t line_len,
 	if(link) {
 		token_append_child(t, link);
 	} else {
-			const char *view = wiki_thread_buf_append_to_tokens(line + open, (close + 2) - open);
-			token_append_text_n(t, view, (close + 2) - open);
+			token_append_text_n(t, line + open, (close + 2) - open);
 	}
 
 	if(close + 2 < line_len) {
-		const char *view = wiki_thread_buf_append_to_tokens(line + close + 2, line_len - (close + 2));
-		token_append_text_n(t, view, line_len - (close + 2));
+		token_append_text_n(t, line + close + 2, line_len - (close + 2));
 	}
 
 	Token *tail= make_empty_noinclude(accum);
@@ -1232,8 +1226,7 @@ static void postprocess_gallery_ext_inner(Token *t, const ParserConfig *cfg, Acc
 			if(img) {
 				token_append_child(t, img);
 			} else {
-				const char *view = wiki_thread_buf_append_to_tokens(line_ptr, line_len);
-				token_append_text_n(t, view, line_len);
+				token_append_text_n(t, line_ptr, line_len);
 			}
 
 			line_start= eol ? (size_t)(eol - tmp->buf) + 1 : tmp->len;
@@ -1311,8 +1304,7 @@ static void postprocess_imagemap_ext_inner(Token *t, const ParserConfig *cfg, Ac
 				if(tok) {
 					token_append_child(t, tok);
 				} else {
-					const char *view = wiki_thread_buf_append_to_tokens(line_ptr, line_len);
-					token_append_text_n(t, view, line_len);
+					token_append_text_n(t, line_ptr, line_len);
 				}
 			}
 
@@ -1826,7 +1818,8 @@ static bool token_has_ext_inner_ancestor(const Token *target, const Accum *accum
 static void postprocess_parameter_value_inline_impl(Token *t, const ParserConfig *cfg, Accum *accum,
 																				const char *page, const Token *parent,
 																						const Token *grandparent,
-																						bool in_ext_context) {
+																																						bool in_ext_context,
+																																						bool recurse_existing_children) {
 	if(!t) return;
 
 	log_debug_env_token("DEBUG_PARAM_VALUE", t, "postprocess_parameter_value_inline_impl start");
@@ -1834,9 +1827,11 @@ static void postprocess_parameter_value_inline_impl(Token *t, const ParserConfig
 	bool self_is_ext_inner= (t->type == TOKEN_EXT_INNER && t->type_name && strcmp(t->type_name, "ext-inner") == 0);
 	bool current_in_ext_context= in_ext_context || self_is_ext_inner;
 
-	for(size_t i= 0; i < t->child_count; i++) {
-		if(!t->children[i].is_text && t->children[i].token) {
-			postprocess_parameter_value_inline_impl(t->children[i].token, cfg, accum, page, t, parent, current_in_ext_context);
+	if(recurse_existing_children) {
+		for(size_t i= 0; i < t->child_count; i++) {
+			if(!t->children[i].is_text && t->children[i].token) {
+				postprocess_parameter_value_inline_impl(t->children[i].token, cfg, accum, page, t, parent, current_in_ext_context, true);
+			}
 		}
 	}
 
@@ -2010,7 +2005,7 @@ static void postprocess_parameter_value_inline_impl(Token *t, const ParserConfig
 
 						for(size_t i= 0; i < t->child_count; i++) {
 							if(!t->children[i].is_text && t->children[i].token) {
-								postprocess_parameter_value_inline_impl(t->children[i].token, cfg, accum, page, t, parent, current_in_ext_context);
+								postprocess_parameter_value_inline_impl(t->children[i].token, cfg, accum, page, t, parent, current_in_ext_context, true);
 							}
 						}
 
@@ -2034,6 +2029,7 @@ static void postprocess_parameter_value_inline_impl(Token *t, const ParserConfig
 
 	Child *old_children= t->children;
 	size_t old_count= t->child_count;
+	bool transformed_children= false;
 	bool has_non_text_children= false;
 	for(size_t i= 0; i < old_count; i++) {
 		if(!old_children[i].is_text) {
@@ -2128,6 +2124,7 @@ static void postprocess_parameter_value_inline_impl(Token *t, const ParserConfig
 			}
 
 			if(cur.text_owned && cur.text) free((void*)cur.text);
+			transformed_children= true;
 
 		Token *tmp= token_new(is_attr_value ? TOKEN_ATTR_VALUE : TOKEN_PLAIN,
 			is_attr_value ? "attr-value" : t->type_name);
@@ -2163,31 +2160,35 @@ static void postprocess_parameter_value_inline_impl(Token *t, const ParserConfig
 	t->child_cap= new_cap;
 	wiki_thread_buf_release_scratch(scratch);
 
-	/* Recurse after replacement: transforming this token may have created brand-new
-	 * nested tokens (for example template parameters from a freshly parsed {{...}})
-	 * that were not visited by the pre-order recursion at function entry. */
-	for(size_t i= 0; i < t->child_count; i++) {
-		if(!t->children[i].is_text && t->children[i].token) {
-			postprocess_parameter_value_inline_impl(t->children[i].token, cfg, accum, page, t, parent, current_in_ext_context);
+	if(transformed_children) {
+		/* Recurse after replacement: transforming this token may have created
+		 * brand-new nested tokens (for example template parameters from a
+		 * freshly parsed {{...}}) that were not visited by the pre-order
+		 * recursion at function entry. */
+		for(size_t i= 0; i < t->child_count; i++) {
+			if(!t->children[i].is_text && t->children[i].token) {
+				postprocess_parameter_value_inline_impl(t->children[i].token, cfg, accum, page, t, parent, current_in_ext_context, true);
+			}
 		}
-	}
 
-	/* JS parity: any sub-token (e.g. ExtToken with ext-inner) that was
-     * built from this parameter-value text must run the nested-plain pass
-     * so its ext-inner content goes through stages 5..10 just like JS
-     * Token.parseOnce would do for tokens added to the accum. */
-	for(size_t i= 0; i < t->child_count; i++) {
-		if(!t->children[i].is_text && t->children[i].token) {
-			postprocess_nested_plain(t->children[i].token, cfg, accum, page);
+		/* JS parity: any sub-token (e.g. ExtToken with ext-inner) that was
+		 * built from this parameter-value text must run the nested-plain pass
+		 * so its ext-inner content goes through stages 5..10 just like JS
+		 * Token.parseOnce would do for tokens added to the accum. */
+		for(size_t i= 0; i < t->child_count; i++) {
+			if(!t->children[i].is_text && t->children[i].token) {
+				postprocess_nested_plain(t->children[i].token, cfg, accum, page);
+			}
 		}
 	}
 	log_debug_env_token("DEBUG_PARAM_VALUE", t, "postprocess_parameter_value_inline_impl end");
 }
 
 static void postprocess_parameter_value_inline(Token *t, const ParserConfig *cfg, Accum *accum,
-																			const char *page) {
+																																		const char *page,
+																																		bool recurse_existing_children) {
 	bool inferred_in_ext_context= token_has_ext_inner_ancestor(t, accum);
-	postprocess_parameter_value_inline_impl(t, cfg, accum, page, NULL, NULL, inferred_in_ext_context);
+	postprocess_parameter_value_inline_impl(t, cfg, accum, page, NULL, NULL, inferred_in_ext_context, recurse_existing_children);
 }
 
 static void finalize_gallery_and_link_names(Token *t, const ParserConfig *cfg,
@@ -2517,7 +2518,7 @@ Token *wiki_parse_with_page(const char *wikitext, size_t input_len, const Parser
 
 			for(size_t _ai= scan_start; _ai < scan_end; _ai++) {
 				if(accum.tokens[_ai]) {
-					postprocess_parameter_value_inline(accum.tokens[_ai], cfg, &accum, page);
+					postprocess_parameter_value_inline(accum.tokens[_ai], cfg, &accum, page, true);
 				}
 			}
 
@@ -2541,7 +2542,7 @@ Token *wiki_parse_with_page(const char *wikitext, size_t input_len, const Parser
 
 	/* JS parity: run inline stages again for any new text children created
      * during build_token_recursive (e.g. ext-inner content). */
-	postprocess_parameter_value_inline(root, cfg, &accum, page);
+	postprocess_parameter_value_inline(root, cfg, &accum, page, true);
 	finalize_gallery_and_link_names(root, cfg, page);
 
 	/* ── Debug: log the final token tree as JSON ─────────────────────────── */
