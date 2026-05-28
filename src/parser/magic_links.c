@@ -290,6 +290,14 @@ static bool magic_find_next(const char *s, size_t len, size_t at,
                             const ParserConfig *cfg, MagicScanMatch *m) {
     if (!s || !m) return false;
     for (size_t i = at; i < len; i++) {
+        unsigned char c = (unsigned char)s[i];
+        unsigned char cl = (unsigned char)fast_tolower(c);
+        bool keyword_start = (cl == 'r' || cl == 'p' || cl == 'i');
+        bool proto_start = (cfg && cfg->protocol_initials[cl]);
+        if (!keyword_start && !proto_start) {
+            continue;
+        }
+
         if (!magic_left_boundary_ok(s, len, i)) continue;
 
         size_t body_s = 0, body_e = 0, mend = 0;
