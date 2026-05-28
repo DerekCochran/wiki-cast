@@ -63,8 +63,9 @@ static Token *make_table_attr(const char *key, size_t key_len,
 
 	t->name= str_trim_lc(key, key_len);
 	if(equal && equal_len > 0) {
-		t->data.ext_attr.equal= build_normalize_attr_equal(equal, equal_len, accum);
-		assert(t->data.ext_attr.equal);
+		char *equal_owned= build_normalize_attr_equal(equal, equal_len, accum);
+		assert(equal_owned);
+		t->data.ext_attr.equal = (sz_string_view_t){ .start = equal_owned, .length = strlen(equal_owned) };
 	}
 	t->data.ext_attr.quote_open= quote_open;
 	t->data.ext_attr.quote_close= quote_close;
@@ -508,15 +509,15 @@ Token *create_td_token(const char *syntax,
 			norm_syn= "{{!}}";
 			norm_len= 5;
 		}
-		td->data.td.inner_syntax= malloc(norm_len + 1);
-		assert(td->data.td.inner_syntax);
-		sz_copy(td->data.td.inner_syntax, norm_syn, norm_len);
-		td->data.td.inner_syntax[norm_len]= '\0';
-		td->data.td.inner_syntax_len= norm_len;  /* Cache length */
+		char *inner_owned= malloc(norm_len + 1);
+		assert(inner_owned);
+		sz_copy(inner_owned, norm_syn, norm_len);
+		inner_owned[norm_len]= '\0';
+		td->data.td.inner_syntax = (sz_string_view_t){ .start = inner_owned, .length = norm_len };
 	} else {
-		td->data.td.inner_syntax= strdup("");
-		assert(td->data.td.inner_syntax);
-		td->data.td.inner_syntax_len= 0;  /* Cache length for empty string */
+		char *inner_owned= strdup("");
+		assert(inner_owned);
+		td->data.td.inner_syntax = (sz_string_view_t){ .start = inner_owned, .length = 0 };
 	}
 
 	Token *inner_tok= token_new(TOKEN_PLAIN, "td-inner");

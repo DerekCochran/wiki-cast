@@ -9,6 +9,7 @@
 #include <stdbool.h>
 #include <stddef.h>
 #include <stdio.h>
+#include "stringzilla/types.h"
 #include "util/thread_buffer.h"
 
 /* ── Token type enum ──────────────────────────────────────────────────────── */
@@ -80,11 +81,10 @@ typedef union {
     struct {
         bool self_closing;             /* HtmlToken */
         bool closing;
-        char *orig_tag;                /* original-case tag name for toString */
+        sz_string_view_t orig_tag;     /* original-case tag name for toString */
     } html;
     struct {
-        char *inner_syntax;             /* TdToken separator between attrs and inner */
-        size_t inner_syntax_len;        /* Cached length to avoid repeated strlen() during serialization */
+        sz_string_view_t inner_syntax; /* TdToken separator between attrs and inner */
     } td;
     struct {
         bool case_sensitive;           /* DoubleUnderscoreToken */
@@ -95,42 +95,40 @@ typedef union {
         bool italic;
     } quote;
     struct {
-        char *pre;                     /* RedirectToken: leading whitespace */
-        char *post;                    /* trailing whitespace */
-        char *link;                    /* raw link target */
-        char *display;                 /* optional display text (after |) */
+        sz_string_view_t pre;          /* RedirectToken: leading whitespace */
+        sz_string_view_t post;         /* trailing whitespace */
+        sz_string_view_t link;         /* raw link target */
+        sz_string_view_t display;      /* optional display text (after |) */
     } redirect;
     struct {
-        char *name;                    /* ExtToken: tag name */
-        char *attr;                    /* attribute string */
-        char *inner;                   /* inner content */
-        char *closing;                 /* closing tag text */
+        sz_string_view_t name;         /* ExtToken: tag name */
+        sz_string_view_t attr;         /* attribute string */
+        sz_string_view_t inner;        /* inner content */
+        sz_string_view_t closing;      /* closing tag text */
         bool  self_closing;
     } ext;
     struct {
-        char *tag;                     /* IncludeToken: "includeonly"/"noinclude" */
-        char *attr;
-        char *inner;
-        char *closing;                 /* closing tag text, NULL if unclosed */
+        sz_string_view_t tag;          /* IncludeToken: "includeonly"/"noinclude" */
+        sz_string_view_t attr;
+        sz_string_view_t inner;
+        sz_string_view_t closing;      /* closing tag text, NULL if unclosed */
     } include;
     struct {
-        char *equal;      /* equal sign + surrounding whitespace — owned, NULL if boolean attr */
-        char  quote_open; /* opening quote ('"', '\'', or '\0' if unquoted/boolean) */
-        char  quote_close;/* closing quote ('"', '\'', or '\0' if unclosed/unquoted) */
+        sz_string_view_t equal; /* equal sign + surrounding whitespace — owned, empty if boolean attr */
+        char  quote_open;       /* opening quote ('"', '\'', or '\0' if unquoted/boolean) */
+        char  quote_close;      /* closing quote ('"', '\'', or '\0' if unclosed/unquoted) */
     } ext_attr;
     struct {
-        char *raw_syntax; /* canonical syntax string for image-parameter toString */
+        sz_string_view_t raw_syntax;  /* canonical syntax string for image-parameter toString */
     } image_param;
     struct {
-        char *space;      /* ExtLinkToken separator between URL and text (may be empty) */
-        size_t space_len; /* Cached length to avoid repeated strlen() during serialization */
+        sz_string_view_t space;  /* ExtLinkToken separator between URL and text (may be empty) */
     } ext_link;
     struct {
         bool magic_pipe;  /* LinkBaseToken delimiter was \0\d+!\x7F ({{!}}) */
     } link;
     struct {
-        char *modifier;        /* TranscludeToken modifier prefix, e.g. "subst:" */
-        size_t modifier_len;   /* Cached length to avoid repeated strlen() during serialization */
+        sz_string_view_t modifier; /* TranscludeToken modifier prefix, e.g. "subst:" */
     } transclude;
 } TokenData;
 

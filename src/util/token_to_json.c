@@ -36,14 +36,14 @@ cJSON* token_to_json(const Token *token) {
 		case TOKEN_HTML:
 			cJSON_AddBoolToObject(root, "selfClosing", token->data.html.self_closing);
 			cJSON_AddBoolToObject(root, "closing", token->data.html.closing);
-			if (token->data.html.orig_tag) {
-				cJSON_AddStringToObject(root, "origTag", token->data.html.orig_tag);
+			if (token->data.html.orig_tag.start) {
+				cJSON_AddStringToObject(root, "origTag", token->data.html.orig_tag.start);
 			}
 			break;
 
 		case TOKEN_TD:
-			if (token->data.td.inner_syntax) {
-				cJSON_AddStringToObject(root, "innerSyntax", token->data.td.inner_syntax);
+			if (token->data.td.inner_syntax.start) {
+				cJSON_AddStringToObject(root, "innerSyntax", token->data.td.inner_syntax.start);
 			}
 			break;
 
@@ -58,14 +58,14 @@ cJSON* token_to_json(const Token *token) {
 			break;
 
 		case TOKEN_REDIRECT:
-			if (token->data.redirect.display) cJSON_AddStringToObject(root, "display", token->data.redirect.display);
+			if (token->data.redirect.display.start) cJSON_AddStringToObject(root, "display", token->data.redirect.display.start);
 			break;
 
 		case TOKEN_EXT:
-			if (token->data.ext.name) cJSON_AddStringToObject(root, "extName", token->data.ext.name);
-			if (token->data.ext.attr) cJSON_AddStringToObject(root, "extAttr", token->data.ext.attr);
-			if (token->data.ext.inner) cJSON_AddStringToObject(root, "extInner", token->data.ext.inner);
-			if (token->data.ext.closing) cJSON_AddStringToObject(root, "extClosing", token->data.ext.closing);
+			if (token->data.ext.name.start) cJSON_AddStringToObject(root, "extName", token->data.ext.name.start);
+			if (token->data.ext.attr.start) cJSON_AddStringToObject(root, "extAttr", token->data.ext.attr.start);
+			if (token->data.ext.inner.start) cJSON_AddStringToObject(root, "extInner", token->data.ext.inner.start);
+			if (token->data.ext.closing.start) cJSON_AddStringToObject(root, "extClosing", token->data.ext.closing.start);
 			cJSON_AddBoolToObject(root, "extSelfClosing", token->data.ext.self_closing);
 			break;
 
@@ -73,14 +73,14 @@ cJSON* token_to_json(const Token *token) {
 		case TOKEN_INCLUDE:
 		case TOKEN_ONLYINCLUDE:
 		case TOKEN_TRANSLATE:
-			if (token->data.include.tag) cJSON_AddStringToObject(root, "tag", token->data.include.tag);
-			if (token->data.include.attr) cJSON_AddStringToObject(root, "includeAttr", token->data.include.attr);
-			if (token->data.include.inner) cJSON_AddStringToObject(root, "includeInner", token->data.include.inner);
-			if (token->data.include.closing) cJSON_AddStringToObject(root, "includeClosing", token->data.include.closing);
+			if (token->data.include.tag.start) cJSON_AddStringToObject(root, "tag", token->data.include.tag.start);
+			if (token->data.include.attr.start) cJSON_AddStringToObject(root, "includeAttr", token->data.include.attr.start);
+			if (token->data.include.inner.start) cJSON_AddStringToObject(root, "includeInner", token->data.include.inner.start);
+			if (token->data.include.closing.start) cJSON_AddStringToObject(root, "includeClosing", token->data.include.closing.start);
 			break;
 
 		case TOKEN_EXT_ATTR:
-			if (token->data.ext_attr.equal) cJSON_AddStringToObject(root, "equal", token->data.ext_attr.equal);
+			if (token->data.ext_attr.equal.start) cJSON_AddStringToObject(root, "equal", token->data.ext_attr.equal.start);
 			{
 				char qo[2] = {token->data.ext_attr.quote_open, '\0'};
 				char qc[2] = {token->data.ext_attr.quote_close, '\0'};
@@ -90,12 +90,12 @@ cJSON* token_to_json(const Token *token) {
 			break;
 
 		case TOKEN_PARAMETER:
-			if (token->data.image_param.raw_syntax) cJSON_AddStringToObject(root, "rawSyntax", token->data.image_param.raw_syntax);
+			if (token->data.image_param.raw_syntax.start) cJSON_AddStringToObject(root, "rawSyntax", token->data.image_param.raw_syntax.start);
 			break;
 
 		case TOKEN_MAGIC_LINK:
 		case TOKEN_EXT_LINK:
-			if (token->data.ext_link.space) cJSON_AddStringToObject(root, "space", token->data.ext_link.space);
+			if (token->data.ext_link.space.start) cJSON_AddStringToObject(root, "space", token->data.ext_link.space.start);
 			break;
 
 		case TOKEN_LINK:
@@ -106,7 +106,7 @@ cJSON* token_to_json(const Token *token) {
 
 		case TOKEN_TRANSCLUDE:
 		case TOKEN_ARG:
-			if (token->data.transclude.modifier) cJSON_AddStringToObject(root, "modifier", token->data.transclude.modifier);
+			if (token->data.transclude.modifier.start) cJSON_AddStringToObject(root, "modifier", token->data.transclude.modifier.start);
 			break;
 
 		default:

@@ -211,8 +211,9 @@ static Token *make_html_attr(const char *key, size_t key_len,
 
 	t->name= str_trim_lc(key, key_len);
 	if(equal && equal_len > 0) {
-		t->data.ext_attr.equal= html_normalize_equal(equal, equal_len, accum);
-		assert(t->data.ext_attr.equal);
+		char *equal_owned= html_normalize_equal(equal, equal_len, accum);
+		assert(equal_owned);
+		t->data.ext_attr.equal = (sz_string_view_t){ .start = equal_owned, .length = strlen(equal_owned) };
 	}
 	t->data.ext_attr.quote_open= quote_open;
 	t->data.ext_attr.quote_close= quote_close;
@@ -615,7 +616,7 @@ void parse_html(ThreadBuf *tb, const ParserConfig *cfg, Accum *accum) {
 									sz_copy(orig_tag, htc.tag_name, htc.tag_name_len);
 									orig_tag[htc.tag_name_len] = '\0';
 								}
-								ht->data.html.orig_tag = orig_tag;
+								ht->data.html.orig_tag = (sz_string_view_t){ .start = orig_tag, .length = orig_tag ? htc.tag_name_len : 0 };
 								/* closing flag: leading slash present? */
 								ht->data.html.closing = htc.is_closing;
 								/* self-closing flag */

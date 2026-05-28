@@ -566,8 +566,9 @@ static Token *make_ext_attr(const char *tag_name,
 
 	/* Store equal and quote chars (JS AttributeToken #equal / #quotes) */
 	if(equal && equal_len > 0) {
-		t->data.ext_attr.equal= build_normalize_attr_equal(equal, equal_len, accum);
-		assert(t->data.ext_attr.equal);
+		char *equal_owned = build_normalize_attr_equal(equal, equal_len, accum);
+		assert(equal_owned);
+		t->data.ext_attr.equal = (sz_string_view_t){ .start = equal_owned, .length = strlen(equal_owned) };
 	}
 	t->data.ext_attr.quote_open= quote_open;
 	t->data.ext_attr.quote_close= quote_close;
@@ -1484,13 +1485,14 @@ static void normalize_gallery_thumb_caption_local(Token *img, Accum *accum) {
 			return;
 		}
 		size_t syntax_len= cut - 1; /* drop trailing '|' */
-		thumb->data.image_param.raw_syntax= malloc(syntax_len + 1);
-		if(!thumb->data.image_param.raw_syntax) {
+		char *owned_syntax= malloc(syntax_len + 1);
+		if(!owned_syntax) {
 			token_free(thumb);
 			return;
 		}
-		sz_copy(thumb->data.image_param.raw_syntax, txt, syntax_len);
-		thumb->data.image_param.raw_syntax[syntax_len]= '\0';
+		sz_copy(owned_syntax, txt, syntax_len);
+		owned_syntax[syntax_len]= '\0';
+		thumb->data.image_param.raw_syntax = (sz_string_view_t){ .start = owned_syntax, .length = syntax_len };
 		accum_push(accum, thumb);
 
 		size_t remain_len= txt_len - cut;
@@ -1743,12 +1745,13 @@ static Token *parse_gallery_image_line_local(const char *line, size_t line_len,
 			if(!new_name) continue;
 			free(param->name);
 			param->name= new_name;
-			free(param->data.image_param.raw_syntax);
-			param->data.image_param.raw_syntax= malloc(p + 8);
-			if(param->data.image_param.raw_syntax) {
-				if(p > 0) sz_copy(param->data.image_param.raw_syntax, first->text, p);
-				sz_copy(param->data.image_param.raw_syntax + p, "link=$1", 7);
-				param->data.image_param.raw_syntax[p + 7]= '\0';
+			free((void *)param->data.image_param.raw_syntax.start);
+			char *owned_syntax= malloc(p + 8);
+			if(owned_syntax) {
+				if(p > 0) sz_copy(owned_syntax, first->text, p);
+				sz_copy(owned_syntax + p, "link=$1", 7);
+				owned_syntax[p + 7]= '\0';
+				param->data.image_param.raw_syntax = (sz_string_view_t){ .start = owned_syntax, .length = p + 7 };
 			}
 
 			size_t prefix_len= p + 5;
@@ -1953,13 +1956,14 @@ static Token *create_raw_ext_link_token_local(const char *url, size_t url_len,
 	}
 
 	if(space_len > 0) {
-		ext->data.ext_link.space= malloc(space_len + 1);
-		if(!ext->data.ext_link.space) {
+		char *owned_space= malloc(space_len + 1);
+		if(!owned_space) {
 			token_free(ext);
 			return NULL;
 		}
-		sz_copy(ext->data.ext_link.space, space, space_len);
-		ext->data.ext_link.space[space_len]= '\0';
+		sz_copy(owned_space, space, space_len);
+		owned_space[space_len]= '\0';
+		ext->data.ext_link.space = (sz_string_view_t){ .start = owned_space, .length = space_len };
 	}
 
 	token_append_child(ext, url_tok);
@@ -2354,9 +2358,11 @@ static Token *build_ext_token(const char *name, size_t name_len,
 	}
 	t->name= strdup(lcname);
 	/* Store original-cased tag name for toString() parity with JS */
-	t->data.ext.name= strndup(name, name_len);
+	char *ext_name = strndup(name, name_len);
+	t->data.ext.name = (sz_string_view_t){ .start = ext_name, .length = ext_name ? name_len : 0 };
 	if(closing && closing_len > 0) {
-		t->data.ext.closing= strndup(closing, closing_len);
+		char *ext_closing = strndup(closing, closing_len);
+		t->data.ext.closing = (sz_string_view_t){ .start = ext_closing, .length = ext_closing ? closing_len : 0 };
 	}
 
 	/* Build sub-tokens */
@@ -2456,7 +2462,9 @@ static Token *build_include_token(const char *tag_name, size_t tag_name_len,
 
 	/* closing tag name — NULL means unclosed (JS TagPairToken.closed = false) */
 	if(closing && closing_len > 0) {
-		t->data.include.closing= str_trim_lc(closing, closing_len);
+		char *include_closing= str_trim_lc(closing, closing_len);
+		t->data.include.closing = (sz_string_view_t){ .start = include_closing,
+			.length = include_closing ? strlen(include_closing) : 0 };
 	}
 
 	accum_push(accum, t);

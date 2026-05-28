@@ -121,14 +121,14 @@ static Token *build_ext_link_token(Token *url_tok,
 	Token *ext= token_new(TOKEN_EXT_LINK, "ext-link");
 	if(!ext) return NULL;
 	/* store separator as owned string for now (refactor later to use tokens arena) */
-	ext->data.ext_link.space= malloc(space_len + 1);
-	if(!ext->data.ext_link.space) {
+    char *space_owned = malloc(space_len + 1);
+    if(!space_owned) {
 		token_free(ext);
 		return NULL;
 	}
-    if(space && space_len > 0) sz_copy(ext->data.ext_link.space, space, space_len);
-	ext->data.ext_link.space[space_len]= '\0';
-	ext->data.ext_link.space_len= space_len; /* Cache length to avoid strlen() during serialization */
+    if(space && space_len > 0) sz_copy(space_owned, space, space_len);
+    space_owned[space_len]= '\0';
+    ext->data.ext_link.space = (sz_string_view_t){ .start = space_owned, .length = space_len };
 
 	token_append_child(ext, url_tok);
 

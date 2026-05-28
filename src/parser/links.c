@@ -178,15 +178,18 @@ static Token *make_image_param_token(const char *name, Accum *accum) {
 
 static void set_image_param_syntax(Token *param, const char *syntax) {
 	if(!param || !syntax) return;
-	param->data.image_param.raw_syntax= strdup(syntax);
+	char *owned = strdup(syntax);
+	if(!owned) return;
+	param->data.image_param.raw_syntax = (sz_string_view_t){ .start = owned, .length = strlen(owned) };
 }
 
 static void set_image_param_syntax_n(Token *param, const char *syntax, size_t syntax_len) {
 	if(!param || !syntax) return;
-	param->data.image_param.raw_syntax= malloc(syntax_len + 1);
-	assert(param->data.image_param.raw_syntax);
-	sz_copy(param->data.image_param.raw_syntax, syntax, syntax_len);
-	param->data.image_param.raw_syntax[syntax_len]= '\0';
+	char *owned = malloc(syntax_len + 1);
+	assert(owned);
+	sz_copy(owned, syntax, syntax_len);
+	owned[syntax_len]= '\0';
+	param->data.image_param.raw_syntax = (sz_string_view_t){ .start = owned, .length = syntax_len };
 }
 
 static bool match_img_syntax(const char *seg, size_t seg_len,

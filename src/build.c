@@ -79,11 +79,13 @@ static void append_key_token_repr_tb(const Token *t, ThreadBuf *tb) {
 	}
 
 	if(t->type == TOKEN_EXT) {
-		const char *ext_tag= t->data.ext.name ? t->data.ext.name : t->name;
-		const char *ext_closing= t->data.ext.closing ? t->data.ext.closing : ext_tag;
+		const char *ext_tag= t->data.ext.name.start ? t->data.ext.name.start : t->name;
+		size_t ext_tag_len= t->data.ext.name.start ? t->data.ext.name.length : (t->name ? strlen(t->name) : 0);
+		const char *ext_closing= t->data.ext.closing.start ? t->data.ext.closing.start : ext_tag;
+		size_t ext_closing_len= t->data.ext.closing.start ? t->data.ext.closing.length : ext_tag_len;
 
 		wiki_thread_buf_putc(tb, '<');
-		if(ext_tag) wiki_thread_buf_append(tb, (sz_string_view_t){ ext_tag, strlen(ext_tag) });
+		if(ext_tag) wiki_thread_buf_append(tb, (sz_string_view_t){ ext_tag, ext_tag_len });
 		if(t->child_count > 0) {
 			const Child *c= &t->children[0];
 			if(c->is_text) {
@@ -107,7 +109,7 @@ static void append_key_token_repr_tb(const Token *t, ThreadBuf *tb) {
 			}
 		}
 		wiki_thread_buf_append(tb, (sz_string_view_t){ "</", 2 });
-		if(ext_closing) wiki_thread_buf_append(tb, (sz_string_view_t){ ext_closing, strlen(ext_closing) });
+		if(ext_closing) wiki_thread_buf_append(tb, (sz_string_view_t){ ext_closing, ext_closing_len });
 		wiki_thread_buf_putc(tb, '>');
 		return;
 	}
@@ -121,8 +123,8 @@ static void append_key_token_repr_tb(const Token *t, ThreadBuf *tb) {
 				append_key_token_repr_tb(c->token, tb);
 			}
 		}
-		if(t->data.ext_attr.equal) {
-			wiki_thread_buf_append(tb, (sz_string_view_t){ t->data.ext_attr.equal, strlen(t->data.ext_attr.equal) });
+		if(t->data.ext_attr.equal.start) {
+			wiki_thread_buf_append(tb, t->data.ext_attr.equal);
 			if(t->data.ext_attr.quote_open) wiki_thread_buf_putc(tb, t->data.ext_attr.quote_open);
 			if(t->child_count > 1) {
 				const Child *c= &t->children[1];
@@ -179,11 +181,12 @@ static void append_key_token_repr_tb(const Token *t, ThreadBuf *tb) {
 	}
 
 	if(t->type == TOKEN_HTML) {
-		const char *tag= t->data.html.orig_tag ? t->data.html.orig_tag : t->name;
+		const char *tag= t->data.html.orig_tag.start ? t->data.html.orig_tag.start : t->name;
+		size_t tag_len= t->data.html.orig_tag.start ? t->data.html.orig_tag.length : (t->name ? strlen(t->name) : 0);
 		if(t->data.html.closing) {
 			wiki_thread_buf_putc(tb, '<');
 			wiki_thread_buf_putc(tb, '/');
-			if(tag) wiki_thread_buf_append(tb, (sz_string_view_t){ tag, strlen(tag) });
+			if(tag) wiki_thread_buf_append(tb, (sz_string_view_t){ tag, tag_len });
 			if(t->child_count > 0) {
 				const Child *c= &t->children[0];
 				if(c->is_text) {
@@ -201,7 +204,7 @@ static void append_key_token_repr_tb(const Token *t, ThreadBuf *tb) {
 		}
 
 		wiki_thread_buf_putc(tb, '<');
-		if(tag) wiki_thread_buf_append(tb, (sz_string_view_t){ tag, strlen(tag) });
+		if(tag) wiki_thread_buf_append(tb, (sz_string_view_t){ tag, tag_len });
 		if(t->child_count > 0) {
 			const Child *c= &t->children[0];
 			if(c->is_text) {
@@ -229,12 +232,12 @@ static void append_key_token_repr_tb(const Token *t, ThreadBuf *tb) {
 			}
 
 			if(t->child_count == 1) {
-				if(t->data.ext_link.space) {
-					wiki_thread_buf_append(tb, (sz_string_view_t){ t->data.ext_link.space, strlen(t->data.ext_link.space) });
+				if(t->data.ext_link.space.start) {
+					wiki_thread_buf_append(tb, t->data.ext_link.space);
 				}
 			} else {
-				if(t->data.ext_link.space) {
-					wiki_thread_buf_append(tb, (sz_string_view_t){ t->data.ext_link.space, strlen(t->data.ext_link.space) });
+				if(t->data.ext_link.space.start) {
+					wiki_thread_buf_append(tb, t->data.ext_link.space);
 				} else {
 					wiki_thread_buf_putc(tb, ' ');
 				}

@@ -66,43 +66,43 @@ void token_append_child(Token *t, Token *child) {
 static void free_token_data(Token *t) {
 	switch(t->type) {
 	case TOKEN_EXT_ATTR:
-		free(t->data.ext_attr.equal);
+		free((void *)t->data.ext_attr.equal.start);
 		break;
 	case TOKEN_PLAIN:
 		if(t->type_name && strcmp(t->type_name, "image-parameter") == 0) {
-			free(t->data.image_param.raw_syntax);
+			free((void *)t->data.image_param.raw_syntax.start);
 		}
 		break;
 	case TOKEN_TD:
-		free(t->data.td.inner_syntax);
+		free((void *)t->data.td.inner_syntax.start);
 		break;
 	case TOKEN_HTML:
-		free(t->data.html.orig_tag);
+		free((void *)t->data.html.orig_tag.start);
 		break;
 	case TOKEN_REDIRECT:
-		free(t->data.redirect.pre);
-		free(t->data.redirect.post);
-		free(t->data.redirect.link);
-		free(t->data.redirect.display);
+		free((void *)t->data.redirect.pre.start);
+		free((void *)t->data.redirect.post.start);
+		free((void *)t->data.redirect.link.start);
+		free((void *)t->data.redirect.display.start);
 		break;
 	case TOKEN_EXT_LINK:
-		free(t->data.ext_link.space);
+		free((void *)t->data.ext_link.space.start);
 		break;
 	case TOKEN_EXT:
-		free(t->data.ext.name);
-		free(t->data.ext.attr);
-		free(t->data.ext.inner);
-		free(t->data.ext.closing);
+		free((void *)t->data.ext.name.start);
+		free((void *)t->data.ext.attr.start);
+		free((void *)t->data.ext.inner.start);
+		free((void *)t->data.ext.closing.start);
 		break;
 	case TOKEN_TRANSCLUDE:
-		free(t->data.transclude.modifier);
+		free((void *)t->data.transclude.modifier.start);
 		break;
 	case TOKEN_INCLUDE:
 	case TOKEN_NOINCLUDE:
-		free(t->data.include.tag);
-		free(t->data.include.attr);
-		free(t->data.include.inner);
-		free(t->data.include.closing);
+		free((void *)t->data.include.tag.start);
+		free((void *)t->data.include.attr.start);
+		free((void *)t->data.include.inner.start);
+		free((void *)t->data.include.closing.start);
 		break;
 	default:
 		break;
@@ -194,10 +194,12 @@ static void token_to_string_rec(const Token *t, ThreadBuf *tb) {
 
 	case TOKEN_EXT: {
 		/* Use original-cased tag name for serialization (JS parity) */
-		const char *ext_tag= t->data.ext.name ? t->data.ext.name : t->name;
-		const char *ext_closing= t->data.ext.closing ? t->data.ext.closing : ext_tag;
+		const char *ext_tag= t->data.ext.name.start ? t->data.ext.name.start : t->name;
+		size_t ext_tag_len= t->data.ext.name.start ? t->data.ext.name.length : (t->name ? strlen(t->name) : 0);
+		const char *ext_closing= t->data.ext.closing.start ? t->data.ext.closing.start : ext_tag;
+		size_t ext_closing_len= t->data.ext.closing.start ? t->data.ext.closing.length : ext_tag_len;
 		thread_buf_append_char(tb, '<');
-		if(ext_tag) thread_buf_append(tb, ext_tag, strlen(ext_tag));
+		if(ext_tag) thread_buf_append(tb, ext_tag, ext_tag_len);
 		if(t->child_count > 0) {
 			const Child *c= &t->children[0];
 			if(c->is_text)
@@ -218,7 +220,7 @@ static void token_to_string_rec(const Token *t, ThreadBuf *tb) {
 				token_to_string_rec(c->token, tb);
 		}
 		thread_buf_append(tb, "</", 2);
-		if(ext_closing) thread_buf_append(tb, ext_closing, strlen(ext_closing));
+		if(ext_closing) thread_buf_append(tb, ext_closing, ext_closing_len);
 		thread_buf_append_char(tb, '>');
 		return;
 	}
@@ -232,8 +234,8 @@ static void token_to_string_rec(const Token *t, ThreadBuf *tb) {
 			else
 				token_to_string_rec(c->token, tb);
 		}
-		if(t->data.ext_attr.equal) {
-			thread_buf_append(tb, t->data.ext_attr.equal, strlen(t->data.ext_attr.equal));
+		if(t->data.ext_attr.equal.start) {
+			thread_buf_append(tb, t->data.ext_attr.equal.start, t->data.ext_attr.equal.length);
 			if(t->data.ext_attr.quote_open)
 				thread_buf_append_char(tb, t->data.ext_attr.quote_open);
 			if(t->child_count > 1) {
@@ -337,14 +339,15 @@ static void token_to_string_rec(const Token *t, ThreadBuf *tb) {
 				thread_buf_append(tb, c->text, c->text_len);
 			} else if(t->type == TOKEN_FILE && c->token && c->token->type == TOKEN_PLAIN && c->token->type_name && strcmp(c->token->type_name, "image-parameter") == 0) {
 				const Token *p= c->token;
-				if(p->data.image_param.raw_syntax) {
-					const char *syntax= p->data.image_param.raw_syntax;
+				if(p->data.image_param.raw_syntax.start) {
+					const char *syntax= p->data.image_param.raw_syntax.start;
+					size_t syntax_len= p->data.image_param.raw_syntax.length;
 					const char *slot= strstr(syntax, "$1");
 					if(!slot) {
-						thread_buf_append(tb, syntax, strlen(syntax));
+						thread_buf_append(tb, syntax, syntax_len);
 					} else {
 						size_t pre_len= (size_t)(slot - syntax);
-						size_t post_len= strlen(slot + 2);
+						size_t post_len= syntax_len - pre_len - 2;  /* Use cached length to compute post_len */
 						thread_buf_append(tb, syntax, pre_len);
 						for(size_t pi= 0; pi < p->child_count; pi++) {
 							const Child *pc= &p->children[pi];
@@ -382,8 +385,8 @@ static void token_to_string_rec(const Token *t, ThreadBuf *tb) {
 		/* External link: [url label] or [url] */
 		thread_buf_append_char(tb, '[');
 		if(t->child_count > 0) {
-			const char *space= t->data.ext_link.space;
-			size_t space_len= t->data.ext_link.space_len;  /* Use cached length */
+			const char *space= t->data.ext_link.space.start;
+			size_t space_len= t->data.ext_link.space.length;
 			const Child *c= &t->children[0];
 			if(c->is_text)
 				thread_buf_append(tb, c->text, c->text_len);
@@ -431,8 +434,8 @@ static void token_to_string_rec(const Token *t, ThreadBuf *tb) {
 	case TOKEN_TRANSCLUDE: {
 		/* Template/magic-word: {{name|params}} */
 		thread_buf_append(tb, "{{", 2);
-		if(t->data.transclude.modifier) {
-			thread_buf_append(tb, t->data.transclude.modifier, t->data.transclude.modifier_len);  /* Use cached length */
+		if(t->data.transclude.modifier.start) {
+			thread_buf_append(tb, t->data.transclude.modifier.start, t->data.transclude.modifier.length);
 		}
 		bool is_magic_word= (t->type_name && strcmp(t->type_name, "magic-word") == 0);
 		for(size_t i= 0; i < t->child_count; i++) {
@@ -493,10 +496,11 @@ static void token_to_string_rec(const Token *t, ThreadBuf *tb) {
 	case TOKEN_HTML: {
 		/* HTML tags: opening, attrs, self-closing, or closing */
 		/* Use orig_tag (original case) for round-trip toString, like JS this.tag */
-		const char *tag_str= t->data.html.orig_tag ? t->data.html.orig_tag : t->name;
+		const char *tag_str= t->data.html.orig_tag.start ? t->data.html.orig_tag.start : t->name;
+		size_t tag_len= t->data.html.orig_tag.start ? t->data.html.orig_tag.length : (t->name ? strlen(t->name) : 0);
 		if(t->data.html.closing) {
 			thread_buf_append(tb, "</", 2);
-			if(tag_str) thread_buf_append(tb, tag_str, strlen(tag_str));
+			if(tag_str) thread_buf_append(tb, tag_str, tag_len);
 			if(t->child_count > 0) {
 				const Child *c= &t->children[0];
 				if(c->is_text)
@@ -512,7 +516,7 @@ static void token_to_string_rec(const Token *t, ThreadBuf *tb) {
 			return;
 		}
 		thread_buf_append_char(tb, '<');
-		if(tag_str) thread_buf_append(tb, tag_str, strlen(tag_str));
+		if(tag_str) thread_buf_append(tb, tag_str, tag_len);
 		if(t->child_count > 0) {
 			const Child *c= &t->children[0];
 			if(c->is_text)
@@ -569,8 +573,8 @@ static void token_to_string_rec(const Token *t, ThreadBuf *tb) {
 				thread_buf_append(tb, ac->text, ac->text_len);
 			}
 		}
-		if(t->data.td.inner_syntax) {
-			thread_buf_append(tb, t->data.td.inner_syntax, t->data.td.inner_syntax_len);  /* Use cached length */
+		if(t->data.td.inner_syntax.start) {
+			thread_buf_append(tb, t->data.td.inner_syntax.start, t->data.td.inner_syntax.length);
 		}
 		if(t->child_count > 2) {
 			const Child *c= &t->children[2];
@@ -600,9 +604,9 @@ static void token_to_string_rec(const Token *t, ThreadBuf *tb) {
 			else
 				token_to_string_rec(c->token, tb);
 		}
-		if(t->data.include.closing) {
+		if(t->data.include.closing.start) {
 			thread_buf_append(tb, "</", 2);
-			thread_buf_append(tb, t->data.include.closing, strlen(t->data.include.closing));
+			thread_buf_append(tb, t->data.include.closing.start, t->data.include.closing.length);
 			thread_buf_append_char(tb, '>');
 		}
 		return;
@@ -629,7 +633,7 @@ static void token_to_string_rec(const Token *t, ThreadBuf *tb) {
 
 	case TOKEN_REDIRECT: {
 		/* Redirect: pre + children.join(sep) + post */
-		if(t->data.redirect.pre) thread_buf_append(tb, t->data.redirect.pre, strlen(t->data.redirect.pre));
+		if(t->data.redirect.pre.start) thread_buf_append(tb, t->data.redirect.pre.start, t->data.redirect.pre.length);
 		for(size_t i= 0; i < t->child_count; i++) {
 			if(i > 0 && t->sep != '\0') thread_buf_append_char(tb, t->sep);
 			const Child *c= &t->children[i];
@@ -638,7 +642,7 @@ static void token_to_string_rec(const Token *t, ThreadBuf *tb) {
 			else
 				token_to_string_rec(c->token, tb);
 		}
-		if(t->data.redirect.post) thread_buf_append(tb, t->data.redirect.post, strlen(t->data.redirect.post));
+		if(t->data.redirect.post.start) thread_buf_append(tb, t->data.redirect.post.start, t->data.redirect.post.length);
 		return;
 	}
 

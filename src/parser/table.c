@@ -107,8 +107,9 @@ static Token *make_table_attr(const char *key, size_t key_len,
 
 	t->name= str_trim_lc(key, key_len);
 	if(equal && equal_len > 0) {
-		t->data.ext_attr.equal= build_normalize_attr_equal(equal, equal_len, accum);
-		assert(t->data.ext_attr.equal);
+		char *equal_owned= build_normalize_attr_equal(equal, equal_len, accum);
+		assert(equal_owned);
+		t->data.ext_attr.equal = (sz_string_view_t){ .start = equal_owned, .length = strlen(equal_owned) };
 	}
 	t->data.ext_attr.quote_open= quote_open;
 	t->data.ext_attr.quote_close= quote_close;

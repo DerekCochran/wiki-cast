@@ -753,8 +753,8 @@ static Token *build_template_token(const char **parts_restored, const size_t *pa
 					if(lead < title_part_len && parse_sentinel_at_allowed(title_part, title_part_len, lead, "s", 1, &s_sl)) {
 			size_t mod_len = lead + s_sl;
 			size_t modifier_len = 0;
-			t->data.transclude.modifier = build_transclude_modifier(title_part, title_part_len, mod_len, accum, &modifier_len);
-			t->data.transclude.modifier_len = modifier_len;
+			char *modifier = build_transclude_modifier(title_part, title_part_len, mod_len, accum, &modifier_len);
+			t->data.transclude.modifier = (sz_string_view_t){ .start = modifier, .length = modifier ? modifier_len : 0 };
 			title_part += mod_len;
 			title_part_len -= mod_len;
 		} else {
@@ -784,8 +784,8 @@ static Token *build_template_token(const char **parts_restored, const size_t *pa
 					}
 					size_t mod_len= prefix_len + 1 + mt_len;
 					size_t modifier_len = 0;
-					t->data.transclude.modifier= build_transclude_modifier(title_part, title_part_len, mod_len, accum, &modifier_len);
-					t->data.transclude.modifier_len = modifier_len;
+					char *modifier= build_transclude_modifier(title_part, title_part_len, mod_len, accum, &modifier_len);
+					t->data.transclude.modifier = (sz_string_view_t){ .start = modifier, .length = modifier ? modifier_len : 0 };
 					title_part= title_part + mod_len;
 					title_part_len-= mod_len;
 				}

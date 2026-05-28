@@ -1066,12 +1066,13 @@ static Token *parse_gallery_image_line(const char *line, size_t line_len,
 			if(!new_name) continue;
 			free(param->name);
 			param->name= new_name;
-			free(param->data.image_param.raw_syntax);
-			param->data.image_param.raw_syntax= malloc(p + 8);
-			if(param->data.image_param.raw_syntax) {
-				if(p > 0) sz_copy(param->data.image_param.raw_syntax, first->text, p);
-				sz_copy(param->data.image_param.raw_syntax + p, "link=$1", 7);
-				param->data.image_param.raw_syntax[p + 7]= '\0';
+			free((void *)param->data.image_param.raw_syntax.start);
+			char *owned_syntax= malloc(p + 8);
+			if(owned_syntax) {
+				if(p > 0) sz_copy(owned_syntax, first->text, p);
+				sz_copy(owned_syntax + p, "link=$1", 7);
+				owned_syntax[p + 7]= '\0';
+				param->data.image_param.raw_syntax = (sz_string_view_t){ .start = owned_syntax, .length = p + 7 };
 			}
 
 			size_t prefix_len= p + 5;
