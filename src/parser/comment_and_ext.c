@@ -900,13 +900,10 @@ static Token *build_pre_noinclude_token(const char *substr, size_t sub_len, Accu
 static bool find_ci_lit(const char *s, size_t len, size_t from,
 							 const char *lit, size_t lit_len, size_t *out_pos) {
 	if(!s || !lit || lit_len == 0 || from >= len) return false;
-	for(size_t i= from; i + lit_len <= len; i++) {
-		if(str_ci_eq_n(s + i, lit, lit_len)) {
-			if(out_pos) *out_pos= i;
-			return true;
-		}
-	}
-	return false;
+	const char *found = str_istr(s + from, len - from, lit, lit_len);
+	if(!found) return false;
+	if(out_pos) *out_pos = (size_t)(found - s);
+	return true;
 }
 
 static Token *build_pre_inner_token(const char *inner_str, size_t inner_len, Accum *accum) {
