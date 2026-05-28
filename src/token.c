@@ -432,7 +432,7 @@ static void token_to_string_rec(const Token *t, ThreadBuf *tb) {
 		/* Template/magic-word: {{name|params}} */
 		thread_buf_append(tb, "{{", 2);
 		if(t->data.transclude.modifier) {
-			thread_buf_append(tb, t->data.transclude.modifier, strlen(t->data.transclude.modifier));
+			thread_buf_append(tb, t->data.transclude.modifier, t->data.transclude.modifier_len);  /* Use cached length */
 		}
 		bool is_magic_word= (t->type_name && strcmp(t->type_name, "magic-word") == 0);
 		for(size_t i= 0; i < t->child_count; i++) {

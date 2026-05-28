@@ -604,11 +604,17 @@ static const char *parser_function_canonical(const ParserConfig *cfg, const char
 /* Build an owned, printable modifier string from title_part[0..mod_len),
  * expanding c/n/s sentinels via accum token toString (JS afterBuild parity). */
 static char *build_transclude_modifier(const char *title_part, size_t title_part_len,
-																 size_t mod_len, const Accum *accum) {
-	if(!title_part || mod_len == 0 || mod_len > title_part_len) return NULL;
+																 size_t mod_len, const Accum *accum, size_t *out_len) {
+	if(!title_part || mod_len == 0 || mod_len > title_part_len) {
+		if(out_len) *out_len = 0;
+		return NULL;
+	}
 
 	ThreadBuf *mod_tb = wiki_thread_buf_acquire_scratch();
-	if(!mod_tb) return NULL;
+	if(!mod_tb) {
+		if(out_len) *out_len = 0;
+		return NULL;
+	}
 	mod_tb->len = 0;
 
 	size_t i = 0;
@@ -647,6 +653,9 @@ static char *build_transclude_modifier(const char *title_part, size_t title_part
 	if(modifier) {
 		sz_copy(modifier, mod_tb->buf, mod_tb->len);
 		modifier[mod_tb->len] = '\0';
+		if(out_len) *out_len = mod_tb->len;
+	} else {
+		if(out_len) *out_len = 0;
 	}
 
 	wiki_thread_buf_release_scratch(mod_tb);
@@ -743,7 +752,9 @@ static Token *build_template_token(const char **parts_restored, const size_t *pa
 		size_t s_sl = 0;
 					if(lead < title_part_len && parse_sentinel_at_allowed(title_part, title_part_len, lead, "s", 1, &s_sl)) {
 			size_t mod_len = lead + s_sl;
-			t->data.transclude.modifier = build_transclude_modifier(title_part, title_part_len, mod_len, accum);
+			size_t modifier_len = 0;
+			t->data.transclude.modifier = build_transclude_modifier(title_part, title_part_len, mod_len, accum, &modifier_len);
+			t->data.transclude.modifier_len = modifier_len;
 			title_part += mod_len;
 			title_part_len -= mod_len;
 		} else {
@@ -772,7 +783,9 @@ static Token *build_template_token(const char **parts_restored, const size_t *pa
 						break;
 					}
 					size_t mod_len= prefix_len + 1 + mt_len;
-					t->data.transclude.modifier= build_transclude_modifier(title_part, title_part_len, mod_len, accum);
+					size_t modifier_len = 0;
+					t->data.transclude.modifier= build_transclude_modifier(title_part, title_part_len, mod_len, accum, &modifier_len);
+					t->data.transclude.modifier_len = modifier_len;
 					title_part= title_part + mod_len;
 					title_part_len-= mod_len;
 				}

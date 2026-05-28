@@ -128,7 +128,8 @@ typedef union {
         bool magic_pipe;  /* LinkBaseToken delimiter was \0\d+!\x7F ({{!}}) */
     } link;
     struct {
-        char *modifier;   /* TranscludeToken modifier prefix, e.g. "subst:" */
+        char *modifier;        /* TranscludeToken modifier prefix, e.g. "subst:" */
+        size_t modifier_len;   /* Cached length to avoid repeated strlen() during serialization */
     } transclude;
 } TokenData;
 
