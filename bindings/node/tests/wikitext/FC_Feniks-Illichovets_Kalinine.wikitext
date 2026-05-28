@@ -1,0 +1,225 @@
+{{Use mdy dates|date=September 2011}}
+{{Infobox football club
+| clubname = Feniks-Illichovets Kalinine
+| image    = 
+| fullname = Futbol′nyy klub Feniks-Illichovets Kalinine
+| nickname =
+| founded  = 2000
+| dissolved = 2011
+| ground   = Stadium Yunist, [[Kalinine, Krasnohvardiyske Raion|Kalinine]], [[Crimea]]
+| capacity = 1,050
+| chairman =
+| mgrtitle = Head Coach
+| manager  =
+| pattern_la1 =_shoulder stripes black stripes
+| pattern_b1  =_adidas black piping
+| pattern_ra1 =_shoulder stripes black stripes
+| pattern_sh1 =_adidaswhite
+| pattern_so1 =_3_stripes_black
+| leftarm1=FFFFFF|body1=FFFFFF|rightarm1=FFFFFF|shorts1=000000|socks1=FFFFFF
+| pattern_la2 =
+| pattern_b2  =
+| pattern_ra2 =
+| leftarm2    =
+| body2       =
+| rightarm2   =
+| shorts2     =
+| socks2      =
+| league   =
+| season   = [[2010–11 Ukrainian First League|2010–11]]
+| position = [[Ukrainian First League]], 18th
+}}
+<!-- Deleted image removed: [[File:Feniks-Illich.png|80px|right|thumb|Previous club's Emblem]] -->
+'''FC Feniks-Illichovets Kalinine''' ({{langx|uk|Фенікс-Іллічовець}} (also ''Фенікс-Іллічiвець''); {{langx|ru|link=no|Феникс-Ильичёвец}}) was a [[Ukraine|Ukrainian]] [[football club]] based in [[Kalinine, Krasnohvardiiske Raion|Kalinine]] which is located south-west of [[Dzhankoy]] (in the [[Crimea]] region).
+
+==History==
+The team was winner of the Crimea championship in 2005, its bronze medallist in 2004 and 2006 and silver medallist of the Ukrainian amateur championship in 2005. In 2006/07 season they played in the [[Ukrainian Second League]] (group B), became runners-up and were promoted to the First League.
+
+They participated in the [[Ukrainian First League]] until the club folded and withdrew from the competition during the winter break of the [[2010–11 Ukrainian First League]] season.<ref name="Feniks_withdraw">{{cite news |url=http://pfl.ua/football_news.php?readmore=5049 |title=Фенікс-Іллічовець" Калініно знято зі змагань ("Feniks-Illichovets Kalinino withdraws from the competition)) |date=2011-03-17 |publisher=PFL |access-date=2011-03-17 |language=uk |archive-url=https://web.archive.org/web/20120523192100/http://pfl.ua/football_news.php?readmore=5049 |archive-date=May 23, 2012 |url-status=dead }}</ref>
+
+The club attempted to reform at the end of 2010 as FC Zhemchuzhyna (''Perlyna''&nbsp;– in [[Ukrainian language|Ukrainian]]), in [[Yalta]], Ukraine but the [[Professional Football League of Ukraine|PFL]] did not allow for the transfer to occur.<ref name="Feniks_withdraw"/>
+
+The club's president was Andrey Ryumshin.
+
+==League and cup history (Ukraine)==
+
+:{|class="wikitable"
+! Season
+! Div.
+! Pos.
+! Pl.
+! W
+! D
+! L
+! GS
+! GA
+! P
+![[Ukrainian Cup|Domestic Cup]]
+!colspan=2|Europe
+!Notes
+|- align=center bgcolor=SteelBlue
+|align=center|2003
+|align=center|'''5th''' Crimean Championship
+|align=center|'''4'''<sub>/15</sub>
+|align=center|28
+|align=center|17
+|align=center|5
+|align=center|6
+|align=center|43
+|align=center|28
+|align=center|'''56'''
+|align=center|
+|align=center|
+|align=center|
+|align=center|<ref name="ffru" >https://footballfacts.ru/club/4626-fenikskalinino «Феникс-Ильичёвец» Кали[нино (Не существует)], footballfacts.ru</ref>
+|- bgcolor=SteelBlue
+|align=center|2004
+|align=center|'''5th''' Crimean Championship
+|align=center bgcolor=tan|'''3'''<sub>/15</sub>
+|align=center|28
+|align=center|21
+|align=center|2
+|align=center|5
+|align=center|58
+|align=center|30
+|align=center|'''65'''
+|align=center|
+|align=center|
+|align=center|
+|align=center|<ref name="ffru" />
+|- bgcolor=SteelBlue
+|align=center|2005
+|align=center|'''5th''' Crimean Championship
+|align=center bgcolor=gold|'''1'''<sub>/14</sub>
+|align=center|26
+|align=center|21
+|align=center|3
+|align=center|2
+|align=center|90
+|align=center|22
+|align=center|'''66'''
+|align=center|
+|align=center|
+|align=center|
+|align=center bgcolor=lightgreen|Admitted to Amateur League<ref name="ffru" />
+|- bgcolor=SteelBlue
+|align=center|[[2005 Ukrainian Football Amateur League|2005]]
+|align=center|'''4th''' [[Ukrainian Football Amateur League|Amateur League Gr. 2]]
+|align=center bgcolor=gold|'''1'''<sub>/5</sub>
+|align=center|6
+|align=center|5
+|align=center|0
+|align=center|1
+|align=center|15
+|align=center|5
+|align=center|'''15'''
+|align=center|
+|align=center|
+|align=center|
+|align=center bgcolor=lightgreen|Final (2nd, admitted)
+|- align=center bgcolor=PowderBlue
+|align=center|[[Ukrainian Second League 2006-07|2006–07]]
+|align=center|'''3rd''' [[Ukrainian Second League|Second League Gr. B]]
+|align=center bgcolor=silver|'''2'''<sub>/16</sub>
+|align=center|28
+|align=center|17
+|align=center|6
+|align=center|5
+|align=center|42
+|align=center|22
+|align=center|'''57'''
+|align=center|{{frac|1|32}} finals
+|align=center|
+|align=center|
+|align=center bgcolor=lightgreen|Promoted
+|- align=center bgcolor=LightCyan
+|align=center|[[Ukrainian First League 2007-08|2007–08]]
+|align=center|'''2nd''' [[Ukrainian Second League|First League]]
+|align=center|'''16'''<sub>/20</sub>
+|align=center|38
+|align=center|11
+|align=center|8
+|align=center|19
+|align=center|35
+|align=center|56
+|align=center|'''41'''
+|align=center|{{frac|1|32}} finals
+|align=center|
+|align=center|
+|align=center|
+|- bgcolor=LightCyan
+|align=center|[[Ukrainian First League 2008-09|2008–09]]
+|align=center|'''2nd''' [[Ukrainian Second League|First League]]
+|align=center|'''13'''<sub>/18</sub>
+|align=center|32
+|align=center|9
+|align=center|11
+|align=center|12
+|align=center|33
+|align=center|38
+|align=center|'''38'''
+|align=center|{{frac|1|8}} finals
+|align=center|
+|align=center|
+|align=center|
+|- bgcolor=LightCyan
+|align=center|[[Ukrainian First League 2009–10|2009–10]]
+|align=center|'''2nd''' [[Ukrainian Second League|First League]]
+|align=center|'''14'''<sub>/18</sub>
+|align=center|34
+|align=center|10
+|align=center|7
+|align=center|17
+|align=center|39
+|align=center|52
+|align=center|'''37'''
+|align=center|{{frac|1|8}} finals
+|align=center|
+|align=center|
+|align=center|
+|- bgcolor=LightCyan
+|align=center|[[2010–11 Ukrainian First League|2010–11]]
+|align=center|'''2nd''' [[Ukrainian Second League|First League]]
+|align=center|'''18'''<sub>/18</sub>
+|align=center|34
+|align=center|3
+|align=center|2
+|align=center|29
+|align=center|17
+|align=center|48
+|align=center|'''8'''
+|align=center|{{frac|1|8}} finals
+|align=center|
+|align=center|
+|align=center bgcolor=lightgrey|−3<ref name="deduct_3">{{cite news|url=http://www.ua-football.com/ukrainian/news/4d78d6c7.html |title=ДК ПФЛ позбавив шість клубів по 3 очки (Disciplinary Committee deducts 3 points from 6 clubs)| date=2011-03-10 | publisher=ua-football.com | access-date=2011-06-20|quote=Deducted 3 points by the PFL due to failure of payment of league dues. (''February 9, 2011'')|language=uk}}</ref>&nbsp;– withdrew<ref name="Feniks_withdraw"/>
+|}
+
+==Head coaches==
+{{Expand section|date=August 2011}}
+*{{flagicon|Ukraine}} [[Oleksandr Haidash]] (2008–09)
+*{{flagicon|Ukraine}} [[Ivan Maruschak]] (2010–2011)<ref>{{cite news |url=http://pfl.ua/football_news.php?readmore=5049 |title="Своїх талантів намагаємося не втрачати" ("We will try not to lose our talents") |date=2010-12-30 |publisher=PFL |access-date=2010-12-30 |language=uk |archive-url=https://web.archive.org/web/20120523192100/http://pfl.ua/football_news.php?readmore=5049 |archive-date=May 23, 2012 |url-status=dead }}</ref>
+
+==Honours==
+*'''[[Republican Football Federation of Crimea|Crimea championship]]''' (Ukrainian Lower League Tier)
+:: [[File:Gold medal icon.svg|15px]] 2005
+
+==See also==
+* [[FC Yalos Yalta]]
+* [[FC Zhemchuzhyna Yalta]]
+
+==References==
+{{reflist|30em}}
+
+{{FC Feniks-Illichovets Kalinine managers}}
+
+{{DEFAULTSORT:Feniks-Illichovets Kalinine}}
+[[Category:FC Feniks-Illichovets Kalinine| ]]
+[[Category:Association football clubs established in 2000]]
+[[Category:Association football clubs disestablished in 2010]]
+[[Category:Defunct football clubs in Crimea|Feniks-Illichovets Kalinine]]
+[[Category:2000 establishments in Ukraine]]
+[[Category:2010 disestablishments in Ukraine]]
+[[Category:Krasnohvardiiske Raion]]
+
+
+{{Ukraine-footyclub-stub}}

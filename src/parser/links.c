@@ -204,9 +204,11 @@ static bool syntax_ends_with_slot(const char *syntax) {
 static char *build_img_syntax_template(const char *seg_ptr, size_t seg_len,
 																			 size_t lead_ws_len, size_t trail_ws_len,
 																			 const char *syntax,
-																			 bool slot_at_end) {
+																		 bool slot_at_end,
+																		 size_t trail_prefix_skip) {
 	size_t syntax_len= strlen(syntax);
-	size_t tmpl_trail_ws_len= slot_at_end ? 0 : trail_ws_len;
+	if(trail_prefix_skip > trail_ws_len) trail_prefix_skip= trail_ws_len;
+	size_t tmpl_trail_ws_len= slot_at_end ? 0 : (trail_ws_len - trail_prefix_skip);
 	size_t out_len= lead_ws_len + syntax_len + tmpl_trail_ws_len;
 	char *out= malloc(out_len + 1);
 	if(!out) return NULL;
@@ -215,7 +217,7 @@ static char *build_img_syntax_template(const char *seg_ptr, size_t seg_len,
 	sz_copy(out + lead_ws_len, syntax, syntax_len);
 	if(tmpl_trail_ws_len > 0) {
 		memcpy(out + lead_ws_len + syntax_len,
-					 seg_ptr + seg_len - tmpl_trail_ws_len,
+				 seg_ptr + seg_len - trail_ws_len + trail_prefix_skip,
 					 tmpl_trail_ws_len);
 	}
 	out[out_len]= '\0';
@@ -820,6 +822,7 @@ static void append_file_image_params(Token *file_tok,
 						size_t vl= cap_len;
 						bool slot_at_end= syntax_ends_with_slot(syntax);
 						bool trail_has_line_break= false;
+						size_t trail_same_line_ws_len= trail_ws_len;
 						if(slot_at_end) {
 							/* JS parity: trailing same-line spaces belong to a $1-at-end value,
 							 * but newline indentation before the next pipe does not. */
@@ -827,12 +830,11 @@ static void append_file_image_params(Token *file_tok,
 								char ch= seg_ptr[seg_len - trail_ws_len + tw];
 								if(ch == '\n' || ch == '\r') {
 									trail_has_line_break= true;
+									trail_same_line_ws_len= tw;
 									break;
 								}
 							}
-							if(!trail_has_line_break) {
-								vl+= trail_ws_len;
-							}
+							vl+= trail_same_line_ws_len;
 						}
 						/* Note: Do NOT trim the value - JavaScript parser preserves whitespace */
 
@@ -852,9 +854,14 @@ static void append_file_image_params(Token *file_tok,
 							token_append_text_n(param, "", 0);
 						}
 
+						size_t trail_prefix_skip= (slot_at_end && trail_has_line_break)
+							? trail_same_line_ws_len
+							: 0;
 						char *syn= build_img_syntax_template(seg_ptr, seg_len,
-																								 lead_ws_len, trail_ws_len,
-																										 syntax, slot_at_end && !trail_has_line_break);
+																			 lead_ws_len, trail_ws_len,
+																					 syntax,
+																					 slot_at_end && !trail_has_line_break,
+																					 trail_prefix_skip);
 						if(syn) {
 							set_image_param_syntax(param, syn);
 							free(syn);
@@ -1344,7 +1351,7 @@ void parse_links(ThreadBuf *tb, const ParserConfig *cfg, Accum *accum,
 
 				/* Create FILE token with link-target atom */
 				Token *tok= create_link_token(TOKEN_FILE, "file", link_ptr, link_len,
-																			tok_text_ptr, tok_text_len, NULL,
+																					 tok_text_ptr, tok_text_len, delim_ptr,
 																			cfg, accum, tidy);
 				if(!tok) {
 					free(img_buf);
@@ -1487,6 +1494,7 @@ static Token *parse_inner_fragment(const char *s, size_t len, const ParserConfig
 																								 const char *page) {
 	if(!s) return NULL;
 	ThreadBuf *inner_tb = wiki_thread_buf_acquire_scratch_from_data(s, len);
+	bool has_quote_sentinel= has_sentinel_type_in_view(s, len, 'q');
 
 	if(in_file) {
 		parse_comment_and_ext(inner_tb, cfg, accum, false);
@@ -1497,7 +1505,9 @@ static Token *parse_inner_fragment(const char *s, size_t len, const ParserConfig
 		/* JS parity: file/gallery parameter text supports internal links. */
 		parse_links(inner_tb, cfg, accum, page, tidy);
 	}
-	parse_quotes(inner_tb, cfg, accum, tidy);
+	if(!has_quote_sentinel) {
+		parse_quotes(inner_tb, cfg, accum, tidy);
+	}
 	if(in_file) {
 		/* JS parity: parseExternalLinks(text, ..., true) is executed before
 		 * parameter splitting (see parse_links file branches). At this point we

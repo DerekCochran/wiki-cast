@@ -1,0 +1,126 @@
+{{Short description|Area of landscape in Scotland}}
+[[Image:Stob_Binnein.jpg|thumb|300px|[[Stob Binnein]] in the [[Loch Lomond and The Trossachs National Park]]]]
+{{National parks in the UK|sidebar=yes}}
+The '''national parks of Scotland''' ({{langx|gd|Pàirc Nàiseanta}}) are managed areas of outstanding [[landscape]] where some forms of development are restricted to preserve the landscape and [[natural environment]]. At present, Scotland has two [[national parks]]: [[Loch Lomond and The Trossachs National Park]], created in 2002, and the [[Cairngorms National Park]], created in 2003.<ref name=snh>{{cite web|url=https://snh1wfthjxuubf.devcloud.acquia-sites.com/professional-advice/safeguarding-protected-areas-and-species/protected-areas/national-designations/national-park|title=National Park|publisher=Scottish Natural Heritage|date=2017|access-date=2018-01-15|archive-date=2019-04-16|archive-url=https://web.archive.org/web/20190416095225/https://snh1wfthjxuubf.devcloud.acquia-sites.com/professional-advice/safeguarding-protected-areas-and-species/protected-areas/national-designations/national-park|url-status=dead}}</ref>
+
+Unlike the national parks of many other countries, the national parks of Scotland are not areas of uninhabited land owned by the state. The majority of the land is in the ownership of private landowners (including conservation bodies such as the [[National Trust for Scotland]]), and people continue to live and work in the parks.  Although the landscapes often appear "wild" in character,  the land is not [[wilderness area|wilderness]], as it has been worked by humans for thousands of years.<ref name=wildness>{{cite web|url=https://www.nature.scot/sites/default/files/2017-06/A150654%20-%20policy%20statement%200203-%20wildness%20in%20Scotland%27s%20countryside%20-%202003.pdf|title=Wildness in Scotland's Countryside|publisher=Scottish Natural Heritage|access-date=2018-01-16|archive-url=https://web.archive.org/web/20180117011914/https://www.nature.scot/sites/default/files/2017-06/A150654%20-%20policy%20statement%200203-%20wildness%20in%20Scotland%27s%20countryside%20-%202003.pdf|archive-date=2018-01-17|url-status=dead}}</ref> Like their English and Welsh counterparts, the national parks of Scotland are effectively "managed landscapes", and are classified as [[IUCN]] Category V Protected Landscapes because of this.<ref>{{cite web|url=http://www.nationalparks.gov.uk/students/whatisanationalpark/nationalparksareprotectedareas/iucncategories|title=The IUCN Categories|publisher=National Parks UK|date=2017|access-date=2018-01-15|archive-date=2016-12-21|archive-url=https://web.archive.org/web/20161221162957/http://www.nationalparks.gov.uk/students/whatisanationalpark/nationalparksareprotectedareas/iucncategories|url-status=dead}}</ref> National parks are only one of a [[Protected areas of Scotland|number of designations]] used to protect and conserve the landscape and natural environment of Scotland.<ref>{{cite web|url=https://snh1wfthjxuubf.devcloud.acquia-sites.com/professional-advice/safeguarding-protected-areas-and-species/protected-areas/national-designations|title=National Designations|publisher=Scottish Natural Heritage|access-date=2018-01-16|archive-date=2019-04-16|archive-url=https://web.archive.org/web/20190416171140/https://snh1wfthjxuubf.devcloud.acquia-sites.com/professional-advice/safeguarding-protected-areas-and-species/protected-areas/national-designations|url-status=dead}}</ref> Public access to all land in Scotland is governed by the [[Land Reform (Scotland) Act 2003]], which grants the public the [[freedom to roam]] on most land (and water) for activities such as [[hiking|walking]], [[camping]], [[cycling]], [[canoeing]], [[swimming]] and [[climbing]]; this right applies to land regardless of ownership or whether or not it is in a national park, providing it is exercised responsibly (as defined by the [[Scottish Outdoor Access Code]]).<ref>{{cite web|url=http://www.outdooraccess-scotland.com/sites/default/files//docs/Scottish_Outdoor_Access_Code_-_Part_1_Introduction.pdf|title=Scottish Outdoor Access Code|publisher=Scottish Natural Heritage|date=2005|access-date=2018-01-16|archive-url=https://web.archive.org/web/20150923165217/http://www.outdooraccess-scotland.com/sites/default/files//docs/Scottish_Outdoor_Access_Code_-_Part_1_Introduction.pdf|archive-date=2015-09-23|url-status=dead}}</ref>{{Biodiversity of Scotland}}
+
+==History==
+[[Image:Loch Morlich.jpg|thumb|350px|[[Loch Morlich]] in the [[Cairngorms National Park]].]]
+The concept of national parks was [[History of the National Park Service|first proposed in the United States]] in the 1860s, where [[national park]]s were established to protect [[wilderness]] areas such as [[Yosemite National Park|Yosemite]].<ref>The National Parks: Shaping the System; Harpers Ferry Center; U.S. Department of the Interior, Washington, D.C., 2004</ref> Scottish-born [[John Muir]] was early advocate for the preservation of wilderness in the United States, and is acknowledged as a leading figure in the formation of national parks in the US, as well as the conservation movement at large.<ref>{{cite book|last=Miller|first=Barbara Kiely|title=John Muir|publisher=Gareth Stevens|year=2008|page=10|isbn=0836883187}}</ref> Many other countries have since gone on to form national parks on the basis of setting aside areas of wilderness. Scotland however, lacks any such areas, as thousands of years of human activity have altered the landscape. Human settlement and activity, including [[agriculture]], historical [[deforestation]], [[overgrazing]] by [[sheep]] and [[deer]], and extensive 20th century [[afforestation]] with [[Exotic species|introduced]] tree species (particularly [[conifer]]s) have resulted in landscapes which are semi-natural.<ref name="wildness"/>
+
+Nonetheless, the idea that areas of wild or remote character should be designated to protect the environment and encourage public access grew in popularity throughout the nineteenth and early twentieth centuries.  In 1931 a commission headed by [[Christopher Addison, 1st Viscount Addison|Christopher Addison]] proposed the creation of a national park in the Cairngorms,<ref name = snh-history>{{cite web|url=http://www.snh.org.uk/strategy/natparks/sr-npc02g.asp|title=Brief History of National Parks Proposals|publisher=SNH|access-date=2018-01-15|archive-url=https://web.archive.org/web/20180116004435/http://www.snh.org.uk/strategy/natparks/sr-npc02g.asp|archive-date=2018-01-16|url-status=dead}}</ref> alongside proposals for parks in England and Wales. Following the [[Second World War]], the [[Attlee ministry|Labour government]] passed the [[National Parks and Access to the Countryside Act 1949]], which led to the creation of 10 national parks in England and Wales between 1951 and 1957. No parks were created in Scotland, however a committee, chaired by Sir Douglas Ramsay, was established to consider the issue of national parks in Scotland.  The report, published in 1945, proposed national parks in five areas: Loch Lomond & the Trossachs, the Cairngorms, Glen Coe-Ben Nevis-Black Mount, Wester Ross and Glen Strathfarrar-Glen Affric-Glen Cannich.<ref name=cairngom-history>{{cite web|url=http://cairngormslearningzone.co.uk/managing-the-park/the-national-park-family/history-leading-to-the-cairngorms-national-park/|title=History Leading to the Cairngorms National Park|publisher=Cairngorms National Park Authority|access-date=2018-01-15|archive-url=https://web.archive.org/web/20180115185119/http://cairngormslearningzone.co.uk/managing-the-park/the-national-park-family/history-leading-to-the-cairngorms-national-park/|archive-date=2018-01-15|url-status=dead}}</ref> The government designated these areas as "National Park Direction Areas", giving powers for planning decisions taken by local authorities to be reviewed by central government, however the areas were not given full national park status.<ref name="snh-history"/> In 1981 the direction areas were replaced by [[National Scenic Area (Scotland)|national scenic areas]], of which there are now 40.<ref>{{cite web|url=https://www.nature.scot/professional-advice/safeguarding-protected-areas-and-species/protected-areas/national-designations/national-scenic-areas/|title=National Scenic Areas|publisher=Scottish Natural Heritage|access-date=2018-01-17}}</ref> Although the national scenic area designation provided a degree of additional protection via the planning process, there are no bodies equivalent to a [[national park authority]],<ref>{{cite web|url=https://www.nature.scot/professional-advice/safeguarding-protected-areas-and-species/protected-areas/national-designations/national-scenic-areas/development-management-and|title=Development management and National Scenic Areas|publisher=SNH|date=2017|access-date=2018-01-23}}</ref> and whilst [[Subdivisions of Scotland|local authorities]] can produce a management strategy for each one, only the three national scenic areas within [[Dumfries and Galloway]] have current management strategies.<ref>{{cite web|url=https://www.dumgal.gov.uk/article/15974/National-Scenic-Areas-NSAs|title=National Scenic Areas (NSAs)|publisher=Dumfries and Galloway council|date=2017-12-08|access-date=2018-01-24}}</ref>
+
+A 1974 report by the [[Countryside Commission for Scotland]] (CCS) entitled ''A Park System for Scotland'' did not explicitly recommend that national parks be established in Scotland, noting only that the issue would “no doubt continue to be debated”.<ref name="unfinished"/> A further CCS report into protection of the landscape of Scotland, ''The Mountain Areas of Scotland - Conservation and Management'', was published in 1990. It recommended that four areas were under such pressure that they ought to be designated as national parks, each with an independent planning board, in order to retain their heritage value. The four areas identified were similar to those proposed by the Ramsay Committee: Loch Lomond & the Trossachs, the Cairngorms, Glen Coe-Ben Nevis-Black Mount and Wester Ross, although Wester Ross was not considered to require a dedicated planning body.<ref name="unfinished"/>
+
+Despite this long history of recommendations that national parks be established in Scotland, no action was taken until the [[Scotland Act 1998|establishment]] of the [[Scottish Parliament]] in 1999. The two current parks were designated as such under the [[National Parks (Scotland) Act 2000]], which was one of the first pieces of legislation to be passed by the Parliament. Since the original creation of the first two national parks, no further parks have been created, although the Cairngorms National Park was extended in 2010 to include the highland portion of [[Perthshire]].<ref name="cairngom-history"/>
+
+===Proposals for additional parks===
+In June 2005, the [[Scottish Executive]] announced their intention to create Scotland's first [[coast]]al and [[marine national park]]. Five possible locations for this were considered,<ref>{{cite web|url=https://snh1wfthjxuubf.devcloud.acquia-sites.com/sites/default/files/2017-07/Publication%202006%20-%20SNH%20Advice%20on%20Coastal%20and%20Marine%20National%20Parks.pdf|title=SNH Advice on Coastal and Marine National Parks |publisher=Scottish Natural Heritage|date= 2017|access-date=2018-01-15}}</ref> however no marine park has been established as of 2023.<ref name="snh"/>
+*[[Solway Firth]]
+*[[Argyll]] Islands and Coast
+*[[Ardnamurchan]], [[Small Isles]] and South [[Isle of Skye|Skye]] Coast
+*North [[Isle of Skye|Skye]] Coast and [[Wester Ross]]
+*[[North Uist]], [[Sound of Harris]], [[Harris, Scotland|Harris]] and South [[Isle of Lewis|Lewis]]
+
+In 2011 the Scottish Government rejected a proposal to create a national park on the Isle of Harris.<ref>{{cite web|url=http://www.scotsman.com/news/National-Park-status-for-Harris.6698742.jp |title=National Park status for Harris rejected but locals vow to fight on - News |publisher=Scotsman.com |date=2011-01-21 |access-date=2013-05-08}}</ref> In 2013 the Scottish Campaign for National Parks proposed the seven areas listed below as suitable for national park status, however no further parks were subsequently designated.<ref name=unfinished>{{cite web|url=http://www.scnp.org.uk/News/Docs/2013/Unfinished-Business-a-national-parks-strategy-for-scotland.pdf|title=Unfinished Business a national parks strategy for scotland|publisher=Scottish Campaign for National Parks|date=March 2013|access-date=2018-01-13|archive-date=2016-09-09|archive-url=https://web.archive.org/web/20160909034924/http://scnp.org.uk/News/Docs/2013/Unfinished-Business-a-national-parks-strategy-for-scotland.pdf|url-status=dead}}</ref><ref>{{cite web|url=https://www.dgwgo.com/dumfries-galloway-news/scottish-government-short-sighted-over-snub-to-national-park-for-galloway/|title=Scottish Government "short sighted" over snub to national park for Galloway|publisher=Dumfries and Galloway - What's Going On|date=2016-09-16|access-date=2018-01-13|archive-date=2018-01-14|archive-url=https://web.archive.org/web/20180114021350/https://www.dgwgo.com/dumfries-galloway-news/scottish-government-short-sighted-over-snub-to-national-park-for-galloway/|url-status=dead}}</ref>
+
+*[[Harris, Scotland|Harris]]
+*[[Wester Ross]]
+*[[Glen Affric]]
+*[[Isle of Mull|Mull]] and the [[Small Isles]] &ndash; to be a marine park
+*[[Ben Nevis]], [[Glen Coe]] and the [[Black Mount]]
+*[[Galloway]]
+*[[Cheviot Hills]]
+
+The [[Scottish National Party–Scottish Greens agreement|power sharing arrangement]] agreed between the [[Scottish National Party]] and the [[Scottish Greens]] following the [[2021 Scottish Parliament election]] committed the government to designate at least one additional national park by 2026.<ref>{{cite web|url=https://www.gov.scot/binaries/content/documents/govscot/publications/agreement/2021/08/scottish-government-and-scottish-green-party-shared-policy-programme/documents/scottish-government-and-scottish-green-party-draft-shared-policy-programme/scottish-government-and-scottish-green-party-draft-shared-policy-programme/govscot%3Adocument/SG%2BSGP%2BTalks%2B-%2BDraft%2BPolicy%2BProgramme%2B-%2BFINAL%2B-%2BOFFSEN.pdf|title=Scottish Government and Scottish Green party Draft Shared Policy Programme|publisher=Dumfries and Galloway - What's Going On  |date=20 August 2021|access-date=24 August 2021|page=41}}</ref> Areas that wish to be consider for national park status have been invited to submit applications between October 2023 and February 2024.<ref>{{cite web|url=https://www.nature.scot/professional-advice/protected-areas-and-species/protected-areas/national-designations/national-park|title=Advice on new National Park(s)|publisher=NatureScot|access-date=7 October 2023}}</ref> As of October 2023, councils and local groups from the following areas are considering applications:<ref>{{cite web|url=https://www.gov.scot/news/new-national-parks-in-scotland/|title=New National Parks in Scotland|date=12 October 2023|access-date=30 October 2023|publisher=Scottish Government}}</ref>
+
+*Galloway<ref>{{cite web|url=https://www.gallowaynationalpark.org/ |title=Galloway National Park Association|publisher=Galloway National Park Association |access-date=24 August 2021}}</ref><ref>{{cite news|url=https://www.thenational.scot/news/23633809.galloway-national-park-bid-third-time-lucky-council-hopes/|title=Galloway national park bid 'third time lucky' council hopes|publisher=[[The National (Scotland)|The National]]|date=4 July 2023|access-date=7 October 2023|author=Marc McLeam}}</ref>
+*[[Scottish Borders]]<ref>{{cite web|url=http://www.borders-national-park.scot/|title=Campaign for a Scottish Borders National Park|publisher=Campaign for a Scottish Borders National Park|access-date=24 August 2021|archive-date=6 September 2021|archive-url=https://web.archive.org/web/20210906054325/http://borders-national-park.scot/|url-status=dead}}</ref><ref>{{cite news|url=https://www.bordertelegraph.com/news/23456530.borders-national-park-calls-set-reignited-meeting/|title=Borders national park calls set to be reignited at meeting|publisher=Borders Telegraph|date=16 April 2023|access-date=7 October 2023|author=Mike Thomson}}</ref>
+*[[Tay Forest Park|Tay Forest]]<ref>{{cite news|url=https://www.dailyrecord.co.uk/news/local-news/perth-kinross-council-looks-set-31055285|title=Perth and Kinross Council looks set to launch consultation on bid to create new National Park|publisher=[[Daily Record (Scotland)|Daily Record]]|date=28 September 2023|access-date=7 October 2023|author=Kathryn Anderson}}</ref><ref>{{cite web|url=https://consult.pkc.gov.uk/communities/tay-forest-national-park-consultation/|title=Tay Forest National Park Consultation|publisher=[[Perth and Kinross Council]]|access-date=7 October 2023}}</ref>
+*[[Ben Nevis]] and [[Lochaber]]<ref>{{cite news|url=https://www.bbc.co.uk/news/articles/cn0qx7eyep9o|title=Park status suggested for Ben Nevis and Lochaber|publisher=BBC News|date=29 September 2023|access-date=7 October 2023|author=Kathryn Anderson}}</ref>
+*Eilean a' Cheo ([[Isle of Skye|Skye]] and [[Raasay]])
+*[[Glen Affric|Affric]] to [[Alladale Estate|Alladale]]
+*[[Glen Affric]]
+*[[Lammermuir Hills]]
+*[[Largo Bay]]
+*[[Loch Awe]]
+
+In July 2024 the Scottish government announced that Galloway was to be designated as the country's third national park.<ref>{{cite web|url=https://www.bbc.co.uk/news/articles/cxx2d8djp5ro|title=Galloway chosen as preferred site of next national park|date=22 July 2024|publisher=BBC News}}</ref>
+
+==Organisation==
+[[Image:Loch Katrine.jpg|thumb|350px|Looking eastwards along [[Loch Katrine]] in the [[Loch Lomond and the Trossachs National Park]].]]
+Each national park in Scotland is administered by a [[national park authority]]. Under the [[National Parks (Scotland) Act 2000]], national parks in Scotland have four aims:<ref name="snh"/>
+#To conserve and enhance the natural and cultural heritage of the area
+#To promote [[sustainable use]] of the [[natural resources]] of the area
+#To promote understanding and enjoyment (including enjoyment in the form of recreation) of the special qualities of the area by the public
+#To promote [[sustainable economic development|sustainable economic]] and social development of the area's communities
+
+The first two of these aims are identical to those included in the [[National Parks and Access to the Countryside Act 1949]] legislation that governs national parks in England and Wales, however the Scottish national parks have two additional aims (3 and 4 above).  The general purpose of the national park authority, as defined in the National Parks (Scotland) Act 2000, is to ensure that these aims are "collectively achieved ...in a coordinated way".  Although the four aims have equal status, in accordance with the [[Sandford Principle]], the first aim (conservation and enhancement of the natural and cultural heritage) is to be given greater weight when it appears to the park authority that there is irreconcilable conflict with the other aims.<ref name="snh"/>
+
+A key function of the authority relates to planning permission: in this respect the two current Scottish parks differ.  The Loch Lomond and The Trossachs National Park is a full planning authority, exercising powers that would otherwise be exercised by the [[local government in Scotland|local authority]], whilst the Cairngorms National Park has the power to "call in" planning decisions from the local authority where they are considered to conflict with the aims of the park.<ref name = govern>{{cite web|url=http://www.scnp.org.uk/News/Docs/2015/SCNP-Report2-Possible-Governance-Models.pdf|title=Future National Parks in Scotland: Possible Governance Models|publisher=Scottish Campaign for National Parks|date=August 2015|access-date=2018-01-17|archive-date=2016-09-09|archive-url=https://web.archive.org/web/20160909041116/http://scnp.org.uk/News/Docs/2015/SCNP-Report2-Possible-Governance-Models.pdf|url-status=dead}}</ref>  National park authorities are also required to take the responsibility for managing access to the countryside that elsewhere falls to local authorities.<ref name = galloway>{{cite web|url=https://www.gallowaynationalpark.org/s/Report_Web.pdf|title=A National Park in Galloway? A Discussion Paper|publisher=Galloway National Park Association|date=October 2017|access-date=2018-01-21|archive-date=2018-07-25|archive-url=https://web.archive.org/web/20180725185402/https://static1.squarespace.com/static/58c1840a197aea86abdd1da5/t/5a27dfb7e4966b0f7231b8ab/1512562661220/Report_Web.pdf|url-status=dead}}</ref>
+
+Aside from the planning and access function, national parks authorities have considerable flexibility as to how the four aims are achieved.  They can, for example, acquire land, make byelaws and management agreements, provide grants, offer advice, and undertake or commission research.<ref = name = "galloway"></ref>
+
+The national park authority is run by a board, consisting of members elected by the community living with the park, members from the [[Subdivisions of Scotland#Council areas|local authorities]] with areas in the park, and members appointed by the Scottish government. The Cairngorms National Park board has 19 members, whilst the Loch Lomond and The Trossachs National Park board has 17 members (see below).<ref name="snh"/>
+
+{| class="wikitable sortable" 
+|-
+! colspan=3 | Composition of the national park authorities<ref name="govern"/>
+|-
+! Members
+! Cairngorms
+! Loch Lomond and The Trossachs
+|-
+| style="text-align:left" | Elected
+| 5
+| 5
+|-
+| style="text-align:left" | Appointed by local authorities
+| 7 (2 appointed by each of [[The Highland Council]] and [[Aberdeenshire Council]]; one appointed by each of [[Moray Council]], [[Angus Council]] and [[Perth and Kinross Council]])<ref>{{cite web|url=https://cairngorms.co.uk/working-together/authority/about/board/|title=Park Authority Board|publisher=Cairngorms National Park Authority|access-date=2 February 2024}}</ref>
+| 6 (2 appointed by each of [[Stirling Council]] and [[Argyll and Bute Council]]; one appointed by each of [[West Dunbartonshire Council]] and [[Perth and Kinross Council]])<ref>{{cite web|url=https://www.lochlomond-trossachs.org/park-authority/our-board-committees/national-park-board/|title=Our Board|publisher=Loch Lomond and the Trossachs National Park Authority|access-date=2 February 2024}}</ref>
+|-
+| style="text-align:left" | Appointed by Scottish Government
+| 7
+| 6
+|-
+| style="text-align:left" | Total
+| 19
+| 17
+|}
+
+== List of Scottish national parks ==
+[[File:National parks of scotland.png|thumb|Map of national parks of Scotland]]
+{|
+|
+{| class="wikitable sortable"
+|-
+|'''Key'''||'''National Park'''||'''Established'''||'''km²'''||'''sq&nbsp;mi'''||'''Local Authorities with areas inside park'''
+|-
+|1||[[Loch Lomond and The Trossachs National Park]]<br>(''Pàirc Nàiseanta Loch Laomainn is nan Tròisichean'') ||2002||{{convert|1,865<ref>{{cite web|url=http://www.lochlomond-trossachs.org/discover-the-park/key-facts/|title= Key Facts|publisher=Loch Lomond & the Trossach National Park Authority |access-date=2018-01-22}}</ref>
+|km2|sqmi|disp=table}} ||[[Argyll and Bute]], [[Stirling (council area)|Stirling]], [[West Dunbartonshire]] and [[Perth and Kinross]]<ref>{{cite web|url=http://www.lochlomond-trossachs.org/park-authority/our-board-committees/national-park-board/|title= Our Board|publisher=Loch Lomond & the Trossach National Park Authority |access-date=2018-01-22}}</ref>
+|-
+|2||[[Cairngorms National Park]]<br>(''Pàirc Nàiseanta a' Mhonaidh Ruaidh'')||2003||{{convert|4,528<ref>{{cite web|url=http://cairngorms.co.uk/discover-explore/facts-figures/|publisher=Cairngorm National Park Authority|title= Facts and Figures|date= 2015|access-date=2018-01-22}}</ref>|km2|sqmi|disp=table}}||[[Aberdeenshire]], [[Angus, Scotland|Angus]], [[Highland (council area)|Highland]], [[Moray]] and [[Perth and Kinross]]<ref>{{cite web|url=http://cairngorms.co.uk/park-authority/planning/|title= Planning|publisher=Cairngorm National Park Authority |date= 2015|access-date=2018-01-22}}</ref>
+|-
+|&nbsp;||Established total||&nbsp;||{{convert|6393|km2|sqmi|disp=table}}||
+|}
+|
+|}
+
+==See also==
+*[[Conservation in the United Kingdom]]
+*[[National parks of England and Wales]]
+*[[National nature reserve (Scotland)]]
+*[[National Scenic Area (Scotland)]]
+
+==References==
+{{Reflist}}
+
+==External links==
+* [http://www.lochlomond-trossachs.org/ Loch Lomond and The Trossachs National Park]
+* [http://www.cairngorms.co.uk/ Cairngorms National Park]
+{{Protected areas of Scotland}}{{Geography of Scotland}}{{Tourism in Scotland}}{{Europe in topic|List of national parks of|countries_only=yes}}
+
+[[Category:National parks of Scotland| ]]
+[[Category:Lists of national parks|Scotland]]
+[[Category:Lists of protected areas of Scotland]]

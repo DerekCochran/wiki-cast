@@ -157,9 +157,14 @@ static bool parse_isbn_core_10(const char *s, size_t len, size_t p, size_t *core
 		if (isdigit((unsigned char)s[p])) {
 			digits++;
 			p++;
-			size_t sep = consume_magic_space(s, len, p);
-			if (sep > 0) p += sep;
-			if (p < len && s[p] == '-') p++;
+            /* JS parity for (?:\d[\s-]?){9}: only one optional separator token
+             * per position (either a space-token or '-' but not both). */
+            size_t sep = consume_magic_space(s, len, p);
+            if (sep > 0) {
+                p += sep;
+            } else if (p < len && s[p] == '-') {
+                p++;
+            }
 			continue;
 		}
 		break;
@@ -195,8 +200,11 @@ static bool parse_isbn(const char *s, size_t len, size_t i, size_t *out_end) {
     if (p + 2 < len && s[p] == '9' && s[p + 1] == '7' && (s[p + 2] == '8' || s[p + 2] == '9')) {
         size_t p13 = p + 3;
         size_t sep = consume_magic_space(s, len, p13);
-        if (sep > 0) p13 += sep;
-        if (p13 < len && s[p13] == '-') p13++;
+        if (sep > 0) {
+            p13 += sep;
+        } else if (p13 < len && s[p13] == '-') {
+            p13++;
+        }
         size_t end13 = 0;
         if (parse_isbn_core_10(s, len, p13, &end13) && end13 > best_end) {
             best_end = end13;

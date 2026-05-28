@@ -37,6 +37,9 @@ void build(Token *root, const ThreadBuf *tb, Accum *accum,
 void build_from_str(Token *parent, const char *str, size_t str_len,
                     Accum *accum);
 
+char *build_normalize_attr_equal(const char *equal, size_t equal_len,
+                                 Accum *accum);
+
 /* Expand sentinels recursively for a token subtree created after build(). */
 void build_token_recursive(Token *t, Accum *accum,
                            const ParserConfig *cfg);

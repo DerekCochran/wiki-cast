@@ -1,4 +1,5 @@
 #include "parser/table.h"
+#include "build.h"
 #include "parser/td.h"
 #include "parser/tr.h"
 #include "util/string_util.h"
@@ -46,6 +47,44 @@ static Token *make_attr_value(const char *val, size_t val_len, Accum *accum) {
 	return t;
 }
 
+static size_t sentinel_at(const char *buf, size_t len, size_t i, char type);
+
+static size_t table_attr_gap_len_at(const char *s, size_t len, size_t i) {
+	if(i >= len) return 0;
+	size_t ws= 0;
+	unsigned char c= (unsigned char)s[i];
+	if(c == ' ' || c == '\t' || c == '\n' || c == '\r' || c == '\f' || c == '\v') ws= 1;
+	if(ws > 0) return ws;
+	if(i + 1 < len && c == 0xC2 && (unsigned char)s[i + 1] == 0xA0) return 2;
+	ws= sentinel_at(s, len, i, 'c');
+	if(ws > 0) return ws;
+	return sentinel_at(s, len, i, 'n');
+}
+
+static size_t table_ws_len_at(const char *s, size_t len, size_t i) {
+	if(i >= len) return 0;
+	unsigned char c= (unsigned char)s[i];
+	if(c == ' ' || c == '\t' || c == '\n' || c == '\r' || c == '\f' || c == '\v') return 1;
+	if(i + 1 < len && c == 0xC2 && (unsigned char)s[i + 1] == 0xA0) return 2;
+	return 0;
+}
+
+static size_t table_trim_ws_end(const char *s, size_t end) {
+	while(end > 0) {
+		if(end >= 2 && (unsigned char)s[end - 2] == 0xC2 && (unsigned char)s[end - 1] == 0xA0) {
+			end-= 2;
+			continue;
+		}
+		unsigned char c= (unsigned char)s[end - 1];
+		if(c == ' ' || c == '\t' || c == '\n' || c == '\r' || c == '\f' || c == '\v') {
+			end--;
+			continue;
+		}
+		break;
+	}
+	return end;
+}
+
 static Token *make_table_attr_dirty(const char *text, size_t text_len, Accum *accum) {
 	Token *t= token_new(TOKEN_ATOM, "table-attr-dirty");
 	if(!t) return NULL;
@@ -69,10 +108,8 @@ static Token *make_table_attr(const char *key, size_t key_len,
 
 	t->name= str_trim_lc(key, key_len);
 	if(equal && equal_len > 0) {
-		t->data.ext_attr.equal= malloc(equal_len + 1);
+		t->data.ext_attr.equal= build_normalize_attr_equal(equal, equal_len, accum);
 		assert(t->data.ext_attr.equal);
-		memcpy(t->data.ext_attr.equal, equal, equal_len);
-		t->data.ext_attr.equal[equal_len]= '\0';
 	}
 	t->data.ext_attr.quote_open= quote_open;
 	t->data.ext_attr.quote_close= quote_close;
@@ -546,17 +583,20 @@ static void parse_table_attrs(Token *attrs_tok, const char *attr_str, size_t att
 	/* JS parity: dynamic boolean attrs should produce table-attr token. */
 	if(!table_attr_has_equal_marker(attr_str, attr_len)) {
 		size_t first= 0;
-		while(first < attr_len && (attr_str[first] == ' ' || attr_str[first] == '\t' || attr_str[first] == '\n' || attr_str[first] == '\r' || attr_str[first] == '\f' || attr_str[first] == '\v')) first++;
+		while(first < attr_len) {
+			size_t ws= table_ws_len_at(attr_str, attr_len, first);
+			if(ws == 0) break;
+			first+= ws;
+		}
 		size_t last= attr_len;
-		while(last > first && (attr_str[last - 1] == ' ' || attr_str[last - 1] == '\t' || attr_str[last - 1] == '\n' || attr_str[last - 1] == '\r' || attr_str[last - 1] == '\f' || attr_str[last - 1] == '\v')) last--;
+		last= table_trim_ws_end(attr_str, last);
 
 		if(last > first) {
 			const char *k= attr_str + first;
 			size_t klen= last - first;
 			int has_space= 0;
 			for(size_t p= 0; p < klen; p++) {
-				char ch= k[p];
-				if(ch == ' ' || ch == '\t' || ch == '\n' || ch == '\r' || ch == '\f' || ch == '\v') {
+				if(table_ws_len_at(k, klen, p) > 0) {
 					has_space= 1;
 					break;
 				}
@@ -600,15 +640,22 @@ static void parse_table_attrs(Token *attrs_tok, const char *attr_str, size_t att
 	} while(0)
 
 	while(i < attr_len) {
-		if(attr_str[i] == '/' || attr_str[i] == ' ' || attr_str[i] == '\t' || attr_str[i] == '\n' || attr_str[i] == '\r' || attr_str[i] == '\f' || attr_str[i] == '\v') {
-			dirty_buf[dirty_len++]= attr_str[i++];
+		size_t ws_take= table_ws_len_at(attr_str, attr_len, i);
+		if(attr_str[i] == '/' || ws_take > 0) {
+			if(ws_take > 0) {
+				memcpy(dirty_buf + dirty_len, attr_str + i, ws_take);
+				dirty_len+= ws_take;
+				i+= ws_take;
+			} else {
+				dirty_buf[dirty_len++]= attr_str[i++];
+			}
 			continue;
 		}
 
 		size_t key_start= i;
 		while(i < attr_len) {
-			if(attr_str[i] == '/' || attr_str[i] == '=' ||
-				 attr_str[i] == ' ' || attr_str[i] == '\t' || attr_str[i] == '\n' || attr_str[i] == '\r' || attr_str[i] == '\f' || attr_str[i] == '\v') {
+			if(table_ws_len_at(attr_str, attr_len, i) > 0) break;
+			if(attr_str[i] == '/' || attr_str[i] == '=') {
 				break;
 			}
 			if(sentinel_at(attr_str, attr_len, i, '~')) break;
@@ -616,6 +663,26 @@ static void parse_table_attrs(Token *attrs_tok, const char *attr_str, size_t att
 		}
 		size_t key_len= i - key_start;
 		if(key_len == 0) {
+			size_t eq_take= sentinel_at(attr_str, attr_len, i, '~');
+			if(i < attr_len && (attr_str[i] == '=' || eq_take > 0)) {
+				if(eq_take == 0) eq_take= 1;
+				memcpy(dirty_buf + dirty_len, attr_str + i, eq_take);
+				dirty_len+= eq_take;
+				i+= eq_take;
+				if(i < attr_len && (attr_str[i] == '"' || attr_str[i] == '\'')) {
+					char q= attr_str[i];
+					dirty_buf[dirty_len++]= attr_str[i++];
+					while(i < attr_len) {
+						dirty_buf[dirty_len++]= attr_str[i];
+						if(attr_str[i++] == q) break;
+					}
+				} else {
+					while(i < attr_len && table_ws_len_at(attr_str, attr_len, i) == 0) {
+						dirty_buf[dirty_len++]= attr_str[i++];
+					}
+				}
+				continue;
+			}
 			dirty_buf[dirty_len++]= attr_str[i++];
 			continue;
 		}
@@ -648,7 +715,7 @@ static void parse_table_attrs(Token *attrs_tok, const char *attr_str, size_t att
 							if(attr_str[i++] == q) break;
 						}
 					} else {
-						while(i < attr_len && attr_str[i] != ' ' && attr_str[i] != '\t' && attr_str[i] != '\n' && attr_str[i] != '\r' && attr_str[i] != '\f' && attr_str[i] != '\v') {
+						while(i < attr_len && table_ws_len_at(attr_str, attr_len, i) == 0) {
 							dirty_buf[dirty_len++]= attr_str[i++];
 						}
 					}
@@ -658,7 +725,11 @@ static void parse_table_attrs(Token *attrs_tok, const char *attr_str, size_t att
 		}
 
 		size_t ws_start= i;
-		while(i < attr_len && (attr_str[i] == ' ' || attr_str[i] == '\t' || attr_str[i] == '\n' || attr_str[i] == '\r' || attr_str[i] == '\f' || attr_str[i] == '\v')) i++;
+		while(i < attr_len) {
+			size_t gap= table_attr_gap_len_at(attr_str, attr_len, i);
+			if(gap == 0) break;
+			i+= gap;
+		}
 
 		size_t eq_sl= (i < attr_len) ? sentinel_at(attr_str, attr_len, i, '~') : 0;
 		if(i >= attr_len || (attr_str[i] != '=' && eq_sl == 0)) {
@@ -676,7 +747,11 @@ static void parse_table_attrs(Token *attrs_tok, const char *attr_str, size_t att
 		size_t eq_marker_len= (attr_str[i] == '=') ? 1 : eq_sl;
 		bool eq_has_magic= (eq_marker_len > 1);
 		i+= eq_marker_len;
-		while(i < attr_len && (attr_str[i] == ' ' || attr_str[i] == '\t' || attr_str[i] == '\n' || attr_str[i] == '\r' || attr_str[i] == '\f' || attr_str[i] == '\v')) i++;
+		while(i < attr_len) {
+			size_t gap= table_attr_gap_len_at(attr_str, attr_len, i);
+			if(gap == 0) break;
+			i+= gap;
+		}
 		size_t eq_len= i - eq_start;
 
 		char quote_open= '\0', quote_close= '\0';
@@ -695,7 +770,7 @@ static void parse_table_attrs(Token *attrs_tok, const char *attr_str, size_t att
 			}
 		} else {
 			size_t val_start= i;
-			while(i < attr_len && attr_str[i] != ' ' && attr_str[i] != '\t' && attr_str[i] != '\n' && attr_str[i] != '\r' && attr_str[i] != '\f' && attr_str[i] != '\v') i++;
+			while(i < attr_len && table_ws_len_at(attr_str, attr_len, i) == 0) i++;
 			val= attr_str + val_start;
 			val_len= i - val_start;
 		}

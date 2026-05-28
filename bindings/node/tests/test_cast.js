@@ -5,7 +5,78 @@ const { runTests } = require('./helpers');
 
 const castTests = [
   // Failures from export of wikitexts
-    `{{reflist |group=Note |refs=
+  `{| class="wikitable"
+|-
+|-bgcolor=<!-- party shade if gain -->lightblue
+|}`,
+  `{| class="wikitable sortable"  style="font-size: 100%"
+|}`,
+  `{| class=wikitable =wikitable 
+|}`,
+  `[[Image:Barrère Pierre 1690-1755 Ornithologiae.png|thumbnail|250px|right|Plate from ''''Ornithologiae Specimen'' de Barrère showing his system of bird classification]]`,
+  `[[Image:Edward Snowden-2.jpg{{!}}border|thumb|right|200px|During the season, many critics and analysts noticed parallelisms between the series' premise and [[Edward Snowden]].]]`,
+  `{|class=wikitable
+!=width:60px|[[A Just Russia|JR]]
+|}`,
+  `<ref = name = "galloway"></ref>`,
+    `{| class="wikitable sortable"
+| '''[[American pipit]]''' ||''Anthus rubescens'' || '''A'''||=center style="background: #006666"| {{font color|White|Least concern}} || align=center|{{decrease}}|| Vagrant.|| [[Image: Anthus rubescens japonicus.JPG|175px]]
+|}`,
+  `Richardson, Dan and Jacobs, Daniel (2007) ''The Rough Guide to Egypt''. ISBN 978 -1-84353-782-3 (7th edition). p.718`,
+  `* {{ISBN|978-88-11-73836-7}}, ISBN 978 -82-91165-04-2.`,
+  `ISBN 978-0-9559732 -0-8.`,
+  `<gallery Mode="packed" heights="140px">
+File:COLLECTIE TROPENMUSEUM De Broodbakkersstraat in Pasoeroean TMnr 60052542.jpg|Chinatown of Broodbakkerstraat (now Jalan Niaga) in Pasuruan from Hoofdstraat (now Jalan Soekarno Hatta)
+File:COLLECTIE TROPENMUSEUM Stoplicht boven het kruispunt in de Hoofdstraat Pasoeroean TMnr 60052543.jpg|Traffic light over the intersection in the Hoofdstraat of Pasuruan
+File:PSSM B16 at Waroeng-dowo.jpg|Warungdowo as the main operational station of PsSM with Hohenzollern B16 tram engine (right side).
+File:Stasiun Winongan.jpg|Winongan tram station around 1910-1920s
+File:Pasoeroan Town in 1946's map.tif|thumb|Map issued in February 1946 showing the city of Pasuruan including the main railway line of [[Staatsspoorwegen]] (SS) and PsSM's steam tram line]]
+</gallery>`,
+  `<ref>{{usurped|1={{usurped|1=[https://archive.today/20070702164815/http://www.popcultureshock.com/reviews.php?id=4542 APComics 2005 Preview » PopCultureShock<!-- Bot generated title -->]}}}}</ref>`,
+  `{{Clade|style=font-size:90%; line-height:90%
+|label1=Halobacteriales
+|1={{clade
+  |1={{clade
+    |1=[[Natronoarchaeaceae]]
+    |2={{clade
+      |1=''[[Haloparvum]]'' **
+      |2={{clade
+        |1=''[[Halopenitus]]'' **
+        |2=''[[Halorubrum]]'' {[[Halorubraceae]]}
+         }}
+       }}
+     }}
+  |2={{clade
+    |1=[[Haloferacaceae]]
+    |2={{clade
+      |1={{clade
+        |1=[[Halobacteriaceae]]
+        |2=[[Haloarculaceae]]
+         }}
+      |2={{clade
+        |1={{clade
+          |1=''[[Halostella]]'' * {"Halostellaceae"}
+          |2={{clade
+            |1=''[[Halalkalicoccus]]'' {"Halalkalicoccaceae"}
+            |2=''[[Halococcus]]'' {[[Halococcaceae]]}
+             }}
+           }}
+        |2={{clade
+          |1={{clade
+            |1=''[[Salinarchaeum]]'' * {"Salinarchaeaceae"}
+            |2=[[Haladaptaceae]] (Halorubellaceae)
+             }}
+          |2=[[Natrialbaceae]]
+           }}
+         }}
+       }}
+     }}
+   }}
+}}`,  
+  `<ref = name=lance>[https://www.theglobeandmail.com/sports/more-sports/lance-armstrong-building-deception-upon-lies/article4500335/] " Lance Armstrong: building deception upon lies" ''Globe and Mail'', BRUCE DOWBIGGIN.</ref>`,
+  `[[File:Jersey yellow.svg|20px|link=General classification in the Tour de France|alt=Yellow 
+]]`,
+  `{{reflist |group=Note |refs=
 <ref name="c">French reports: "The (over 5{{nbs"[[Hectare|ha]]) era...}}</ref>
 }}`,
   `* ﻿{{cite web |url= https://reason.com/2019/10/31/its-that-old-looney-tuner-lysander-spooner/ |title= It's That Old Looney Tuner, Lysander Spooner |last= Bagge |first= Peter |date= November 2019 |website= Reason Magazine |format= Comic strip| access-date= }}`,
