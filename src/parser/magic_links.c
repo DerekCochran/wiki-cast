@@ -153,7 +153,7 @@ static bool parse_rfc_or_pmid(const char *s, size_t len, size_t i, size_t *out_e
 static bool parse_isbn_core_10(const char *s, size_t len, size_t p, size_t *core_end) {
 	int digits = 0;
 	while (p < len && digits < 9) {
-		if (isdigit((unsigned char)s[p])) {
+        if ((unsigned char)(s[p] - '0') <= 9) {
 			digits++;
 			p++;
             /* JS parity for (?:\d[\s-]?){9}: only one optional separator token
@@ -169,7 +169,7 @@ static bool parse_isbn_core_10(const char *s, size_t len, size_t p, size_t *core
 		break;
 	}
 	if (digits != 9 || p >= len) return false;
-	if (isdigit((unsigned char)s[p]) || s[p] == 'x' || s[p] == 'X') p++;
+    if ((unsigned char)(s[p] - '0') <= 9 || s[p] == 'x' || s[p] == 'X') p++;
 	else return false;
 	if (p < len && utf8_cp_at_is_word(s, len, p)) return false;
 	*core_end = p;
