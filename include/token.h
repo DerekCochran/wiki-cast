@@ -122,6 +122,7 @@ typedef union {
     } image_param;
     struct {
         char *space;      /* ExtLinkToken separator between URL and text (may be empty) */
+        size_t space_len; /* Cached length to avoid repeated strlen() during serialization */
     } ext_link;
     struct {
         bool magic_pipe;  /* LinkBaseToken delimiter was \0\d+!\x7F ({{!}}) */

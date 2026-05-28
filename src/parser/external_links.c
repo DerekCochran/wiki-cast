@@ -128,6 +128,7 @@ static Token *build_ext_link_token(Token *url_tok,
 	}
     if(space && space_len > 0) sz_copy(ext->data.ext_link.space, space, space_len);
 	ext->data.ext_link.space[space_len]= '\0';
+	ext->data.ext_link.space_len= space_len; /* Cache length to avoid strlen() during serialization */
 
 	token_append_child(ext, url_tok);
 

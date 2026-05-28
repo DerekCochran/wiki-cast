@@ -383,7 +383,7 @@ static void token_to_string_rec(const Token *t, ThreadBuf *tb) {
 		thread_buf_append_char(tb, '[');
 		if(t->child_count > 0) {
 			const char *space= t->data.ext_link.space;
-			size_t space_len= space ? strlen(space) : 0;
+			size_t space_len= t->data.ext_link.space_len;  /* Use cached length */
 			const Child *c= &t->children[0];
 			if(c->is_text)
 				thread_buf_append(tb, c->text, c->text_len);
