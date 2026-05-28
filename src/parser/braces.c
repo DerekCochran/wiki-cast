@@ -35,7 +35,8 @@ static bool parse_sentinel_at_allowed(const char *buf, size_t len, size_t pos,
 	if((unsigned char)buf[pos] != 0) return false;
 	size_t j= pos + 1;
 	if(j >= len || buf[j] < '0' || buf[j] > '9') return false;
-	while(j < len && buf[j] >= '0' && buf[j] <= '9') j++;
+	const char *not_digit = sz_find_byte_not_from(buf + j, len - j, "0123456789", 10);
+	j = not_digit ? (size_t)(not_digit - buf) : len;
 	if(j >= len) return false;
 	char t= buf[j];
 	if(allowed_types && sz_find_byte(allowed_types, allowed_len, &t) == NULL) return false;
