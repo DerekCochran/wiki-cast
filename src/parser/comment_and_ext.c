@@ -2647,8 +2647,8 @@ static bool handle_onlyinclude(ThreadBuf *tb, const ParserConfig *cfg, Accum *ac
 	(void)cfg;
 	const char *onlyinclude_open= "<onlyinclude>";
 	const char *onlyinclude_close= "</onlyinclude>";
-	size_t open_len= strlen(onlyinclude_open);
-	size_t close_len= strlen(onlyinclude_close);
+	const size_t open_len= 13;
+	const size_t close_len= 14;
 
 	const char *pos_open= find_substr_cs(tb->buf, tb->len, onlyinclude_open, open_len);
 	if(!pos_open) return false;
