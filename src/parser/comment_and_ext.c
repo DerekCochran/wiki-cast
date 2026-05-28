@@ -2364,19 +2364,21 @@ static Token *build_ext_token(const char *name, size_t name_len,
 	/* Build sub-tokens */
 	Token *attrs_tok= build_ext_attrs(lcname, attr, attr_len, accum);
 	Token *inner_tok= NULL;
-	if(strcmp(lcname, "references") == 0 && !self_closing) {
+	size_t lc_len = strlen(lcname);
+	if(lc_len == 10 && sz_equal(lcname, "references", 10) == sz_true_k && !self_closing) {
 		inner_tok= build_references_inner_token(inner, inner_len, cfg, accum);
-	} else if(strcmp(lcname, "pre") == 0 && !self_closing && !ext_attr_is_format_wikitext(attr, attr_len)) {
+	} else if(lc_len == 3 && sz_equal(lcname, "pre", 3) == sz_true_k
+					&& !self_closing && !ext_attr_is_format_wikitext(attr, attr_len)) {
 		inner_tok= build_pre_inner_token(inner, inner_len, accum);
-	} else if(strcmp(lcname, "dynamicpagelist") == 0 && !self_closing) {
+	} else if(lc_len == 15 && sz_equal(lcname, "dynamicpagelist", 15) == sz_true_k && !self_closing) {
 		inner_tok= build_param_tag_inner_token(lcname, inner, inner_len, cfg, accum, false);
-	} else if(strcmp(lcname, "inputbox") == 0 && !self_closing) {
+	} else if(lc_len == 8 && sz_equal(lcname, "inputbox", 8) == sz_true_k && !self_closing) {
 		inner_tok= build_param_tag_inner_token(lcname, inner, inner_len, cfg, accum, true);
-	} else if(strcmp(lcname, "gallery") == 0 && !self_closing) {
+	} else if(lc_len == 7 && sz_equal(lcname, "gallery", 7) == sz_true_k && !self_closing) {
 		inner_tok= build_gallery_inner_token(inner, inner_len, cfg, accum);
-	} else if(strcmp(lcname, "imagemap") == 0 && !self_closing) {
+	} else if(lc_len == 8 && sz_equal(lcname, "imagemap", 8) == sz_true_k && !self_closing) {
 		inner_tok= build_imagemap_inner_token(inner, inner_len, cfg, accum);
-	} else if(strcmp(lcname, "categorytree") == 0) {
+	} else if(lc_len == 12 && sz_equal(lcname, "categorytree", 12) == sz_true_k) {
 		inner_tok= build_categorytree_inner_token(inner, inner_len, accum);
 	} else {
 		inner_tok= build_ext_inner(lcname, inner, inner_len, self_closing, accum);
