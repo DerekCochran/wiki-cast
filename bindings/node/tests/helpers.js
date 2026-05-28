@@ -247,8 +247,34 @@ function compareSample(wikitext, { include = false, tidy = false, name = 'sample
   const textOk = jsResult.text === nativeResult.text;
   const cmp = compareAST(jsResult.root, JSON.parse(nativeResult.root.toJson()));
   const ok = textOk && cmp.success;
+  let failureStageDir = stageDir;
 
   if (!ok) {
+    if (!failureStageDir) {
+      const rerunStageDir = path.join(os.tmpdir(), `wiki_stage_${Date.now()}_${process.pid}_${Math.random().toString(36).slice(2,8)}`);
+      ensureDir(rerunStageDir);
+
+      const rerunPrevStageDir = process.env.WIKI_STAGE_LOG_DIR;
+      const rerunPrevStageFlag = process.env.WIKI_STAGE_LOG;
+      process.env.WIKI_STAGE_LOG = '1';
+      process.env.WIKI_STAGE_LOG_DIR = rerunStageDir;
+
+      let rerunJsResult;
+      let rerunNativeResult;
+      try {
+        rerunJsResult = runParse(wikitext, wikiparser, include, tidy, 'js-rerun-stage-log');
+        rerunNativeResult = runParse(Buffer.from(wikitext, 'utf-8'), nativeParser, include, tidy, 'native-rerun-stage-log');
+      } catch (e) {
+        // Best-effort logging rerun only.
+      } finally {
+        releaseNativeResult(rerunNativeResult);
+        if (rerunPrevStageDir === undefined) delete process.env.WIKI_STAGE_LOG_DIR; else process.env.WIKI_STAGE_LOG_DIR = rerunPrevStageDir;
+        if (rerunPrevStageFlag === undefined) delete process.env.WIKI_STAGE_LOG; else process.env.WIKI_STAGE_LOG = rerunPrevStageFlag;
+      }
+
+      failureStageDir = rerunStageDir;
+    }
+
     console.error('FAIL', label);
 
     if( name != 'export' ) {
@@ -306,19 +332,19 @@ function compareSample(wikitext, { include = false, tidy = false, name = 'sample
 
         // Copy any stage logs collected into the suite artifact directory
         ensureDir(suiteDir);
-        if (stageDir) {
-          const files = fs.readdirSync(stageDir);
+        if (failureStageDir) {
+          const files = fs.readdirSync(failureStageDir);
           for (const f of files) {
-            const src = path.join(stageDir, f);
+            const src = path.join(failureStageDir, f);
             const dst = path.join(suiteDir, f);
             console.log(`  stage log    : ${dst}`);
             try { fs.copyFileSync(src, dst); } catch (e) { /* ignore */ }
           }
         }
         // Read the js-stage.log and native-stage.log.  Match each on stage names and print which stage they do not match on.
-        if(stageDir && ! name.startsWith('export') && ! name.startsWith('wikitext')) {
-          const jsStageLogPath = path.join(stageDir, 'js-stage.log');
-          const nativeStageLogPath = path.join(stageDir, 'native-stage.log');
+        if(failureStageDir && ! name.startsWith('export') && ! name.startsWith('wikitext')) {
+          const jsStageLogPath = path.join(failureStageDir, 'js-stage.log');
+          const nativeStageLogPath = path.join(failureStageDir, 'native-stage.log');
           if (fs.existsSync(jsStageLogPath) && fs.existsSync(nativeStageLogPath)) {
             // Filter both files where the lines start with Stage #
             const jsStageLog = fs.readFileSync(jsStageLogPath, 'utf8').split('\n').filter(line => line.trim() && line.startsWith('Stage '));
