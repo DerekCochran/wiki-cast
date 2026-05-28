@@ -2745,12 +2745,9 @@ void parse_comment_and_ext(ThreadBuf *tb, const ParserConfig *cfg,
     }
 
     if(include_only) {
-        const char *oi_open = "<onlyinclude>";
-		if(find_substr_cs(tb->buf, tb->len, oi_open, 13)) {
-            if(handle_onlyinclude(tb, cfg, accum)) {
-                return;
-            }
-        }
+		if(handle_onlyinclude(tb, cfg, accum)) {
+			return;
+		}
     }
 
     if(has_translate) {
