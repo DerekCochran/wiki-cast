@@ -190,7 +190,8 @@ static bool list_prefix_parse(const char *line, size_t len, ListPrefixResult *ou
 static size_t get_common_prefix_len(const char *prefix, size_t plen, const char *last, size_t last_len) {
 	if(!last) return 0;
 	if(last_len == 0) return 0;
-	if(plen >= last_len && sz_equal(prefix, last, last_len) == sz_true_k) return last_len;
+	size_t common_len = plen < last_len ? plen : last_len;
+	if(common_len > 0 && sz_equal(prefix, last, common_len) == sz_true_k) return common_len;
 	for(size_t i= 0; i < last_len; i++) {
 		if(i >= plen) return i;
 		if(prefix[i] != last[i]) return i;
