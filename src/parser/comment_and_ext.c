@@ -808,29 +808,18 @@ static Token *build_ext_attrs(const char *tag_name,
 
 /* ── ext-inner token builder ─────────────────────────────────────────────── */
 
-typedef struct {
-	const char *name;
-	size_t len;
-} ExtTagName;
-
-static bool ext_tag_in_set(const char *tag_name, const ExtTagName *set, size_t set_len) {
-	if(!tag_name || !set || set_len == 0) return false;
-	size_t tag_len = strlen(tag_name);
-	for(size_t i = 0; i < set_len; i++) {
-		if(set[i].len != tag_len) continue;
-		if(sz_equal(tag_name, set[i].name, tag_len) == sz_true_k) return true;
+static bool is_multiline_tag(const char *tag_name) {
+	static const char *const ML_TAGS[]= {
+	"gallery",
+	"imagemap",
+	"dynamicpagelist",
+	"inputbox",
+	NULL,
+	};
+	for(int i= 0; ML_TAGS[i]; i++) {
+		if(strcmp(tag_name, ML_TAGS[i]) == 0) return true;
 	}
 	return false;
-}
-
-static bool is_multiline_tag(const char *tag_name) {
-	static const ExtTagName ML_TAGS[]= {
-		{ "gallery", 7 },
-		{ "imagemap", 8 },
-		{ "dynamicpagelist", 14 },
-		{ "inputbox", 8 },
-	};
-	return ext_tag_in_set(tag_name, ML_TAGS, sizeof(ML_TAGS) / sizeof(ML_TAGS[0]));
 }
 
 static bool ext_attr_is_format_wikitext(const char *attr, size_t attr_len) {
@@ -900,10 +889,13 @@ static Token *build_pre_noinclude_token(const char *substr, size_t sub_len, Accu
 static bool find_ci_lit(const char *s, size_t len, size_t from,
 							 const char *lit, size_t lit_len, size_t *out_pos) {
 	if(!s || !lit || lit_len == 0 || from >= len) return false;
-	const char *found = str_istr(s + from, len - from, lit, lit_len);
-	if(!found) return false;
-	if(out_pos) *out_pos = (size_t)(found - s);
-	return true;
+	for(size_t i= from; i + lit_len <= len; i++) {
+		if(str_ci_eq_n(s + i, lit, lit_len)) {
+			if(out_pos) *out_pos= i;
+			return true;
+		}
+	}
+	return false;
 }
 
 static Token *build_pre_inner_token(const char *inner_str, size_t inner_len, Accum *accum) {
@@ -982,35 +974,30 @@ static Token *build_pre_inner_token(const char *inner_str, size_t inner_len, Acc
 
 static bool ext_self_closing_inner_has_no_children(const char *tag_name) {
 	if(!tag_name) return false;
-	static const ExtTagName EMPTY_INNER_TAGS[]= {
-		{ "pre", 3 },
-		{ "indicator", 9 },
-		{ "poem", 4 },
-		{ "ref", 3 },
-		{ "option", 6 },
-		{ "combooption", 11 },
-		{ "tab", 3 },
-		{ "tabs", 4 },
-		{ "poll", 4 },
-		{ "seo", 3 },
-		{ "langconvert", 11 },
-		{ "phonos", 6 },
-		{ "references", 10 },
-		{ "choose", 6 },
-		{ "combobox", 8 },
-		{ "dynamicpagelist", 14 },
-		{ "inputbox", 8 },
-		{ "gallery", 7 },
-		{ "imagemap", 8 },
-	};
 
 	/* JS ExtToken parity: these tags use Token/Nested/Param/Pre-like constructors,
 	 * which receive `inner=undefined` for self-closing tags and therefore keep an
 	 * empty ext-inner with no text child.
 	 */
-	return ext_tag_in_set(tag_name,
-		EMPTY_INNER_TAGS,
-		sizeof(EMPTY_INNER_TAGS) / sizeof(EMPTY_INNER_TAGS[0]));
+	return strcmp(tag_name, "pre") == 0
+		|| strcmp(tag_name, "indicator") == 0
+		|| strcmp(tag_name, "poem") == 0
+		|| strcmp(tag_name, "ref") == 0
+		|| strcmp(tag_name, "option") == 0
+		|| strcmp(tag_name, "combooption") == 0
+		|| strcmp(tag_name, "tab") == 0
+		|| strcmp(tag_name, "tabs") == 0
+		|| strcmp(tag_name, "poll") == 0
+		|| strcmp(tag_name, "seo") == 0
+		|| strcmp(tag_name, "langconvert") == 0
+		|| strcmp(tag_name, "phonos") == 0
+		|| strcmp(tag_name, "references") == 0
+		|| strcmp(tag_name, "choose") == 0
+		|| strcmp(tag_name, "combobox") == 0
+		|| strcmp(tag_name, "dynamicpagelist") == 0
+		|| strcmp(tag_name, "inputbox") == 0
+		|| strcmp(tag_name, "gallery") == 0
+		|| strcmp(tag_name, "imagemap") == 0;
 }
 
 static Token *build_ext_inner(const char *tag_name,
