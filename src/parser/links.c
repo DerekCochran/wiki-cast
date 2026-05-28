@@ -167,8 +167,8 @@ static int eq_n(const char *a, size_t alen, const char *b) {
 static Token *make_image_param_token(const char *name, Accum *accum) {
 	Token *p= token_new(TOKEN_PLAIN, "image-parameter");
 	if(!p) return NULL;
-	p->name= strdup(name);
-	if(!p->name) {
+	p->name.start= strdup(name);
+	if(!p->name.start) {
 		token_free(p);
 		return NULL;
 	}
@@ -1397,7 +1397,7 @@ void parse_links(ThreadBuf *tb, const ParserConfig *cfg, Accum *accum,
 				}
 
 				/* Set the normalized title as the token name */
-				if(parsed->title) tok->name= strdup(parsed->title);
+				if(parsed->title) tok->name.start= strdup(parsed->title);
 
 				free(img_buf);
 			}
@@ -1489,7 +1489,7 @@ void parse_links(ThreadBuf *tb, const ParserConfig *cfg, Accum *accum,
 
 		/* Normalized name */
 		char *norm= parsed->title ? strdup(parsed->title) : NULL;
-		if(norm) tok->name= norm;
+		if(norm) tok->name.start= norm;
 
 		title_free(parsed);
 		free(no_comment);

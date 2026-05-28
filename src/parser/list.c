@@ -544,7 +544,7 @@ void parse_list(ThreadBuf *tb, const ParserConfig *cfg, Accum *accum) {
 				size_t idx = sentinel_idx;
 				if(typech == 'x') {
 					Token *ht = accum_get(accum, idx);
-					const char *name = ht ? ht->name : NULL;
+					const char *name = ht ? ht->name.start : NULL;
 					bool closing = ht ? ht->data.html.closing : false;
 					bool selfClosing = ht ? ht->data.html.self_closing : false;
 

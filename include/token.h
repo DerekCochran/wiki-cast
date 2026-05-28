@@ -136,7 +136,7 @@ typedef union {
 typedef struct Token {
     TokenType  type;
     char      *type_name;   /* e.g. "root", "redirect", "comment" — owned */
-    char      *name;        /* tag/template name where applicable — owned */
+    sz_string_view_t name;  /* tag/template name where applicable; owned or borrowed */
     char       sep;         /* separator for token_to_string(): '\0' or '\n' */
 
     Child     *children;

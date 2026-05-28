@@ -79,8 +79,8 @@ static void append_key_token_repr_tb(const Token *t, ThreadBuf *tb) {
 	}
 
 	if(t->type == TOKEN_EXT) {
-		const char *ext_tag= t->data.ext.name.start ? t->data.ext.name.start : t->name;
-		size_t ext_tag_len= t->data.ext.name.start ? t->data.ext.name.length : (t->name ? strlen(t->name) : 0);
+		const char *ext_tag= t->data.ext.name.start ? t->data.ext.name.start : t->name.start;
+		size_t ext_tag_len= t->data.ext.name.start ? t->data.ext.name.length : (t->name.start ? strlen(t->name.start) : 0);
 		const char *ext_closing= t->data.ext.closing.start ? t->data.ext.closing.start : ext_tag;
 		size_t ext_closing_len= t->data.ext.closing.start ? t->data.ext.closing.length : ext_tag_len;
 
@@ -181,8 +181,8 @@ static void append_key_token_repr_tb(const Token *t, ThreadBuf *tb) {
 	}
 
 	if(t->type == TOKEN_HTML) {
-		const char *tag= t->data.html.orig_tag.start ? t->data.html.orig_tag.start : t->name;
-		size_t tag_len= t->data.html.orig_tag.start ? t->data.html.orig_tag.length : (t->name ? strlen(t->name) : 0);
+		const char *tag= t->data.html.orig_tag.start ? t->data.html.orig_tag.start : t->name.start;
+		size_t tag_len= t->data.html.orig_tag.start ? t->data.html.orig_tag.length : (t->name.start ? strlen(t->name.start) : 0);
 		if(t->data.html.closing) {
 			wiki_thread_buf_putc(tb, '<');
 			wiki_thread_buf_putc(tb, '/');
@@ -433,8 +433,8 @@ static void refresh_template_name(Token *t, const ParserConfig *cfg) {
 	title_free(parsed);
 
 	if(name) {
-		free(t->name);
-		t->name= name;
+		free(t->name.start);
+		t->name.start= name;
 	}
 }
 
@@ -454,14 +454,14 @@ static void refresh_attribute_name(Token *t) {
 	}
 
 	if(new_name) {
-		free(t->name);
-		t->name= new_name;
+		free(t->name.start);
+		t->name.start= new_name;
 	}
 }
 
 /* JS parity: ParameterToken.afterBuild() recomputes named-parameter keys from
  * the built parameter-key token (so embedded tokens like {{LASTYEAR}} are
- * reflected in param->name). Anonymous parameters keep their numeric names. */
+ * reflected in param->name.start). Anonymous parameters keep their numeric names. */
 static void refresh_parameter_name(Token *t) {
 	if(!t || t->type != TOKEN_PARAMETER || t->child_count == 0) return;
 
@@ -495,8 +495,8 @@ static void refresh_parameter_name(Token *t) {
 	if(new_name) {
 		sz_copy(new_name, buf + i, n);
 		new_name[n]= '\0';
-		free(t->name);
-		t->name= new_name;
+		free(t->name.start);
+		t->name.start= new_name;
 	}
 
 	wiki_thread_buf_release_scratch(scratch);
@@ -746,8 +746,8 @@ static void set_td_attrs_name(Token *td, const char *name) {
 			dup[nlen] = '\0';
 		}
 	}
-	free(ac->token->name);
-	ac->token->name = dup;
+	free(ac->token->name.start);
+	ac->token->name.start = dup;
 }
 
 /* JS parity: AttributesToken.afterBuild() calls parentNode.subtype for 'td'

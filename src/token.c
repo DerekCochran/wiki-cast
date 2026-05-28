@@ -13,23 +13,9 @@
 /* Initial capacity for children array */
 #define CHILD_INIT_CAP 4
 
-static size_t token_name_len_cached(const Token *t) {
-	if(!t || !t->name) return 0;
-	switch(t->type) {
-	case TOKEN_EXT:
-		if(t->data.ext.name.start) return t->data.ext.name.length;
-		break;
-	case TOKEN_HTML:
-		if(t->data.html.orig_tag.start) return t->data.html.orig_tag.length;
-		break;
-	case TOKEN_INCLUDE:
-	case TOKEN_NOINCLUDE:
-		if(t->data.include.tag.start) return t->data.include.tag.length;
-		break;
-	default:
-		break;
-	}
-	return strlen(t->name);
+static inline size_t token_name_len(const Token *t) {
+	if(!t || !t->name.start) return 0;
+	return t->name.length ? t->name.length : strlen(t->name.start);
 }
 
 Token *token_new(TokenType type, const char *type_name) {
@@ -146,7 +132,7 @@ static void token_free_graph(Token *node, unsigned epoch) {
 	free(node->children);
 	free_token_data(node);
 	free(node->type_name);
-	free(node->name);
+	free((void*)node->name.start);
 	free(node);
 }
 
@@ -173,7 +159,7 @@ void token_free_shallow(Token *t) {
 	free(t->children);
 	free_token_data(t);
 	free(t->type_name);
-	free(t->name);
+	free((void*)t->name.start);
 	free(t);
 }
 
@@ -213,8 +199,8 @@ static void token_to_string_rec(const Token *t, ThreadBuf *tb) {
 
 	case TOKEN_EXT: {
 		/* Use original-cased tag name for serialization (JS parity) */
-		const char *ext_tag= t->data.ext.name.start ? t->data.ext.name.start : t->name;
-		size_t ext_tag_len= t->data.ext.name.start ? t->data.ext.name.length : (t->name ? strlen(t->name) : 0);
+		const char *ext_tag= t->data.ext.name.start ? t->data.ext.name.start : t->name.start;
+		size_t ext_tag_len= t->data.ext.name.start ? t->data.ext.name.length : token_name_len(t);
 		const char *ext_closing= t->data.ext.closing.start ? t->data.ext.closing.start : ext_tag;
 		size_t ext_closing_len= t->data.ext.closing.start ? t->data.ext.closing.length : ext_tag_len;
 		thread_buf_append_char(tb, '<');
@@ -377,7 +363,7 @@ static void token_to_string_rec(const Token *t, ThreadBuf *tb) {
 						}
 						thread_buf_append(tb, slot + 2, post_len);
 					}
-				} else if(p->name && strcmp(p->name, "caption") == 0) {
+							} else if(p->name.start && strcmp(p->name.start, "caption") == 0) {
 					for(size_t pi= 0; pi < p->child_count; pi++) {
 						const Child *pc= &p->children[pi];
 						if(pc->is_text)
@@ -385,8 +371,8 @@ static void token_to_string_rec(const Token *t, ThreadBuf *tb) {
 						else
 							token_to_string_rec(pc->token, tb);
 					}
-				} else if(p->name) {
-					thread_buf_append(tb, p->name, strlen(p->name));
+							} else if(p->name.start) {
+									thread_buf_append(tb, p->name.start, token_name_len(p));
 				} else {
 					token_to_string_rec(c->token, tb);
 				}
@@ -515,8 +501,8 @@ static void token_to_string_rec(const Token *t, ThreadBuf *tb) {
 	case TOKEN_HTML: {
 		/* HTML tags: opening, attrs, self-closing, or closing */
 		/* Use orig_tag (original case) for round-trip toString, like JS this.tag */
-		const char *tag_str= t->data.html.orig_tag.start ? t->data.html.orig_tag.start : t->name;
-		size_t tag_len= t->data.html.orig_tag.start ? t->data.html.orig_tag.length : (t->name ? strlen(t->name) : 0);
+			const char *tag_str= t->data.html.orig_tag.start ? t->data.html.orig_tag.start : t->name.start;
+			size_t tag_len= t->data.html.orig_tag.start ? t->data.html.orig_tag.length : token_name_len(t);
 		if(t->data.html.closing) {
 			thread_buf_append(tb, "</", 2);
 			if(tag_str) thread_buf_append(tb, tag_str, tag_len);
@@ -607,7 +593,7 @@ static void token_to_string_rec(const Token *t, ThreadBuf *tb) {
 
 	case TOKEN_INCLUDE:
 		thread_buf_append_char(tb, '<');
-		if(t->name) thread_buf_append(tb, t->name, token_name_len_cached(t));
+		if(t->name.start) thread_buf_append(tb, t->name.start, token_name_len(t));
 		if(t->child_count > 0) {
 			const Child *c= &t->children[0];
 			if(c->is_text)
@@ -909,11 +895,11 @@ void json_stringify_wikiparser_node(const Token *t, ThreadBuf *tb) {
 		}
 		thread_buf_append_char(tb, ']');
 	}
-	if(t->name) {
-		size_t name_len= token_name_len_cached(t);
+	if(t->name.start) {
+		size_t name_len= token_name_len(t);
 		if(name_len > 0) {
 			thread_buf_append(tb, ",\"name\":", 8);
-			json_string(tb, t->name);
+			json_string(tb, t->name.start);
 		}
 	}
 

@@ -22,7 +22,7 @@ cJSON* token_to_json(const Token *token) {
 
     // Basic metadata
     cJSON_AddStringToObject(root, "type", token->type_name ? token->type_name : "unknown");
-    if (token->name) cJSON_AddStringToObject(root, "name", token->name);
+    if (token->name.start) cJSON_AddStringToObject(root, "name", token->name.start);
 
 	switch (token->type) {
 		case TOKEN_HEADING:
