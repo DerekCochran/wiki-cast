@@ -213,9 +213,29 @@ static bool parse_external_inner(const char *inner, size_t len,
             }
         }
 
+        static const char url_stop_bytes[] =
+            "\x00\x01\x02\x03\x04\x05\x06\x07\x08\x09\x0A\x0B\x0C\x0D\x0E\x0F"
+            "\x10\x11\x12\x13\x14\x15\x16\x17\x18\x19\x1A\x1B\x1C\x1D\x1E\x1F\x20"
+            "[]<>\"\x7F\xC2\xE1\xE2\xE3\xEF";
         while(i < len) {
             size_t sc = skip_exturl_sentinel(inner, len, i);
-            if(sc > 0) { i += sc; continue; }
+            if(sc > 0) {
+                i += sc;
+                continue;
+            }
+
+            const char *stop = sz_find_byte_from(inner + i, len - i,
+                                                 url_stop_bytes, sizeof(url_stop_bytes) - 1);
+            if(!stop) {
+                i = len;
+                break;
+            }
+            size_t stop_i = (size_t)(stop - inner);
+            if(stop_i > i) {
+                i = stop_i;
+                continue;
+            }
+
             if(consume_js_zs(inner, len, i) > 0) break;
             if(i + 2 < len && (unsigned char)inner[i] == 0xEF &&
                (unsigned char)inner[i + 1] == 0xBF && (unsigned char)inner[i + 2] == 0xBD) break;
