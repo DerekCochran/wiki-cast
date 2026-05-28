@@ -92,13 +92,15 @@ static bool ext_lookahead_ok(const char *s, size_t len, size_t i) {
 
 /* JS text group: [^\]\x01-\x08\x0A-\x1F\uFFFD]* */
 static bool ext_text_is_valid(const char *s, size_t len) {
+    if(!s || len == 0) return true;
+    static const char rb = ']';
+    if(sz_find_byte(s, len, &rb) != NULL) return false;
+    static const char replacement[] = "\xEF\xBF\xBD";
+    if(len >= 3 && sz_find(s, len, replacement, 3) != NULL) return false;
     for(size_t i = 0; i < len; i++) {
         unsigned char c = (unsigned char)s[i];
-        if(c == ']') return false;
         if(c >= 0x01 && c <= 0x08) return false;
         if(c >= 0x0A && c <= 0x1F) return false;
-        if(i + 2 < len && c == 0xEF && (unsigned char)s[i + 1] == 0xBF && (unsigned char)s[i + 2] == 0xBD)
-            return false; /* U+FFFD */
     }
     return true;
 }
@@ -154,14 +156,10 @@ static Token *build_ext_link_token(Token *url_tok,
  * image-parameter caption tokens that were already pre-processed with inFile=true.
  */
 static bool try_parse_f_sentinel(const char *ptr, size_t len, size_t *out_idx) {
-	if(len < 4) return false;
-	if((unsigned char)ptr[0] != 0x00) return false;
-	if(ptr[len - 2] != 'f') return false;
-	if((unsigned char)ptr[len - 1] != 0x7F) return false;
-    const size_t digit_span = len - 3;
-    if(digit_span == 0) return false;
-    const char *not_digit = sz_find_byte_not_from(ptr + 1, digit_span, "0123456789", 10);
-    if(not_digit) return false;
+    if(!ptr || len < 4 || !out_idx) return false;
+    /* Reuse shared sentinel scanner and require full-span match. */
+    size_t slen = skip_typed_sentinel(ptr, len, 0, 'f');
+    if(slen == 0 || slen != len) return false;
 	size_t idx= 0;
 	for(size_t i= 1; i + 2 < len; i++) {
 		char c= ptr[i];
