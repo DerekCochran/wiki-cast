@@ -67,9 +67,10 @@ static void str_list_from_json_array(StrList *sl, const cJSON *arr) {
 	const cJSON *item;
 	cJSON_ArrayForEach(item, arr) {
 		if(cJSON_IsString(item) && item->valuestring) {
-			size_t slen = strlen(item->valuestring);
+			const char *value = item->valuestring;
+			size_t slen = strlen(value);
 			sz_ptr_t ptr = sz_string_init_length(&sl->items[k], slen, &allocator_default);
-			sz_copy(ptr, (sz_ptr_t)item->valuestring, slen);
+			sz_copy(ptr, (sz_ptr_t)value, slen);
 			k++;
 		}
 	}
@@ -88,9 +89,10 @@ static void str_list_from_json_object_keys(StrList *sl, const cJSON *obj) {
 
 	cJSON_ArrayForEach(item, obj) {
 		if(item->string) {
-			size_t slen = strlen(item->string);
+			const char *key = item->string;
+			size_t slen = strlen(key);
 			sz_ptr_t ptr = sz_string_init_length(&sl->items[k], slen, &allocator_default);
-			sz_copy(ptr, (sz_ptr_t)item->string, slen);
+			sz_copy(ptr, (sz_ptr_t)key, slen);
 			k++;
 		}
 	}
@@ -131,12 +133,14 @@ static void str_map_from_json_object(StrMap *m, const cJSON *obj) {
 
 	cJSON_ArrayForEach(item, obj) {
 		if(item->string && cJSON_IsString(item) && item->valuestring) {
-			size_t klen = strlen(item->string);
-			size_t vlen = strlen(item->valuestring);
+			const char *key = item->string;
+			const char *value = item->valuestring;
+			size_t klen = strlen(key);
+			size_t vlen = strlen(value);
 			sz_ptr_t key_ptr = sz_string_init_length(&m->keys[k], klen, &allocator_default);
-			sz_copy(key_ptr, (sz_ptr_t)item->string, klen);
+			sz_copy(key_ptr, (sz_ptr_t)key, klen);
 			sz_ptr_t val_ptr = sz_string_init_length(&m->values[k], vlen, &allocator_default);
-			sz_copy(val_ptr, (sz_ptr_t)item->valuestring, vlen);
+			sz_copy(val_ptr, (sz_ptr_t)value, vlen);
 			k++;
 		}
 	}
@@ -148,9 +152,8 @@ static sz_string_t *realloc_sz_string_array_preserve_small(
 static NsEntry *realloc_ns_entry_array_preserve_small(
 		NsEntry *arr, size_t old_count, size_t new_count);
 
-static bool str_list_contains_exact(const StrList *sl, const char *needle) {
+static bool str_list_contains_exact_n(const StrList *sl, const char *needle, size_t needle_len) {
 	if(!sl || !needle) return false;
-	size_t needle_len = strlen(needle);
 	for(size_t i= 0; i < sl->count; i++) {
 		sz_ptr_t start;
 		sz_size_t len;
@@ -173,9 +176,8 @@ static void str_list_append_dup(StrList *sl, const char *s) {
 	sl->count++;
 }
 
-static bool str_map_contains_key(const StrMap *m, const char *key) {
+static bool str_map_contains_key_n(const StrMap *m, const char *key, size_t key_len) {
 	if(!m || !key) return false;
-	size_t key_len = strlen(key);
 	for(size_t i= 0; i < m->count; i++) {
 		sz_ptr_t start;
 		sz_size_t len;
@@ -391,6 +393,7 @@ static bool build_protocol_items(ParserConfig *cfg) {
 	/* Reset before (re)building so config reload is safe. */
 	protocol_items_free(&cfg->protocol_items);
 	protocol_buffer_free(cfg);
+	memset(cfg->protocol_initials, 0, sizeof(cfg->protocol_initials));
 	cfg->protocol_items_valid = false;
 
 	/* Initialize protocol buffer */
@@ -448,6 +451,9 @@ static bool build_protocol_items(ParserConfig *cfg) {
 		}
 		const char *proto_start = (const char *)cfg->protocol_items.items[i].protocol.start;
 		sz_lookup((sz_ptr_t)lower_ptr, len, proto_start, (const char *)fast_tolower_table());
+		if(len > 0) {
+			cfg->protocol_initials[(unsigned char)fast_tolower((unsigned char)proto_start[0])] = 1;
+		}
 	}
 	cfg->protocol_items_valid = true;
 	return true;
@@ -493,18 +499,20 @@ static ParserConfig *config_from_cjson(const cJSON *root) {
 			const cJSON *item;
 			cJSON_ArrayForEach(item, ns) {
 				if(item->string && cJSON_IsNumber(item)) {
-				size_t nlen = strlen(item->string);
-				sz_ptr_t name_ptr = sz_string_init_length(&cfg->namespaces[k].name, nlen, &allocator_default);
-				sz_copy(name_ptr, (sz_ptr_t)item->string, nlen);
+					const char *name = item->string;
+					size_t nlen = strlen(name);
+					sz_ptr_t name_ptr = sz_string_init_length(&cfg->namespaces[k].name, nlen, &allocator_default);
+					sz_copy(name_ptr, (sz_ptr_t)name, nlen);
 					cfg->namespaces[k].num= (int)item->valuedouble;
 					k++;
 				} else if(item->string && cJSON_IsString(item) && item->valuestring) {
 					char *endp= NULL;
 					long nsnum= strtol(item->string, &endp, 10);
 					if(endp && *endp == '\0') {
-					size_t vlen = strlen(item->valuestring);
-					sz_ptr_t name_ptr = sz_string_init_length(&cfg->namespaces[k].name, vlen, &allocator_default);
-					sz_copy(name_ptr, (sz_ptr_t)item->valuestring, vlen);
+						const char *name = item->valuestring;
+						size_t vlen = strlen(name);
+						sz_ptr_t name_ptr = sz_string_init_length(&cfg->namespaces[k].name, vlen, &allocator_default);
+						sz_copy(name_ptr, (sz_ptr_t)name, vlen);
 						cfg->namespaces[k].num= (int)nsnum;
 						k++;
 					}
@@ -531,9 +539,10 @@ static ParserConfig *config_from_cjson(const cJSON *root) {
 					cfg->namespaces, cfg->ns_count, cfg->ns_count + 1);
 				assert(grown);
 				cfg->namespaces= grown;
-				size_t nslen= strlen(item->string);
+				const char *name = item->string;
+				size_t nslen= strlen(name);
 			sz_ptr_t ptr = sz_string_init_length(&cfg->namespaces[cfg->ns_count].name, nslen, &allocator_default);
-			sz_copy(ptr, (sz_ptr_t)item->string, nslen);
+			sz_copy(ptr, (sz_ptr_t)name, nslen);
 				cfg->namespaces[cfg->ns_count].num= nsnum;
 				cfg->ns_count++;
 			}
@@ -640,10 +649,11 @@ static ParserConfig *config_from_cjson(const cJSON *root) {
      *   parserFunction[1]["TRANSLATIONLANGUAGE"] = "translationlanguage";
      * }
      */
-	if(str_list_contains_exact(&cfg->ext, "translate") &&
-		 !str_list_contains_exact(&cfg->variable, "translationlanguage")) {
+	if(str_list_contains_exact_n(&cfg->ext, "translate", sizeof("translate") - 1) &&
+		 !str_list_contains_exact_n(&cfg->variable, "translationlanguage", sizeof("translationlanguage") - 1)) {
 		str_list_append_dup(&cfg->variable, "translationlanguage");
-		if(!str_map_contains_key(&cfg->parser_function_sensitive, "TRANSLATIONLANGUAGE")) {
+		if(!str_map_contains_key_n(&cfg->parser_function_sensitive,
+				"TRANSLATIONLANGUAGE", sizeof("TRANSLATIONLANGUAGE") - 1)) {
 			str_map_append_dup(&cfg->parser_function_sensitive,
 												 "TRANSLATIONLANGUAGE",
 												 "translationlanguage");

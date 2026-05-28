@@ -22,7 +22,7 @@ if( jsString !== nativeString ) {
     console.error("Error: The string representations of the AST outputs differ between implementations.");
 }
 const jsJSON = JSON.stringify(jsImpl);
-const nativeJSON = nativeImpl.jsonStringifyWikiparserNode();
+const nativeJSON = nativeImpl.toJson();
 if (jsJSON === nativeJSON) {
     console.log("Success: Both implementations produce the same AST.");
     console.log("js JSON: "+ jsJSON);
@@ -31,4 +31,8 @@ if (jsJSON === nativeJSON) {
     console.log("js JSON: "+ jsJSON);
     console.log("c  JSON: "+ nativeJSON);
     console.error("Error: The AST outputs differ between implementations.");
+}
+
+if (typeof nativeImpl._freeNative === 'function') {
+    nativeImpl._freeNative();
 }

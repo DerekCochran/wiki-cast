@@ -372,6 +372,19 @@ void parse_hr_and_double_underscore(ThreadBuf *tb, const ParserConfig *cfg, Accu
 			while(line_end < buf2_len && buf2[line_end] != '\n') line_end++;
 			const char *line = buf2 + line_start;
 			size_t line_len  = line_end - line_start;
+			const char eq_ch = '=';
+			if(line_len == 0 || sz_find_byte(line, line_len, &eq_ch) == NULL) {
+				if(line_len > 0) {
+					GROW_OUT2_APPEND(line, line_len);
+				}
+				if(line_end < buf2_len) {
+					GROW_OUT2_APPEND("\n", 1);
+					cursor = line_end + 1;
+				} else {
+					cursor = line_end;
+				}
+				continue;
+			}
 
 			HdLineResult hr;
 			if(heading_line_parse_full(line, line_len, &hr)) {

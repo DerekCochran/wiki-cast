@@ -63,6 +63,7 @@ typedef struct {
     /* expanded protocol items */
     ProtocolList protocol_items;
     bool protocol_items_valid;
+    unsigned char protocol_initials[256]; /* lowercase first-byte filter for protocols */
     char *protocol_buffer;       /* Storage for expanded protocol strings */
     size_t protocol_buffer_cap;   /* Capacity of protocol buffer */
     size_t protocol_buffer_len;   /* Used length of protocol buffer */

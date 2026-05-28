@@ -89,6 +89,11 @@ typedef struct {
 	size_t count;
 } TokenPtrSet;
 
+typedef struct {
+	Token *token;
+	bool in_context;
+} TokenContextFrame;
+
 static bool token_vec_push(TokenVec *v, Token *t) {
 	if(!v) return false;
 	if(v->count >= v->cap) {
@@ -186,6 +191,101 @@ static bool token_ptr_set_insert(TokenPtrSet *set, Token *t) {
 		if(cur == t) return true;
 		pos= (pos + 1) & mask;
 	}
+}
+
+static bool token_is_ext_inner(const Token *t) {
+	return t && t->type == TOKEN_EXT_INNER && t->type_name && strcmp(t->type_name, "ext-inner") == 0;
+}
+
+static bool token_context_frames_push(TokenContextFrame **frames, size_t *count, size_t *cap,
+												 Token *token, bool in_context) {
+	if(!token || !frames || !count || !cap) return false;
+	if(*count >= *cap) {
+		size_t next_cap= *cap ? *cap * 2 : 64;
+		TokenContextFrame *grown= realloc(*frames, next_cap * sizeof(TokenContextFrame));
+		if(!grown) return false;
+		*frames= grown;
+		*cap= next_cap;
+	}
+	(*frames)[(*count)++]= (TokenContextFrame){ .token= token, .in_context= in_context };
+	return true;
+}
+
+static void mark_ext_inner_descendants(Token *seed, TokenPtrSet *visited) {
+	if(!seed || !visited) return;
+	TokenVec stack= {0};
+	if(!token_vec_push(&stack, seed)) {
+		free(stack.items);
+		return;
+	}
+	while(stack.count > 0) {
+		Token *cur= stack.items[--stack.count];
+		if(!cur || token_ptr_set_contains(visited, cur)) continue;
+		if(!token_ptr_set_insert(visited, cur)) {
+			free(stack.items);
+			return;
+		}
+		cur->ext_inner_context= true;
+		for(size_t i= 0; i < cur->child_count; i++) {
+			if(!cur->children[i].is_text && cur->children[i].token) {
+				if(!token_vec_push(&stack, cur->children[i].token)) {
+					free(stack.items);
+					return;
+				}
+			}
+		}
+	}
+	free(stack.items);
+}
+
+static void refresh_accum_ext_inner_context(Accum *accum) {
+	if(!accum) return;
+	for(size_t i= 0; i < accum->count; i++) {
+		if(accum->tokens[i]) accum->tokens[i]->ext_inner_context= false;
+	}
+	if(accum->count == 0) return;
+
+	TokenPtrSet visited;
+	if(!token_ptr_set_init(&visited, accum->count * 2 + 16)) return;
+	for(size_t i= 0; i < accum->count; i++) {
+		Token *tok= accum->tokens[i];
+		if(!tok || !token_is_ext_inner(tok)) continue;
+		for(size_t j= 0; j < tok->child_count; j++) {
+			if(!tok->children[j].is_text && tok->children[j].token) {
+				mark_ext_inner_descendants(tok->children[j].token, &visited);
+			}
+		}
+	}
+	token_ptr_set_destroy(&visited);
+}
+
+static void refresh_tree_ext_inner_context(Token *root) {
+	if(!root) return;
+	TokenContextFrame *frames= NULL;
+	size_t count= 0;
+	size_t cap= 0;
+	if(!token_context_frames_push(&frames, &count, &cap, root, false)) {
+		free(frames);
+		return;
+	}
+
+	while(count > 0) {
+		TokenContextFrame frame= frames[--count];
+		Token *tok= frame.token;
+		if(!tok) continue;
+		tok->ext_inner_context= frame.in_context;
+		bool next_in_context= frame.in_context || token_is_ext_inner(tok);
+		for(size_t i= 0; i < tok->child_count; i++) {
+			if(!tok->children[i].is_text && tok->children[i].token) {
+				if(!token_context_frames_push(&frames, &count, &cap, tok->children[i].token, next_in_context)) {
+					free(frames);
+					return;
+				}
+			}
+		}
+	}
+
+	free(frames);
 }
 
 static int cmp_accum_slot_ref_ptr(const void *a, const void *b) {
@@ -480,6 +580,25 @@ static void json_write_escaped_len(const char *s, size_t len, FILE *fp) {
 
 static void stage_json_write_token(const Token *t, FILE *fp, const Accum *accum);
 
+static bool parse_sentinel_shape(const char *s, size_t len, size_t pos,
+								 char *type_out, size_t *idx_out, size_t *next_pos_out) {
+	if(!s || pos >= len || (unsigned char)s[pos] != '\0') return false;
+	size_t p = pos + 1;
+	if(p >= len || !isdigit((unsigned char)s[p])) return false;
+	const char *not_digit = sz_find_byte_not_from(s + p, len - p, "0123456789", 10);
+	size_t type_pos = not_digit ? (size_t)(not_digit - s) : len;
+	if(type_pos >= len || type_pos <= p) return false;
+	if(type_pos + 1 >= len || (unsigned char)s[type_pos + 1] != 0x7F) return false;
+	size_t idx = 0;
+	for(size_t i = p; i < type_pos; i++) {
+		idx = idx * 10 + (size_t)(s[i] - '0');
+	}
+	if(idx_out) *idx_out = idx;
+	if(type_out) *type_out = s[type_pos];
+	if(next_pos_out) *next_pos_out = type_pos + 2;
+	return true;
+}
+
 static bool stage_json_parse_sentinel(const char *s, size_t len, size_t *pos, size_t *idx_out) {
 	if(!s || !pos || !idx_out) {
 		log_debug_env_token("WTC_DEBUG_STAGE_1", NULL,
@@ -491,54 +610,18 @@ static bool stage_json_parse_sentinel(const char *s, size_t len, size_t *pos, si
 			"[C stage_json_parse_sentinel] pos >= len: pos=%zu len=%zu", *pos, len);
 		return false;
 	}
-	if((unsigned char)s[*pos] != '\0') {
+	char type_ch = '\0';
+	size_t next_pos = 0;
+	if(!parse_sentinel_shape(s, len, *pos, &type_ch, idx_out, &next_pos)) {
 		log_debug_env_token("WTC_DEBUG_STAGE_1", NULL,
-			"[C stage_json_parse_sentinel] not NUL at pos=%zu byte=%02X", *pos, (unsigned char)s[*pos]);
-		return false;
-	}
-
-	size_t p = *pos + 1; /* first digit */
-	if(p >= len) {
-		log_debug_env_token("WTC_DEBUG_STAGE_1", NULL,
-			"[C stage_json_parse_sentinel] no room for digit at p=%zu len=%zu", p, len);
-		return false;
-	}
-	if(!isdigit((unsigned char)s[p])) {
-		log_debug_env_token("WTC_DEBUG_STAGE_1", NULL,
-			"[C stage_json_parse_sentinel] first char after NUL not digit p=%zu byte=%02X", p, (unsigned char)s[p]);
-		return false;
-	}
-
-	size_t idx = 0;
-	while(p < len && isdigit((unsigned char)s[p])) {
-		idx = idx * 10 + (size_t)(s[p] - '0');
-		p++;
-	}
-
-	/* p now points at the type char (should exist) */
-	if(p >= len) {
-		log_debug_env_token("WTC_DEBUG_STAGE_1", NULL,
-			"[C stage_json_parse_sentinel] ran off end after digits p=%zu len=%zu", p, len);
-		return false;
-	}
-
-	unsigned char type_ch = (unsigned char)s[p];
-	if(p + 1 >= len) {
-		log_debug_env_token("WTC_DEBUG_STAGE_1", NULL,
-			"[C stage_json_parse_sentinel] missing DEL after type at p=%zu type=%02X len=%zu", p, type_ch, len);
-		return false;
-	}
-	if((unsigned char)s[p + 1] != 0x7F) {
-		log_debug_env_token("WTC_DEBUG_STAGE_1", NULL,
-			"[C stage_json_parse_sentinel] trailing byte not DEL at del_idx=%zu byte=%02X", p + 1, (unsigned char)s[p + 1]);
+			"[C stage_json_parse_sentinel] invalid sentinel shape at pos=%zu", *pos);
 		return false;
 	}
 
 	/* Success: advance pos to after the DEL */
-	*idx_out = idx;
-	*pos = p + 2;
+	*pos = next_pos;
 	log_debug_env_token("WTC_DEBUG_STAGE_1", NULL,
-		"[C stage_json_parse_sentinel] OK parsed idx=%zu type=%02X next_pos=%zu", idx, type_ch, *pos);
+		"[C stage_json_parse_sentinel] OK parsed idx=%zu type=%02X next_pos=%zu", *idx_out, (unsigned char)type_ch, *pos);
 	return true;
 }
 
@@ -548,15 +631,11 @@ static bool thread_buf_has_sentinel_type(const ThreadBuf *tb, char type_ch) {
 	if(!tb || !tb->buf || tb->len < 4) return false;
 
 	for(size_t i= 0; i + 3 < tb->len; i++) {
-		if((unsigned char)tb->buf[i] != '\0') continue;
-
-		size_t p= i + 1;
-		if(p >= tb->len || !isdigit((unsigned char)tb->buf[p])) continue;
-
-		while(p < tb->len && isdigit((unsigned char)tb->buf[p])) p++;
-		if(p + 1 >= tb->len) continue;
-
-		if(tb->buf[p] == type_ch && (unsigned char)tb->buf[p + 1] == 0x7F) {
+		char parsed_type = '\0';
+		size_t idx = 0;
+		size_t next_pos = 0;
+		if(!parse_sentinel_shape(tb->buf, tb->len, i, &parsed_type, &idx, &next_pos)) continue;
+		if(parsed_type == type_ch) {
 			return true;
 		}
 	}
@@ -1232,11 +1311,11 @@ static void postprocess_gallery_ext_inner(Token *t, const ParserConfig *cfg, Acc
 			line_start= eol ? (size_t)(eol - tmp->buf) + 1 : tmp->len;
 		}
 
-		for(size_t i= 0; i < t->child_count; i++) {
-			if(!t->children[i].is_text && t->children[i].token) {
-				postprocess_nested_plain(t->children[i].token, cfg, accum, page);
-			}
-		}
+		// for(size_t i= 0; i < t->child_count; i++) {
+		// 	if(!t->children[i].is_text && t->children[i].token) {
+		// 		postprocess_nested_plain(t->children[i].token, cfg, accum, page);
+		// 	}
+		// }
 
 		wiki_thread_buf_release_scratch(tmp);
 		return;
@@ -1758,60 +1837,28 @@ static AttrValueParseMode classify_attr_value_parse_mode(const Token *parent,
 }
 
 static bool token_has_ext_inner_ancestor(const Token *target, const Accum *accum) {
-	if(!target || !accum || accum->count == 0) return false;
+	(void)accum;
+	return target && target->ext_inner_context;
+}
 
-	size_t cap= accum->count;
-	const Token **stack= malloc(cap * sizeof(*stack));
-	const Token **seen= malloc(cap * sizeof(*seen));
-	if(!stack || !seen) {
-		free((void *)stack);
-		free((void *)seen);
-		return false;
+static bool param_value_text_may_need_pipeline(const char *s, size_t n) {
+	if(!s || n == 0) return false;
+
+	const char zn= '\0';
+	if(sz_find_byte(s, n, &zn) != NULL) return true;
+
+	/* Superset of stage trigger bytes for inline parameter/attr parsing. */
+	sz_byteset_t set;
+	sz_byteset_init(&set);
+	static const char trigger_set[] = "<>{}[]'|!=#*;:-_/&\n\r";
+	for(size_t i= 0; i < sizeof(trigger_set) - 1; i++) {
+		sz_byteset_add(&set, (unsigned char)trigger_set[i]);
 	}
-
-	size_t sp= 0;
-	size_t seen_n= 0;
-	stack[sp++]= target;
-	seen[seen_n++]= target;
-
-	while(sp > 0) {
-		const Token *cur= stack[--sp];
-		for(size_t ai= 0; ai < accum->count; ai++) {
-			Token *parent= accum->tokens[ai];
-			if(!parent || parent == cur) continue;
-
-			bool is_parent= false;
-			for(size_t ci= 0; ci < parent->child_count; ci++) {
-				if(parent->children[ci].is_text) continue;
-				if(parent->children[ci].token == cur) {
-					is_parent= true;
-					break;
-				}
-			}
-			if(!is_parent) continue;
-
-			if(parent->type == TOKEN_EXT_INNER && parent->type_name && strcmp(parent->type_name, "ext-inner") == 0) {
-				free((void *)stack);
-				free((void *)seen);
-				return true;
-			}
-
-			bool already_seen= false;
-			for(size_t si= 0; si < seen_n; si++) {
-				if(seen[si] == parent) {
-					already_seen= true;
-					break;
-				}
-			}
-			if(!already_seen && seen_n < cap && sp < cap) {
-				seen[seen_n++]= parent;
-				stack[sp++]= parent;
-			}
-		}
+	for(unsigned char d= '0'; d <= '9'; d++) {
+		sz_byteset_add(&set, d);
 	}
+	if(sz_find_byteset(s, n, &set) != NULL) return true;
 
-	free((void *)stack);
-	free((void *)seen);
 	return false;
 }
 
@@ -2040,7 +2087,7 @@ static void postprocess_parameter_value_inline_impl(Token *t, const ParserConfig
 	size_t new_cap= old_count ? old_count : 1;
 	Child *new_children= malloc(new_cap * sizeof(Child));
 	if(!new_children) {
-		wiki_thread_buf_release_scratch(scratch);
+		if(scratch) wiki_thread_buf_release_scratch(scratch);
 		return;
 	}
 	size_t new_count= 0;
@@ -2061,6 +2108,26 @@ static void postprocess_parameter_value_inline_impl(Token *t, const ParserConfig
 
 		const char *txt= cur.text;
 		size_t txt_len= cur.text_len;
+		if(!param_value_text_may_need_pipeline(txt, txt_len)) {
+			if(new_count >= new_cap) {
+				new_cap*= 2;
+				Child *grown= realloc(new_children, new_cap * sizeof(Child));
+				assert(grown);
+				new_children= grown;
+			}
+			new_children[new_count++]= cur;
+			continue;
+		}
+
+		if(!scratch) {
+			scratch= wiki_thread_buf_acquire_scratch();
+			if(!scratch) {
+				free(new_children);
+				log_fatal("postprocess_parameter_value_inline_impl: failed to acquire scratch");
+				abort();
+			}
+		}
+
 		wiki_thread_buf_set(scratch, txt, txt_len);
 
 		if(is_attr_value) {
@@ -2158,7 +2225,7 @@ static void postprocess_parameter_value_inline_impl(Token *t, const ParserConfig
 	t->children= new_children;
 	t->child_count= new_count;
 	t->child_cap= new_cap;
-	wiki_thread_buf_release_scratch(scratch);
+	if(scratch) wiki_thread_buf_release_scratch(scratch);
 
 	if(transformed_children) {
 		/* Recurse after replacement: transforming this token may have created
@@ -2187,7 +2254,10 @@ static void postprocess_parameter_value_inline_impl(Token *t, const ParserConfig
 static void postprocess_parameter_value_inline(Token *t, const ParserConfig *cfg, Accum *accum,
 																																		const char *page,
 																																		bool recurse_existing_children) {
-	bool inferred_in_ext_context= token_has_ext_inner_ancestor(t, accum);
+	bool inferred_in_ext_context= t && t->ext_inner_context;
+	if(!inferred_in_ext_context) {
+		inferred_in_ext_context = token_has_ext_inner_ancestor(t, accum);
+	}
 	postprocess_parameter_value_inline_impl(t, cfg, accum, page, NULL, NULL, inferred_in_ext_context, recurse_existing_children);
 }
 
@@ -2513,6 +2583,7 @@ Token *wiki_parse_with_page(const char *wikitext, size_t input_len, const Parser
 		size_t scan_start= 0;
 
 		while(scan_start < accum.count && pass < max_inline_passes && scan_start < max_inline_tokens) {
+			refresh_accum_ext_inner_context(&accum);
 			size_t scan_end= accum.count;
 			if(scan_end > max_inline_tokens) scan_end= max_inline_tokens;
 
@@ -2530,6 +2601,7 @@ Token *wiki_parse_with_page(const char *wikitext, size_t input_len, const Parser
 
 	/* ── build phase 2: recursively expand remaining sentinels ───────────── */
 	build_token_recursive(root, &accum, cfg);
+	refresh_tree_ext_inner_context(root);
 
 	/* JS parity: AttributesToken.afterBuild() sets table-attrs name to the
      * cell subtype (td/th/caption), including sibling inheritance for inline
