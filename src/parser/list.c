@@ -136,7 +136,8 @@ static size_t skip_cno_sentinel(const char *p, size_t remaining) {
 	if(!p || remaining < 4) return 0;
 	if((unsigned char)p[0] != '\0') return 0;
 	size_t j = 1;
-	while(j < remaining && p[j] >= '0' && p[j] <= '9') j++;
+	const char *not_digit = sz_find_byte_not_from(p + j, remaining - j, "0123456789", 10);
+	j = not_digit ? (size_t)(not_digit - p) : remaining;
 	if(j == 1 || j + 1 >= remaining) return 0; /* need at least one digit and a type+DEL */
 	char t = p[j];
 	if(!(t == 'c' || t == 'n' || t == 'o')) return 0;
