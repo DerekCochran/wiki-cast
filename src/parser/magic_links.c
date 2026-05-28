@@ -110,7 +110,8 @@ static size_t consume_magic_space(const char *s, size_t len, size_t i) {
         size_t j = i + 2;
         if (j < len && (s[j] == 'x' || s[j] == 'X')) {
             j++;
-            while (j < len && s[j] == '0') j++;
+            const char *hex_nz = sz_find_byte_not_from(s + j, len - j, "0", 1);
+            j = hex_nz ? (size_t)(hex_nz - s) : len;
             if (j + 2 < len && s[j + 2] == ';') {
                 char a = (char)fast_tolower((unsigned char)s[j]);
                 char b = (char)fast_tolower((unsigned char)s[j + 1]);
@@ -118,7 +119,8 @@ static size_t consume_magic_space(const char *s, size_t len, size_t i) {
             }
             return 0;
         }
-        while (j < len && s[j] == '0') j++;
+        const char *dec_nz = sz_find_byte_not_from(s + j, len - j, "0", 1);
+        j = dec_nz ? (size_t)(dec_nz - s) : len;
         if (j + 2 < len && s[j] == '1' && s[j + 1] == '6' && s[j + 2] == '0' && j + 3 < len && s[j + 3] == ';')
             return (j + 4) - i;
     }
