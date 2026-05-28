@@ -90,11 +90,10 @@ static bool ext_text_is_valid(const char *s, size_t len) {
     if(sz_find_byte(s, len, &rb) != NULL) return false;
     static const char replacement[] = "\xEF\xBF\xBD";
     if(len >= 3 && sz_find(s, len, replacement, 3) != NULL) return false;
-    for(size_t i = 0; i < len; i++) {
-        unsigned char c = (unsigned char)s[i];
-        if(c >= 0x01 && c <= 0x08) return false;
-        if(c >= 0x0A && c <= 0x1F) return false;
-    }
+    static const char invalid_ctrl[] =
+        "\x01\x02\x03\x04\x05\x06\x07\x08"
+        "\x0A\x0B\x0C\x0D\x0E\x0F\x10\x11\x12\x13\x14\x15\x16\x17\x18\x19\x1A\x1B\x1C\x1D\x1E\x1F";
+    if(sz_find_byte_from(s, len, invalid_ctrl, sizeof(invalid_ctrl) - 1) != NULL) return false;
     return true;
 }
 
