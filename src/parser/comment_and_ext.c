@@ -325,15 +325,13 @@ static bool cae_find_next_match(const char *s, size_t len, size_t at,
 }
 
 typedef struct {
-	char **items;
-	size_t *lens;
+	sz_string_view_t *items;
 	size_t count;
 	size_t cap;
 } TextStack;
 
 static void text_stack_init(TextStack *st) {
 	st->items= NULL;
-	st->lens= NULL;
 	st->count= 0;
 	st->cap= 0;
 }
@@ -341,23 +339,19 @@ static void text_stack_init(TextStack *st) {
 static void text_stack_push(TextStack *st, const char *s, size_t len) {
 	if(st->count >= st->cap) {
 		size_t new_cap= st->cap ? st->cap * 2 : 8;
-		st->items= realloc(st->items, new_cap * sizeof(char *));
-		st->lens= realloc(st->lens, new_cap * sizeof(size_t));
-		assert(st->items && st->lens);
+		st->items= realloc(st->items, new_cap * sizeof(sz_string_view_t));
+		assert(st->items);
 		st->cap= new_cap;
 	}
 	const char *view = wiki_thread_buf_append_to_tokens(s, len);
-	st->items[st->count]= (char *)view;
-	st->lens[st->count]= len;
+	st->items[st->count]= (sz_string_view_t){ .start = view, .length = len };
 	st->count++;
 }
 
 static void text_stack_free(TextStack *st) {
 	/* Items are views into the tokens arena (append-only); do not free them. */
 	free(st->items);
-	free(st->lens);
 	st->items= NULL;
-	st->lens= NULL;
 	st->count= 0;
 	st->cap= 0;
 }
@@ -387,8 +381,7 @@ static void append_numeric_placeholder(char *dst, size_t *len, size_t idx) {
  * Returns number of bytes appended to `tb` (new tb->len).
  */
 static size_t str_restore_to_tb(const char *s, size_t len,
-								const char **stack, size_t stack_count,
-								const size_t *stack_lengths,
+								const sz_string_view_t *stack, size_t stack_count,
 								ThreadBuf *tb) {
 	if(!s || len == 0) return 0;
 	const char *p = s;
@@ -419,9 +412,9 @@ static size_t str_restore_to_tb(const char *s, size_t len,
 		if(k < end && k > found + 1 && (unsigned char)*k == '\x7F') {
 			size_t idx = 0;
 			for(const char *d = found + 1; d < k; ++d) idx = idx * 10 + (size_t)(*d - '0');
-			if(idx < stack_count && stack[idx]) {
-				const char *rep = stack[idx];
-				size_t replen = (stack_lengths && stack_lengths[idx]) ? stack_lengths[idx] : strlen(rep);
+			if(idx < stack_count && stack[idx].start) {
+				const char *rep = stack[idx].start;
+				size_t replen = stack[idx].length;
 				if(replen) {
 					wiki_thread_buf_reserve(tb, tb->len + replen);
 					sz_copy(tb->buf + tb->len, rep, replen);
@@ -2558,7 +2551,7 @@ static void translate_scan_cb_wrap(const char *segment, size_t len,
 	const char *inner_ptr = NULL;
 	size_t inner_len = 0;
 	if (kind == PARSER_SEG_INNER && len > 0) {
-		str_restore_to_tb(segment, len, (const char **)ctx->st->items, ctx->st->count, ctx->st->lens, tmp_restore);
+		str_restore_to_tb(segment, len, ctx->st->items, ctx->st->count, tmp_restore);
 		inner_ptr = tmp_restore->buf;
 		inner_len = tmp_restore->len;
 	}
@@ -2640,7 +2633,7 @@ static void apply_translate_prepass(ThreadBuf *tb, const ParserConfig *cfg, Accu
 	ThreadBuf *tmp_all = wiki_thread_buf_acquire_scratch();
 	if(!tmp_all) { log_fatal("thread_buffer: failed to acquire scratch in apply_translate_prepass (final restore)\n"); abort(); }
 	tmp_all->len = 0;
-	str_restore_to_tb(out_tb->buf, out_tb->len, (const char **)st.items, st.count, st.lens, tmp_all);
+	str_restore_to_tb(out_tb->buf, out_tb->len, st.items, st.count, tmp_all);
 	wiki_thread_buf_set(tb, tmp_all->buf, tmp_all->len);
 	wiki_thread_buf_release_scratch(tmp_all);
 	wiki_thread_buf_release_scratch(out_tb);
