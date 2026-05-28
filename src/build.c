@@ -142,9 +142,9 @@ static void append_key_token_repr_tb(const Token *t, ThreadBuf *tb) {
 	if(t->type == TOKEN_LINK || t->type == TOKEN_FILE ||
 	   t->type == TOKEN_CATEGORY || t->type == TOKEN_REDIRECT_TARGET) {
 		bool is_file_line_image =
-			(t->type == TOKEN_FILE && t->type_name &&
-			 (strcmp(t->type_name, "gallery-image") == 0 ||
-			  strcmp(t->type_name, "imagemap-image") == 0));
+			(t->type == TOKEN_FILE &&
+			 (t->subtype == TOKEN_SUBTYPE_GALLERY_IMAGE ||
+			  t->subtype == TOKEN_SUBTYPE_IMAGEMAP_IMAGE));
 
 		if(!is_file_line_image) {
 			wiki_thread_buf_append(tb, (sz_string_view_t){ "[[", 2 });
@@ -258,7 +258,7 @@ static void append_key_token_repr_tb(const Token *t, ThreadBuf *tb) {
 	if(t->type == TOKEN_TRANSCLUDE) {
 		wiki_thread_buf_putc(tb, '{');
 		wiki_thread_buf_putc(tb, '{');
-		bool is_magic_word = (t->type_name && strcmp(t->type_name, "magic-word") == 0);
+		bool is_magic_word = (t->subtype == TOKEN_SUBTYPE_MAGIC_WORD);
 		for(size_t i = 0; i < t->child_count; i++) {
 			if(i > 0) {
 				if(is_magic_word && i == 1)
@@ -382,7 +382,7 @@ static size_t js_trim_ws_before(const char *s, size_t end) {
  * stage-log snapshots captured during parseBraces (Stage 1). */
 static void refresh_template_name(Token *t, const ParserConfig *cfg) {
 	if(!t || t->type != TOKEN_TRANSCLUDE) return;
-	if(!t->type_name || strcmp(t->type_name, "template") != 0) return;
+	if(t->subtype != TOKEN_SUBTYPE_TEMPLATE) return;
 	if(t->child_count == 0) return;
 
 	/* Child 0 is the template-name atom token */
@@ -433,8 +433,7 @@ static void refresh_template_name(Token *t, const ParserConfig *cfg) {
 	title_free(parsed);
 
 	if(name) {
-		free(t->name.start);
-		t->name.start= name;
+		token_set_name_owned(t, name);
 	}
 }
 
@@ -454,8 +453,7 @@ static void refresh_attribute_name(Token *t) {
 	}
 
 	if(new_name) {
-		free(t->name.start);
-		t->name.start= new_name;
+		token_set_name_owned(t, new_name);
 	}
 }
 
@@ -495,8 +493,7 @@ static void refresh_parameter_name(Token *t) {
 	if(new_name) {
 		sz_copy(new_name, buf + i, n);
 		new_name[n]= '\0';
-		free(t->name.start);
-		t->name.start= new_name;
+		token_set_name_owned(t, new_name);
 	}
 
 	wiki_thread_buf_release_scratch(scratch);
@@ -746,8 +743,7 @@ static void set_td_attrs_name(Token *td, const char *name) {
 			dup[nlen] = '\0';
 		}
 	}
-	free(ac->token->name.start);
-	ac->token->name.start = dup;
+	token_set_name_owned(ac->token, dup);
 }
 
 /* JS parity: AttributesToken.afterBuild() calls parentNode.subtype for 'td'

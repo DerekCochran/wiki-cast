@@ -194,7 +194,7 @@ static bool token_ptr_set_insert(TokenPtrSet *set, Token *t) {
 }
 
 static bool token_is_ext_inner(const Token *t) {
-	return t && t->type == TOKEN_EXT_INNER && t->type_name && strcmp(t->type_name, "ext-inner") == 0;
+	return t && t->type == TOKEN_EXT_INNER && t->subtype == TOKEN_SUBTYPE_EXT_INNER;
 }
 
 static bool token_context_frames_push(TokenContextFrame **frames, size_t *count, size_t *cap,
@@ -492,7 +492,8 @@ static void debug_dump_bad_sentinel_window(const char *label, const ThreadBuf *t
 	ssize_t hit= find_nul_colon(tb->buf, tb->len);
 	if(hit < 0) return;
 
-	const char *type_name= (t && t->type_name) ? t->type_name : "(null)";
+	sz_string_view_t subtype_name= t ? token_subtype_name(t->subtype) : (sz_string_view_t){ NULL, 0 };
+	const char *type_name= subtype_name.start ? subtype_name.start : "(null)";
 	const char *name= (t && t->name.start) ? t->name.start : "(null)";
 	fprintf(stderr,
 	        "DEBUG bad-sentinel: label=%s token=%p type=%d type_name=%s name=%s len=%zu nul_colon_at=%zd\n",
@@ -526,7 +527,7 @@ static char nested_token_marker_char(const Token *tok) {
 	char sym = token_sentinel_char(tok->type);
 	if(sym == '?') sym = '\0';
 
-	if(tok->type == TOKEN_TRANSCLUDE && tok->type_name && strcmp(tok->type_name, "magic-word") == 0 && tok->name.start) {
+	if(tok->type == TOKEN_TRANSCLUDE && tok->subtype == TOKEN_SUBTYPE_MAGIC_WORD && tok->name.start) {
 		const char *name = tok->name.start;
 		if(strcmp(name, "!") == 0) return '!';
 		if(strcmp(name, "!!") == 0) return '+';
@@ -708,11 +709,13 @@ static void stage_json_write_token(const Token *t, FILE *fp, const Accum *accum)
 	}
 
 	fputs("{\"type\":", fp);
-	json_write_escaped_len(t->type_name ? t->type_name : "", t->type_name ? strlen(t->type_name) : 0, fp);
+	sz_string_view_t subtype_name= token_subtype_name(t->subtype);
+	json_write_escaped_len(subtype_name.start ? subtype_name.start : "", subtype_name.length, fp);
 
 	if(t->name.start) {
 		fputs(",\"name\":", fp);
-		json_write_escaped_len(t->name.start, strlen(t->name.start), fp);
+		size_t name_len= t->name.length ? t->name.length : strlen(t->name.start);
+		json_write_escaped_len(t->name.start, name_len, fp);
 	}
 
 	bool has_stage_children= false;
@@ -745,9 +748,10 @@ static void stage_json_write_token(const Token *t, FILE *fp, const Accum *accum)
 						if(_qi+1 < _le && _hp < sizeof(_hbuf)) _hbuf[_hp++] = ' ';
 					}
 					_hbuf[_hp] = '\0';
+					sz_string_view_t log_subtype_name= token_subtype_name(t->subtype);
 					log_debug_env_token("WTC_DEBUG_STAGE_1", NULL,
 						"[C write_tok_child] tok_type=%s text_len=%zu ptr=%p bytes_at[%zu..%zu]=%s",
-						t->type_name ? t->type_name : "?", c->text_len, (void*)c->text,
+						log_subtype_name.start ? log_subtype_name.start : "?", c->text_len, (void*)c->text,
 						_ls, _le, _hbuf);
 				}
 				stage_json_write_text_segments(c->text, c->text_len, fp, accum, &first);
@@ -913,8 +917,11 @@ static void parse_table_skip_first_line(ThreadBuf *scratch, const ParserConfig *
 }
 
 static bool should_postprocess_plain(const Token *t) {
-	if(!t || !(t->type == TOKEN_PLAIN || t->type == TOKEN_EXT_INNER) || !t->type_name) return false;
-	return strcmp(t->type_name, "td-inner") == 0 || strcmp(t->type_name, "table-inter") == 0 || strcmp(t->type_name, "ext-inner") == 0 || strcmp(t->type_name, "heading-title") == 0;
+	if(!t || !(t->type == TOKEN_PLAIN || t->type == TOKEN_EXT_INNER)) return false;
+	return t->subtype == TOKEN_SUBTYPE_TD_INNER ||
+			 t->subtype == TOKEN_SUBTYPE_TABLE_INTER ||
+			 t->subtype == TOKEN_SUBTYPE_EXT_INNER ||
+			 t->subtype == TOKEN_SUBTYPE_HEADING_TITLE;
 }
 
 static bool ext_inner_allows_nested_parse(const char *name) {
@@ -1047,13 +1054,12 @@ static Token *parse_gallery_image_line(const char *line, size_t line_len,
 		log_debug_env_token("WTC_DEBUG_GALLERY", NULL,
 			"[C gallery_line] direct FILE token branch line_len=%zu", line_len);
 		tmp->children[0].token= NULL;
-		if(out->type_name) free(out->type_name);
-		out->type_name= strdup("gallery-image");
+		out->subtype= TOKEN_SUBTYPE_GALLERY_IMAGE;
 		/* JS parity: GalleryImageToken keeps link=... as a link parameter. */
 		for(size_t ci= 1; ci < out->child_count; ci++) {
 			if(out->children[ci].is_text || !out->children[ci].token) continue;
 			Token *param= out->children[ci].token;
-			if(param->type != TOKEN_PLAIN || !param->type_name || strcmp(param->type_name, "image-parameter") != 0) continue;
+			if(param->type != TOKEN_PLAIN || param->subtype != TOKEN_SUBTYPE_IMAGE_PARAMETER) continue;
 			if(!param->name.start || strcmp(param->name.start, "caption") != 0 || param->child_count == 0) continue;
 			Child *first= &param->children[0];
 			if(!first->is_text || !first->text || first->text_len < 5) continue;
@@ -1064,8 +1070,7 @@ static Token *parse_gallery_image_line(const char *line, size_t line_len,
 
 			char *new_name= strdup("link");
 			if(!new_name) continue;
-			free(param->name.start);
-			param->name.start= new_name;
+			token_set_name_owned(param, new_name);
 			free((void *)param->data.image_param.raw_syntax.start);
 			char *owned_syntax= malloc(p + 8);
 			if(owned_syntax) {
@@ -1207,8 +1212,7 @@ static Token *parse_imagemap_image_line(const char *line, size_t line_len,
 	if(tmp->child_count == 1 && !tmp->children[0].is_text && tmp->children[0].token && tmp->children[0].token->type == TOKEN_FILE) {
 		out= tmp->children[0].token;
 		tmp->children[0].token= NULL;
-		if(out->type_name) free(out->type_name);
-		out->type_name= strdup("imagemap-image");
+		out->subtype= TOKEN_SUBTYPE_IMAGEMAP_IMAGE;
 	}
 
 	token_free_shallow(tmp);
@@ -1263,7 +1267,7 @@ static Token *parse_imagemap_link_line(const char *line, size_t line_len,
 
 static void postprocess_gallery_ext_inner(Token *t, const ParserConfig *cfg, Accum *accum,
 																		const char *page) {
-	if(!t || !t->type_name || strcmp(t->type_name, "ext-inner") != 0 || !t->name.start || strcmp(t->name.start, "gallery") != 0) return;
+	if(!t || t->subtype != TOKEN_SUBTYPE_EXT_INNER || !t->name.start || strcmp(t->name.start, "gallery") != 0) return;
 
 	bool has_non_text= false;
 	size_t src_len= 0;
@@ -1329,7 +1333,7 @@ static void postprocess_gallery_ext_inner(Token *t, const ParserConfig *cfg, Acc
 
 static void postprocess_imagemap_ext_inner(Token *t, const ParserConfig *cfg, Accum *accum,
 																		 const char *page) {
-	if(!t || !t->type_name || strcmp(t->type_name, "ext-inner") != 0 || !t->name.start || strcmp(t->name.start, "imagemap") != 0) return;
+	if(!t || t->subtype != TOKEN_SUBTYPE_EXT_INNER || !t->name.start || strcmp(t->name.start, "imagemap") != 0) return;
 
 	bool has_non_text= false;
 	size_t src_len= 0;
@@ -1448,7 +1452,8 @@ static void run_nested_plain_pipeline(ThreadBuf *scratch,
 		if(ext_inner_has_sentinel && !is_poem_ext_inner) {
 			hr_root_type= TOKEN_PLAIN;
 		}
-		const char *hr_root_name= t->type_name;
+		sz_string_view_t hr_root_subtype= token_subtype_name(t->subtype);
+		const char *hr_root_name= hr_root_subtype.start;
 		if(is_ext_inner && t && t->name.start) hr_root_name= t->name.start;
 		parse_hr_and_double_underscore(scratch, cfg, accum, hr_root_type, hr_root_name);
 		debug_dump_bad_sentinel_window("run_nested_plain_pipeline:after-stage4", scratch, t);
@@ -1505,19 +1510,19 @@ static void postprocess_nested_plain(Token *t, const ParserConfig *cfg, Accum *a
 	if(t->type == TOKEN_EXT_INNER && t->name.start && strcmp(t->name.start, "nowiki") == 0) return;
 	if(t->type == TOKEN_EXT_INNER && !ext_inner_allows_nested_parse(t->name.start)) return;
 
-	if(t->type_name && strcmp(t->type_name, "ext-inner") == 0 && t->name.start && strcmp(t->name.start, "gallery") == 0) {
+	if(t->subtype == TOKEN_SUBTYPE_EXT_INNER && t->name.start && strcmp(t->name.start, "gallery") == 0) {
 		postprocess_gallery_ext_inner(t, cfg, accum, page);
 		return;
 	}
 
-	if(t->type_name && strcmp(t->type_name, "ext-inner") == 0 && t->name.start && strcmp(t->name.start, "imagemap") == 0) {
+	if(t->subtype == TOKEN_SUBTYPE_EXT_INNER && t->name.start && strcmp(t->name.start, "imagemap") == 0) {
 		postprocess_imagemap_ext_inner(t, cfg, accum, page);
 		return;
 	}
 
-	bool is_td_inner= strcmp(t->type_name, "td-inner") == 0 || strcmp(t->type_name, "table-inter") == 0;
-	bool is_ext_inner= strcmp(t->type_name, "ext-inner") == 0;
-	bool is_heading_title= strcmp(t->type_name, "heading-title") == 0;
+	bool is_td_inner= t->subtype == TOKEN_SUBTYPE_TD_INNER || t->subtype == TOKEN_SUBTYPE_TABLE_INTER;
+	bool is_ext_inner= t->subtype == TOKEN_SUBTYPE_EXT_INNER;
+	bool is_heading_title= t->subtype == TOKEN_SUBTYPE_HEADING_TITLE;
 
 	ThreadBuf *scratch= wiki_thread_buf_acquire_scratch();
 
@@ -1586,7 +1591,7 @@ static void postprocess_nested_plain(Token *t, const ParserConfig *cfg, Accum *a
 						/* Use the tmp_ser scratch directly for nested parsing and building. */
 						run_nested_plain_pipeline(tmp_ser, is_td_inner, is_ext_inner, is_heading_title, t, cfg, accum, page);
 
-						Token *tmp= token_new(TOKEN_PLAIN, t->type_name);
+						Token *tmp= token_new_with_subtype(TOKEN_PLAIN, t->subtype);
 						if(tmp) {
 							build_from_str(tmp, tmp_ser->buf, tmp_ser->len, accum);
 							build_token_recursive(tmp, accum, cfg);
@@ -1678,7 +1683,7 @@ static void postprocess_nested_plain(Token *t, const ParserConfig *cfg, Accum *a
 
 			if(cur.text_owned && cur.text) free((void*)cur.text);
 
-			Token *tmp= token_new(TOKEN_PLAIN, t->type_name);
+			Token *tmp= token_new_with_subtype(TOKEN_PLAIN, t->subtype);
 			if(!tmp) {
 				if(tmp_tb) wiki_thread_buf_release_scratch(tmp_tb);
 				log_fatal("postprocess_nested_plain: token_new() returned NULL");
@@ -1812,11 +1817,11 @@ typedef enum {
 static AttrValueParseMode classify_attr_value_parse_mode(const Token *parent,
 																								 const Token *grandparent) {
 	if(!parent || !grandparent || parent->type != TOKEN_EXT_ATTR) return ATTR_VALUE_PARSE_NONE;
-	if(!parent->name.start || !grandparent->name.start || !grandparent->type_name) return ATTR_VALUE_PARSE_NONE;
+	if(!parent->name.start || !grandparent->name.start) return ATTR_VALUE_PARSE_NONE;
 
-	if(strcmp(grandparent->type_name, "ext-attrs") != 0 &&
-		 strcmp(grandparent->type_name, "html-attrs") != 0 &&
-		 strcmp(grandparent->type_name, "table-attrs") != 0) {
+	if(grandparent->subtype != TOKEN_SUBTYPE_EXT_ATTRS &&
+		 grandparent->subtype != TOKEN_SUBTYPE_HTML_ATTRS &&
+		 grandparent->subtype != TOKEN_SUBTYPE_TABLE_ATTRS) {
 		return ATTR_VALUE_PARSE_NONE;
 	}
 
@@ -1872,7 +1877,7 @@ static void postprocess_parameter_value_inline_impl(Token *t, const ParserConfig
 
 	log_debug_env_token("DEBUG_PARAM_VALUE", t, "postprocess_parameter_value_inline_impl start");
 
-	bool self_is_ext_inner= (t->type == TOKEN_EXT_INNER && t->type_name && strcmp(t->type_name, "ext-inner") == 0);
+	bool self_is_ext_inner= (t->type == TOKEN_EXT_INNER && t->subtype == TOKEN_SUBTYPE_EXT_INNER);
 	bool current_in_ext_context= in_ext_context || self_is_ext_inner;
 
 	if(recurse_existing_children) {
@@ -1897,12 +1902,12 @@ static void postprocess_parameter_value_inline_impl(Token *t, const ParserConfig
 	}
 
 	if(!is_attr_value) {
-		if(t->type != TOKEN_PLAIN || !t->type_name) {
+		if(t->type != TOKEN_PLAIN) {
 			return;
 		}
-		is_parameter_value= strcmp(t->type_name, "parameter-value") == 0;
-		is_arg_default= strcmp(t->type_name, "arg-default") == 0;
-		is_parameter_key= strcmp(t->type_name, "parameter-key") == 0;
+		is_parameter_value= t->subtype == TOKEN_SUBTYPE_PARAMETER_VALUE;
+		is_arg_default= t->subtype == TOKEN_SUBTYPE_ARG_DEFAULT;
+		is_parameter_key= t->subtype == TOKEN_SUBTYPE_PARAMETER_KEY;
 		if(!is_parameter_value && !is_arg_default && !is_parameter_key) {
 			return;
 		}
@@ -2028,7 +2033,7 @@ static void postprocess_parameter_value_inline_impl(Token *t, const ParserConfig
 					parse_list_skip_first_line(tmp_ser, cfg, accum);
 					parse_converter(tmp_ser, cfg, accum);
 
-					Token *tmp= token_new(TOKEN_PLAIN, t->type_name);
+					Token *tmp= token_new_with_subtype(TOKEN_PLAIN, t->subtype);
 					if(tmp) {
 						build_from_str(tmp, tmp_ser->buf, tmp_ser->len, accum);
 						build_token_recursive(tmp, accum, cfg);
@@ -2194,8 +2199,8 @@ static void postprocess_parameter_value_inline_impl(Token *t, const ParserConfig
 			if(cur.text_owned && cur.text) free((void*)cur.text);
 			transformed_children= true;
 
-		Token *tmp= token_new(is_attr_value ? TOKEN_ATTR_VALUE : TOKEN_PLAIN,
-			is_attr_value ? "attr-value" : t->type_name);
+		Token *tmp= token_new_with_subtype(is_attr_value ? TOKEN_ATTR_VALUE : TOKEN_PLAIN,
+			is_attr_value ? TOKEN_SUBTYPE_ATTR_VALUE : t->subtype);
 		if(!tmp) {
 			wiki_thread_buf_release_scratch(scratch);
 			log_fatal("postprocess_parameter_value_inline_impl: token_new() returned NULL");
@@ -2291,13 +2296,11 @@ static void finalize_gallery_and_link_names(Token *t, const ParserConfig *cfg,
 				int def_ns= (t->type == TOKEN_FILE) ? 6 : (t->type == TOKEN_CATEGORY ? 14 : 0);
 				Title *tt= raw ? title_parse_half_parsed(raw, raw_len, def_ns, cfg, true, page) : NULL;
 				if(tt && tt->valid && tt->title) {
-					free(t->name.start);
-					t->name.start= strdup(tt->title);
+					token_set_name_owned(t, strdup(tt->title));
 				} else if(raw && raw_len > 0) {
 					char *norm= title_normalize(raw, raw_len);
 					if(norm) {
-						free(t->name.start);
-						t->name.start= norm;
+						token_set_name_owned(t, norm);
 					}
 				}
 				title_free(tt);

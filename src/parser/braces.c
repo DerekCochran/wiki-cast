@@ -824,8 +824,7 @@ static Token *build_template_token(const char **parts_restored, const size_t *pa
 				magic_first_arg_len= p0_len - magic_title_len - 1;
 			}
 
-			free(t->type_name);
-			t->type_name= strdup("magic-word");
+			t->subtype= TOKEN_SUBTYPE_MAGIC_WORD;
 			size_t magic_clean_len= 0;
 			char *magic_clean= str_remove_comment(title_part, magic_title_len, &magic_clean_len);
 			char *magic_raw_name= magic_clean ? trim_copy(magic_clean, magic_clean_len) : NULL;

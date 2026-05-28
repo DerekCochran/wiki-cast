@@ -819,10 +819,11 @@ static void append_file_image_params(Token *file_tok,
 
 					/* JS parity: when has_cap (mt.length===4), call validate().
 					 * If validate() returns false, skip this syntax and fall through to caption. */
+					sz_string_view_t file_subtype_name = token_subtype_name(file_tok->subtype);
 					if(has_cap && !img_param_validate(name, cap_ptr, cap_len,
 																			cfg,
 																			file_extension ? file_extension : "",
-																			file_tok->type_name ? file_tok->type_name : "")) {
+													file_subtype_name.start ? file_subtype_name.start : "")) {
 						continue;
 					}
 

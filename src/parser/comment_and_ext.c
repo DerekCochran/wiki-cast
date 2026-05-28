@@ -128,8 +128,9 @@ static bool cae_find_close_named(const char *s, size_t len, size_t from,
                                  size_t *close_tag_s,
                                  size_t *close_name_s, size_t *close_name_e,
                                  size_t *close_tag_e) {
-    if(!s || !name || !close_tag_s || !close_name_s || !close_name_e || !close_tag_e)
-        return false;
+	if(!s || !name || !close_tag_s || !close_name_s || !close_name_e || !close_tag_e) {
+		return false;
+	}
 
 	const char lt = '<';
 	size_t q = from;
@@ -1271,7 +1272,7 @@ static void split_gallery_unclosed_caption_local(Token *img,
 	for(size_t ci= 1; ci < img->child_count; ci++) {
 		if(img->children[ci].is_text || !img->children[ci].token) continue;
 		Token *cap= img->children[ci].token;
-		if(cap->type != TOKEN_PLAIN || !cap->type_name || strcmp(cap->type_name, "image-parameter") != 0) continue;
+		if(cap->type != TOKEN_PLAIN || cap->subtype != TOKEN_SUBTYPE_IMAGE_PARAMETER) continue;
 		if(!cap->name.start || strcmp(cap->name.start, "caption") != 0) continue;
 
 		bool split_mixed= false;
@@ -1453,12 +1454,12 @@ static void split_gallery_unclosed_caption_local(Token *img,
 }
 
 static void normalize_gallery_thumb_caption_local(Token *img, Accum *accum) {
-	if(!img || !accum || img->type != TOKEN_FILE || !img->type_name || strcmp(img->type_name, "gallery-image") != 0) return;
+	if(!img || !accum || img->type != TOKEN_FILE || img->subtype != TOKEN_SUBTYPE_GALLERY_IMAGE) return;
 
 	for(size_t ci= 1; ci < img->child_count; ci++) {
 		if(img->children[ci].is_text || !img->children[ci].token) continue;
 		Token *param= img->children[ci].token;
-		if(param->type != TOKEN_PLAIN || !param->type_name || strcmp(param->type_name, "image-parameter") != 0) continue;
+		if(param->type != TOKEN_PLAIN || param->subtype != TOKEN_SUBTYPE_IMAGE_PARAMETER) continue;
 		if(!param->name.start || strcmp(param->name.start, "caption") != 0) continue;
 		if(param->child_count == 0 || !param->children[0].is_text || !param->children[0].text) continue;
 
@@ -1717,18 +1718,16 @@ static Token *parse_gallery_image_line_local(const char *line, size_t line_len,
 	if(tmp->child_count == 1 && !tmp->children[0].is_text && tmp->children[0].token && tmp->children[0].token->type == TOKEN_FILE) {
 		out= tmp->children[0].token;
 		tmp->children[0].token= NULL;
-		if(out->type_name) free(out->type_name);
-		out->type_name= strdup("gallery-image");
+		out->subtype= TOKEN_SUBTYPE_GALLERY_IMAGE;
 		if(out->name.start) {
-			free(out->name.start);
-			out->name.start= NULL;
+			token_clear_name(out);
 		}
 		/* JS parity: gallery-image uses GalleryImageToken, where link=... always
 		 * remains an image link parameter (not caption fallback). */
 		for(size_t ci= 1; ci < out->child_count; ci++) {
 			if(out->children[ci].is_text || !out->children[ci].token) continue;
 			Token *param= out->children[ci].token;
-			if(param->type != TOKEN_PLAIN || !param->type_name || strcmp(param->type_name, "image-parameter") != 0) continue;
+			if(param->type != TOKEN_PLAIN || param->subtype != TOKEN_SUBTYPE_IMAGE_PARAMETER) continue;
 			if(!param->name.start || strcmp(param->name.start, "caption") != 0 || param->child_count == 0) continue;
 			Child *first= &param->children[0];
 			if(!first->is_text || !first->text || first->text_len < 5) continue;
@@ -1739,8 +1738,7 @@ static Token *parse_gallery_image_line_local(const char *line, size_t line_len,
 
 			char *new_name= strdup("link");
 			if(!new_name) continue;
-			free(param->name.start);
-			param->name.start= new_name;
+			token_set_name_owned(param, new_name);
 			free((void *)param->data.image_param.raw_syntax.start);
 			char *owned_syntax= malloc(p + 8);
 			if(owned_syntax) {
@@ -1769,15 +1767,13 @@ static Token *parse_gallery_image_line_local(const char *line, size_t line_len,
 			if(out->children[ci].is_text || !out->children[ci].token) continue;
 			Token *child= out->children[ci].token;
 			if((child->type == TOKEN_LINK || child->type == TOKEN_FILE || child->type == TOKEN_CATEGORY) && child->name.start) {
-				free(child->name.start);
-				child->name.start= NULL;
+				token_clear_name(child);
 			}
 			for(size_t cj= 0; cj < child->child_count; cj++) {
 				if(child->children[cj].is_text || !child->children[cj].token) continue;
 				Token *g= child->children[cj].token;
 				if((g->type == TOKEN_LINK || g->type == TOKEN_FILE || g->type == TOKEN_CATEGORY) && g->name.start) {
-					free(g->name.start);
-					g->name.start= NULL;
+					token_clear_name(g);
 				}
 			}
 		}
@@ -2024,11 +2020,9 @@ static Token *parse_imagemap_image_line_local(const char *line, size_t line_len,
 	Token *out= parse_gallery_image_line_local(line, line_len, cfg, accum);
 	if(!out || out->type != TOKEN_FILE) return NULL;
 
-	if(out->type_name) free(out->type_name);
-	out->type_name= strdup("imagemap-image");
+	out->subtype= TOKEN_SUBTYPE_IMAGEMAP_IMAGE;
 	if(out->name.start) {
-		free(out->name.start);
-		out->name.start= NULL;
+		token_clear_name(out);
 	}
 
 	/* JS stage-log parity: link/file names are assigned later in afterBuild(). */
@@ -2036,15 +2030,13 @@ static Token *parse_imagemap_image_line_local(const char *line, size_t line_len,
 		if(out->children[ci].is_text || !out->children[ci].token) continue;
 		Token *child= out->children[ci].token;
 		if((child->type == TOKEN_LINK || child->type == TOKEN_FILE || child->type == TOKEN_CATEGORY) && child->name.start) {
-			free(child->name.start);
-			child->name.start= NULL;
+			token_clear_name(child);
 		}
 		for(size_t cj= 0; cj < child->child_count; cj++) {
 			if(child->children[cj].is_text || !child->children[cj].token) continue;
 			Token *g= child->children[cj].token;
 			if((g->type == TOKEN_LINK || g->type == TOKEN_FILE || g->type == TOKEN_CATEGORY) && g->name.start) {
-				free(g->name.start);
-				g->name.start= NULL;
+				token_clear_name(g);
 			}
 		}
 	}

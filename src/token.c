@@ -18,15 +18,127 @@ static inline size_t token_name_len(const Token *t) {
 	return t->name.length ? t->name.length : strlen(t->name.start);
 }
 
+typedef struct {
+	const char *name;
+	TokenSubType subtype;
+} TokenSubTypeMapEntry;
+
+static const TokenSubTypeMapEntry TOKEN_SUBTYPE_MAP[]= {
+	{ "root", TOKEN_SUBTYPE_ROOT },
+	{ "redirect", TOKEN_SUBTYPE_REDIRECT },
+	{ "redirect-syntax", TOKEN_SUBTYPE_REDIRECT_SYNTAX },
+	{ "redirect-target", TOKEN_SUBTYPE_REDIRECT_TARGET },
+	{ "comment", TOKEN_SUBTYPE_COMMENT },
+	{ "ext", TOKEN_SUBTYPE_EXT },
+	{ "noinclude", TOKEN_SUBTYPE_NOINCLUDE },
+	{ "include", TOKEN_SUBTYPE_INCLUDE },
+	{ "includeonly", TOKEN_SUBTYPE_INCLUDEONLY },
+	{ "onlyinclude", TOKEN_SUBTYPE_ONLYINCLUDE },
+	{ "translate", TOKEN_SUBTYPE_TRANSLATE },
+	{ "arg", TOKEN_SUBTYPE_ARG },
+	{ "arg-name", TOKEN_SUBTYPE_ARG_NAME },
+	{ "arg-default", TOKEN_SUBTYPE_ARG_DEFAULT },
+	{ "template", TOKEN_SUBTYPE_TEMPLATE },
+	{ "template-name", TOKEN_SUBTYPE_TEMPLATE_NAME },
+	{ "magic-word", TOKEN_SUBTYPE_MAGIC_WORD },
+	{ "magic-word-name", TOKEN_SUBTYPE_MAGIC_WORD_NAME },
+	{ "parameter", TOKEN_SUBTYPE_PARAMETER },
+	{ "parameter-key", TOKEN_SUBTYPE_PARAMETER_KEY },
+	{ "parameter-value", TOKEN_SUBTYPE_PARAMETER_VALUE },
+	{ "heading", TOKEN_SUBTYPE_HEADING },
+	{ "heading-title", TOKEN_SUBTYPE_HEADING_TITLE },
+	{ "heading-trail", TOKEN_SUBTYPE_HEADING_TRAIL },
+	{ "html", TOKEN_SUBTYPE_HTML },
+	{ "html-attrs", TOKEN_SUBTYPE_HTML_ATTRS },
+	{ "html-attr", TOKEN_SUBTYPE_HTML_ATTR },
+	{ "html-attr-dirty", TOKEN_SUBTYPE_HTML_ATTR_DIRTY },
+	{ "table", TOKEN_SUBTYPE_TABLE },
+	{ "tr", TOKEN_SUBTYPE_TR },
+	{ "td", TOKEN_SUBTYPE_TD },
+	{ "table-syntax", TOKEN_SUBTYPE_TABLE_SYNTAX },
+	{ "table-attrs", TOKEN_SUBTYPE_TABLE_ATTRS },
+	{ "table-attr", TOKEN_SUBTYPE_TABLE_ATTR },
+	{ "table-attr-dirty", TOKEN_SUBTYPE_TABLE_ATTR_DIRTY },
+	{ "table-inter", TOKEN_SUBTYPE_TABLE_INTER },
+	{ "table-inner", TOKEN_SUBTYPE_TABLE_INNER },
+	{ "td-inner", TOKEN_SUBTYPE_TD_INNER },
+	{ "hr", TOKEN_SUBTYPE_HR },
+	{ "double-underscore", TOKEN_SUBTYPE_DOUBLE_UNDERSCORE },
+	{ "link", TOKEN_SUBTYPE_LINK },
+	{ "file", TOKEN_SUBTYPE_FILE },
+	{ "category", TOKEN_SUBTYPE_CATEGORY },
+	{ "text", TOKEN_SUBTYPE_TEXT },
+	{ "link-target", TOKEN_SUBTYPE_LINK_TARGET },
+	{ "link-text", TOKEN_SUBTYPE_LINK_TEXT },
+	{ "quote", TOKEN_SUBTYPE_QUOTE },
+	{ "ext-link", TOKEN_SUBTYPE_EXT_LINK },
+	{ "ext-link-url", TOKEN_SUBTYPE_EXT_LINK_URL },
+	{ "ext-link-text", TOKEN_SUBTYPE_EXT_LINK_TEXT },
+	{ "magic-link", TOKEN_SUBTYPE_MAGIC_LINK },
+	{ "free-ext-link", TOKEN_SUBTYPE_FREE_EXT_LINK },
+	{ "list", TOKEN_SUBTYPE_LIST },
+	{ "dd", TOKEN_SUBTYPE_DD },
+	{ "converter", TOKEN_SUBTYPE_CONVERTER },
+	{ "converter-rule", TOKEN_SUBTYPE_CONVERTER_RULE },
+	{ "converter-rule-from", TOKEN_SUBTYPE_CONVERTER_RULE_FROM },
+	{ "converter-rule-variant", TOKEN_SUBTYPE_CONVERTER_RULE_VARIANT },
+	{ "converter-rule-to", TOKEN_SUBTYPE_CONVERTER_RULE_TO },
+	{ "converter-flags", TOKEN_SUBTYPE_CONVERTER_FLAGS },
+	{ "converter-flag", TOKEN_SUBTYPE_CONVERTER_FLAG },
+	{ "attributes", TOKEN_SUBTYPE_ATTRIBUTES },
+	{ "attr-equal-tmp", TOKEN_SUBTYPE_ATTR_EQUAL_TMP },
+	{ "attr-key", TOKEN_SUBTYPE_ATTR_KEY },
+	{ "attr-value", TOKEN_SUBTYPE_ATTR_VALUE },
+	{ "atom", TOKEN_SUBTYPE_ATOM },
+	{ "hidden", TOKEN_SUBTYPE_HIDDEN },
+	{ "ext-attrs", TOKEN_SUBTYPE_EXT_ATTRS },
+	{ "ext-inner", TOKEN_SUBTYPE_EXT_INNER },
+	{ "ext-attr-dirty", TOKEN_SUBTYPE_EXT_ATTR_DIRTY },
+	{ "ext-attr", TOKEN_SUBTYPE_EXT_ATTR },
+	{ "image-parameter", TOKEN_SUBTYPE_IMAGE_PARAMETER },
+	{ "gallery-image", TOKEN_SUBTYPE_GALLERY_IMAGE },
+	{ "imagemap-image", TOKEN_SUBTYPE_IMAGEMAP_IMAGE },
+	{ "gallery-line", TOKEN_SUBTYPE_GALLERY_LINE },
+	{ "gallery-param-wrapper", TOKEN_SUBTYPE_GALLERY_PARAM_WRAPPER },
+	{ "imagemap-link-inner", TOKEN_SUBTYPE_IMAGEMAP_LINK_INNER },
+	{ "imagemap-image-line", TOKEN_SUBTYPE_IMAGEMAP_IMAGE_LINE },
+	{ "imagemap-link", TOKEN_SUBTYPE_IMAGEMAP_LINK },
+	{ "invoke-module", TOKEN_SUBTYPE_INVOKE_MODULE },
+	{ "invoke-function", TOKEN_SUBTYPE_INVOKE_FUNCTION },
+	{ "param-line", TOKEN_SUBTYPE_PARAM_LINE },
+};
+
+sz_string_view_t token_subtype_name(TokenSubType subtype) {
+	for(size_t i= 0; i < sizeof(TOKEN_SUBTYPE_MAP) / sizeof(TOKEN_SUBTYPE_MAP[0]); i++) {
+		if(TOKEN_SUBTYPE_MAP[i].subtype == subtype) {
+			return (sz_string_view_t){ TOKEN_SUBTYPE_MAP[i].name, strlen(TOKEN_SUBTYPE_MAP[i].name) };
+		}
+	}
+	return (sz_string_view_t){ NULL, 0 };
+}
+
+TokenSubType token_subtype_from_name(const char *type_name) {
+	if(!type_name || !type_name[0]) return TOKEN_SUBTYPE_NONE;
+	for(size_t i= 0; i < sizeof(TOKEN_SUBTYPE_MAP) / sizeof(TOKEN_SUBTYPE_MAP[0]); i++) {
+		if(strcmp(TOKEN_SUBTYPE_MAP[i].name, type_name) == 0) {
+			return TOKEN_SUBTYPE_MAP[i].subtype;
+		}
+	}
+	return TOKEN_SUBTYPE_NONE;
+}
+
 Token *token_new(TokenType type, const char *type_name) {
+	return token_new_with_subtype(type, token_subtype_from_name(type_name));
+}
+
+Token *token_new_with_subtype(TokenType type, TokenSubType subtype) {
 	Token *t= calloc(1, sizeof(Token));
 	if(!t) return NULL;
 	t->type= type;
-	t->type_name= type_name ? strdup(type_name) : NULL;
+	t->subtype= subtype;
 	t->child_cap= CHILD_INIT_CAP;
 	t->children= malloc(CHILD_INIT_CAP * sizeof(Child));
 	if(!t->children) {
-		free(t->type_name);
 		free(t);
 		return NULL;
 	}
@@ -67,6 +179,23 @@ void token_append_child(Token *t, Token *child) {
 	c->token= child;
 }
 
+void token_set_name_owned(Token *t, char *name) {
+	if(!t) {
+		free(name);
+		return;
+	}
+	free((void *)t->name.start);
+	t->name.start= name;
+	t->name.length= name ? strlen(name) : 0;
+}
+
+void token_clear_name(Token *t) {
+	if(!t) return;
+	free((void *)t->name.start);
+	t->name.start= NULL;
+	t->name.length= 0;
+}
+
 // TODO:  Should these be freed or can they use the thread buffer?
 static void free_token_data(Token *t) {
 	switch(t->type) {
@@ -74,7 +203,7 @@ static void free_token_data(Token *t) {
 		free((void *)t->data.ext_attr.equal.start);
 		break;
 	case TOKEN_PLAIN:
-		if(t->type_name && strcmp(t->type_name, "image-parameter") == 0) {
+		if(t->subtype == TOKEN_SUBTYPE_IMAGE_PARAMETER) {
 			free((void *)t->data.image_param.raw_syntax.start);
 		}
 		break;
@@ -131,7 +260,6 @@ static void token_free_graph(Token *node, unsigned epoch) {
 
 	free(node->children);
 	free_token_data(node);
-	free(node->type_name);
 	free((void*)node->name.start);
 	free(node);
 }
@@ -158,7 +286,6 @@ void token_free_shallow(Token *t) {
 	}
 	free(t->children);
 	free_token_data(t);
-	free(t->type_name);
 	free((void*)t->name.start);
 	free(t);
 }
@@ -257,7 +384,7 @@ static void token_to_string_rec(const Token *t, ThreadBuf *tb) {
 	}
 
 	case TOKEN_PLAIN: {
-		if(t->type_name && strcmp(t->type_name, "converter-rule") == 0) {
+		if(t->subtype == TOKEN_SUBTYPE_CONVERTER_RULE) {
 			if(t->child_count == 3) {
 				const Child *from= &t->children[0];
 				const Child *variant= &t->children[1];
@@ -313,7 +440,8 @@ static void token_to_string_rec(const Token *t, ThreadBuf *tb) {
 	case TOKEN_FILE:
 	case TOKEN_CATEGORY:
 	case TOKEN_REDIRECT_TARGET: {
-		bool is_file_line_image= (t->type == TOKEN_FILE && t->type_name && (strcmp(t->type_name, "gallery-image") == 0 || strcmp(t->type_name, "imagemap-image") == 0));
+		bool is_file_line_image= (t->type == TOKEN_FILE &&
+			(t->subtype == TOKEN_SUBTYPE_GALLERY_IMAGE || t->subtype == TOKEN_SUBTYPE_IMAGEMAP_IMAGE));
 
 		/* Internal links: [[target|text]] — join children with '|' and wrap.
              * Gallery images serialize as plain lines without [[...]]. */
@@ -342,7 +470,7 @@ static void token_to_string_rec(const Token *t, ThreadBuf *tb) {
 			const Child *c= &t->children[i];
 			if(c->is_text) {
 				thread_buf_append(tb, c->text, c->text_len);
-			} else if(t->type == TOKEN_FILE && c->token && c->token->type == TOKEN_PLAIN && c->token->type_name && strcmp(c->token->type_name, "image-parameter") == 0) {
+			} else if(t->type == TOKEN_FILE && c->token && c->token->type == TOKEN_PLAIN && c->token->subtype == TOKEN_SUBTYPE_IMAGE_PARAMETER) {
 				const Token *p= c->token;
 				if(p->data.image_param.raw_syntax.start) {
 					const char *syntax= p->data.image_param.raw_syntax.start;
@@ -442,7 +570,7 @@ static void token_to_string_rec(const Token *t, ThreadBuf *tb) {
 		if(t->data.transclude.modifier.start) {
 			thread_buf_append(tb, t->data.transclude.modifier.start, t->data.transclude.modifier.length);
 		}
-		bool is_magic_word= (t->type_name && strcmp(t->type_name, "magic-word") == 0);
+		bool is_magic_word= (t->subtype == TOKEN_SUBTYPE_MAGIC_WORD);
 		for(size_t i= 0; i < t->child_count; i++) {
 			if(i > 0) {
 				if(is_magic_word && i == 1)
