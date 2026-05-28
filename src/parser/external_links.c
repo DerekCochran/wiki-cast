@@ -83,8 +83,8 @@ static size_t consume_ipv6_bracket_host(const char *s, size_t len, size_t i) {
 static bool ext_lookahead_ok(const char *s, size_t len, size_t i) {
     if(i >= len) return true; /* closing ']' is outside parser_scan inner segment */
     unsigned char c = (unsigned char)s[i];
-    if(c == '[' || c == ']' || c == '<' || c == '>' || c == '"') return true;
-    if(c == '\t' || c == '\n' || c == '\r' || c == '\f' || c == '\v') return true;
+    static const char term_bytes[] = "[]<>\"\t\n\r\f\v";
+    if(sz_find_byte(term_bytes, sizeof(term_bytes) - 1, (const char *)&s[i]) != NULL) return true;
     if(consume_js_zs(s, len, i) > 0) return true;
     if(c == 0 && i + 1 < len && s[i + 1] >= '0' && s[i + 1] <= '9') return true;
     return false;
