@@ -5,6 +5,19 @@ const { runTests } = require('./helpers');
 
 const castTests = [
   // Failures from export of wikitexts
+  `{{!:}}`,
+  `{{cite web|url=https://api.parliament.uk/historic-hansard/lords/1983/jun/23/occupiers-liability-bill-hl|title=Occupiers' Liability Bill [HL] (Hansard, 23 June 1983)|date=23 June 1983|publisher=[[Hansard|work=[[Hansard|Parliamentary Debates (Hansard)]]|Parliamentary Debates (Hansard)]]|access-date=2 December 2009}}`,
+  `<gallery mode="packed" style="text-align: center;" caption="Gallery" heights="140px" perrow="3">
+File:Paul Cézanne - Gardanne (Horizontal View) (Gardanne (vue horizontale)) - BF917 - Barnes Foundation.jpg|Paul_Cézanne_-_Gardanne_(Horizontal_View)_(Gardanne_(vue_horizontale))_-_BF917_-_Barnes_Foundation]]|View of Gardanne by Paul Cézanne
+</gallery>`,
+  `<gallery mode="packed" heights="180px">
+Padova - Santa Giustina - MadonnaCostantinopolitana (Expo -12 Contrasto 25).jpg|''''Madonna of Constantinople'' original version
+</gallery>`,
+
+  `<gallery>
+File:Hawksbill Egypt (35150034493).jpg|[[Hawksbill sea turtle|Hawksbill turtle]] at Elphinstone Reef[[File:The_drop-off_at_Elphinstone_Reef,_Egypt.jpg|thumb|Anthias drop-off[[File:Dendronephthya_Soft_corals_at_Elphinstone_Reef,_Egypt.jpg|thumb|Dendronephthya Soft corals.[[File:Bluecheek_butterflyfish_at_Elphinstone_Reef,_Egypt.jpg|thumb|A .]]]]]]
+</gallery>`,
+
   `{| class="wikitable"
 |-
 |-bgcolor=<!-- party shade if gain -->lightblue
