@@ -1,3 +1,8 @@
+/*
+ * We are controlling the shape of what gets printed out so it is ONLY the items being compared.
+ */
+
+
 function buildJsAst(jsToken, parentToken) {
     const curToken = {};
     curToken.type = jsToken.type;
@@ -81,20 +86,20 @@ function buildJsAst(jsToken, parentToken) {
     } else if (jsToken.type === 'param-line') {
         curToken.name = jsToken.name;
     } else if (jsToken.type === 'list-range') {
-        curToken.start = jsToken.start;
-        curToken.end = jsToken.end;
+        // curToken.start = jsToken.start;
+        // curToken.end = jsToken.end;
     } else if (jsToken.type === 'list' || jsToken.type === 'dd') {
-        // curToken.indent = jsToken.indent;
-        // curToken.dd = jsToken.dd;
-        // curToken.dt = jsToken.dt;
-        // curToken.ul = jsToken.ul;
-        // curToken.ol = jsToken.ol;
+        curToken.indent = jsToken.indent;
+        curToken.dd = jsToken.dd;
+        curToken.dt = jsToken.dt;
+        curToken.ul = jsToken.ul;
+        curToken.ol = jsToken.ol;
     } else if (jsToken.type === 'link' || jsToken.type === 'file' || jsToken.type === 'category') {
-        // curToken.magic_pipe = jsToken.magic_pipe;
+        curToken.magic_pipe = jsToken.magic_pipe;
     } else if (jsToken.type === 'ext-attr') {
-        // curToken.equal = jsToken.equal;
-        // curToken.quoteOpen = jsToken.quoteOpen;
-        // curToken.quoteClose = jsToken.quoteClose;
+        curToken.equal = jsToken.equal;
+        curToken.quoteOpen = jsToken.quoteOpen;
+        curToken.quoteClose = jsToken.quoteClose;
     }
 
     if( jsToken.childNodes ) {

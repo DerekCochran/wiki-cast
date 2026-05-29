@@ -254,8 +254,10 @@ static void node_add_list_flags(cJSON *root, const Token *token) {
     for (size_t i = 0; i < len; i++) {
         char ch = text[i];
         if (ch == ':' || ch == ';' || ch == '*' || ch == '#') {
-            indent++;
-            if (ch == ':') has_dd = true;
+            if (ch == ':') {
+                indent++;
+                has_dd = true;
+            }
             else if (ch == ';') has_dt = true;
             else if (ch == '*') has_ul = true;
             else if (ch == '#') has_ol = true;
@@ -328,10 +330,6 @@ static cJSON *token_to_node_json(const Token *token) {
             break;
 
         case TOKEN_REDIRECT:
-            node_json_add_view_property(root, "pre", token->data.redirect.pre);
-            node_json_add_view_property(root, "post", token->data.redirect.post);
-            node_json_add_view_property(root, "link", token->data.redirect.link);
-            if (token->data.redirect.display.start) cJSON_AddStringToObject(root, "display", token->data.redirect.display.start);
             break;
 
         case TOKEN_EXT:
@@ -353,15 +351,6 @@ static cJSON *token_to_node_json(const Token *token) {
             break;
 
         case TOKEN_EXT_ATTR:
-            if (token->data.ext_attr.equal.start) cJSON_AddStringToObject(root, "equal", token->data.ext_attr.equal.start);
-            {
-                char qo[2] = {token->data.ext_attr.quote_open, '\0'};
-                char qc[2] = {token->data.ext_attr.quote_close, '\0'};
-                cJSON_AddStringToObject(root, "quoteOpen", qo);
-                cJSON_AddStringToObject(root, "quoteClose", qc);
-            }
-            break;
-
         case TOKEN_PARAMETER:
             break;
 
