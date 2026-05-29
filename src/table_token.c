@@ -17,6 +17,19 @@ static Token *make_text_token_n(TokenType type, const char *type_name,
 }
 
 Token *table_token_create(const char *syntax, const char *attr, const char *inner, Accum *accum) {
+	const char *syntax_text = syntax ? syntax : "";
+	const char *attr_text = attr ? attr : "";
+	const char *inner_text = inner ? inner : "";
+	return table_token_create_n(syntax_text, strlen(syntax_text),
+										 attr_text, strlen(attr_text),
+										 inner_text, strlen(inner_text),
+										 accum);
+}
+
+Token *table_token_create_n(const char *syntax, size_t syntax_len,
+										 const char *attr, size_t attr_len,
+										 const char *inner, size_t inner_len,
+										 Accum *accum) {
 	if(!accum) return NULL;
 
 	/* Create top-level table token and push it first (matches JS constructor order) */
@@ -27,9 +40,6 @@ Token *table_token_create(const char *syntax, const char *attr, const char *inne
 	const char *syntax_text = syntax ? syntax : "";
 	const char *attr_text = attr ? attr : "";
 	const char *inner_text = inner ? inner : "";
-	size_t syntax_len = syntax ? strlen(syntax) : 0;
-	size_t attr_len = attr ? strlen(attr) : 0;
-	size_t inner_len = inner ? strlen(inner) : 0;
 
 	/* Syntax token: "table-syntax" */
 	Token *syntax_tok= make_text_token_n(TOKEN_SYNTAX, "table-syntax", syntax_text, syntax_len, accum);
