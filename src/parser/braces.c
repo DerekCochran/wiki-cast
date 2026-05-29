@@ -2030,12 +2030,22 @@ static void main_braces_template_cb(const char *segment, size_t len,
 	/* JS parity (reReplace): newline is allowed in {{...}} only when not
 	 * immediately followed by '=' or a placeholder-NUL. If disallowed,
 	 * leave this match untouched for the stage-1 state machine. */
-	for(size_t i= 0; i + 1 < inner_len; i++) {
-		if(inner[i] == '\n' && (inner[i + 1] == '=' || inner[i + 1] == '\0')) {
-			wiki_thread_buf_append(ctx->out, (sz_string_view_t){.start= "{{", .length= 2});
-			wiki_thread_buf_append(ctx->out, (sz_string_view_t){.start= inner, .length= inner_len});
-			wiki_thread_buf_append(ctx->out, (sz_string_view_t){.start= "}}", .length= 2});
-			return;
+	if(inner_len > 1) {
+		const char nl = '\n';
+		const char *scan = inner;
+		size_t rem = inner_len;
+		while(rem > 1) {
+			const char *p = sz_find_byte(scan, rem, &nl);
+			if(!p) break;
+			size_t off = (size_t)(p - inner);
+			if(off + 1 < inner_len && (inner[off + 1] == '=' || inner[off + 1] == '\0')) {
+				wiki_thread_buf_append(ctx->out, (sz_string_view_t){.start= "{{", .length= 2});
+				wiki_thread_buf_append(ctx->out, (sz_string_view_t){.start= inner, .length= inner_len});
+				wiki_thread_buf_append(ctx->out, (sz_string_view_t){.start= "}}", .length= 2});
+				return;
+			}
+			scan = p + 1;
+			rem = inner_len - (size_t)(scan - inner);
 		}
 	}
 
