@@ -1210,23 +1210,25 @@ static Token *make_gallery_caption_param_local(const char *txt, size_t tlen,
 
 static bool has_sentinel_type_local(const char *s, size_t len, char want) {
 	if(!s || len == 0) return false;
+	char nul_cand[1];
+	nul_cand[0]= '\0';
 	for(size_t i= 0; i < len;) {
-		if((unsigned char)s[i] != '\0') {
-			i++;
-			continue;
-		}
-		size_t j= i + 1;
+		const char *nul= sz_find_byte_from(s + i, len - i, nul_cand, 1);
+		if(!nul) break;
+		size_t p= (size_t)(nul - s);
+		size_t j= p + 1;
 		if(j >= len || !(s[j] >= '0' && s[j] <= '9')) {
-			i++;
+			i= p + 1;
 			continue;
 		}
-		while(j < len && s[j] >= '0' && s[j] <= '9') j++;
+		const char *not_digit= sz_find_byte_not_from(s + j, len - j, "0123456789", 10);
+		j= not_digit ? (size_t)(not_digit - s) : len;
 		if(j + 1 < len && (unsigned char)s[j + 1] == 0x7F) {
 			if(s[j] == want) return true;
 			i= j + 2;
 			continue;
 		}
-		i++;
+		i= p + 1;
 	}
 	return false;
 }
@@ -1235,18 +1237,25 @@ static bool has_unclosed_link_from_local(const char *txt, size_t len, size_t ope
 	if(!txt || open_pos >= len) return false;
 
 	int depth= 0;
+	char cand[2];
+	cand[0]= '[';
+	cand[1]= ']';
 	for(size_t i= open_pos; i + 1 < len;) {
-		if(txt[i] == '[' && txt[i + 1] == '[') {
+		const char *found= sz_find_byte_from(txt + i, len - i, cand, 2);
+		if(!found) break;
+		size_t p= (size_t)(found - txt);
+		if(p + 1 >= len) break;
+		if(txt[p] == '[' && txt[p + 1] == '[') {
 			depth++;
-			i += 2;
+			i= p + 2;
 			continue;
 		}
-		if(txt[i] == ']' && txt[i + 1] == ']') {
+		if(txt[p] == ']' && txt[p + 1] == ']') {
 			if(depth > 0) depth--;
-			i += 2;
+			i= p + 2;
 			continue;
 		}
-		i++;
+		i= p + 1;
 	}
 
 	return depth > 0;
