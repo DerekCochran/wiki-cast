@@ -1274,7 +1274,7 @@ static bool parts_append_text(PartList *parts, const char *s, size_t len) {
 }
 
 typedef struct {
-	char *open;
+	char open_ch;
 	size_t open_len;
 	size_t index;
 	size_t pos;
@@ -1289,22 +1289,17 @@ static bool brace_frame_init(BraceFrame *frame, const char *open, size_t open_le
 	if(!frame) return false;
 	frame->out_mark= 0;
 	frame->has_out_mark= false;
-	frame->open= malloc(open_len + 1);
-	if(!frame->open) return false;
-	sz_copy(frame->open, open, open_len);
-	frame->open[open_len]= '\0';
+	frame->open_ch = (open && open_len > 0) ? open[0] : '\0';
 	frame->open_len= open_len;
 	frame->index= index;
 	frame->pos= pos;
 	frame->find_equal= find_equal;
-	frame->has_parts= (open_len > 0 && open[0] == '{');
+	frame->has_parts= (open_len > 0 && frame->open_ch == '{');
 	if(frame->has_parts) {
 		/* initialise parts and ensure we clean up on failure */
 		parts_init(&frame->parts);
 		if(!parts_add_empty(&frame->parts)) {
-			/* parts_add_empty failed: free open and any partial parts allocations */
-			free(frame->open);
-			frame->open= NULL;
+			/* parts_add_empty failed: clean up any partial parts allocations */
 			parts_free(&frame->parts);
 			return false;
 		}
@@ -1316,8 +1311,6 @@ static bool brace_frame_init(BraceFrame *frame, const char *open, size_t open_le
 
 static void brace_frame_free(BraceFrame *frame) {
 	if(!frame) return;
-	free(frame->open);
-	frame->open= NULL;
 	parts_free(&frame->parts);
 }
 
@@ -1411,7 +1404,7 @@ static bool braces_state_machine(ThreadBuf *tb, const ParserConfig *cfg,
 										&equals_count, &sentinel_len);
 
 		/* JS parity: heading frames can close at EOF without a trailing newline. */
-		if(!matched && stack_len > 0 && stack[stack_len - 1].open_len == 1 && stack[stack_len - 1].open[0] == '=') {
+		if(!matched && stack_len > 0 && stack[stack_len - 1].open_len == 1 && stack[stack_len - 1].open_ch == '=') {
 			matched= true;
 			evkind= BRACE_EVT_NEWLINE;
 			event_pos= tb->len;
@@ -1470,18 +1463,18 @@ static bool braces_state_machine(ThreadBuf *tb, const ParserConfig *cfg,
 
 		if(matched && evkind == BRACE_EVT_WIKILINK_CLOSE) {
 			/* ]] closes a [[ link frame; preserve any non-link frame below it */
-			if(has_top && !(top.open_len >= 1 && top.open[0] == '[')) {
+			if(has_top && !(top.open_len >= 1 && top.open_ch == '[')) {
 				stack[stack_len++]= top;
 				top_requeued= true;
 			}
 		} else if(matched && evkind == BRACE_EVT_CONVERTER_CLOSE) {
 			/* }- closes a -{ converter frame; preserve any non-converter frame below it */
-			if(has_top && !(top.open_len >= 1 && top.open[0] == '-')) {
+			if(has_top && !(top.open_len >= 1 && top.open_ch == '-')) {
 				stack[stack_len++]= top;
 				top_requeued= true;
 			}
 		} else if(matched && evkind == BRACE_EVT_NEWLINE) {
-			if(has_top && top.open_len == 1 && top.open[0] == '=') {
+			if(has_top && top.open_len == 1 && top.open_ch == '=') {
 				/* Only materialize heading tokens when no outer frame is active.
 				 * Nested template values are reparsed recursively later. */
 				if(stack_len == 0) {
@@ -1652,7 +1645,7 @@ static bool braces_state_machine(ThreadBuf *tb, const ParserConfig *cfg,
 						next_write= rep_end;
 						if(rest > 1) {
 							BraceFrame child;
-							if(brace_frame_init(&child, top.open, rest, top.index, rep_end, false)) {
+							if(brace_frame_init(&child, "{", rest, top.index, rep_end, false)) {
 								bool child_ok = true;
 								/* JS parity: when an overlong opener (for example '{{{{{') closes
 								 * as an inner token, the remaining outer frame starts with that
@@ -1707,7 +1700,7 @@ static bool braces_state_machine(ThreadBuf *tb, const ParserConfig *cfg,
 				}
 				size_t frame_out_mark= out_len;
 				BraceFrame frame;
-				if(brace_frame_init(&frame, syntax, syntax_len, cur_index, cur_index + syntax_len, false)) {
+				if(brace_frame_init(&frame, "{", syntax_len, cur_index, cur_index + syntax_len, false)) {
 					frame.out_mark= frame_out_mark;
 					frame.has_out_mark= true;
 					if(has_top) {
