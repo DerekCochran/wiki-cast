@@ -7,12 +7,12 @@
 #include <string.h>
 #include <assert.h>
 #include <time.h>
+#include <cjson/cJSON.h>
 
 /* extern_tokenizer headers */
 #include "parse.h"
 #include "token.h"
 #include "config.h"
-#include "util/token_to_json.h"
 
 // Cache for config
 static char* cached_config_path = NULL;
@@ -105,6 +105,137 @@ static napi_value toString_wrapper(napi_env env, napi_callback_info info) {
     return result; 
 }
 
+static cJSON *node_token_text_to_json_string(const char *text, size_t text_len) {
+    if (!text || text_len == 0) {
+        return cJSON_CreateString("");
+    }
+    char *tmp = (char *)malloc(text_len + 1);
+    if (!tmp) return cJSON_CreateString("");
+    memcpy(tmp, text, text_len);
+    tmp[text_len] = '\0';
+    cJSON *s = cJSON_CreateString(tmp);
+    free(tmp);
+    return s ? s : cJSON_CreateString("");
+}
+
+static void node_json_add_cstr_to_object(cJSON *root, const char *key, const char *value) {
+    if (!root || !key || !value) return;
+    cJSON_AddStringToObject(root, key, value);
+}
+
+static cJSON *token_to_node_json(const Token *token) {
+    if (!token) return NULL;
+
+    cJSON *root = cJSON_CreateObject();
+    sz_string_view_t subtype_name = token_subtype_name(token->subtype);
+
+    cJSON_AddItemToObject(root, "type", node_token_text_to_json_string(subtype_name.start ? subtype_name.start : "", subtype_name.length));
+    if (token->name) node_json_add_cstr_to_object(root, "name", token->name);
+
+    switch (token->type) {
+        case TOKEN_HEADING:
+            cJSON_AddNumberToObject(root, "level", token->data.heading.level);
+            break;
+
+        case TOKEN_COMMENT:
+            cJSON_AddBoolToObject(root, "closed", token->data.comment.closed);
+            break;
+
+        case TOKEN_HTML:
+            cJSON_AddBoolToObject(root, "selfClosing", token->data.html.self_closing);
+            cJSON_AddBoolToObject(root, "closing", token->data.html.closing);
+            if (token->data.html.orig_tag.start) {
+                cJSON_AddStringToObject(root, "origTag", token->data.html.orig_tag.start);
+            }
+            break;
+
+        case TOKEN_TD:
+            if (token->data.td.inner_syntax.start) {
+                cJSON_AddStringToObject(root, "innerSyntax", token->data.td.inner_syntax.start);
+            }
+            break;
+
+        case TOKEN_DOUBLE_UNDERSCORE:
+            cJSON_AddBoolToObject(root, "caseSensitive", token->data.dunder.case_sensitive);
+            cJSON_AddBoolToObject(root, "fullwidth", token->data.dunder.fullwidth);
+            break;
+
+        case TOKEN_QUOTE:
+            cJSON_AddBoolToObject(root, "bold", token->data.quote.bold);
+            cJSON_AddBoolToObject(root, "italic", token->data.quote.italic);
+            break;
+
+        case TOKEN_REDIRECT:
+            if (token->data.redirect.display.start) cJSON_AddStringToObject(root, "display", token->data.redirect.display.start);
+            break;
+
+        case TOKEN_EXT:
+            if (token->data.ext.name.start) cJSON_AddStringToObject(root, "extName", token->data.ext.name.start);
+            if (token->data.ext.attr.start) cJSON_AddStringToObject(root, "extAttr", token->data.ext.attr.start);
+            if (token->data.ext.inner.start) cJSON_AddStringToObject(root, "extInner", token->data.ext.inner.start);
+            if (token->data.ext.closing.start) cJSON_AddStringToObject(root, "extClosing", token->data.ext.closing.start);
+            cJSON_AddBoolToObject(root, "extSelfClosing", token->data.ext.self_closing);
+            break;
+
+        case TOKEN_NOINCLUDE:
+        case TOKEN_INCLUDE:
+        case TOKEN_ONLYINCLUDE:
+        case TOKEN_TRANSLATE:
+            if (token->data.include.tag.start) cJSON_AddStringToObject(root, "tag", token->data.include.tag.start);
+            if (token->data.include.attr.start) cJSON_AddStringToObject(root, "includeAttr", token->data.include.attr.start);
+            if (token->data.include.inner.start) cJSON_AddStringToObject(root, "includeInner", token->data.include.inner.start);
+            if (token->data.include.closing.start) cJSON_AddStringToObject(root, "includeClosing", token->data.include.closing.start);
+            break;
+
+        case TOKEN_EXT_ATTR:
+            if (token->data.ext_attr.equal.start) cJSON_AddStringToObject(root, "equal", token->data.ext_attr.equal.start);
+            {
+                char qo[2] = {token->data.ext_attr.quote_open, '\0'};
+                char qc[2] = {token->data.ext_attr.quote_close, '\0'};
+                cJSON_AddStringToObject(root, "quoteOpen", qo);
+                cJSON_AddStringToObject(root, "quoteClose", qc);
+            }
+            break;
+
+        case TOKEN_PARAMETER:
+            if (token->data.image_param.raw_syntax.start) cJSON_AddStringToObject(root, "rawSyntax", token->data.image_param.raw_syntax.start);
+            break;
+
+        case TOKEN_MAGIC_LINK:
+        case TOKEN_EXT_LINK:
+            if (token->data.ext_link.space.start) cJSON_AddStringToObject(root, "space", token->data.ext_link.space.start);
+            break;
+
+        case TOKEN_LINK:
+        case TOKEN_FILE:
+        case TOKEN_CATEGORY:
+            cJSON_AddBoolToObject(root, "magicPipe", token->data.link.magic_pipe);
+            break;
+
+        case TOKEN_TRANSCLUDE:
+        case TOKEN_ARG:
+            if (token->data.transclude.modifier.start) cJSON_AddStringToObject(root, "modifier", token->data.transclude.modifier.start);
+            break;
+
+        default:
+            break;
+    }
+
+    if (token->child_count > 0) {
+        cJSON *children_arr = cJSON_AddArrayToObject(root, "childNodes");
+        for (size_t i = 0; i < token->child_count; i++) {
+            Child *child = &token->children[i];
+            if (child->is_text) {
+                cJSON_AddItemToArray(children_arr, node_token_text_to_json_string(child->text, child->text_len));
+            } else {
+                cJSON_AddItemToArray(children_arr, token_to_node_json(child->token));
+            }
+        }
+    }
+
+    return root;
+}
+
 static napi_value toJson_wrapper(napi_env env, napi_callback_info info) {
     napi_value this_arg;
     napi_status status = napi_get_cb_info(env, info, NULL, NULL, &this_arg, NULL);
@@ -125,7 +256,7 @@ static napi_value toJson_wrapper(napi_env env, napi_callback_info info) {
         return NULL;
     }
 
-    cJSON *json = token_to_json(token);
+    cJSON *json = token_to_node_json(token);
     if (!json) {
         napi_throw_error(env, NULL, "Failed to encode token as JSON");
         return NULL;
