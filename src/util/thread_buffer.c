@@ -19,6 +19,24 @@ static size_t align_up_64(size_t n) {
 	return (n + 63u) & ~(size_t)63u;
 }
 
+static inline bool ranges_overlap_(const char *src, size_t len, const char *dst) {
+	if(!src || !dst || len == 0) return false;
+	const uintptr_t s0 = (uintptr_t)src;
+	const uintptr_t s1 = s0 + len;
+	const uintptr_t d0 = (uintptr_t)dst;
+	const uintptr_t d1 = d0 + len;
+	return s0 < d1 && d0 < s1;
+}
+
+static inline void copy_bytes_(char *dst, const char *src, size_t len) {
+	if(!dst || !src || len == 0) return;
+	if(ranges_overlap_(src, len, dst)) {
+		memmove(dst, src, len);
+		return;
+	}
+	sz_copy(dst, src, len);
+}
+
 static void *aligned_zalloc_64(size_t n) {
 	size_t alloc_n= align_up_64(n);
 	void *p= aligned_alloc(64, alloc_n);
@@ -789,7 +807,7 @@ ThreadBuf *wiki_thread_buf_acquire_scratch_from_data(const char *s, size_t len) 
 	ThreadBuf *scratch= acquire_scratch_with_len_internal(tb, len, avoid_idx);
 
 	if(len > 0 && s != NULL) {
-		memmove(scratch->buf, s, len);
+		copy_bytes_(scratch->buf, s, len);
 	}
 
 	scratch->buf[len]= '\0';
@@ -828,7 +846,7 @@ void wiki_thread_buf_release_scratch(ThreadBuf *scratch) {
 
 void wiki_thread_buf_set(ThreadBuf *tb, const char *s, size_t len) {
 	wiki_thread_buf_reserve(tb, len);
-	if(len > 0) memmove(tb->buf, s, len);
+	if(len > 0) copy_bytes_(tb->buf, s, len);
 	tb->buf[len]= '\0';
 	tb->len= len;
 }
