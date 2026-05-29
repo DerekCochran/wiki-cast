@@ -408,7 +408,8 @@ static size_t str_restore_to_tb(const char *s, size_t len,
 		}
 
 		const char *k = found + 1;
-		while(k < end && *k >= '0' && *k <= '9') k++;
+		const char *not_digit = sz_find_byte_not_from(k, (size_t)(end - k), "0123456789", 10);
+		k = not_digit ? not_digit : end;
 		if(k < end && k > found + 1 && (unsigned char)*k == '\x7F') {
 			size_t idx = 0;
 			for(const char *d = found + 1; d < k; ++d) idx = idx * 10 + (size_t)(*d - '0');
@@ -448,7 +449,8 @@ static size_t restore_accum_mode_to_tb(const char *s, size_t len,
 	for(size_t i = 0; i < len;) {
 		if((unsigned char)s[i] == '\0') {
 			size_t k = i + 1;
-			while(k < len && s[k] >= '0' && s[k] <= '9') k++;
+			const char *not_digit = sz_find_byte_not_from(s + k, len - k, "0123456789", 10);
+			k = not_digit ? (size_t)(not_digit - s) : len;
 			if(k > i + 1 && k + 1 < len && (unsigned char)s[k + 1] == '\x7F') {
 				char ch = s[k];
 				bool should_expand = (mode == 1 && ch == 'g') || (mode == 2 && ch == 'n');
