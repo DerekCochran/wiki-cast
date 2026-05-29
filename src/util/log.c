@@ -78,7 +78,7 @@ static int parse_log_level(const char *s) {
 }
 
 static void init_log(void) {
-	const char *env = env_get("TOKENIZER_LOG_LEVEL");
+	 const char *env = env_get_n("TOKENIZER_LOG_LEVEL", sizeof("TOKENIZER_LOG_LEVEL") - 1);
 	L.level= parse_log_level(env);
 }
 
@@ -203,7 +203,19 @@ void log_log(int level, const char *file, int line, const char *fmt, ...) {
 void log_log_env_token(int level, const char *file, int line, const char *env, const Token* token, const char *fmt, ...) {
     pthread_once(&g_log_init_once, init_log);
 
-    // 1. Check environment variable and serialize token early
+	bool emit_stderr = (!L.quiet && level >= L.level);
+	bool emit_callback = false;
+	for (int i = 0; i < MAX_CALLBACKS && L.callbacks[i].fn; i++) {
+		if (level >= L.callbacks[i].level) {
+			emit_callback = true;
+			break;
+		}
+	}
+	if (!emit_stderr && !emit_callback) {
+		return;
+	}
+
+    // 1. Check environment variable and serialize token only when needed
 	if( !env_set(env) ) {
 		return;
 	}
@@ -223,16 +235,18 @@ void log_log_env_token(int level, const char *file, int line, const char *env, c
 
     lock();
 
-    // 2. Handle stderr output
-	init_event(&ev, stderr);
-	va_start(ev.ap, fmt);
-	stdout_callback(&ev);
-	va_end(ev.ap);
-	
-	if (json_str) {
-		fprintf(stderr, "   --> %s", json_str);
+	// 2. Handle stderr output
+	if (emit_stderr) {
+		init_event(&ev, stderr);
+		va_start(ev.ap, fmt);
+		stdout_callback(&ev);
+		va_end(ev.ap);
+
+		if (json_str) {
+			fprintf(stderr, "   --> %s", json_str);
+		}
+		fprintf(stderr, "\n"); // Ensure newline after the extra token data
 	}
-	fprintf(stderr, "\n"); // Ensure newline after the extra token data
 
     // 3. Handle all other callbacks (e.g., file logging)
     for (int i = 0; i < MAX_CALLBACKS && L.callbacks[i].fn; i++) {

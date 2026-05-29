@@ -29,6 +29,30 @@ static inline bool is_alpha_ci_char(unsigned char c) {
 	return lc >= 'a' && lc <= 'z';
 }
 
+static const char HTML_WS_BYTES[] = " \t\r\n\v\f";
+
+static inline bool html_has_any_sentinel(const char *s, size_t len) {
+	if(!s || len == 0) return false;
+	return sz_find_byte(s, len, "\0") != NULL;
+}
+
+static bool html_find_ci_lit(const char *s, size_t len, const char *lit, size_t lit_len) {
+	if(!s || !lit || lit_len == 0 || len < lit_len) return false;
+	const unsigned char first = (unsigned char)lit[0];
+	char cand[2];
+	cand[0] = (char)fast_tolower(first);
+	cand[1] = (char)((first >= 'a' && first <= 'z') ? (first - ('a' - 'A')) : first);
+
+	for(size_t i = 0; i + lit_len <= len;) {
+		const char *found = sz_find_byte_from(s + i, len - i, cand, 2);
+		if(!found) return false;
+		size_t p = (size_t)(found - s);
+		if(str_ci_eq_n(s + p, lit, lit_len)) return true;
+		i = p + 1;
+	}
+	return false;
+}
+
 /**
  * Forward-scan implementation of the HTML tag pattern described in
  * proposals/callback_parser_regexes.md. `buf` points to the first byte
@@ -58,11 +82,9 @@ bool html_tag_parse(const char        *buf,
 	if(!is_alpha_ci_char(c0)) return false;
 	size_t name_start = pos;
 	pos++;
-	while(pos < len) {
-		unsigned char cc = (unsigned char)buf[pos];
-		if(cc == '>' || cc == '/' || cc == ' ' || cc == '\t' || cc == '\r' || cc == '\n' || cc == '\v' || cc == '\f') break;
-		pos++;
-	}
+	const char name_stop[] = ">/ \t\r\n\v\f";
+	const char *name_end = sz_find_byte_from(buf + pos, len - pos, name_stop, sizeof(name_stop) - 1);
+	pos = name_end ? (size_t)(name_end - buf) : len;
 	size_t name_len = pos - name_start;
 	if(name_len == 0) return false;
 	out->tag_name = buf + name_start;
@@ -81,9 +103,16 @@ bool html_tag_parse(const char        *buf,
 		if(start_attrs) {
 			has_attrs = true;
 			size_t p = pos;
+			const char attr_stop[] = ">/";
 			while(p < len) {
+				const char *cand = sz_find_byte_from(buf + p, len - p, attr_stop, 2);
+				if(!cand) {
+					p = len;
+					break;
+				}
+				p = (size_t)(cand - buf);
 				if(buf[p] == '>') break;
-				if(buf[p] == '/' && p + 1 < len && buf[p + 1] == '>') break;
+				if(p + 1 < len && buf[p] == '/' && buf[p + 1] == '>') break;
 				p++;
 			}
 			pos = p;
@@ -124,9 +153,8 @@ bool html_tag_parse(const char        *buf,
 
 
 /* Helper: whether a tag name (lowercase) is in any of cfg->html lists */
-static bool html_tag_allowed(const ParserConfig *cfg, const char *lcname) {
-	if(!cfg || !lcname) return false;
-	size_t lcname_len= strlen(lcname);
+static bool html_tag_allowed(const ParserConfig *cfg, const char *lcname, size_t lcname_len) {
+	if(!cfg || !lcname || lcname_len == 0) return false;
 	for(int grp= 0; grp < 3; grp++) {
 		for(size_t i= 0; i < cfg->html[grp].count; i++) {
 			sz_ptr_t html_name;
@@ -146,14 +174,16 @@ static Token *make_html_attr_key(const char *key, size_t key_len, Accum *accum) 
 	return t;
 }
 
-static char *html_normalize_equal(const char *equal, size_t equal_len, Accum *accum) {
+static char *html_normalize_equal(const char *equal, size_t equal_len, Accum *accum, size_t *out_len) {
 	if(!equal || equal_len == 0) return NULL;
+	if(out_len) *out_len = 0;
 
 	if(sz_find_byte(equal, equal_len, "\0") == NULL) {
 		char *out= malloc(equal_len + 1);
 		if(!out) return NULL;
 		sz_copy(out, equal, equal_len);
 		out[equal_len]= '\0';
+		if(out_len) *out_len = equal_len;
 		return out;
 	}
 
@@ -173,6 +203,7 @@ static char *html_normalize_equal(const char *equal, size_t equal_len, Accum *ac
 	if(out) {
 		if(slen > 0 && s) sz_copy(out, s, slen);
 		out[slen]= '\0';
+		if(out_len) *out_len = slen;
 	}
 
 	wiki_thread_buf_release_scratch(scratch);
@@ -209,10 +240,12 @@ static Token *make_html_attr(const char *key, size_t key_len,
 	Token *t= token_new(TOKEN_EXT_ATTR, "html-attr");
 	if(!t) return NULL;
 
-	t->name= str_trim_lc(key, key_len);
+	 t->name= str_trim_lc(key, key_len);
 	if(equal && equal_len > 0) {
-		t->data.ext_attr.equal= html_normalize_equal(equal, equal_len, accum);
-		assert(t->data.ext_attr.equal);
+		size_t equal_owned_len = 0;
+		char *equal_owned= html_normalize_equal(equal, equal_len, accum, &equal_owned_len);
+		assert(equal_owned);
+		t->data.ext_attr.equal = (sz_string_view_t){ .start = equal_owned, .length = equal_owned_len };
 	}
 	t->data.ext_attr.quote_open= quote_open;
 	t->data.ext_attr.quote_close= quote_close;
@@ -306,22 +339,30 @@ static size_t html_sentinel_at(const char *attr, size_t attr_len, size_t i, char
 	return (j + 2) - i;
 }
 
-/* JS parity for regex (?:\s|\0\d+[cn]\x7F)* used around equals. */
-static size_t html_skip_eq_ws(const char *attr, size_t attr_len, size_t i) {
+static size_t html_skip_ws_or_sentinels(const char *attr, size_t attr_len, size_t i,
+														const char *sentinel_types, size_t sentinel_types_len) {
 	while(i < attr_len) {
 		if(isspace((unsigned char)attr[i])) {
 			i++;
 			continue;
 		}
-		size_t sc= html_sentinel_at(attr, attr_len, i, 'c');
-		if(sc == 0) sc= html_sentinel_at(attr, attr_len, i, 'n');
-		if(sc > 0) {
-			i+= sc;
-			continue;
+		bool consumed = false;
+		for(size_t ti = 0; ti < sentinel_types_len; ti++) {
+			size_t sl = html_sentinel_at(attr, attr_len, i, sentinel_types[ti]);
+			if(sl > 0) {
+				i += sl;
+				consumed = true;
+				break;
+			}
 		}
-		break;
+		if(!consumed) break;
 	}
 	return i;
+}
+
+/* JS parity for regex (?:\s|\0\d+[cn]\x7F)* used around equals. */
+static size_t html_skip_eq_ws(const char *attr, size_t attr_len, size_t i) {
+	return html_skip_ws_or_sentinels(attr, attr_len, i, "cn", 2);
 }
 
 static void parse_html_attrs(Token *attrs_tok, const char *attr_str, size_t attr_len, Accum *accum) {
@@ -330,6 +371,17 @@ static void parse_html_attrs(Token *attrs_tok, const char *attr_str, size_t attr
 	size_t i= 0;
 	char dirty_buf[4096];
 	size_t dirty_len= 0;
+
+#define APPEND_HTML_DIRTY_RANGE(start_idx, end_idx)                              \
+	do {                                                                            \
+		size_t __start = (start_idx);                                                \
+		size_t __end = (end_idx);                                                    \
+		if(__end > __start) {                                                        \
+			size_t __n = __end - __start;                                              \
+			sz_copy(dirty_buf + dirty_len, attr_str + __start, __n);                   \
+			dirty_len += __n;                                                          \
+		}                                                                             \
+	} while(0)
 
 #define FLUSH_HTML_DIRTY()                                          \
 	do {                                                              \
@@ -369,7 +421,7 @@ static void parse_html_attrs(Token *attrs_tok, const char *attr_str, size_t attr
 		bool valid_key= html_attr_key_valid(key, key_len);
 
 		if(!valid_key) {
-			for(size_t k= 0; k < key_len; k++) dirty_buf[dirty_len++]= key[k];
+			APPEND_HTML_DIRTY_RANGE(key_start, key_start + key_len);
 			continue;
 		}
 
@@ -404,7 +456,8 @@ static void parse_html_attrs(Token *attrs_tok, const char *attr_str, size_t attr
 		if(i < attr_len && (attr_str[i] == '"' || attr_str[i] == '\'')) {
 			quote_open= attr_str[i++];
 			size_t val_start= i;
-			while(i < attr_len && attr_str[i] != quote_open) i++;
+			const char *qclose = sz_find_byte(attr_str + i, attr_len - i, &quote_open);
+			i = qclose ? (size_t)(qclose - attr_str) : attr_len;
 			val= attr_str + val_start;
 			val_len= i - val_start;
 			if(i < attr_len) {
@@ -413,7 +466,8 @@ static void parse_html_attrs(Token *attrs_tok, const char *attr_str, size_t attr
 			}
 		} else {
 			size_t val_start= i;
-			while(i < attr_len && !isspace((unsigned char)attr_str[i])) i++;
+			const char *w = sz_find_byte_from(attr_str + i, attr_len - i, HTML_WS_BYTES, sizeof(HTML_WS_BYTES) - 1);
+			i = w ? (size_t)(w - attr_str) : attr_len;
 			val= attr_str + val_start;
 			val_len= i - val_start;
 		}
@@ -428,12 +482,13 @@ static void parse_html_attrs(Token *attrs_tok, const char *attr_str, size_t attr
 
 	FLUSH_HTML_DIRTY();
 #undef FLUSH_HTML_DIRTY
+#undef APPEND_HTML_DIRTY_RANGE
 }
 
 static Token *build_html_attrs(const char *tag_name, const char *attr_str, size_t attr_len, Accum *accum) {
 	Token *t= token_new(TOKEN_ATTRIBUTES, "html-attrs");
 	if(!t) return NULL;
-	t->name= strdup(tag_name);
+	 t->name= strdup(tag_name);
 	accum_push(accum, t);
 
 	if(attr_str && attr_len > 0 && !isspace((unsigned char)attr_str[0]) && attr_str[0] != '/') {
@@ -462,9 +517,8 @@ static bool html_attrs_has_attr(const Token *attrs, const char *attr_name) {
 		const Child *c= &attrs->children[i];
 		if(c->is_text || !c->token) continue;
 		const Token *a= c->token;
-		if(a->type == TOKEN_EXT_ATTR && a->name) {
-			size_t nlen= strlen(a->name);
-			if(nlen == attr_len && str_ci_eq_n(a->name, attr_name, attr_len)) return true;
+			if(a->type == TOKEN_EXT_ATTR && a->name) {
+					if(a->name[attr_len] == '\0' && str_ci_eq_n(a->name, attr_name, attr_len)) return true;
 		}
 	}
 	return false;
@@ -551,7 +605,7 @@ void parse_html(ThreadBuf *tb, const ParserConfig *cfg, Accum *accum) {
 						out_tb->len+= seg_len;
 					}
 				} else {
-					if(!html_tag_allowed(cfg, lcname)) {
+					if(!html_tag_allowed(cfg, lcname, htc.tag_name_len)) {
 						/* unknown tag — emit raw */
 						ENSURE_OUT_CAP(1 + seg_len + 1);
 						out_tb->buf[out_tb->len++]= '<';
@@ -566,6 +620,30 @@ void parse_html(ThreadBuf *tb, const ParserConfig *cfg, Accum *accum) {
 
 						const char *attr_ptr = htc.attrs;
 						size_t attr_len = htc.attrs_len;
+
+						/* Fast reject for plain attr text on meta/link before token creation. */
+						bool early_reject = false;
+						const bool is_meta = (htc.tag_name_len == 4 && str_ci_eq_n(htc.tag_name, "meta", 4));
+						const bool is_link = (htc.tag_name_len == 4 && str_ci_eq_n(htc.tag_name, "link", 4));
+						if((is_meta || is_link) && attr_ptr && attr_len > 0 && !html_has_any_sentinel(attr_ptr, attr_len)) {
+							bool has_itemprop = html_find_ci_lit(attr_ptr, attr_len, "itemprop", 8);
+							bool has_required = is_meta
+								? html_find_ci_lit(attr_ptr, attr_len, "content", 7)
+								: html_find_ci_lit(attr_ptr, attr_len, "href", 4);
+							early_reject = !(has_itemprop && has_required);
+						}
+
+						if(early_reject) {
+							ENSURE_OUT_CAP(1 + seg_len + 1);
+							out_tb->buf[out_tb->len++]= '<';
+							if(seg_len > 0) {
+								sz_copy(out_tb->buf + out_tb->len, seg_start, seg_len);
+								out_tb->len+= seg_len;
+							}
+							free(lcname);
+							pos= (size_t)(seg_start - buf) + seg_len;
+							continue;
+						}
 
 						Token *attrs = build_html_attrs(lcname, attr_ptr, attr_len, accum);
 
@@ -608,14 +686,14 @@ void parse_html(ThreadBuf *tb, const ParserConfig *cfg, Accum *accum) {
 							/* Now create HtmlToken and push it (matching JS order) */
 							Token *ht = token_new(TOKEN_HTML, "html");
 							if(ht) {
-								ht->name = strdup(lcname);
+													ht->name = strdup(lcname);
 								/* orig_tag: original-case name for toString round-trip */
 								char *orig_tag = malloc(htc.tag_name_len + 1);
 								if(orig_tag) {
 									sz_copy(orig_tag, htc.tag_name, htc.tag_name_len);
 									orig_tag[htc.tag_name_len] = '\0';
 								}
-								ht->data.html.orig_tag = orig_tag;
+								ht->data.html.orig_tag = (sz_string_view_t){ .start = orig_tag, .length = orig_tag ? htc.tag_name_len : 0 };
 								/* closing flag: leading slash present? */
 								ht->data.html.closing = htc.is_closing;
 								/* self-closing flag */

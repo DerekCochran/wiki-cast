@@ -64,17 +64,10 @@ static size_t consume_js_zs(const char *s, size_t len, size_t i) {
 static size_t consume_ipv6_bracket_host(const char *s, size_t len, size_t i) {
     if(i >= len || s[i] != '[') return 0;
     size_t j = i + 1;
-    size_t body_len = 0;
-    while(j < len) {
-        unsigned char c = (unsigned char)s[j];
-        bool ok = (c >= '0' && c <= '9') ||
-                  (c >= 'a' && c <= 'f') ||
-                  (c >= 'A' && c <= 'F') ||
-                  c == ':' || c == '.';
-        if(!ok) break;
-        j++;
-        body_len++;
-    }
+    const char *bad = sz_find_byte_not_from(s + j, len - j,
+                                            "0123456789abcdefABCDEF:.", 24);
+    size_t body_len = bad ? (size_t)(bad - (s + j)) : (len - j);
+    j += body_len;
     if(body_len == 0) return 0;
     if(j >= len || s[j] != ']') return 0;
     return (j + 1) - i;
@@ -83,8 +76,8 @@ static size_t consume_ipv6_bracket_host(const char *s, size_t len, size_t i) {
 static bool ext_lookahead_ok(const char *s, size_t len, size_t i) {
     if(i >= len) return true; /* closing ']' is outside parser_scan inner segment */
     unsigned char c = (unsigned char)s[i];
-    if(c == '[' || c == ']' || c == '<' || c == '>' || c == '"') return true;
-    if(c == '\t' || c == '\n' || c == '\r' || c == '\f' || c == '\v') return true;
+    static const char term_bytes[] = "[]<>\"\t\n\r\f\v";
+    if(sz_find_byte(term_bytes, sizeof(term_bytes) - 1, (const char *)&s[i]) != NULL) return true;
     if(consume_js_zs(s, len, i) > 0) return true;
     if(c == 0 && i + 1 < len && s[i + 1] >= '0' && s[i + 1] <= '9') return true;
     return false;
@@ -92,14 +85,15 @@ static bool ext_lookahead_ok(const char *s, size_t len, size_t i) {
 
 /* JS text group: [^\]\x01-\x08\x0A-\x1F\uFFFD]* */
 static bool ext_text_is_valid(const char *s, size_t len) {
-    for(size_t i = 0; i < len; i++) {
-        unsigned char c = (unsigned char)s[i];
-        if(c == ']') return false;
-        if(c >= 0x01 && c <= 0x08) return false;
-        if(c >= 0x0A && c <= 0x1F) return false;
-        if(i + 2 < len && c == 0xEF && (unsigned char)s[i + 1] == 0xBF && (unsigned char)s[i + 2] == 0xBD)
-            return false; /* U+FFFD */
-    }
+    if(!s || len == 0) return true;
+    static const char rb = ']';
+    if(sz_find_byte(s, len, &rb) != NULL) return false;
+    static const char replacement[] = "\xEF\xBF\xBD";
+    if(len >= 3 && sz_find(s, len, replacement, 3) != NULL) return false;
+    static const char invalid_ctrl[] =
+        "\x01\x02\x03\x04\x05\x06\x07\x08"
+        "\x0A\x0B\x0C\x0D\x0E\x0F\x10\x11\x12\x13\x14\x15\x16\x17\x18\x19\x1A\x1B\x1C\x1D\x1E\x1F";
+    if(sz_find_byte_from(s, len, invalid_ctrl, sizeof(invalid_ctrl) - 1) != NULL) return false;
     return true;
 }
 
@@ -116,28 +110,45 @@ static Token *build_magic_link_token(const char *url, size_t url_len, Accum *acc
 /* Build an ext-link token: TOKEN_EXT_LINK containing [url_tok, (opt) ext-link-text] */
 static Token *build_ext_link_token(Token *url_tok,
 																	 const char *space, size_t space_len,
-																	 const char *text, size_t text_len,
+                                                     const char *text, size_t text_len,
+                                                     const char *text2, size_t text2_len,
 																	 Accum *accum) {
 	Token *ext= token_new(TOKEN_EXT_LINK, "ext-link");
 	if(!ext) return NULL;
 	/* store separator as owned string for now (refactor later to use tokens arena) */
-	ext->data.ext_link.space= malloc(space_len + 1);
-	if(!ext->data.ext_link.space) {
+    char *space_owned = malloc(space_len + 1);
+    if(!space_owned) {
 		token_free(ext);
 		return NULL;
 	}
-    if(space && space_len > 0) sz_copy(ext->data.ext_link.space, space, space_len);
-	ext->data.ext_link.space[space_len]= '\0';
+    if(space && space_len > 0) sz_copy(space_owned, space, space_len);
+    space_owned[space_len]= '\0';
+    ext->data.ext_link.space = (sz_string_view_t){ .start = space_owned, .length = space_len };
 
 	token_append_child(ext, url_tok);
 
-	if(text_len > 0) {
+    if(text_len > 0 || text2_len > 0) {
 		Token *inner= token_new(TOKEN_PLAIN, "ext-link-text");
 		if(!inner) {
 			token_free(ext);
 			return NULL;
 		}
-        token_append_text_n(inner, text, text_len);
+        if(text2_len > 0) {
+            size_t merged_len = text_len + text2_len;
+            char *merged = malloc(merged_len + 1);
+            if(!merged) {
+                token_free(inner);
+                token_free(ext);
+                return NULL;
+            }
+            if(text_len > 0) sz_copy(merged, text, text_len);
+            sz_copy(merged + text_len, text2, text2_len);
+            merged[merged_len] = '\0';
+            token_append_text_n(inner, merged, merged_len);
+            free(merged);
+        } else if(text_len > 0) {
+            token_append_text_n(inner, text, text_len);
+        }
 		accum_push(accum, inner);
 		token_append_child(ext, inner);
 	}
@@ -153,14 +164,10 @@ static Token *build_ext_link_token(Token *url_tok,
  * image-parameter caption tokens that were already pre-processed with inFile=true.
  */
 static bool try_parse_f_sentinel(const char *ptr, size_t len, size_t *out_idx) {
-	if(len < 4) return false;
-	if((unsigned char)ptr[0] != 0x00) return false;
-	if(ptr[len - 2] != 'f') return false;
-	if((unsigned char)ptr[len - 1] != 0x7F) return false;
-    const size_t digit_span = len - 3;
-    if(digit_span == 0) return false;
-    const char *not_digit = sz_find_byte_not_from(ptr + 1, digit_span, "0123456789", 10);
-    if(not_digit) return false;
+    if(!ptr || len < 4 || !out_idx) return false;
+    /* Reuse shared sentinel scanner and require full-span match. */
+    size_t slen = skip_typed_sentinel(ptr, len, 0, 'f');
+    if(slen == 0 || slen != len) return false;
 	size_t idx= 0;
 	for(size_t i= 1; i + 2 < len; i++) {
 		char c= ptr[i];
@@ -222,9 +229,29 @@ static bool parse_external_inner(const char *inner, size_t len,
             }
         }
 
+        static const char url_stop_bytes[] =
+            "\x00\x01\x02\x03\x04\x05\x06\x07\x08\x09\x0A\x0B\x0C\x0D\x0E\x0F"
+            "\x10\x11\x12\x13\x14\x15\x16\x17\x18\x19\x1A\x1B\x1C\x1D\x1E\x1F\x20"
+            "[]<>\"\x7F\xC2\xE1\xE2\xE3\xEF";
         while(i < len) {
             size_t sc = skip_exturl_sentinel(inner, len, i);
-            if(sc > 0) { i += sc; continue; }
+            if(sc > 0) {
+                i += sc;
+                continue;
+            }
+
+            const char *stop = sz_find_byte_from(inner + i, len - i,
+                                                 url_stop_bytes, sizeof(url_stop_bytes) - 1);
+            if(!stop) {
+                i = len;
+                break;
+            }
+            size_t stop_i = (size_t)(stop - inner);
+            if(stop_i > i) {
+                i = stop_i;
+                continue;
+            }
+
             if(consume_js_zs(inner, len, i) > 0) break;
             if(i + 2 < len && (unsigned char)inner[i] == 0xEF &&
                (unsigned char)inner[i + 1] == 0xBF && (unsigned char)inner[i + 2] == 0xBD) break;
@@ -279,24 +306,22 @@ static void ext_cb(const char *seg, size_t len, ParserSegmentKind kind, void *ud
     }
 
     /* JS parity: split URL at first &lt; / &gt; entity and move suffix into text. */
-    ThreadBuf *entity_text = NULL;
+    const char *txt2 = NULL;
+    size_t tlen2 = 0;
     for(size_t i = 0; i + 3 < ulen; i++) {
         if(url[i] != '&') continue;
         bool is_lt = (url[i + 1] == 'l' && url[i + 2] == 't' && url[i + 3] == ';');
         bool is_gt = (url[i + 1] == 'g' && url[i + 2] == 't' && url[i + 3] == ';');
         if(!is_lt && !is_gt) continue;
 
-        entity_text = wiki_thread_buf_acquire_scratch();
-        if(!entity_text) { log_fatal("thread_buffer: failed to acquire scratch in ext_cb"); abort(); }
-        entity_text->len = 0;
-        wiki_thread_buf_append(entity_text, (sz_string_view_t){ .start = url + i, .length = ulen - i });
-        if(tlen > 0) wiki_thread_buf_append(entity_text, (sz_string_view_t){ .start = txt, .length = tlen });
+        txt2 = txt;
+        tlen2 = tlen;
+        txt = url + i;
+        tlen = ulen - i;
 
         ulen = i;
         sp = "";
         splen = 0;
-        txt = entity_text->buf;
-        tlen = entity_text->len;
         break;
     }
 
@@ -313,7 +338,6 @@ static void ext_cb(const char *seg, size_t len, ParserSegmentKind kind, void *ud
         wiki_thread_buf_append(c->out, (sz_string_view_t){ .start = "[", .length = 1 });
         wiki_thread_buf_append(c->out, (sz_string_view_t){ .start = seg, .length = len });
         wiki_thread_buf_append(c->out, (sz_string_view_t){ .start = "]", .length = 1 });
-        if(entity_text) wiki_thread_buf_release_scratch(entity_text);
         return;
     }
 
@@ -324,9 +348,10 @@ static void ext_cb(const char *seg, size_t len, ParserSegmentKind kind, void *ud
         wiki_thread_buf_append(c->out, (sz_string_view_t){ .start = sent, .length = slen });
         if(splen) wiki_thread_buf_append(c->out, (sz_string_view_t){ .start = sp, .length = splen });
         if(tlen) wiki_thread_buf_append(c->out, (sz_string_view_t){ .start = txt, .length = tlen });
+        if(tlen2) wiki_thread_buf_append(c->out, (sz_string_view_t){ .start = txt2, .length = tlen2 });
         wiki_thread_buf_append(c->out, (sz_string_view_t){ .start = "]", .length = 1 });
     } else {
-        Token *ext = build_ext_link_token(url_tok, sp, splen, txt, tlen, c->accum);
+        Token *ext = build_ext_link_token(url_tok, sp, splen, txt, tlen, txt2, tlen2, c->accum);
         if(!ext) {
             wiki_thread_buf_append(c->out, (sz_string_view_t){ .start = "[", .length = 1 });
             wiki_thread_buf_append(c->out, (sz_string_view_t){ .start = seg, .length = len });
@@ -337,8 +362,6 @@ static void ext_cb(const char *seg, size_t len, ParserSegmentKind kind, void *ud
         work_str_sentinel(c->accum->count - 1, 'w', sent, &slen);
         wiki_thread_buf_append(c->out, (sz_string_view_t){ .start = sent, .length = slen });
     }
-
-    if(entity_text) wiki_thread_buf_release_scratch(entity_text);
 }
 
 void parse_external_links(ThreadBuf *tb, const ParserConfig *cfg,
@@ -374,7 +397,11 @@ void parse_external_links(ThreadBuf *tb, const ParserConfig *cfg,
      * Run a second pass that probes every '[' position against the same
      * parse_external_inner() grammar to recover matches that begin inside
      * previously skipped/invalid bracket runs (for example [[foo[http://...]]). */
-    if(!in_file && out->len >= 3) {
+     static const char lb = '[';
+     static const char rb = ']';
+     if(!in_file && out->len >= 3
+         && sz_find_byte(out->buf, out->len, &lb) != NULL
+         && sz_find_byte(out->buf, out->len, &rb) != NULL) {
         ThreadBuf *out2 = wiki_thread_buf_acquire_scratch();
         if(out2) {
             out2->len = 0;

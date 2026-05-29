@@ -184,6 +184,7 @@ static char *title_main_from_text(const char *s, size_t len) {
 
 static char *title_compose_resolved(const Title *t, const char *page) {
 	if(!t || !t->main || !t->prefix || !t->interwiki) return NULL;
+	size_t page_len= page ? strlen(page) : 0;
 	size_t pre_len= strlen(t->interwiki);
 	size_t ns_len= strlen(t->prefix);
 	size_t main_len= strlen(t->main);
@@ -208,7 +209,6 @@ static char *title_compose_resolved(const Title *t, const char *page) {
 	sz_lookup(base, pos, base, (const char *)s_spc2under_lut);
 
 	if(base[0] == '/') {
-		size_t page_len= page ? strlen(page) : 0;
 		while(pos > 0 && base[pos - 1] == '/') pos--;
 		/* JS parity: keep a single slash for slash-only targets like "/". */
 		if(pos == 0) pos= 1;
@@ -231,7 +231,6 @@ static char *title_compose_resolved(const Title *t, const char *page) {
 			level++;
 			sub+= 3;
 		}
-		size_t page_len= strlen(page);
 		/* Use sz_find_byte to count '/' without a byte-by-byte loop */
 		size_t dir_count= 1;
 		{
@@ -451,10 +450,11 @@ Title *title_parse_half_parsed(const char *raw, size_t raw_len,
 	}
 
 	size_t t0= 0, t1= raw_len;
+	size_t page_len= page ? strlen(page) : 0;
 	while(t0 < t1 && isspace((unsigned char)raw[t0])) t0++;
 	while(t1 > t0 && isspace((unsigned char)raw[t1 - 1])) t1--;
 	bool subpage= (t1 - t0 >= 3 && raw[t0] == '.' && raw[t0 + 1] == '.' && raw[t0 + 2] == '/');
-	bool page_subpage= (page && *page && raw_len - t0 >= 1 && raw[t0] == '/');
+	bool page_subpage= (page_len > 0 && raw_len - t0 >= 1 && raw[t0] == '/');
 
 	size_t decoded_len= 0;
 	char *pct_decoded= title_try_percent_decode(raw, raw_len, &decoded_len);
@@ -569,10 +569,11 @@ Title *title_parse_half_parsed(const char *raw, size_t raw_len,
 		size_t frag_dec_len= 0;
 		char *frag_pct= title_try_percent_decode(fragment, fragment_len, &frag_dec_len);
 		if(frag_pct) {
-			char *frag_html= str_decode_html_basic(frag_pct, frag_dec_len, NULL);
+			size_t frag_html_len= 0;
+			char *frag_html= str_decode_html_basic(frag_pct, frag_dec_len, &frag_html_len);
 			free(frag_pct);
 			if(frag_html) {
-				size_t flen= strlen(frag_html);
+				size_t flen= frag_html_len;
 				while(flen > 0 && isspace((unsigned char)frag_html[flen - 1])) flen--;
 				/* Replace spaces in fragment with underscores via lookup table */
 				sz_lookup(frag_html, flen, frag_html, (const char *)s_spc2under_lut);
@@ -618,16 +619,15 @@ Title *title_parse_half_parsed(const char *raw, size_t raw_len,
 	if(level > 0 && page != NULL) {
 		/* Use sz_find_byte to count '/' without iterating byte-by-byte */
 		size_t page_parts= 1;
-		size_t plen= strlen(page);
 		char slash_ch= '/';
 		const char *pp= page;
-		size_t prem= plen;
+		size_t prem= page_len;
 		while(prem > 0) {
 			sz_cptr_t nsl= sz_find_byte(pp, prem, &slash_ch);
 			if(!nsl) break;
 			page_parts++;
 			pp= nsl + 1;
-			prem= plen - (size_t)(pp - page);
+			prem= page_len - (size_t)(pp - page);
 		}
 		page_ok= page_parts > level;
 	}
@@ -651,9 +651,9 @@ Title *title_parse_half_parsed(const char *raw, size_t raw_len,
 char *title_normalize(const char *raw, size_t raw_len) {
 	if(!raw || raw_len == 0) return strdup("");
 
-	char *decoded= str_decode_html_basic(raw, raw_len, NULL);
+	size_t decoded_len= 0;
+	char *decoded= str_decode_html_basic(raw, raw_len, &decoded_len);
 	if(!decoded) return NULL;
-	size_t decoded_len= strlen(decoded);
 
 	char *result= malloc(decoded_len + 1);
 	if(!result) {

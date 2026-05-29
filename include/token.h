@@ -9,6 +9,7 @@
 #include <stdbool.h>
 #include <stddef.h>
 #include <stdio.h>
+#include "stringzilla/types.h"
 #include "util/thread_buffer.h"
 
 /* ── Token type enum ──────────────────────────────────────────────────────── */
@@ -58,6 +59,93 @@ typedef enum {
     TOKEN_TYPE_COUNT
 } TokenType;
 
+typedef enum {
+    TOKEN_SUBTYPE_NONE = 0,
+    TOKEN_SUBTYPE_ROOT,
+    TOKEN_SUBTYPE_REDIRECT,
+    TOKEN_SUBTYPE_REDIRECT_SYNTAX,
+    TOKEN_SUBTYPE_REDIRECT_TARGET,
+    TOKEN_SUBTYPE_COMMENT,
+    TOKEN_SUBTYPE_EXT,
+    TOKEN_SUBTYPE_NOINCLUDE,
+    TOKEN_SUBTYPE_INCLUDE,
+    TOKEN_SUBTYPE_INCLUDEONLY,
+    TOKEN_SUBTYPE_ONLYINCLUDE,
+    TOKEN_SUBTYPE_TRANSLATE,
+    TOKEN_SUBTYPE_ARG,
+    TOKEN_SUBTYPE_ARG_NAME,
+    TOKEN_SUBTYPE_ARG_DEFAULT,
+    TOKEN_SUBTYPE_TEMPLATE,
+    TOKEN_SUBTYPE_MAGIC_WORD,
+    TOKEN_SUBTYPE_MAGIC_WORD_NAME,
+    TOKEN_SUBTYPE_PARAMETER,
+    TOKEN_SUBTYPE_PARAMETER_KEY,
+    TOKEN_SUBTYPE_PARAMETER_VALUE,
+    TOKEN_SUBTYPE_HEADING,
+    TOKEN_SUBTYPE_HEADING_TITLE,
+    TOKEN_SUBTYPE_HEADING_TRAIL,
+    TOKEN_SUBTYPE_HTML,
+    TOKEN_SUBTYPE_HTML_ATTRS,
+    TOKEN_SUBTYPE_HTML_ATTR,
+    TOKEN_SUBTYPE_HTML_ATTR_DIRTY,
+    TOKEN_SUBTYPE_TABLE,
+    TOKEN_SUBTYPE_TR,
+    TOKEN_SUBTYPE_TD,
+    TOKEN_SUBTYPE_TABLE_SYNTAX,
+    TOKEN_SUBTYPE_TABLE_ATTRS,
+    TOKEN_SUBTYPE_TABLE_ATTR,
+    TOKEN_SUBTYPE_TABLE_ATTR_DIRTY,
+    TOKEN_SUBTYPE_TABLE_INTER,
+    TOKEN_SUBTYPE_TABLE_INNER,
+    TOKEN_SUBTYPE_TD_INNER,
+    TOKEN_SUBTYPE_HR,
+    TOKEN_SUBTYPE_DOUBLE_UNDERSCORE,
+    TOKEN_SUBTYPE_LINK,
+    TOKEN_SUBTYPE_FILE,
+    TOKEN_SUBTYPE_CATEGORY,
+    TOKEN_SUBTYPE_TEXT,
+    TOKEN_SUBTYPE_LINK_TARGET,
+    TOKEN_SUBTYPE_LINK_TEXT,
+    TOKEN_SUBTYPE_QUOTE,
+    TOKEN_SUBTYPE_EXT_LINK,
+    TOKEN_SUBTYPE_EXT_LINK_URL,
+    TOKEN_SUBTYPE_EXT_LINK_TEXT,
+    TOKEN_SUBTYPE_MAGIC_LINK,
+    TOKEN_SUBTYPE_FREE_EXT_LINK,
+    TOKEN_SUBTYPE_LIST,
+    TOKEN_SUBTYPE_DD,
+    TOKEN_SUBTYPE_CONVERTER,
+    TOKEN_SUBTYPE_CONVERTER_RULE,
+    TOKEN_SUBTYPE_CONVERTER_RULE_FROM,
+    TOKEN_SUBTYPE_CONVERTER_RULE_VARIANT,
+    TOKEN_SUBTYPE_CONVERTER_RULE_TO,
+    TOKEN_SUBTYPE_CONVERTER_FLAGS,
+    TOKEN_SUBTYPE_CONVERTER_FLAG,
+    TOKEN_SUBTYPE_ATTRIBUTES,
+    TOKEN_SUBTYPE_ATTR_EQUAL_TMP,
+    TOKEN_SUBTYPE_ATTR_KEY,
+    TOKEN_SUBTYPE_ATTR_VALUE,
+    TOKEN_SUBTYPE_ATOM,
+    TOKEN_SUBTYPE_HIDDEN,
+    TOKEN_SUBTYPE_EXT_ATTRS,
+    TOKEN_SUBTYPE_EXT_INNER,
+    TOKEN_SUBTYPE_EXT_ATTR_DIRTY,
+    TOKEN_SUBTYPE_EXT_ATTR,
+    TOKEN_SUBTYPE_IMAGE_PARAMETER,
+    TOKEN_SUBTYPE_GALLERY_IMAGE,
+    TOKEN_SUBTYPE_IMAGEMAP_IMAGE,
+    TOKEN_SUBTYPE_GALLERY_LINE,
+    TOKEN_SUBTYPE_GALLERY_PARAM_WRAPPER,
+    TOKEN_SUBTYPE_IMAGEMAP_LINK_INNER,
+    TOKEN_SUBTYPE_IMAGEMAP_IMAGE_LINE,
+    TOKEN_SUBTYPE_IMAGEMAP_LINK,
+    TOKEN_SUBTYPE_TEMPLATE_NAME,
+    TOKEN_SUBTYPE_INVOKE_MODULE,
+    TOKEN_SUBTYPE_INVOKE_FUNCTION,
+    TOKEN_SUBTYPE_PARAM_LINE,
+    TOKEN_SUBTYPE_COUNT
+} TokenSubType;
+
 /* ── Child node ───────────────────────────────────────────────────────────── */
 typedef struct {
     bool   is_text;       /* true → text node; false → token node */
@@ -80,10 +168,10 @@ typedef union {
     struct {
         bool self_closing;             /* HtmlToken */
         bool closing;
-        char *orig_tag;                /* original-case tag name for toString */
+        sz_string_view_t orig_tag;     /* original-case tag name for toString */
     } html;
     struct {
-        char *inner_syntax;            /* TdToken separator between attrs and inner */
+        sz_string_view_t inner_syntax; /* TdToken separator between attrs and inner */
     } td;
     struct {
         bool case_sensitive;           /* DoubleUnderscoreToken */
@@ -94,48 +182,48 @@ typedef union {
         bool italic;
     } quote;
     struct {
-        char *pre;                     /* RedirectToken: leading whitespace */
-        char *post;                    /* trailing whitespace */
-        char *link;                    /* raw link target */
-        char *display;                 /* optional display text (after |) */
+        sz_string_view_t pre;          /* RedirectToken: leading whitespace */
+        sz_string_view_t post;         /* trailing whitespace */
+        sz_string_view_t link;         /* raw link target */
+        sz_string_view_t display;      /* optional display text (after |) */
     } redirect;
     struct {
-        char *name;                    /* ExtToken: tag name */
-        char *attr;                    /* attribute string */
-        char *inner;                   /* inner content */
-        char *closing;                 /* closing tag text */
+        sz_string_view_t name;         /* ExtToken: tag name */
+        sz_string_view_t attr;         /* attribute string */
+        sz_string_view_t inner;        /* inner content */
+        sz_string_view_t closing;      /* closing tag text */
         bool  self_closing;
     } ext;
     struct {
-        char *tag;                     /* IncludeToken: "includeonly"/"noinclude" */
-        char *attr;
-        char *inner;
-        char *closing;                 /* closing tag text, NULL if unclosed */
+        sz_string_view_t tag;          /* IncludeToken: "includeonly"/"noinclude" */
+        sz_string_view_t attr;
+        sz_string_view_t inner;
+        sz_string_view_t closing;      /* closing tag text, NULL if unclosed */
     } include;
     struct {
-        char *equal;      /* equal sign + surrounding whitespace — owned, NULL if boolean attr */
-        char  quote_open; /* opening quote ('"', '\'', or '\0' if unquoted/boolean) */
-        char  quote_close;/* closing quote ('"', '\'', or '\0' if unclosed/unquoted) */
+        sz_string_view_t equal; /* equal sign + surrounding whitespace — owned, empty if boolean attr */
+        char  quote_open;       /* opening quote ('"', '\'', or '\0' if unquoted/boolean) */
+        char  quote_close;      /* closing quote ('"', '\'', or '\0' if unclosed/unquoted) */
     } ext_attr;
     struct {
-        char *raw_syntax; /* canonical syntax string for image-parameter toString */
+        sz_string_view_t raw_syntax;  /* canonical syntax string for image-parameter toString */
     } image_param;
     struct {
-        char *space;      /* ExtLinkToken separator between URL and text (may be empty) */
+        sz_string_view_t space;  /* ExtLinkToken separator between URL and text (may be empty) */
     } ext_link;
     struct {
         bool magic_pipe;  /* LinkBaseToken delimiter was \0\d+!\x7F ({{!}}) */
     } link;
     struct {
-        char *modifier;   /* TranscludeToken modifier prefix, e.g. "subst:" */
+        sz_string_view_t modifier; /* TranscludeToken modifier prefix, e.g. "subst:" */
     } transclude;
 } TokenData;
 
 /* ── Token struct ─────────────────────────────────────────────────────────── */
 typedef struct Token {
     TokenType  type;
-    char      *type_name;   /* e.g. "root", "redirect", "comment" — owned */
-    char      *name;        /* tag/template name where applicable — owned */
+    TokenSubType subtype;
+    char      *name;        /* tag/template name where applicable; always owned */
     char       sep;         /* separator for token_to_string(): '\0' or '\n' */
 
     Child     *children;
@@ -154,14 +242,23 @@ typedef struct Token {
 
 /* ── Lifecycle ────────────────────────────────────────────────────────────── */
 
-/** Allocate a new token with the given type.  type_name is strdup'd. */
+/** Allocate a new token with the given type and subtype name. */
 Token *token_new(TokenType type, const char *type_name);
+
+/** Allocate a new token with an explicit subtype enum. */
+Token *token_new_with_subtype(TokenType type, TokenSubType subtype);
 
 /** Append a TEXT child to a token from a pointer+length substring. */
 void token_append_text_n(Token *t, const char *text, size_t len);
 
 /** Append a TOKEN child to a token.  Takes ownership of child. */
 void token_append_child(Token *t, Token *child);
+
+/** Replace a token name with an owned C string, updating the string-view length. */
+void token_set_name_owned(Token *t, char *name);
+
+/** Clear a token name, freeing any owned string and resetting the string view. */
+void token_clear_name(Token *t);
 
 /** Recursively free a token and all its children. */
 void token_free(Token *t);
@@ -190,3 +287,9 @@ char *token_to_string(const Token *t, ThreadBuf *tb);
 
 /** Return the sentinel char for a token type (e.g. 'c', 'e', 'n', 'o'…). */
 char token_sentinel_char(TokenType type);
+
+/** Return the canonical subtype name used for JSON/debug/toString parity. */
+sz_string_view_t token_subtype_name(TokenSubType subtype);
+
+/** Map a legacy subtype string name to a TokenSubType enum. */
+TokenSubType token_subtype_from_name(const char *type_name);

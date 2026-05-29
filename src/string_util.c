@@ -435,6 +435,17 @@ char *str_restore(const char *s, size_t len,
 									const char **stack, size_t stack_count,
 									const size_t *stack_lengths,
 									size_t *out_len) {
+	const size_t *lens = stack_lengths;
+	size_t *owned_lens = NULL;
+	if(!lens && stack && stack_count > 0) {
+		owned_lens = calloc(stack_count, sizeof(size_t));
+		assert(owned_lens);
+		for(size_t i = 0; i < stack_count; i++) {
+			if(stack[i]) owned_lens[i] = strlen(stack[i]);
+		}
+		lens = owned_lens;
+	}
+
 	/* Two-pass: first count output size, then emit */
 	size_t cap= len * 2 + 1;
 	char *result= malloc(cap);
@@ -474,7 +485,7 @@ char *str_restore(const char *s, size_t len,
 			for(const char *d = found + 1; d < k; ++d) idx = idx * 10 + (size_t)(*d - '0');
 			if(idx < stack_count && stack[idx]) {
 				const char *rep = stack[idx];
-				size_t replen = (stack_lengths && stack_lengths[idx]) ? stack_lengths[idx] : strlen(rep);
+				size_t replen = lens ? lens[idx] : 0;
 				if(j + replen + 1 > cap) {
 					while(j + replen + 1 > cap) { cap*= 2; result= realloc(result, cap); assert(result); }
 				}
@@ -492,6 +503,7 @@ char *str_restore(const char *s, size_t len,
 	}
 	result[j]= '\0';
 	if(out_len) *out_len= j;
+	free(owned_lens);
 	return result;
 }
 

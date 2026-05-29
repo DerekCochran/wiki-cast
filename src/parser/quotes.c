@@ -11,6 +11,7 @@
 typedef struct {
 	char *s;			 /* pointer to bytes (may contain NUL for sentinels) */
 	size_t len;		 /* length in bytes */
+	bool owned;    /* whether `s` must be freed */
 	bool is_quote; /* whether this part was a matched apostrophe run */
 } Part;
 
@@ -37,12 +38,20 @@ static Token *build_quote_token(const char *txt, size_t txt_len, Accum *accum) {
 static int part_append_bytes(Part *p, const char *add, size_t addlen) {
 	if(!p) return -1;
 	size_t new_len = p->len + addlen;
-	char *newbuf = realloc(p->s, new_len + 1);
-	if(!newbuf) return -1;
+	char *newbuf = NULL;
+	if(p->owned) {
+		newbuf = realloc(p->s, new_len + 1);
+		if(!newbuf) return -1;
+	} else {
+		newbuf = malloc(new_len + 1);
+		if(!newbuf) return -1;
+		if(p->len > 0 && p->s) sz_copy(newbuf, p->s, p->len);
+	}
 	if(add && addlen > 0) sz_copy(newbuf + p->len, add, addlen);
 	newbuf[new_len]= '\0';
 	p->s= newbuf;
 	p->len= new_len;
+	p->owned= true;
 	return 0;
 }
 
@@ -89,28 +98,18 @@ static void quote_parts_cb(size_t pos, size_t run_len, void *ud) {
 	size_t text_start = c->last_pos;
 	size_t text_len = (pos > text_start) ? (pos - text_start) : 0;
 	size_t idx = *c->parts_len_ptr;
-	arr[idx].s = NULL;
-	arr[idx].len = 0;
+	arr[idx].s = (char *)(c->buf + text_start);
+	arr[idx].len = text_len;
+	arr[idx].owned = false;
 	arr[idx].is_quote = false;
-	if(text_len > 0) {
-		arr[idx].s = malloc(text_len + 1);
-		sz_copy(arr[idx].s, c->buf + text_start, text_len);
-		arr[idx].s[text_len] = '\0';
-		arr[idx].len = text_len;
-	} else {
-		arr[idx].s = malloc(1);
-		arr[idx].s[0] = '\0';
-		arr[idx].len = 0;
-	}
 	(*c->parts_len_ptr)++;
 
 	/* Push quote run */
 	idx = *c->parts_len_ptr;
 	size_t rl = run_len;
-	arr[idx].s = malloc(rl + 1);
-	sz_copy(arr[idx].s, c->buf + pos, rl);
-	arr[idx].s[rl] = '\0';
+	arr[idx].s = (char *)(c->buf + pos);
 	arr[idx].len = rl;
+	arr[idx].owned = false;
 	arr[idx].is_quote = true;
 	(*c->parts_len_ptr)++;
 
@@ -139,10 +138,9 @@ void parse_quotes(ThreadBuf *tb, const ParserConfig *cfg, Accum *accum, bool tid
 			parts = realloc(parts, parts_cap * sizeof(Part));
 			assert(parts);
 		}
-		parts[parts_len].s = malloc(text_len + 1);
-		if(text_len > 0) sz_copy(parts[parts_len].s, tb->buf + qctx.last_pos, text_len);
-		parts[parts_len].s[text_len] = '\0';
+		parts[parts_len].s = (char *)(tb->buf + qctx.last_pos);
 		parts[parts_len].len = text_len;
+		parts[parts_len].owned = false;
 		parts[parts_len].is_quote = false;
 		parts_len++;
 	}
@@ -155,7 +153,7 @@ void parse_quotes(ThreadBuf *tb, const ParserConfig *cfg, Accum *accum, bool tid
 			break;
 		}
 	if(!any_quote) {
-		for(size_t k= 0; k < parts_len; k++) free(parts[k].s);
+		for(size_t k= 0; k < parts_len; k++) if(parts[k].owned) free(parts[k].s);
 		free(parts);
 		return;
 	}
@@ -176,9 +174,10 @@ void parse_quotes(ThreadBuf *tb, const ParserConfig *cfg, Accum *accum, bool tid
 			size_t prev= i - 1;
 			part_append_bytes(&parts[prev], "'", 1);
 			/* arr[i] = "'''" */
-			free(parts[i].s);
+			if(parts[i].owned) free(parts[i].s);
 			parts[i].s= strdup("'''");
 			parts[i].len= 3;
+			parts[i].owned= true;
 			__attribute__((fallthrough));
 		}
 		case 3:
@@ -209,9 +208,10 @@ void parse_quotes(ThreadBuf *tb, const ParserConfig *cfg, Accum *accum, bool tid
 				part_append_bytes(&parts[prev], buf, rep);
 				free(buf);
 			}
-			free(parts[i].s);
+			if(parts[i].owned) free(parts[i].s);
 			parts[i].s= strdup("'''''");
 			parts[i].len= 5;
+			parts[i].owned= true;
 			nItalic++;
 			nBold++;
 		}
@@ -223,9 +223,10 @@ void parse_quotes(ThreadBuf *tb, const ParserConfig *cfg, Accum *accum, bool tid
 		if(pick != -1) {
 			size_t idx= (size_t)pick;
 			/* arr[i] = "''"; arr[i-1] += "'" */
-			free(parts[idx].s);
+			if(parts[idx].owned) free(parts[idx].s);
 			parts[idx].s= strdup("''");
 			parts[idx].len= 2;
+			parts[idx].owned= true;
 			part_append_bytes(&parts[idx - 1], "'", 1);
 		}
 	}
@@ -250,9 +251,17 @@ void parse_quotes(ThreadBuf *tb, const ParserConfig *cfg, Accum *accum, bool tid
 		work_str_sentinel(tok_idx, token_sentinel_char(TOKEN_QUOTE), marker_buf, &marker_len);
 
 		/* Replace parts[i] content with marker bytes */
-		free(parts[i].s);
-		parts[i].s= malloc(marker_len);
+		if(parts[i].owned) {
+			char *grown = realloc(parts[i].s, marker_len + 1);
+			if(!grown) continue;
+			parts[i].s = grown;
+		} else {
+			parts[i].s = malloc(marker_len + 1);
+			if(!parts[i].s) continue;
+			parts[i].owned = true;
+		}
 		sz_copy(parts[i].s, marker_buf, marker_len);
+		parts[i].s[marker_len] = '\0';
 		parts[i].len= marker_len;
 		parts[i].is_quote= false; /* now a sentinel */
 
@@ -291,9 +300,11 @@ void parse_quotes(ThreadBuf *tb, const ParserConfig *cfg, Accum *accum, bool tid
 				parts= realloc(parts, parts_cap * sizeof(Part));
 				assert(parts);
 			}
-			parts[parts_len].s= malloc(marker_len);
+			parts[parts_len].s= malloc(marker_len + 1);
 			sz_copy(parts[parts_len].s, marker_buf, marker_len);
+			parts[parts_len].s[marker_len]= '\0';
 			parts[parts_len].len= marker_len;
+			parts[parts_len].owned= true;
 			parts[parts_len].is_quote= false;
 			parts_len++;
 		}
@@ -330,6 +341,6 @@ void parse_quotes(ThreadBuf *tb, const ParserConfig *cfg, Accum *accum, bool tid
 		wiki_thread_buf_set(tb, out_buf, out_pos);
 		free(out_buf);
 	}
-	for(size_t k= 0; k < parts_len; k++) free(parts[k].s);
+	for(size_t k= 0; k < parts_len; k++) if(parts[k].owned) free(parts[k].s);
 	free(parts);
 }

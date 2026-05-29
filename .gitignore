@@ -50,3 +50,5 @@ dist/
 Thumbs.db
 
 .artifacts/
+bindings/node/tests/wikitext/**/*.wikitext
+tests/wikitext/**/*.wikitext

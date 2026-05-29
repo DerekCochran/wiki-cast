@@ -38,18 +38,42 @@ static void ensure_initialized(void) {
     pthread_once(&cache_once, env_cache_init);
 }
 
+static const char *getenv_from_view(const char *name, size_t name_len) {
+    if (!name) return NULL;
+    if (name[name_len] == '\0') return getenv(name);
+
+    char *tmp = (char *)malloc(name_len + 1);
+    if (!tmp) return NULL;
+    sz_copy(tmp, name, name_len);
+    tmp[name_len] = '\0';
+    const char *v = getenv(tmp);
+    free(tmp);
+    return v;
+}
+
 bool env_set(const char *name) {
-    const char *val = env_get(name);
+    if (!name) return false;
+    const char *val = env_get_n(name, strlen(name));
+    return (val != NULL);
+}
+
+bool env_set_n(const char *name, size_t name_len) {
+    const char *val = env_get_n(name, name_len);
     return (val != NULL);
 }
 
 const char *env_get(const char *name) {
     if (!name) return NULL;
+    return env_get_n(name, strlen(name));
+}
+
+const char *env_get_n(const char *name, size_t name_len) {
+    if (!name) return NULL;
 
     ensure_initialized();
-    if (!cache) return getenv(name);
-
-    size_t name_len = strlen(name);
+    if (!cache) {
+        return getenv_from_view(name, name_len);
+    }
 
     /* Fast path: unlocked check for existing entry.
      * This is safe because entries are only added, never modified after insertion.
@@ -80,14 +104,30 @@ const char *env_get(const char *name) {
         EnvCacheEntry *new_cache = (EnvCacheEntry *)realloc(cache, new_cap * sizeof(EnvCacheEntry));
         if (!new_cache) {
             pthread_mutex_unlock(&cache_mutex);
-            return getenv(name);
+            return getenv_from_view(name, name_len);
         }
         cache = new_cache;
         cache_cap = new_cap;
     }
 
-    const char *val = getenv(name);
-    cache[cache_count].name = strdup(name);
+    const char *val = NULL;
+    char *owned_name = NULL;
+    if (name[name_len] == '\0') {
+        val = getenv(name);
+        owned_name = strdup(name);
+    } else {
+        owned_name = (char *)malloc(name_len + 1);
+        if (owned_name) {
+            sz_copy(owned_name, name, name_len);
+            owned_name[name_len] = '\0';
+            val = getenv(owned_name);
+        }
+    }
+    if (!owned_name) {
+        pthread_mutex_unlock(&cache_mutex);
+        return getenv_from_view(name, name_len);
+    }
+    cache[cache_count].name = owned_name;
     cache[cache_count].name_len = name_len;
     cache[cache_count].value = val;
     cache[cache_count].is_set = (val != NULL && val[0] != '\0');

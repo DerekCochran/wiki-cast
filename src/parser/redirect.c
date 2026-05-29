@@ -128,7 +128,7 @@ Accum *accum) {
 	}
 	Title *parsed= title_parse_half_parsed(link, link_main_len, 0, cfg, true, "");
 	if(parsed && parsed->title) {
-		target_tok->name= strdup(parsed->title);
+			target_tok->name= strdup(parsed->title);
 	}
 	title_free(parsed);
 	token_append_child(target_tok, link_atom);
@@ -151,19 +151,23 @@ Accum *accum) {
 
 	Token *redir= token_new(TOKEN_REDIRECT, "redirect");
 	if(!redir) return NULL;
-	redir->data.redirect.pre= malloc(pre_len + 1);
-	sz_copy(redir->data.redirect.pre, pre, pre_len);
-	redir->data.redirect.pre[pre_len]= '\0';
+	char *pre_owned= malloc(pre_len + 1);
+	sz_copy(pre_owned, pre, pre_len);
+	pre_owned[pre_len]= '\0';
+	redir->data.redirect.pre = (sz_string_view_t){ .start = pre_owned, .length = pre_len };
 	if(post && post_len > 0) {
-		redir->data.redirect.post= malloc(post_len + 1);
-		sz_copy(redir->data.redirect.post, post, post_len);
-		redir->data.redirect.post[post_len]= '\0';
+		char *post_owned= malloc(post_len + 1);
+		sz_copy(post_owned, post, post_len);
+		post_owned[post_len]= '\0';
+		redir->data.redirect.post = (sz_string_view_t){ .start = post_owned, .length = post_len };
 	} else {
-		redir->data.redirect.post= strdup("");
+		char *post_owned= strdup("");
+		redir->data.redirect.post = (sz_string_view_t){ .start = post_owned, .length = 0 };
 	}
-	redir->data.redirect.link= malloc(link_len + 1);
-	sz_copy(redir->data.redirect.link, link, link_len);
-	redir->data.redirect.link[link_len]= '\0';
+	char *link_owned= malloc(link_len + 1);
+	sz_copy(link_owned, link, link_len);
+	link_owned[link_len]= '\0';
+	redir->data.redirect.link = (sz_string_view_t){ .start = link_owned, .length = link_len };
 
 	token_append_child(redir, syn_tok);
 	token_append_child(redir, target_tok);

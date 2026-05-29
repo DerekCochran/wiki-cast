@@ -155,7 +155,7 @@ function getWikiTextSmallesDiff(jsToken, ncToken, parents) {
   }
 
   const textOk = jsResult.text === nativeResult.text;
-  const cmp = compareAST(jsResult.root, JSON.parse(nativeResult.root));
+  const cmp = compareAST(jsResult.root, JSON.parse(nativeResult.root.toJson()));
   ok = textOk && cmp.success;
   if( !ok ) {
     return testStr;

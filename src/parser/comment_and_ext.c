@@ -56,6 +56,23 @@ static const char *find_substr_cs(const char *hay, size_t hlen,
 	return sz_find(hay, hlen, needle, nlen);
 }
 
+static bool gallery_caption_may_need_inline_parse(const char *s, size_t len) {
+	if(!s || len == 0) return false;
+
+	/* Fast delimiter probes for stages that can change caption text. */
+	if(sz_find_byte_from(s, len, "<[{':/", 6)) return true;
+	if(sz_find(s, len, "RFC ", 4) || sz_find(s, len, "PMID ", 5) || sz_find(s, len, "ISBN ", 5)) {
+		return true;
+	}
+	return false;
+}
+
+static size_t gallery_find_last_open_link_before(const char *txt, size_t upto) {
+	if(!txt || upto < 2) return SIZE_MAX;
+	const char *open = sz_rfind(txt, upto, "[[", 2);
+	return open ? (size_t)(open - txt) : SIZE_MAX;
+}
+
 static inline bool cae_tag_name_boundary(unsigned char c) {
     return c == '>' || c == '/' || isspace(c);
 }
@@ -72,8 +89,8 @@ static bool cae_match_open_named(const char *s, size_t len, size_t i,
     p += name_len;
     if(p >= len || !cae_tag_name_boundary((unsigned char)s[p])) return false;
 
-    out->name_s = i + 1;
-    out->name_e = i + 1 + name_len;
+	out->name_s = i + 1;
+	out->name_e = i + 1 + name_len;
     out->has_attr = false;
     out->attr_s = out->attr_e = 0;
     out->self_closing = false;
@@ -128,8 +145,9 @@ static bool cae_find_close_named(const char *s, size_t len, size_t from,
                                  size_t *close_tag_s,
                                  size_t *close_name_s, size_t *close_name_e,
                                  size_t *close_tag_e) {
-    if(!s || !name || !close_tag_s || !close_name_s || !close_name_e || !close_tag_e)
-        return false;
+	if(!s || !name || !close_tag_s || !close_name_s || !close_name_e || !close_tag_e) {
+		return false;
+	}
 
 	const char lt = '<';
 	size_t q = from;
@@ -162,18 +180,17 @@ static bool cae_find_close_named(const char *s, size_t len, size_t from,
 }
 
 static bool cae_match_comment(const char *s, size_t len, size_t i, CaeScanMatch *m) {
-    if(!s || !m || i + 4 > len) return false;
-    if(!(s[i] == '<' && s[i + 1] == '!' && s[i + 2] == '-' && s[i + 3] == '-')) return false;
+	if(!s || !m || i + 4 > len) return false;
 
-    const char *tail = s + i + 4;
-    size_t rem = len - (i + 4);
-    const char *close = find_substr_cs(tail, rem, "-->", 3);
+	const char *tail = s + i + 4;
+	size_t rem = len - (i + 4);
+	const char *close = find_substr_cs(tail, rem, "-->", 3);
 
-    memset(m, 0, sizeof(*m));
-    m->kind = CAE_MATCH_COMMENT;
-    m->mstart = i;
-    m->mend = close ? (size_t)((close - s) + 3) : len;
-    return true;
+	memset(m, 0, sizeof(*m));
+	m->kind = CAE_MATCH_COMMENT;
+	m->mstart = i;
+	m->mend = close ? (size_t)((close - s) + 3) : len;
+	return true;
 }
 
 static bool cae_match_noinclude_single(const char *s, size_t len, size_t i,
@@ -206,11 +223,20 @@ static bool cae_match_ext(const char *s, size_t len, size_t i,
     if(!s || !cfg || !m || i + 1 >= len) return false;
     if(s[i] != '<' || s[i + 1] == '/') return false;
 
+	const unsigned char after_lt = (unsigned char)s[i + 1];
+	const unsigned char after_lt_lc = (unsigned char)fast_tolower(after_lt);
+
     for(size_t ei = 0; ei < cfg->ext.count; ei++) {
         sz_ptr_t ename;
         sz_size_t ename_len;
         sz_string_range(&cfg->ext.items[ei], &ename, &ename_len);
         if(!ename) continue;
+
+		if(ename_len == 0) continue;
+		if(after_lt_lc != (unsigned char)fast_tolower((unsigned char)ename[0])) {
+			continue;
+		}
+
 		if(has_translate && ((ename_len == 9 && sz_equal(ename, "translate", 9) == sz_true_k) ||
 				   (ename_len == 4 && sz_equal(ename, "tvar", 4) == sz_true_k)))
             continue;
@@ -221,8 +247,8 @@ static bool cae_match_ext(const char *s, size_t len, size_t i,
         memset(m, 0, sizeof(*m));
         m->kind = CAE_MATCH_EXT;
         m->mstart = i;
-        m->name_s = ot.name_s;
-        m->name_e = ot.name_e;
+		m->name_s = ot.name_s;
+		m->name_e = ot.name_e;
         m->has_attr = ot.has_attr;
         m->attr_s = ot.attr_s;
         m->attr_e = ot.attr_e;
@@ -262,8 +288,8 @@ static bool cae_match_include(const char *s, size_t len, size_t i,
     memset(m, 0, sizeof(*m));
     m->kind = CAE_MATCH_INCLUDE;
     m->mstart = i;
-    m->name_s = ot.name_s;
-    m->name_e = ot.name_e;
+	m->name_s = ot.name_s;
+	m->name_e = ot.name_e;
     m->has_attr = ot.has_attr;
     m->attr_s = ot.attr_s;
     m->attr_e = ot.attr_e;
@@ -306,6 +332,9 @@ static bool cae_find_next_match(const char *s, size_t len, size_t at,
 		const char *cand = sz_find_byte(s + i, len - i, &lt);
 		if(!cand) return false;
 		i = (size_t)(cand - s);
+		const unsigned char next = (i + 1 < len) ? (unsigned char)s[i + 1] : 0;
+		const unsigned char next_lc = (unsigned char)fast_tolower(next);
+		const bool maybe_include_family = (next == '/' || next_lc == 'n' || next_lc == 'i' || next_lc == 'o');
 
         /* Keep JS alternation order exactly:
          * 1) comment
@@ -313,10 +342,12 @@ static bool cae_find_next_match(const char *s, size_t len, size_t at,
          * 3) dynamic ext
          * 4) includeRegex
          */
-        if(cae_match_comment(s, len, i, m)) return true;
-        if(cae_match_noinclude_single(s, len, i, include_only, m)) return true;
+		if(i + 4 <= len && s[i + 1] == '!' && s[i + 2] == '-' && s[i + 3] == '-') {
+			if(cae_match_comment(s, len, i, m)) return true;
+		}
+		if(maybe_include_family && cae_match_noinclude_single(s, len, i, include_only, m)) return true;
         if(cae_match_ext(s, len, i, cfg, has_translate, m)) return true;
-        if(cae_match_include(s, len, i, include_only, m)) return true;
+		if(maybe_include_family && cae_match_include(s, len, i, include_only, m)) return true;
 
 		i++;
     }
@@ -324,15 +355,13 @@ static bool cae_find_next_match(const char *s, size_t len, size_t at,
 }
 
 typedef struct {
-	char **items;
-	size_t *lens;
+	sz_string_view_t *items;
 	size_t count;
 	size_t cap;
 } TextStack;
 
 static void text_stack_init(TextStack *st) {
 	st->items= NULL;
-	st->lens= NULL;
 	st->count= 0;
 	st->cap= 0;
 }
@@ -340,23 +369,19 @@ static void text_stack_init(TextStack *st) {
 static void text_stack_push(TextStack *st, const char *s, size_t len) {
 	if(st->count >= st->cap) {
 		size_t new_cap= st->cap ? st->cap * 2 : 8;
-		st->items= realloc(st->items, new_cap * sizeof(char *));
-		st->lens= realloc(st->lens, new_cap * sizeof(size_t));
-		assert(st->items && st->lens);
+		st->items= realloc(st->items, new_cap * sizeof(sz_string_view_t));
+		assert(st->items);
 		st->cap= new_cap;
 	}
 	const char *view = wiki_thread_buf_append_to_tokens(s, len);
-	st->items[st->count]= (char *)view;
-	st->lens[st->count]= len;
+	st->items[st->count]= (sz_string_view_t){ .start = view, .length = len };
 	st->count++;
 }
 
 static void text_stack_free(TextStack *st) {
 	/* Items are views into the tokens arena (append-only); do not free them. */
 	free(st->items);
-	free(st->lens);
 	st->items= NULL;
-	st->lens= NULL;
 	st->count= 0;
 	st->cap= 0;
 }
@@ -386,8 +411,7 @@ static void append_numeric_placeholder(char *dst, size_t *len, size_t idx) {
  * Returns number of bytes appended to `tb` (new tb->len).
  */
 static size_t str_restore_to_tb(const char *s, size_t len,
-								const char **stack, size_t stack_count,
-								const size_t *stack_lengths,
+								const sz_string_view_t *stack, size_t stack_count,
 								ThreadBuf *tb) {
 	if(!s || len == 0) return 0;
 	const char *p = s;
@@ -414,13 +438,14 @@ static size_t str_restore_to_tb(const char *s, size_t len,
 		}
 
 		const char *k = found + 1;
-		while(k < end && *k >= '0' && *k <= '9') k++;
+		const char *not_digit = sz_find_byte_not_from(k, (size_t)(end - k), "0123456789", 10);
+		k = not_digit ? not_digit : end;
 		if(k < end && k > found + 1 && (unsigned char)*k == '\x7F') {
 			size_t idx = 0;
 			for(const char *d = found + 1; d < k; ++d) idx = idx * 10 + (size_t)(*d - '0');
-			if(idx < stack_count && stack[idx]) {
-				const char *rep = stack[idx];
-				size_t replen = (stack_lengths && stack_lengths[idx]) ? stack_lengths[idx] : strlen(rep);
+			if(idx < stack_count && stack[idx].start) {
+				const char *rep = stack[idx].start;
+				size_t replen = stack[idx].length;
 				if(replen) {
 					wiki_thread_buf_reserve(tb, tb->len + replen);
 					sz_copy(tb->buf + tb->len, rep, replen);
@@ -454,7 +479,8 @@ static size_t restore_accum_mode_to_tb(const char *s, size_t len,
 	for(size_t i = 0; i < len;) {
 		if((unsigned char)s[i] == '\0') {
 			size_t k = i + 1;
-			while(k < len && s[k] >= '0' && s[k] <= '9') k++;
+			const char *not_digit = sz_find_byte_not_from(s + k, len - k, "0123456789", 10);
+			k = not_digit ? (size_t)(not_digit - s) : len;
 			if(k > i + 1 && k + 1 < len && (unsigned char)s[k + 1] == '\x7F') {
 				char ch = s[k];
 				bool should_expand = (mode == 1 && ch == 'g') || (mode == 2 && ch == 'n');
@@ -504,8 +530,7 @@ static Token *make_attr_key(const char *key, size_t key_len, Accum *accum) {
 	Token *t= token_new(TOKEN_ATTR_KEY, "attr-key");
 	if(!t) return NULL;
 	if(key && key_len > 0) {
-		const char *key_view = wiki_thread_buf_append_to_tokens(key, key_len);
-		token_append_text_n(t, key_view, key_len);
+		token_append_text_n(t, key, key_len);
 	} else {
 		token_append_text_n(t, "", 0);
 	}
@@ -520,8 +545,7 @@ static Token *make_attr_value(const char *val, size_t val_len, Accum *accum) {
 	Token *t= token_new(TOKEN_ATTR_VALUE, "attr-value");
 	if(!t) return NULL;
 	if(val && val_len > 0) {
-		const char *val_view = wiki_thread_buf_append_to_tokens(val, val_len);
-		token_append_text_n(t, val_view, val_len);
+		token_append_text_n(t, val, val_len);
 	} else {
 		token_append_text_n(t, "", 0);
 	}
@@ -536,8 +560,7 @@ static Token *make_attr_dirty(const char *text, size_t text_len, Accum *accum) {
 	Token *t= token_new(TOKEN_EXT_ATTR_DIRTY, "ext-attr-dirty");
 	if(!t) return NULL;
 	if(text && text_len > 0) {
-		const char *text_view = wiki_thread_buf_append_to_tokens(text, text_len);
-		token_append_text_n(t, text_view, text_len);
+		token_append_text_n(t, text, text_len);
 	} else {
 		token_append_text_n(t, "", 0);
 	}
@@ -561,13 +584,14 @@ static Token *make_ext_attr(const char *tag_name,
 	if(!t) return NULL;
 	/* Lowercase the key for .name */
 	char *lkey= str_trim_lc(key, key_len);
-	t->name= lkey; /* ownership transferred */
+	 t->name= lkey; /* ownership transferred */
 	(void)tag_name;
 
 	/* Store equal and quote chars (JS AttributeToken #equal / #quotes) */
 	if(equal && equal_len > 0) {
-		t->data.ext_attr.equal= build_normalize_attr_equal(equal, equal_len, accum);
-		assert(t->data.ext_attr.equal);
+		char *equal_owned = build_normalize_attr_equal(equal, equal_len, accum);
+		assert(equal_owned);
+		t->data.ext_attr.equal = (sz_string_view_t){ .start = equal_owned, .length = strlen(equal_owned) };
 	}
 	t->data.ext_attr.quote_open= quote_open;
 	t->data.ext_attr.quote_close= quote_close;
@@ -616,6 +640,17 @@ static void parse_ext_attrs(Token *attrs_tok, const char *attr_str, size_t attr_
 	size_t i= 0;
 	char dirty_buf[4096]; /* Accumulates "dirty" text */
 	size_t dirty_len= 0;
+
+#define APPEND_DIRTY_RANGE(start_idx, end_idx)                                   \
+	do {                                                                      \
+		size_t __start = (start_idx);                                    \
+		size_t __end = (end_idx);                                        \
+		if(__end > __start) {                                            \
+			size_t __n = __end - __start;                            \
+			sz_copy(dirty_buf + dirty_len, attr_str + __start, __n); \
+			dirty_len += __n;                                        \
+		}                                                                 \
+	} while(0)
 
 #define FLUSH_DIRTY()                                          \
 	do {                                                         \
@@ -672,7 +707,7 @@ static void parse_ext_attrs(Token *attrs_tok, const char *attr_str, size_t attr_
 					full_end= i + 1 + ws_len;
 				}
 
-				for(size_t k= i; k < full_end; k++) dirty_buf[dirty_len++]= attr_str[k];
+								APPEND_DIRTY_RANGE(i, full_end);
 				i= full_end;
 			} else {
 				dirty_buf[dirty_len++]= attr_str[i++];
@@ -712,7 +747,7 @@ static void parse_ext_attrs(Token *attrs_tok, const char *attr_str, size_t attr_
 				full_end= probe;
 			}
 
-			for(size_t k= key_start; k < full_end; k++) dirty_buf[dirty_len++]= attr_str[k];
+						APPEND_DIRTY_RANGE(key_start, full_end);
 			i= full_end;
 			continue;
 		}
@@ -774,6 +809,7 @@ static void parse_ext_attrs(Token *attrs_tok, const char *attr_str, size_t attr_
 
 	FLUSH_DIRTY();
 #undef FLUSH_DIRTY
+#undef APPEND_DIRTY_RANGE
 }
 
 /* ── ext-attrs token builder ─────────────────────────────────────────────── */
@@ -783,7 +819,7 @@ static Token *build_ext_attrs(const char *tag_name,
 															Accum *accum) {
 	Token *t= token_new(TOKEN_EXT_ATTRS, "ext-attrs");
 	if(!t) return NULL;
-	t->name= strdup(tag_name);
+	 t->name= strdup(tag_name);
 	accum_push(accum, t);
 
 	/* Ensure attr starts with whitespace (JS always ensures this by prepending ' '
@@ -809,25 +845,23 @@ static Token *build_ext_attrs(const char *tag_name,
 /* ── ext-inner token builder ─────────────────────────────────────────────── */
 
 static bool is_multiline_tag(const char *tag_name) {
-	static const char *const ML_TAGS[]= {
-	"gallery",
-	"imagemap",
-	"dynamicpagelist",
-	"inputbox",
-	NULL,
-	};
-	for(int i= 0; ML_TAGS[i]; i++) {
-		if(strcmp(tag_name, ML_TAGS[i]) == 0) return true;
-	}
-	return false;
+	if(!tag_name) return false;
+	size_t nlen = strlen(tag_name);
+	return (nlen == 7  && sz_equal(tag_name, "gallery", 7) == sz_true_k)
+		|| (nlen == 8  && sz_equal(tag_name, "imagemap", 8) == sz_true_k)
+		|| (nlen == 8  && sz_equal(tag_name, "inputbox", 8) == sz_true_k)
+		|| (nlen == 15 && sz_equal(tag_name, "dynamicpagelist", 15) == sz_true_k);
 }
 
 static bool ext_attr_is_format_wikitext(const char *attr, size_t attr_len) {
 	if(!attr || attr_len == 0) return false;
 
 	size_t i= 0;
+	const char ws[] = " \t\r\n\v\f";
 	while(i < attr_len) {
-		while(i < attr_len && isspace((unsigned char)attr[i])) i++;
+		const char *nw = sz_find_byte_not_from(attr + i, attr_len - i, ws, sizeof(ws) - 1);
+		if(!nw) break;
+		i = (size_t)(nw - attr);
 		if(i >= attr_len) break;
 
 		size_t key_s= i;
@@ -839,12 +873,16 @@ static bool ext_attr_is_format_wikitext(const char *attr, size_t attr_len) {
 		}
 
 		bool is_format= (key_e - key_s == 6 && str_ci_eq_n(attr + key_s, "format", 6));
-		while(i < attr_len && isspace((unsigned char)attr[i])) i++;
+		nw = sz_find_byte_not_from(attr + i, attr_len - i, ws, sizeof(ws) - 1);
+		if(!nw) break;
+		i = (size_t)(nw - attr);
 		if(i >= attr_len || attr[i] != '=') {
 			continue;
 		}
 		i++;
-		while(i < attr_len && isspace((unsigned char)attr[i])) i++;
+		nw = sz_find_byte_not_from(attr + i, attr_len - i, ws, sizeof(ws) - 1);
+		if(!nw) break;
+		i = (size_t)(nw - attr);
 
 		char q= '\0';
 		if(i < attr_len && (attr[i] == '\'' || attr[i] == '"')) {
@@ -853,9 +891,12 @@ static bool ext_attr_is_format_wikitext(const char *attr, size_t attr_len) {
 
 		size_t v_s= i;
 		if(q) {
-			while(i < attr_len && attr[i] != q) i++;
+			const char *qclose = sz_find_byte(attr + i, attr_len - i, &q);
+			i = qclose ? (size_t)(qclose - attr) : attr_len;
 		} else {
-			while(i < attr_len && !isspace((unsigned char)attr[i]) && attr[i] != '>' && attr[i] != '/') i++;
+			const char unquoted_stop[] = " \t\r\n\v\f>/";
+			const char *vstop = sz_find_byte_from(attr + i, attr_len - i, unquoted_stop, sizeof(unquoted_stop) - 1);
+			i = vstop ? (size_t)(vstop - attr) : attr_len;
 		}
 		size_t v_e= i;
 
@@ -889,11 +930,20 @@ static Token *build_pre_noinclude_token(const char *substr, size_t sub_len, Accu
 static bool find_ci_lit(const char *s, size_t len, size_t from,
 							 const char *lit, size_t lit_len, size_t *out_pos) {
 	if(!s || !lit || lit_len == 0 || from >= len) return false;
-	for(size_t i= from; i + lit_len <= len; i++) {
-		if(str_ci_eq_n(s + i, lit, lit_len)) {
-			if(out_pos) *out_pos= i;
+	unsigned char first= (unsigned char)lit[0];
+	char cand[2];
+	cand[0]= (char)fast_tolower(first);
+	cand[1]= (char)((first >= 'a' && first <= 'z') ? (first - ('a' - 'A')) : first);
+
+	for(size_t i= from; i + lit_len <= len;) {
+		const char *found= sz_find_byte_from(s + i, len - i, cand, 2);
+		if(!found) return false;
+		size_t p= (size_t)(found - s);
+		if(p + lit_len <= len && str_ci_eq_n(s + p, lit, lit_len)) {
+			if(out_pos) *out_pos= p;
 			return true;
 		}
+		i= p + 1;
 	}
 	return false;
 }
@@ -901,7 +951,7 @@ static bool find_ci_lit(const char *s, size_t len, size_t from,
 static Token *build_pre_inner_token(const char *inner_str, size_t inner_len, Accum *accum) {
 	Token *t= token_new(TOKEN_EXT_INNER, "ext-inner");
 	if(!t) return NULL;
-	t->name= strdup("pre");
+	 t->name= strdup("pre");
 	accum_push(accum, t);
 
 	if(!inner_str || inner_len == 0) {
@@ -974,30 +1024,31 @@ static Token *build_pre_inner_token(const char *inner_str, size_t inner_len, Acc
 
 static bool ext_self_closing_inner_has_no_children(const char *tag_name) {
 	if(!tag_name) return false;
+	size_t nlen = strlen(tag_name);
 
 	/* JS ExtToken parity: these tags use Token/Nested/Param/Pre-like constructors,
 	 * which receive `inner=undefined` for self-closing tags and therefore keep an
 	 * empty ext-inner with no text child.
 	 */
-	return strcmp(tag_name, "pre") == 0
-		|| strcmp(tag_name, "indicator") == 0
-		|| strcmp(tag_name, "poem") == 0
-		|| strcmp(tag_name, "ref") == 0
-		|| strcmp(tag_name, "option") == 0
-		|| strcmp(tag_name, "combooption") == 0
-		|| strcmp(tag_name, "tab") == 0
-		|| strcmp(tag_name, "tabs") == 0
-		|| strcmp(tag_name, "poll") == 0
-		|| strcmp(tag_name, "seo") == 0
-		|| strcmp(tag_name, "langconvert") == 0
-		|| strcmp(tag_name, "phonos") == 0
-		|| strcmp(tag_name, "references") == 0
-		|| strcmp(tag_name, "choose") == 0
-		|| strcmp(tag_name, "combobox") == 0
-		|| strcmp(tag_name, "dynamicpagelist") == 0
-		|| strcmp(tag_name, "inputbox") == 0
-		|| strcmp(tag_name, "gallery") == 0
-		|| strcmp(tag_name, "imagemap") == 0;
+	return (nlen == 3  && sz_equal(tag_name, "pre", 3) == sz_true_k)
+		|| (nlen == 9  && sz_equal(tag_name, "indicator", 9) == sz_true_k)
+		|| (nlen == 4  && sz_equal(tag_name, "poem", 4) == sz_true_k)
+		|| (nlen == 3  && sz_equal(tag_name, "ref", 3) == sz_true_k)
+		|| (nlen == 6  && sz_equal(tag_name, "option", 6) == sz_true_k)
+		|| (nlen == 11 && sz_equal(tag_name, "combooption", 11) == sz_true_k)
+		|| (nlen == 3  && sz_equal(tag_name, "tab", 3) == sz_true_k)
+		|| (nlen == 4  && sz_equal(tag_name, "tabs", 4) == sz_true_k)
+		|| (nlen == 4  && sz_equal(tag_name, "poll", 4) == sz_true_k)
+		|| (nlen == 3  && sz_equal(tag_name, "seo", 3) == sz_true_k)
+		|| (nlen == 11 && sz_equal(tag_name, "langconvert", 11) == sz_true_k)
+		|| (nlen == 6  && sz_equal(tag_name, "phonos", 6) == sz_true_k)
+		|| (nlen == 10 && sz_equal(tag_name, "references", 10) == sz_true_k)
+		|| (nlen == 6  && sz_equal(tag_name, "choose", 6) == sz_true_k)
+		|| (nlen == 8  && sz_equal(tag_name, "combobox", 8) == sz_true_k)
+		|| (nlen == 15 && sz_equal(tag_name, "dynamicpagelist", 15) == sz_true_k)
+		|| (nlen == 8  && sz_equal(tag_name, "inputbox", 8) == sz_true_k)
+		|| (nlen == 7  && sz_equal(tag_name, "gallery", 7) == sz_true_k)
+		|| (nlen == 8  && sz_equal(tag_name, "imagemap", 8) == sz_true_k);
 }
 
 static Token *build_ext_inner(const char *tag_name,
@@ -1006,7 +1057,7 @@ static Token *build_ext_inner(const char *tag_name,
 															Accum *accum) {
 	Token *t= token_new(TOKEN_EXT_INNER, "ext-inner");
 	if(!t) return NULL;
-	t->name= strdup(tag_name);
+	 t->name= strdup(tag_name);
 	if(is_multiline_tag(tag_name)) {
 		t->sep= '\n';
 	}
@@ -1036,7 +1087,7 @@ static Token *build_param_tag_inner_token(const char *tag_name,
 														bool inputbox_mode) {
 	Token *t= token_new(TOKEN_EXT_INNER, "ext-inner");
 	if(!t) return NULL;
-	t->name= strdup(tag_name);
+	 t->name= strdup(tag_name);
 	t->sep= '\n';
 	accum_push(accum, t);
 
@@ -1083,7 +1134,7 @@ static Token *build_param_tag_inner_token(const char *tag_name,
 
 		Token *pl= token_new(TOKEN_PLAIN, "param-line");
 		if(pl) {
-			pl->name= strdup(tag_name);
+				   pl->name= strdup(tag_name);
 			if(line_emit_len > 0) {
 				const char *line_view= wiki_thread_buf_append_to_tokens(line_emit, line_emit_len);
 				token_append_text_n(pl, line_view, line_emit_len);
@@ -1113,7 +1164,7 @@ static Token *build_references_inner_token(const char *inner_str, size_t inner_l
 																				 Accum *accum) {
 	Token *t= token_new(TOKEN_EXT_INNER, "ext-inner");
 	if(!t) return NULL;
-	t->name= strdup("references");
+	 t->name= strdup("references");
 	accum_push(accum, t);
 
 	if(!inner_str || inner_len == 0) {
@@ -1185,8 +1236,25 @@ static Token *make_gallery_caption_param_local(const char *txt, size_t tlen,
 															 const ParserConfig *cfg,
 															 const ParserConfig *links_cfg,
 															 Accum *accum) {
+	Token *cap= token_new(TOKEN_PLAIN, "image-parameter");
+	if(!cap) return NULL;
+	cap->name= strdup("caption");
+	if(!cap->name) {
+		token_free(cap);
+		return NULL;
+	}
+
+	if(!gallery_caption_may_need_inline_parse(txt, tlen)) {
+		token_append_text_n(cap, txt ? txt : "", tlen);
+		accum_push(accum, cap);
+		return cap;
+	}
+
 	ThreadBuf *tb= wiki_thread_buf_acquire_scratch_from_data(txt ? txt : "", tlen);
-	if(!tb) return NULL;
+	if(!tb) {
+		token_free(cap);
+		return NULL;
+	}
 
 	parse_comment_and_ext(tb, cfg, accum, false);
 	parse_braces(tb, cfg, accum);
@@ -1196,20 +1264,11 @@ static Token *make_gallery_caption_param_local(const char *txt, size_t tlen,
 	parse_external_links(tb, cfg, accum, false);
 	parse_magic_links(tb, cfg, accum);
 
-	Token *cap= token_new(TOKEN_PLAIN, "image-parameter");
-	if(cap) {
-		cap->name= strdup("caption");
-		if(!cap->name) {
-			token_free(cap);
-			cap= NULL;
-		} else {
-			build_from_str(cap, tb->buf, tb->len, accum);
-			if(cap->child_count == 0) {
-				token_append_text_n(cap, "", 0);
-			}
-			accum_push(accum, cap);
-		}
+	build_from_str(cap, tb->buf, tb->len, accum);
+	if(cap->child_count == 0) {
+		token_append_text_n(cap, "", 0);
 	}
+	accum_push(accum, cap);
 
 	wiki_thread_buf_release_scratch(tb);
 	return cap;
@@ -1217,23 +1276,25 @@ static Token *make_gallery_caption_param_local(const char *txt, size_t tlen,
 
 static bool has_sentinel_type_local(const char *s, size_t len, char want) {
 	if(!s || len == 0) return false;
+	char nul_cand[1];
+	nul_cand[0]= '\0';
 	for(size_t i= 0; i < len;) {
-		if((unsigned char)s[i] != '\0') {
-			i++;
-			continue;
-		}
-		size_t j= i + 1;
+		const char *nul= sz_find_byte_from(s + i, len - i, nul_cand, 1);
+		if(!nul) break;
+		size_t p= (size_t)(nul - s);
+		size_t j= p + 1;
 		if(j >= len || !(s[j] >= '0' && s[j] <= '9')) {
-			i++;
+			i= p + 1;
 			continue;
 		}
-		while(j < len && s[j] >= '0' && s[j] <= '9') j++;
+		const char *not_digit= sz_find_byte_not_from(s + j, len - j, "0123456789", 10);
+		j= not_digit ? (size_t)(not_digit - s) : len;
 		if(j + 1 < len && (unsigned char)s[j + 1] == 0x7F) {
 			if(s[j] == want) return true;
 			i= j + 2;
 			continue;
 		}
-		i++;
+		i= p + 1;
 	}
 	return false;
 }
@@ -1242,18 +1303,25 @@ static bool has_unclosed_link_from_local(const char *txt, size_t len, size_t ope
 	if(!txt || open_pos >= len) return false;
 
 	int depth= 0;
+	char cand[2];
+	cand[0]= '[';
+	cand[1]= ']';
 	for(size_t i= open_pos; i + 1 < len;) {
-		if(txt[i] == '[' && txt[i + 1] == '[') {
+		const char *found= sz_find_byte_from(txt + i, len - i, cand, 2);
+		if(!found) break;
+		size_t p= (size_t)(found - txt);
+		if(p + 1 >= len) break;
+		if(txt[p] == '[' && txt[p + 1] == '[') {
 			depth++;
-			i += 2;
+			i= p + 2;
 			continue;
 		}
-		if(txt[i] == ']' && txt[i + 1] == ']') {
+		if(txt[p] == ']' && txt[p + 1] == ']') {
 			if(depth > 0) depth--;
-			i += 2;
+			i= p + 2;
 			continue;
 		}
-		i++;
+		i= p + 1;
 	}
 
 	return depth > 0;
@@ -1274,8 +1342,8 @@ static void split_gallery_unclosed_caption_local(Token *img,
 	for(size_t ci= 1; ci < img->child_count; ci++) {
 		if(img->children[ci].is_text || !img->children[ci].token) continue;
 		Token *cap= img->children[ci].token;
-		if(cap->type != TOKEN_PLAIN || !cap->type_name || strcmp(cap->type_name, "image-parameter") != 0) continue;
-		if(!cap->name || strcmp(cap->name, "caption") != 0) continue;
+		if(cap->type != TOKEN_PLAIN || cap->subtype != TOKEN_SUBTYPE_IMAGE_PARAMETER) continue;
+			if(!cap->name || strcmp(cap->name, "caption") != 0) continue;
 
 		bool split_mixed= false;
 		if(cap->child_count > 1) {
@@ -1288,26 +1356,17 @@ static void split_gallery_unclosed_caption_local(Token *img,
 				if(!pipe_ptr) continue;
 
 				size_t pipe_pos= (size_t)(pipe_ptr - txt);
-				size_t open_pos= SIZE_MAX;
-				for(size_t oi= 0; oi + 1 < pipe_pos; oi++) {
-					if(txt[oi] == '[' && txt[oi + 1] == '[') open_pos= oi;
-				}
+				size_t open_pos= gallery_find_last_open_link_before(txt, pipe_pos);
 				if(open_pos == SIZE_MAX) continue;
 				if(!has_unclosed_link_from_local(txt, tlen, open_pos)) continue;
 
 				size_t left_len= pipe_pos;
 				size_t right_len= tlen - (pipe_pos + 1);
+				Token *cap2= make_gallery_caption_param_local(
+					txt + pipe_pos + 1, right_len,
+					cfg, links_cfg, accum);
 				char *left_owned= malloc(left_len + 1);
-				char *right_owned= NULL;
 				if(!left_owned) continue;
-				if(right_len > 0) {
-					right_owned= malloc(right_len);
-					if(!right_owned) {
-						free(left_owned);
-						continue;
-					}
-					sz_copy(right_owned, txt + pipe_pos + 1, right_len);
-				}
 
 				if(left_len > 0) sz_copy(left_owned, txt, left_len);
 				left_owned[left_len]= '\0';
@@ -1318,10 +1377,6 @@ static void split_gallery_unclosed_caption_local(Token *img,
 				cap->children[cj].text_len= left_len;
 				cap->children[cj].text_owned= true;
 
-				Token *cap2= make_gallery_caption_param_local(
-					right_len > 0 ? right_owned : "", right_len,
-					cfg, links_cfg, accum);
-				if(right_owned) free(right_owned);
 				if(cap2) token_append_child(img, cap2);
 
 				split_mixed= true;
@@ -1369,10 +1424,7 @@ static void split_gallery_unclosed_caption_local(Token *img,
 			}
 
 			bool unclosed_link_pipe= false;
-			size_t open_pos= SIZE_MAX;
-			for(size_t oi= 0; oi + 1 < split_at; oi++) {
-				if(txt[oi] == '[' && txt[oi + 1] == '[') open_pos= oi;
-			}
+			size_t open_pos= gallery_find_last_open_link_before(txt, split_at);
 			if(open_pos != SIZE_MAX && has_unclosed_link_from_local(txt, tlen, open_pos)) {
 				unclosed_link_pipe= true;
 			}
@@ -1383,17 +1435,11 @@ static void split_gallery_unclosed_caption_local(Token *img,
 		if(needs_split) {
 			size_t left_len= split_at;
 			size_t right_len= tlen - (split_at + 1);
-			char *right_owned= NULL;
+			Token *cap2= make_gallery_caption_param_local(
+				pipe_ptr + 1, right_len,
+				cfg, links_cfg, accum);
 			char *left_owned= malloc(left_len + 1);
 			if(!left_owned) return;
-			if(right_len > 0) {
-				right_owned= malloc(right_len);
-				if(!right_owned) {
-					free(left_owned);
-					return;
-				}
-				sz_copy(right_owned, pipe_ptr + 1, right_len);
-			}
 			if(left_len > 0) sz_copy(left_owned, txt, left_len);
 			left_owned[left_len]= '\0';
 			if(cap->children[0].text_owned && cap->children[0].text) {
@@ -1403,33 +1449,35 @@ static void split_gallery_unclosed_caption_local(Token *img,
 			cap->children[0].text_len= left_len;
 			cap->children[0].text_owned= true;
 
-			/* Re-parse the left side so resolved links are preserved in caption-1. */
-			ThreadBuf *left_tb= wiki_thread_buf_acquire_scratch_from_data(cap->children[0].text, cap->children[0].text_len);
-			if(left_tb) {
-				parse_comment_and_ext(left_tb, cfg, accum, false);
-				parse_braces(left_tb, cfg, accum);
-				parse_html(left_tb, cfg, accum);
-				parse_links(left_tb, links_cfg, accum, NULL, false);
-				parse_quotes(left_tb, cfg, accum, false);
-				parse_external_links(left_tb, cfg, accum, false);
-				parse_magic_links(left_tb, cfg, accum);
+			if(gallery_caption_may_need_inline_parse(cap->children[0].text, cap->children[0].text_len)) {
+				/* Re-parse the left side only when it can still carry inline syntax. */
+				ThreadBuf *left_tb= wiki_thread_buf_acquire_scratch_from_data(cap->children[0].text, cap->children[0].text_len);
+				if(left_tb) {
+					parse_comment_and_ext(left_tb, cfg, accum, false);
+					parse_braces(left_tb, cfg, accum);
+					parse_html(left_tb, cfg, accum);
+					parse_links(left_tb, links_cfg, accum, NULL, false);
+					parse_quotes(left_tb, cfg, accum, false);
+					parse_external_links(left_tb, cfg, accum, false);
+					parse_magic_links(left_tb, cfg, accum);
 
-				if(cap->children[0].text_owned && cap->children[0].text) {
-					free((void *)cap->children[0].text);
+					if(cap->children[0].text_owned && cap->children[0].text) {
+						free((void *)cap->children[0].text);
+					}
+					cap->child_count= 0;
+					build_from_str(cap, left_tb->buf, left_tb->len, accum);
+					if(cap->child_count == 0) {
+						token_append_text_n(cap, "", 0);
+					}
+					wiki_thread_buf_release_scratch(left_tb);
 				}
-				cap->child_count= 0;
-				build_from_str(cap, left_tb->buf, left_tb->len, accum);
-				if(cap->child_count == 0) {
-					token_append_text_n(cap, "", 0);
-				}
-				wiki_thread_buf_release_scratch(left_tb);
 			}
 
-			Token *cap2= make_gallery_caption_param_local(
-				right_len > 0 ? right_owned : "", right_len,
-				cfg, links_cfg, accum);
-			if(right_owned) free(right_owned);
 			if(cap2) token_append_child(img, cap2);
+			continue;
+		}
+
+		if(!gallery_caption_may_need_inline_parse(txt, tlen)) {
 			continue;
 		}
 
@@ -1456,13 +1504,13 @@ static void split_gallery_unclosed_caption_local(Token *img,
 }
 
 static void normalize_gallery_thumb_caption_local(Token *img, Accum *accum) {
-	if(!img || !accum || img->type != TOKEN_FILE || !img->type_name || strcmp(img->type_name, "gallery-image") != 0) return;
+	if(!img || !accum || img->type != TOKEN_FILE || img->subtype != TOKEN_SUBTYPE_GALLERY_IMAGE) return;
 
 	for(size_t ci= 1; ci < img->child_count; ci++) {
 		if(img->children[ci].is_text || !img->children[ci].token) continue;
 		Token *param= img->children[ci].token;
-		if(param->type != TOKEN_PLAIN || !param->type_name || strcmp(param->type_name, "image-parameter") != 0) continue;
-		if(!param->name || strcmp(param->name, "caption") != 0) continue;
+		if(param->type != TOKEN_PLAIN || param->subtype != TOKEN_SUBTYPE_IMAGE_PARAMETER) continue;
+			if(!param->name || strcmp(param->name, "caption") != 0) continue;
 		if(param->child_count == 0 || !param->children[0].is_text || !param->children[0].text) continue;
 
 		const char *txt= param->children[0].text;
@@ -1478,19 +1526,20 @@ static void normalize_gallery_thumb_caption_local(Token *img, Accum *accum) {
 
 		Token *thumb= token_new(TOKEN_PLAIN, "image-parameter");
 		if(!thumb) return;
-		thumb->name= strdup("thumbnail");
-		if(!thumb->name) {
+			thumb->name= strdup("thumbnail");
+			if(!thumb->name) {
 			token_free(thumb);
 			return;
 		}
 		size_t syntax_len= cut - 1; /* drop trailing '|' */
-		thumb->data.image_param.raw_syntax= malloc(syntax_len + 1);
-		if(!thumb->data.image_param.raw_syntax) {
+		char *owned_syntax= malloc(syntax_len + 1);
+		if(!owned_syntax) {
 			token_free(thumb);
 			return;
 		}
-		sz_copy(thumb->data.image_param.raw_syntax, txt, syntax_len);
-		thumb->data.image_param.raw_syntax[syntax_len]= '\0';
+		sz_copy(owned_syntax, txt, syntax_len);
+		owned_syntax[syntax_len]= '\0';
+		thumb->data.image_param.raw_syntax = (sz_string_view_t){ .start = owned_syntax, .length = syntax_len };
 		accum_push(accum, thumb);
 
 		size_t remain_len= txt_len - cut;
@@ -1624,6 +1673,8 @@ static Token *parse_gallery_image_line_local(const char *line, size_t line_len,
 	Title *file_title= title_parse_half_parsed(trim_file_ptr, trim_file_len, 6, cfg, true, "");
 	bool file_valid= (file_title && file_title->valid);
 	title_free(file_title);
+	bool fallback_file_valid_known = (trim_file_ptr == line && trim_file_len == file_len);
+	bool fallback_file_valid = file_valid;
 
 	/* JS GalleryToken parity: invalid file titles produce CommentLineToken. */
 	if(!file_valid) {
@@ -1719,18 +1770,16 @@ static Token *parse_gallery_image_line_local(const char *line, size_t line_len,
 	if(tmp->child_count == 1 && !tmp->children[0].is_text && tmp->children[0].token && tmp->children[0].token->type == TOKEN_FILE) {
 		out= tmp->children[0].token;
 		tmp->children[0].token= NULL;
-		if(out->type_name) free(out->type_name);
-		out->type_name= strdup("gallery-image");
+		out->subtype= TOKEN_SUBTYPE_GALLERY_IMAGE;
 		if(out->name) {
-			free(out->name);
-			out->name= NULL;
+			token_clear_name(out);
 		}
 		/* JS parity: gallery-image uses GalleryImageToken, where link=... always
 		 * remains an image link parameter (not caption fallback). */
 		for(size_t ci= 1; ci < out->child_count; ci++) {
 			if(out->children[ci].is_text || !out->children[ci].token) continue;
 			Token *param= out->children[ci].token;
-			if(param->type != TOKEN_PLAIN || !param->type_name || strcmp(param->type_name, "image-parameter") != 0) continue;
+			if(param->type != TOKEN_PLAIN || param->subtype != TOKEN_SUBTYPE_IMAGE_PARAMETER) continue;
 			if(!param->name || strcmp(param->name, "caption") != 0 || param->child_count == 0) continue;
 			Child *first= &param->children[0];
 			if(!first->is_text || !first->text || first->text_len < 5) continue;
@@ -1741,14 +1790,14 @@ static Token *parse_gallery_image_line_local(const char *line, size_t line_len,
 
 			char *new_name= strdup("link");
 			if(!new_name) continue;
-			free(param->name);
-			param->name= new_name;
-			free(param->data.image_param.raw_syntax);
-			param->data.image_param.raw_syntax= malloc(p + 8);
-			if(param->data.image_param.raw_syntax) {
-				if(p > 0) sz_copy(param->data.image_param.raw_syntax, first->text, p);
-				sz_copy(param->data.image_param.raw_syntax + p, "link=$1", 7);
-				param->data.image_param.raw_syntax[p + 7]= '\0';
+			token_set_name_owned(param, new_name);
+			free((void *)param->data.image_param.raw_syntax.start);
+			char *owned_syntax= malloc(p + 8);
+			if(owned_syntax) {
+				if(p > 0) sz_copy(owned_syntax, first->text, p);
+				sz_copy(owned_syntax + p, "link=$1", 7);
+				owned_syntax[p + 7]= '\0';
+				param->data.image_param.raw_syntax = (sz_string_view_t){ .start = owned_syntax, .length = p + 7 };
 			}
 
 			size_t prefix_len= p + 5;
@@ -1770,15 +1819,13 @@ static Token *parse_gallery_image_line_local(const char *line, size_t line_len,
 			if(out->children[ci].is_text || !out->children[ci].token) continue;
 			Token *child= out->children[ci].token;
 			if((child->type == TOKEN_LINK || child->type == TOKEN_FILE || child->type == TOKEN_CATEGORY) && child->name) {
-				free(child->name);
-				child->name= NULL;
+				token_clear_name(child);
 			}
 			for(size_t cj= 0; cj < child->child_count; cj++) {
 				if(child->children[cj].is_text || !child->children[cj].token) continue;
 				Token *g= child->children[cj].token;
 				if((g->type == TOKEN_LINK || g->type == TOKEN_FILE || g->type == TOKEN_CATEGORY) && g->name) {
-					free(g->name);
-					g->name= NULL;
+					token_clear_name(g);
 				}
 			}
 		}
@@ -1789,14 +1836,17 @@ static Token *parse_gallery_image_line_local(const char *line, size_t line_len,
 		if(non_ws < line_len) {
 			const char pipe_ch2 = '|';
 			const char *pipe_ptr2 = sz_find_byte(line, line_len, &pipe_ch2);
-			size_t file_len= pipe_ptr2 ? (size_t)(pipe_ptr2 - line) : line_len;
+			size_t fallback_file_len= pipe_ptr2 ? (size_t)(pipe_ptr2 - line) : line_len;
 			/* JS GalleryToken parity: only construct gallery-image when
 			 * normalizeTitle(file, 6, {halfParsed:true, decode:true, page:''}).valid. */
-			Title *file_title= title_parse_half_parsed(line, file_len, 6, cfg, true, "");
-			bool file_valid= (file_title && file_title->valid);
-			title_free(file_title);
+			bool file_valid_local = fallback_file_valid;
+			if(!fallback_file_valid_known || fallback_file_len != file_len) {
+				Title *file_title= title_parse_half_parsed(line, fallback_file_len, 6, cfg, true, "");
+				file_valid_local= (file_title && file_title->valid);
+				title_free(file_title);
+			}
 
-			if(!file_valid) {
+			if(!file_valid_local) {
 				Token *comment_line = token_new(TOKEN_NOINCLUDE, "noinclude");
 				if(comment_line) {
 					const char *line_view = wiki_thread_buf_append_to_tokens(line, line_len);
@@ -1837,7 +1887,7 @@ static Token *parse_gallery_image_line_local(const char *line, size_t line_len,
 						if(fallback->child_count == 1) {
 							Token *cap= token_new(TOKEN_PLAIN, "image-parameter");
 							if(cap) {
-								cap->name= strdup("caption");
+													cap->name= strdup("caption");
 								const char *rhs_view= wiki_thread_buf_append_to_tokens(pipe_ptr2 + 1, rhs_len);
 								token_append_text_n(cap, rhs_view, rhs_len);
 								accum_push(accum, cap);
@@ -1953,13 +2003,14 @@ static Token *create_raw_ext_link_token_local(const char *url, size_t url_len,
 	}
 
 	if(space_len > 0) {
-		ext->data.ext_link.space= malloc(space_len + 1);
-		if(!ext->data.ext_link.space) {
+		char *owned_space= malloc(space_len + 1);
+		if(!owned_space) {
 			token_free(ext);
 			return NULL;
 		}
-		sz_copy(ext->data.ext_link.space, space, space_len);
-		ext->data.ext_link.space[space_len]= '\0';
+		sz_copy(owned_space, space, space_len);
+		owned_space[space_len]= '\0';
+		ext->data.ext_link.space = (sz_string_view_t){ .start = owned_space, .length = space_len };
 	}
 
 	token_append_child(ext, url_tok);
@@ -2024,11 +2075,9 @@ static Token *parse_imagemap_image_line_local(const char *line, size_t line_len,
 	Token *out= parse_gallery_image_line_local(line, line_len, cfg, accum);
 	if(!out || out->type != TOKEN_FILE) return NULL;
 
-	if(out->type_name) free(out->type_name);
-	out->type_name= strdup("imagemap-image");
+	out->subtype= TOKEN_SUBTYPE_IMAGEMAP_IMAGE;
 	if(out->name) {
-		free(out->name);
-		out->name= NULL;
+		token_clear_name(out);
 	}
 
 	/* JS stage-log parity: link/file names are assigned later in afterBuild(). */
@@ -2036,15 +2085,13 @@ static Token *parse_imagemap_image_line_local(const char *line, size_t line_len,
 		if(out->children[ci].is_text || !out->children[ci].token) continue;
 		Token *child= out->children[ci].token;
 		if((child->type == TOKEN_LINK || child->type == TOKEN_FILE || child->type == TOKEN_CATEGORY) && child->name) {
-			free(child->name);
-			child->name= NULL;
+			token_clear_name(child);
 		}
 		for(size_t cj= 0; cj < child->child_count; cj++) {
 			if(child->children[cj].is_text || !child->children[cj].token) continue;
 			Token *g= child->children[cj].token;
 			if((g->type == TOKEN_LINK || g->type == TOKEN_FILE || g->type == TOKEN_CATEGORY) && g->name) {
-				free(g->name);
-				g->name= NULL;
+				token_clear_name(g);
 			}
 		}
 	}
@@ -2052,14 +2099,12 @@ static Token *parse_imagemap_image_line_local(const char *line, size_t line_len,
 	return out;
 }
 
-static Token *parse_imagemap_link_line_local(const char *line, size_t line_len,
-														const ParserConfig *cfg,
-														Accum *accum) {
-	if(!line || line_len == 0) return NULL;
+static Token *parse_imagemap_link_line_from_open_local(const char *line, size_t line_len,
+																		  size_t open,
+																		  const ParserConfig *cfg,
+																		  Accum *accum) {
+	if(!line || line_len == 0 || open >= line_len) return NULL;
 
-	const char *p_open= sz_find_byte(line, line_len, "[");
-	if(!p_open) return NULL;
-	size_t open= (size_t)(p_open - line);
 	const char *substr= line + open;
 	size_t substr_len= line_len - open;
 
@@ -2147,7 +2192,7 @@ static Token *build_imagemap_inner_token(const char *inner_str, size_t inner_len
 													 Accum *accum) {
 	Token *t= token_new(TOKEN_EXT_INNER, "ext-inner");
 	if(!t) return NULL;
-	t->name= strdup("imagemap");
+	 t->name= strdup("imagemap");
 	t->sep= '\n';
 	accum_push(accum, t);
 
@@ -2204,8 +2249,10 @@ static Token *build_imagemap_inner_token(const char *inner_str, size_t inner_len
 				continue;
 			}
 
-			if(sz_find_byte(line_ptr, line_len, "[") != NULL) {
-				tok= parse_imagemap_link_line_local(line_ptr, line_len, cfg, accum);
+			const char *p_open = sz_find_byte(line_ptr, line_len, "[");
+			if(p_open != NULL) {
+				tok= parse_imagemap_link_line_from_open_local(line_ptr, line_len,
+					(size_t)(p_open - line_ptr), cfg, accum);
 			}
 
 			if(tok) {
@@ -2233,7 +2280,7 @@ static Token *build_gallery_inner_token(const char *inner_str, size_t inner_len,
 																			Accum *accum) {
 	Token *t= token_new(TOKEN_EXT_INNER, "ext-inner");
 	if(!t) return NULL;
-	t->name= strdup("gallery");
+	 t->name= strdup("gallery");
 	t->sep= '\n';
 	accum_push(accum, t);
 
@@ -2278,7 +2325,7 @@ static Token *build_categorytree_inner_token(const char *inner_str, size_t inner
 																												Accum *accum) {
 	Token *t= token_new(TOKEN_EXT_INNER, "ext-inner");
 	if(!t) return NULL;
-	t->name= strdup("categorytree");
+	 t->name= strdup("categorytree");
 	accum_push(accum, t);
 
 	Token *target= token_new(TOKEN_ATOM, "link-target");
@@ -2352,29 +2399,33 @@ static Token *build_ext_token(const char *name, size_t name_len,
 		free(lcname);
 		return NULL;
 	}
-	t->name= strdup(lcname);
+	 t->name= strdup(lcname);
 	/* Store original-cased tag name for toString() parity with JS */
-	t->data.ext.name= strndup(name, name_len);
+	char *ext_name = strndup(name, name_len);
+	t->data.ext.name = (sz_string_view_t){ .start = ext_name, .length = ext_name ? name_len : 0 };
 	if(closing && closing_len > 0) {
-		t->data.ext.closing= strndup(closing, closing_len);
+		char *ext_closing = strndup(closing, closing_len);
+		t->data.ext.closing = (sz_string_view_t){ .start = ext_closing, .length = ext_closing ? closing_len : 0 };
 	}
 
 	/* Build sub-tokens */
 	Token *attrs_tok= build_ext_attrs(lcname, attr, attr_len, accum);
 	Token *inner_tok= NULL;
-	if(strcmp(lcname, "references") == 0 && !self_closing) {
+	size_t lc_len = strlen(lcname);
+	if(lc_len == 10 && sz_equal(lcname, "references", 10) == sz_true_k && !self_closing) {
 		inner_tok= build_references_inner_token(inner, inner_len, cfg, accum);
-	} else if(strcmp(lcname, "pre") == 0 && !self_closing && !ext_attr_is_format_wikitext(attr, attr_len)) {
+	} else if(lc_len == 3 && sz_equal(lcname, "pre", 3) == sz_true_k
+					&& !self_closing && !ext_attr_is_format_wikitext(attr, attr_len)) {
 		inner_tok= build_pre_inner_token(inner, inner_len, accum);
-	} else if(strcmp(lcname, "dynamicpagelist") == 0 && !self_closing) {
+	} else if(lc_len == 15 && sz_equal(lcname, "dynamicpagelist", 15) == sz_true_k && !self_closing) {
 		inner_tok= build_param_tag_inner_token(lcname, inner, inner_len, cfg, accum, false);
-	} else if(strcmp(lcname, "inputbox") == 0 && !self_closing) {
+	} else if(lc_len == 8 && sz_equal(lcname, "inputbox", 8) == sz_true_k && !self_closing) {
 		inner_tok= build_param_tag_inner_token(lcname, inner, inner_len, cfg, accum, true);
-	} else if(strcmp(lcname, "gallery") == 0 && !self_closing) {
+	} else if(lc_len == 7 && sz_equal(lcname, "gallery", 7) == sz_true_k && !self_closing) {
 		inner_tok= build_gallery_inner_token(inner, inner_len, cfg, accum);
-	} else if(strcmp(lcname, "imagemap") == 0 && !self_closing) {
+	} else if(lc_len == 8 && sz_equal(lcname, "imagemap", 8) == sz_true_k && !self_closing) {
 		inner_tok= build_imagemap_inner_token(inner, inner_len, cfg, accum);
-	} else if(strcmp(lcname, "categorytree") == 0) {
+	} else if(lc_len == 12 && sz_equal(lcname, "categorytree", 12) == sz_true_k) {
 		inner_tok= build_categorytree_inner_token(inner, inner_len, accum);
 	} else {
 		inner_tok= build_ext_inner(lcname, inner, inner_len, self_closing, accum);
@@ -2406,8 +2457,7 @@ static Token *build_noinclude_token(const char *substr, size_t sub_len, Accum *a
 	Token *t= token_new(TOKEN_NOINCLUDE, "noinclude");
 	if(!t) return NULL;
 	if(sub_len > 0) {
-		const char *sub_view = wiki_thread_buf_append_to_tokens(substr, sub_len);
-		token_append_text_n(t, sub_view, sub_len);
+		token_append_text_n(t, substr, sub_len);
 	} else {
 		token_append_text_n(t, "", 0);
 	}
@@ -2434,7 +2484,7 @@ static Token *build_include_token(const char *tag_name, size_t tag_name_len,
 	Token *t= token_new(TOKEN_INCLUDE, "include");
 	if(!t) return NULL;
 	char *lcname= str_trim_lc(tag_name, tag_name_len);
-	t->name= lcname;
+	 t->name= lcname;
 
 	/* attr text (may be NULL for self-closing or no attributes) */
 	const char *attr_src= attr ? attr : "";
@@ -2456,7 +2506,9 @@ static Token *build_include_token(const char *tag_name, size_t tag_name_len,
 
 	/* closing tag name — NULL means unclosed (JS TagPairToken.closed = false) */
 	if(closing && closing_len > 0) {
-		t->data.include.closing= str_trim_lc(closing, closing_len);
+		char *include_closing= str_trim_lc(closing, closing_len);
+		t->data.include.closing = (sz_string_view_t){ .start = include_closing,
+			.length = include_closing ? strlen(include_closing) : 0 };
 	}
 
 	accum_push(accum, t);
@@ -2468,16 +2520,14 @@ static Token *build_translate_token(const char *attr, size_t attr_len,
 																		Accum *accum) {
 	Token *t= token_new(TOKEN_TRANSLATE, "translate");
 	if(!t) return NULL;
-	t->name= strdup("translate");
+	 t->name= strdup("translate");
 	if(attr && attr_len > 0) {
-		const char *attr_view = wiki_thread_buf_append_to_tokens(attr, attr_len);
-		token_append_text_n(t, attr_view, attr_len);
+		token_append_text_n(t, attr, attr_len);
 	} else {
 		token_append_text_n(t, "", 0);
 	}
 	if(inner && inner_len > 0) {
-		const char *inner_view = wiki_thread_buf_append_to_tokens(inner, inner_len);
-		token_append_text_n(t, inner_view, inner_len);
+		token_append_text_n(t, inner, inner_len);
 	} else {
 		token_append_text_n(t, "", 0);
 	}
@@ -2560,7 +2610,7 @@ static void translate_scan_cb_wrap(const char *segment, size_t len,
 	const char *inner_ptr = NULL;
 	size_t inner_len = 0;
 	if (kind == PARSER_SEG_INNER && len > 0) {
-		str_restore_to_tb(segment, len, (const char **)ctx->st->items, ctx->st->count, ctx->st->lens, tmp_restore);
+		str_restore_to_tb(segment, len, ctx->st->items, ctx->st->count, tmp_restore);
 		inner_ptr = tmp_restore->buf;
 		inner_len = tmp_restore->len;
 	}
@@ -2591,34 +2641,47 @@ static void translate_scan_cb_wrap(const char *segment, size_t len,
 }
 
 static void apply_translate_prepass(ThreadBuf *tb, const ParserConfig *cfg, Accum *accum) {
+	if(!tb || tb->len == 0) return;
+
+	/* Fast reject: no translate opener means nothing to do in this prepass. */
+	if(!find_ci_lit(tb->buf, tb->len, 0, "<translate", 10, NULL)) {
+		return;
+	}
+
 	TextStack st;
 	text_stack_init(&st);
+	bool has_nowiki = find_ci_lit(tb->buf, tb->len, 0, "<nowiki", 7, NULL);
 
-	/* Pass 1: handle paired <nowiki>...</nowiki> */
-	ThreadBuf *out_tb = wiki_thread_buf_acquire_scratch();
-	if(!out_tb) { log_fatal("thread_buffer: failed to acquire scratch in apply_translate_prepass (pass1)"); abort(); }
-	wiki_thread_buf_reserve(out_tb, tb->len * 2 + 64);
-	out_tb->len = 0;
+	ThreadBuf *out_tb = NULL;
+	NowikiScanCtx ctx = { .st = &st, .out = NULL };
 
-	NowikiScanCtx ctx = { .st = &st, .out = out_tb };
-	parser_scan(tb->buf, tb->len, &wiki_rule_nowiki_paired, nowiki_scan_cb, &ctx);
+	if(has_nowiki) {
+		/* Pass 1: handle paired <nowiki>...</nowiki> */
+		out_tb = wiki_thread_buf_acquire_scratch();
+		if(!out_tb) { log_fatal("thread_buffer: failed to acquire scratch in apply_translate_prepass (pass1)"); abort(); }
+		wiki_thread_buf_reserve(out_tb, tb->len * 2 + 64);
+		out_tb->len = 0;
 
-	out_tb->buf[out_tb->len]= '\0';
-	wiki_thread_buf_set(tb, out_tb->buf, out_tb->len);
-	wiki_thread_buf_release_scratch(out_tb);
+		ctx.out = out_tb;
+		parser_scan(tb->buf, tb->len, &wiki_rule_nowiki_paired, nowiki_scan_cb, &ctx);
 
-	/* Pass 2: handle self-closing <nowiki ... /> forms */
-	out_tb = wiki_thread_buf_acquire_scratch();
-	if(!out_tb) { log_fatal("thread_buffer: failed to acquire scratch in apply_translate_prepass (pass2)"); abort(); }
-	wiki_thread_buf_reserve(out_tb, tb->len * 2 + 64);
-	out_tb->len = 0;
+		out_tb->buf[out_tb->len]= '\0';
+		wiki_thread_buf_set(tb, out_tb->buf, out_tb->len);
+		wiki_thread_buf_release_scratch(out_tb);
 
-	ctx.out = out_tb;
-	parser_scan(tb->buf, tb->len, &wiki_rule_nowiki_sc, nowiki_scan_cb, &ctx);
+		/* Pass 2: handle self-closing <nowiki ... /> forms */
+		out_tb = wiki_thread_buf_acquire_scratch();
+		if(!out_tb) { log_fatal("thread_buffer: failed to acquire scratch in apply_translate_prepass (pass2)"); abort(); }
+		wiki_thread_buf_reserve(out_tb, tb->len * 2 + 64);
+		out_tb->len = 0;
 
-	out_tb->buf[out_tb->len]= '\0';
-	wiki_thread_buf_set(tb, out_tb->buf, out_tb->len);
-	wiki_thread_buf_release_scratch(out_tb);
+		ctx.out = out_tb;
+		parser_scan(tb->buf, tb->len, &wiki_rule_nowiki_sc, nowiki_scan_cb, &ctx);
+
+		out_tb->buf[out_tb->len]= '\0';
+		wiki_thread_buf_set(tb, out_tb->buf, out_tb->len);
+		wiki_thread_buf_release_scratch(out_tb);
+	}
 
 	/* Re-acquire an output scratch buffer for the translate pass. */
 	out_tb = wiki_thread_buf_acquire_scratch();
@@ -2642,7 +2705,7 @@ static void apply_translate_prepass(ThreadBuf *tb, const ParserConfig *cfg, Accu
 	ThreadBuf *tmp_all = wiki_thread_buf_acquire_scratch();
 	if(!tmp_all) { log_fatal("thread_buffer: failed to acquire scratch in apply_translate_prepass (final restore)\n"); abort(); }
 	tmp_all->len = 0;
-	str_restore_to_tb(out_tb->buf, out_tb->len, (const char **)st.items, st.count, st.lens, tmp_all);
+	str_restore_to_tb(out_tb->buf, out_tb->len, st.items, st.count, tmp_all);
 	wiki_thread_buf_set(tb, tmp_all->buf, tmp_all->len);
 	wiki_thread_buf_release_scratch(tmp_all);
 	wiki_thread_buf_release_scratch(out_tb);
@@ -2656,8 +2719,8 @@ static bool handle_onlyinclude(ThreadBuf *tb, const ParserConfig *cfg, Accum *ac
 	(void)cfg;
 	const char *onlyinclude_open= "<onlyinclude>";
 	const char *onlyinclude_close= "</onlyinclude>";
-	size_t open_len= strlen(onlyinclude_open);
-	size_t close_len= strlen(onlyinclude_close);
+	const size_t open_len= 13;
+	const size_t close_len= 14;
 
 	const char *pos_open= find_substr_cs(tb->buf, tb->len, onlyinclude_open, open_len);
 	if(!pos_open) return false;
@@ -2672,16 +2735,15 @@ static bool handle_onlyinclude(ThreadBuf *tb, const ParserConfig *cfg, Accum *ac
 
 	const char *remaining= tb->buf;
 	size_t remaining_len= tb->len;
+	const char *next_open= pos_open;
+	const char *next_close= pos_close;
 
 	char sent_buf[64];
 
 	while(1) {
-		const char *next_open= find_substr_cs(remaining, remaining_len, onlyinclude_open, open_len);
 		if(!next_open) break;
 
 		size_t rel_open= (size_t)(next_open - remaining);
-		size_t tail_after_open= remaining_len - rel_open - open_len;
-		const char *next_close= find_substr_cs(next_open + open_len, tail_after_open, onlyinclude_close, close_len);
 		if(!next_close) break;
 
 		if(rel_open > 0) {
@@ -2718,6 +2780,11 @@ static bool handle_onlyinclude(ThreadBuf *tb, const ParserConfig *cfg, Accum *ac
 
 		remaining= next_close + close_len;
 		remaining_len= tb->len - (size_t)(remaining - tb->buf);
+
+		next_open= find_substr_cs(remaining, remaining_len, onlyinclude_open, open_len);
+		if(!next_open) break;
+		size_t tail_after_open= remaining_len - (size_t)(next_open - remaining) - open_len;
+		next_close= find_substr_cs(next_open + open_len, tail_after_open, onlyinclude_close, close_len);
 	}
 
 		if(remaining_len > 0) {
@@ -2754,12 +2821,9 @@ void parse_comment_and_ext(ThreadBuf *tb, const ParserConfig *cfg,
     }
 
     if(include_only) {
-        const char *oi_open = "<onlyinclude>";
-		if(find_substr_cs(tb->buf, tb->len, oi_open, 13)) {
-            if(handle_onlyinclude(tb, cfg, accum)) {
-                return;
-            }
-        }
+		if(handle_onlyinclude(tb, cfg, accum)) {
+			return;
+		}
     }
 
     if(has_translate) {

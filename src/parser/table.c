@@ -105,10 +105,11 @@ static Token *make_table_attr(const char *key, size_t key_len,
 	Token *t= token_new(TOKEN_EXT_ATTR, "table-attr");
 	if(!t) return NULL;
 
-	t->name= str_trim_lc(key, key_len);
+	 t->name= str_trim_lc(key, key_len);
 	if(equal && equal_len > 0) {
-		t->data.ext_attr.equal= build_normalize_attr_equal(equal, equal_len, accum);
-		assert(t->data.ext_attr.equal);
+		char *equal_owned= build_normalize_attr_equal(equal, equal_len, accum);
+		assert(equal_owned);
+		t->data.ext_attr.equal = (sz_string_view_t){ .start = equal_owned, .length = strlen(equal_owned) };
 	}
 	t->data.ext_attr.quote_open= quote_open;
 	t->data.ext_attr.quote_close= quote_close;
@@ -542,8 +543,8 @@ static bool table_attr_has_equal_marker(const char *s, size_t len) {
 	return false;
 }
 
-static char *table_attr_normalize_equal_syntax(const char *eq, size_t eq_len, size_t *out_len) {
-	if(!eq) return NULL;
+static bool table_attr_normalize_equal_syntax_tb(const char *eq, size_t eq_len, ThreadBuf *out_tb) {
+	if(!eq || !out_tb) return false;
 
 	size_t need= 0;
 	for(size_t i= 0; i < eq_len;) {
@@ -557,27 +558,26 @@ static char *table_attr_normalize_equal_syntax(const char *eq, size_t eq_len, si
 		i++;
 	}
 
-	char *out= malloc(need + 1);
-	if(!out) return NULL;
+	wiki_thread_buf_reserve(out_tb, need);
+	out_tb->len= 0;
 
-	size_t p= 0;
 	for(size_t i= 0; i < eq_len;) {
 		size_t sl= sentinel_at(eq, eq_len, i, '~');
 		if(sl) {
-			sz_copy(out + p, "{{=}}", 5);
-			p+= 5;
+			sz_copy(out_tb->buf + out_tb->len, "{{=}}", 5);
+			out_tb->len+= 5;
 			i+= sl;
 			continue;
 		}
-		out[p++]= eq[i++];
+		out_tb->buf[out_tb->len++]= eq[i++];
 	}
-	out[p]= '\0';
-	if(out_len) *out_len= p;
-	return out;
+	out_tb->buf[out_tb->len]= '\0';
+	return true;
 }
 
 static void parse_table_attrs(Token *attrs_tok, const char *attr_str, size_t attr_len, Accum *accum) {
 	if(!attr_str || attr_len == 0) return;
+	ThreadBuf *eq_norm_tb= wiki_thread_buf_acquire_scratch();
 
 	/* JS parity: dynamic boolean attrs should produce table-attr token. */
 	if(!table_attr_has_equal_marker(attr_str, attr_len)) {
@@ -626,27 +626,46 @@ static void parse_table_attrs(Token *attrs_tok, const char *attr_str, size_t att
 	}
 
 	size_t i= 0;
-	char dirty_buf[4096];
-	size_t dirty_len= 0;
+	size_t dirty_start= (size_t)-1;
+	size_t dirty_end= 0;
 
 #define FLUSH_DIRTY()                                                \
 	do {                                                               \
-		if(dirty_len > 0) {                                              \
-			Token *dt= make_table_attr_dirty(dirty_buf, dirty_len, accum); \
+		if(dirty_start != (size_t)-1 && dirty_end > dirty_start) {      \
+			Token *dt= make_table_attr_dirty(attr_str + dirty_start, dirty_end - dirty_start, accum); \
 			if(dt) token_append_child(attrs_tok, dt);                      \
-			dirty_len= 0;                                                  \
+			dirty_start= (size_t)-1;                                       \
+			dirty_end= 0;                                                  \
 		}                                                                \
+	} while(0)
+
+#define APPEND_DIRTY_SPAN(off, span_len)                                         \
+	do {                                                                           \
+		size_t _off= (off);                                                           \
+		size_t _len= (span_len);                                                      \
+		if(_len > 0) {                                                                 \
+			if(dirty_start == (size_t)-1) {                                              \
+				dirty_start= _off;                                                           \
+				dirty_end= _off + _len;                                                     \
+			} else if(dirty_end == _off) {                                               \
+				dirty_end+= _len;                                                           \
+			} else {                                                                      \
+				FLUSH_DIRTY();                                                              \
+				dirty_start= _off;                                                          \
+				dirty_end= _off + _len;                                                    \
+			}                                                                             \
+		}                                                                               \
 	} while(0)
 
 	while(i < attr_len) {
 		size_t ws_take= table_ws_len_at(attr_str, attr_len, i);
 		if(attr_str[i] == '/' || ws_take > 0) {
 			if(ws_take > 0) {
-				sz_copy(dirty_buf + dirty_len, attr_str + i, ws_take);
-				dirty_len+= ws_take;
+				APPEND_DIRTY_SPAN(i, ws_take);
 				i+= ws_take;
 			} else {
-				dirty_buf[dirty_len++]= attr_str[i++];
+				APPEND_DIRTY_SPAN(i, 1);
+				i++;
 			}
 			continue;
 		}
@@ -665,24 +684,26 @@ static void parse_table_attrs(Token *attrs_tok, const char *attr_str, size_t att
 			size_t eq_take= sentinel_at(attr_str, attr_len, i, '~');
 			if(i < attr_len && (attr_str[i] == '=' || eq_take > 0)) {
 				if(eq_take == 0) eq_take= 1;
-				sz_copy(dirty_buf + dirty_len, attr_str + i, eq_take);
-				dirty_len+= eq_take;
+				APPEND_DIRTY_SPAN(i, eq_take);
 				i+= eq_take;
 				if(i < attr_len && (attr_str[i] == '"' || attr_str[i] == '\'')) {
-					char q= attr_str[i];
-					dirty_buf[dirty_len++]= attr_str[i++];
+					size_t vstart= i;
+					char q= attr_str[i++];
 					while(i < attr_len) {
-						dirty_buf[dirty_len++]= attr_str[i];
 						if(attr_str[i++] == q) break;
 					}
+					APPEND_DIRTY_SPAN(vstart, i - vstart);
 				} else {
+					size_t vstart= i;
 					while(i < attr_len && table_ws_len_at(attr_str, attr_len, i) == 0) {
-						dirty_buf[dirty_len++]= attr_str[i++];
+						i++;
 					}
+					APPEND_DIRTY_SPAN(vstart, i - vstart);
 				}
 				continue;
 			}
-			dirty_buf[dirty_len++]= attr_str[i++];
+			APPEND_DIRTY_SPAN(i, 1);
+			i++;
 			continue;
 		}
 
@@ -697,26 +718,27 @@ static void parse_table_attrs(Token *attrs_tok, const char *attr_str, size_t att
 		if(!valid_key) {
 			bool dynamic_key= table_attr_key_is_dynamic(key, key_len);
 			if(!dynamic_key || !is_valid_attr_key_after_comment_trim(key, key_len)) {
-				for(size_t k= 0; k < key_len; k++) dirty_buf[dirty_len++]= key[k];
+				APPEND_DIRTY_SPAN(key_start, key_len);
 				/* JS parity: when an invalid key is immediately followed by '=value',
 				 * keep the whole chunk dirty instead of treating value as a new attr key. */
 				size_t eq_sl= (i < attr_len) ? sentinel_at(attr_str, attr_len, i, '~') : 0;
 				if(i < attr_len && (attr_str[i] == '=' || eq_sl > 0)) {
 					size_t eq_take= (attr_str[i] == '=') ? 1 : eq_sl;
-					sz_copy(dirty_buf + dirty_len, attr_str + i, eq_take);
-					dirty_len+= eq_take;
+					APPEND_DIRTY_SPAN(i, eq_take);
 					i+= eq_take;
 					if(i < attr_len && (attr_str[i] == '"' || attr_str[i] == '\'')) {
-						char q= attr_str[i];
-						dirty_buf[dirty_len++]= attr_str[i++];
+						size_t vstart= i;
+						char q= attr_str[i++];
 						while(i < attr_len) {
-							dirty_buf[dirty_len++]= attr_str[i];
 							if(attr_str[i++] == q) break;
 						}
+						APPEND_DIRTY_SPAN(vstart, i - vstart);
 					} else {
+						size_t vstart= i;
 						while(i < attr_len && table_ws_len_at(attr_str, attr_len, i) == 0) {
-							dirty_buf[dirty_len++]= attr_str[i++];
+							i++;
 						}
+						APPEND_DIRTY_SPAN(vstart, i - vstart);
 					}
 				}
 				continue;
@@ -736,8 +758,7 @@ static void parse_table_attrs(Token *attrs_tok, const char *attr_str, size_t att
 			Token *at= make_table_attr(key, key_len, NULL, 0, NULL, 0, '\0', '\0', accum);
 			if(at) token_append_child(attrs_tok, at);
 			if(ws_start < i) {
-				sz_copy(dirty_buf, attr_str + ws_start, i - ws_start);
-				dirty_len= i - ws_start;
+				APPEND_DIRTY_SPAN(ws_start, i - ws_start);
 			}
 			continue;
 		}
@@ -777,20 +798,25 @@ static void parse_table_attrs(Token *attrs_tok, const char *attr_str, size_t att
 		FLUSH_DIRTY();
 		const char *eq_ptr= attr_str + eq_start;
 		size_t eq_use_len= eq_len;
-		char *eq_norm= NULL;
+		bool eq_norm_ok= false;
 		if(eq_has_magic) {
-			eq_norm= table_attr_normalize_equal_syntax(attr_str + eq_start, eq_len, &eq_use_len);
-			if(eq_norm) eq_ptr= eq_norm;
+			eq_norm_ok= table_attr_normalize_equal_syntax_tb(attr_str + eq_start, eq_len, eq_norm_tb);
+			if(eq_norm_ok) {
+				eq_ptr= eq_norm_tb->buf;
+				eq_use_len= eq_norm_tb->len;
+			}
 		}
 		Token *at= make_table_attr(key, key_len, val, val_len,
 											 eq_ptr, eq_use_len,
 															 quote_open, quote_close,
 															 accum);
-		if(eq_norm) free(eq_norm);
+		(void)eq_norm_ok;
 		if(at) token_append_child(attrs_tok, at);
 	}
 
 	FLUSH_DIRTY();
+	wiki_thread_buf_release_scratch(eq_norm_tb);
+#undef APPEND_DIRTY_SPAN
 #undef FLUSH_DIRTY
 }
 
@@ -994,7 +1020,7 @@ static Token *create_table_token(const char *syntax, size_t syntax_len,
 
 	Token *attrs= token_new(TOKEN_ATTRIBUTES, "table-attrs");
 	if(attrs) {
-		attrs->name= strdup("table");
+			attrs->name= strdup("table");
 		parse_table_attrs(attrs, attr, attr_len, accum);
 		accum_push(accum, attrs);
 		token_append_child(table, attrs);
@@ -1033,6 +1059,7 @@ void parse_table(ThreadBuf *tb, const ParserConfig *cfg, Accum *accum) {
 
 	TokStack st;
 	stack_init(&st);
+	ThreadBuf *line_scratch= wiki_thread_buf_acquire_scratch();
 
 	for(size_t i= 0; i < line_count; i++) {
 		const char *out_line= lines_ptr[i];
@@ -1076,36 +1103,27 @@ void parse_table(ThreadBuf *tb, const ParserConfig *cfg, Accum *accum) {
 			size_t table_idx= accum->count;
 			Token *table= create_table_token(syn, syn_len, attr, attr_len, accum);
 
-			size_t pre_cap= 4 + spaces_len + more_len + 64 + 64;
-			char *pre= malloc(pre_cap);
-			assert(pre);
-			size_t plen= 0;
-			pre[plen++]= '\n';
+			wiki_thread_buf_set(line_scratch, "\n", 1);
 			if(spaces_len > 0) {
-				sz_copy(pre + plen, out_line, spaces_len);
-				plen+= spaces_len;
+				wiki_thread_buf_append(line_scratch, (sz_string_view_t){ .start = out_line, .length = spaces_len });
 			}
 			if(has_dd) {
 				char m[64];
 				size_t ml= 0;
 				work_str_sentinel(dd_idx, 'd', m, &ml);
-				sz_copy(pre + plen, m, ml);
-				plen+= ml;
+				wiki_thread_buf_append(line_scratch, (sz_string_view_t){ .start = m, .length = ml });
 			}
 			if(more_len > 0) {
-				sz_copy(pre + plen, more, more_len);
-				plen+= more_len;
+				wiki_thread_buf_append(line_scratch, (sz_string_view_t){ .start = more, .length = more_len });
 			}
 			if(table) {
 				char m[64];
 				size_t ml= 0;
 				work_str_sentinel(table_idx, 'b', m, &ml);
-				sz_copy(pre + plen, m, ml);
-				plen+= ml;
+				wiki_thread_buf_append(line_scratch, (sz_string_view_t){ .start = m, .length = ml });
 			}
 
-			push_text_like_js(&out_buf, &out_len, &out_cap, pre, plen, top, cfg, accum);
-			free(pre);
+			push_text_like_js(&out_buf, &out_len, &out_cap, line_scratch->buf, line_scratch->len, top, cfg, accum);
 
 			if(top) stack_push(&st, top);
 			if(table) stack_push(&st, table);
@@ -1119,12 +1137,9 @@ void parse_table(ThreadBuf *tb, const ParserConfig *cfg, Accum *accum) {
 
 		TableLineResult lres;
 		if (!table_line_classify(line, line_len, &lres)) {
-			size_t n = out_line_len + 1;
-			char *tmp = malloc(n);
-			tmp[0] = '\n';
-			sz_copy(tmp + 1, out_line, out_line_len);
-			push_text_like_js(&out_buf, &out_len, &out_cap, tmp, n, top, cfg, accum);
-			free(tmp);
+			wiki_thread_buf_set(line_scratch, "\n", 1);
+			wiki_thread_buf_append(line_scratch, (sz_string_view_t){ .start = out_line, .length = out_line_len });
+			push_text_like_js(&out_buf, &out_len, &out_cap, line_scratch->buf, line_scratch->len, top, cfg, accum);
 			stack_push(&st, top);
 			continue;
 		}
@@ -1136,23 +1151,20 @@ void parse_table(ThreadBuf *tb, const ParserConfig *cfg, Accum *accum) {
 			while(top && top->type != TOKEN_TABLE) top = stack_pop(&st);
 			if(top) {
 				size_t clos_len = line_len - attr_len;
-				size_t syn_len = 1 + spaces_len + clos_len;
-				char *syn = malloc(syn_len);
-				syn[0] = '\n';
-				if(spaces_len > 0) sz_copy(syn + 1, out_line, spaces_len);
-				if(clos_len > 0) sz_copy(syn + 1 + spaces_len, line, clos_len);
+				wiki_thread_buf_set(line_scratch, "\n", 1);
+				if(spaces_len > 0) wiki_thread_buf_append(line_scratch, (sz_string_view_t){ .start = out_line, .length = spaces_len });
+				if(clos_len > 0) wiki_thread_buf_append(line_scratch, (sz_string_view_t){ .start = line, .length = clos_len });
 
 				Token *clos = token_new(TOKEN_SYNTAX, "table-syntax");
 				if(clos) {
-					if(syn_len > 0) {
-						token_append_text_n(clos, syn, syn_len);
+					if(line_scratch->len > 0) {
+						token_append_text_n(clos, line_scratch->buf, line_scratch->len);
 					} else {
 						token_append_text_n(clos, NULL, 0);
 					}
 					accum_push(accum, clos);
 					token_append_child(top, clos);
 				}
-				free(syn);
 			}
 			push_text_like_js(&out_buf, &out_len, &out_cap, attr, attr_len, stack_peek(&st), cfg, accum);
 		} else if (lres.kind == TABLE_LINE_ROW) {
@@ -1160,14 +1172,11 @@ void parse_table(ThreadBuf *tb, const ParserConfig *cfg, Accum *accum) {
 			if(top && top->type == TOKEN_TR) top= stack_pop(&st);
 
 			size_t row_len = line_len - attr_len;
-			size_t syn_len = 1 + spaces_len + row_len;
-			char *syn = malloc(syn_len);
-			syn[0] = '\n';
-			if(spaces_len > 0) sz_copy(syn + 1, out_line, spaces_len);
-			if(row_len > 0) sz_copy(syn + 1 + spaces_len, line, row_len);
+			wiki_thread_buf_set(line_scratch, "\n", 1);
+			if(spaces_len > 0) wiki_thread_buf_append(line_scratch, (sz_string_view_t){ .start = out_line, .length = spaces_len });
+			if(row_len > 0) wiki_thread_buf_append(line_scratch, (sz_string_view_t){ .start = line, .length = row_len });
 
-			Token *tr = create_tr_token(syn, syn_len, attr, attr_len, accum);
-			free(syn);
+			Token *tr = create_tr_token(line_scratch->buf, line_scratch->len, attr, attr_len, accum);
 			if(top && tr) token_append_child(top, tr);
 			if(top) stack_push(&st, top);
 			if(tr) stack_push(&st, tr);
@@ -1179,11 +1188,11 @@ void parse_table(ThreadBuf *tb, const ParserConfig *cfg, Accum *accum) {
 			bool include_double_bang = (cell_len == 1 && cell[0] == '!');
 
 			size_t last_index = 0;
-			size_t last_syn_len = 1 + spaces_len + cell_len;
-			char *last_syn = malloc(last_syn_len);
-			last_syn[0] = '\n';
-			if(spaces_len > 0) sz_copy(last_syn + 1, out_line, spaces_len);
-			if(cell_len > 0) sz_copy(last_syn + 1 + spaces_len, cell, cell_len);
+			wiki_thread_buf_set(line_scratch, "\n", 1);
+			if(spaces_len > 0) wiki_thread_buf_append(line_scratch, (sz_string_view_t){ .start = out_line, .length = spaces_len });
+			if(cell_len > 0) wiki_thread_buf_append(line_scratch, (sz_string_view_t){ .start = cell, .length = cell_len });
+			const char *last_syn_ptr = line_scratch->buf;
+			size_t last_syn_len = line_scratch->len;
 
 			size_t scan = 0;
 			for(;;) {
@@ -1222,7 +1231,7 @@ void parse_table(ThreadBuf *tb, const ParserConfig *cfg, Accum *accum) {
 					}
 				}
 
-				Token *td = create_td_token(last_syn, last_syn_len,
+				Token *td = create_td_token(last_syn_ptr, last_syn_len,
 											 cell_attrs, cell_attrs_len,
 											 inner_syntax, inner_syntax_len,
 											 inner, inner_len,
@@ -1235,15 +1244,12 @@ void parse_table(ThreadBuf *tb, const ParserConfig *cfg, Accum *accum) {
 					break;
 				}
 
-				free(last_syn);
+				last_syn_ptr = attr + sep_pos;
 				last_syn_len = sep_len;
-				last_syn = malloc(last_syn_len);
-				sz_copy(last_syn, attr + sep_pos, sep_len);
 
 				last_index = sep_pos + sep_len;
 				scan = last_index;
 			}
-			free(last_syn);
 		}
 	}
 
@@ -1254,6 +1260,7 @@ void parse_table(ThreadBuf *tb, const ParserConfig *cfg, Accum *accum) {
 		wiki_thread_buf_set(tb, out_buf, 0);
 	}
 	free(out_buf);
+	wiki_thread_buf_release_scratch(line_scratch);
 	stack_free(&st);
 	free(lines_ptr);
 	free(lines_len);

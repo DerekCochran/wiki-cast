@@ -17,17 +17,26 @@
 /* the fixpoint driver doesn't re-enter this path per byte.                  */
 /* ------------------------------------------------------------------------- */
 
+static inline const char *parser_find_with_md_(
+                                      const char *h, size_t h_len,
+                                      const char *n, size_t n_len,
+                                      bool case_insensitive,
+                                      sz_utf8_case_insensitive_needle_metadata_t *md_opt) {
+    if (n_len == 0 || h_len < n_len) return NULL;
+    if (case_insensitive) {
+        sz_utf8_case_insensitive_needle_metadata_t md_local = {0};
+        sz_utf8_case_insensitive_needle_metadata_t *md = md_opt ? md_opt : &md_local;
+        sz_size_t matched_length = 0;
+        return (const char *)sz_utf8_case_insensitive_find(
+            h, h_len, n, n_len, md, &matched_length);
+    }
+    return (const char *)sz_find(h, h_len, n, n_len);
+}
+
 static inline const char *parser_find_(const char *h, size_t h_len,
                                       const char *n, size_t n_len,
                                       bool case_insensitive) {
-    if (n_len == 0 || h_len < n_len) return NULL;
-    if (case_insensitive) {
-        sz_utf8_case_insensitive_needle_metadata_t md = {0};
-        sz_size_t matched_length = 0;
-        return (const char *)sz_utf8_case_insensitive_find(
-            h, h_len, n, n_len, &md, &matched_length);
-    }
-    return (const char *)sz_find(h, h_len, n, n_len);
+    return parser_find_with_md_(h, h_len, n, n_len, case_insensitive, NULL);
 }
 
 /* ------------------------------------------------------------------------- */
@@ -162,15 +171,17 @@ static const char *find_closer_(const char *buf,
         size_t avail = (size_t)(end - inner_start_in);
         const char *p;
         if (r->case_insensitive) {
+            sz_utf8_case_insensitive_needle_metadata_t close_md = {0};
             /* sz_rfind has no case-insensitive variant; emulate by
                case-insensitive forward scan and tracking the last hit. */
             p = NULL;
             const char *probe = inner_start_in;
             for (;;) {
-                const char *h = parser_find_(probe,
+                const char *h = parser_find_with_md_(probe,
                                             (size_t)(end - probe),
                                             r->close_delim,
-                                            r->close_len, true);
+                                            r->close_len, true,
+                                            &close_md);
                 if (!h) break;
                 if (!r->line_anchored_close || at_line_start_(buf, h))
                     p = h;
@@ -191,6 +202,8 @@ static const char *find_closer_(const char *buf,
     }
 
     case PARSER_MATCH_INNERMOST: {
+        sz_utf8_case_insensitive_needle_metadata_t close_md = {0};
+        sz_utf8_case_insensitive_needle_metadata_t open_md = {0};
         /* Walk inward: find the next closer; if a nested opener appears
            before it, descend to that opener and retry. The accepted opener
            is the innermost one with no further nested opener inside.
@@ -216,9 +229,10 @@ static const char *find_closer_(const char *buf,
             const char *close;
             const char *p = probe_inner;
             for (;;) {
-                close = parser_find_(p, (size_t)(end - p),
+                close = parser_find_with_md_(p, (size_t)(end - p),
                                     r->close_delim, r->close_len,
-                                    r->case_insensitive);
+                                    r->case_insensitive,
+                                    r->case_insensitive ? &close_md : NULL);
                 if (!close) return NULL;
                 if (!r->line_anchored_close || at_line_start_(buf, close))
                     break;
@@ -226,10 +240,11 @@ static const char *find_closer_(const char *buf,
             }
 
             /* Look for a nested opener strictly inside [probe_inner, close). */
-            const char *nested = parser_find_(probe_inner,
+            const char *nested = parser_find_with_md_(probe_inner,
                                              (size_t)(close - probe_inner),
                                              r->open_delim, r->open_len,
-                                             r->case_insensitive);
+                                             r->case_insensitive,
+                                             r->case_insensitive ? &open_md : NULL);
             if (!nested) {
                 /* probe_open .. close is the innermost match. */
                 *open_out        = probe_open;
@@ -265,11 +280,13 @@ static const char *find_closer_(const char *buf,
 
     case PARSER_MATCH_FIRST_CLOSE:
     default: {
+        sz_utf8_case_insensitive_needle_metadata_t close_md = {0};
         const char *p = inner_start_in;
         for (;;) {
-            const char *h = parser_find_(p, (size_t)(end - p),
+            const char *h = parser_find_with_md_(p, (size_t)(end - p),
                                         r->close_delim, r->close_len,
-                                        r->case_insensitive);
+                                        r->case_insensitive,
+                                        r->case_insensitive ? &close_md : NULL);
             if (!h) return NULL;
             if (!r->line_anchored_close || at_line_start_(buf, h))
                 return h;
@@ -287,12 +304,14 @@ void parser_scan(const char *buf, size_t len, const ParserRules *r,
                 ParserCallback cb, void *user_data) {
     const char *curr = buf;
     const char *end  = buf + len;
+    sz_utf8_case_insensitive_needle_metadata_t open_md = {0};
 
     while (curr < end) {
         /* 1) Find the next opener (with optional case-insensitive search). */
-        const char *open = parser_find_(curr, (size_t)(end - curr),
+        const char *open = parser_find_with_md_(curr, (size_t)(end - curr),
                                        r->open_delim, r->open_len,
-                                       r->case_insensitive);
+                                       r->case_insensitive,
+                                       r->case_insensitive ? &open_md : NULL);
         if (!open) {
             if (end > curr) cb(curr, (size_t)(end - curr),
                                PARSER_SEG_TEXT, user_data);

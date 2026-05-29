@@ -35,7 +35,8 @@ static bool parse_sentinel_at_allowed(const char *buf, size_t len, size_t pos,
 	if((unsigned char)buf[pos] != 0) return false;
 	size_t j= pos + 1;
 	if(j >= len || buf[j] < '0' || buf[j] > '9') return false;
-	while(j < len && buf[j] >= '0' && buf[j] <= '9') j++;
+	const char *not_digit = sz_find_byte_not_from(buf + j, len - j, "0123456789", 10);
+	j = not_digit ? (size_t)(not_digit - buf) : len;
 	if(j >= len) return false;
 	char t= buf[j];
 	if(allowed_types && sz_find_byte(allowed_types, allowed_len, &t) == NULL) return false;
@@ -83,12 +84,13 @@ static bool heading_line_parse(const char *s, size_t len, HeadingLineResult *out
 	/* Group 3: strip trailing ((\s|\0\d+[cn]\x7F)*) from the end */
 	const char *trail_end   = end;
 	const char *trail_start = end;
-	bool changed = true;
-	while(changed && trail_start > s + 1) {
-		changed = false;
-		/* whitespace */
-		if(isspace((unsigned char)*(trail_start - 1))) {
-			trail_start--; changed = true; continue;
+	while(trail_start > s + 1) {
+		/* Whitespace suffix (non-newline) can be consumed as one run. */
+		const char *ws = trail_start;
+		while(ws > s + 1 && isspace((unsigned char)*(ws - 1))) ws--;
+		if(ws != trail_start) {
+			trail_start = ws;
+			continue;
 		}
 		/* \x00\d+[cn]\x7F sentinel — scan backwards */
 		if((unsigned char)*(trail_start - 1) == (unsigned char)'\x7F'
@@ -103,11 +105,11 @@ static bool heading_line_parse(const char *s, size_t len, HeadingLineResult *out
 				}
 				if(digit_count >= 1 && (unsigned char)*q == 0) {
 					trail_start = q;
-					changed = true;
 					continue;
 				}
 			}
 		}
+		break;
 	}
 
 	/* JS/regex parity: backtrack opening run (={1,6}) from max to 1. */
@@ -241,18 +243,27 @@ brace_event_next(const char *buf, size_t len, size_t *pos,
                ([^\S\n] | \0\d+[cn]\x7F)* then another \n. */
 			size_t j= p + 1;
 			while(j < len) {
-				unsigned char cj= (unsigned char)buf[j];
-				if(cj == '\0') {
+				if((unsigned char)buf[j] == '\0') {
 					size_t sl= 0;
-											if(parse_sentinel_at_allowed(buf, len, j, "cn", 2, &sl)) {
+					if(parse_sentinel_at_allowed(buf, len, j, "cn", 2, &sl)) {
 						j+= sl;
 						continue;
 					}
 					break;
 				}
-				if(cj == ' ' || cj == '\t' || cj == '\v' || cj == '\f' || cj == '\r') {
-					j++;
-					continue;
+
+				const char *non_ws = sz_find_byte_not_from(buf + j, len - j, " \t\v\f\r", 5);
+				if(!non_ws) {
+					j = len;
+					break;
+				}
+				j = (size_t)(non_ws - buf);
+				if((unsigned char)buf[j] == '\0') {
+					size_t sl= 0;
+					if(parse_sentinel_at_allowed(buf, len, j, "cn", 2, &sl)) {
+						j+= sl;
+						continue;
+					}
 				}
 				break;
 			}
@@ -564,6 +575,14 @@ static char *trim_copy_n(const char *s, size_t len, size_t *out_n) {
 	return out;
 }
 
+static sz_string_view_t trim_view(const char *s, size_t len) {
+	if(!s || len == 0) return (sz_string_view_t){ .start = NULL, .length = 0 };
+	size_t i= 0, j= len;
+	while(i < j && isspace((unsigned char)s[i])) i++;
+	while(j > i && isspace((unsigned char)s[j - 1])) j--;
+	return (sz_string_view_t){ .start = s + i, .length = j - i };
+}
+
 static char *lower_copy(const char *s, size_t len) {
 	if(!s) return NULL;
 
@@ -581,34 +600,34 @@ static char *lower_copy(const char *s, size_t len) {
 static const char *parser_function_canonical(const ParserConfig *cfg, const char *name, size_t len) {
 	if(!cfg || !name || len == 0) return NULL;
 
-	size_t trimmed_len = 0;
-	char *trimmed= trim_copy_n(name, len, &trimmed_len);
-	if(!trimmed || trimmed_len == 0) {
-		free(trimmed);
-		return NULL;
-	}
+	sz_string_view_t trimmed = trim_view(name, len);
+	if(!trimmed.start || trimmed.length == 0) return NULL;
 
-	const char *canonical= str_map_get_exact(&cfg->parser_function_sensitive, trimmed, trimmed_len);
+	const char *canonical= str_map_get_exact(&cfg->parser_function_sensitive, trimmed.start, trimmed.length);
 	if(!canonical) {
-		char *lc= lower_copy(trimmed, trimmed_len);
+		char *lc= lower_copy(trimmed.start, trimmed.length);
 		if(lc) {
-			canonical= str_map_get_exact(&cfg->parser_function_insensitive, lc, trimmed_len);
+			canonical= str_map_get_exact(&cfg->parser_function_insensitive, lc, trimmed.length);
 			free(lc);
 		}
 	}
-
-	free(trimmed);
 	return canonical;
 }
 
 /* Build an owned, printable modifier string from title_part[0..mod_len),
  * expanding c/n/s sentinels via accum token toString (JS afterBuild parity). */
 static char *build_transclude_modifier(const char *title_part, size_t title_part_len,
-																 size_t mod_len, const Accum *accum) {
-	if(!title_part || mod_len == 0 || mod_len > title_part_len) return NULL;
+																 size_t mod_len, const Accum *accum, size_t *out_len) {
+	if(!title_part || mod_len == 0 || mod_len > title_part_len) {
+		if(out_len) *out_len = 0;
+		return NULL;
+	}
 
 	ThreadBuf *mod_tb = wiki_thread_buf_acquire_scratch();
-	if(!mod_tb) return NULL;
+	if(!mod_tb) {
+		if(out_len) *out_len = 0;
+		return NULL;
+	}
 	mod_tb->len = 0;
 
 	size_t i = 0;
@@ -647,6 +666,9 @@ static char *build_transclude_modifier(const char *title_part, size_t title_part
 	if(modifier) {
 		sz_copy(modifier, mod_tb->buf, mod_tb->len);
 		modifier[mod_tb->len] = '\0';
+		if(out_len) *out_len = mod_tb->len;
+	} else {
+		if(out_len) *out_len = 0;
 	}
 
 	wiki_thread_buf_release_scratch(mod_tb);
@@ -680,7 +702,7 @@ static Token *build_template_token(const char **parts_restored, const size_t *pa
 			token_append_child(t, name_tok);
 
 			char *nm= trim_copy(parts_restored[0], parts_lens[0]);
-			if(nm) t->name= nm;
+					if(nm) t->name= nm;
 		}
 
 		if(parts_count > 1 && parts_restored[1]) {
@@ -743,7 +765,9 @@ static Token *build_template_token(const char **parts_restored, const size_t *pa
 		size_t s_sl = 0;
 					if(lead < title_part_len && parse_sentinel_at_allowed(title_part, title_part_len, lead, "s", 1, &s_sl)) {
 			size_t mod_len = lead + s_sl;
-			t->data.transclude.modifier = build_transclude_modifier(title_part, title_part_len, mod_len, accum);
+			size_t modifier_len = 0;
+			char *modifier = build_transclude_modifier(title_part, title_part_len, mod_len, accum, &modifier_len);
+			t->data.transclude.modifier = (sz_string_view_t){ .start = modifier, .length = modifier ? modifier_len : 0 };
 			title_part += mod_len;
 			title_part_len -= mod_len;
 		} else {
@@ -772,7 +796,9 @@ static Token *build_template_token(const char **parts_restored, const size_t *pa
 						break;
 					}
 					size_t mod_len= prefix_len + 1 + mt_len;
-					t->data.transclude.modifier= build_transclude_modifier(title_part, title_part_len, mod_len, accum);
+					size_t modifier_len = 0;
+					char *modifier= build_transclude_modifier(title_part, title_part_len, mod_len, accum, &modifier_len);
+					t->data.transclude.modifier = (sz_string_view_t){ .start = modifier, .length = modifier ? modifier_len : 0 };
 					title_part= title_part + mod_len;
 					title_part_len-= mod_len;
 				}
@@ -810,8 +836,7 @@ static Token *build_template_token(const char **parts_restored, const size_t *pa
 				magic_first_arg_len= p0_len - magic_title_len - 1;
 			}
 
-			free(t->type_name);
-			t->type_name= strdup("magic-word");
+			t->subtype= TOKEN_SUBTYPE_MAGIC_WORD;
 			size_t magic_clean_len= 0;
 			char *magic_clean= str_remove_comment(title_part, magic_title_len, &magic_clean_len);
 			char *magic_raw_name= magic_clean ? trim_copy(magic_clean, magic_clean_len) : NULL;
@@ -826,17 +851,17 @@ static Token *build_template_token(const char **parts_restored, const size_t *pa
 				return NULL;
 			}
 			if(canonical) {
-				t->name= strdup(canonical);
+							t->name= strdup(canonical);
 			} else {
 				char *nm= magic_raw_name;
 					if(nm) {
 						size_t nm_len= strlen(nm);
 						sz_lookup(nm, nm_len, nm, (const char *)fast_tolower_table());
-						t->name= nm;
+										t->name= nm;
 					}
 			}
 			if(canonical && magic_raw_name) free(magic_raw_name);
-			if(t->name && strcmp(t->name, "invoke") == 0) invoke_magic= true;
+					if(t->name && strcmp(t->name, "invoke") == 0) invoke_magic= true;
 
 			Token *mw_name= token_new(TOKEN_SYNTAX, "magic-word-name");
 			if(mw_name) {
@@ -947,7 +972,7 @@ static Token *build_template_token(const char **parts_restored, const size_t *pa
 					token_append_child(param, val_tok);
 
 					char *pname= strdup("1");
-					if(pname) param->name= pname;
+								if(pname) param->name= pname;
 					positional= 2;
 					token_append_child(t, param);
 				} else {
@@ -974,14 +999,14 @@ static Token *build_template_token(const char **parts_restored, const size_t *pa
 		 *   - #tag: params with j>1 may be key=value
 		 * Here k maps to j with an offset of params_start_idx. */
 		bool allow_named_split= true;
-		if(transclude_is_magic && t->name) {
-			if(strcmp(t->name, "invoke") == 0) {
+			if(transclude_is_magic && t->name) {
+				if(strcmp(t->name, "invoke") == 0) {
 				/* JS parity: #invoke behaves template-like for remaining args,
 				 * so key=value stays named (for example x=y). */
 				allow_named_split= true;
-			} else if(strcmp(t->name, "switch") == 0) {
+				} else if(strcmp(t->name, "switch") == 0) {
 				allow_named_split= (k >= params_start_idx);
-			} else if(strcmp(t->name, "tag") == 0) {
+				} else if(strcmp(t->name, "tag") == 0) {
 				allow_named_split= (k > params_start_idx);
 			} else {
 				allow_named_split= false;
@@ -1036,7 +1061,7 @@ static Token *build_template_token(const char **parts_restored, const size_t *pa
 			char *key_clean= str_remove_comment(part, key_len, &key_clean_len);
 			char *pname= key_clean ? trim_copy(key_clean, key_clean_len) : NULL;
 			free(key_clean);
-			if(pname) param->name= pname;
+				   if(pname) param->name= pname;
 		} else {
 			token_append_child(param, key_tok);
 			token_append_text_n(val_tok, part, part_len);
@@ -1049,7 +1074,7 @@ static Token *build_template_token(const char **parts_restored, const size_t *pa
 				// It is safe because it only copies the exact length of the string.
 				char *pname= strdup(idx_buf);
 				if(pname) {
-					param->name= pname;
+								param->name= pname;
 				}
 			}
 		}
@@ -1250,7 +1275,7 @@ static bool parts_append_text(PartList *parts, const char *s, size_t len) {
 }
 
 typedef struct {
-	char *open;
+	char open_ch;
 	size_t open_len;
 	size_t index;
 	size_t pos;
@@ -1265,22 +1290,17 @@ static bool brace_frame_init(BraceFrame *frame, const char *open, size_t open_le
 	if(!frame) return false;
 	frame->out_mark= 0;
 	frame->has_out_mark= false;
-	frame->open= malloc(open_len + 1);
-	if(!frame->open) return false;
-	sz_copy(frame->open, open, open_len);
-	frame->open[open_len]= '\0';
+	frame->open_ch = (open && open_len > 0) ? open[0] : '\0';
 	frame->open_len= open_len;
 	frame->index= index;
 	frame->pos= pos;
 	frame->find_equal= find_equal;
-	frame->has_parts= (open_len > 0 && open[0] == '{');
+	frame->has_parts= (open_len > 0 && frame->open_ch == '{');
 	if(frame->has_parts) {
 		/* initialise parts and ensure we clean up on failure */
 		parts_init(&frame->parts);
 		if(!parts_add_empty(&frame->parts)) {
-			/* parts_add_empty failed: free open and any partial parts allocations */
-			free(frame->open);
-			frame->open= NULL;
+			/* parts_add_empty failed: clean up any partial parts allocations */
 			parts_free(&frame->parts);
 			return false;
 		}
@@ -1292,8 +1312,6 @@ static bool brace_frame_init(BraceFrame *frame, const char *open, size_t open_le
 
 static void brace_frame_free(BraceFrame *frame) {
 	if(!frame) return;
-	free(frame->open);
-	frame->open= NULL;
 	parts_free(&frame->parts);
 }
 
@@ -1387,7 +1405,7 @@ static bool braces_state_machine(ThreadBuf *tb, const ParserConfig *cfg,
 										&equals_count, &sentinel_len);
 
 		/* JS parity: heading frames can close at EOF without a trailing newline. */
-		if(!matched && stack_len > 0 && stack[stack_len - 1].open_len == 1 && stack[stack_len - 1].open[0] == '=') {
+		if(!matched && stack_len > 0 && stack[stack_len - 1].open_len == 1 && stack[stack_len - 1].open_ch == '=') {
 			matched= true;
 			evkind= BRACE_EVT_NEWLINE;
 			event_pos= tb->len;
@@ -1425,7 +1443,6 @@ static bool braces_state_machine(ThreadBuf *tb, const ParserConfig *cfg,
 		}
 
 		size_t syntax_len = syntax_end > syntax_start ? syntax_end - syntax_start : 0;
-		const char *syntax = tb->buf + syntax_start;
 		BraceFrame top;
 		bool has_top = false;
 		bool top_requeued = false;
@@ -1446,18 +1463,18 @@ static bool braces_state_machine(ThreadBuf *tb, const ParserConfig *cfg,
 
 		if(matched && evkind == BRACE_EVT_WIKILINK_CLOSE) {
 			/* ]] closes a [[ link frame; preserve any non-link frame below it */
-			if(has_top && !(top.open_len >= 1 && top.open[0] == '[')) {
+			if(has_top && !(top.open_len >= 1 && top.open_ch == '[')) {
 				stack[stack_len++]= top;
 				top_requeued= true;
 			}
 		} else if(matched && evkind == BRACE_EVT_CONVERTER_CLOSE) {
 			/* }- closes a -{ converter frame; preserve any non-converter frame below it */
-			if(has_top && !(top.open_len >= 1 && top.open[0] == '-')) {
+			if(has_top && !(top.open_len >= 1 && top.open_ch == '-')) {
 				stack[stack_len++]= top;
 				top_requeued= true;
 			}
 		} else if(matched && evkind == BRACE_EVT_NEWLINE) {
-			if(has_top && top.open_len == 1 && top.open[0] == '=') {
+			if(has_top && top.open_len == 1 && top.open_ch == '=') {
 				/* Only materialize heading tokens when no outer frame is active.
 				 * Nested template values are reparsed recursively later. */
 				if(stack_len == 0) {
@@ -1628,7 +1645,7 @@ static bool braces_state_machine(ThreadBuf *tb, const ParserConfig *cfg,
 						next_write= rep_end;
 						if(rest > 1) {
 							BraceFrame child;
-							if(brace_frame_init(&child, top.open, rest, top.index, rep_end, false)) {
+							if(brace_frame_init(&child, "{", rest, top.index, rep_end, false)) {
 								bool child_ok = true;
 								/* JS parity: when an overlong opener (for example '{{{{{') closes
 								 * as an inner token, the remaining outer frame starts with that
@@ -1683,7 +1700,7 @@ static bool braces_state_machine(ThreadBuf *tb, const ParserConfig *cfg,
 				}
 				size_t frame_out_mark= out_len;
 				BraceFrame frame;
-				if(brace_frame_init(&frame, syntax, syntax_len, cur_index, cur_index + syntax_len, false)) {
+				if(brace_frame_init(&frame, "{", syntax_len, cur_index, cur_index + syntax_len, false)) {
 					frame.out_mark= frame_out_mark;
 					frame.has_out_mark= true;
 					if(has_top) {
@@ -2006,12 +2023,22 @@ static void main_braces_template_cb(const char *segment, size_t len,
 	/* JS parity (reReplace): newline is allowed in {{...}} only when not
 	 * immediately followed by '=' or a placeholder-NUL. If disallowed,
 	 * leave this match untouched for the stage-1 state machine. */
-	for(size_t i= 0; i + 1 < inner_len; i++) {
-		if(inner[i] == '\n' && (inner[i + 1] == '=' || inner[i + 1] == '\0')) {
-			wiki_thread_buf_append(ctx->out, (sz_string_view_t){.start= "{{", .length= 2});
-			wiki_thread_buf_append(ctx->out, (sz_string_view_t){.start= inner, .length= inner_len});
-			wiki_thread_buf_append(ctx->out, (sz_string_view_t){.start= "}}", .length= 2});
-			return;
+	if(inner_len > 1) {
+		const char nl = '\n';
+		const char *scan = inner;
+		size_t rem = inner_len;
+		while(rem > 1) {
+			const char *p = sz_find_byte(scan, rem, &nl);
+			if(!p) break;
+			size_t off = (size_t)(p - inner);
+			if(off + 1 < inner_len && (inner[off + 1] == '=' || inner[off + 1] == '\0')) {
+				wiki_thread_buf_append(ctx->out, (sz_string_view_t){.start= "{{", .length= 2});
+				wiki_thread_buf_append(ctx->out, (sz_string_view_t){.start= inner, .length= inner_len});
+				wiki_thread_buf_append(ctx->out, (sz_string_view_t){.start= "}}", .length= 2});
+				return;
+			}
+			scan = p + 1;
+			rem = inner_len - (size_t)(scan - inner);
 		}
 	}
 
@@ -2055,14 +2082,16 @@ static void main_braces_park_cb(const char *segment, size_t len,
 	/* PARSER_SEG_INNER: reconstruct open+inner+close, park, emit placeholder. */
 	const ParserRules *r= ctx->active_rule;
 	size_t full_len= r->open_len + len + r->close_len;
-	char *tmp= malloc(full_len + 1);
+	ThreadBuf *tmp = wiki_thread_buf_acquire_scratch();
 	assert(tmp);
-	sz_copy(tmp, r->open_delim, r->open_len);
-	sz_copy(tmp + r->open_len, segment, len);
-	sz_copy(tmp + r->open_len + len, r->close_delim, r->close_len);
-	tmp[full_len]= '\0';
-	main_braces_push_link_stack(ctx, tmp, full_len);
-	free(tmp);
+	wiki_thread_buf_reserve(tmp, full_len + 1);
+	tmp->len = 0;
+	wiki_thread_buf_append(tmp, (sz_string_view_t){ .start = r->open_delim, .length = r->open_len });
+	wiki_thread_buf_append(tmp, (sz_string_view_t){ .start = segment, .length = len });
+	wiki_thread_buf_append(tmp, (sz_string_view_t){ .start = r->close_delim, .length = r->close_len });
+	tmp->buf[tmp->len] = '\0';
+	main_braces_push_link_stack(ctx, tmp->buf, tmp->len);
+	wiki_thread_buf_release_scratch(tmp);
 }
 
 typedef struct {
@@ -2075,6 +2104,11 @@ typedef struct {
 	size_t *link_cap;
 } MainBracesPassArgs;
 
+static inline bool braces_has_literal(const char *buf, size_t len, const char *lit, size_t lit_len) {
+	if(!buf || !lit || lit_len == 0 || len < lit_len) return false;
+	return sz_find(buf, len, lit, lit_len) != NULL;
+}
+
 /*
  * One pass of the outer fixpoint loop.
  * Runs four sequential sub-scans (two template alternations, then wikilink,
@@ -2082,6 +2116,13 @@ typedef struct {
  */
 static void main_braces_run_pass(void *user_data) {
 	MainBracesPassArgs *args= (MainBracesPassArgs *)user_data;
+	const char *in_buf = args->tb->buf;
+	size_t in_len = args->tb->len;
+	bool has_template_pair = braces_has_literal(in_buf, in_len, "{{", 2) && braces_has_literal(in_buf, in_len, "}}", 2);
+	bool has_wikilink_pair = braces_has_literal(in_buf, in_len, "[[", 2) && braces_has_literal(in_buf, in_len, "]]", 2);
+	bool has_converter_pair = braces_has_literal(in_buf, in_len, "-{", 2) && braces_has_literal(in_buf, in_len, "}-", 2);
+	if(!has_template_pair && !has_wikilink_pair && !has_converter_pair) return;
+
 	ThreadBuf *out= wiki_thread_buf_acquire_scratch();
 	assert(out);
 
@@ -2095,33 +2136,39 @@ static void main_braces_run_pass(void *user_data) {
 	.link_cap= args->link_cap,
 	};
 
-	/* Sub-pass 1a: {{...}} not preceded by { (alternation 1). */
-	out->len= 0;
-	ctx.active_rule= &wiki_rule_main_template_1;
-	parser_scan(args->tb->buf, args->tb->len, &wiki_rule_main_template_1,
-				main_braces_template_cb, &ctx);
-	wiki_thread_buf_set(args->tb, out->buf, out->len);
+	if(has_template_pair) {
+		/* Sub-pass 1a: {{...}} not preceded by { (alternation 1). */
+		out->len= 0;
+		ctx.active_rule= &wiki_rule_main_template_1;
+		parser_scan(args->tb->buf, args->tb->len, &wiki_rule_main_template_1,
+						main_braces_template_cb, &ctx);
+		wiki_thread_buf_set(args->tb, out->buf, out->len);
 
-	/* Sub-pass 1b: {{...}} not followed by } (alternation 2). */
-	out->len= 0;
-	ctx.active_rule= &wiki_rule_main_template_2;
-	parser_scan(args->tb->buf, args->tb->len, &wiki_rule_main_template_2,
-				main_braces_template_cb, &ctx);
-	wiki_thread_buf_set(args->tb, out->buf, out->len);
+		/* Sub-pass 1b: {{...}} not followed by } (alternation 2). */
+		out->len= 0;
+		ctx.active_rule= &wiki_rule_main_template_2;
+		parser_scan(args->tb->buf, args->tb->len, &wiki_rule_main_template_2,
+						main_braces_template_cb, &ctx);
+		wiki_thread_buf_set(args->tb, out->buf, out->len);
+	}
 
-	/* Sub-pass 2: park [[...]] wikilinks. */
-	out->len= 0;
-	ctx.active_rule= &wiki_rule_main_wikilink;
-	parser_scan(args->tb->buf, args->tb->len, &wiki_rule_main_wikilink,
-				main_braces_park_cb, &ctx);
-	wiki_thread_buf_set(args->tb, out->buf, out->len);
+	if(has_wikilink_pair) {
+		/* Sub-pass 2: park [[...]] wikilinks. */
+		out->len= 0;
+		ctx.active_rule= &wiki_rule_main_wikilink;
+		parser_scan(args->tb->buf, args->tb->len, &wiki_rule_main_wikilink,
+						main_braces_park_cb, &ctx);
+		wiki_thread_buf_set(args->tb, out->buf, out->len);
+	}
 
-	/* Sub-pass 3: park -{...}- converters. */
-	out->len= 0;
-	ctx.active_rule= &wiki_rule_main_converter;
-	parser_scan(args->tb->buf, args->tb->len, &wiki_rule_main_converter,
-				main_braces_park_cb, &ctx);
-	wiki_thread_buf_set(args->tb, out->buf, out->len);
+	if(has_converter_pair) {
+		/* Sub-pass 3: park -{...}- converters. */
+		out->len= 0;
+		ctx.active_rule= &wiki_rule_main_converter;
+		parser_scan(args->tb->buf, args->tb->len, &wiki_rule_main_converter,
+						main_braces_park_cb, &ctx);
+		wiki_thread_buf_set(args->tb, out->buf, out->len);
+	}
 
 	wiki_thread_buf_release_scratch(out);
 }
@@ -2178,8 +2225,10 @@ void parse_braces_with_heading(ThreadBuf *tb, const ParserConfig *cfg, Accum *ac
 	}
 
 	/* JS parity: after innermost {{...}} replacements, outer {{{...}}} may become
-     * simple enough to match (e.g. {{{a|{{T}}}}}). Re-run the simple-arg pass. */
-	parse_simple_args(tb, cfg, accum);
+	 * simple enough to match (e.g. {{{a|{{T}}}}}). Re-run only when candidates exist. */
+	if(braces_has_literal(tb->buf, tb->len, "{{{", 3) && braces_has_literal(tb->buf, tb->len, "}}}", 3)) {
+		parse_simple_args(tb, cfg, accum);
+	}
 
 	/* Cleanup link_stack */
 	for(size_t i= 0; i < link_count; i++) free(link_stack[i]);

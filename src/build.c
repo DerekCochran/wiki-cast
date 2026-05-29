@@ -79,11 +79,13 @@ static void append_key_token_repr_tb(const Token *t, ThreadBuf *tb) {
 	}
 
 	if(t->type == TOKEN_EXT) {
-		const char *ext_tag= t->data.ext.name ? t->data.ext.name : t->name;
-		const char *ext_closing= t->data.ext.closing ? t->data.ext.closing : ext_tag;
+		const char *ext_tag= t->data.ext.name.start ? t->data.ext.name.start : t->name;
+		size_t ext_tag_len= t->data.ext.name.start ? t->data.ext.name.length : (t->name ? strlen(t->name) : 0);
+		const char *ext_closing= t->data.ext.closing.start ? t->data.ext.closing.start : ext_tag;
+		size_t ext_closing_len= t->data.ext.closing.start ? t->data.ext.closing.length : ext_tag_len;
 
 		wiki_thread_buf_putc(tb, '<');
-		if(ext_tag) wiki_thread_buf_append(tb, (sz_string_view_t){ ext_tag, strlen(ext_tag) });
+		if(ext_tag) wiki_thread_buf_append(tb, (sz_string_view_t){ ext_tag, ext_tag_len });
 		if(t->child_count > 0) {
 			const Child *c= &t->children[0];
 			if(c->is_text) {
@@ -107,7 +109,7 @@ static void append_key_token_repr_tb(const Token *t, ThreadBuf *tb) {
 			}
 		}
 		wiki_thread_buf_append(tb, (sz_string_view_t){ "</", 2 });
-		if(ext_closing) wiki_thread_buf_append(tb, (sz_string_view_t){ ext_closing, strlen(ext_closing) });
+		if(ext_closing) wiki_thread_buf_append(tb, (sz_string_view_t){ ext_closing, ext_closing_len });
 		wiki_thread_buf_putc(tb, '>');
 		return;
 	}
@@ -121,8 +123,8 @@ static void append_key_token_repr_tb(const Token *t, ThreadBuf *tb) {
 				append_key_token_repr_tb(c->token, tb);
 			}
 		}
-		if(t->data.ext_attr.equal) {
-			wiki_thread_buf_append(tb, (sz_string_view_t){ t->data.ext_attr.equal, strlen(t->data.ext_attr.equal) });
+		if(t->data.ext_attr.equal.start) {
+			wiki_thread_buf_append(tb, t->data.ext_attr.equal);
 			if(t->data.ext_attr.quote_open) wiki_thread_buf_putc(tb, t->data.ext_attr.quote_open);
 			if(t->child_count > 1) {
 				const Child *c= &t->children[1];
@@ -140,9 +142,9 @@ static void append_key_token_repr_tb(const Token *t, ThreadBuf *tb) {
 	if(t->type == TOKEN_LINK || t->type == TOKEN_FILE ||
 	   t->type == TOKEN_CATEGORY || t->type == TOKEN_REDIRECT_TARGET) {
 		bool is_file_line_image =
-			(t->type == TOKEN_FILE && t->type_name &&
-			 (strcmp(t->type_name, "gallery-image") == 0 ||
-			  strcmp(t->type_name, "imagemap-image") == 0));
+			(t->type == TOKEN_FILE &&
+			 (t->subtype == TOKEN_SUBTYPE_GALLERY_IMAGE ||
+			  t->subtype == TOKEN_SUBTYPE_IMAGEMAP_IMAGE));
 
 		if(!is_file_line_image) {
 			wiki_thread_buf_append(tb, (sz_string_view_t){ "[[", 2 });
@@ -179,11 +181,12 @@ static void append_key_token_repr_tb(const Token *t, ThreadBuf *tb) {
 	}
 
 	if(t->type == TOKEN_HTML) {
-		const char *tag= t->data.html.orig_tag ? t->data.html.orig_tag : t->name;
+		const char *tag= t->data.html.orig_tag.start ? t->data.html.orig_tag.start : t->name;
+		size_t tag_len= t->data.html.orig_tag.start ? t->data.html.orig_tag.length : (t->name ? strlen(t->name) : 0);
 		if(t->data.html.closing) {
 			wiki_thread_buf_putc(tb, '<');
 			wiki_thread_buf_putc(tb, '/');
-			if(tag) wiki_thread_buf_append(tb, (sz_string_view_t){ tag, strlen(tag) });
+			if(tag) wiki_thread_buf_append(tb, (sz_string_view_t){ tag, tag_len });
 			if(t->child_count > 0) {
 				const Child *c= &t->children[0];
 				if(c->is_text) {
@@ -201,7 +204,7 @@ static void append_key_token_repr_tb(const Token *t, ThreadBuf *tb) {
 		}
 
 		wiki_thread_buf_putc(tb, '<');
-		if(tag) wiki_thread_buf_append(tb, (sz_string_view_t){ tag, strlen(tag) });
+		if(tag) wiki_thread_buf_append(tb, (sz_string_view_t){ tag, tag_len });
 		if(t->child_count > 0) {
 			const Child *c= &t->children[0];
 			if(c->is_text) {
@@ -229,12 +232,12 @@ static void append_key_token_repr_tb(const Token *t, ThreadBuf *tb) {
 			}
 
 			if(t->child_count == 1) {
-				if(t->data.ext_link.space) {
-					wiki_thread_buf_append(tb, (sz_string_view_t){ t->data.ext_link.space, strlen(t->data.ext_link.space) });
+				if(t->data.ext_link.space.start) {
+					wiki_thread_buf_append(tb, t->data.ext_link.space);
 				}
 			} else {
-				if(t->data.ext_link.space) {
-					wiki_thread_buf_append(tb, (sz_string_view_t){ t->data.ext_link.space, strlen(t->data.ext_link.space) });
+				if(t->data.ext_link.space.start) {
+					wiki_thread_buf_append(tb, t->data.ext_link.space);
 				} else {
 					wiki_thread_buf_putc(tb, ' ');
 				}
@@ -255,7 +258,7 @@ static void append_key_token_repr_tb(const Token *t, ThreadBuf *tb) {
 	if(t->type == TOKEN_TRANSCLUDE) {
 		wiki_thread_buf_putc(tb, '{');
 		wiki_thread_buf_putc(tb, '{');
-		bool is_magic_word = (t->type_name && strcmp(t->type_name, "magic-word") == 0);
+		bool is_magic_word = (t->subtype == TOKEN_SUBTYPE_MAGIC_WORD);
 		for(size_t i = 0; i < t->child_count; i++) {
 			if(i > 0) {
 				if(is_magic_word && i == 1)
@@ -379,7 +382,7 @@ static size_t js_trim_ws_before(const char *s, size_t end) {
  * stage-log snapshots captured during parseBraces (Stage 1). */
 static void refresh_template_name(Token *t, const ParserConfig *cfg) {
 	if(!t || t->type != TOKEN_TRANSCLUDE) return;
-	if(!t->type_name || strcmp(t->type_name, "template") != 0) return;
+	if(t->subtype != TOKEN_SUBTYPE_TEMPLATE) return;
 	if(t->child_count == 0) return;
 
 	/* Child 0 is the template-name atom token */
@@ -430,8 +433,7 @@ static void refresh_template_name(Token *t, const ParserConfig *cfg) {
 	title_free(parsed);
 
 	if(name) {
-		free(t->name);
-		t->name= name;
+		token_set_name_owned(t, name);
 	}
 }
 
@@ -451,14 +453,13 @@ static void refresh_attribute_name(Token *t) {
 	}
 
 	if(new_name) {
-		free(t->name);
-		t->name= new_name;
+		token_set_name_owned(t, new_name);
 	}
 }
 
 /* JS parity: ParameterToken.afterBuild() recomputes named-parameter keys from
  * the built parameter-key token (so embedded tokens like {{LASTYEAR}} are
- * reflected in param->name). Anonymous parameters keep their numeric names. */
+ * reflected in param->name.start). Anonymous parameters keep their numeric names. */
 static void refresh_parameter_name(Token *t) {
 	if(!t || t->type != TOKEN_PARAMETER || t->child_count == 0) return;
 
@@ -492,8 +493,7 @@ static void refresh_parameter_name(Token *t) {
 	if(new_name) {
 		sz_copy(new_name, buf + i, n);
 		new_name[n]= '\0';
-		free(t->name);
-		t->name= new_name;
+		token_set_name_owned(t, new_name);
 	}
 
 	wiki_thread_buf_release_scratch(scratch);
@@ -743,8 +743,7 @@ static void set_td_attrs_name(Token *td, const char *name) {
 			dup[nlen] = '\0';
 		}
 	}
-	free(ac->token->name);
-	ac->token->name = dup;
+	token_set_name_owned(ac->token, dup);
 }
 
 /* JS parity: AttributesToken.afterBuild() calls parentNode.subtype for 'td'

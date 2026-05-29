@@ -100,8 +100,10 @@ static bool heading_line_parse_full(const char *s, size_t len, HdLineResult *out
     size_t lead_len = (size_t)(p - lead);
 
 	const char *eq_start = p;
-	size_t open_run = 0;
-	while(p < end && *p == '=' && open_run < 6) { p++; open_run++; }
+	const char *first_non_eq = sz_find_byte_not_from(p, (size_t)(end - p), "=", 1);
+	size_t open_run = first_non_eq ? (size_t)(first_non_eq - p) : (size_t)(end - p);
+	if(open_run > 6) open_run = 6;
+	p += open_run;
 	if(open_run == 0) return false;
 
     const char *trail_end = end, *trail_start = end;
@@ -251,11 +253,11 @@ static void dunder_cb(const char *seg, size_t len, ParserSegmentKind kind, void 
 
 	if(alias && alias[0]) {
 		size_t alen = strlen(alias);
-		t->name = lower_copy(alias, alen);
+			t->name = lower_copy(alias, alen);
 		free(lc);
 		lc = NULL;
 	} else {
-		t->name = lc;
+			t->name = lc;
 		lc = NULL;
 	}
 

@@ -24,11 +24,6 @@ static Token *build_magic_link(const char *s, size_t len,
 
 /* ── Helpers for forward scanning ───────────────────────────────────────── */
 
-    static bool ci_eq_lit(const char *s, size_t slen, const char *lit, size_t litlen) {
-        if (litlen > slen) return false;
-        return str_ci_eq_n(s, lit, litlen);
-    }
-
 static bool utf8_prev_cp(const char *s, size_t len, size_t pos, UChar32 *out_cp) {
     if (!s || !out_cp || pos == 0 || pos > len) return false;
     size_t i = pos - 1;
@@ -94,11 +89,24 @@ static size_t parse_cnht_sentinel(const char *s, size_t len, size_t i) {
 /* ── Magic link matcher structs and functions ────────────────────────────── */
 
 typedef struct {
+    enum {
+        MAGIC_MATCH_URL = 1,
+        MAGIC_MATCH_KEYWORD = 2,
+    } kind;
     size_t mstart, mend;
     size_t lead_s, lead_e;
     bool has_p1;
     size_t p1_s, p1_e; /* URL body after protocol, only when has_p1=true */
 } MagicScanMatch;
+
+static size_t consume_ascii_digit_span(const char *s, size_t len, size_t i, size_t max_digits) {
+    if (!s || i >= len || max_digits == 0) return 0;
+    const char *digits = "0123456789";
+    const char *p = sz_find_byte_not_from(s + i, len - i, digits, 10);
+    size_t span = p ? (size_t)(p - (s + i)) : (len - i);
+    if (span > max_digits) span = max_digits;
+    return span;
+}
 
 static size_t consume_magic_space(const char *s, size_t len, size_t i) {
     if (i >= len) return 0;
@@ -110,7 +118,8 @@ static size_t consume_magic_space(const char *s, size_t len, size_t i) {
         size_t j = i + 2;
         if (j < len && (s[j] == 'x' || s[j] == 'X')) {
             j++;
-            while (j < len && s[j] == '0') j++;
+            const char *hex_nz = sz_find_byte_not_from(s + j, len - j, "0", 1);
+            j = hex_nz ? (size_t)(hex_nz - s) : len;
             if (j + 2 < len && s[j + 2] == ';') {
                 char a = (char)fast_tolower((unsigned char)s[j]);
                 char b = (char)fast_tolower((unsigned char)s[j + 1]);
@@ -118,7 +127,8 @@ static size_t consume_magic_space(const char *s, size_t len, size_t i) {
             }
             return 0;
         }
-        while (j < len && s[j] == '0') j++;
+        const char *dec_nz = sz_find_byte_not_from(s + j, len - j, "0", 1);
+        j = dec_nz ? (size_t)(dec_nz - s) : len;
         if (j + 2 < len && s[j] == '1' && s[j + 1] == '6' && s[j + 2] == '0' && j + 3 < len && s[j + 3] == ';')
             return (j + 4) - i;
     }
@@ -127,8 +137,8 @@ static size_t consume_magic_space(const char *s, size_t len, size_t i) {
 
 static bool parse_rfc_or_pmid(const char *s, size_t len, size_t i, size_t *out_end) {
     size_t p = i;
-        if (ci_eq_lit(s + p, len - p, "RFC", 3)) p += 3;
-        else if (ci_eq_lit(s + p, len - p, "PMID", 4)) p += 4;
+        if (len - p >= 3 && sz_equal(s + p, "RFC", 3) == sz_true_k) p += 3;
+        else if (len - p >= 4 && sz_equal(s + p, "PMID", 4) == sz_true_k) p += 4;
     else return false;
 
     size_t sp = consume_magic_space(s, len, p);
@@ -140,34 +150,33 @@ static bool parse_rfc_or_pmid(const char *s, size_t len, size_t i, size_t *out_e
         p += nsp;
     }
 
-    size_t d0 = p;
-    while (p < len && isdigit((unsigned char)s[p])) p++;
-    if (p == d0) return false;
-    if (p < len && utf8_cp_at_is_word(s, len, p)) return false;
-    *out_end = p;
+    const char *not_digit = sz_find_byte_not_from(s + p, len - p, "0123456789", 10);
+    size_t end = not_digit ? (size_t)(not_digit - s) : len;
+    if (end == p) return false;
+    if (end < len && utf8_cp_at_is_word(s, len, end)) return false;
+    *out_end = end;
     return true;
 }
 
 static bool parse_isbn_core_10(const char *s, size_t len, size_t p, size_t *core_end) {
 	int digits = 0;
 	while (p < len && digits < 9) {
-		if (isdigit((unsigned char)s[p])) {
-			digits++;
-			p++;
-            /* JS parity for (?:\d[\s-]?){9}: only one optional separator token
-             * per position (either a space-token or '-' but not both). */
-            size_t sep = consume_magic_space(s, len, p);
-            if (sep > 0) {
-                p += sep;
-            } else if (p < len && s[p] == '-') {
-                p++;
-            }
-			continue;
+        size_t span = consume_ascii_digit_span(s, len, p, (size_t)(9 - digits));
+        if (span == 0) break;
+        digits += (int)span;
+        p += span;
+
+        /* JS parity for (?:\d[\s-]?){9}: consume at most one separator token
+         * after each consumed digit run. */
+        size_t sep = consume_magic_space(s, len, p);
+        if (sep > 0) {
+            p += sep;
+        } else if (p < len && s[p] == '-') {
+            p++;
 		}
-		break;
 	}
 	if (digits != 9 || p >= len) return false;
-	if (isdigit((unsigned char)s[p]) || s[p] == 'x' || s[p] == 'X') p++;
+    if ((unsigned char)(s[p] - '0') <= 9 || s[p] == 'x' || s[p] == 'X') p++;
 	else return false;
 	if (p < len && utf8_cp_at_is_word(s, len, p)) return false;
 	*core_end = p;
@@ -176,7 +185,7 @@ static bool parse_isbn_core_10(const char *s, size_t len, size_t p, size_t *core
 
 static bool parse_isbn(const char *s, size_t len, size_t i, size_t *out_end) {
     size_t p = i;
-        if (!ci_eq_lit(s + p, len - p, "ISBN", 4)) return false;
+        if (len - p < 4 || sz_equal(s + p, "ISBN", 4) != sz_true_k) return false;
     p += 4;
 
     size_t sp = consume_magic_space(s, len, p);
@@ -241,9 +250,29 @@ static bool parse_protocol_url(const char *s, size_t len, size_t i,
         p++;
     }
 
+    static const char url_stop_bytes[] =
+        "\x00\x01\x02\x03\x04\x05\x06\x07\x08\x09\x0A\x0B\x0C\x0D\x0E\x0F"
+        "\x10\x11\x12\x13\x14\x15\x16\x17\x18\x19\x1A\x1B\x1C\x1D\x1E\x1F\x20"
+        "[]<>\"\x7F\xC2\xE1\xE2\xE3\xEF";
     while (p < len) {
         size_t sc = parse_cnht_sentinel(s, len, p);
-        if (sc > 0) { p += sc; continue; }
+        if (sc > 0) {
+            p += sc;
+            continue;
+        }
+
+        const char *stop = sz_find_byte_from(s + p, len - p,
+                                             url_stop_bytes, sizeof(url_stop_bytes) - 1);
+        if (!stop) {
+            p = len;
+            break;
+        }
+        size_t stop_p = (size_t)(stop - s);
+        if (stop_p > p) {
+            p = stop_p;
+            continue;
+        }
+
         if (consume_js_zs_magic(s, len, p) > 0) break;
         if (p + 2 < len && (unsigned char)s[p] == 0xEF &&
             (unsigned char)s[p + 1] == 0xBF && (unsigned char)s[p + 2] == 0xBD) break;
@@ -268,10 +297,19 @@ static bool magic_find_next(const char *s, size_t len, size_t at,
                             const ParserConfig *cfg, MagicScanMatch *m) {
     if (!s || !m) return false;
     for (size_t i = at; i < len; i++) {
+        unsigned char c = (unsigned char)s[i];
+        unsigned char cl = (unsigned char)fast_tolower(c);
+        bool keyword_start = (cl == 'r' || cl == 'p' || cl == 'i');
+        bool proto_start = (cfg && cfg->protocol_initials[cl]);
+        if (!keyword_start && !proto_start) {
+            continue;
+        }
+
         if (!magic_left_boundary_ok(s, len, i)) continue;
 
         size_t body_s = 0, body_e = 0, mend = 0;
         if (parse_protocol_url(s, len, i, cfg, &body_s, &body_e, &mend)) {
+            m->kind = MAGIC_MATCH_URL;
             m->mstart = i; /* plain text runs from search_at to mstart */
             m->lead_s = i;
             m->lead_e = i; /* keyword/URL starts here; no separate lead span */
@@ -283,6 +321,7 @@ static bool magic_find_next(const char *s, size_t len, size_t at,
         }
 
         if (parse_rfc_or_pmid(s, len, i, &mend) || parse_isbn(s, len, i, &mend)) {
+            m->kind = MAGIC_MATCH_KEYWORD;
             m->mstart = i;
             m->lead_s = i;
             m->lead_e = i;
@@ -488,11 +527,7 @@ void parse_magic_links(ThreadBuf *tb, const ParserConfig *cfg, Accum *accum) {
             const char *inner_ptr = tb->buf + lead_e;
             size_t inner_len = (mend > lead_e) ? (mend - lead_e) : 0;
 
-            bool is_magic =
-                (inner_len >= 3 && sz_equal(inner_ptr, "RFC", 3) == sz_true_k) ||
-                (inner_len >= 4 && sz_equal(inner_ptr, "PMID", 4) == sz_true_k) ||
-                (inner_len >= 4 && sz_equal(inner_ptr, "ISBN", 4) == sz_true_k);
-            if (!is_magic) {
+            if (mm.kind != MAGIC_MATCH_KEYWORD) {
                 size_t rest_len = mend - lead_e;
                 ENSURE_CAP(rest_len + 1);
                 sz_copy(out_buf + out_len, tb->buf + lead_e, rest_len);
