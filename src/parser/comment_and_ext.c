@@ -627,6 +627,17 @@ static void parse_ext_attrs(Token *attrs_tok, const char *attr_str, size_t attr_
 	char dirty_buf[4096]; /* Accumulates "dirty" text */
 	size_t dirty_len= 0;
 
+#define APPEND_DIRTY_RANGE(start_idx, end_idx)                                   \
+	do {                                                                      \
+		size_t __start = (start_idx);                                    \
+		size_t __end = (end_idx);                                        \
+		if(__end > __start) {                                            \
+			size_t __n = __end - __start;                            \
+			sz_copy(dirty_buf + dirty_len, attr_str + __start, __n); \
+			dirty_len += __n;                                        \
+		}                                                                 \
+	} while(0)
+
 #define FLUSH_DIRTY()                                          \
 	do {                                                         \
 		if(dirty_len > 0) {                                        \
@@ -682,7 +693,7 @@ static void parse_ext_attrs(Token *attrs_tok, const char *attr_str, size_t attr_
 					full_end= i + 1 + ws_len;
 				}
 
-				for(size_t k= i; k < full_end; k++) dirty_buf[dirty_len++]= attr_str[k];
+								APPEND_DIRTY_RANGE(i, full_end);
 				i= full_end;
 			} else {
 				dirty_buf[dirty_len++]= attr_str[i++];
@@ -722,7 +733,7 @@ static void parse_ext_attrs(Token *attrs_tok, const char *attr_str, size_t attr_
 				full_end= probe;
 			}
 
-			for(size_t k= key_start; k < full_end; k++) dirty_buf[dirty_len++]= attr_str[k];
+						APPEND_DIRTY_RANGE(key_start, full_end);
 			i= full_end;
 			continue;
 		}
@@ -784,6 +795,7 @@ static void parse_ext_attrs(Token *attrs_tok, const char *attr_str, size_t attr_
 
 	FLUSH_DIRTY();
 #undef FLUSH_DIRTY
+#undef APPEND_DIRTY_RANGE
 }
 
 /* ── ext-attrs token builder ─────────────────────────────────────────────── */
