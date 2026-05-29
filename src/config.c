@@ -163,6 +163,17 @@ static bool str_list_contains_exact_n(const StrList *sl, const char *needle, siz
 	return false;
 }
 
+static bool str_list_contains_ci_n(const StrList *sl, const char *needle, size_t needle_len) {
+	if(!sl || !needle) return false;
+	for(size_t i= 0; i < sl->count; i++) {
+		sz_ptr_t start;
+		sz_size_t len;
+		sz_string_range(&sl->items[i], &start, &len);
+		if(start && len == needle_len && str_ci_eq_n((const char *)start, needle, needle_len)) return true;
+	}
+	return false;
+}
+
 static void str_list_append_dup(StrList *sl, const char *s) {
 
 	if(!sl || !s) return;
@@ -754,25 +765,10 @@ void config_free(ParserConfig *cfg) {
 
 bool config_excluded(const ParserConfig *cfg, const char *name) {
 	if(!cfg || !name) return false;
-	size_t name_len= strlen(name);
-	for(size_t i= 0; i < cfg->excludes.count; i++) {
-		sz_ptr_t start;
-		sz_size_t len;
-		sz_string_range(&cfg->excludes.items[i], &start, &len);
-		if(start && len == name_len && sz_equal(start, name, len) == sz_true_k) return true;
-	}
-	return false;
+	return str_list_contains_exact_n(&cfg->excludes, name, strlen(name));
 }
 
 bool config_has_ext(const ParserConfig *cfg, const char *name) {
 	if(!cfg || !name) return false;
-	size_t name_len= strlen(name);
-
-	for(size_t i= 0; i < cfg->ext.count; i++) {
-		sz_ptr_t start;
-		sz_size_t len;
-		sz_string_range(&cfg->ext.items[i], &start, &len);
-		if(start && len == name_len && str_ci_eq_n((const char *)start, name, len)) return true;
-	}
-	return false;
+	return str_list_contains_ci_n(&cfg->ext, name, strlen(name));
 }
