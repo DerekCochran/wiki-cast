@@ -13,6 +13,7 @@
 #include "parse.h"
 #include "token.h"
 #include "config.h"
+#include "util/token_to_json.h"
 
 // Cache for config
 static char* cached_config_path = NULL;
@@ -569,6 +570,48 @@ static napi_value toJson_wrapper(napi_env env, napi_callback_info info) {
     return result;
 }
 
+static napi_value toInternalJson_wrapper(napi_env env, napi_callback_info info) {
+    napi_value this_arg;
+    napi_status status = napi_get_cb_info(env, info, NULL, NULL, &this_arg, NULL);
+    if (status != napi_ok) {
+        return NULL;
+    }
+
+    void *wrapped = NULL;
+    status = napi_unwrap(env, this_arg, &wrapped);
+    if (status != napi_ok) {
+        napi_throw_error(env, NULL, "Failed to unwrap root token");
+        return NULL;
+    }
+
+    Token *token = (Token *)wrapped;
+    if (!token) {
+        napi_throw_error(env, NULL, "Token pointer is NULL");
+        return NULL;
+    }
+
+    cJSON *json = token_to_json(token);
+    if (!json) {
+        napi_throw_error(env, NULL, "Failed to encode internal token JSON");
+        return NULL;
+    }
+
+    char *json_text = cJSON_PrintUnformatted(json);
+    cJSON_Delete(json);
+    if (!json_text) {
+        napi_throw_error(env, NULL, "Failed to stringify internal token JSON");
+        return NULL;
+    }
+
+    napi_value result;
+    status = napi_create_string_utf8(env, json_text, NAPI_AUTO_LENGTH, &result);
+    cJSON_free(json_text);
+    if (status != napi_ok) {
+        return NULL;
+    }
+    return result;
+}
+
 static ParserConfig* get_token_config_json(napi_env env, napi_value token) {
     napi_value config_val;
     napi_status status;
@@ -662,6 +705,16 @@ static napi_value token_to_js(napi_env env, const Token *token, bool wrap_root) 
                 NULL
             },
             {
+                "toInternalJson",
+                NULL,
+                toInternalJson_wrapper,
+                NULL,
+                NULL,
+                NULL,
+                napi_default,
+                NULL
+            },
+            {
                 "_freeNative",
                 NULL,
                 free_wrapper,
@@ -672,7 +725,7 @@ static napi_value token_to_js(napi_env env, const Token *token, bool wrap_root) 
                 NULL
             }
         };
-        napi_define_properties(env, js_token, 3, root_methods);
+        napi_define_properties(env, js_token, 4, root_methods);
     }
 
     return js_token;

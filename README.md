@@ -2,6 +2,22 @@
 
 This is a C implementation to create an abstract systax tree (AST) for wikipedia.  This common format can then be used to transform or read the data as needed.  It was created by using the [wikiparser-node](https://github.com/bhsd-harry/wikiparser-node) project as a template.  However, the design is quickly diverging based upon different needs.
 
+## Pipe Dream
+
+The long-term vision is to make this parser a single source of truth for
+wikitext parsing across ecosystems.
+
+- Use one high-performance C parser core instead of many divergent parser
+  implementations.
+- Expose a stable AST contract that language bindings and tools can consume.
+- Let projects in Node, PHP, Python, and other runtimes share the same parsing
+  behavior and edge-case handling.
+- Reduce duplicated parser maintenance and avoid drift between "whacky"
+  implementations.
+
+If this matures, projects like Parsoid or other wiki tooling could integrate
+the same core parser through native bindings or service interfaces.
+
 ## Implementation
 
 **High-level overview**

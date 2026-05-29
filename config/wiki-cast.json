@@ -1,0 +1,188 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://wiki-cast.local/schema/wiki-cast.json",
+  "title": "wiki-cast internal AST",
+  "type": "object",
+  "required": [
+    "type",
+    "tokenType",
+    "tokenSubtype",
+    "childCount",
+    "childCap",
+    "stage",
+    "include",
+    "built",
+    "extInnerContext",
+    "sepCode"
+  ],
+  "properties": {
+    "type": {
+      "type": "string"
+    },
+    "tokenType": {
+      "type": "integer"
+    },
+    "tokenSubtype": {
+      "type": "integer"
+    },
+    "name": {
+      "type": "string"
+    },
+    "childCount": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "childCap": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "stage": {
+      "type": "integer"
+    },
+    "include": {
+      "type": "boolean"
+    },
+    "built": {
+      "type": "boolean"
+    },
+    "extInnerContext": {
+      "type": "boolean"
+    },
+    "sepCode": {
+      "type": "integer",
+      "minimum": 0,
+      "maximum": 255
+    },
+    "sep": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 1
+    },
+    "childNodes": {
+      "type": "array",
+      "items": {
+        "$ref": "#/definitions/child"
+      }
+    }
+  },
+  "additionalProperties": true,
+  "definitions": {
+    "token": {
+      "type": "object",
+      "required": [
+        "type",
+        "tokenType",
+        "tokenSubtype",
+        "childCount",
+        "childCap",
+        "stage",
+        "include",
+        "built",
+        "extInnerContext",
+        "sepCode"
+      ],
+      "properties": {
+        "type": {
+          "type": "string"
+        },
+        "tokenType": {
+          "type": "integer"
+        },
+        "tokenSubtype": {
+          "type": "integer"
+        },
+        "name": {
+          "type": "string"
+        },
+        "childCount": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "childCap": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "stage": {
+          "type": "integer"
+        },
+        "include": {
+          "type": "boolean"
+        },
+        "built": {
+          "type": "boolean"
+        },
+        "extInnerContext": {
+          "type": "boolean"
+        },
+        "sepCode": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 255
+        },
+        "sep": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 1
+        },
+        "childNodes": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/child"
+          }
+        }
+      },
+      "additionalProperties": true
+    },
+    "childText": {
+      "type": "object",
+      "required": [
+        "kind",
+        "text",
+        "textLen",
+        "textOwned"
+      ],
+      "properties": {
+        "kind": {
+          "const": "text"
+        },
+        "text": {
+          "type": "string"
+        },
+        "textLen": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "textOwned": {
+          "type": "boolean"
+        }
+      },
+      "additionalProperties": true
+    },
+    "childToken": {
+      "type": "object",
+      "required": [
+        "kind",
+        "token"
+      ],
+      "properties": {
+        "kind": {
+          "const": "token"
+        },
+        "token": {
+          "$ref": "#/definitions/token"
+        }
+      },
+      "additionalProperties": true
+    },
+    "child": {
+      "oneOf": [
+        {
+          "$ref": "#/definitions/childText"
+        },
+        {
+          "$ref": "#/definitions/childToken"
+        }
+      ]
+    }
+  }
+}
