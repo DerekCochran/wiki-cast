@@ -110,7 +110,8 @@ static Token *build_magic_link_token(const char *url, size_t url_len, Accum *acc
 /* Build an ext-link token: TOKEN_EXT_LINK containing [url_tok, (opt) ext-link-text] */
 static Token *build_ext_link_token(Token *url_tok,
 																	 const char *space, size_t space_len,
-																	 const char *text, size_t text_len,
+                                                     const char *text, size_t text_len,
+                                                     const char *text2, size_t text2_len,
 																	 Accum *accum) {
 	Token *ext= token_new(TOKEN_EXT_LINK, "ext-link");
 	if(!ext) return NULL;
@@ -126,13 +127,28 @@ static Token *build_ext_link_token(Token *url_tok,
 
 	token_append_child(ext, url_tok);
 
-	if(text_len > 0) {
+    if(text_len > 0 || text2_len > 0) {
 		Token *inner= token_new(TOKEN_PLAIN, "ext-link-text");
 		if(!inner) {
 			token_free(ext);
 			return NULL;
 		}
-        token_append_text_n(inner, text, text_len);
+        if(text2_len > 0) {
+            size_t merged_len = text_len + text2_len;
+            char *merged = malloc(merged_len + 1);
+            if(!merged) {
+                token_free(inner);
+                token_free(ext);
+                return NULL;
+            }
+            if(text_len > 0) sz_copy(merged, text, text_len);
+            sz_copy(merged + text_len, text2, text2_len);
+            merged[merged_len] = '\0';
+            token_append_text_n(inner, merged, merged_len);
+            free(merged);
+        } else if(text_len > 0) {
+            token_append_text_n(inner, text, text_len);
+        }
 		accum_push(accum, inner);
 		token_append_child(ext, inner);
 	}
@@ -290,25 +306,18 @@ static void ext_cb(const char *seg, size_t len, ParserSegmentKind kind, void *ud
     }
 
     /* JS parity: split URL at first &lt; / &gt; entity and move suffix into text. */
-    ThreadBuf *entity_text = NULL;
+    const char *txt2 = NULL;
+    size_t tlen2 = 0;
     for(size_t i = 0; i + 3 < ulen; i++) {
         if(url[i] != '&') continue;
         bool is_lt = (url[i + 1] == 'l' && url[i + 2] == 't' && url[i + 3] == ';');
         bool is_gt = (url[i + 1] == 'g' && url[i + 2] == 't' && url[i + 3] == ';');
         if(!is_lt && !is_gt) continue;
 
-        if(tlen > 0) {
-            entity_text = wiki_thread_buf_acquire_scratch();
-            if(!entity_text) { log_fatal("thread_buffer: failed to acquire scratch in ext_cb"); abort(); }
-            entity_text->len = 0;
-            wiki_thread_buf_append(entity_text, (sz_string_view_t){ .start = url + i, .length = ulen - i });
-            wiki_thread_buf_append(entity_text, (sz_string_view_t){ .start = txt, .length = tlen });
-            txt = entity_text->buf;
-            tlen = entity_text->len;
-        } else {
-            txt = url + i;
-            tlen = ulen - i;
-        }
+        txt2 = txt;
+        tlen2 = tlen;
+        txt = url + i;
+        tlen = ulen - i;
 
         ulen = i;
         sp = "";
@@ -329,7 +338,6 @@ static void ext_cb(const char *seg, size_t len, ParserSegmentKind kind, void *ud
         wiki_thread_buf_append(c->out, (sz_string_view_t){ .start = "[", .length = 1 });
         wiki_thread_buf_append(c->out, (sz_string_view_t){ .start = seg, .length = len });
         wiki_thread_buf_append(c->out, (sz_string_view_t){ .start = "]", .length = 1 });
-        if(entity_text) wiki_thread_buf_release_scratch(entity_text);
         return;
     }
 
@@ -340,9 +348,10 @@ static void ext_cb(const char *seg, size_t len, ParserSegmentKind kind, void *ud
         wiki_thread_buf_append(c->out, (sz_string_view_t){ .start = sent, .length = slen });
         if(splen) wiki_thread_buf_append(c->out, (sz_string_view_t){ .start = sp, .length = splen });
         if(tlen) wiki_thread_buf_append(c->out, (sz_string_view_t){ .start = txt, .length = tlen });
+        if(tlen2) wiki_thread_buf_append(c->out, (sz_string_view_t){ .start = txt2, .length = tlen2 });
         wiki_thread_buf_append(c->out, (sz_string_view_t){ .start = "]", .length = 1 });
     } else {
-        Token *ext = build_ext_link_token(url_tok, sp, splen, txt, tlen, c->accum);
+        Token *ext = build_ext_link_token(url_tok, sp, splen, txt, tlen, txt2, tlen2, c->accum);
         if(!ext) {
             wiki_thread_buf_append(c->out, (sz_string_view_t){ .start = "[", .length = 1 });
             wiki_thread_buf_append(c->out, (sz_string_view_t){ .start = seg, .length = len });
@@ -353,8 +362,6 @@ static void ext_cb(const char *seg, size_t len, ParserSegmentKind kind, void *ud
         work_str_sentinel(c->accum->count - 1, 'w', sent, &slen);
         wiki_thread_buf_append(c->out, (sz_string_view_t){ .start = sent, .length = slen });
     }
-
-    if(entity_text) wiki_thread_buf_release_scratch(entity_text);
 }
 
 void parse_external_links(ThreadBuf *tb, const ParserConfig *cfg,
@@ -390,7 +397,11 @@ void parse_external_links(ThreadBuf *tb, const ParserConfig *cfg,
      * Run a second pass that probes every '[' position against the same
      * parse_external_inner() grammar to recover matches that begin inside
      * previously skipped/invalid bracket runs (for example [[foo[http://...]]). */
-    if(!in_file && out->len >= 3) {
+     static const char lb = '[';
+     static const char rb = ']';
+     if(!in_file && out->len >= 3
+         && sz_find_byte(out->buf, out->len, &lb) != NULL
+         && sz_find_byte(out->buf, out->len, &rb) != NULL) {
         ThreadBuf *out2 = wiki_thread_buf_acquire_scratch();
         if(out2) {
             out2->len = 0;
