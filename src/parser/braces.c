@@ -84,12 +84,13 @@ static bool heading_line_parse(const char *s, size_t len, HeadingLineResult *out
 	/* Group 3: strip trailing ((\s|\0\d+[cn]\x7F)*) from the end */
 	const char *trail_end   = end;
 	const char *trail_start = end;
-	bool changed = true;
-	while(changed && trail_start > s + 1) {
-		changed = false;
-		/* whitespace */
-		if(isspace((unsigned char)*(trail_start - 1))) {
-			trail_start--; changed = true; continue;
+	while(trail_start > s + 1) {
+		/* Whitespace suffix (non-newline) can be consumed as one run. */
+		const char *ws = trail_start;
+		while(ws > s + 1 && isspace((unsigned char)*(ws - 1))) ws--;
+		if(ws != trail_start) {
+			trail_start = ws;
+			continue;
 		}
 		/* \x00\d+[cn]\x7F sentinel — scan backwards */
 		if((unsigned char)*(trail_start - 1) == (unsigned char)'\x7F'
@@ -104,11 +105,11 @@ static bool heading_line_parse(const char *s, size_t len, HeadingLineResult *out
 				}
 				if(digit_count >= 1 && (unsigned char)*q == 0) {
 					trail_start = q;
-					changed = true;
 					continue;
 				}
 			}
 		}
+		break;
 	}
 
 	/* JS/regex parity: backtrack opening run (={1,6}) from max to 1. */
