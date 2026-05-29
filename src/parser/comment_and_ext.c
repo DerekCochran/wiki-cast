@@ -315,6 +315,9 @@ static bool cae_find_next_match(const char *s, size_t len, size_t at,
 		const char *cand = sz_find_byte(s + i, len - i, &lt);
 		if(!cand) return false;
 		i = (size_t)(cand - s);
+		const unsigned char next = (i + 1 < len) ? (unsigned char)s[i + 1] : 0;
+		const unsigned char next_lc = (unsigned char)fast_tolower(next);
+		const bool maybe_include_family = (next == '/' || next_lc == 'n' || next_lc == 'i' || next_lc == 'o');
 
         /* Keep JS alternation order exactly:
          * 1) comment
@@ -325,9 +328,9 @@ static bool cae_find_next_match(const char *s, size_t len, size_t at,
 		if(i + 4 <= len && s[i + 1] == '!' && s[i + 2] == '-' && s[i + 3] == '-') {
 			if(cae_match_comment(s, len, i, m)) return true;
 		}
-        if(cae_match_noinclude_single(s, len, i, include_only, m)) return true;
+		if(maybe_include_family && cae_match_noinclude_single(s, len, i, include_only, m)) return true;
         if(cae_match_ext(s, len, i, cfg, has_translate, m)) return true;
-        if(cae_match_include(s, len, i, include_only, m)) return true;
+		if(maybe_include_family && cae_match_include(s, len, i, include_only, m)) return true;
 
 		i++;
     }
