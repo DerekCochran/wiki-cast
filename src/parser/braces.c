@@ -2079,14 +2079,16 @@ static void main_braces_park_cb(const char *segment, size_t len,
 	/* PARSER_SEG_INNER: reconstruct open+inner+close, park, emit placeholder. */
 	const ParserRules *r= ctx->active_rule;
 	size_t full_len= r->open_len + len + r->close_len;
-	char *tmp= malloc(full_len + 1);
+	ThreadBuf *tmp = wiki_thread_buf_acquire_scratch();
 	assert(tmp);
-	sz_copy(tmp, r->open_delim, r->open_len);
-	sz_copy(tmp + r->open_len, segment, len);
-	sz_copy(tmp + r->open_len + len, r->close_delim, r->close_len);
-	tmp[full_len]= '\0';
-	main_braces_push_link_stack(ctx, tmp, full_len);
-	free(tmp);
+	wiki_thread_buf_reserve(tmp, full_len + 1);
+	tmp->len = 0;
+	wiki_thread_buf_append(tmp, (sz_string_view_t){ .start = r->open_delim, .length = r->open_len });
+	wiki_thread_buf_append(tmp, (sz_string_view_t){ .start = segment, .length = len });
+	wiki_thread_buf_append(tmp, (sz_string_view_t){ .start = r->close_delim, .length = r->close_len });
+	tmp->buf[tmp->len] = '\0';
+	main_braces_push_link_stack(ctx, tmp->buf, tmp->len);
+	wiki_thread_buf_release_scratch(tmp);
 }
 
 typedef struct {
