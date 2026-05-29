@@ -302,6 +302,7 @@ static void thread_buf_append_char(ThreadBuf *tb, char ch) {
 
 static void token_to_string_rec(const Token *t, ThreadBuf *tb) {
 	if(!t || !tb) return;
+	const size_t t_name_len = (t->name && t->name[0] != '\0') ? strlen(t->name) : 0;
 
 	// TODO:  Look at the different types and see if functionality can be combined
 	//        For example, can we have a preamble and postamble such as <!--, <, [[, etc
@@ -325,7 +326,7 @@ static void token_to_string_rec(const Token *t, ThreadBuf *tb) {
 	case TOKEN_EXT: {
 		/* Use original-cased tag name for serialization (JS parity) */
 		const char *ext_tag= t->data.ext.name.start ? t->data.ext.name.start : t->name;
-		size_t ext_tag_len= t->data.ext.name.start ? t->data.ext.name.length : token_name_len(t);
+		size_t ext_tag_len= t->data.ext.name.start ? t->data.ext.name.length : t_name_len;
 		const char *ext_closing= t->data.ext.closing.start ? t->data.ext.closing.start : ext_tag;
 		size_t ext_closing_len= t->data.ext.closing.start ? t->data.ext.closing.length : ext_tag_len;
 		thread_buf_append_char(tb, '<');
@@ -497,8 +498,9 @@ static void token_to_string_rec(const Token *t, ThreadBuf *tb) {
 						else
 							token_to_string_rec(pc->token, tb);
 					}
-							} else if(p->name) {
-									thread_buf_append(tb, p->name, token_name_len(p));
+							} else if(p->name && p->name[0] != '\0') {
+									size_t p_name_len = strlen(p->name);
+									thread_buf_append(tb, p->name, p_name_len);
 				} else {
 					token_to_string_rec(c->token, tb);
 				}
@@ -628,7 +630,7 @@ static void token_to_string_rec(const Token *t, ThreadBuf *tb) {
 		/* HTML tags: opening, attrs, self-closing, or closing */
 		/* Use orig_tag (original case) for round-trip toString, like JS this.tag */
 			const char *tag_str= t->data.html.orig_tag.start ? t->data.html.orig_tag.start : t->name;
-			size_t tag_len= t->data.html.orig_tag.start ? t->data.html.orig_tag.length : token_name_len(t);
+			size_t tag_len= t->data.html.orig_tag.start ? t->data.html.orig_tag.length : t_name_len;
 		if(t->data.html.closing) {
 			thread_buf_append(tb, "</", 2);
 			if(tag_str) thread_buf_append(tb, tag_str, tag_len);
@@ -719,7 +721,7 @@ static void token_to_string_rec(const Token *t, ThreadBuf *tb) {
 
 	case TOKEN_INCLUDE:
 		thread_buf_append_char(tb, '<');
-		if(t->name) thread_buf_append(tb, t->name, token_name_len(t));
+		if(t_name_len > 0) thread_buf_append(tb, t->name, t_name_len);
 		if(t->child_count > 0) {
 			const Child *c= &t->children[0];
 			if(c->is_text)
@@ -1021,12 +1023,9 @@ void json_stringify_wikiparser_node(const Token *t, ThreadBuf *tb) {
 		}
 		thread_buf_append_char(tb, ']');
 	}
-	if(t->name) {
-		size_t name_len= token_name_len(t);
-		if(name_len > 0) {
-			thread_buf_append(tb, ",\"name\":", 8);
-			json_string(tb, t->name);
-		}
+	if(t->name && t->name[0] != '\0') {
+		thread_buf_append(tb, ",\"name\":", 8);
+		json_string(tb, t->name);
 	}
 
 	thread_buf_append_char(tb, '}');
