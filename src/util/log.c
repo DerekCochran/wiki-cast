@@ -78,7 +78,7 @@ static int parse_log_level(const char *s) {
 }
 
 static void init_log(void) {
-	const char *env = env_get("TOKENIZER_LOG_LEVEL");
+	 const char *env = env_get_n("TOKENIZER_LOG_LEVEL", sizeof("TOKENIZER_LOG_LEVEL") - 1);
 	L.level= parse_log_level(env);
 }
 

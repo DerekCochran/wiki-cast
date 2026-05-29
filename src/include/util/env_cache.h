@@ -20,6 +20,7 @@
  * Results are cached after the first lookup.
  */
 bool env_set(const char *name);
+bool env_set_n(const char *name, size_t name_len);
 
 /*
  * env_get — Get the cached value of an environment variable
@@ -30,6 +31,7 @@ bool env_set(const char *name);
  * Results are cached after the first lookup.
  */
 const char *env_get(const char *name);
+const char *env_get_n(const char *name, size_t name_len);
 
 /*
  * env_cache_clear — Clear all cached entries (mainly for testing)
