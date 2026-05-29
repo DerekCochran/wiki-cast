@@ -209,40 +209,6 @@ static bool table_attr_has_equal_marker(const char *s, size_t len) {
 	return false;
 }
 
-static char *table_attr_normalize_equal_syntax(const char *eq, size_t eq_len, size_t *out_len) {
-	if(!eq) return NULL;
-
-	size_t need= 0;
-	for(size_t i= 0; i < eq_len;) {
-		size_t sl= sentinel_at(eq, eq_len, i, '~');
-		if(sl) {
-			need+= 5; /* {{=}} */
-			i+= sl;
-			continue;
-		}
-		need++;
-		i++;
-	}
-
-	char *out= malloc(need + 1);
-	if(!out) return NULL;
-
-	size_t p= 0;
-	for(size_t i= 0; i < eq_len;) {
-		size_t sl= sentinel_at(eq, eq_len, i, '~');
-		if(sl) {
-			sz_copy(out + p, "{{=}}", 5);
-			p+= 5;
-			i+= sl;
-			continue;
-		}
-		out[p++]= eq[i++];
-	}
-	out[p]= '\0';
-	if(out_len) *out_len= p;
-	return out;
-}
-
 static void parse_table_attrs(Token *attrs_tok, const char *attr_str, size_t attr_len, Accum *accum) {
 	if(!attr_str || attr_len == 0) return;
 
@@ -346,13 +312,7 @@ static void parse_table_attrs(Token *attrs_tok, const char *attr_str, size_t att
 		}
 
 		const char *key= attr_str + key_start;
-		unsigned char kc0= (unsigned char)key[0];
-		int valid_key= ((kc0 >= 'A' && kc0 <= 'Z') || (kc0 >= 'a' && kc0 <= 'z') ||
-							 (kc0 >= '0' && kc0 <= '9') || kc0 == '_' || kc0 == ':');
-		for(size_t k= 1; valid_key && k < key_len; k++) {
-			unsigned char kc= (unsigned char)key[k];
-			valid_key= ((kc >= 'A' && kc <= 'Z') || (kc >= 'a' && kc <= 'z') || (kc >= '0' && kc <= '9') || kc == ':' || kc == '.' || kc == '_' || kc == '-');
-		}
+		int valid_key= is_valid_attr_key(key, key_len);
 		if(!valid_key) {
 			bool dynamic_key= table_attr_key_is_dynamic(key, key_len);
 			if(!dynamic_key || !is_valid_attr_key_after_comment_trim(key, key_len)) {
@@ -403,7 +363,6 @@ static void parse_table_attrs(Token *attrs_tok, const char *attr_str, size_t att
 
 		size_t eq_start= ws_start;
 		size_t eq_marker_len= (attr_str[i] == '=') ? 1 : eq_sl;
-		bool eq_has_magic= (eq_marker_len > 1);
 		i+= eq_marker_len;
 		while(i < attr_len) {
 			size_t gap= table_attr_gap_len_at(attr_str, attr_len, i);
@@ -436,16 +395,10 @@ static void parse_table_attrs(Token *attrs_tok, const char *attr_str, size_t att
 		FLUSH_DIRTY();
 		const char *eq_ptr= attr_str + eq_start;
 		size_t eq_use_len= eq_len;
-		char *eq_norm= NULL;
-		if(eq_has_magic) {
-			eq_norm= table_attr_normalize_equal_syntax(attr_str + eq_start, eq_len, &eq_use_len);
-			if(eq_norm) eq_ptr= eq_norm;
-		}
 		Token *at= make_table_attr(key, key_len, val, val_len,
 														 eq_ptr, eq_use_len,
 															 quote_open, quote_close,
 															 accum);
-		if(eq_norm) free(eq_norm);
 		if(at) token_append_child(attrs_tok, at);
 	}
 
