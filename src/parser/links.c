@@ -41,19 +41,8 @@ static size_t consume_links_space(const char *s, size_t len, size_t i) {
     return consume_js_zs_proto(s, len, i);
 }
 
-static bool proto_token_match_ci_n(const char *s, size_t slen,
-                                   const char *tok, size_t tlen) {
-    if(tlen > slen) return false;
-    for(size_t i = 0; i < tlen; i++) {
-        unsigned char a = (unsigned char)s[i];
-        unsigned char b = (unsigned char)tok[i];
-        if(tolower(a) != tolower(b)) return false;
-    }
-    return true;
-}
-
 static bool scan_next_sentinel_any(const char *s, size_t len, size_t *pos,
-																size_t *out_n, char *out_type, size_t *out_total_len);
+																										size_t *out_n, char *out_type, size_t *out_total_len);
 
 /* PARITY: links.js uses /^\s*(?:${config.protocol}|\/\/)/iu.
  * Leading whitespace includes Unicode Zs + ASCII whitespace.
@@ -72,20 +61,11 @@ static bool starts_with_proto(const char *s, size_t len, const ParserConfig *cfg
     if(i + 2 <= len && s[i] == '/' && s[i + 1] == '/') {
         return true;
     }
+	if(i >= len || !cfg->protocol_initials[(unsigned char)fast_tolower((unsigned char)s[i])]) {
+		return false;
+	}
 
-    for(size_t pi = 0; pi < cfg->protocol_items.count; pi++) {
-        const ProtocolItem *proto = &cfg->protocol_items.items[pi];
-        if(proto->protocol.length == 0) {
-            continue;
-        }
-        if(proto->protocol.length > len - i) {
-            continue;
-        }
-        if(proto->protocol.start && proto_token_match_ci_n(s + i, len - i, (const char *)proto->protocol.start, proto->protocol.length)) {
-            return true;
-        }
-    }
-    return false;
+	return match_proto_prefix(s + i, len - i, cfg) > 0;
 }
 
 /* JS Title.valid parity helper used by parseLinks normalizeTitle() path:
@@ -230,7 +210,7 @@ static bool syntax_ends_with_slot(const char *syntax) {
 
 static char *build_img_syntax_template(const char *seg_ptr, size_t seg_len,
 																			 size_t lead_ws_len, size_t trail_ws_len,
-																			 const char *syntax,
+																	 const char *syntax,
 																		 bool slot_at_end,
 																		 size_t trail_prefix_skip) {
 	size_t syntax_len= strlen(syntax);
@@ -296,7 +276,7 @@ static void img_get_extension(const char *title, char *ext_buf, size_t bufsize) 
  * out_buf must be at least val_len+1 bytes. Returns pointer to trimmed string
  * within out_buf. */
 static const char *img_strip_and_trim(const char *val, size_t val_len,
-																			char *out_buf, bool strip_quotes) {
+																										char *out_buf, bool strip_quotes) {
 	size_t j= 0;
 	size_t i= 0;
 	while(i < val_len) {
@@ -340,6 +320,37 @@ static const char *img_strip_and_trim(const char *val, size_t val_len,
 	while(end > p && (end[-1] == ' ' || end[-1] == '\t' || end[-1] == '\n' || end[-1] == '\r')) end--;
 	*end= '\0';
 	return p;
+}
+
+static void img_scan_link_sentinels(const char *val, size_t val_len,
+																											 bool strip_quotes,
+																											 bool *has_magic_url,
+																											 bool *has_link,
+																											 bool *has_invalid) {
+	if(has_magic_url) *has_magic_url= false;
+	if(has_link) *has_link= false;
+	if(has_invalid) *has_invalid= false;
+	if(!val || val_len == 0) return;
+
+	size_t pos= 0;
+	for(;;) {
+		size_t n= 0;
+		char t= '\0';
+		size_t total= 0;
+		if(!scan_next_sentinel_any(val, val_len, &pos, &n, &t, &total)) break;
+		(void)n;
+		(void)total;
+		bool stripped= (t == 'c' || t == 't' || (strip_quotes && t == 'q'));
+		if(!stripped) {
+			if(t == 'm' || t == 'w') {
+				if(has_magic_url) *has_magic_url= true;
+			} else if(t == 'l') {
+				if(has_link) *has_link= true;
+			} else {
+				if(has_invalid) *has_invalid= true;
+			}
+		}
+	}
 }
 
 /* JS: /^(?:\d+x?|\d*x\d+)(?:\s*px)?$/u */
@@ -604,37 +615,6 @@ static bool img_title_chars_ok(const char *v) {
 	return true;
 }
 
-static void img_scan_link_sentinels(const char *val, size_t val_len,
-																		 bool strip_quotes,
-																		 bool *has_magic_url,
-																		 bool *has_link,
-																		 bool *has_invalid) {
-	if(has_magic_url) *has_magic_url= false;
-	if(has_link) *has_link= false;
-	if(has_invalid) *has_invalid= false;
-	if(!val || val_len == 0) return;
-
-	size_t pos= 0;
-	for(;;) {
-		size_t n= 0;
-		char t= '\0';
-		size_t total= 0;
-		if(!scan_next_sentinel_any(val, val_len, &pos, &n, &t, &total)) break;
-		(void)n;
-		(void)total;
-		bool stripped= (t == 'c' || t == 't' || (strip_quotes && t == 'q'));
-		if(!stripped) {
-			if(t == 'm' || t == 'w') {
-				if(has_magic_url) *has_magic_url= true;
-			} else if(t == 'l') {
-				if(has_link) *has_link= true;
-			} else {
-				if(has_invalid) *has_invalid= true;
-			}
-		}
-	}
-}
-
 /* JS parity: validate() from imageParameter.js */
 static bool img_param_validate(const char *name, const char *val_ptr, size_t val_len,
 																			const ParserConfig *cfg,
@@ -706,7 +686,7 @@ static bool img_param_validate(const char *name, const char *val_ptr, size_t val
 			/* JS validate() returns empty string here, and constructor accepts !== false. */
 			result= true;
 		} else {
-			bool proto_like= false;
+				bool proto_like= false;
 			if(value[0] == '/' && value[1] == '/') {
 				proto_like= true;
 			} else if(has_magic_url_sentinel) {
@@ -714,7 +694,7 @@ static bool img_param_validate(const char *name, const char *val_ptr, size_t val
 			} else if(img_starts_with_magic_url_sentinel(value)) {
 				proto_like= true;
 			} else if(cfg) {
-				proto_like= starts_with_proto(value, strlen(value), cfg);
+					proto_like= starts_with_proto(value, strlen(value), cfg);
 			}else {
 				fprintf(stderr,"No Config");
 			}
@@ -875,7 +855,7 @@ static void append_file_image_params(Token *file_tok,
 							: 0;
 						char *syn= build_img_syntax_template(seg_ptr, seg_len,
 																			 lead_ws_len, trail_ws_len,
-																					 syntax,
+																							 syntax,
 																					 slot_at_end && !trail_has_line_break,
 																					 trail_prefix_skip);
 						if(syn) {
@@ -1018,6 +998,7 @@ void parse_links(ThreadBuf *tb, const ParserConfig *cfg, Accum *accum,
 	for(size_t bi= 1; bi <= bb_count; bi++) {
 		const char *x= bits[bi].ptr;
 		size_t xlen= bits[bi].len;
+
 		log_debug_env_token("WTC_DEBUG_STAGE_5", NULL,
 			"[C parse_links] bi=%zu xlen=%zu x=%.200s", bi, xlen, xlen>200?"(trunc)":x);
 
