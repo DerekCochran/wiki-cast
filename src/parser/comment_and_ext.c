@@ -163,18 +163,17 @@ static bool cae_find_close_named(const char *s, size_t len, size_t from,
 }
 
 static bool cae_match_comment(const char *s, size_t len, size_t i, CaeScanMatch *m) {
-    if(!s || !m || i + 4 > len) return false;
-    if(!(s[i] == '<' && s[i + 1] == '!' && s[i + 2] == '-' && s[i + 3] == '-')) return false;
+	if(!s || !m || i + 4 > len) return false;
 
-    const char *tail = s + i + 4;
-    size_t rem = len - (i + 4);
-    const char *close = find_substr_cs(tail, rem, "-->", 3);
+	const char *tail = s + i + 4;
+	size_t rem = len - (i + 4);
+	const char *close = find_substr_cs(tail, rem, "-->", 3);
 
-    memset(m, 0, sizeof(*m));
-    m->kind = CAE_MATCH_COMMENT;
-    m->mstart = i;
-    m->mend = close ? (size_t)((close - s) + 3) : len;
-    return true;
+	memset(m, 0, sizeof(*m));
+	m->kind = CAE_MATCH_COMMENT;
+	m->mstart = i;
+	m->mend = close ? (size_t)((close - s) + 3) : len;
+	return true;
 }
 
 static bool cae_match_noinclude_single(const char *s, size_t len, size_t i,
@@ -314,7 +313,9 @@ static bool cae_find_next_match(const char *s, size_t len, size_t at,
          * 3) dynamic ext
          * 4) includeRegex
          */
-        if(cae_match_comment(s, len, i, m)) return true;
+		if(i + 4 <= len && s[i + 1] == '!' && s[i + 2] == '-' && s[i + 3] == '-') {
+			if(cae_match_comment(s, len, i, m)) return true;
+		}
         if(cae_match_noinclude_single(s, len, i, include_only, m)) return true;
         if(cae_match_ext(s, len, i, cfg, has_translate, m)) return true;
         if(cae_match_include(s, len, i, include_only, m)) return true;
