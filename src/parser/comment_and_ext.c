@@ -843,8 +843,11 @@ static bool ext_attr_is_format_wikitext(const char *attr, size_t attr_len) {
 	if(!attr || attr_len == 0) return false;
 
 	size_t i= 0;
+	const char ws[] = " \t\r\n\v\f";
 	while(i < attr_len) {
-		while(i < attr_len && isspace((unsigned char)attr[i])) i++;
+		const char *nw = sz_find_byte_not_from(attr + i, attr_len - i, ws, sizeof(ws) - 1);
+		if(!nw) break;
+		i = (size_t)(nw - attr);
 		if(i >= attr_len) break;
 
 		size_t key_s= i;
@@ -856,12 +859,16 @@ static bool ext_attr_is_format_wikitext(const char *attr, size_t attr_len) {
 		}
 
 		bool is_format= (key_e - key_s == 6 && str_ci_eq_n(attr + key_s, "format", 6));
-		while(i < attr_len && isspace((unsigned char)attr[i])) i++;
+		nw = sz_find_byte_not_from(attr + i, attr_len - i, ws, sizeof(ws) - 1);
+		if(!nw) break;
+		i = (size_t)(nw - attr);
 		if(i >= attr_len || attr[i] != '=') {
 			continue;
 		}
 		i++;
-		while(i < attr_len && isspace((unsigned char)attr[i])) i++;
+		nw = sz_find_byte_not_from(attr + i, attr_len - i, ws, sizeof(ws) - 1);
+		if(!nw) break;
+		i = (size_t)(nw - attr);
 
 		char q= '\0';
 		if(i < attr_len && (attr[i] == '\'' || attr[i] == '"')) {
@@ -870,9 +877,12 @@ static bool ext_attr_is_format_wikitext(const char *attr, size_t attr_len) {
 
 		size_t v_s= i;
 		if(q) {
-			while(i < attr_len && attr[i] != q) i++;
+			const char *qclose = sz_find_byte(attr + i, attr_len - i, &q);
+			i = qclose ? (size_t)(qclose - attr) : attr_len;
 		} else {
-			while(i < attr_len && !isspace((unsigned char)attr[i]) && attr[i] != '>' && attr[i] != '/') i++;
+			const char unquoted_stop[] = " \t\r\n\v\f>/";
+			const char *vstop = sz_find_byte_from(attr + i, attr_len - i, unquoted_stop, sizeof(unquoted_stop) - 1);
+			i = vstop ? (size_t)(vstop - attr) : attr_len;
 		}
 		size_t v_e= i;
 
