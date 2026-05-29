@@ -2637,34 +2637,47 @@ static void translate_scan_cb_wrap(const char *segment, size_t len,
 }
 
 static void apply_translate_prepass(ThreadBuf *tb, const ParserConfig *cfg, Accum *accum) {
+	if(!tb || tb->len == 0) return;
+
+	/* Fast reject: no translate opener means nothing to do in this prepass. */
+	if(!find_ci_lit(tb->buf, tb->len, 0, "<translate", 10, NULL)) {
+		return;
+	}
+
 	TextStack st;
 	text_stack_init(&st);
+	bool has_nowiki = find_ci_lit(tb->buf, tb->len, 0, "<nowiki", 7, NULL);
 
-	/* Pass 1: handle paired <nowiki>...</nowiki> */
-	ThreadBuf *out_tb = wiki_thread_buf_acquire_scratch();
-	if(!out_tb) { log_fatal("thread_buffer: failed to acquire scratch in apply_translate_prepass (pass1)"); abort(); }
-	wiki_thread_buf_reserve(out_tb, tb->len * 2 + 64);
-	out_tb->len = 0;
+	ThreadBuf *out_tb = NULL;
+	NowikiScanCtx ctx = { .st = &st, .out = NULL };
 
-	NowikiScanCtx ctx = { .st = &st, .out = out_tb };
-	parser_scan(tb->buf, tb->len, &wiki_rule_nowiki_paired, nowiki_scan_cb, &ctx);
+	if(has_nowiki) {
+		/* Pass 1: handle paired <nowiki>...</nowiki> */
+		out_tb = wiki_thread_buf_acquire_scratch();
+		if(!out_tb) { log_fatal("thread_buffer: failed to acquire scratch in apply_translate_prepass (pass1)"); abort(); }
+		wiki_thread_buf_reserve(out_tb, tb->len * 2 + 64);
+		out_tb->len = 0;
 
-	out_tb->buf[out_tb->len]= '\0';
-	wiki_thread_buf_set(tb, out_tb->buf, out_tb->len);
-	wiki_thread_buf_release_scratch(out_tb);
+		ctx.out = out_tb;
+		parser_scan(tb->buf, tb->len, &wiki_rule_nowiki_paired, nowiki_scan_cb, &ctx);
 
-	/* Pass 2: handle self-closing <nowiki ... /> forms */
-	out_tb = wiki_thread_buf_acquire_scratch();
-	if(!out_tb) { log_fatal("thread_buffer: failed to acquire scratch in apply_translate_prepass (pass2)"); abort(); }
-	wiki_thread_buf_reserve(out_tb, tb->len * 2 + 64);
-	out_tb->len = 0;
+		out_tb->buf[out_tb->len]= '\0';
+		wiki_thread_buf_set(tb, out_tb->buf, out_tb->len);
+		wiki_thread_buf_release_scratch(out_tb);
 
-	ctx.out = out_tb;
-	parser_scan(tb->buf, tb->len, &wiki_rule_nowiki_sc, nowiki_scan_cb, &ctx);
+		/* Pass 2: handle self-closing <nowiki ... /> forms */
+		out_tb = wiki_thread_buf_acquire_scratch();
+		if(!out_tb) { log_fatal("thread_buffer: failed to acquire scratch in apply_translate_prepass (pass2)"); abort(); }
+		wiki_thread_buf_reserve(out_tb, tb->len * 2 + 64);
+		out_tb->len = 0;
 
-	out_tb->buf[out_tb->len]= '\0';
-	wiki_thread_buf_set(tb, out_tb->buf, out_tb->len);
-	wiki_thread_buf_release_scratch(out_tb);
+		ctx.out = out_tb;
+		parser_scan(tb->buf, tb->len, &wiki_rule_nowiki_sc, nowiki_scan_cb, &ctx);
+
+		out_tb->buf[out_tb->len]= '\0';
+		wiki_thread_buf_set(tb, out_tb->buf, out_tb->len);
+		wiki_thread_buf_release_scratch(out_tb);
+	}
 
 	/* Re-acquire an output scratch buffer for the translate pass. */
 	out_tb = wiki_thread_buf_acquire_scratch();
@@ -2718,16 +2731,15 @@ static bool handle_onlyinclude(ThreadBuf *tb, const ParserConfig *cfg, Accum *ac
 
 	const char *remaining= tb->buf;
 	size_t remaining_len= tb->len;
+	const char *next_open= pos_open;
+	const char *next_close= pos_close;
 
 	char sent_buf[64];
 
 	while(1) {
-		const char *next_open= find_substr_cs(remaining, remaining_len, onlyinclude_open, open_len);
 		if(!next_open) break;
 
 		size_t rel_open= (size_t)(next_open - remaining);
-		size_t tail_after_open= remaining_len - rel_open - open_len;
-		const char *next_close= find_substr_cs(next_open + open_len, tail_after_open, onlyinclude_close, close_len);
 		if(!next_close) break;
 
 		if(rel_open > 0) {
@@ -2764,6 +2776,11 @@ static bool handle_onlyinclude(ThreadBuf *tb, const ParserConfig *cfg, Accum *ac
 
 		remaining= next_close + close_len;
 		remaining_len= tb->len - (size_t)(remaining - tb->buf);
+
+		next_open= find_substr_cs(remaining, remaining_len, onlyinclude_open, open_len);
+		if(!next_open) break;
+		size_t tail_after_open= remaining_len - (size_t)(next_open - remaining) - open_len;
+		next_close= find_substr_cs(next_open + open_len, tail_after_open, onlyinclude_close, close_len);
 	}
 
 		if(remaining_len > 0) {
