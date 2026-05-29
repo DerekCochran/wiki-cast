@@ -228,10 +228,22 @@ static Token *make_dd_token(const char *syntax, size_t syntax_len, Accum *accum)
  * split at positions where ';' appears, keeping the leading ';' on later parts.
  * Returns an array of allocated strings (caller frees), and sets out_count.
  */
+static char **split_on_semicolon_lookahead_with_len(const char *s, size_t len,
+																											 size_t *out_count,
+																											 size_t **out_lens);
+
 static char **split_on_semicolon_lookahead(const char *s, size_t len, size_t *out_count) {
+	return split_on_semicolon_lookahead_with_len(s, len, out_count, NULL);
+}
+
+static char **split_on_semicolon_lookahead_with_len(const char *s, size_t len,
+																											 size_t *out_count,
+																											 size_t **out_lens) {
 	size_t cap= 8, count= 0;
 	char **parts= malloc(cap * sizeof(char *));
+	size_t *lens= out_lens ? malloc(cap * sizeof(size_t)) : NULL;
 	assert(parts);
+	if(out_lens) assert(lens);
 	size_t start= 0;
 	for(size_t i= 0; i < len; i++) {
 		if(s[i] == ';' && i != start) {
@@ -243,9 +255,12 @@ static char **split_on_semicolon_lookahead(const char *s, size_t len, size_t *ou
 			if(count >= cap) {
 				cap*= 2;
 				parts= realloc(parts, cap * sizeof(char *));
+				if(out_lens) lens= realloc(lens, cap * sizeof(size_t));
 				assert(parts);
+				if(out_lens) assert(lens);
 			}
 			parts[count++]= p;
+			if(out_lens) lens[count - 1]= plen;
 			start= i;
 		}
 	}
@@ -258,17 +273,22 @@ static char **split_on_semicolon_lookahead(const char *s, size_t len, size_t *ou
 	if(count >= cap) {
 		cap*= 2;
 		parts= realloc(parts, cap * sizeof(char *));
+		if(out_lens) lens= realloc(lens, cap * sizeof(size_t));
 		assert(parts);
+		if(out_lens) assert(lens);
 	}
 	parts[count++]= p;
+	if(out_lens) lens[count - 1]= plen;
 	*out_count= count;
+	if(out_lens) *out_lens= lens;
 	return parts;
 }
 
 /* free array returned by split_on_semicolon_lookahead */
-static void free_parts(char **parts, size_t count) {
+static void free_parts(char **parts, size_t *lens, size_t count) {
 	for(size_t i= 0; i < count; i++) free(parts[i]);
 	free(parts);
+	free(lens);
 }
 
 /* Main parse_list implementation */
@@ -356,7 +376,8 @@ void parse_list(ThreadBuf *tb, const ParserConfig *cfg, Accum *accum) {
 
 		/* Split combined into parts using lookahead semicolon split */
 		size_t parts_count= 0;
-		char **parts= split_on_semicolon_lookahead(combined, combined_len, &parts_count);
+		size_t *parts_len= NULL;
+		char **parts= split_on_semicolon_lookahead_with_len(combined, combined_len, &parts_count, &parts_len);
 
 		bool isDt= (parts_count > 0 && parts[0][0] == ';');
 		int dt= (int)parts_count - (isDt ? 0 : 1);
@@ -370,22 +391,28 @@ void parse_list(ThreadBuf *tb, const ParserConfig *cfg, Accum *accum) {
 			commonPrefix[cp_len]= '\0';
 			if(isDt) {
 				size_t cp_parts= 0;
-				char **cp_list= split_on_semicolon_lookahead(commonPrefix, cp_len, &cp_parts);
+				size_t *cp_lens= NULL;
+				char **cp_list= split_on_semicolon_lookahead_with_len(commonPrefix, cp_len, &cp_parts, &cp_lens);
 				/* prepend cp_list to parts */
 				size_t new_count= parts_count + cp_parts;
 				char **new_parts= malloc(new_count * sizeof(char *));
+				size_t *new_lens= malloc(new_count * sizeof(size_t));
 				assert(new_parts);
+				assert(new_lens);
 				size_t pi= 0;
-				for(size_t k= 0; k < cp_parts; k++) new_parts[pi++]= cp_list[k];
-				for(size_t k= 0; k < parts_count; k++) new_parts[pi++]= parts[k];
+				for(size_t k= 0; k < cp_parts; k++) { new_parts[pi]= cp_list[k]; new_lens[pi]= cp_lens[k]; pi++; }
+				for(size_t k= 0; k < parts_count; k++) { new_parts[pi]= parts[k]; new_lens[pi]= parts_len[k]; pi++; }
 				free(cp_list);
+				free(cp_lens);
 				free(parts);
+				free(parts_len);
 				parts= new_parts;
+				parts_len= new_lens;
 				parts_count= new_count;
 				if(strchr(commonPrefix, ';')) dt+= (int)cp_parts;
 			} else {
 				/* prepend commonPrefix to first part */
-				size_t a_len= strlen(parts[0]);
+				size_t a_len= parts_len[0];
 				char *merged= malloc(cp_len + a_len + 1);
 				assert(merged);
 				sz_copy(merged, commonPrefix, cp_len);
@@ -393,6 +420,7 @@ void parse_list(ThreadBuf *tb, const ParserConfig *cfg, Accum *accum) {
 				merged[cp_len + a_len]= '\0';
 				free(parts[0]);
 				parts[0]= merged;
+				parts_len[0]= cp_len + a_len;
 			}
 			free(commonPrefix);
 		}
@@ -440,14 +468,14 @@ void parse_list(ThreadBuf *tb, const ParserConfig *cfg, Accum *accum) {
 
 		/* Create ListToken for each part (order matters) */
 		for(size_t i= 0; i < parts_count; i++) {
-			make_list_token(parts[i], strlen(parts[i]), accum);
+			make_list_token(parts[i], parts_len[i], accum);
 		}
 
 		if(dt == 0) {
 			free(line);
 			lines[li]= out; /* adopt out as new line */
 			lines_len[li]= out_len;
-			free_parts(parts, parts_count);
+			free_parts(parts, parts_len, parts_count);
 			free(combined);
 			continue;
 		}
@@ -605,7 +633,7 @@ void parse_list(ThreadBuf *tb, const ParserConfig *cfg, Accum *accum) {
 					free(line);
 					lines[li] = new_out;
 					lines_len[li] = new_len;
-					free_parts(parts, parts_count);
+					free_parts(parts, parts_len, parts_count);
 					free(combined);
 					goto next_line;
 				}
@@ -636,7 +664,7 @@ void parse_list(ThreadBuf *tb, const ParserConfig *cfg, Accum *accum) {
 		free(line);
 		lines[li]= out;
 		lines_len[li]= out_len;
-		free_parts(parts, parts_count);
+		free_parts(parts, parts_len, parts_count);
 		free(combined);
 	next_line:;
 	}
@@ -645,21 +673,24 @@ void parse_list(ThreadBuf *tb, const ParserConfig *cfg, Accum *accum) {
 	size_t total_len= 0;
 	for(size_t i= 0; i < line_count; i++) total_len+= lines_len[i];
 	total_len+= (line_count > 0 ? (line_count - 1) : 0); /* newlines between lines */
-	char *joined= malloc(total_len + 1);
-	assert(joined);
-	size_t p= 0;
+	ThreadBuf *join_tb = wiki_thread_buf_acquire_scratch();
+	if(!join_tb) { log_fatal("parse_list: failed to acquire scratch for join"); abort(); }
+	wiki_thread_buf_reserve(join_tb, total_len + 1);
+	join_tb->len = 0;
 	for(size_t i= 0; i < line_count; i++) {
-		if(lines_len[i] > 0) sz_copy(joined + p, lines[i], lines_len[i]);
-		p+= lines_len[i];
+		if(lines_len[i] > 0) {
+			sz_copy(join_tb->buf + join_tb->len, lines[i], lines_len[i]);
+			join_tb->len += lines_len[i];
+		}
 		if(i + 1 < line_count) {
-			joined[p++]= '\n';
+			join_tb->buf[join_tb->len++]= '\n';
 		}
 		free(lines[i]);
 	}
-	joined[p]= '\0';
+	join_tb->buf[join_tb->len]= '\0';
 
-	wiki_thread_buf_set(tb, joined, p);
-	free(joined);
+	wiki_thread_buf_set(tb, join_tb->buf, join_tb->len);
+	wiki_thread_buf_release_scratch(join_tb);
 	free(lines);
 	free(lines_len);
 	if(lastPrefix) free(lastPrefix);
