@@ -1671,6 +1671,8 @@ static Token *parse_gallery_image_line_local(const char *line, size_t line_len,
 	Title *file_title= title_parse_half_parsed(trim_file_ptr, trim_file_len, 6, cfg, true, "");
 	bool file_valid= (file_title && file_title->valid);
 	title_free(file_title);
+	bool fallback_file_valid_known = (trim_file_ptr == line && trim_file_len == file_len);
+	bool fallback_file_valid = file_valid;
 
 	/* JS GalleryToken parity: invalid file titles produce CommentLineToken. */
 	if(!file_valid) {
@@ -1832,14 +1834,17 @@ static Token *parse_gallery_image_line_local(const char *line, size_t line_len,
 		if(non_ws < line_len) {
 			const char pipe_ch2 = '|';
 			const char *pipe_ptr2 = sz_find_byte(line, line_len, &pipe_ch2);
-			size_t file_len= pipe_ptr2 ? (size_t)(pipe_ptr2 - line) : line_len;
+			size_t fallback_file_len= pipe_ptr2 ? (size_t)(pipe_ptr2 - line) : line_len;
 			/* JS GalleryToken parity: only construct gallery-image when
 			 * normalizeTitle(file, 6, {halfParsed:true, decode:true, page:''}).valid. */
-			Title *file_title= title_parse_half_parsed(line, file_len, 6, cfg, true, "");
-			bool file_valid= (file_title && file_title->valid);
-			title_free(file_title);
+			bool file_valid_local = fallback_file_valid;
+			if(!fallback_file_valid_known || fallback_file_len != file_len) {
+				Title *file_title= title_parse_half_parsed(line, fallback_file_len, 6, cfg, true, "");
+				file_valid_local= (file_title && file_title->valid);
+				title_free(file_title);
+			}
 
-			if(!file_valid) {
+			if(!file_valid_local) {
 				Token *comment_line = token_new(TOKEN_NOINCLUDE, "noinclude");
 				if(comment_line) {
 					const char *line_view = wiki_thread_buf_append_to_tokens(line, line_len);
