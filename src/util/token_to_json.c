@@ -17,7 +17,7 @@ static cJSON *token_text_to_json_string(const char *text, size_t text_len) {
 
 static void json_add_cstr_to_object(cJSON *root, const char *key, const char *value) {
 	if (!root || !key || !value) return;
-	cJSON_AddItemToObject(root, key, token_text_to_json_string(value, strlen(value)));
+	cJSON_AddStringToObject(root, key, value);
 }
 
 cJSON* token_to_json(const Token *token) {
