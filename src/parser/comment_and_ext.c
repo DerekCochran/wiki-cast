@@ -2092,14 +2092,12 @@ static Token *parse_imagemap_image_line_local(const char *line, size_t line_len,
 	return out;
 }
 
-static Token *parse_imagemap_link_line_local(const char *line, size_t line_len,
-														const ParserConfig *cfg,
-														Accum *accum) {
-	if(!line || line_len == 0) return NULL;
+static Token *parse_imagemap_link_line_from_open_local(const char *line, size_t line_len,
+																		  size_t open,
+																		  const ParserConfig *cfg,
+																		  Accum *accum) {
+	if(!line || line_len == 0 || open >= line_len) return NULL;
 
-	const char *p_open= sz_find_byte(line, line_len, "[");
-	if(!p_open) return NULL;
-	size_t open= (size_t)(p_open - line);
 	const char *substr= line + open;
 	size_t substr_len= line_len - open;
 
@@ -2244,8 +2242,10 @@ static Token *build_imagemap_inner_token(const char *inner_str, size_t inner_len
 				continue;
 			}
 
-			if(sz_find_byte(line_ptr, line_len, "[") != NULL) {
-				tok= parse_imagemap_link_line_local(line_ptr, line_len, cfg, accum);
+			const char *p_open = sz_find_byte(line_ptr, line_len, "[");
+			if(p_open != NULL) {
+				tok= parse_imagemap_link_line_from_open_local(line_ptr, line_len,
+					(size_t)(p_open - line_ptr), cfg, accum);
 			}
 
 			if(tok) {
