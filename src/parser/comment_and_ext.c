@@ -206,11 +206,20 @@ static bool cae_match_ext(const char *s, size_t len, size_t i,
     if(!s || !cfg || !m || i + 1 >= len) return false;
     if(s[i] != '<' || s[i + 1] == '/') return false;
 
+	const unsigned char after_lt = (unsigned char)s[i + 1];
+	const unsigned char after_lt_lc = (unsigned char)fast_tolower(after_lt);
+
     for(size_t ei = 0; ei < cfg->ext.count; ei++) {
         sz_ptr_t ename;
         sz_size_t ename_len;
         sz_string_range(&cfg->ext.items[ei], &ename, &ename_len);
         if(!ename) continue;
+
+		if(ename_len == 0) continue;
+		if(after_lt_lc != (unsigned char)fast_tolower((unsigned char)ename[0])) {
+			continue;
+		}
+
 		if(has_translate && ((ename_len == 9 && sz_equal(ename, "translate", 9) == sz_true_k) ||
 				   (ename_len == 4 && sz_equal(ename, "tvar", 4) == sz_true_k)))
             continue;
