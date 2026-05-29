@@ -655,6 +655,13 @@ static void stage_json_write_text_segments(const char *s, size_t len,
 														 const Accum *accum,
 														 bool *first) {
 	if(!s || len == 0) return;
+	const char znul = '\0';
+	if(sz_find_byte(s, len, &znul) == NULL) {
+		if(!*first) fputc(',', fp);
+		*first= false;
+		stage_json_write_text(s, len, fp);
+		return;
+	}
 
 	size_t pos= 0;
 	while(pos < len) {
@@ -783,6 +790,13 @@ static void append_native_stage_json(const char *stage_log_dir, int stage, Threa
 	fprintf(f, "Stage %d: ", stage);
 	/* Emit a root object with childNodes array */
 	fputs("{\"type\":\"root\",\"childNodes\":[", f);
+	const char znul = '\0';
+	if(sz_find_byte(ws->buf, ws->len, &znul) == NULL) {
+		stage_json_write_text(ws->buf, ws->len, f);
+		fputs("]}\n", f);
+		fclose(f);
+		return;
+	}
 
 	bool first= true;
 	size_t pos= 0;
@@ -850,32 +864,28 @@ static void parse_list_skip_first_line(ThreadBuf *scratch, const ParserConfig *c
 
 	size_t prefix_len= newline_index + 1;
 	size_t rest_len= scratch->len - prefix_len;
- 	/* Try to use a temporary scratch buffer for prefix+processed-rest assembly. */
- 	const char *orig_buf = scratch->buf;
- 	const char *rest = orig_buf + prefix_len;
+	const char *orig_buf = scratch->buf;
+	const char *rest = orig_buf + prefix_len;
 
- 	ThreadBuf *tmp = wiki_thread_buf_acquire_scratch();
- 	if(!tmp) {
+	ThreadBuf *tail = wiki_thread_buf_acquire_scratch_from_data(rest, rest_len);
+	if(!tail) {
  		log_fatal("parse_list_skip_first_line: failed to acquire scratch");
  		abort();
  	}
+	parse_list(tail, cfg, accum);
 
-	/* Copy prefix into tmp, then parse the rest into `scratch` and append. */
-	wiki_thread_buf_reserve(tmp, prefix_len + rest_len + 1);
-	sz_copy(tmp->buf, orig_buf, prefix_len);
-	tmp->len = prefix_len;
+	if(tail->len == rest_len && (rest_len == 0 || sz_equal(tail->buf, rest, rest_len) == sz_true_k)) {
+		wiki_thread_buf_release_scratch(tail);
+		return;
+	}
 
-	wiki_thread_buf_set(scratch, rest, rest_len);
-	parse_list(scratch, cfg, accum);
-
-	/* Ensure tmp can hold prefix + processed-rest and append. */
-	wiki_thread_buf_reserve(tmp, prefix_len + scratch->len + 1);
-	sz_copy(tmp->buf + prefix_len, scratch->buf, scratch->len);
-	tmp->len = prefix_len + scratch->len;
-	tmp->buf[tmp->len] = '\0';
-
-	wiki_thread_buf_set(scratch, tmp->buf, tmp->len);
-	wiki_thread_buf_release_scratch(tmp);
+	wiki_thread_buf_reserve(scratch, prefix_len + tail->len);
+	if(tail->len > 0) {
+		sz_copy(scratch->buf + prefix_len, tail->buf, tail->len);
+	}
+	scratch->len = prefix_len + tail->len;
+	scratch->buf[scratch->len] = '\0';
+	wiki_thread_buf_release_scratch(tail);
 	return;
 }
 
@@ -892,27 +902,34 @@ static void parse_table_skip_first_line(ThreadBuf *scratch, const ParserConfig *
 	const char *orig_buf = scratch->buf;
 	const char *rest = orig_buf + prefix_len;
 
-	ThreadBuf *tmp = wiki_thread_buf_acquire_scratch();
-	if(!tmp) {
+	ThreadBuf *tail = wiki_thread_buf_acquire_scratch_from_data(rest, rest_len);
+	if(!tail) {
 		log_fatal("parse_table_skip_first_line: failed to acquire scratch");
 		abort();
 	}
+	parse_table(tail, cfg, accum);
 
-	/* Keep the first line literal, then run parse_table on the remaining lines. */
-	wiki_thread_buf_reserve(tmp, prefix_len + rest_len + 1);
-	sz_copy(tmp->buf, orig_buf, prefix_len);
-	tmp->len = prefix_len;
+	if(tail->len == rest_len && (rest_len == 0 || sz_equal(tail->buf, rest, rest_len) == sz_true_k)) {
+		wiki_thread_buf_release_scratch(tail);
+		return;
+	}
 
-	wiki_thread_buf_set(scratch, rest, rest_len);
-	parse_table(scratch, cfg, accum);
+	wiki_thread_buf_reserve(scratch, prefix_len + tail->len);
+	if(tail->len > 0) {
+		sz_copy(scratch->buf + prefix_len, tail->buf, tail->len);
+	}
+	scratch->len = prefix_len + tail->len;
+	scratch->buf[scratch->len] = '\0';
+	wiki_thread_buf_release_scratch(tail);
+}
 
-	wiki_thread_buf_reserve(tmp, prefix_len + scratch->len + 1);
-	sz_copy(tmp->buf + prefix_len, scratch->buf, scratch->len);
-	tmp->len = prefix_len + scratch->len;
-	tmp->buf[tmp->len] = '\0';
-
-	wiki_thread_buf_set(scratch, tmp->buf, tmp->len);
-	wiki_thread_buf_release_scratch(tmp);
+static bool likely_has_inline_stage_syntax(const char *s, size_t len) {
+	if(!s || len == 0) return false;
+	if(sz_find_byte_from(s, len, "<[{':/_#*;=-", 12)) return true;
+	if(sz_find(s, len, "RFC ", 4) || sz_find(s, len, "PMID ", 5) || sz_find(s, len, "ISBN ", 5)) {
+		return true;
+	}
+	return false;
 }
 
 static bool should_postprocess_plain(const Token *t) {
@@ -994,15 +1011,19 @@ static Token *parse_gallery_image_line(const char *line, size_t line_len,
 	if(pipe_ptr) {
 		pipe_idx= (size_t)(pipe_ptr - line);
 		if(pipe_idx + 1 < line_len) {
-			pre_text_tb= wiki_thread_buf_acquire_scratch_from_data(line + pipe_idx + 1, line_len - (pipe_idx + 1));
-			if(!pre_text_tb) { log_fatal("parse_gallery_image_line: failed to acquire scratch for pre_text"); abort(); }
-			/* JS parity: gallery-image text is pre-parsed through inline-link stages
-			 * before FileToken-style parameter splitting. */
-			parse_comment_and_ext(pre_text_tb, cfg, accum, false);
-			parse_braces(pre_text_tb, cfg, accum);
-			parse_links(pre_text_tb, cfg, accum, page, false);
-			parse_external_links(pre_text_tb, cfg, accum, false);
-			parse_magic_links(pre_text_tb, cfg, accum);
+			const char *rhs = line + pipe_idx + 1;
+			size_t rhs_len = line_len - (pipe_idx + 1);
+			if(likely_has_inline_stage_syntax(rhs, rhs_len)) {
+				pre_text_tb= wiki_thread_buf_acquire_scratch_from_data(rhs, rhs_len);
+				if(!pre_text_tb) { log_fatal("parse_gallery_image_line: failed to acquire scratch for pre_text"); abort(); }
+				/* JS parity: gallery-image text is pre-parsed through inline-link stages
+				 * before FileToken-style parameter splitting. */
+				parse_comment_and_ext(pre_text_tb, cfg, accum, false);
+				parse_braces(pre_text_tb, cfg, accum);
+				parse_links(pre_text_tb, cfg, accum, page, false);
+				parse_external_links(pre_text_tb, cfg, accum, false);
+				parse_magic_links(pre_text_tb, cfg, accum);
+			}
 		}
 	}
 
@@ -1430,6 +1451,16 @@ static void run_nested_plain_pipeline(ThreadBuf *scratch,
 		parse_braces_with_heading(scratch, cfg, accum, !is_poem_ext_inner);
 	}
 
+	if(!(is_td_inner || is_ext_inner || is_heading_title)) {
+		return;
+	}
+
+	const char znul = '\0';
+	if(sz_find_byte(scratch->buf, scratch->len, &znul) == NULL &&
+		 !likely_has_inline_stage_syntax(scratch->buf, scratch->len)) {
+		return;
+	}
+
 	if(is_td_inner || is_ext_inner) {
 		debug_dump_bad_sentinel_window("run_nested_plain_pipeline:before-stage4", scratch, t);
 		bool ext_inner_has_sentinel = false;
@@ -1794,7 +1825,7 @@ static void postprocess_root_braces_fallback(Token *root, const ParserConfig *cf
 
 	const char *txt= root->children[0].text;
 	size_t txt_len= root->children[0].text_len;
-	if(!txt || txt_len == 0 || sz_find(txt, txt_len, "{{", 2) == NULL) return;
+	if(!txt || txt_len == 0 || sz_find(txt, txt_len, "{{", 2) == NULL || sz_find(txt, txt_len, "}}", 2) == NULL) return;
 
 	ThreadBuf *scratch = wiki_thread_buf_acquire_scratch_from_data(txt, txt_len);
 	parse_braces(scratch, cfg, accum);
@@ -2313,11 +2344,15 @@ static void parse_quotes_stage6_per_line(ThreadBuf *ws, const ParserConfig *cfg,
 	if(!ws || !ws->buf) return;
 
 	ThreadBuf *scratch= wiki_thread_buf_acquire_scratch();
-
-	size_t out_cap= ws->len * 2 + 64;
-	char *out= malloc(out_cap);
-	assert(out);
-	size_t out_len= 0;
+	ThreadBuf *out= wiki_thread_buf_acquire_scratch();
+	if(!scratch || !out) {
+		if(scratch) wiki_thread_buf_release_scratch(scratch);
+		if(out) wiki_thread_buf_release_scratch(out);
+		log_fatal("parse_quotes_stage6_per_line: failed to acquire scratch");
+		abort();
+	}
+	out->len = 0;
+	wiki_thread_buf_reserve(out, ws->len + 1);
 
 	size_t line_start= 0;
 	while(line_start < ws->len) {
@@ -2327,33 +2362,26 @@ static void parse_quotes_stage6_per_line(ThreadBuf *ws, const ParserConfig *cfg,
 		wiki_thread_buf_set(scratch, ws->buf + line_start, line_len);
 		parse_quotes(scratch, cfg, accum, false);
 
-		while(out_len + scratch->len + 2 >= out_cap) {
-			out_cap*= 2;
-			out= realloc(out, out_cap);
-			assert(out);
-		}
 		if(scratch->len > 0) {
-			sz_copy(out + out_len, scratch->buf, scratch->len);
-			out_len+= scratch->len;
+			wiki_thread_buf_append(out, (sz_string_view_t){ .start = scratch->buf, .length = scratch->len });
 		}
 		if(eol) {
-			out[out_len++]= '\n';
+			wiki_thread_buf_putc(out, '\n');
 		}
 
 		line_start= eol ? (size_t)(eol - ws->buf) + 1 : ws->len;
 	}
 
-	out[out_len]= '\0';
-	wiki_thread_buf_set(ws, out, out_len);
-
-	free(out);
+	wiki_thread_buf_set(ws, out->buf, out->len);
+	wiki_thread_buf_release_scratch(out);
 	wiki_thread_buf_release_scratch(scratch);
 }
 
-static void stage1_parse_braces_on_accum(const ParserConfig *cfg, Accum *accum) {
+static void stage1_parse_braces_on_accum(const ParserConfig *cfg, Accum *accum, size_t scan_limit) {
 	if(!cfg || !accum) return;
+	if(scan_limit > accum->count) scan_limit = accum->count;
 
-	for(size_t ai= 0; ai < accum->count; ai++) {
+	for(size_t ai= 0; ai < scan_limit; ai++) {
 		Token *tok= accum->tokens[ai];
 		if(!tok) continue;
 			if(tok->type != TOKEN_EXT_INNER || !ext_inner_allows_nested_parse(tok->name)) continue;
@@ -2381,10 +2409,11 @@ static void stage1_parse_braces_on_accum(const ParserConfig *cfg, Accum *accum) 
 	}
 }
 
-static void stage0_parse_comment_and_ext_on_accum(const ParserConfig *cfg, Accum *accum) {
+static void stage0_parse_comment_and_ext_on_accum(const ParserConfig *cfg, Accum *accum, size_t scan_limit) {
 	if(!cfg || !accum) return;
+	if(scan_limit > accum->count) scan_limit = accum->count;
 
-	for(size_t ai= 0; ai < accum->count; ai++) {
+	for(size_t ai= 0; ai < scan_limit; ai++) {
 		Token *tok= accum->tokens[ai];
 		if(!tok) continue;
 			if(tok->type != TOKEN_EXT_INNER || !ext_inner_allows_nested_parse(tok->name)) continue;
@@ -2516,14 +2545,17 @@ Token *wiki_parse_with_page(const char *wikitext, size_t input_len, const Parser
 			parse_redirect(ws, cfg, &accum);
 			/* parseCommentAndExt always runs at stage 0 */
 			parse_comment_and_ext(ws, cfg, &accum, include);
-			stage0_parse_comment_and_ext_on_accum(cfg, &accum);
+			stage0_parse_comment_and_ext_on_accum(cfg, &accum, accum.count);
 			break;
 
 		/* Stage 1: parseBraces */
 		case 1:
+		{
+			size_t scan_limit = accum.count;
 			parse_braces(ws, cfg, &accum);
-			stage1_parse_braces_on_accum(cfg, &accum);
+			stage1_parse_braces_on_accum(cfg, &accum, scan_limit);
 			break;
+		}
 
 		case 2: /* parseHtml */
 			parse_html(ws, cfg, &accum);
