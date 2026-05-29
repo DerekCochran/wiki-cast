@@ -881,11 +881,20 @@ static Token *build_pre_noinclude_token(const char *substr, size_t sub_len, Accu
 static bool find_ci_lit(const char *s, size_t len, size_t from,
 							 const char *lit, size_t lit_len, size_t *out_pos) {
 	if(!s || !lit || lit_len == 0 || from >= len) return false;
-	for(size_t i= from; i + lit_len <= len; i++) {
-		if(str_ci_eq_n(s + i, lit, lit_len)) {
-			if(out_pos) *out_pos= i;
+	unsigned char first= (unsigned char)lit[0];
+	char cand[2];
+	cand[0]= (char)fast_tolower(first);
+	cand[1]= (char)((first >= 'a' && first <= 'z') ? (first - ('a' - 'A')) : first);
+
+	for(size_t i= from; i + lit_len <= len;) {
+		const char *found= sz_find_byte_from(s + i, len - i, cand, 2);
+		if(!found) return false;
+		size_t p= (size_t)(found - s);
+		if(p + lit_len <= len && str_ci_eq_n(s + p, lit, lit_len)) {
+			if(out_pos) *out_pos= p;
 			return true;
 		}
+		i= p + 1;
 	}
 	return false;
 }
