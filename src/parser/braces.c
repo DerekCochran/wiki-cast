@@ -1442,7 +1442,6 @@ static bool braces_state_machine(ThreadBuf *tb, const ParserConfig *cfg,
 		}
 
 		size_t syntax_len = syntax_end > syntax_start ? syntax_end - syntax_start : 0;
-		const char *syntax = tb->buf + syntax_start;
 		BraceFrame top;
 		bool has_top = false;
 		bool top_requeued = false;
