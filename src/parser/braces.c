@@ -565,6 +565,14 @@ static char *trim_copy_n(const char *s, size_t len, size_t *out_n) {
 	return out;
 }
 
+static sz_string_view_t trim_view(const char *s, size_t len) {
+	if(!s || len == 0) return (sz_string_view_t){ .start = NULL, .length = 0 };
+	size_t i= 0, j= len;
+	while(i < j && isspace((unsigned char)s[i])) i++;
+	while(j > i && isspace((unsigned char)s[j - 1])) j--;
+	return (sz_string_view_t){ .start = s + i, .length = j - i };
+}
+
 static char *lower_copy(const char *s, size_t len) {
 	if(!s) return NULL;
 
@@ -582,23 +590,17 @@ static char *lower_copy(const char *s, size_t len) {
 static const char *parser_function_canonical(const ParserConfig *cfg, const char *name, size_t len) {
 	if(!cfg || !name || len == 0) return NULL;
 
-	size_t trimmed_len = 0;
-	char *trimmed= trim_copy_n(name, len, &trimmed_len);
-	if(!trimmed || trimmed_len == 0) {
-		free(trimmed);
-		return NULL;
-	}
+	sz_string_view_t trimmed = trim_view(name, len);
+	if(!trimmed.start || trimmed.length == 0) return NULL;
 
-	const char *canonical= str_map_get_exact(&cfg->parser_function_sensitive, trimmed, trimmed_len);
+	const char *canonical= str_map_get_exact(&cfg->parser_function_sensitive, trimmed.start, trimmed.length);
 	if(!canonical) {
-		char *lc= lower_copy(trimmed, trimmed_len);
+		char *lc= lower_copy(trimmed.start, trimmed.length);
 		if(lc) {
-			canonical= str_map_get_exact(&cfg->parser_function_insensitive, lc, trimmed_len);
+			canonical= str_map_get_exact(&cfg->parser_function_insensitive, lc, trimmed.length);
 			free(lc);
 		}
 	}
-
-	free(trimmed);
 	return canonical;
 }
 
@@ -2088,6 +2090,11 @@ typedef struct {
 	size_t *link_cap;
 } MainBracesPassArgs;
 
+static inline bool braces_has_literal(const char *buf, size_t len, const char *lit, size_t lit_len) {
+	if(!buf || !lit || lit_len == 0 || len < lit_len) return false;
+	return sz_find(buf, len, lit, lit_len) != NULL;
+}
+
 /*
  * One pass of the outer fixpoint loop.
  * Runs four sequential sub-scans (two template alternations, then wikilink,
@@ -2095,6 +2102,13 @@ typedef struct {
  */
 static void main_braces_run_pass(void *user_data) {
 	MainBracesPassArgs *args= (MainBracesPassArgs *)user_data;
+	const char *in_buf = args->tb->buf;
+	size_t in_len = args->tb->len;
+	bool has_template_pair = braces_has_literal(in_buf, in_len, "{{", 2) && braces_has_literal(in_buf, in_len, "}}", 2);
+	bool has_wikilink_pair = braces_has_literal(in_buf, in_len, "[[", 2) && braces_has_literal(in_buf, in_len, "]]", 2);
+	bool has_converter_pair = braces_has_literal(in_buf, in_len, "-{", 2) && braces_has_literal(in_buf, in_len, "}-", 2);
+	if(!has_template_pair && !has_wikilink_pair && !has_converter_pair) return;
+
 	ThreadBuf *out= wiki_thread_buf_acquire_scratch();
 	assert(out);
 
@@ -2108,33 +2122,39 @@ static void main_braces_run_pass(void *user_data) {
 	.link_cap= args->link_cap,
 	};
 
-	/* Sub-pass 1a: {{...}} not preceded by { (alternation 1). */
-	out->len= 0;
-	ctx.active_rule= &wiki_rule_main_template_1;
-	parser_scan(args->tb->buf, args->tb->len, &wiki_rule_main_template_1,
-				main_braces_template_cb, &ctx);
-	wiki_thread_buf_set(args->tb, out->buf, out->len);
+	if(has_template_pair) {
+		/* Sub-pass 1a: {{...}} not preceded by { (alternation 1). */
+		out->len= 0;
+		ctx.active_rule= &wiki_rule_main_template_1;
+		parser_scan(args->tb->buf, args->tb->len, &wiki_rule_main_template_1,
+						main_braces_template_cb, &ctx);
+		wiki_thread_buf_set(args->tb, out->buf, out->len);
 
-	/* Sub-pass 1b: {{...}} not followed by } (alternation 2). */
-	out->len= 0;
-	ctx.active_rule= &wiki_rule_main_template_2;
-	parser_scan(args->tb->buf, args->tb->len, &wiki_rule_main_template_2,
-				main_braces_template_cb, &ctx);
-	wiki_thread_buf_set(args->tb, out->buf, out->len);
+		/* Sub-pass 1b: {{...}} not followed by } (alternation 2). */
+		out->len= 0;
+		ctx.active_rule= &wiki_rule_main_template_2;
+		parser_scan(args->tb->buf, args->tb->len, &wiki_rule_main_template_2,
+						main_braces_template_cb, &ctx);
+		wiki_thread_buf_set(args->tb, out->buf, out->len);
+	}
 
-	/* Sub-pass 2: park [[...]] wikilinks. */
-	out->len= 0;
-	ctx.active_rule= &wiki_rule_main_wikilink;
-	parser_scan(args->tb->buf, args->tb->len, &wiki_rule_main_wikilink,
-				main_braces_park_cb, &ctx);
-	wiki_thread_buf_set(args->tb, out->buf, out->len);
+	if(has_wikilink_pair) {
+		/* Sub-pass 2: park [[...]] wikilinks. */
+		out->len= 0;
+		ctx.active_rule= &wiki_rule_main_wikilink;
+		parser_scan(args->tb->buf, args->tb->len, &wiki_rule_main_wikilink,
+						main_braces_park_cb, &ctx);
+		wiki_thread_buf_set(args->tb, out->buf, out->len);
+	}
 
-	/* Sub-pass 3: park -{...}- converters. */
-	out->len= 0;
-	ctx.active_rule= &wiki_rule_main_converter;
-	parser_scan(args->tb->buf, args->tb->len, &wiki_rule_main_converter,
-				main_braces_park_cb, &ctx);
-	wiki_thread_buf_set(args->tb, out->buf, out->len);
+	if(has_converter_pair) {
+		/* Sub-pass 3: park -{...}- converters. */
+		out->len= 0;
+		ctx.active_rule= &wiki_rule_main_converter;
+		parser_scan(args->tb->buf, args->tb->len, &wiki_rule_main_converter,
+						main_braces_park_cb, &ctx);
+		wiki_thread_buf_set(args->tb, out->buf, out->len);
+	}
 
 	wiki_thread_buf_release_scratch(out);
 }
@@ -2191,8 +2211,10 @@ void parse_braces_with_heading(ThreadBuf *tb, const ParserConfig *cfg, Accum *ac
 	}
 
 	/* JS parity: after innermost {{...}} replacements, outer {{{...}}} may become
-     * simple enough to match (e.g. {{{a|{{T}}}}}). Re-run the simple-arg pass. */
-	parse_simple_args(tb, cfg, accum);
+	 * simple enough to match (e.g. {{{a|{{T}}}}}). Re-run only when candidates exist. */
+	if(braces_has_literal(tb->buf, tb->len, "{{{", 3) && braces_has_literal(tb->buf, tb->len, "}}}", 3)) {
+		parse_simple_args(tb, cfg, accum);
+	}
 
 	/* Cleanup link_stack */
 	for(size_t i= 0; i < link_count; i++) free(link_stack[i]);
