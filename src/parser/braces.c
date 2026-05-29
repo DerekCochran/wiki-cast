@@ -242,18 +242,27 @@ brace_event_next(const char *buf, size_t len, size_t *pos,
                ([^\S\n] | \0\d+[cn]\x7F)* then another \n. */
 			size_t j= p + 1;
 			while(j < len) {
-				unsigned char cj= (unsigned char)buf[j];
-				if(cj == '\0') {
+				if((unsigned char)buf[j] == '\0') {
 					size_t sl= 0;
-											if(parse_sentinel_at_allowed(buf, len, j, "cn", 2, &sl)) {
+					if(parse_sentinel_at_allowed(buf, len, j, "cn", 2, &sl)) {
 						j+= sl;
 						continue;
 					}
 					break;
 				}
-				if(cj == ' ' || cj == '\t' || cj == '\v' || cj == '\f' || cj == '\r') {
-					j++;
-					continue;
+
+				const char *non_ws = sz_find_byte_not_from(buf + j, len - j, " \t\v\f\r", 5);
+				if(!non_ws) {
+					j = len;
+					break;
+				}
+				j = (size_t)(non_ws - buf);
+				if((unsigned char)buf[j] == '\0') {
+					size_t sl= 0;
+					if(parse_sentinel_at_allowed(buf, len, j, "cn", 2, &sl)) {
+						j+= sl;
+						continue;
+					}
 				}
 				break;
 			}
