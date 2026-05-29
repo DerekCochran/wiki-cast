@@ -325,6 +325,20 @@ function compareAST(jsToken, ncToken, parents= []) {
         // if( !cmpObj(jsToken.ol, ncToken.ol) ) {
         //     return { success: false,  kind: 'data', jsToken: jsToken, ncToken: ncToken, parents: parents, reason: `List ol mismatch: JS ${jsToken.ol} vs C ${ncToken.ol}` };
         // }
+    } else if (jsToken.type === 'link' || jsToken.type === 'file' || jsToken.type === 'category') {
+        // if( !cmpObj(jsToken.magic_pipe, ncToken.magic_pipe) ) {
+        //     return { success: false,  kind: 'data', jsToken: jsToken, ncToken: ncToken, parents: parents, reason: `Link/File/Category magic_pipe mismatch: JS ${jsToken.magic_pipe} vs C ${ncToken.magic_pipe}` };
+        // }
+    } else if (jsToken.type === 'ext-attr') {
+        // if( !cmpObj(jsToken.equal, ncToken.equal) ) {
+        //     return { success: false,  kind: 'data', jsToken: jsToken, ncToken: ncToken, parents: parents, reason: `Ext-attr equal mismatch: JS "${jsToken.equal}" vs C "${ncToken.equal}"` };
+        // }
+        // if( !cmpObj(jsToken.quoteOpen, ncToken.quoteOpen) ) {
+        //     return { success: false,  kind: 'data', jsToken: jsToken, ncToken: ncToken, parents: parents, reason: `Ext-attr quoteOpen mismatch: JS "${jsToken.quoteOpen}" vs C "${ncToken.quoteOpen}"` };
+        // }
+        // if( !cmpObj(jsToken.quoteClose, ncToken.quoteClose) ) {
+        //     return { success: false,  kind: 'data', jsToken: jsToken, ncToken: ncToken, parents: parents, reason: `Ext-attr quoteClose mismatch: JS "${jsToken.quoteClose}" vs C "${ncToken.quoteClose}"` };
+        // }
     }
     if( jsToken.type !== 'text' && !cmpObj(jsToken.childNodes && jsToken.childNodes.length || 0, ncToken.childNodes && ncToken.childNodes.length || 0 ) ) {
         if( handleChildrenMismatch(jsToken, ncToken) ) {

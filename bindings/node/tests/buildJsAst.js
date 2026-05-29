@@ -89,7 +89,14 @@ function buildJsAst(jsToken, parentToken) {
         // curToken.dt = jsToken.dt;
         // curToken.ul = jsToken.ul;
         // curToken.ol = jsToken.ol;
+    } else if (jsToken.type === 'link' || jsToken.type === 'file' || jsToken.type === 'category') {
+        // curToken.magic_pipe = jsToken.magic_pipe;
+    } else if (jsToken.type === 'ext-attr') {
+        // curToken.equal = jsToken.equal;
+        // curToken.quoteOpen = jsToken.quoteOpen;
+        // curToken.quoteClose = jsToken.quoteClose;
     }
+
     if( jsToken.childNodes ) {
         for( let i = 0; i < jsToken.childNodes.length; i++ ) {
             buildJsAst(jsToken.childNodes[i], curToken) 

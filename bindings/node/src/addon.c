@@ -123,6 +123,168 @@ static void node_json_add_cstr_to_object(cJSON *root, const char *key, const cha
     cJSON_AddStringToObject(root, key, value);
 }
 
+static bool node_token_text_len(const Token *token, const char **text, size_t *len) {
+    if (!token || token->child_count == 0 || !text || !len) return false;
+    const Child *c = &token->children[0];
+    if (!c->is_text || !c->text) return false;
+    *text = c->text;
+    *len = c->text_len;
+    return true;
+}
+
+static void node_json_add_protocol_from_url(cJSON *root, const char *url, size_t url_len) {
+    if (!root || !url || url_len == 0) return;
+    for (size_t i = 0; i + 2 < url_len; i++) {
+        if (url[i] == ':' && url[i + 1] == '/' && url[i + 2] == '/') {
+            cJSON_AddItemToObject(root, "protocol", node_token_text_to_json_string(url, i + 3));
+            return;
+        }
+    }
+}
+
+static void node_json_add_token_text_property(cJSON *root, const char *key, const Token *token) {
+    if (!root || !key || !token) return;
+    ThreadBuf *scratch = wiki_thread_buf_acquire_scratch();
+    if (!scratch) return;
+    char *str = token_to_string(token, scratch);
+    if (str) {
+        cJSON_AddItemToObject(root, key, node_token_text_to_json_string(str, scratch->len));
+    }
+    wiki_thread_buf_release_scratch(scratch);
+}
+
+static bool node_child_token_at(const Token *token, size_t idx, const Token **out) {
+    if (!token || !out || idx >= token->child_count) return false;
+    const Child *c = &token->children[idx];
+    if (c->is_text || !c->token) return false;
+    *out = c->token;
+    return true;
+}
+
+static bool node_child_text_at(const Token *token, size_t idx, const char **text, size_t *len) {
+    if (!token || !text || !len || idx >= token->child_count) return false;
+    const Child *c = &token->children[idx];
+    if (!c->is_text || !c->text) return false;
+    *text = c->text;
+    *len = c->text_len;
+    return true;
+}
+
+static void node_json_add_view_property(cJSON *root, const char *key, sz_string_view_t view) {
+    if (!root || !key || !view.start) return;
+    cJSON_AddItemToObject(root, key, node_token_text_to_json_string(view.start, view.length));
+}
+
+static void node_json_add_token_text_property_at(cJSON *root, const char *key, const Token *token, size_t idx) {
+    const Token *child = NULL;
+    if (node_child_token_at(token, idx, &child)) {
+        node_json_add_token_text_property(root, key, child);
+        return;
+    }
+    const char *text = NULL;
+    size_t len = 0;
+    if (node_child_text_at(token, idx, &text, &len)) {
+        cJSON_AddItemToObject(root, key, node_token_text_to_json_string(text, len));
+    }
+}
+
+static cJSON *node_json_text_child_as_string(const Token *token, size_t idx) {
+    if (!token || idx >= token->child_count) return NULL;
+    const Child *c = &token->children[idx];
+    if (c->is_text && c->text) {
+        return node_token_text_to_json_string(c->text, c->text_len);
+    }
+    if (!c->is_text && c->token) {
+        const char *text = NULL;
+        size_t len = 0;
+        if (node_token_text_len(c->token, &text, &len)) {
+            return node_token_text_to_json_string(text, len);
+        }
+    }
+    return NULL;
+}
+
+static bool node_is_numeric_name(const char *name) {
+    if (!name || !name[0]) return false;
+    for (const char *p = name; *p; p++) {
+        if (*p < '0' || *p > '9') return false;
+    }
+    return true;
+}
+
+static void node_add_image_parameter_dimensions(cJSON *root, const char *value, size_t len) {
+    if (!root || !value || len == 0) return;
+    size_t x = SIZE_MAX;
+    for (size_t i = 0; i < len; i++) {
+        if (value[i] == 'x' || value[i] == 'X') {
+            x = i;
+            break;
+        }
+    }
+    if (x == SIZE_MAX) {
+        cJSON_AddItemToObject(root, "width", node_token_text_to_json_string(value, len));
+        return;
+    }
+    if (x > 0) {
+        cJSON_AddItemToObject(root, "width", node_token_text_to_json_string(value, x));
+    }
+    if (x + 1 < len) {
+        cJSON_AddItemToObject(root, "height", node_token_text_to_json_string(value + x + 1, len - x - 1));
+    }
+}
+
+static void node_add_list_flags(cJSON *root, const Token *token) {
+    if (!root || !token || token->child_count == 0) return;
+    const char *text = NULL;
+    size_t len = 0;
+    const Token *marker_tok = NULL;
+    if (node_child_text_at(token, 0, &text, &len)) {
+        /* ok */
+    } else if (node_child_token_at(token, 0, &marker_tok) && node_token_text_len(marker_tok, &text, &len)) {
+        /* ok */
+    } else {
+        return;
+    }
+
+    int indent = 0;
+    bool has_dd = false;
+    bool has_dt = false;
+    bool has_ul = false;
+    bool has_ol = false;
+    for (size_t i = 0; i < len; i++) {
+        char ch = text[i];
+        if (ch == ':' || ch == ';' || ch == '*' || ch == '#') {
+            indent++;
+            if (ch == ':') has_dd = true;
+            else if (ch == ';') has_dt = true;
+            else if (ch == '*') has_ul = true;
+            else if (ch == '#') has_ol = true;
+        }
+    }
+    cJSON_AddNumberToObject(root, "indent", indent);
+    cJSON_AddBoolToObject(root, "dd", has_dd);
+    cJSON_AddBoolToObject(root, "dt", has_dt);
+    cJSON_AddBoolToObject(root, "ul", has_ul);
+    cJSON_AddBoolToObject(root, "ol", has_ol);
+}
+
+static void node_add_converter_rule_fields(cJSON *root, const Token *token) {
+    if (!root || !token) return;
+    const Token *variant_tok = NULL;
+    const Token *from_tok = NULL;
+    for (size_t i = 0; i < token->child_count; i++) {
+        const Token *child = NULL;
+        if (!node_child_token_at(token, i, &child)) continue;
+        if (child->subtype == TOKEN_SUBTYPE_CONVERTER_RULE_VARIANT) variant_tok = child;
+        else if (child->subtype == TOKEN_SUBTYPE_CONVERTER_RULE_FROM) from_tok = child;
+    }
+    if (variant_tok) {
+        node_json_add_token_text_property(root, "variant", variant_tok);
+    }
+    cJSON_AddBoolToObject(root, "unidirectional", from_tok != NULL);
+    cJSON_AddBoolToObject(root, "bidirectional", variant_tok != NULL && from_tok == NULL);
+}
+
 static cJSON *token_to_node_json(const Token *token) {
     if (!token) return NULL;
 
@@ -166,6 +328,9 @@ static cJSON *token_to_node_json(const Token *token) {
             break;
 
         case TOKEN_REDIRECT:
+            node_json_add_view_property(root, "pre", token->data.redirect.pre);
+            node_json_add_view_property(root, "post", token->data.redirect.post);
+            node_json_add_view_property(root, "link", token->data.redirect.link);
             if (token->data.redirect.display.start) cJSON_AddStringToObject(root, "display", token->data.redirect.display.start);
             break;
 
@@ -198,7 +363,6 @@ static cJSON *token_to_node_json(const Token *token) {
             break;
 
         case TOKEN_PARAMETER:
-            if (token->data.image_param.raw_syntax.start) cJSON_AddStringToObject(root, "rawSyntax", token->data.image_param.raw_syntax.start);
             break;
 
         case TOKEN_MAGIC_LINK:
@@ -216,6 +380,144 @@ static cJSON *token_to_node_json(const Token *token) {
         case TOKEN_ARG:
             if (token->data.transclude.modifier.start) cJSON_AddStringToObject(root, "modifier", token->data.transclude.modifier.start);
             break;
+
+        default:
+            break;
+    }
+
+    /* Subtype-specific JSON fields not represented directly in TokenType payload. */
+    switch (token->subtype) {
+        case TOKEN_SUBTYPE_IMAGE_PARAMETER:
+            if (token->data.image_param.raw_syntax.start) {
+                cJSON_AddStringToObject(root, "rawSyntax", token->data.image_param.raw_syntax.start);
+            }
+            node_json_add_token_text_property_at(root, "value", token, 0);
+            if (token->name && strcmp(token->name, "width") == 0) {
+                const Token *v = NULL;
+                const char *value_text = NULL;
+                size_t value_len = 0;
+                if (node_child_token_at(token, 0, &v) && node_token_text_len(v, &value_text, &value_len)) {
+                    node_add_image_parameter_dimensions(root, value_text, value_len);
+                } else if (node_child_text_at(token, 0, &value_text, &value_len)) {
+                    node_add_image_parameter_dimensions(root, value_text, value_len);
+                }
+            }
+            break;
+
+        case TOKEN_SUBTYPE_EXT_LINK:
+            if (token->child_count > 0 && !token->children[0].is_text && token->children[0].token) {
+                const Token *url_tok = token->children[0].token;
+                const char *url_text = NULL;
+                size_t url_len = 0;
+                if (node_token_text_len(url_tok, &url_text, &url_len)) {
+                    cJSON_AddItemToObject(root, "link", node_token_text_to_json_string(url_text, url_len));
+                    node_json_add_protocol_from_url(root, url_text, url_len);
+                }
+            }
+            if (token->child_count > 1 && !token->children[1].is_text && token->children[1].token) {
+                node_json_add_token_text_property(root, "innerText", token->children[1].token);
+            }
+            break;
+
+        case TOKEN_SUBTYPE_PARAMETER:
+            if (token->name) cJSON_AddBoolToObject(root, "anon", node_is_numeric_name(token->name));
+            node_json_add_token_text_property_at(root, "value", token, 1);
+            break;
+
+        case TOKEN_SUBTYPE_ARG:
+            node_json_add_token_text_property_at(root, "default", token, 1);
+            break;
+
+        case TOKEN_SUBTYPE_TEMPLATE:
+        case TOKEN_SUBTYPE_MAGIC_WORD: {
+            size_t anon_count = 0;
+            cJSON *seen = cJSON_CreateObject();
+            bool dup = false;
+            for (size_t i = 0; i < token->child_count; i++) {
+                const Token *p = NULL;
+                if (!node_child_token_at(token, i, &p)) continue;
+                if (p->subtype != TOKEN_SUBTYPE_PARAMETER) continue;
+                if (p->name && node_is_numeric_name(p->name)) anon_count++;
+                if (seen && p->name && p->name[0]) {
+                    cJSON *existing = cJSON_GetObjectItemCaseSensitive(seen, p->name);
+                    if (existing) dup = true;
+                    else cJSON_AddBoolToObject(seen, p->name, true);
+                }
+                if (p->subtype == TOKEN_SUBTYPE_PARAMETER && p->child_count > 0) {
+                    const Token *k = NULL;
+                    if (node_child_token_at(p, 0, &k) && k->subtype == TOKEN_SUBTYPE_PARAMETER_KEY) {
+                        const Token *maybe_module = NULL;
+                        if (node_child_token_at(k, 0, &maybe_module)) {
+                            if (maybe_module->subtype == TOKEN_SUBTYPE_INVOKE_MODULE) {
+                                node_json_add_token_text_property(root, "module", maybe_module);
+                            } else if (maybe_module->subtype == TOKEN_SUBTYPE_INVOKE_FUNCTION) {
+                                node_json_add_token_text_property(root, "function", maybe_module);
+                            }
+                        }
+                    }
+                }
+            }
+            if (seen) cJSON_Delete(seen);
+            cJSON_AddNumberToObject(root, "anonCount", (double)anon_count);
+            cJSON_AddBoolToObject(root, "duplication", dup);
+            break;
+        }
+
+        case TOKEN_SUBTYPE_CONVERTER_FLAGS: {
+            cJSON *arr = cJSON_CreateArray();
+            if (arr) {
+                for (size_t i = 0; i < token->child_count; i++) {
+                    cJSON *item = node_json_text_child_as_string(token, i);
+                    if (item) cJSON_AddItemToArray(arr, item);
+                }
+                cJSON_AddItemToObject(root, "flags", arr);
+            }
+            break;
+        }
+
+        case TOKEN_SUBTYPE_CONVERTER_RULE:
+            node_add_converter_rule_fields(root, token);
+            break;
+
+        case TOKEN_SUBTYPE_CONVERTER:
+            if (token->child_count > 1) {
+                const Token *rule = NULL;
+                if (node_child_token_at(token, 1, &rule) && rule->subtype == TOKEN_SUBTYPE_CONVERTER_RULE) {
+                    node_add_converter_rule_fields(root, rule);
+                }
+            }
+            break;
+
+        case TOKEN_SUBTYPE_LIST:
+        case TOKEN_SUBTYPE_DD:
+            node_add_list_flags(root, token);
+            break;
+
+        case TOKEN_SUBTYPE_ONLYINCLUDE:
+            node_json_add_token_text_property(root, "innerText", token);
+            break;
+
+        case TOKEN_SUBTYPE_PARAM_LINE:
+            break;
+
+        case TOKEN_SUBTYPE_IMAGEMAP_LINK:
+            if (token->child_count > 1 && !token->children[1].is_text && token->children[1].token) {
+                node_json_add_token_text_property(root, "link", token->children[1].token);
+            }
+            break;
+
+        case TOKEN_SUBTYPE_EXT_LINK_URL:
+        case TOKEN_SUBTYPE_FREE_EXT_LINK:
+        case TOKEN_SUBTYPE_MAGIC_LINK: {
+            const char *link_text = NULL;
+            size_t link_len = 0;
+            if (node_token_text_len(token, &link_text, &link_len)) {
+                cJSON_AddItemToObject(root, "link", node_token_text_to_json_string(link_text, link_len));
+                cJSON_AddItemToObject(root, "innerText", node_token_text_to_json_string(link_text, link_len));
+                node_json_add_protocol_from_url(root, link_text, link_len);
+            }
+            break;
+        }
 
         default:
             break;
