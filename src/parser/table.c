@@ -626,27 +626,46 @@ static void parse_table_attrs(Token *attrs_tok, const char *attr_str, size_t att
 	}
 
 	size_t i= 0;
-	char dirty_buf[4096];
-	size_t dirty_len= 0;
+	size_t dirty_start= (size_t)-1;
+	size_t dirty_end= 0;
 
 #define FLUSH_DIRTY()                                                \
 	do {                                                               \
-		if(dirty_len > 0) {                                              \
-			Token *dt= make_table_attr_dirty(dirty_buf, dirty_len, accum); \
+		if(dirty_start != (size_t)-1 && dirty_end > dirty_start) {      \
+			Token *dt= make_table_attr_dirty(attr_str + dirty_start, dirty_end - dirty_start, accum); \
 			if(dt) token_append_child(attrs_tok, dt);                      \
-			dirty_len= 0;                                                  \
+			dirty_start= (size_t)-1;                                       \
+			dirty_end= 0;                                                  \
 		}                                                                \
+	} while(0)
+
+#define APPEND_DIRTY_SPAN(off, span_len)                                         \
+	do {                                                                           \
+		size_t _off= (off);                                                           \
+		size_t _len= (span_len);                                                      \
+		if(_len > 0) {                                                                 \
+			if(dirty_start == (size_t)-1) {                                              \
+				dirty_start= _off;                                                           \
+				dirty_end= _off + _len;                                                     \
+			} else if(dirty_end == _off) {                                               \
+				dirty_end+= _len;                                                           \
+			} else {                                                                      \
+				FLUSH_DIRTY();                                                              \
+				dirty_start= _off;                                                          \
+				dirty_end= _off + _len;                                                    \
+			}                                                                             \
+		}                                                                               \
 	} while(0)
 
 	while(i < attr_len) {
 		size_t ws_take= table_ws_len_at(attr_str, attr_len, i);
 		if(attr_str[i] == '/' || ws_take > 0) {
 			if(ws_take > 0) {
-				sz_copy(dirty_buf + dirty_len, attr_str + i, ws_take);
-				dirty_len+= ws_take;
+				APPEND_DIRTY_SPAN(i, ws_take);
 				i+= ws_take;
 			} else {
-				dirty_buf[dirty_len++]= attr_str[i++];
+				APPEND_DIRTY_SPAN(i, 1);
+				i++;
 			}
 			continue;
 		}
@@ -665,24 +684,26 @@ static void parse_table_attrs(Token *attrs_tok, const char *attr_str, size_t att
 			size_t eq_take= sentinel_at(attr_str, attr_len, i, '~');
 			if(i < attr_len && (attr_str[i] == '=' || eq_take > 0)) {
 				if(eq_take == 0) eq_take= 1;
-				sz_copy(dirty_buf + dirty_len, attr_str + i, eq_take);
-				dirty_len+= eq_take;
+				APPEND_DIRTY_SPAN(i, eq_take);
 				i+= eq_take;
 				if(i < attr_len && (attr_str[i] == '"' || attr_str[i] == '\'')) {
-					char q= attr_str[i];
-					dirty_buf[dirty_len++]= attr_str[i++];
+					size_t vstart= i;
+					char q= attr_str[i++];
 					while(i < attr_len) {
-						dirty_buf[dirty_len++]= attr_str[i];
 						if(attr_str[i++] == q) break;
 					}
+					APPEND_DIRTY_SPAN(vstart, i - vstart);
 				} else {
+					size_t vstart= i;
 					while(i < attr_len && table_ws_len_at(attr_str, attr_len, i) == 0) {
-						dirty_buf[dirty_len++]= attr_str[i++];
+						i++;
 					}
+					APPEND_DIRTY_SPAN(vstart, i - vstart);
 				}
 				continue;
 			}
-			dirty_buf[dirty_len++]= attr_str[i++];
+			APPEND_DIRTY_SPAN(i, 1);
+			i++;
 			continue;
 		}
 
@@ -697,26 +718,27 @@ static void parse_table_attrs(Token *attrs_tok, const char *attr_str, size_t att
 		if(!valid_key) {
 			bool dynamic_key= table_attr_key_is_dynamic(key, key_len);
 			if(!dynamic_key || !is_valid_attr_key_after_comment_trim(key, key_len)) {
-				for(size_t k= 0; k < key_len; k++) dirty_buf[dirty_len++]= key[k];
+				APPEND_DIRTY_SPAN(key_start, key_len);
 				/* JS parity: when an invalid key is immediately followed by '=value',
 				 * keep the whole chunk dirty instead of treating value as a new attr key. */
 				size_t eq_sl= (i < attr_len) ? sentinel_at(attr_str, attr_len, i, '~') : 0;
 				if(i < attr_len && (attr_str[i] == '=' || eq_sl > 0)) {
 					size_t eq_take= (attr_str[i] == '=') ? 1 : eq_sl;
-					sz_copy(dirty_buf + dirty_len, attr_str + i, eq_take);
-					dirty_len+= eq_take;
+					APPEND_DIRTY_SPAN(i, eq_take);
 					i+= eq_take;
 					if(i < attr_len && (attr_str[i] == '"' || attr_str[i] == '\'')) {
-						char q= attr_str[i];
-						dirty_buf[dirty_len++]= attr_str[i++];
+						size_t vstart= i;
+						char q= attr_str[i++];
 						while(i < attr_len) {
-							dirty_buf[dirty_len++]= attr_str[i];
 							if(attr_str[i++] == q) break;
 						}
+						APPEND_DIRTY_SPAN(vstart, i - vstart);
 					} else {
+						size_t vstart= i;
 						while(i < attr_len && table_ws_len_at(attr_str, attr_len, i) == 0) {
-							dirty_buf[dirty_len++]= attr_str[i++];
+							i++;
 						}
+						APPEND_DIRTY_SPAN(vstart, i - vstart);
 					}
 				}
 				continue;
@@ -736,8 +758,7 @@ static void parse_table_attrs(Token *attrs_tok, const char *attr_str, size_t att
 			Token *at= make_table_attr(key, key_len, NULL, 0, NULL, 0, '\0', '\0', accum);
 			if(at) token_append_child(attrs_tok, at);
 			if(ws_start < i) {
-				sz_copy(dirty_buf, attr_str + ws_start, i - ws_start);
-				dirty_len= i - ws_start;
+				APPEND_DIRTY_SPAN(ws_start, i - ws_start);
 			}
 			continue;
 		}
@@ -795,6 +816,7 @@ static void parse_table_attrs(Token *attrs_tok, const char *attr_str, size_t att
 
 	FLUSH_DIRTY();
 	wiki_thread_buf_release_scratch(eq_norm_tb);
+#undef APPEND_DIRTY_SPAN
 #undef FLUSH_DIRTY
 }
 
@@ -1038,7 +1060,6 @@ void parse_table(ThreadBuf *tb, const ParserConfig *cfg, Accum *accum) {
 	TokStack st;
 	stack_init(&st);
 	ThreadBuf *line_scratch= wiki_thread_buf_acquire_scratch();
-	ThreadBuf *last_syn_scratch= wiki_thread_buf_acquire_scratch();
 
 	for(size_t i= 0; i < line_count; i++) {
 		const char *out_line= lines_ptr[i];
@@ -1167,9 +1188,11 @@ void parse_table(ThreadBuf *tb, const ParserConfig *cfg, Accum *accum) {
 			bool include_double_bang = (cell_len == 1 && cell[0] == '!');
 
 			size_t last_index = 0;
-			wiki_thread_buf_set(last_syn_scratch, "\n", 1);
-			if(spaces_len > 0) wiki_thread_buf_append(last_syn_scratch, (sz_string_view_t){ .start = out_line, .length = spaces_len });
-			if(cell_len > 0) wiki_thread_buf_append(last_syn_scratch, (sz_string_view_t){ .start = cell, .length = cell_len });
+			wiki_thread_buf_set(line_scratch, "\n", 1);
+			if(spaces_len > 0) wiki_thread_buf_append(line_scratch, (sz_string_view_t){ .start = out_line, .length = spaces_len });
+			if(cell_len > 0) wiki_thread_buf_append(line_scratch, (sz_string_view_t){ .start = cell, .length = cell_len });
+			const char *last_syn_ptr = line_scratch->buf;
+			size_t last_syn_len = line_scratch->len;
 
 			size_t scan = 0;
 			for(;;) {
@@ -1208,7 +1231,7 @@ void parse_table(ThreadBuf *tb, const ParserConfig *cfg, Accum *accum) {
 					}
 				}
 
-				Token *td = create_td_token(last_syn_scratch->buf, last_syn_scratch->len,
+				Token *td = create_td_token(last_syn_ptr, last_syn_len,
 											 cell_attrs, cell_attrs_len,
 											 inner_syntax, inner_syntax_len,
 											 inner, inner_len,
@@ -1221,7 +1244,8 @@ void parse_table(ThreadBuf *tb, const ParserConfig *cfg, Accum *accum) {
 					break;
 				}
 
-				wiki_thread_buf_set(last_syn_scratch, attr + sep_pos, sep_len);
+				last_syn_ptr = attr + sep_pos;
+				last_syn_len = sep_len;
 
 				last_index = sep_pos + sep_len;
 				scan = last_index;
@@ -1237,7 +1261,6 @@ void parse_table(ThreadBuf *tb, const ParserConfig *cfg, Accum *accum) {
 	}
 	free(out_buf);
 	wiki_thread_buf_release_scratch(line_scratch);
-	wiki_thread_buf_release_scratch(last_syn_scratch);
 	stack_free(&st);
 	free(lines_ptr);
 	free(lines_len);
