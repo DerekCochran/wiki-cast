@@ -23,42 +23,40 @@
  * are temporarily masked during splitting.
  */
 
-/* Helper: trim whitespace from ends; returns newly-allocated string */
-static char *trim_copy(const char *s, size_t len) {
+static sz_string_view_t trim_view(const char *s, size_t len) {
+	if(!s || len == 0) return (sz_string_view_t){ NULL, 0 };
 	size_t i= 0, j= len;
 	while(i < j && isspace((unsigned char)s[i])) i++;
 	while(j > i && isspace((unsigned char)s[j - 1])) j--;
-	size_t n= j - i;
-	char *r= malloc(n + 1);
-	assert(r);
-	if(n > 0) sz_copy(r, s + i, n);
-	r[n]= '\0';
-	return r;
+	return (sz_string_view_t){ s + i, j - i };
 }
 
 static bool variant_in_config(const ParserConfig *cfg, const char *s, size_t len) {
 	if(!cfg || !s) return false;
-	char *trimmed= trim_copy(s, len);
-	if(!trimmed) return false;
-	size_t tlen= strlen(trimmed);
+	sz_string_view_t trimmed= trim_view(s, len);
+	if(!trimmed.start) return false;
+	if(trimmed.length == 0) return false;
 
 	for(size_t i= 0; i < cfg->variants.count; i++) {
 		sz_ptr_t start;
 		sz_size_t vlen;
 		sz_string_range(&cfg->variants.items[i], &start, &vlen);
-		if(start && vlen == tlen && str_ci_eq_n(trimmed, (const char *)start, vlen)) {
-			free(trimmed);
+		if(start && vlen == trimmed.length &&
+					 str_ci_eq_n(trimmed.start, (const char *)start, vlen)) {
 			return true;
 		}
 	}
-
-	free(trimmed);
 	return false;
 }
 
 static bool token_append_text_decoded_nul(Token *t, const char *s, size_t len) {
 	if(len == 0) {
 		token_append_text_n(t, NULL, 0);
+		return true;
+	}
+	char esc= CONVERTER_ESC_NUL;
+	if(!sz_find_byte(s, len, &esc)) {
+		token_append_text_n(t, s, len);
 		return true;
 	}
 	char *decoded= malloc(len);
@@ -237,15 +235,12 @@ static char *mask_entities(const char *s, size_t len, size_t *out_len) {
 	return out;
 }
 
-/* Restore placeholder \x01 back to ';' in-place (returns newly-allocated copy) */
-static char *unmask_entities(const char *s, size_t len) {
-	char *r= malloc(len + 1);
-	assert(r);
-	if(len > 0) sz_copy(r, s, len);
-	r[len]= '\0';
-	/* Replace \x01 placeholders back to ';' */
-	for(size_t i= 0; i < len; i++) if(r[i] == '\x01') r[i]= ';';
-	return r;
+/* Restore placeholder \x01 back to ';' in-place. */
+static void unmask_entities_inplace(char *s, size_t len) {
+	if(!s || len == 0) return;
+	for(size_t i= 0; i < len; i++) {
+		if(s[i] == '\x01') s[i]= ';';
+	}
 }
 
 /* JS split lookahead also allows semicolon splits before trailing
@@ -423,8 +418,7 @@ void parse_converter(ThreadBuf *tb, const ParserConfig *cfg, Accum *accum) {
 			if(!seg) { log_fatal("OOM in converter split"); abort(); }
 			if(seg_len) sz_copy(seg, masked + split_cur, seg_len);
 			seg[seg_len] = '\0';
-			char *restored = unmask_entities(seg, seg_len);
-			free(seg);
+			unmask_entities_inplace(seg, seg_len);
 
 			if(rule_count >= rule_cap) {
 				rule_cap = rule_cap ? rule_cap * 2 : 8;
@@ -432,7 +426,7 @@ void parse_converter(ThreadBuf *tb, const ParserConfig *cfg, Accum *accum) {
 				if(!_rules_tmp) { free(rules); log_fatal("OOM in converter rules realloc"); abort(); }
 				rules = _rules_tmp;
 			}
-			rules[rule_count++] = restored;
+			rules[rule_count++] = seg;
 			split_cur = k + 1;
 		}
 	}
