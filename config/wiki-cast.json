@@ -727,7 +727,7 @@
             "properties": {
               "childNodes": {
                 "type": "array",
-                "minItems": 2,
+                "minItems": 1,
                 "items": [
                   {
                     "type": "object",
@@ -1192,7 +1192,7 @@
             "properties": {
               "childNodes": {
                 "type": "array",
-                "minItems": 2,
+                "minItems": 1,
                 "items": [
                   {
                     "type": "object",
@@ -1458,8 +1458,7 @@
             "properties": {
               "type": {
                 "enum": [
-                  "comment", "dd", "hr", "invoke-function", "invoke-module",
-                  "list", "magic-link", "param-line", "quote"
+                  "comment", "dd", "hr", "list", "magic-link", "quote"
                 ]
               }
             },
@@ -1472,6 +1471,27 @@
                 "type": "array",
                 "minItems": 1,
                 "maxItems": 1,
+                "items": { "$ref": "#/definitions/childAny" }
+              }
+            }
+          }
+        },
+
+        {
+          "if": {
+            "properties": {
+              "type": {
+                "enum": ["invoke-function", "invoke-module", "param-line"]
+              }
+            },
+            "required": ["type"]
+          },
+          "then": {
+            "required": ["childNodes"],
+            "properties": {
+              "childNodes": {
+                "type": "array",
+                "minItems": 1,
                 "items": { "$ref": "#/definitions/childAny" }
               }
             }
