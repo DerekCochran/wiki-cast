@@ -116,9 +116,9 @@ function formatMs(ms) {
 function appendPerfLine(name, sampleIndex, jsTiming, nativeTiming) {
   const jsParseMs = Number(jsTiming && jsTiming.parseMs) || 0;
   const jsToStringMs = Number(jsTiming && jsTiming.toStringMs) || 0;
-  if (jsParseMs <= 25 && jsToStringMs <= 25) {
-    return;
-  }
+  // if (jsParseMs <= 25 && jsToStringMs <= 25) {
+  //   return;
+  // }
 
   const label = `${sanitizeName(name)}-${sampleIndex}`;
   const line = `${label} parse: ${formatMs(jsTiming.parseMs)} ${formatMs(nativeTiming.parseMs)}, toString: ${formatMs(jsTiming.toStringMs)} ${formatMs(nativeTiming.toStringMs)}\n`;

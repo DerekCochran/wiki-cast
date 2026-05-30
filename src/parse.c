@@ -2612,7 +2612,7 @@ Token *wiki_parse_with_page(const char *wikitext, size_t input_len, const Parser
 	 * also be processed. Keep that behavior, but cap growth on malformed inputs
 	 * so post-build processing cannot run forever. */
 	{
-		const size_t max_inline_passes= 3;
+		const size_t max_inline_passes= 1;
 		const size_t max_inline_tokens= 50000;
 		size_t pass= 0;
 		size_t scan_start= 0;
