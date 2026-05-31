@@ -66,11 +66,16 @@ static size_t table_ws_len_at(const char *s, size_t len, size_t i) {
 	unsigned char c= (unsigned char)s[i];
 	if(c == ' ' || c == '\t' || c == '\n' || c == '\r' || c == '\f' || c == '\v') return 1;
 	if(i + 1 < len && c == 0xC2 && (unsigned char)s[i + 1] == 0xA0) return 2;
+	if(i + 2 < len && c == 0xE3 && (unsigned char)s[i + 1] == 0x80 && (unsigned char)s[i + 2] == 0x80) return 3;
 	return 0;
 }
 
 static size_t table_trim_ws_end(const char *s, size_t end) {
 	while(end > 0) {
+		if(end >= 3 && (unsigned char)s[end - 3] == 0xE3 && (unsigned char)s[end - 2] == 0x80 && (unsigned char)s[end - 1] == 0x80) {
+			end-= 3;
+			continue;
+		}
 		if(end >= 2 && (unsigned char)s[end - 2] == 0xC2 && (unsigned char)s[end - 1] == 0xA0) {
 			end-= 2;
 			continue;

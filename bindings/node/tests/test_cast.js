@@ -5,6 +5,84 @@ const { runTests } = require('./helpers');
 
 const castTests = [
   // Failures from export of wikitexts
+`{| class="wikitable" width="100%"
+! style="width:6%" | Event
+|-
+| [[Shulaveri-Shomu culture|Shulaveri]]: a late Neolithic/Eneolithic culture that existed on the territory of present-day Georgia, Azerbaijan and the Armenian Highlands. The culture is dated to mid-6th or early-5th millennia BC and is thought to be one of the earliest known Neolithic cultures; started in c.6000 BC and lasted until 4000 BC.
+|-
+|- Some of the earliest known traces of [[wine]] are found in Georgia, dating to c. 6000 BC.
+|}`,
+  `{{Cite tweet |user=CoryBooker |number=1255659700739284996 |title=I hope you'll support @TriciaforWI for Congress. She's running in a tough special election in Wisconsin on May 12th against an opponent who's been endorsed by Donald Trump. Let's make sure Tricia flips this seat. Chip in to her campaign today: https://secure.actblue.com/donate/tzcb&nbsp;https://twitter.com/emilyslist/status/1255120659727990785&nbsp;…|first=Cory|last=Booker|date=April 29, 2020|access-date=May 13, 2020}}`,
+  `<ref>https://allafrica.com/stories/201305240694.html<ref/>
+GIHL then sued Nigeria at [[International Chamber of Commerce]].<ref name=":0">{{Cite news |last=Adekoya |first=Femi |date=2023-01-13 |title=Ajaokuta Steel Plant: Like refineries, a story retold, promises unkept |url=https://guardian.ng/business-services/ajaokuta-steel-plant-like-refineries-a-story-retold-promises-unkept/ |location=Lagos, Nigeria|archive-url=https://web.archive.org/web/20230124215732/https://guardian.ng/business-services/ajaokuta-steel-plant-like-refineries-a-story-retold-promises-unkept/ |archive-date=2023-01-24 |access-date=2024-01-10 |newspaper=[[The Guardian (Nigeria)|The Guardian]]|language=en-US}}</ref>`,
+`<gallery mode=packed heights=300>
+File:Colliers Wood London 2011 07.jpg|alt=Destinations of CS7 in the style of a tube line, on a large upright sign.|Cycle Superhighway CS7 start point at [[Colliers Wood]] Underground Station]
+File:Milton Keynes Redway.gif|Cycleway network in Milton Keynes. NCR routes 6 and 51 are highlighted in red. In 1970 in the United Kingdom, the [[Milton Keynes Development Corporation]] produced the [[History of Milton Keynes#Milton Keynes Development Corporation: designing a city for 250,000 people|"Master Plan for Milton Keynes"]].<ref>[http://www.mkweb.co.uk/milton_keynes_general/displayarticle.asp?id=285 Modern Milton Keynes: the master plan] {{Webarchive|url=https://web.archive.org/web/20120728111624/http://www.mkweb.co.uk/milton_keynes_general/displayarticle.asp?ID=285 |date=28 July 2012 }} MK Web</ref>
+File:Biketrail map2detail.jpg| A [[locator map]] on the [[numbered-node cycle network]], at node 20 in [[Schoten]], near [[Antwerp]]. Each intersection is marked with a numbered circle; any route through the network can be represented as a string of numbers.
+</gallery>`,
+`'''[[Classic of Poetry]]'', "Airs of the States - Airs of [[Wey (state)|Wey]] - [https://ctext.org/book-of-poetry/bo-xi?searchu=%E4%BC%AF%E5%85%AE%E6%9C%85%E5%85%AE%E3%80%81%E9%82%A6%E4%B9%8B%E6%A1%80%E5%85%AE%E3%80%82&searchmode=showall#result Bo Xi]". quote:「伯兮'''朅'''兮、邦之'''桀'''兮。」; [[James Legge]]'s translation: "My noble husband is how '''martial-like'''! The '''hero''' of the country!"; [[Zhu Xi]], ''Collected Commentaries on the Classic of Poetry'', "vol. 2", quote: 「'''朅'''，武貌。'''桀'''，才過人也。」. [https://ctext.org/library.pl?if=en&file=9214&page=119#%E6%9C%85%E6%AD%A6%E8%B2%8C%E6%A1%80%E6%89%8D%E9%81%8E%E4%BA%BA%E4%B9%9F p. 119 of 141]`,
+`{{SAFESUBST:}} IT\ICCU\VEAV\\045592`,
+`<ref>Scruton, Roger (1999). The Aesthetics of Music. Oxford University Press. Print ISBN 9780198167273.</ref>`,
+`{{Tree chart|border=no | | | | | | | | | | | | | | | | | | | | | | | | | [[File:Coat of arms of Republic of Venice.svg|93px]]|[[File:Coat of arms of Republic of Venice.svg|93px]]=[[File:Coat of arms of Republic of Venice.svg|93px]]}}`,
+`{{code|lang=html|code=<font [color=<var>color</var>] [size=<var>size</var>] [face=<var>face</var>]>...</font>}}`,
+`{{ubli|[[Grand Jury (Ireland) Act 1837]]|[[Coroners (Ireland) Act 1846]]|[[Grand Jury Cess (Ireland) Act 1848]]|[[Summary Jurisdiction (Ireland) Act 1850]]|[[Grand Jury (Ireland) Act 1857]]|[[County Surveyors, &c. (Ireland) Act 1861]]|[[County Surveyors (Ireland) Act 1862]]|[[Vestry Cess Abolition (Ireland) Act 1864]]|[[Grand Jury (Ireland) Act 1873]]|[[Prison Officers Superannuation (Ireland) Act 1873]]|[[Statute Law Revision Act 1874]]|[[Public Works Loans (Ireland) Act 1877]]|[[General Prisons (Ireland) Act 1877]]|[[Statute Law Revision Act 1890]]|[[Statute Law Revision Act 1891|[[Grand Jury (Ireland) Act 1895]]]]}}`,
+`[[File:Bear Valley Whaleback DCP 0776.jpg|thumb|upright=1.1[[Bear Valley Strip Mine]], southwest of [[Shamokin, Pennsylvania|Shamokin]] in the [[Coal Region]]]]`,
+  `{{Infobox automobile
+| name == Dodge Viper SRT-10 (ZB II) ==
+| manufacturer = [[Chrysler LLC]]<br>[[Chrysler Group LLC]]
+|'''Coupé:''' {{convert|47.6|in|mm|abbr=on}}
+|'''Convertible:''' {{convert|48.6|in|mm|abbr=on}}
+}}
+| weight = {{ubl
+|'''SRT-10:''' {{convert|3460|lb|kg|0|abbr=on}}
+|'''ACR:''' {{convert|3408|lb|kg|abbr=on}}
+}}
+| predecessor = [[Dodge Viper (ZB I)]]
+| successor = [[Dodge Viper (VX I)]]
+}}`,
+`{{Mono|1==:=}}`,
+`<imagemap>
+:File:Comparison of temperature scales blank.svg|845x580px|class=skin-invert-image|
+circle 40 330 4  [[:File:Comparison of temperature scales blank.svg|0 K / 0 °R (−273.15 °C)]]
+</imagemap>`,
+`{{mono|1==, -ci=, <, -ci<, >, -ci>, <=, -ci<=, >=}}`,
+`{|border=1　
+|- style="background:LIGHTGREY" 
+|hitting average||Games||At bat||Runs||Hits||RBI||Double||Triple||HR||K||Walk
+|- 
+||.310||9||29||2||9||4||4||0||0||5||8
+|}`,  
+`{{Infobox university
+ | name                   = Canberra Institute of Technology
+  | postgrad               = 
+ | doctoral               = 
+ | '''profession''''''''' = 
+ | city                   = Canberra
+ | state                  = [[Australian Capital Territory|ACT]]
+ }}`,  
+  `{{cite web|url=http://www.lnfs.es/Data/Adjuntos/1.3%20RFEF%20%20Reglamento%20General%202014-2015.pdf|title=Reglamento General|website=www.[[LNFS|publisher=[[Royal Spanish Football Federation]]|trans-title=General Regulations|access-date=26 March 2015|lnfs]].es|language=es}}`,
+  `<references>-Block vollständig erhalten.
+
+Hier ist der komplette Abschluss für deinen Artikel 3rd Army Group (France):
+
+Code-Snippet
+
+==References==
+<references>
+<ref name="hetou3-2">{{cite book|last=Mary|first=Jean-Yves|author2=Hohnadel, Alain|author3=Sicard|title=Hommes et Ouvrages de la Ligne Maginot, Tome 3|publisher=Histoire & Collections|year=2003|pages=150–152|isbn=2-913903-88-6|language=fr}}</ref>
+<ref name="hetou3-3">Mary, Tome 3, p. 146</ref>
+<ref name="Mary3-4">Mary, Tome 3, p. 189</ref>
+<ref name="8e-armee">{{Cite web|url=http://france1940.free.fr/oob/8armee.html|title = 8e Armée Order of Battle / Ordre de bataille, 10/05/1940}}</ref>
+<ref name="ga3-reserves">{{Cite web|url=http://france1940.free.fr/oob/ga3.html|title = Réserves du 3e Groupe d'Armées Order of Battle, 10 May 1940}}</ref>
+</references>`,
+`<gallery mode="packed" heights="180px">
+File:Santa Giustina (Padua) - Chapel of Saint Luke.jpg|Chapel of Saint Luke
+Abbazia di Santa Giustina (St Luc).jpg|Altar and Reliquary of [[St. Luke the Evangelist]]
+Santa Giustina (Padua) - Chapel of Saint Luke - Tomb of Luke the Evangelist (front).jpg|Reliquary of [[St. Luke the Evangelist]] and transept organ
+Santa Giustina (Padua) - Chapel of Saint Luke - Tomb of Luke the Evangelist (rear).jpg|Reliquary of [[St. Luke the Evangelist]] (rear)
+Santa Giustina (Padua) - Chapel of Saint Luke - Madonna of Constantinople Sixteenth-century version.jpg|''Madonna of Constantinople'' Sixteenth-century version
+Padova - Santa Giustina - MadonnaCostantinopolitana (Expo -12 Contrasto 25).jpg|''''Madonna of Constantinople'' original version
+</gallery>`,
 `https://web.archive.org/web/20160304040450/http://www.hollywoodflip.com/articlex.php?subaction=showfull&id=1281026953&archive=&start_from=&ucat=1&; `,
 `<span |align=right style="color:green;">`,
 `<gallery>

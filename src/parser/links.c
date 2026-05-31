@@ -416,6 +416,15 @@ static bool link_parse(const char *buf, size_t len, bool require_nonempty_target
 	const char *inner = buf;
 	size_t inner_len = close_pos;
 
+	/* JS parseLinks parity: input is pre-split on "[[". A candidate segment
+	 * processed by the main regex never contains a raw nested "[[" before its
+	 * first closing "]]". If we still see one here, this is an outer wrapper
+	 * around a nested link and must be left as text. */
+	if(sz_find(inner, inner_len, "[[", 2) != NULL) {
+		out->found_close = false;
+		return false;
+	}
+
 	/* 2) Scan for target: advance while byte is not \n, '[', ']', '{', '}', '|' or a '!' sentinel start */
 	size_t i = 0;
 	while(i < inner_len) {
@@ -509,11 +518,15 @@ static bool link_parse(const char *buf, size_t len, bool require_nonempty_target
 		return false;
 	}
 
-	/* JS inExt regex parity:
-	 * /^((...)+)(?:(\||\0\d+!\x7F)([\s\S]*?[^\]]))?\]\]/
-	 * If delimiter exists in inExt mode, text must be non-empty and not end with ']'. */
-	if(require_nonempty_target && out->has_delim) {
-		if(!out->text || out->text_len == 0 || out->text[out->text_len - 1] == ']') {
+	/* JS regex parity: when a delimiter exists, the captured text fragment must
+	 * not end with ']'. This prevents invalid outer-link capture in constructs
+	 * like [[A|[[B]]]], where only the inner link should be tokenized. */
+	if(out->has_delim) {
+		if(require_nonempty_target && (!out->text || out->text_len == 0)) {
+			out->found_close = false;
+			return false;
+		}
+		if(out->text && out->text_len > 0 && out->text[out->text_len - 1] == ']') {
 			out->found_close = false;
 			return false;
 		}
@@ -724,7 +737,11 @@ static bool img_param_validate(const char *name, const char *val_ptr, size_t val
 		}
 	} else {
 		/* default: Boolean(value) && !isNaN(value) */
-		if(*value) {
+		if(sz_find_byte(val_ptr, val_len, "\0") != NULL) {
+			/* JS parity: embedded sentinels remain part of the string for Number()
+			 * and make numeric validation fail; C strtod would incorrectly stop at NUL. */
+			result= false;
+		} else if(*value) {
 			char *endp;
 			strtod(value, &endp);
 			result= (*endp == '\0'); /* all chars consumed → valid number */

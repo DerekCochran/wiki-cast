@@ -167,6 +167,33 @@ static void append_key_token_repr_tb(const Token *t, ThreadBuf *tb) {
 			}
 
 			const Child *c = &t->children[i];
+			if(t->type == TOKEN_FILE && !c->is_text && c->token &&
+			   c->token->type == TOKEN_PLAIN && c->token->subtype == TOKEN_SUBTYPE_IMAGE_PARAMETER) {
+				const Token *p = c->token;
+				if(p->data.image_param.raw_syntax.start) {
+					const char *syntax = p->data.image_param.raw_syntax.start;
+					size_t syntax_len = p->data.image_param.raw_syntax.length;
+					const char *slot = strstr(syntax, "$1");
+					if(!slot) {
+						wiki_thread_buf_append(tb, (sz_string_view_t){ syntax, syntax_len });
+					} else {
+						size_t pre_len = (size_t)(slot - syntax);
+						size_t post_len = syntax_len - pre_len - 2;
+						wiki_thread_buf_append(tb, (sz_string_view_t){ syntax, pre_len });
+						for(size_t pi = 0; pi < p->child_count; pi++) {
+							const Child *pc = &p->children[pi];
+							if(pc->is_text) {
+								wiki_thread_buf_append(tb, (sz_string_view_t){ pc->text, pc->text_len });
+							} else {
+								append_key_token_repr_tb(pc->token, tb);
+							}
+						}
+						wiki_thread_buf_append(tb, (sz_string_view_t){ slot + 2, post_len });
+					}
+					continue;
+				}
+			}
+
 			if(c->is_text) {
 				wiki_thread_buf_append(tb, (sz_string_view_t){ c->text, c->text_len });
 			} else {

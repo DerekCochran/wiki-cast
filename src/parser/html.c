@@ -555,6 +555,16 @@ static bool html_attrs_has_attr(const Token *attrs, const char *attr_name) {
 	return false;
 }
 
+static bool html_attrs_has_valid_attr(const Token *attrs) {
+	if(!attrs) return false;
+	for(size_t i= 0; i < attrs->child_count; i++) {
+		const Child *c= &attrs->children[i];
+		if(c->is_text || !c->token) continue;
+		if(c->token->type == TOKEN_EXT_ATTR) return true;
+	}
+	return false;
+}
+
 static void accum_rollback_shallow(Accum *accum, size_t saved_count) {
 	if(!accum) return;
 	while(accum->count > saved_count) {
@@ -680,6 +690,17 @@ void parse_html(ThreadBuf *tb, const ParserConfig *cfg, Accum *accum) {
 
 						/* Special-case: meta/link require itemprop+content/href. */
 						bool reject = false;
+						if(!htc.is_closing && attr_ptr && attr_len > 0) {
+							size_t p = 0;
+							while(p < attr_len && isspace((unsigned char)attr_ptr[p])) p++;
+							if(p < attr_len && attr_ptr[p] == '[') {
+								bool has_eq = sz_find(attr_ptr + p, attr_len - p, "=", 1) != NULL;
+								bool has_close = sz_find(attr_ptr + p, attr_len - p, "]", 1) != NULL;
+								if(has_eq && has_close && !html_attrs_has_valid_attr(attrs)) {
+									reject = true;
+								}
+							}
+						}
 						if(strcmp(lcname, "meta") == 0 || strcmp(lcname, "link") == 0) {
 							bool has_itemprop = html_attrs_has_attr(attrs, "itemprop");
 							bool has_required = strcmp(lcname, "meta") == 0

@@ -1197,7 +1197,7 @@ static Token *build_references_inner_token(const char *inner_str, size_t inner_l
 	if(!tmp) { log_fatal("thread_buffer: failed to acquire scratch in build_references_inner_token"); abort(); }
 
 	parse_comment_and_ext(tmp, cfg, accum, false);
-	parse_braces(tmp, cfg, accum);
+	parse_braces_with_heading(tmp, cfg, accum, false);
 
 	ThreadBuf *out_tb = wiki_thread_buf_acquire_scratch();
 	if(!out_tb) { log_fatal("thread_buffer: failed to acquire scratch in build_references_inner_token (out)"); abort(); }
@@ -1286,6 +1286,24 @@ static Token *make_gallery_caption_param_local(const char *txt, size_t tlen,
 	parse_magic_links(tb, cfg, accum);
 
 	build_from_str(cap, tb->buf, tb->len, accum);
+	if(cap->child_count == 1 && !cap->children[0].is_text && cap->children[0].token
+		&& cap->children[0].token->type == TOKEN_QUOTE) {
+		Token *qt= cap->children[0].token;
+		if(qt->child_count == 1 && qt->children[0].is_text && qt->children[0].text
+			&& qt->children[0].text_len == 2
+			&& qt->children[0].text[0] == '\'' && qt->children[0].text[1] == '\'') {
+			char *owned= malloc(3);
+			if(owned) {
+				owned[0]= '\'';
+				owned[1]= '\'';
+				owned[2]= '\0';
+				cap->children[0].is_text= true;
+				cap->children[0].text= owned;
+				cap->children[0].text_len= 2;
+				cap->children[0].text_owned= true;
+			}
+		}
+	}
 	if(cap->child_count == 0) {
 		token_append_text_n(cap, "", 0);
 	}
@@ -1309,6 +1327,46 @@ static Token *make_gallery_caption_param_raw_local(const char *txt, size_t tlen,
 	}
 	accum_push(accum, cap);
 	return cap;
+}
+
+static void normalize_gallery_caption_lone_quote_local(Token *cap) {
+	if(!cap || cap->child_count < 2) return;
+	if(cap->children[0].is_text || !cap->children[0].token) return;
+	if(cap->children[1].is_text || !cap->children[1].token) return;
+
+	Token *q0= cap->children[0].token;
+	Token *q1= cap->children[1].token;
+	bool q0_is_two= q0->type == TOKEN_QUOTE && q0->child_count == 1
+		&& q0->children[0].is_text && q0->children[0].text
+		&& q0->children[0].text_len == 2
+		&& q0->children[0].text[0] == '\'' && q0->children[0].text[1] == '\'';
+	bool q1_is_two= q1->type == TOKEN_QUOTE && q1->child_count == 1
+		&& q1->children[0].is_text && q1->children[0].text
+		&& q1->children[0].text_len == 2
+		&& q1->children[0].text[0] == '\'' && q1->children[0].text[1] == '\'';
+	if(!q0_is_two || !q1_is_two) return;
+
+	char *owned= malloc(3);
+	if(!owned) return;
+	owned[0]= '\'';
+	owned[1]= '\'';
+	owned[2]= '\0';
+
+	cap->children[0].is_text= true;
+	cap->children[0].text= owned;
+	cap->children[0].text_len= 2;
+	cap->children[0].text_owned= true;
+}
+
+static void normalize_gallery_image_caption_quotes_local(Token *img) {
+	if(!img || img->type != TOKEN_FILE) return;
+	for(size_t ci= 1; ci < img->child_count; ci++) {
+		if(img->children[ci].is_text || !img->children[ci].token) continue;
+		Token *param= img->children[ci].token;
+		if(param->type != TOKEN_PLAIN || param->subtype != TOKEN_SUBTYPE_IMAGE_PARAMETER) continue;
+		if(!param->name || strcmp(param->name, "caption") != 0) continue;
+		normalize_gallery_caption_lone_quote_local(param);
+	}
 }
 
 static bool has_sentinel_type_local(const char *s, size_t len, char want) {
@@ -1611,6 +1669,7 @@ static void split_gallery_unclosed_caption_local(Token *img,
 					}
 					cap->child_count= 0;
 					build_from_str(cap, left_tb->buf, left_tb->len, accum);
+					normalize_gallery_caption_lone_quote_local(cap);
 					if(cap->child_count == 0) {
 						token_append_text_n(cap, "", 0);
 					}
@@ -1641,6 +1700,7 @@ static void split_gallery_unclosed_caption_local(Token *img,
 		}
 		cap->child_count= 0;
 		build_from_str(cap, tb->buf, tb->len, accum);
+		normalize_gallery_caption_lone_quote_local(cap);
 		if(cap->child_count == 0) {
 			token_append_text_n(cap, "", 0);
 		}
@@ -2059,6 +2119,7 @@ static Token *parse_gallery_image_line_local(const char *line, size_t line_len,
 		split_gallery_unclosed_caption_local(out, cfg, accum);
 		split_gallery_param_pipe_tail_local(out, accum);
 		normalize_gallery_thumb_caption_local(out, accum);
+		normalize_gallery_image_caption_quotes_local(out);
 		/* Preserve the original gallery line target text exactly as parsed. */
 		/* JS stage-log parity: link/file names are assigned later in afterBuild(). */
 		for(size_t ci= 0; ci < out->child_count; ci++) {
@@ -2144,6 +2205,7 @@ static Token *parse_gallery_image_line_local(const char *line, size_t line_len,
 						split_gallery_unclosed_caption_local(fallback, cfg, accum);
 						split_gallery_param_pipe_tail_local(fallback, accum);
 						normalize_gallery_thumb_caption_local(fallback, accum);
+						normalize_gallery_image_caption_quotes_local(fallback);
 
 						accum_push(accum, fallback);
 						out= fallback;
@@ -2317,12 +2379,45 @@ static Token *parse_imagemap_image_line_local(const char *line, size_t line_len,
 														 Accum *accum) {
 	if(!line || line_len == 0) return NULL;
 
+	/* Imagemap image lines may be prefixed with ':' indentation. JS treats this
+	 * as line syntax, not part of the file target text. */
+	const char *parse_ptr= line;
+	size_t parse_len= line_len;
+	size_t off= 0;
+	bool had_indent_colon= false;
+	while(off < line_len && (line[off] == ' ' || line[off] == '\t')) off++;
+	if(off < line_len && line[off] == ':') {
+		had_indent_colon= true;
+		off++;
+		while(off < line_len && (line[off] == ' ' || line[off] == '\t')) off++;
+		parse_ptr= line + off;
+		parse_len= line_len - off;
+	}
+
 	/* JS parity: ImagemapToken first-line image uses GalleryImageToken logic.
 	 * Reuse gallery-image parsing and retag to imagemap-image. */
-	Token *out= parse_gallery_image_line_local(line, line_len, cfg, accum);
+	Token *out= parse_gallery_image_line_local(parse_ptr, parse_len, cfg, accum);
 	if(!out || out->type != TOKEN_FILE) return NULL;
 
 	out->subtype= TOKEN_SUBTYPE_IMAGEMAP_IMAGE;
+	if(had_indent_colon && out->child_count > 0 && !out->children[0].is_text && out->children[0].token) {
+		Token *target= out->children[0].token;
+		if(target->child_count > 0 && target->children[0].is_text && target->children[0].text) {
+			size_t old_len= target->children[0].text_len;
+			char *owned= malloc(old_len + 2);
+			if(owned) {
+				owned[0]= ':';
+				if(old_len > 0) sz_copy(owned + 1, target->children[0].text, old_len);
+				owned[old_len + 1]= '\0';
+				if(target->children[0].text_owned && target->children[0].text) {
+					free((void *)target->children[0].text);
+				}
+				target->children[0].text= owned;
+				target->children[0].text_len= old_len + 1;
+				target->children[0].text_owned= true;
+			}
+		}
+	}
 	if(out->name) {
 		token_clear_name(out);
 	}

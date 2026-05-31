@@ -10,4 +10,5 @@
  * sentinel markers into the working string.
  */
 void parse_hr_and_double_underscore(ThreadBuf *tb, const ParserConfig *cfg, Accum *accum,
-                                    TokenType root_type, const char *root_name);
+                                    TokenType root_type, const char *root_name,
+                                    bool allow_heading);
