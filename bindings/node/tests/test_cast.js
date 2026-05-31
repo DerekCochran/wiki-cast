@@ -5,6 +5,9 @@ const { runTests } = require('./helpers');
 
 const castTests = [
   // Failures from export of wikitexts
+  `===Scholarship distribution chart===
+ 
+`,
   `== Awards and honors ==\n<NBSP>\n`,
 // `{| class="wikitable" width="100%"
 // ! style="width:6%" | Event
