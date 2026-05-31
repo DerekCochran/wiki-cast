@@ -442,6 +442,11 @@ void parse_hr_and_double_underscore(ThreadBuf *tb, const ParserConfig *cfg, Accu
 							if(seen_non_newline) {
 								break;
 							}
+							if(!consumed_any && (scan + 1 >= buf2_len)) {
+								/* JS parity: a single terminal newline after heading text
+								 * remains outside heading-trail as plain text. */
+								break;
+							}
 							if(consumed_any) {
 								size_t look= scan;
 								while(look < buf2_len && (buf2[look] == '\n' || buf2[look] == '\r')) {
