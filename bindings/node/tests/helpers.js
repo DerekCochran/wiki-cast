@@ -7,6 +7,13 @@ const { spawnSync } = require('child_process');
 const { compareAST } = require('./compareAST');
 const { buildJsAst } = require('./buildJsAst');
 
+let Ajv;
+try {
+  Ajv = require('ajv');
+} catch (e) {
+  Ajv = null;
+}
+
 const wikiparser = require(path.join(__dirname, '..', '..', '..', 'new-js', 'dist', 'index.js'));
 // Get the native parser by looking in the Release directory fist, then Debug if not found.  This allows running tests in both dev and prod builds without changing the test code.
 let nativeParser;
@@ -21,6 +28,33 @@ const LAST_SAMPLE_PATH = '/tmp/wiki_latest_test_input.txt';
 const PERF_LOG_PATH = '/tmp/wikitext_perf.txt';
 const LATEST_FAILED_PATH = '/tmp/wiki_latest_failed.txt';
 const DEFAULT_WIKI_CONFIG = path.join(__dirname, '..', '..', '..', 'config', 'enwiki.json');
+const INTERNAL_SCHEMA_PATH = path.join(__dirname, '..', '..', '..', 'config', 'wiki-cast.json');
+
+let internalSchemaValidator = null;
+let internalSchemaInitError = null;
+
+function getInternalSchemaValidator() {
+  if (internalSchemaValidator || internalSchemaInitError) {
+    return internalSchemaValidator;
+  }
+
+  if (!Ajv) {
+    internalSchemaInitError = 'ajv is required for internal schema validation (npm i ajv)';
+    return null;
+  }
+
+  try {
+    const schemaText = fs.readFileSync(INTERNAL_SCHEMA_PATH, 'utf8');
+    const schema = JSON.parse(schemaText);
+    const ajv = new Ajv({ strict: false, allErrors: true });
+    internalSchemaValidator = ajv.compile(schema);
+  } catch (e) {
+    internalSchemaInitError = e && e.message ? e.message : String(e);
+    return null;
+  }
+
+  return internalSchemaValidator;
+}
 
 wikiparser.config = String(DEFAULT_WIKI_CONFIG);
 nativeParser.config = String(DEFAULT_WIKI_CONFIG);
@@ -82,9 +116,9 @@ function formatMs(ms) {
 function appendPerfLine(name, sampleIndex, jsTiming, nativeTiming) {
   const jsParseMs = Number(jsTiming && jsTiming.parseMs) || 0;
   const jsToStringMs = Number(jsTiming && jsTiming.toStringMs) || 0;
-  if (jsParseMs <= 25 && jsToStringMs <= 25) {
-    return;
-  }
+  // if (jsParseMs <= 25 && jsToStringMs <= 25) {
+  //   return;
+  // }
 
   const label = `${sanitizeName(name)}-${sampleIndex}`;
   const line = `${label} parse: ${formatMs(jsTiming.parseMs)} ${formatMs(nativeTiming.parseMs)}, toString: ${formatMs(jsTiming.toStringMs)} ${formatMs(nativeTiming.toStringMs)}\n`;
@@ -201,12 +235,15 @@ function runParse(wikitext, parser, include = false, tidy = false, runLabel = 'p
  * Returns true if both match.
  * Prints OK / FAIL to stdout with diagnostics on failure.
  */
-function compareSample(wikitext, { include = false, tidy = false, name = 'samples', sampleIndex = 1, sampleLabel = null } = {}) {
+function compareSampleDetailed(wikitext, { include = false, tidy = false, name = 'samples', sampleIndex = 1, sampleLabel = null } = {}) {
   writeLatestSampleCheckpoint(wikitext, { include, tidy });
 
   const label = sampleLabel == null ? JSON.stringify(wikitext.slice(0, 70)) : String(sampleLabel);
 
   let jsResult, nativeResult;
+  let schemaOk = true;
+  let schemaErrors = [];
+  let nativeText = '';
   const enableStageLog = Boolean(process.env.WIKI_STAGE_LOG);
   const stageDir = enableStageLog
     ? path.join(os.tmpdir(), `wiki_stage_${Date.now()}_${process.pid}_${Math.random().toString(36).slice(2,8)}`)
@@ -225,14 +262,29 @@ function compareSample(wikitext, { include = false, tidy = false, name = 'sample
       jsResult = runParse(wikitext, wikiparser, include, tidy, 'js');
     } catch (e) {
       console.log('ERROR (JS)  ', label, e && e.message, e && e.stack);
-      return false;
+      return {
+        ok: false,
+        textOk: false,
+        astOk: false,
+        schemaOk: false,
+        schemaErrors: [{ keyword: 'parse', instancePath: '/', message: `js parse failed: ${e && e.message ? e.message : e}` }],
+        nativeText: '',
+      };
     }
 
     try {
       nativeResult = runParse(Buffer.from(wikitext, 'utf-8'), nativeParser, include, tidy, 'native');
+      nativeText = nativeResult.text;
     } catch (e) {
       console.log('ERROR (NAT) ', label, e && e.message, e && e.stack);
-      return false;
+      return {
+        ok: false,
+        textOk: false,
+        astOk: false,
+        schemaOk: false,
+        schemaErrors: [{ keyword: 'parse', instancePath: '/', message: `native parse failed: ${e && e.message ? e.message : e}` }],
+        nativeText: '',
+      };
     }
   } finally {
     /* restore any previous env */
@@ -246,7 +298,33 @@ function compareSample(wikitext, { include = false, tidy = false, name = 'sample
 
   const textOk = jsResult.text === nativeResult.text;
   const cmp = compareAST(jsResult.root, JSON.parse(nativeResult.root.toJson()));
-  const ok = textOk && cmp.success;
+
+  const validateInternal = getInternalSchemaValidator();
+  if (!validateInternal) {
+    schemaOk = false;
+    schemaErrors = [{ keyword: 'init', instancePath: '/', message: internalSchemaInitError || 'schema validator unavailable' }];
+  } else if (!nativeResult.root || typeof nativeResult.root.toInternalJson !== 'function') {
+    schemaOk = false;
+    schemaErrors = [{ keyword: 'interface', instancePath: '/', message: 'native root missing toInternalJson()' }];
+  } else {
+    try {
+      const internalJson = nativeResult.root.toInternalJson();
+      const ast = JSON.parse(internalJson);
+      schemaOk = validateInternal(ast);
+      if (!schemaOk) {
+        schemaErrors = (validateInternal.errors || []).slice(0, 10).map((e) => ({
+          keyword: e.keyword,
+          instancePath: e.instancePath || '/',
+          message: e.message || '',
+        }));
+      }
+    } catch (e) {
+      schemaOk = false;
+      schemaErrors = [{ keyword: 'parse', instancePath: '/', message: `invalid internal json: ${e && e.message ? e.message : e}` }];
+    }
+  }
+
+  const ok = textOk && cmp.success && schemaOk;
   let failureStageDir = stageDir;
 
   if (!ok) {
@@ -330,6 +408,14 @@ function compareSample(wikitext, { include = false, tidy = false, name = 'sample
           console.log('  JSON output matches');
         }
 
+        if (!schemaOk) {
+          const schemaErrorPath = path.join(suiteDir, `schema.errors.${n}.json`);
+          writeTextFile(schemaErrorPath, JSON.stringify(schemaErrors, null, 2) + '\n');
+          console.log('  schema errors :', schemaErrorPath);
+        } else {
+          console.log('  schema output matches');
+        }
+
         // Copy any stage logs collected into the suite artifact directory
         ensureDir(suiteDir);
         if (failureStageDir) {
@@ -386,7 +472,18 @@ function compareSample(wikitext, { include = false, tidy = false, name = 'sample
   nativeResult = null;
   jsResult = null;
 
-  return ok;
+  return {
+    ok,
+    textOk,
+    astOk: cmp.success,
+    schemaOk,
+    schemaErrors,
+    nativeText,
+  };
+}
+
+function compareSample(wikitext, opts = {}) {
+  return compareSampleDetailed(wikitext, opts).ok;
 }
 
 /**
@@ -425,4 +522,4 @@ function runTests(samples, opts = {}) {
   return true;
 }
 
-module.exports = { runTests, compareSample };
+module.exports = { runTests, compareSample, compareSampleDetailed };

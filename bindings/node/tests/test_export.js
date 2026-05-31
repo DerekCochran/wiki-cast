@@ -5,7 +5,7 @@ const path = require('path');
 const readline = require('readline');
 const { spawn } = require('child_process');
 const bz2 = require('unbzip2-stream');
-const { compareSample } = require('./helpers');
+const { compareSampleDetailed } = require('./helpers');
 
 function openInputStream(inputPath) {
   if (!inputPath || inputPath === '-') {
@@ -125,6 +125,12 @@ function testExport(argv) {
   let lineNumber = 0;
   let processed = 0;
   let ok = true;
+  let failCount = 0;
+
+  function reportFailure(payload) {
+    // Emit machine-readable failure lines on stdout so callers can redirect once and collect all failures.
+    console.log(JSON.stringify(payload));
+  }
 
   return new Promise((resolve, reject) => {
     reader.on('line', (line) => {
@@ -146,7 +152,13 @@ function testExport(argv) {
       try {
         entry = JSON.parse(trimmed);
       } catch (err) {
-        console.error(`Skipping invalid line ${lineNumber}: ${err.message}`);
+        reportFailure({
+          kind: 'invalid-jsonl',
+          line: lineNumber,
+          error: err.message,
+        });
+        ok = false;
+        failCount += 1;
         return;
       }
 
@@ -166,27 +178,49 @@ function testExport(argv) {
       }
 
       if (pageId === undefined || title === undefined || text === undefined) {
-        console.error(`Skipping invalid record on line ${lineNumber}: expected [id, title, rev_id, text] or { id, title, wikitext, ... }`);
+        reportFailure({
+          kind: 'invalid-record',
+          line: lineNumber,
+          error: 'expected [id, title, rev_id, text] or { id, title, wikitext, ... }',
+        });
+        ok = false;
+        failCount += 1;
         return;
       }
 
-      const result = compareSample(text, {
+      const result = compareSampleDetailed(text, {
         name: 'export',
         sampleIndex: lineNumber,
         sampleLabel: `${String(title).replace(/\s+/g, '_')}.wikitext`,
       });
 
-      if (!result) {
-        console.error(`\nFAIL line ${lineNumber} page ${pageId} title '${title}' rev ${revId}, processed ${processed + 1}`);
-        const savePath1 = path.join(scriptDir, 'wikitext', `${title.replace(/\s+/g, '_')}.wikitext`);
+      const roundTripText = String(result.nativeText || '');
+      const roundTripMatchesInput = roundTripText === String(text);
+
+      if (!result.ok || !roundTripMatchesInput) {
+        const saveName = `${String(title).replace(/\s+/g, '_')}.wikitext`;
+        const savePath1 = path.join(scriptDir, 'wikitext', saveName);
         fs.writeFileSync(savePath1, text, 'utf8');
-        console.info(`Saved failing sample to ${savePath1}`);
-        const savePath2 = path.join(scriptDir, '..', '..', '..', 'tests', 'wikitext', `${title.replace(/\s+/g, '_')}.wikitext`);
+
+        const savePath2 = path.join(scriptDir, '..', '..', '..', 'tests', 'wikitext', saveName);
         fs.writeFileSync(savePath2, text, 'utf8');
-        console.info(`Saved failing sample to ${savePath2}`);
+
+        reportFailure({
+          kind: 'validation-failure',
+          line: lineNumber,
+          pageId,
+          title,
+          revId,
+          parityOk: Boolean(result.textOk && result.astOk),
+          schemaOk: Boolean(result.schemaOk),
+          roundTripOk: Boolean(roundTripMatchesInput),
+          roundTripGeneratedLength: roundTripText.length,
+          inputLength: String(text).length,
+          schemaErrors: result.schemaErrors || [],
+          saved: [savePath1, savePath2],
+        });
         ok = false;
-        reader.close();
-        return;
+        failCount += 1;
       }
 
       if (processed % 10 === 0) {
@@ -201,6 +235,13 @@ function testExport(argv) {
         process.stderr.write('\n');
         process.stderr.write('\n');
       }
+      console.log(JSON.stringify({
+        kind: 'summary',
+        input: inputPath,
+        processed,
+        failures: failCount,
+        ok,
+      }));
       resolve(ok);
     });
 
