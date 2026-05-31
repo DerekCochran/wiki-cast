@@ -136,8 +136,9 @@
       ]
     },
     "childTextOnly": {
-      "allOf": [
-        { "$ref": "#/definitions/childText" }
+      "oneOf": [
+        { "$ref": "#/definitions/childText" },
+        { "$ref": "#/definitions/childToken" }
       ]
     },
     "childTokenRestricted": {
@@ -957,7 +958,24 @@
 
         {
           "if": {
-            "properties": { "type": { "enum": ["template", "magic-word", "arg"] } },
+            "properties": { "type": { "const": "template" } },
+            "required": ["type"]
+          },
+          "then": {
+            "propertyNames": {
+              "enum": [
+                "type", "tokenType", "tokenSubtype", "name", "childCount", "childCap",
+                "stage", "include", "built", "extInnerContext", "sepCode", "sep", "childNodes",
+                "modifier", "modifierLen"
+              ]
+            },
+            "required": ["modifierLen"]
+          }
+        },
+
+        {
+          "if": {
+            "properties": { "type": { "enum": ["magic-word", "arg"] } },
             "required": ["type"]
           },
           "then": {
@@ -1335,7 +1353,6 @@
             "required": ["type"]
           },
           "then": {
-            "required": ["childNodes"],
             "properties": {
               "childNodes": {
                 "type": "array",
