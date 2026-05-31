@@ -136,6 +136,7 @@ Token *token_new_with_subtype(TokenType type, TokenSubType subtype) {
 	if(!t) return NULL;
 	t->type= type;
 	t->subtype= subtype;
+	t->accum_index= (size_t)-1;
 	t->child_cap= CHILD_INIT_CAP;
 	t->children= malloc(CHILD_INIT_CAP * sizeof(Child));
 	if(!t->children) {

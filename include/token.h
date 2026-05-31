@@ -238,6 +238,7 @@ typedef struct Token {
     bool       include;     /* includeOnly mode */
     bool       built;       /* build() has been called */
     bool       ext_inner_context; /* cached: token is nested under ext-inner */
+    size_t     accum_index; /* index in Accum when present; (size_t)-1 when not in Accum */
 } Token;
 
 /* ── Lifecycle ────────────────────────────────────────────────────────────── */

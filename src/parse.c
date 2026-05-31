@@ -1592,12 +1592,9 @@ static void postprocess_nested_plain(Token *t, const ParserConfig *cfg, Accum *a
 						}
 
 						Token *ctok= cur.token;
-						size_t tok_idx= SIZE_MAX;
-						for(size_t ai= 0; ai < accum->count; ai++) {
-							if(accum->tokens[ai] == ctok) {
-								tok_idx= ai;
-								break;
-							}
+						size_t tok_idx= ctok ? ctok->accum_index : SIZE_MAX;
+						if(tok_idx >= accum->count || accum->tokens[tok_idx] != ctok) {
+							tok_idx= SIZE_MAX;
 						}
 						char sym= nested_token_marker_char(ctok);
 						if(tok_idx == SIZE_MAX || sym == '\0') {
@@ -1618,8 +1615,21 @@ static void postprocess_nested_plain(Token *t, const ParserConfig *cfg, Accum *a
 					}
 
 					if(serializable) {
+						ThreadBuf *orig_ser = wiki_thread_buf_acquire_scratch_from_data(tmp_ser->buf, ser_len);
+						if(!orig_ser) {
+							wiki_thread_buf_release_scratch(tmp_ser);
+							log_fatal("postprocess_nested_plain: failed to acquire scratch for serialized snapshot");
+							abort();
+						}
 						/* Use the tmp_ser scratch directly for nested parsing and building. */
 						run_nested_plain_pipeline(tmp_ser, is_td_inner, is_ext_inner, is_heading_title, t, cfg, accum, page);
+
+						if(tmp_ser->len == ser_len && sz_equal(tmp_ser->buf, orig_ser->buf, ser_len)) {
+							wiki_thread_buf_release_scratch(orig_ser);
+							wiki_thread_buf_release_scratch(tmp_ser);
+							wiki_thread_buf_release_scratch(scratch);
+							return;
+						}
 
 						Token *tmp= token_new_with_subtype(TOKEN_PLAIN, t->subtype);
 						if(tmp) {
@@ -1646,11 +1656,13 @@ static void postprocess_nested_plain(Token *t, const ParserConfig *cfg, Accum *a
 								}
 							}
 
+							wiki_thread_buf_release_scratch(orig_ser);
 							wiki_thread_buf_release_scratch(tmp_ser);
 							wiki_thread_buf_release_scratch(scratch);
 							return;
 						}
 						/* If build failed, fall through to heap fallback by releasing tmp_ser. */
+						wiki_thread_buf_release_scratch(orig_ser);
 						wiki_thread_buf_release_scratch(tmp_ser);
 					} else {
 						/* tmp_ser couldn't be populated cleanly; fall back to heap-based serializing. */
@@ -1671,6 +1683,7 @@ static void postprocess_nested_plain(Token *t, const ParserConfig *cfg, Accum *a
 			return;
 		}
 		size_t new_count= 0;
+		bool rebuilt_any= false;
 
 		for(size_t i= 0; i < old_count; i++) {
 			Child cur= old_children[i];
@@ -1722,6 +1735,7 @@ static void postprocess_nested_plain(Token *t, const ParserConfig *cfg, Accum *a
 
 			build_from_str(tmp, used_buf, used_len, accum);
 			build_token_recursive(tmp, accum, cfg);
+			rebuilt_any= true;
 
 			for(size_t j= 0; j < tmp->child_count; j++) {
 				if(new_count >= new_cap) {
@@ -1745,9 +1759,11 @@ static void postprocess_nested_plain(Token *t, const ParserConfig *cfg, Accum *a
 		t->children= new_children;
 		t->child_count= new_count;
 		t->child_cap= new_cap;
-		for(size_t i= 0; i < t->child_count; i++) {
-			if(!t->children[i].is_text && t->children[i].token) {
-				postprocess_nested_plain(t->children[i].token, cfg, accum, page);
+		if(rebuilt_any) {
+			for(size_t i= 0; i < t->child_count; i++) {
+				if(!t->children[i].is_text && t->children[i].token) {
+					postprocess_nested_plain(t->children[i].token, cfg, accum, page);
+				}
 			}
 		}
 		wiki_thread_buf_release_scratch(scratch);
@@ -2021,12 +2037,9 @@ static void postprocess_parameter_value_inline_impl(Token *t, const ParserConfig
 					}
 
 					Token *ctok= cur.token;
-					size_t tok_idx= SIZE_MAX;
-					for(size_t ai= 0; ai < accum->count; ai++) {
-						if(accum->tokens[ai] == ctok) {
-							tok_idx= ai;
-							break;
-						}
+					size_t tok_idx= ctok ? ctok->accum_index : SIZE_MAX;
+					if(tok_idx >= accum->count || accum->tokens[tok_idx] != ctok) {
+						tok_idx= SIZE_MAX;
 					}
 
 					char sym= nested_token_marker_char(ctok);
