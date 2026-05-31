@@ -427,31 +427,49 @@ void parse_hr_and_double_underscore(ThreadBuf *tb, const ParserConfig *cfg, Accu
 				size_t scan = line_end;
 				size_t last_boundary = line_end;
 				if(allow_crossline_heading_trail) {
-					bool consumed_non_newline = false;
-					bool consumed_newline = false;
+					bool consumed_any = false;
+					bool seen_non_newline = false;
 					while(scan < buf2_len) {
 						size_t sc = skip_cn_sentinel(buf2 + scan, buf2_len - scan);
 						if(sc > 0) {
 							scan += sc;
 							if(scan == buf2_len || buf2[scan] == '\n') last_boundary = scan;
-							consumed_non_newline = true;
+							consumed_any = true;
+							seen_non_newline = true;
+							continue;
+						}
+						if(buf2[scan] == '\n' || buf2[scan] == '\r') {
+							if(seen_non_newline) {
+								break;
+							}
+							if(consumed_any) {
+								size_t look= scan;
+								while(look < buf2_len && (buf2[look] == '\n' || buf2[look] == '\r')) {
+									look++;
+								}
+								size_t look_sc= (look < buf2_len)
+									? skip_cn_sentinel(buf2 + look, buf2_len - look)
+									: 0;
+								if(look_sc == 0) {
+									break;
+								}
+							}
+							scan++;
+							if(scan == buf2_len || buf2[scan] == '\n') last_boundary = scan;
+							consumed_any = true;
 							continue;
 						}
 						size_t ws = str_js_trim_ws_len_at(buf2, buf2_len, scan);
 						if(ws > 0) {
-							if(ws == 1 && buf2[scan] == '\n') {
-								if(consumed_newline) break;
-								consumed_newline = true;
-							} else {
-								consumed_non_newline = true;
-							}
+							consumed_any = true;
+							seen_non_newline = true;
 							scan += ws;
 							if(scan == buf2_len || buf2[scan] == '\n') last_boundary = scan;
 							continue;
 						}
 						break;
 					}
-					match_end = (consumed_non_newline || consumed_newline) ? last_boundary : line_end;
+					match_end = consumed_any ? last_boundary : line_end;
 				}
 
 				/* 1. Emit lead sentinels verbatim */
