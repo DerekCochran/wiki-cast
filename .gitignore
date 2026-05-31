@@ -51,4 +51,10 @@ Thumbs.db
 
 .artifacts/
 bindings/node/tests/wikitext/**/*.wikitext
+bindings/node/tests/wikitext/**/*.pwt.json
 tests/wikitext/**/*.wikitext
+
+# --- parse_wiki_text generated artifacts ---
+parse_wiki_text/target/
+parse_wiki_text/input/*.samples.json
+parse_wiki_text/input/*.pwt.json
