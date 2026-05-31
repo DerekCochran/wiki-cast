@@ -275,6 +275,69 @@ char *str_trim_lc(const char *s, size_t len) {
 	return result;
 }
 
+size_t str_js_zs_len_at(const char *s, size_t len, size_t i) {
+	if(!s || i >= len) return 0;
+	unsigned char c0 = (unsigned char)s[i];
+	if(c0 == 0x20) return 1; /* U+0020 */
+	if(i + 1 < len && c0 == 0xC2 && (unsigned char)s[i + 1] == 0xA0) return 2; /* U+00A0 */
+	if(i + 2 < len && c0 == 0xE1 && (unsigned char)s[i + 1] == 0x9A && (unsigned char)s[i + 2] == 0x80) return 3; /* U+1680 */
+	if(i + 2 < len && c0 == 0xE2 && (unsigned char)s[i + 1] == 0x80 &&
+	   (unsigned char)s[i + 2] >= 0x80 && (unsigned char)s[i + 2] <= 0x8A) return 3; /* U+2000..U+200A */
+	if(i + 2 < len && c0 == 0xE2 && (unsigned char)s[i + 1] == 0x80 && (unsigned char)s[i + 2] == 0xAF) return 3; /* U+202F */
+	if(i + 2 < len && c0 == 0xE2 && (unsigned char)s[i + 1] == 0x81 && (unsigned char)s[i + 2] == 0x9F) return 3; /* U+205F */
+	if(i + 2 < len && c0 == 0xE3 && (unsigned char)s[i + 1] == 0x80 && (unsigned char)s[i + 2] == 0x80) return 3; /* U+3000 */
+	return 0;
+}
+
+size_t str_js_trim_ws_len_at(const char *s, size_t len, size_t i) {
+	if(!s || i >= len) return 0;
+	unsigned char c0 = (unsigned char)s[i];
+	if(c0 == 0x09 || c0 == 0x0A || c0 == 0x0B || c0 == 0x0C || c0 == 0x0D) return 1;
+	if(c0 == 0x20) return 1;
+	if(i + 2 < len && c0 == 0xEF && (unsigned char)s[i + 1] == 0xBB && (unsigned char)s[i + 2] == 0xBF) return 3; /* U+FEFF */
+	if(i + 2 < len && c0 == 0xE2 && (unsigned char)s[i + 1] == 0x80 &&
+	   ((unsigned char)s[i + 2] == 0xA8 || (unsigned char)s[i + 2] == 0xA9)) return 3; /* U+2028/U+2029 */
+	return str_js_zs_len_at(s, len, i);
+}
+
+size_t str_js_trim_ws_suffix_len(const char *s, size_t end) {
+	if(!s || end == 0) return 0;
+	unsigned char c1 = (unsigned char)s[end - 1];
+	if(c1 == 0x09 || c1 == 0x0A || c1 == 0x0B || c1 == 0x0C || c1 == 0x0D || c1 == 0x20) return 1;
+	if(end >= 2 && (unsigned char)s[end - 2] == 0xC2 && (unsigned char)s[end - 1] == 0xA0) return 2; /* U+00A0 */
+	if(end >= 3) {
+		unsigned char c0 = (unsigned char)s[end - 3];
+		unsigned char c2 = (unsigned char)s[end - 2];
+		unsigned char c3 = (unsigned char)s[end - 1];
+		if(c0 == 0xE1 && c2 == 0x9A && c3 == 0x80) return 3; /* U+1680 */
+		if(c0 == 0xE2 && c2 == 0x80 && ((c3 >= 0x80 && c3 <= 0x8A) || c3 == 0xA8 || c3 == 0xA9 || c3 == 0xAF)) return 3;
+		if(c0 == 0xE2 && c2 == 0x81 && c3 == 0x9F) return 3; /* U+205F */
+		if(c0 == 0xE3 && c2 == 0x80 && c3 == 0x80) return 3; /* U+3000 */
+		if(c0 == 0xEF && c2 == 0xBB && c3 == 0xBF) return 3; /* U+FEFF */
+	}
+	return 0;
+}
+
+void str_trim_view_js(const char **ptr, size_t *len) {
+	if(!ptr || !len || !*ptr) return;
+	const char *s = *ptr;
+	size_t n = *len;
+	size_t start = 0;
+	size_t end = n;
+	while(start < end) {
+		size_t ws = str_js_trim_ws_len_at(s, end, start);
+		if(ws == 0) break;
+		start += ws;
+	}
+	while(end > start) {
+		size_t ws = str_js_trim_ws_suffix_len(s, end);
+		if(ws == 0) break;
+		end -= ws;
+	}
+	*ptr = s + start;
+	*len = end - start;
+}
+
 /* ── decodeHtmlBasic ────────────────────────────────────────────────────── */
 
 /* Named HTML entities we handle (mirrors JS names object) */

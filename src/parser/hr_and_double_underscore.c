@@ -110,7 +110,8 @@ static bool heading_line_parse_full(const char *s, size_t len, HdLineResult *out
     bool changed = true;
 	while(changed && trail_start > eq_start + 1) {
         changed = false;
-        if(isspace((unsigned char)*(trail_start - 1))) { trail_start--; changed = true; continue; }
+		size_t ws_suffix = str_js_trim_ws_suffix_len(eq_start, (size_t)(trail_start - eq_start));
+		if(ws_suffix > 0) { trail_start -= ws_suffix; changed = true; continue; }
 		if((unsigned char)*(trail_start - 1) == 0x7F && trail_start - 2 >= eq_start) {
             const char *type_p = trail_start - 2;
             if(*type_p == 'c' || *type_p == 'n') {
@@ -426,21 +427,25 @@ void parse_hr_and_double_underscore(ThreadBuf *tb, const ParserConfig *cfg, Accu
 				size_t scan = line_end;
 				size_t last_boundary = line_end;
 				if(allow_crossline_heading_trail) {
+					bool consumed_non_newline = false;
 					while(scan < buf2_len) {
 						size_t sc = skip_cn_sentinel(buf2 + scan, buf2_len - scan);
 						if(sc > 0) {
 							scan += sc;
-							if(scan == buf2_len || buf2[scan] == '\n') last_boundary = scan;
+							last_boundary = scan;
+							consumed_non_newline = true;
 							continue;
 						}
-						if(isspace((unsigned char)buf2[scan])) {
-							scan++;
-							if(scan == buf2_len || buf2[scan] == '\n') last_boundary = scan;
+						size_t ws = str_js_trim_ws_len_at(buf2, buf2_len, scan);
+						if(ws > 0) {
+							if(!(ws == 1 && buf2[scan] == '\n')) consumed_non_newline = true;
+							scan += ws;
+							last_boundary = scan;
 							continue;
 						}
 						break;
 					}
-					match_end = last_boundary;
+					match_end = consumed_non_newline ? last_boundary : line_end;
 				}
 
 				/* 1. Emit lead sentinels verbatim */

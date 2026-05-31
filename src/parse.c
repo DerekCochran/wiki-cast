@@ -2359,8 +2359,10 @@ static void postprocess_parameter_value_inline_impl(Token *t, const ParserConfig
 				parse_braces(scratch, cfg, accum);
 				parse_links(scratch, links_cfg, accum, page, false);
 				parse_quotes_stage6_per_line(scratch, cfg, accum);
-				parse_external_links(scratch, cfg, accum, false);
-				parse_magic_links(scratch, cfg, accum);
+				if(!has_non_text_children) {
+					parse_external_links(scratch, cfg, accum, false);
+					parse_magic_links(scratch, cfg, accum);
+				}
 				parse_converter(scratch, cfg, accum);
 			} else if(attr_mode == ATTR_VALUE_PARSE_CONVERTER_ONLY) {
 				parse_converter(scratch, cfg, accum);
@@ -2378,8 +2380,10 @@ static void postprocess_parameter_value_inline_impl(Token *t, const ParserConfig
 				if(!has_quote_token) {
 					parse_quotes_stage6_per_line(scratch, cfg, accum);
 				}
-				parse_external_links(scratch, cfg, accum, false);
-				parse_magic_links(scratch, cfg, accum);
+				if(!has_non_text_children) {
+					parse_external_links(scratch, cfg, accum, false);
+					parse_magic_links(scratch, cfg, accum);
+				}
 				parse_list_skip_first_line(scratch, cfg, accum);
 			} else {
 				parse_comment_and_ext(scratch, cfg, accum, false);
@@ -2394,8 +2398,10 @@ static void postprocess_parameter_value_inline_impl(Token *t, const ParserConfig
 				if(!has_quote_token) {
 					parse_quotes_stage6_per_line(scratch, cfg, accum);
 				}
-				parse_external_links(scratch, cfg, accum, false);
-				parse_magic_links(scratch, cfg, accum);
+				if(!has_non_text_children) {
+					parse_external_links(scratch, cfg, accum, false);
+					parse_magic_links(scratch, cfg, accum);
+				}
 				parse_list_skip_first_line(scratch, cfg, accum);
 				parse_converter(scratch, cfg, accum);
 			}

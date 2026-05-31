@@ -54,20 +54,6 @@ static bool magic_left_boundary_ok(const char *s, size_t len, size_t i) {
 
 /* match_proto_prefix() and is_url_common_byte() are now defined in string_util.c */
 
-static size_t consume_js_zs_magic(const char *s, size_t len, size_t i) {
-    if (i >= len) return 0;
-    unsigned char c0 = (unsigned char)s[i];
-    if (c0 == 0x20) return 1; /* U+0020 */
-    if (i + 1 < len && c0 == 0xC2 && (unsigned char)s[i + 1] == 0xA0) return 2; /* U+00A0 */
-    if (i + 2 < len && c0 == 0xE1 && (unsigned char)s[i + 1] == 0x9A && (unsigned char)s[i + 2] == 0x80) return 3; /* U+1680 */
-    if (i + 2 < len && c0 == 0xE2 && (unsigned char)s[i + 1] == 0x80 &&
-        (unsigned char)s[i + 2] >= 0x80 && (unsigned char)s[i + 2] <= 0x8A) return 3; /* U+2000..U+200A */
-    if (i + 2 < len && c0 == 0xE2 && (unsigned char)s[i + 1] == 0x80 && (unsigned char)s[i + 2] == 0xAF) return 3; /* U+202F */
-    if (i + 2 < len && c0 == 0xE2 && (unsigned char)s[i + 1] == 0x81 && (unsigned char)s[i + 2] == 0x9F) return 3; /* U+205F */
-    if (i + 2 < len && c0 == 0xE3 && (unsigned char)s[i + 1] == 0x80 && (unsigned char)s[i + 2] == 0x80) return 3; /* U+3000 */
-    return 0;
-}
-
 /* is_url_common_byte() is now defined in string_util.c */
 
 /* URL-body continuation across parser sentinels. */
@@ -111,7 +97,7 @@ static size_t consume_ascii_digit_span(const char *s, size_t len, size_t i, size
 static size_t consume_magic_space(const char *s, size_t len, size_t i) {
     if (i >= len) return 0;
     if (s[i] == '\t') return 1;
-    size_t zs = consume_js_zs_magic(s, len, i);
+    size_t zs = str_js_zs_len_at(s, len, i);
     if (zs > 0) return zs;
     if (i + 6 <= len && str_ci_eq_n(s + i, "&nbsp;", 6)) return 6;
     if (i + 4 < len && s[i] == '&' && s[i + 1] == '#') {
@@ -241,7 +227,7 @@ static bool parse_protocol_url(const char *s, size_t len, size_t i,
         if (q <= p + 1 || q >= len || s[q] != ']') return false;
         p = q + 1;
     } else {
-        if (consume_js_zs_magic(s, len, p) > 0) return false;
+        if (str_js_zs_len_at(s, len, p) > 0) return false;
         if (p + 2 < len && (unsigned char)s[p] == 0xEF &&
             (unsigned char)s[p + 1] == 0xBF && (unsigned char)s[p + 2] == 0xBD) {
             return false;
@@ -273,7 +259,7 @@ static bool parse_protocol_url(const char *s, size_t len, size_t i,
             continue;
         }
 
-        if (consume_js_zs_magic(s, len, p) > 0) break;
+        if (str_js_zs_len_at(s, len, p) > 0) break;
         if (p + 2 < len && (unsigned char)s[p] == 0xEF &&
             (unsigned char)s[p + 1] == 0xBF && (unsigned char)s[p + 2] == 0xBD) break;
         if (!is_url_common_byte((unsigned char)s[p])) break;

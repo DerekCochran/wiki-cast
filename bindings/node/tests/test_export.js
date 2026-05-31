@@ -198,7 +198,7 @@ function testExport(argv) {
       const roundTripMatchesInput = roundTripText === String(text);
 
       if (!result.ok || !roundTripMatchesInput) {
-        const saveName = `${String(title).replace(/\s+/g, '_')}.wikitext`;
+        const saveName = `${String(title).replace(/[^\x00-\x7F]/g, '').replace(/\s+/g, '_')}.wikitext`;
         const savePath1 = path.join(scriptDir, 'wikitext', saveName);
         fs.writeFileSync(savePath1, text, 'utf8');
 

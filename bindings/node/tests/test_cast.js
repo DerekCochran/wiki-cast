@@ -5,6 +5,7 @@ const { runTests } = require('./helpers');
 
 const castTests = [
   // Failures from export of wikitexts
+  `== Awards and honors ==\n<NBSP>\n`,
 // `{| class="wikitable" width="100%"
 // ! style="width:6%" | Event
 // |-
