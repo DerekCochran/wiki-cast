@@ -18,6 +18,14 @@ wikitext parsing across ecosystems.
 If this matures, projects like Parsoid or other wiki tooling could integrate
 the same core parser through native bindings or service interfaces.
 
+## Short term goal
+
+The process of creating Wiki-CAST generated a large amount of tests.  We can use these tests to compare output from wikiparser-node, parse_wiki_text and parsoid to find additional issues in all 4 products.
+
+## Issues
+
+This product is still in a pre-release phase with undocumented discrepencies between wikiparser-node.  The testing for other parsers has not been completed, or even started.  If you see an issue you want resolved, feel free to enter it.  However, I may not get to it with the other work needed.
+
 ## Performance
 
 This is based on the [english wikipedia download](https://dumps.wikimedia.org/enwiki/latest/) for 6,877,448 samples.
