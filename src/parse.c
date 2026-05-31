@@ -2637,7 +2637,9 @@ Token *wiki_parse_with_page(const char *wikitext, size_t input_len, const Parser
 
 			for(size_t _ai= scan_start; _ai < scan_end; _ai++) {
 				if(accum.tokens[_ai]) {
-					postprocess_parameter_value_inline(accum.tokens[_ai], cfg, &accum, page, true);
+					/* JS parity: root parseOnce iterates accum and invokes parseOnce
+					 * on each token directly without recursive descent. */
+					postprocess_parameter_value_inline(accum.tokens[_ai], cfg, &accum, page, false);
 				}
 			}
 
@@ -2646,6 +2648,11 @@ Token *wiki_parse_with_page(const char *wikitext, size_t input_len, const Parser
 			pass++;
 		}
 	}
+
+	/* C-only coverage: some nested plain parameter tokens are created without
+	 * direct accum entries (unlike JS Token constructor behavior), so run one
+	 * explicit recursive pass before build phase 2 to preserve parity. */
+	postprocess_parameter_value_inline(root, cfg, &accum, page, true);
 
 	/* ── build phase 2: recursively expand remaining sentinels ───────────── */
 	build_token_recursive(root, &accum, cfg);
