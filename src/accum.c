@@ -22,6 +22,7 @@ void accum_push(Accum *a, Token *t) {
 		a->tokens= realloc(a->tokens, a->cap * sizeof(Token *));
 		assert(a->tokens);
 	}
+	t->accum_index = a->count;
 	a->tokens[a->count++]= t;
 }
 

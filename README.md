@@ -18,6 +18,14 @@ wikitext parsing across ecosystems.
 If this matures, projects like Parsoid or other wiki tooling could integrate
 the same core parser through native bindings or service interfaces.
 
+##
+
+First    | Count: 6877448 | Min: 0.0000 | Max: 1711.0000 | Mean: 8.4138 | SD: 21.0378 | p50: 4.0000 | p95: 28.0000 | p99: 92.0000
+Second   | Count: 6877448 | Min: 0.0000 | Max: 67640.0000 | Mean: 1.2977 | SD: 32.9396 | p50: 1.0000 | p95: 5.0000 | p99: 13.0000
+Speedup (mean first/second): 6.4837x
+Mean percent change (second vs first): -84.58%
+
+
 ## Implementation
 
 **High-level overview**

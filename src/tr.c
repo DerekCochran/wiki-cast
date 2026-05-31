@@ -251,7 +251,12 @@ static void parse_table_attrs(Token *attrs_tok, const char *attr_str, size_t att
 	}
 
 	size_t i= 0;
-	char dirty_buf[4096];
+	char *dirty_buf= malloc(attr_len);
+	if(!dirty_buf) {
+		Token *dt= make_table_attr_dirty(attr_str, attr_len, accum);
+		if(dt) token_append_child(attrs_tok, dt);
+		return;
+	}
 	size_t dirty_len= 0;
 
 #define FLUSH_DIRTY()                                                \
@@ -403,6 +408,7 @@ static void parse_table_attrs(Token *attrs_tok, const char *attr_str, size_t att
 	}
 
 	FLUSH_DIRTY();
+	free(dirty_buf);
 #undef FLUSH_DIRTY
 }
 

@@ -1592,12 +1592,9 @@ static void postprocess_nested_plain(Token *t, const ParserConfig *cfg, Accum *a
 						}
 
 						Token *ctok= cur.token;
-						size_t tok_idx= SIZE_MAX;
-						for(size_t ai= 0; ai < accum->count; ai++) {
-							if(accum->tokens[ai] == ctok) {
-								tok_idx= ai;
-								break;
-							}
+						size_t tok_idx= ctok ? ctok->accum_index : SIZE_MAX;
+						if(tok_idx >= accum->count || accum->tokens[tok_idx] != ctok) {
+							tok_idx= SIZE_MAX;
 						}
 						char sym= nested_token_marker_char(ctok);
 						if(tok_idx == SIZE_MAX || sym == '\0') {
@@ -1618,8 +1615,21 @@ static void postprocess_nested_plain(Token *t, const ParserConfig *cfg, Accum *a
 					}
 
 					if(serializable) {
+						ThreadBuf *orig_ser = wiki_thread_buf_acquire_scratch_from_data(tmp_ser->buf, ser_len);
+						if(!orig_ser) {
+							wiki_thread_buf_release_scratch(tmp_ser);
+							log_fatal("postprocess_nested_plain: failed to acquire scratch for serialized snapshot");
+							abort();
+						}
 						/* Use the tmp_ser scratch directly for nested parsing and building. */
 						run_nested_plain_pipeline(tmp_ser, is_td_inner, is_ext_inner, is_heading_title, t, cfg, accum, page);
+
+						if(tmp_ser->len == ser_len && sz_equal(tmp_ser->buf, orig_ser->buf, ser_len)) {
+							wiki_thread_buf_release_scratch(orig_ser);
+							wiki_thread_buf_release_scratch(tmp_ser);
+							wiki_thread_buf_release_scratch(scratch);
+							return;
+						}
 
 						Token *tmp= token_new_with_subtype(TOKEN_PLAIN, t->subtype);
 						if(tmp) {
@@ -1646,11 +1656,13 @@ static void postprocess_nested_plain(Token *t, const ParserConfig *cfg, Accum *a
 								}
 							}
 
+							wiki_thread_buf_release_scratch(orig_ser);
 							wiki_thread_buf_release_scratch(tmp_ser);
 							wiki_thread_buf_release_scratch(scratch);
 							return;
 						}
 						/* If build failed, fall through to heap fallback by releasing tmp_ser. */
+						wiki_thread_buf_release_scratch(orig_ser);
 						wiki_thread_buf_release_scratch(tmp_ser);
 					} else {
 						/* tmp_ser couldn't be populated cleanly; fall back to heap-based serializing. */
@@ -1671,6 +1683,7 @@ static void postprocess_nested_plain(Token *t, const ParserConfig *cfg, Accum *a
 			return;
 		}
 		size_t new_count= 0;
+		bool rebuilt_any= false;
 
 		for(size_t i= 0; i < old_count; i++) {
 			Child cur= old_children[i];
@@ -1722,6 +1735,7 @@ static void postprocess_nested_plain(Token *t, const ParserConfig *cfg, Accum *a
 
 			build_from_str(tmp, used_buf, used_len, accum);
 			build_token_recursive(tmp, accum, cfg);
+			rebuilt_any= true;
 
 			for(size_t j= 0; j < tmp->child_count; j++) {
 				if(new_count >= new_cap) {
@@ -1745,9 +1759,11 @@ static void postprocess_nested_plain(Token *t, const ParserConfig *cfg, Accum *a
 		t->children= new_children;
 		t->child_count= new_count;
 		t->child_cap= new_cap;
-		for(size_t i= 0; i < t->child_count; i++) {
-			if(!t->children[i].is_text && t->children[i].token) {
-				postprocess_nested_plain(t->children[i].token, cfg, accum, page);
+		if(rebuilt_any) {
+			for(size_t i= 0; i < t->child_count; i++) {
+				if(!t->children[i].is_text && t->children[i].token) {
+					postprocess_nested_plain(t->children[i].token, cfg, accum, page);
+				}
 			}
 		}
 		wiki_thread_buf_release_scratch(scratch);
@@ -1902,8 +1918,11 @@ static void postprocess_parameter_value_inline_impl(Token *t, const ParserConfig
 																				const char *page, const Token *parent,
 																						const Token *grandparent,
 																																						bool in_ext_context,
-																																						bool recurse_existing_children) {
+																								bool recurse_existing_children,
+																								unsigned inline_epoch) {
 	if(!t) return;
+	if(t->inline_seen_epoch == inline_epoch) return;
+	t->inline_seen_epoch = inline_epoch;
 
 	log_debug_env_token("DEBUG_PARAM_VALUE", t, "postprocess_parameter_value_inline_impl start");
 
@@ -1913,7 +1932,7 @@ static void postprocess_parameter_value_inline_impl(Token *t, const ParserConfig
 	if(recurse_existing_children) {
 		for(size_t i= 0; i < t->child_count; i++) {
 			if(!t->children[i].is_text && t->children[i].token) {
-				postprocess_parameter_value_inline_impl(t->children[i].token, cfg, accum, page, t, parent, current_in_ext_context, true);
+				postprocess_parameter_value_inline_impl(t->children[i].token, cfg, accum, page, t, parent, current_in_ext_context, true, inline_epoch);
 			}
 		}
 	}
@@ -2021,12 +2040,9 @@ static void postprocess_parameter_value_inline_impl(Token *t, const ParserConfig
 					}
 
 					Token *ctok= cur.token;
-					size_t tok_idx= SIZE_MAX;
-					for(size_t ai= 0; ai < accum->count; ai++) {
-						if(accum->tokens[ai] == ctok) {
-							tok_idx= ai;
-							break;
-						}
+					size_t tok_idx= ctok ? ctok->accum_index : SIZE_MAX;
+					if(tok_idx >= accum->count || accum->tokens[tok_idx] != ctok) {
+						tok_idx= SIZE_MAX;
 					}
 
 					char sym= nested_token_marker_char(ctok);
@@ -2045,7 +2061,6 @@ static void postprocess_parameter_value_inline_impl(Token *t, const ParserConfig
 
 				if(serializable) {
 					tmp_ser->buf[tmp_ser->len]= '\0';
-
 					parse_comment_and_ext(tmp_ser, cfg, accum, false);
 					if(allow_serialized_braces) {
 						parse_braces(tmp_ser, cfg, accum);
@@ -2088,7 +2103,7 @@ static void postprocess_parameter_value_inline_impl(Token *t, const ParserConfig
 
 						for(size_t i= 0; i < t->child_count; i++) {
 							if(!t->children[i].is_text && t->children[i].token) {
-								postprocess_parameter_value_inline_impl(t->children[i].token, cfg, accum, page, t, parent, current_in_ext_context, true);
+								postprocess_parameter_value_inline_impl(t->children[i].token, cfg, accum, page, t, parent, current_in_ext_context, true, inline_epoch);
 							}
 						}
 
@@ -2270,7 +2285,7 @@ static void postprocess_parameter_value_inline_impl(Token *t, const ParserConfig
 		 * recursion at function entry. */
 		for(size_t i= 0; i < t->child_count; i++) {
 			if(!t->children[i].is_text && t->children[i].token) {
-				postprocess_parameter_value_inline_impl(t->children[i].token, cfg, accum, page, t, parent, current_in_ext_context, true);
+				postprocess_parameter_value_inline_impl(t->children[i].token, cfg, accum, page, t, parent, current_in_ext_context, true, inline_epoch);
 			}
 		}
 
@@ -2287,14 +2302,28 @@ static void postprocess_parameter_value_inline_impl(Token *t, const ParserConfig
 	log_debug_env_token("DEBUG_PARAM_VALUE", t, "postprocess_parameter_value_inline_impl end");
 }
 
-static void postprocess_parameter_value_inline(Token *t, const ParserConfig *cfg, Accum *accum,
-																																		const char *page,
-																																		bool recurse_existing_children) {
+static unsigned next_inline_epoch(void) {
+	static unsigned inline_epoch_counter= 1;
+	unsigned inline_epoch= inline_epoch_counter++;
+	if(inline_epoch_counter == 0) inline_epoch_counter= 1;
+	return inline_epoch;
+}
+
+static void postprocess_parameter_value_inline_with_epoch(Token *t, const ParserConfig *cfg, Accum *accum,
+																								const char *page,
+																								bool recurse_existing_children,
+																								unsigned inline_epoch) {
 	bool inferred_in_ext_context= t && t->ext_inner_context;
 	if(!inferred_in_ext_context) {
 		inferred_in_ext_context = token_has_ext_inner_ancestor(t, accum);
 	}
-	postprocess_parameter_value_inline_impl(t, cfg, accum, page, NULL, NULL, inferred_in_ext_context, recurse_existing_children);
+	postprocess_parameter_value_inline_impl(t, cfg, accum, page, NULL, NULL, inferred_in_ext_context, recurse_existing_children, inline_epoch);
+}
+
+static void postprocess_parameter_value_inline(Token *t, const ParserConfig *cfg, Accum *accum,
+																																		const char *page,
+																																		bool recurse_existing_children) {
+	postprocess_parameter_value_inline_with_epoch(t, cfg, accum, page, recurse_existing_children, next_inline_epoch());
 }
 
 static void finalize_gallery_and_link_names(Token *t, const ParserConfig *cfg,
@@ -2647,8 +2676,8 @@ Token *wiki_parse_with_page(const char *wikitext, size_t input_len, const Parser
 	postprocess_nested_plain(root, cfg, &accum, page);
 	postprocess_root_braces_fallback(root, cfg, &accum);
 
-	/* JS parity: run inline stages again for any new text children created
-     * during build_token_recursive (e.g. ext-inner content). */
+	/* Run inline stages again for any new text children created during
+	 * build_token_recursive / nested plain postprocess. */
 	postprocess_parameter_value_inline(root, cfg, &accum, page, true);
 	finalize_gallery_and_link_names(root, cfg, page);
 
