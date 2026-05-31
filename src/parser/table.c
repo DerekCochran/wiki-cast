@@ -692,19 +692,16 @@ static void parse_table_attrs(Token *attrs_tok, const char *attr_str, size_t att
 				APPEND_DIRTY_SPAN(i, eq_take);
 				i+= eq_take;
 				if(i < attr_len && (attr_str[i] == '"' || attr_str[i] == '\'')) {
-					size_t vstart= i;
-					char q= attr_str[i++];
-					while(i < attr_len) {
-						if(attr_str[i++] == q) break;
-					}
-					APPEND_DIRTY_SPAN(vstart, i - vstart);
-				} else {
-					size_t vstart= i;
-					while(i < attr_len && table_ws_len_at(attr_str, attr_len, i) == 0) {
-						i++;
-					}
-					APPEND_DIRTY_SPAN(vstart, i - vstart);
+					/* JS parity: for malformed ='quoted...' chunks, keep only '=' dirty
+					 * so inner space-delimited fragments can still be tokenized. */
+					continue;
 				}
+				/* Unquoted '=value' remains one dirty chunk in JS. */
+				size_t vstart= i;
+				while(i < attr_len && table_ws_len_at(attr_str, attr_len, i) == 0) {
+					i++;
+				}
+				APPEND_DIRTY_SPAN(vstart, i - vstart);
 				continue;
 			}
 			APPEND_DIRTY_SPAN(i, 1);

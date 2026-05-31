@@ -299,16 +299,12 @@ static void parse_table_attrs(Token *attrs_tok, const char *attr_str, size_t att
 				dirty_len+= eq_take;
 				i+= eq_take;
 				if(i < attr_len && (attr_str[i] == '"' || attr_str[i] == '\'')) {
-					char q= attr_str[i];
+					/* JS parity: malformed ='quoted...' keeps only '=' dirty so
+					 * following fragments can still tokenize by spaces. */
+					continue;
+				}
+				while(i < attr_len && table_ws_len_at(attr_str, attr_len, i) == 0) {
 					dirty_buf[dirty_len++]= attr_str[i++];
-					while(i < attr_len) {
-						dirty_buf[dirty_len++]= attr_str[i];
-						if(attr_str[i++] == q) break;
-					}
-				} else {
-					while(i < attr_len && table_ws_len_at(attr_str, attr_len, i) == 0) {
-						dirty_buf[dirty_len++]= attr_str[i++];
-					}
 				}
 				continue;
 			}
