@@ -4,21 +4,7 @@
 const { runTests } = require('./helpers');
 
 const tempTests = [
-  
-`{{Infobox automobile
-| name == Dodge Viper SRT-10 (ZB II) ==
-| manufacturer = [[Chrysler LLC]]<br>[[Chrysler Group LLC]]
-|'''Coupé:''' {{convert|47.6|in|mm|abbr=on}}
-|'''Convertible:''' {{convert|48.6|in|mm|abbr=on}}
-}}
-| weight = {{ubl
-|'''SRT-10:''' {{convert|3460|lb|kg|0|abbr=on}}
-|'''ACR:''' {{convert|3408|lb|kg|abbr=on}}
-}}
-| predecessor = [[Dodge Viper (ZB I)]]
-| successor = [[Dodge Viper (VX I)]]
-}}`,
-
+  `{{Cite tweet |user=CAL_FIRE |number=1199881723929976833 |title=#CaveFire near Highway 154 in Santa Barbara County is 3,126 acres and 40% contained. Acreage reduced due to accurate mapping. Unified Command: @LosPadresNF @SBCFireInfo @CALFIRE_SLO Evacuation Information: https://twitter.com/sbsheriff&nbsp;https://fire.ca.gov/incidents/&nbsp;pic.twitter.com/BJa6z3YLYP|first=CAL|last=FIRE|date=November 27, 2019}}`
 ];
 
 if (process.argv[1] === __filename) {

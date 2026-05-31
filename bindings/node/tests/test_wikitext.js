@@ -54,8 +54,8 @@ function testWikitext() {
   for (const sample of samples) {
     if (!compareSample(sample.content, { name: `wikitext`, sampleLabel: sample.file })) {
       failCount++;
-      //console.error(`FAILED: stopping on first failure, ${passCount} samples passed`);
-      //return !ok;
+      console.error(`FAILED: stopping on first failure, ${passCount} samples passed`);
+      return !ok;
     }
     passCount++;
   }
