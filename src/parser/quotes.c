@@ -55,6 +55,21 @@ static int part_append_bytes(Part *p, const char *add, size_t addlen) {
 	return 0;
 }
 
+/* JS parity helper for arr[i - 1].slice(-2, -1) === ' ':
+ * inspect the character before the final UTF-8 codepoint, not the prior byte. */
+static bool has_space_before_last_codepoint(const char *s, size_t len) {
+	if(!s || len < 2) return false;
+
+	/* Find start offset of last UTF-8 codepoint. */
+	size_t last_cp_start = len - 1;
+	while(last_cp_start > 0 && (((unsigned char)s[last_cp_start]) & 0xC0) == 0x80) {
+		last_cp_start--;
+	}
+
+	if(last_cp_start == 0) return false;
+	return s[last_cp_start - 1] == ' ';
+}
+
 void quote_scan(const char *line, size_t len, QuoteRunCb cb, void *user_data) {
 	if (!line || !cb || len < 2) return;
 	size_t i = 0;
@@ -188,7 +203,7 @@ void parse_quotes(ThreadBuf *tb, const ParserConfig *cfg, Accum *accum, bool tid
 				size_t plen= parts[prev].len;
 				const char *pstr= parts[prev].s;
 				bool endsWithSpace= (plen > 0 && pstr[plen - 1] == ' ');
-				bool secondLastSpace= (plen >= 2 && pstr[plen - 2] == ' ');
+				bool secondLastSpace= has_space_before_last_codepoint(pstr, plen);
 				if(endsWithSpace) {
 					if(firstMulti == -1 && firstSpace == -1) firstSpace= (ssize_t)i;
 				} else if(secondLastSpace) {

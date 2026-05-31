@@ -161,12 +161,12 @@ static char *title_main_from_text(const char *s, size_t len) {
 	char *out= strndup0(s, len);
 	if(!out) return NULL;
 	size_t in= 0, out_i= 0;
-	while(in < len && (out[in] == '_' || isspace((unsigned char)out[in]))) in++;
+	while(in < len && (out[in] == '_' || out[in] == ' ')) in++;
 	bool last_space= false;
 	for(; in < len; in++) {
 		char c= out[in];
 		if(c == '_') c= ' ';
-		if(isspace((unsigned char)c)) {
+		if(c == ' ') {
 			if(!last_space) out[out_i++]= ' ';
 			last_space= true;
 		} else {

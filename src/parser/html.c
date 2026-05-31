@@ -422,6 +422,37 @@ static void parse_html_attrs(Token *attrs_tok, const char *attr_str, size_t attr
 
 		if(!valid_key) {
 			APPEND_HTML_DIRTY_RANGE(key_start, key_start + key_len);
+
+			/* JS parity: if an invalid key is followed by '=', treat the whole
+			 * assignment as dirty instead of re-parsing the value as a new key. */
+			size_t j = html_skip_eq_ws(attr_str, attr_len, i);
+			size_t eq_bad_len = 0;
+			if(j < attr_len && attr_str[j] == '=') {
+				eq_bad_len = 1;
+			} else {
+				eq_bad_len = html_sentinel_at(attr_str, attr_len, j, '~');
+			}
+
+			if(eq_bad_len > 0) {
+				APPEND_HTML_DIRTY_RANGE(i, j + eq_bad_len);
+				i = j + eq_bad_len;
+
+				size_t ws_after_eq = i;
+				i = html_skip_eq_ws(attr_str, attr_len, i);
+				APPEND_HTML_DIRTY_RANGE(ws_after_eq, i);
+
+				if(i < attr_len && (attr_str[i] == '"' || attr_str[i] == '\'')) {
+					char q = attr_str[i++];
+					size_t vstart = i - 1;
+					const char *qclose = sz_find_byte(attr_str + i, attr_len - i, &q);
+					i = qclose ? (size_t)(qclose - attr_str) + 1 : attr_len;
+					APPEND_HTML_DIRTY_RANGE(vstart, i);
+				} else {
+					size_t vstart = i;
+					while(i < attr_len && !isspace((unsigned char)attr_str[i])) i++;
+					APPEND_HTML_DIRTY_RANGE(vstart, i);
+				}
+			}
 			continue;
 		}
 
@@ -520,6 +551,16 @@ static bool html_attrs_has_attr(const Token *attrs, const char *attr_name) {
 			if(a->type == TOKEN_EXT_ATTR && a->name) {
 					if(a->name[attr_len] == '\0' && str_ci_eq_n(a->name, attr_name, attr_len)) return true;
 		}
+	}
+	return false;
+}
+
+static bool html_attrs_has_valid_attr(const Token *attrs) {
+	if(!attrs) return false;
+	for(size_t i= 0; i < attrs->child_count; i++) {
+		const Child *c= &attrs->children[i];
+		if(c->is_text || !c->token) continue;
+		if(c->token->type == TOKEN_EXT_ATTR) return true;
 	}
 	return false;
 }
@@ -649,6 +690,17 @@ void parse_html(ThreadBuf *tb, const ParserConfig *cfg, Accum *accum) {
 
 						/* Special-case: meta/link require itemprop+content/href. */
 						bool reject = false;
+						if(!htc.is_closing && attr_ptr && attr_len > 0) {
+							size_t p = 0;
+							while(p < attr_len && isspace((unsigned char)attr_ptr[p])) p++;
+							if(p < attr_len && attr_ptr[p] == '[') {
+								bool has_eq = sz_find(attr_ptr + p, attr_len - p, "=", 1) != NULL;
+								bool has_close = sz_find(attr_ptr + p, attr_len - p, "]", 1) != NULL;
+								if(has_eq && has_close && !html_attrs_has_valid_attr(attrs)) {
+									reject = true;
+								}
+							}
+						}
 						if(strcmp(lcname, "meta") == 0 || strcmp(lcname, "link") == 0) {
 							bool has_itemprop = html_attrs_has_attr(attrs, "itemprop");
 							bool has_required = strcmp(lcname, "meta") == 0

@@ -926,7 +926,14 @@ static void parse_table_skip_first_line(ThreadBuf *scratch, const ParserConfig *
 static bool likely_has_inline_stage_syntax(const char *s, size_t len) {
 	if(!s || len == 0) return false;
 	if(sz_find_byte_from(s, len, "<[{':/_#*;=-", 12)) return true;
-	if(sz_find(s, len, "RFC ", 4) || sz_find(s, len, "PMID ", 5) || sz_find(s, len, "ISBN ", 5)) {
+	if(sz_find(s, len, "RFC ", 4) || sz_find(s, len, "PMID ", 5) || sz_find(s, len, "ISBN ", 5) ||
+	   sz_find(s, len, "ISBN\t", 5) ||
+	   sz_find(s, len, "ISBN\xC2\xA0", 6) ||   /* NBSP */
+	   sz_find(s, len, "ISBN\xE2\x80\xAF", 7) || /* NNBSP */
+	   sz_find(s, len, "ISBN&nbsp;", 10) ||
+	   sz_find(s, len, "ISBN&#160;", 9) ||
+	   sz_find(s, len, "ISBN&#xA0;", 10) ||
+	   sz_find(s, len, "ISBN&#xa0;", 10)) {
 		return true;
 	}
 	return false;
@@ -952,6 +959,7 @@ static void postprocess_nested_plain(Token *t, const ParserConfig *cfg, Accum *a
 																 const char *page);
 
 static void parse_quotes_stage6_per_line(ThreadBuf *ws, const ParserConfig *cfg, Accum *accum);
+static bool text_has_url_hint(const char *s, size_t len, const ParserConfig *cfg);
 
 static Token *make_empty_noinclude(Accum *accum) {
 	Token *n= token_new(TOKEN_NOINCLUDE, "noinclude");
@@ -999,6 +1007,42 @@ static Token *parse_single_link_token(const char *s, size_t len,
 	return out;
 }
 
+static void normalize_gallery_caption_lone_quote(Token *img) {
+	if(!img || img->type != TOKEN_FILE || img->subtype != TOKEN_SUBTYPE_GALLERY_IMAGE) return;
+	for(size_t ci= 1; ci < img->child_count; ci++) {
+		if(img->children[ci].is_text || !img->children[ci].token) continue;
+		Token *param= img->children[ci].token;
+		if(param->type != TOKEN_PLAIN || param->subtype != TOKEN_SUBTYPE_IMAGE_PARAMETER) continue;
+		if(!param->name || strcmp(param->name, "caption") != 0) continue;
+		if(param->child_count < 2) continue;
+		if(param->children[0].is_text || !param->children[0].token) continue;
+		if(param->children[1].is_text || !param->children[1].token) continue;
+
+		Token *q0= param->children[0].token;
+		Token *q1= param->children[1].token;
+		bool q0_is_two= q0->type == TOKEN_QUOTE && q0->child_count == 1
+			&& q0->children[0].is_text && q0->children[0].text
+			&& q0->children[0].text_len == 2
+			&& q0->children[0].text[0] == '\'' && q0->children[0].text[1] == '\'';
+		bool q1_is_two= q1->type == TOKEN_QUOTE && q1->child_count == 1
+			&& q1->children[0].is_text && q1->children[0].text
+			&& q1->children[0].text_len == 2
+			&& q1->children[0].text[0] == '\'' && q1->children[0].text[1] == '\'';
+		if(!q0_is_two || !q1_is_two) continue;
+
+		char *owned= malloc(3);
+		if(!owned) continue;
+		owned[0]= '\'';
+		owned[1]= '\'';
+		owned[2]= '\0';
+
+		param->children[0].is_text= true;
+		param->children[0].text= owned;
+		param->children[0].text_len= 2;
+		param->children[0].text_owned= true;
+	}
+}
+
 static Token *parse_gallery_image_line(const char *line, size_t line_len,
 																			 const ParserConfig *cfg, Accum *accum,
 																			 const char *page) {
@@ -1013,16 +1057,27 @@ static Token *parse_gallery_image_line(const char *line, size_t line_len,
 		if(pipe_idx + 1 < line_len) {
 			const char *rhs = line + pipe_idx + 1;
 			size_t rhs_len = line_len - (pipe_idx + 1);
-			if(likely_has_inline_stage_syntax(rhs, rhs_len)) {
+			bool needs_preparse= sz_find(rhs, rhs_len, "[[", 2) != NULL
+				|| sz_find(rhs, rhs_len, "{{", 2) != NULL
+				|| sz_find(rhs, rhs_len, "[http", 5) != NULL
+				|| sz_find(rhs, rhs_len, "[//", 3) != NULL
+				|| text_has_url_hint(rhs, rhs_len, cfg);
+			if(needs_preparse) {
 				pre_text_tb= wiki_thread_buf_acquire_scratch_from_data(rhs, rhs_len);
 				if(!pre_text_tb) { log_fatal("parse_gallery_image_line: failed to acquire scratch for pre_text"); abort(); }
 				/* JS parity: gallery-image text is pre-parsed through inline-link stages
 				 * before FileToken-style parameter splitting. */
 				parse_comment_and_ext(pre_text_tb, cfg, accum, false);
 				parse_braces(pre_text_tb, cfg, accum);
-				parse_links(pre_text_tb, cfg, accum, page, false);
-				parse_external_links(pre_text_tb, cfg, accum, false);
-				parse_magic_links(pre_text_tb, cfg, accum);
+				bool has_link_hint= sz_find(pre_text_tb->buf, pre_text_tb->len, "[[", 2) != NULL
+					|| sz_find(pre_text_tb->buf, pre_text_tb->len, "[http", 5) != NULL
+					|| sz_find(pre_text_tb->buf, pre_text_tb->len, "[//", 3) != NULL
+					|| text_has_url_hint(pre_text_tb->buf, pre_text_tb->len, cfg);
+				if(has_link_hint) {
+					parse_links(pre_text_tb, cfg, accum, page, false);
+					parse_external_links(pre_text_tb, cfg, accum, false);
+					parse_magic_links(pre_text_tb, cfg, accum);
+				}
 			}
 		}
 	}
@@ -1194,6 +1249,10 @@ static Token *parse_gallery_image_line(const char *line, size_t line_len,
 		}
 	}
 
+	if(out && out->type == TOKEN_FILE && out->subtype == TOKEN_SUBTYPE_GALLERY_IMAGE) {
+		normalize_gallery_caption_lone_quote(out);
+	}
+
 	token_free_shallow(tmp);
 	if(pre_text_tb) wiki_thread_buf_release_scratch(pre_text_tb);
 	wiki_thread_buf_release_scratch(scratch);
@@ -1205,16 +1264,29 @@ static Token *parse_imagemap_image_line(const char *line, size_t line_len,
 																				const char *page) {
 	if(!line || line_len == 0) return NULL;
 
+	/* Imagemap image lines may be prefixed by ':' indentation. JS treats this as
+	 * line syntax, not part of the file title target. */
+	const char *parse_ptr= line;
+	size_t parse_len= line_len;
+	size_t off= 0;
+	while(off < line_len && (line[off] == ' ' || line[off] == '\t')) off++;
+	if(off < line_len && line[off] == ':') {
+		off++;
+		while(off < line_len && (line[off] == ' ' || line[off] == '\t')) off++;
+		parse_ptr= line + off;
+		parse_len= line_len - off;
+	}
+
 	ThreadBuf *scratch = wiki_thread_buf_acquire_scratch();
 	if(!scratch) return NULL;
-	wiki_thread_buf_reserve(scratch, line_len + 4);
+	wiki_thread_buf_reserve(scratch, parse_len + 4);
 	scratch->buf[0]= '[';
 	scratch->buf[1]= '[';
-	sz_copy(scratch->buf + 2, line, line_len);
-	scratch->buf[2 + line_len]= ']';
-	scratch->buf[3 + line_len]= ']';
-	scratch->buf[4 + line_len]= '\0';
-	scratch->len= line_len + 4;
+	sz_copy(scratch->buf + 2, parse_ptr, parse_len);
+	scratch->buf[2 + parse_len]= ']';
+	scratch->buf[3 + parse_len]= ']';
+	scratch->buf[4 + parse_len]= '\0';
+	scratch->len= parse_len + 4;
 
 	/* JS parity: braces are parsed before links, which protects pipes inside templates. */
 	parse_braces(scratch, cfg, accum);
@@ -1233,6 +1305,39 @@ static Token *parse_imagemap_image_line(const char *line, size_t line_len,
 		out= tmp->children[0].token;
 		tmp->children[0].token= NULL;
 		out->subtype= TOKEN_SUBTYPE_IMAGEMAP_IMAGE;
+
+		/* JS parity: width image-parameter value stores numeric size text
+		 * without a trailing px suffix; rawSyntax keeps round-trip serialization. */
+		for(size_t ci= 1; ci < out->child_count; ci++) {
+			if(out->children[ci].is_text || !out->children[ci].token) continue;
+			Token *param= out->children[ci].token;
+			if(param->type != TOKEN_PLAIN || param->subtype != TOKEN_SUBTYPE_IMAGE_PARAMETER) continue;
+			if(!param->name || strcmp(param->name, "width") != 0) continue;
+			if(param->child_count == 0 || !param->children[0].is_text || !param->children[0].text) continue;
+
+			const char *txt= param->children[0].text;
+			size_t n= param->children[0].text_len;
+			while(n > 0 && (txt[n - 1] == ' ' || txt[n - 1] == '\t')) n--;
+			if(n < 2) continue;
+			char p0= (char)fast_tolower((unsigned char)txt[n - 2]);
+			char p1= (char)fast_tolower((unsigned char)txt[n - 1]);
+			if(p0 != 'p' || p1 != 'x') continue;
+
+			size_t new_len= n - 2;
+			while(new_len > 0 && (txt[new_len - 1] == ' ' || txt[new_len - 1] == '\t')) new_len--;
+
+			char *owned= malloc(new_len + 1);
+			if(!owned) continue;
+			if(new_len > 0) sz_copy(owned, txt, new_len);
+			owned[new_len]= '\0';
+
+			if(param->children[0].text_owned && param->children[0].text) {
+				free((void *)param->children[0].text);
+			}
+			param->children[0].text= owned;
+			param->children[0].text_len= new_len;
+			param->children[0].text_owned= true;
+		}
 	}
 
 	token_free_shallow(tmp);
@@ -1439,6 +1544,7 @@ static void run_nested_plain_pipeline(ThreadBuf *scratch,
 																					Accum *accum,
 																					const char *page) {
 	bool is_poem_ext_inner= is_ext_inner && t && t->name && strcmp(t->name, "poem") == 0;
+	bool is_include_wrapper= t && (t->type == TOKEN_NOINCLUDE || t->type == TOKEN_INCLUDE || t->type == TOKEN_ONLYINCLUDE);
 
 	if(is_ext_inner) {
 		parse_comment_and_ext(scratch, cfg, accum, false);
@@ -1447,11 +1553,11 @@ static void run_nested_plain_pipeline(ThreadBuf *scratch,
 	/* JS parity: this post-build nested pass models later stages (4+).
 	 * Do not run braces here for td-inner or ext-inner; running stage 1 this
 	 * late can over-parse constructs JS leaves as plain text. */
-	if(!is_heading_title && !is_td_inner && !is_ext_inner) {
+	if(!is_heading_title && !is_td_inner && !is_ext_inner && !is_include_wrapper) {
 		parse_braces_with_heading(scratch, cfg, accum, !is_poem_ext_inner);
 	}
 
-	if(!(is_td_inner || is_ext_inner || is_heading_title)) {
+	if(!(is_td_inner || is_ext_inner || is_heading_title) || is_include_wrapper) {
 		return;
 	}
 
@@ -1485,7 +1591,7 @@ static void run_nested_plain_pipeline(ThreadBuf *scratch,
 		sz_string_view_t hr_root_subtype= token_subtype_name(t->subtype);
 		const char *hr_root_name= hr_root_subtype.start;
 		if(is_ext_inner && t && t->name) hr_root_name= t->name;
-		parse_hr_and_double_underscore(scratch, cfg, accum, hr_root_type, hr_root_name);
+		parse_hr_and_double_underscore(scratch, cfg, accum, hr_root_type, hr_root_name, !is_ext_inner);
 		debug_dump_bad_sentinel_window("run_nested_plain_pipeline:after-stage4", scratch, t);
 		const ParserConfig *links_cfg= cfg;
 		ParserConfig cfg_local;
@@ -1914,6 +2020,64 @@ static bool param_value_text_may_need_pipeline(const char *s, size_t n) {
 	return false;
 }
 
+static bool quote_token_matches(const Token *tok, const char *lit) {
+	if(!tok || tok->type != TOKEN_QUOTE || tok->child_count == 0) return false;
+	const Child *c= &tok->children[0];
+	if(!c->is_text || !c->text || !lit) return false;
+	size_t n= strlen(lit);
+	return c->text_len == n && sz_equal(c->text, lit, n) == sz_true_k;
+}
+
+static void normalize_parameter_key_quote_sequence(Token *t) {
+	if(!t || t->type != TOKEN_PLAIN || t->subtype != TOKEN_SUBTYPE_PARAMETER_KEY) return;
+	if(t->child_count < 3) return;
+
+	for(size_t i= 0; i + 2 < t->child_count; i++) {
+		Child *c0= &t->children[i];
+		Child *c1= &t->children[i + 1];
+		Child *c2= &t->children[i + 2];
+		if(!c0->is_text || !c0->text || c0->text_len == 0) continue;
+		if(c0->text[c0->text_len - 1] != '\'') continue;
+		if(c1->is_text || !c1->token || c2->is_text || !c2->token) continue;
+		if(!quote_token_matches(c1->token, "'''") || !quote_token_matches(c2->token, "'''''") ) continue;
+
+		size_t new_len= c0->text_len + 3;
+		char *owned= malloc(new_len + 1);
+		if(!owned) continue;
+		sz_copy(owned, c0->text, c0->text_len);
+		sz_copy(owned + c0->text_len, "'''", 3);
+		owned[new_len]= '\0';
+
+		if(c0->text_owned && c0->text) free((void *)c0->text);
+		c0->text= owned;
+		c0->text_len= new_len;
+		c0->text_owned= true;
+
+		memmove(&t->children[i + 1], &t->children[i + 2], (t->child_count - (i + 2)) * sizeof(Child));
+		t->child_count--;
+		break;
+	}
+}
+
+static bool text_has_url_hint(const char *s, size_t len, const ParserConfig *cfg) {
+	if(!s || len == 0) return false;
+
+	/* Protocol-relative links are valid without a named scheme. */
+	if(sz_find(s, len, "//", 2)) return true;
+
+	if(!cfg || !cfg->protocol_items_valid || cfg->protocol_items.count == 0) {
+		return false;
+	}
+
+	for(size_t i= 0; i < len; i++) {
+		unsigned char ch= (unsigned char)fast_tolower((unsigned char)s[i]);
+		if(!cfg->protocol_initials[ch]) continue;
+		if(match_proto_prefix(s + i, len - i, cfg) > 0) return true;
+	}
+
+	return false;
+}
+
 static void postprocess_parameter_value_inline_impl(Token *t, const ParserConfig *cfg, Accum *accum,
 																				const char *page, const Token *parent,
 																						const Token *grandparent,
@@ -1988,6 +2152,8 @@ static void postprocess_parameter_value_inline_impl(Token *t, const ParserConfig
 		bool has_open_ext_bracket= false;
 		bool has_close_ext_bracket= false;
 		bool has_quote_markup= false;
+		bool has_magic_word_token= false;
+		bool has_url_hint= false;
 
 		for(size_t i= 0; i < t->child_count; i++) {
 			Child cur= t->children[i];
@@ -2005,9 +2171,15 @@ static void postprocess_parameter_value_inline_impl(Token *t, const ParserConfig
 					char rb= ']';
 					if(sz_find_byte(cur.text, cur.text_len, &lb)) has_open_ext_bracket= true;
 					if(sz_find_byte(cur.text, cur.text_len, &rb)) has_close_ext_bracket= true;
+					if(text_has_url_hint(cur.text, cur.text_len, cfg)) {
+						has_url_hint= true;
+					}
 				}
 			} else if(cur.token) {
 				has_token= true;
+				if(cur.token->type == TOKEN_TRANSCLUDE && cur.token->subtype == TOKEN_SUBTYPE_MAGIC_WORD) {
+					has_magic_word_token= true;
+				}
 				if(cur.token->type == TOKEN_QUOTE) {
 					has_quote_token= true;
 				}
@@ -2021,9 +2193,10 @@ static void postprocess_parameter_value_inline_impl(Token *t, const ParserConfig
 		/* Avoid rejoining across already-parsed nested links such as
 		 * "[[1, [[2, 3]], 4]]", where JS keeps the outer link unparsed. */
 		bool has_split_link_span= has_open_links && has_close_links && !has_link_like_token;
-		bool has_split_ext_link_span= has_open_ext_bracket && has_close_ext_bracket;
+		bool has_split_ext_link_span= has_open_ext_bracket && has_close_ext_bracket && !has_link_like_token;
 		bool has_split_quote_span= has_quote_markup && !has_quote_token;
-		if(has_text && has_token && (has_split_brace_span || has_split_link_span || has_split_ext_link_span || has_split_quote_span)) {
+		bool has_url_magic_bridge= is_parameter_value && has_magic_word_token && has_url_hint;
+		if(has_text && has_token && (has_split_brace_span || has_split_link_span || has_split_ext_link_span || has_split_quote_span || has_url_magic_bridge)) {
 			ThreadBuf *tmp_ser = wiki_thread_buf_acquire_scratch();
 			if(tmp_ser) {
 				tmp_ser->len= 0;
@@ -2063,12 +2236,12 @@ static void postprocess_parameter_value_inline_impl(Token *t, const ParserConfig
 					tmp_ser->buf[tmp_ser->len]= '\0';
 					parse_comment_and_ext(tmp_ser, cfg, accum, false);
 					if(allow_serialized_braces) {
-						parse_braces(tmp_ser, cfg, accum);
+						parse_braces_with_heading(tmp_ser, cfg, accum, false);
 					}
 					parse_html(tmp_ser, cfg, accum);
 					if(is_parameter_value) parse_table(tmp_ser, cfg, accum);
 					else parse_table_skip_first_line(tmp_ser, cfg, accum);
-					parse_hr_and_double_underscore(tmp_ser, cfg, accum, TOKEN_PLAIN, "parameter-value");
+					parse_hr_and_double_underscore(tmp_ser, cfg, accum, TOKEN_PLAIN, "parameter-value", true);
 					parse_links(tmp_ser, links_cfg, accum, page, false);
 					if(!has_quote_token) {
 						parse_quotes_stage6_per_line(tmp_ser, cfg, accum);
@@ -2199,22 +2372,24 @@ static void postprocess_parameter_value_inline_impl(Token *t, const ParserConfig
 				parse_html(scratch, cfg, accum);
 				parse_table_skip_first_line(scratch, cfg, accum);
 				if(!has_non_text_children) {
-					parse_hr_and_double_underscore(scratch, cfg, accum, TOKEN_PLAIN, "parameter-key");
+					parse_hr_and_double_underscore(scratch, cfg, accum, TOKEN_PLAIN, "parameter-key", true);
 				}
 				parse_links(scratch, links_cfg, accum, page, false);
-				parse_quotes_stage6_per_line(scratch, cfg, accum);
+				if(!has_quote_token) {
+					parse_quotes_stage6_per_line(scratch, cfg, accum);
+				}
 				parse_external_links(scratch, cfg, accum, false);
 				parse_magic_links(scratch, cfg, accum);
 				parse_list_skip_first_line(scratch, cfg, accum);
 			} else {
 				parse_comment_and_ext(scratch, cfg, accum, false);
 				if(!has_non_text_children) {
-					parse_braces(scratch, cfg, accum);
+					parse_braces_with_heading(scratch, cfg, accum, false);
 				}
 				parse_html(scratch, cfg, accum);
 				if(is_parameter_value) parse_table(scratch, cfg, accum);
 				else parse_table_skip_first_line(scratch, cfg, accum);
-				parse_hr_and_double_underscore(scratch, cfg, accum, TOKEN_PLAIN, is_attr_value ? "attr-value" : "parameter-value");
+				parse_hr_and_double_underscore(scratch, cfg, accum, TOKEN_PLAIN, is_attr_value ? "attr-value" : "parameter-value", true);
 				parse_links(scratch, links_cfg, accum, page, false);
 				if(!has_quote_token) {
 					parse_quotes_stage6_per_line(scratch, cfg, accum);
@@ -2279,6 +2454,10 @@ static void postprocess_parameter_value_inline_impl(Token *t, const ParserConfig
 	if(scratch) wiki_thread_buf_release_scratch(scratch);
 
 	if(transformed_children) {
+		if(is_parameter_key) {
+			normalize_parameter_key_quote_sequence(t);
+		}
+
 		/* Recurse after replacement: transforming this token may have created
 		 * brand-new nested tokens (for example template parameters from a
 		 * freshly parsed {{...}}) that were not visited by the pre-order
@@ -2593,7 +2772,7 @@ Token *wiki_parse_with_page(const char *wikitext, size_t input_len, const Parser
 			parse_table(ws, cfg, &accum);
 			break;
 		case 4: /* parseHrAndDoubleUnderscore */
-			parse_hr_and_double_underscore(ws, cfg, &accum, TOKEN_ROOT, "root");
+			parse_hr_and_double_underscore(ws, cfg, &accum, TOKEN_ROOT, "root", true);
 			break;
 		case 5: /* parseLinks */
 			parse_links(ws, cfg, &accum, page, false);

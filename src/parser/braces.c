@@ -485,6 +485,10 @@ static char braces_get_symbol(const char *name, size_t len,
 	}
 
 	char out= 't';
+	bool punct_magic_colon_disallowed =
+		has_function_colon &&
+		base_lc && base_lc_len == 1 &&
+		(base_lc[0] == '!' || base_lc[0] == '=');
 	if(n == 1 && lc[0] == '!') {
 		out= '!';
 		if(is_magic_out) *is_magic_out= true;
@@ -515,13 +519,17 @@ static char braces_get_symbol(const char *name, size_t len,
 		}
 	} else if(cfg && canonical && canonical[0]) {
 		bool is_var= str_list_contains_ci(&cfg->variable, canonical, strlen(canonical));
-		if((has_function_colon || is_var) && is_magic_out) *is_magic_out= true;
+		if(((!punct_magic_colon_disallowed && has_function_colon) || is_var) && is_magic_out) *is_magic_out= true;
 	} else if(cfg && base_lc && base_lc[0]) {
 		const char *base_canonical= str_map_get_exact(&cfg->parser_function_insensitive, base_lc, base_lc_len);
 		if(base_canonical) {
 			bool is_var= str_list_contains_ci(&cfg->variable, base_canonical, strlen(base_canonical));
-			if((has_function_colon || is_var) && is_magic_out) *is_magic_out= true;
+			if(((!punct_magic_colon_disallowed && has_function_colon) || is_var) && is_magic_out) *is_magic_out= true;
 		}
+	}
+
+	if(punct_magic_colon_disallowed && is_magic_out) {
+		*is_magic_out= false;
 	}
 
 	if(is_magic_out) {
@@ -771,40 +779,77 @@ static Token *build_template_token(const char **parts_restored, const size_t *pa
 			title_part += mod_len;
 			title_part_len -= mod_len;
 		} else {
-			char colon_ch= ':';
-			const char *colon= sz_find_byte(title_part, title_part_len, &colon_ch);
-			if(colon) {
-				size_t prefix_len= (size_t)(colon - title_part);
-				size_t prefix_str_len = 0;
-				char *prefix= trim_copy_n(title_part, prefix_len, &prefix_str_len);
-				if(prefix && prefix_str_len > 0 && (str_list_contains_ci(&cfg->parser_function_subst, prefix, prefix_str_len)
-								 || str_list_contains_ci(&cfg->parser_function_raw, prefix, prefix_str_len))) {
+			size_t p= 0;
+			while(p < title_part_len && isspace((unsigned char)title_part[p])) p++;
+
+			size_t prefix_start= p;
+			while(p < title_part_len) {
+				size_t sl= 0;
+				if(parse_sentinel_at_allowed(title_part, title_part_len, p, "cn", 2, &sl)) {
+					break;
+				}
+				if(title_part[p] == ':' || isspace((unsigned char)title_part[p])) {
+					break;
+				}
+				p++;
+			}
+
+			size_t prefix_len= (p > prefix_start) ? (p - prefix_start) : 0;
+			size_t prefix_str_len= 0;
+			char *prefix= (prefix_len > 0) ? trim_copy_n(title_part + prefix_start, prefix_len, &prefix_str_len) : NULL;
+
+			if(prefix && prefix_str_len > 0 && (str_list_contains_ci(&cfg->parser_function_subst, prefix, prefix_str_len)
+							 || str_list_contains_ci(&cfg->parser_function_raw, prefix, prefix_str_len))) {
+				size_t q= prefix_start + prefix_len;
+				while(q < title_part_len) {
+					size_t sl= 0;
+					if(isspace((unsigned char)title_part[q])) {
+						q++;
+						continue;
+					}
+					if(parse_sentinel_at_allowed(title_part, title_part_len, q, "cn", 2, &sl)) {
+						q+= sl;
+						continue;
+					}
+					break;
+				}
+
+				if(q < title_part_len && title_part[q] == ':') {
+					q++; /* include ':' in modifier */
 					/* JS parity: consume leading whitespace and c/n sentinels from the
 					 * first argument after the modifier colon into the modifier slice. */
-					size_t mt_len= 0;
-					while(prefix_len + 1 + mt_len < title_part_len) {
-						size_t p= prefix_len + 1 + mt_len;
-						if(isspace((unsigned char)title_part[p])) {
-							mt_len++;
+					while(q < title_part_len) {
+						size_t sl= 0;
+						if(isspace((unsigned char)title_part[q])) {
+							q++;
 							continue;
 						}
-						size_t sl= 0;
-													if(parse_sentinel_at_allowed(title_part, title_part_len, p, "cn", 2, &sl)) {
-							mt_len+= sl;
+						if(parse_sentinel_at_allowed(title_part, title_part_len, q, "cn", 2, &sl)) {
+							q+= sl;
 							continue;
 						}
 						break;
 					}
-					size_t mod_len= prefix_len + 1 + mt_len;
+
+					size_t mod_len= q;
 					size_t modifier_len = 0;
 					char *modifier= build_transclude_modifier(title_part, title_part_len, mod_len, accum, &modifier_len);
 					t->data.transclude.modifier = (sz_string_view_t){ .start = modifier, .length = modifier ? modifier_len : 0 };
 					title_part= title_part + mod_len;
 					title_part_len-= mod_len;
 				}
-				free(prefix);
 			}
+
+			free(prefix);
 		}
+	}
+
+	/* JS parity: TranscludeToken validates the remaining title after modifier
+	 * extraction. Cases like {{SAFESUBST:}} leave an empty title and must be
+	 * treated as invalid template names (kept as plain text by parseBraces). */
+	if(title_part_len == 0) {
+		token_free(t);
+		return NULL;
 	}
 
 	bool transclude_is_magic= false;

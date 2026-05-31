@@ -332,7 +332,8 @@ static const char *strmap_get_exact(const StrMap *m, const char *key, size_t key
 }
 
 void parse_hr_and_double_underscore(ThreadBuf *tb, const ParserConfig *cfg, Accum *accum,
-									TokenType root_type, const char *root_name) {
+															TokenType root_type, const char *root_name,
+															bool allow_heading) {
 	if(!tb || !tb->buf) return;
 
 	bool poem_ctx= root_name && strcmp(root_name, "poem") == 0;
@@ -353,12 +354,14 @@ void parse_hr_and_double_underscore(ThreadBuf *tb, const ParserConfig *cfg, Accu
 
 	bool skip_heading_for_param_ctx= root_type == TOKEN_PLAIN
 		&& root_name
-		&& (strcmp(root_name, "parameter-value") == 0
-			|| strcmp(root_name, "parameter-key") == 0
+		&& (strcmp(root_name, "parameter-key") == 0
 			|| strcmp(root_name, "attr-value") == 0);
+	bool skip_heading_for_references_ctx= root_name
+		&& strcmp(root_name, "references") == 0;
 
 	/* Heading finalization: line-at-a-time forward scan */
-	if(!config_excluded(cfg, "heading") && !skip_heading_for_param_ctx && !poem_ctx) {
+	if(allow_heading && !config_excluded(cfg, "heading") && !skip_heading_for_param_ctx && !skip_heading_for_references_ctx && !poem_ctx) {
+		bool allow_crossline_heading_trail = !(root_name && strcmp(root_name, "parameter-value") == 0);
 		ThreadBuf *out2_tb = wiki_thread_buf_acquire_scratch();
 		if(!out2_tb) { log_fatal("OOM in heading finalization"); abort(); }
 		out2_tb->len = 0;
@@ -422,21 +425,23 @@ void parse_hr_and_double_underscore(ThreadBuf *tb, const ParserConfig *cfg, Accu
 				size_t match_end = line_end;
 				size_t scan = line_end;
 				size_t last_boundary = line_end;
-				while(scan < buf2_len) {
-					size_t sc = skip_cn_sentinel(buf2 + scan, buf2_len - scan);
-					if(sc > 0) {
-						scan += sc;
-						if(scan == buf2_len || buf2[scan] == '\n') last_boundary = scan;
-						continue;
+				if(allow_crossline_heading_trail) {
+					while(scan < buf2_len) {
+						size_t sc = skip_cn_sentinel(buf2 + scan, buf2_len - scan);
+						if(sc > 0) {
+							scan += sc;
+							if(scan == buf2_len || buf2[scan] == '\n') last_boundary = scan;
+							continue;
+						}
+						if(isspace((unsigned char)buf2[scan])) {
+							scan++;
+							if(scan == buf2_len || buf2[scan] == '\n') last_boundary = scan;
+							continue;
+						}
+						break;
 					}
-					if(isspace((unsigned char)buf2[scan])) {
-						scan++;
-						if(scan == buf2_len || buf2[scan] == '\n') last_boundary = scan;
-						continue;
-					}
-					break;
+					match_end = last_boundary;
 				}
-				match_end = last_boundary;
 
 				/* 1. Emit lead sentinels verbatim */
 				if(hr.lead_len > 0) {

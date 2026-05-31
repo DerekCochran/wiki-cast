@@ -1,6 +1,6 @@
 # Wiki CAST
 
-This is a C implementation to create an abstract systax tree (AST) for wikipedia.  This common format can then be used to transform or read the data as needed.  It was created by using the [wikiparser-node](https://github.com/bhsd-harry/wikiparser-node) project as a template.  However, the design is quickly diverging based upon different needs.
+This is a C based abstract systax tree (AST) for wikipedia.  This common format can then be used to transform the data as needed.  It was created by using the [wikiparser-node](https://github.com/bhsd-harry/wikiparser-node) project as a template.  However, the design is quickly diverging based upon different needs.  The goal is to emulate the Parsoid parsing, including all known issues and problems.
 
 ## Pipe Dream
 
@@ -9,7 +9,7 @@ wikitext parsing across ecosystems.
 
 - Use one high-performance C parser core instead of many divergent parser
   implementations.
-- Expose a stable AST contract that language bindings and tools can consume.
+- Expose a [stable AST contract](./config/wiki-cast.json) that language bindings and tools can consume.
 - Let projects in Node, PHP, Python, and other runtimes share the same parsing
   behavior and edge-case handling.
 - Reduce duplicated parser maintenance and avoid drift between "whacky"
@@ -18,15 +18,51 @@ wikitext parsing across ecosystems.
 If this matures, projects like Parsoid or other wiki tooling could integrate
 the same core parser through native bindings or service interfaces.
 
-##
+## Short term goal
 
-First    | Count: 6877448 | Min: 0.0000 | Max: 1711.0000 | Mean: 8.4138 | SD: 21.0378 | p50: 4.0000 | p95: 28.0000 | p99: 92.0000
-Second   | Count: 6877448 | Min: 0.0000 | Max: 67640.0000 | Mean: 1.2977 | SD: 32.9396 | p50: 1.0000 | p95: 5.0000 | p99: 13.0000
-Speedup (mean first/second): 6.4837x
+The process of creating Wiki-CAST generated a large amount of tests.  We can use these tests to compare output from wikiparser-node, parse_wiki_text and parsoid to find additional issues in all 4 products.
+
+## Issues
+
+This product is still in a pre-release phase with undocumented discrepencies between wikiparser-node.  The testing for other parsers has not been completed, or even started.  If you see an issue you want resolved, feel free to enter it.  However, I may not get to it with the other work needed.
+
+## Performance
+
+This is based on the [english wikipedia download](https://dumps.wikimedia.org/enwiki/latest/) for 7,176,400 samples.
+
+| Parser          | Min  | Max     | Mean | Stnd Dev | p50 | p95  | p99  |
+|-----------------|------|---------|------|----------|-----|------|------|
+| wikiparser-node | 0.0  | 1711.0  | 8.41 |  21.0378 | 4.0 | 28.0 | 92.0 |
+| wiki-cast       | 0.0  | 67640.0 | 1.29 |  32.9396 | 1.0 |  5.0 | 13.0 |
+
+Speedup (mean first/second): 6.4837x  
 Mean percent change (second vs first): -84.58%
 
+**NOTE**: REDO!!  This is based on a debug build, but it does show the max has gone down.
+
+| Parser          | Min  | Max     | Mean | Stnd Dev | p50 | p95  | p99   |
+|-----------------|------|---------|------|----------|-----|------|-------|
+| wikiparser-node | 0.0  | 2150.0  | 9.09 |  23.5031 | 4.0 | 31.0 | 101.0 |
+| wiki-cast       | 0.0  | 368.0   | 2.51 |   5.2563 | 1.0 |  9.0 |  24.0 |
+
+Speedup (mean first/second): 3.6187x
+Mean percent change (second vs first): -72.37%
+
+## Testing
+
+This closely matches the wikiparser-node AST generated.  There is a [custom JSON creation](./bindings/node/src/addon.c) to match the shape of its AST.  On the last test executed, there were 523 wikitext articles out of 7,176,400 million that did not match.
+
+This testing is just phase 1.  It gets WIKI-CAST to match at least one implementation and gives us a large number of tests to verify against other implementeations.  However, Parsoid is the source of truth.  We must [verify against it](https://github.com/DerekCochran/wiki-cast/issues/9) if we are to meet the pipe dream.
+
+The testing against Parsoid will only be a "small" sample based on their tests and issues in implementing the english wikipedia.  We can also gain additional tests by comparing to other implementations, such as [parse_wiki_text](https://github.com/lovasoa/parse_wiki_text)
+
+## Languages
+
+The current implementation has only tested against the english wikipedia.  This meets my intiial needs, but to match the pipe dream, all languages must be verified.  This is a time consuming and costly effort.  With the right financial support, I hope to accomplish this goal.
 
 ## Implementation
+
+This implementation was based on wikiparser-node and had fixes implemented incrementally with the smallest code change possible. This means the code does not follow KISS or DRY principles.  A refactor is needed for performance, simplicity and readability.
 
 **High-level overview**
 

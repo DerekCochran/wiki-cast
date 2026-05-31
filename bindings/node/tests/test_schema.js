@@ -40,6 +40,38 @@ function loadWikitextSamples(dir) {
   return samples;
 }
 
+function decodeJsonPointerSegment(seg) {
+  return seg.replace(/~1/g, '/').replace(/~0/g, '~');
+}
+
+function getByJsonPointer(root, pointer) {
+  if (!pointer || pointer === '/') {
+    return root;
+  }
+  const parts = pointer.split('/').slice(1).map(decodeJsonPointerSegment);
+  let cur = root;
+  for (const p of parts) {
+    if (cur === null || typeof cur !== 'object') {
+      return undefined;
+    }
+    cur = cur[p];
+  }
+  return cur;
+}
+
+function trimJson(value, maxLen = 700) {
+  let text;
+  try {
+    text = JSON.stringify(value);
+  } catch (e) {
+    return String(value);
+  }
+  if (text.length <= maxLen) {
+    return text;
+  }
+  return `${text.slice(0, maxLen)} ...<trimmed ${text.length - maxLen} chars>`;
+}
+
 function testSchema() {
   const repoRoot = path.resolve(__dirname, '..', '..', '..');
   const schemaPath = path.join(repoRoot, 'config', 'wiki-cast.json');
@@ -102,11 +134,20 @@ function testSchema() {
     const ok = validate(ast);
     if (!ok) {
       console.error(`FAIL ${sample.file}`);
+      console.error(`Sample path: ${path.join(sampleDir, sample.file)}`);
       console.error('Schema validation failed for internal JSON.');
       const errs = validate.errors || [];
       for (let i = 0; i < Math.min(errs.length, 10); i++) {
         const err = errs[i];
-        console.error(`  - path=${err.instancePath || '/'} keyword=${err.keyword} message=${err.message}`);
+        const pointer = err.instancePath || '/';
+        const node = getByJsonPointer(ast, pointer);
+        const parentPointer = pointer === '/' ? '/' : pointer.replace(/\/[^/]*$/, '') || '/';
+        const parent = getByJsonPointer(ast, parentPointer);
+        console.error(
+          `  - file=${sample.file} path=${pointer} schemaPath=${err.schemaPath || ''} keyword=${err.keyword} message=${err.message}`
+        );
+        console.error(`    value=${trimJson(node)}`);
+        console.error(`    parentPath=${parentPointer} parent=${trimJson(parent)}`);
       }
       return 1;
     }
