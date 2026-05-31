@@ -5,17 +5,44 @@ const { runTests } = require('./helpers');
 
 const castTests = [
   // Failures from export of wikitexts
-//   `{{!:}}`,
-//   `{{cite web|url=https://api.parliament.uk/historic-hansard/lords/1983/jun/23/occupiers-liability-bill-hl|title=Occupiers' Liability Bill [HL] (Hansard, 23 June 1983)|date=23 June 1983|publisher=[[Hansard|work=[[Hansard|Parliamentary Debates (Hansard)]]|Parliamentary Debates (Hansard)]]|access-date=2 December 2009}}`,
-//   `<gallery mode="packed" style="text-align: center;" caption="Gallery" heights="140px" perrow="3">
-// File:Paul Cézanne - Gardanne (Horizontal View) (Gardanne (vue horizontale)) - BF917 - Barnes Foundation.jpg|Paul_Cézanne_-_Gardanne_(Horizontal_View)_(Gardanne_(vue_horizontale))_-_BF917_-_Barnes_Foundation]]|View of Gardanne by Paul Cézanne
-// </gallery>`,
-//   `<gallery mode="packed" heights="180px">
-// Padova - Santa Giustina - MadonnaCostantinopolitana (Expo -12 Contrasto 25).jpg|''''Madonna of Constantinople'' original version
-// </gallery>`,
-//   `<gallery>
-// File:Hawksbill Egypt (35150034493).jpg|[[Hawksbill sea turtle|Hawksbill turtle]] at Elphinstone Reef[[File:The_drop-off_at_Elphinstone_Reef,_Egypt.jpg|thumb|Anthias drop-off[[File:Dendronephthya_Soft_corals_at_Elphinstone_Reef,_Egypt.jpg|thumb|Dendronephthya Soft corals.[[File:Bluecheek_butterflyfish_at_Elphinstone_Reef,_Egypt.jpg|thumb|A .]]]]]]
-// </gallery>`,
+`https://web.archive.org/web/20160304040450/http://www.hollywoodflip.com/articlex.php?subaction=showfull&id=1281026953&archive=&start_from=&ucat=1&; `,
+`<span |align=right style="color:green;">`,
+`<gallery>
+File:Oceanic whitetip shark at Elphinstone Reef.jpg|[[Oceanic whitetip shark]] at Elphinstone Reef
+File:Elphinstone Reef soft corals.jpg|[[Soft corals]] and [[Anthias]] at Elphinstone Reef
+File:Elphinstone Reef memorial.jpg|Memorial dedicated to [[Arno Wallaard]] on south plato
+File:Hawksbill turtle at Elphinstone Reef, Red Sea, Egypt (35150034493).jpg|[[Hawksbill sea turtle|Hawksbill turtle]] at Elphinstone Reef[[File:The_drop-off_at_Elphinstone_Reef,_Egypt.jpg|thumb|Anthias and hard corals at the Elphinstone Reef drop-off[[File:Dendronephthya_Soft_corals_at_Elphinstone_Reef,_Egypt.jpg|thumb|Dendronephthya Soft corals at Elphinstone Reef, Egypt. They thrive in the strong currents at this offshore site.[[File:Bluecheek_butterflyfish_at_Elphinstone_Reef,_Egypt.jpg|thumb|A pair of bluecheek butterflyfish (Chaetodon semilarvatus) at Elphinstone Reef, Egypt.]]]]]]
+</gallery>`,
+`{{Australia-hurdles	-athletics-bio-stub}}`,
+`{{Football kit	box |
+| pattern_la = 
+| pattern_b  = 
+| pattern_ra = 	
+| pattern_sh =	
+| pattern_so = 
+| leftarm    =  84D3EB	
+| body       =  84D3EB
+| rightarm   =  84D3EB	
+| shorts     =  84D3EB	
+| socks      = 84D3EB	
+| title  = -2025
+}}`,
+`<ref name= "Winfield">Winfield p. 208</ref>`,
+`<div style=position:center; Transform-rotate|90|display=block>`,
+`{{safesubst<noinclude/>:#invoke:political party|fetch|Republican Party of Arkansas|color}}`,
+`<ref>{{multiref|
+{{cite book |first3=J. S. |last3=Sandars |last1=O'Malley |first1=Edwin L. |last2=Hardcastle |first2=Henry |title=Reports of the Decisions of the Judges for the trial of Election Petitions in England and Ireland as pursuant to the Parliamentary Elections Act 1868 |location=London |publisher=Stevens & Haynes |date=1910 |volume=5 |url=https://babel.hathitrust.org/cgi/pt?id{{=}}mdp.35112103161263 |pages=212–217 }}|
+{{cite book |title=Copy of the Shorthand Writers' Notes of the Judgment of Mr. Justice Lawrance and Mr. Justice Walton on the Trial of the Election Petition of the City of Worcester; also the Minutes of Evidence taken at the Trial of the said Election Petition |date=14 June 1906 |url=https://babel.hathitrust.org/cgi/pt?id=umn.31951d02039880s&seq=5 |series=Parliamentary papers |volume=HC 1906 xcv (198) 255 }}|
+{{cite book |title=Commons Chamber |date=14 June 1906 |volume=158 |url=https://hansard.parliament.uk/Commons/1906-06-14/debates/7d1bb89d-ffd9-4973-8941-1539dda3b54b/CommonsChamber}}
+}}</ref>`,
+`https://web.archive.org/web/20181103210140/https://www.nytimes.com/2012/11/17/world/middleeast/in-gaza-tragic-result-for-misplaced-hopes-of-cease-fire.html?_r=1&;;;; `,
+  `{{!:}}`,
+  `<gallery mode="packed" style="text-align: center;" caption="Gallery" heights="140px" perrow="3">
+File:Paul Cézanne - Gardanne (Horizontal View) (Gardanne (vue horizontale)) - BF917 - Barnes Foundation.jpg|Paul_Cézanne_-_Gardanne_(Horizontal_View)_(Gardanne_(vue_horizontale))_-_BF917_-_Barnes_Foundation]]|View of Gardanne by Paul Cézanne
+</gallery>`,
+  `<gallery>
+File:Hawksbill Egypt (35150034493).jpg|[[Hawksbill sea turtle|Hawksbill turtle]] at Elphinstone Reef[[File:The_drop-off_at_Elphinstone_Reef,_Egypt.jpg|thumb|Anthias drop-off[[File:Dendronephthya_Soft_corals_at_Elphinstone_Reef,_Egypt.jpg|thumb|Dendronephthya Soft corals.[[File:Bluecheek_butterflyfish_at_Elphinstone_Reef,_Egypt.jpg|thumb|A .]]]]]]
+</gallery>`,
   `{| class="wikitable"
 |-
 |-bgcolor=<!-- party shade if gain -->lightblue

@@ -70,7 +70,7 @@ static size_t consume_js_zs_magic(const char *s, size_t len, size_t i) {
 
 /* is_url_common_byte() is now defined in string_util.c */
 
-/* JS parity: extUrlChar permits only \x00\d+[cn!~]\x7F inside URL body. */
+/* URL-body continuation across parser sentinels. */
 static size_t parse_cnht_sentinel(const char *s, size_t len, size_t i) {
     if (i + 3 >= len || (unsigned char)s[i] != 0) return 0;
     size_t j = i + 1;
@@ -455,39 +455,103 @@ void parse_magic_links(ThreadBuf *tb, const ParserConfig *cfg, Accum *accum) {
                 url_len = entity_at;
             }
 
-            /* --- Trailing punctuation stripping --- */
+            /* --- Trailing punctuation stripping (JS parity) --- */
             bool has_open_paren = false;
             for (size_t k = 0; k < url_len; k++) {
-                if (url_ptr[k] == '(') { has_open_paren = true; break; }
+                if (url_ptr[k] == '(') {
+                    has_open_paren = true;
+                    break;
+                }
             }
 
-            while (url_len > 1) {
-                char last = url_ptr[url_len - 1];
-                bool strippable = (last == ',' || last == ';' || last == '\\' ||
-                                   last == '.' || last == ':' || last == '!' || last == '?');
-                if (!strippable && !has_open_paren && last == ')') strippable = true;
-                if (!strippable) break;
+            size_t punct_start = url_len;
+            while (punct_start > 0) {
+                char ch = url_ptr[punct_start - 1];
+                bool is_punct = (ch == ',' || ch == ';' || ch == '\\' || ch == '.' ||
+                                 ch == ':' || ch == '!' || ch == '?' ||
+                                 (!has_open_paren && ch == ')'));
+                if (!is_punct) {
+                    break;
+                }
+                punct_start--;
+            }
 
-                if (last == ';') {
-                    bool is_entity = false;
-                    for (size_t k = url_len - 1; k-- > 0;) {
-                        if (url_ptr[k] == '&') { is_entity = true; break; }
-                        char c = url_ptr[k];
-                        if (!((c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z') ||
-                              (c >= '0' && c <= '9') || c == '#' || c == 'x' || c == 'X')) break;
+            if (punct_start > 0 && punct_start < url_len) {
+                char prev_ch = url_ptr[punct_start - 1];
+                bool prev_is_punct = (prev_ch == ',' || prev_ch == ';' || prev_ch == '\\' ||
+                                      prev_ch == '.' || prev_ch == ':' || prev_ch == '!' ||
+                                      prev_ch == '?' || (!has_open_paren && prev_ch == ')'));
+                if (!prev_is_punct) {
+                    size_t correction = 1;
+
+                    /* If first stripped char is ';', preserve a trailing entity ';'. */
+                    if (url_ptr[punct_start] == ';' && punct_start >= 1) {
+                        size_t prefix_end = punct_start - 1; /* JS: url.slice(0, sepChars.index) */
+                        size_t amp = prefix_end;
+                        while (amp > 0 && url_ptr[amp - 1] != '&') {
+                            amp--;
+                        }
+                        if (amp > 0 && url_ptr[amp - 1] == '&' && amp <= prefix_end) {
+                            const char *q = url_ptr + amp;
+                            size_t qlen = prefix_end - amp;
+                            bool entity_like = false;
+                            if (qlen > 0) {
+                                /* [a-z]+ */
+                                entity_like = true;
+                                for (size_t i = 0; i < qlen; i++) {
+                                    unsigned char lc = (unsigned char)fast_tolower((unsigned char)q[i]);
+                                    if (!(lc >= 'a' && lc <= 'z')) {
+                                        entity_like = false;
+                                        break;
+                                    }
+                                }
+
+                                /* #x[0-9a-f]+ */
+                                if (!entity_like && qlen > 2 && q[0] == '#' &&
+                                    (q[1] == 'x' || q[1] == 'X')) {
+                                    entity_like = true;
+                                    for (size_t i = 2; i < qlen; i++) {
+                                        if (!isxdigit((unsigned char)q[i])) {
+                                            entity_like = false;
+                                            break;
+                                        }
+                                    }
+                                }
+
+                                /* #[0-9]+ */
+                                if (!entity_like && qlen > 1 && q[0] == '#') {
+                                    entity_like = true;
+                                    for (size_t i = 1; i < qlen; i++) {
+                                        if (q[i] < '0' || q[i] > '9') {
+                                            entity_like = false;
+                                            break;
+                                        }
+                                    }
+                                }
+                            }
+
+                            if (entity_like) {
+                                correction = 2;
+                            }
+                        }
                     }
-                    if (is_entity) { break; }
-                }
 
-                if (trail_len + 1 >= trail_cap) {
-                    trail_cap *= 2;
-                    trail = realloc(trail, trail_cap);
-                    assert(trail);
+                    size_t keep_until = punct_start + (correction - 1);
+                    if (keep_until < url_len) {
+                        size_t stripped_len = url_len - keep_until;
+                        if (trail_len + stripped_len >= trail_cap) {
+                            while (trail_len + stripped_len >= trail_cap) {
+                                trail_cap *= 2;
+                            }
+                            trail = realloc(trail, trail_cap);
+                            assert(trail);
+                        }
+                        memmove(trail + stripped_len, trail, trail_len);
+                        sz_copy(trail, url_ptr + keep_until, stripped_len);
+                        trail_len += stripped_len;
+                        url_len = keep_until;
+                    }
                 }
-                memmove(trail + 1, trail, trail_len);
-                trail[0] = last;
-                trail_len++;
-                url_len--;
             }
 
             if (trail_len >= p1_len) {

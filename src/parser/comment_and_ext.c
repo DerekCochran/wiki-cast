@@ -652,6 +652,10 @@ static void parse_ext_attrs(Token *attrs_tok, const char *attr_str, size_t attr_
 		}                                                                 \
 	} while(0)
 
+#define EXT_ATTR_WS_LEN(s, n, p) \
+	((((p) < (n) && isspace((unsigned char)(s)[(p)])) ? 1 : \
+	 (((p) + 1 < (n) && (unsigned char)(s)[(p)] == 0xC2 && (unsigned char)(s)[(p) + 1] == 0xA0) ? 2 : 0)))
+
 #define FLUSH_DIRTY()                                          \
 	do {                                                         \
 		if(dirty_len > 0) {                                        \
@@ -732,17 +736,25 @@ static void parse_ext_attrs(Token *attrs_tok, const char *attr_str, size_t attr_
 			/* JS parity: invalid key contributes the full attr-like span (key + optional '=value') to dirty text. */
 			size_t full_end= i;
 			size_t probe= i;
-			while(probe < attr_len && isspace((unsigned char)attr_str[probe])) probe++;
+			while(probe < attr_len) {
+				size_t ws= EXT_ATTR_WS_LEN(attr_str, attr_len, probe);
+				if(ws == 0) break;
+				probe += ws;
+			}
 			if(probe < attr_len && attr_str[probe] == '=') {
 				probe++; /* skip '=' */
-				while(probe < attr_len && isspace((unsigned char)attr_str[probe])) probe++;
+				while(probe < attr_len) {
+					size_t ws= EXT_ATTR_WS_LEN(attr_str, attr_len, probe);
+					if(ws == 0) break;
+					probe += ws;
+				}
 
 				if(probe < attr_len && (attr_str[probe] == '"' || attr_str[probe] == '\'')) {
 					char q= attr_str[probe++];
 					while(probe < attr_len && attr_str[probe] != q) probe++;
 					if(probe < attr_len && attr_str[probe] == q) probe++;
 				} else {
-					while(probe < attr_len && !isspace((unsigned char)attr_str[probe])) probe++;
+					while(probe < attr_len && EXT_ATTR_WS_LEN(attr_str, attr_len, probe) == 0) probe++;
 				}
 				full_end= probe;
 			}
@@ -754,7 +766,11 @@ static void parse_ext_attrs(Token *attrs_tok, const char *attr_str, size_t attr_
 
 		/* Skip optional whitespace before '=' */
 		size_t eq_start= i;
-		while(i < attr_len && isspace((unsigned char)attr_str[i])) i++;
+		while(i < attr_len) {
+			size_t ws= EXT_ATTR_WS_LEN(attr_str, attr_len, i);
+			if(ws == 0) break;
+			i += ws;
+		}
 
 		if(i >= attr_len || attr_str[i] != '=') {
 			/* Boolean attribute (no value) */
@@ -772,7 +788,11 @@ static void parse_ext_attrs(Token *attrs_tok, const char *attr_str, size_t attr_
 		i++; /* skip '=' */
 
 		/* Skip optional whitespace after '=' */
-		while(i < attr_len && isspace((unsigned char)attr_str[i])) i++;
+		while(i < attr_len) {
+			size_t ws= EXT_ATTR_WS_LEN(attr_str, attr_len, i);
+			if(ws == 0) break;
+			i += ws;
+		}
 
 		/* Capture the full equal string (whitespace + '=' + whitespace) for JS parity */
 		const char *equal_start= attr_str + eq_start;
@@ -795,7 +815,7 @@ static void parse_ext_attrs(Token *attrs_tok, const char *attr_str, size_t attr_
 		} else {
 			/* Unquoted value: \S+ */
 			size_t val_start= i;
-			while(i < attr_len && !isspace((unsigned char)attr_str[i])) i++;
+			while(i < attr_len && EXT_ATTR_WS_LEN(attr_str, attr_len, i) == 0) i++;
 			val= attr_str + val_start;
 			val_len= i - val_start;
 		}
@@ -808,6 +828,7 @@ static void parse_ext_attrs(Token *attrs_tok, const char *attr_str, size_t attr_
 	}
 
 	FLUSH_DIRTY();
+#undef EXT_ATTR_WS_LEN
 #undef FLUSH_DIRTY
 #undef APPEND_DIRTY_RANGE
 }
@@ -1274,6 +1295,22 @@ static Token *make_gallery_caption_param_local(const char *txt, size_t tlen,
 	return cap;
 }
 
+static Token *make_gallery_caption_param_raw_local(const char *txt, size_t tlen, Accum *accum) {
+	Token *cap= token_new(TOKEN_PLAIN, "image-parameter");
+	if(!cap) return NULL;
+	cap->name= strdup("caption");
+	if(!cap->name) {
+		token_free(cap);
+		return NULL;
+	}
+	token_append_text_n(cap, txt ? txt : "", tlen);
+	if(cap->child_count == 0) {
+		token_append_text_n(cap, "", 0);
+	}
+	accum_push(accum, cap);
+	return cap;
+}
+
 static bool has_sentinel_type_local(const char *s, size_t len, char want) {
 	if(!s || len == 0) return false;
 	char nul_cand[1];
@@ -1327,6 +1364,136 @@ static bool has_unclosed_link_from_local(const char *txt, size_t len, size_t ope
 	return depth > 0;
 }
 
+static bool gallery_pipe_should_split_local(const char *txt, size_t tlen, size_t pipe_pos) {
+	if(!txt || pipe_pos >= tlen) return false;
+
+	/* Track open [[...]] frames up to the pipe. */
+	size_t *stack= malloc((pipe_pos + 1) * sizeof(size_t));
+	if(!stack) return false;
+	size_t sp= 0;
+	for(size_t i= 0; i + 1 < pipe_pos; ) {
+		if(txt[i] == '[' && txt[i + 1] == '[') {
+			stack[sp++]= i;
+			i += 2;
+			continue;
+		}
+		if(txt[i] == ']' && txt[i + 1] == ']' && sp > 0) {
+			sp--;
+			i += 2;
+			continue;
+		}
+		i++;
+	}
+
+	/* Not inside a link: normal parameter delimiter. */
+	if(sp == 0) {
+		free(stack);
+		return true;
+	}
+
+	size_t open_idx= stack[sp - 1];
+
+	/* Inside a link: split if that innermost link is unclosed. */
+	if(has_unclosed_link_from_local(txt, tlen, open_idx)) {
+		free(stack);
+		return true;
+	}
+
+	/* Closed link case: only split for file/image links that contain nested
+	 * file/image links before their own closing ]]. */
+	size_t head= open_idx + 2;
+	while(head < pipe_pos && (txt[head] == ' ' || txt[head] == '\t' || txt[head] == ':')) head++;
+	bool is_file_like= false;
+	if(head < pipe_pos) {
+		size_t avail= pipe_pos - head;
+		if((avail >= 5 && str_ci_eq_n(txt + head, "file:", 5)) ||
+		   (avail >= 6 && str_ci_eq_n(txt + head, "image:", 6))) {
+			is_file_like= true;
+		}
+	}
+	if(!is_file_like) {
+		free(stack);
+		return false;
+	}
+
+	bool nested_file_like= false;
+	int depth= 0;
+	for(size_t i= open_idx; i + 1 < tlen; ) {
+		if(txt[i] == '[' && txt[i + 1] == '[') {
+			depth++;
+			if(depth >= 2) {
+				size_t p= i + 2;
+				while(p < tlen && (txt[p] == ' ' || txt[p] == '\t' || txt[p] == ':')) p++;
+				size_t rem= tlen - p;
+				if((rem >= 5 && str_ci_eq_n(txt + p, "file:", 5)) ||
+				   (rem >= 6 && str_ci_eq_n(txt + p, "image:", 6))) {
+					nested_file_like= true;
+					break;
+				}
+			}
+			i += 2;
+			continue;
+		}
+		if(txt[i] == ']' && txt[i + 1] == ']' && depth > 0) {
+			depth--;
+			i += 2;
+			if(depth == 0) break;
+			continue;
+		}
+		i++;
+	}
+
+	bool split= nested_file_like;
+	free(stack);
+	return split;
+}
+
+static const char *gallery_find_split_pipe_local(const char *txt, size_t tlen) {
+	if(!txt || tlen == 0) return NULL;
+	int conv_depth= 0;
+	int tpl_depth= 0;
+	int arg_depth= 0;
+	for(size_t i= 0; i < tlen; i++) {
+		if(i + 2 < tlen && txt[i] == '{' && txt[i + 1] == '{' && txt[i + 2] == '{') {
+			arg_depth++;
+			i += 2;
+			continue;
+		}
+		if(i + 1 < tlen && txt[i] == '{' && txt[i + 1] == '{') {
+			tpl_depth++;
+			i++;
+			continue;
+		}
+		if(i + 2 < tlen && txt[i] == '}' && txt[i + 1] == '}' && txt[i + 2] == '}' && arg_depth > 0) {
+			arg_depth--;
+			i += 2;
+			continue;
+		}
+		if(i + 1 < tlen && txt[i] == '}' && txt[i + 1] == '}' && tpl_depth > 0) {
+			tpl_depth--;
+			i++;
+			continue;
+		}
+		if(i + 1 < tlen && txt[i] == '-' && txt[i + 1] == '{') {
+			conv_depth++;
+			i++;
+			continue;
+		}
+		if(i + 1 < tlen && txt[i] == '}' && txt[i + 1] == '-' && conv_depth > 0) {
+			conv_depth--;
+			i++;
+			continue;
+		}
+		if(txt[i] != '|') continue;
+		if(conv_depth > 0) continue;
+		if(tpl_depth > 0 || arg_depth > 0) continue;
+		if(gallery_pipe_should_split_local(txt, tlen, i)) {
+			return txt + i;
+		}
+	}
+	return NULL;
+}
+
 static void split_gallery_unclosed_caption_local(Token *img,
 												const ParserConfig *cfg,
 												Accum *accum) {
@@ -1351,20 +1518,15 @@ static void split_gallery_unclosed_caption_local(Token *img,
 				if(!cap->children[cj].is_text || !cap->children[cj].text) continue;
 				const char *txt= cap->children[cj].text;
 				size_t tlen= cap->children[cj].text_len;
-				const char pipe_ch= '|';
-				const char *pipe_ptr= sz_find_byte(txt, tlen, &pipe_ch);
+				const char *pipe_ptr= gallery_find_split_pipe_local(txt, tlen);
 				if(!pipe_ptr) continue;
 
 				size_t pipe_pos= (size_t)(pipe_ptr - txt);
-				size_t open_pos= gallery_find_last_open_link_before(txt, pipe_pos);
-				if(open_pos == SIZE_MAX) continue;
-				if(!has_unclosed_link_from_local(txt, tlen, open_pos)) continue;
 
 				size_t left_len= pipe_pos;
 				size_t right_len= tlen - (pipe_pos + 1);
-				Token *cap2= make_gallery_caption_param_local(
-					txt + pipe_pos + 1, right_len,
-					cfg, links_cfg, accum);
+				Token *cap2= make_gallery_caption_param_raw_local(
+					txt + pipe_pos + 1, right_len, accum);
 				char *left_owned= malloc(left_len + 1);
 				if(!left_owned) continue;
 
@@ -1390,8 +1552,7 @@ static void split_gallery_unclosed_caption_local(Token *img,
 		const char *txt= cap->children[0].text;
 		size_t tlen= cap->children[0].text_len;
 		bool has_link_sent= has_sentinel_type_local(txt, tlen, 'l');
-		const char pipe_ch= '|';
-		const char *pipe_ptr= sz_find_byte(txt, tlen, &pipe_ch);
+		const char *pipe_ptr= gallery_find_split_pipe_local(txt, tlen);
 		log_debug_env_token("WTC_DEBUG_STAGE_5", NULL,
 			"[C split_gallery_caption] cap_single_text len=%zu has_link_sentinel=%d",
 			tlen, has_link_sent ? 1 : 0);
@@ -1414,30 +1575,14 @@ static void split_gallery_unclosed_caption_local(Token *img,
 		size_t split_at= 0;
 		if(pipe_ptr) {
 			split_at= (size_t)(pipe_ptr - txt);
-
-			bool nested_link_after_pipe= false;
-			if(split_at + 3 <= tlen &&
-				 pipe_ptr[1] == '[' && pipe_ptr[2] == '[' &&
-				 sz_find(txt, split_at, "[[", 2) &&
-				 sz_find(pipe_ptr + 1, tlen - (split_at + 1), "]]", 2)) {
-				nested_link_after_pipe= true;
-			}
-
-			bool unclosed_link_pipe= false;
-			size_t open_pos= gallery_find_last_open_link_before(txt, split_at);
-			if(open_pos != SIZE_MAX && has_unclosed_link_from_local(txt, tlen, open_pos)) {
-				unclosed_link_pipe= true;
-			}
-
-			needs_split= nested_link_after_pipe || unclosed_link_pipe;
+			needs_split= true;
 		}
 
 		if(needs_split) {
 			size_t left_len= split_at;
 			size_t right_len= tlen - (split_at + 1);
-			Token *cap2= make_gallery_caption_param_local(
-				pipe_ptr + 1, right_len,
-				cfg, links_cfg, accum);
+			Token *cap2= make_gallery_caption_param_raw_local(
+				pipe_ptr + 1, right_len, accum);
 			char *left_owned= malloc(left_len + 1);
 			if(!left_owned) return;
 			if(left_len > 0) sz_copy(left_owned, txt, left_len);
@@ -1503,6 +1648,86 @@ static void split_gallery_unclosed_caption_local(Token *img,
 	}
 }
 
+static void split_gallery_param_pipe_tail_local(Token *img, Accum *accum) {
+	if(!img || !accum || img->type != TOKEN_FILE) return;
+
+	for(size_t ci= 1; ci < img->child_count; ci++) {
+		if(img->children[ci].is_text || !img->children[ci].token) continue;
+		Token *param= img->children[ci].token;
+		if(param->type != TOKEN_PLAIN || param->subtype != TOKEN_SUBTYPE_IMAGE_PARAMETER) continue;
+
+		for(size_t cj= 0; cj < param->child_count; cj++) {
+			if(!param->children[cj].is_text || !param->children[cj].text) continue;
+			const char *txt= param->children[cj].text;
+			size_t tlen= param->children[cj].text_len;
+			const char *pipe_ptr= gallery_find_split_pipe_local(txt, tlen);
+			if(!pipe_ptr) continue;
+
+			size_t split_at= (size_t)(pipe_ptr - txt);
+			size_t right_len= tlen - (split_at + 1);
+			Token *cap2= make_gallery_caption_param_raw_local(pipe_ptr + 1, right_len, accum);
+			if(!cap2) continue;
+
+			char *left_owned= malloc(split_at + 1);
+			if(!left_owned) continue;
+			if(split_at > 0) sz_copy(left_owned, txt, split_at);
+			left_owned[split_at]= '\0';
+
+			if(param->children[cj].text_owned && param->children[cj].text) {
+				free((void *)param->children[cj].text);
+			}
+			param->children[cj].text= left_owned;
+			param->children[cj].text_len= split_at;
+			param->children[cj].text_owned= true;
+
+			token_append_child(img, cap2);
+			break;
+		}
+
+		/* Also handle tail pipes captured inside a free-ext-link token child. */
+		if(!param->name || strcmp(param->name, "link") != 0) {
+			continue;
+		}
+		for(size_t cj= 0; cj < param->child_count; cj++) {
+			if(param->children[cj].is_text || !param->children[cj].token) continue;
+			Token *child_tok= param->children[cj].token;
+			if(child_tok->type != TOKEN_MAGIC_LINK || child_tok->subtype != TOKEN_SUBTYPE_FREE_EXT_LINK) continue;
+			if(child_tok->child_count == 0) continue;
+
+			size_t lj= child_tok->child_count - 1;
+			Child *last= &child_tok->children[lj];
+			if(!last->is_text || !last->text) continue;
+
+			const char *pipe_ptr= gallery_find_split_pipe_local(last->text, last->text_len);
+			if(!pipe_ptr) continue;
+
+			size_t split_at= (size_t)(pipe_ptr - last->text);
+			size_t right_len= last->text_len - (split_at + 1);
+			Token *cap2= make_gallery_caption_param_raw_local(pipe_ptr + 1, right_len, accum);
+			if(!cap2) continue;
+
+			if(split_at == 0) {
+				if(last->text_owned && last->text) free((void *)last->text);
+				memmove(&child_tok->children[lj], &child_tok->children[lj + 1],
+						(child_tok->child_count - (lj + 1)) * sizeof(Child));
+				child_tok->child_count--;
+			} else {
+				char *left_owned= malloc(split_at + 1);
+				if(!left_owned) continue;
+				sz_copy(left_owned, last->text, split_at);
+				left_owned[split_at]= '\0';
+				if(last->text_owned && last->text) free((void *)last->text);
+				last->text= left_owned;
+				last->text_len= split_at;
+				last->text_owned= true;
+			}
+
+			token_append_child(img, cap2);
+			break;
+		}
+	}
+}
+
 static void normalize_gallery_thumb_caption_local(Token *img, Accum *accum) {
 	if(!img || !accum || img->type != TOKEN_FILE || img->subtype != TOKEN_SUBTYPE_GALLERY_IMAGE) return;
 
@@ -1515,6 +1740,27 @@ static void normalize_gallery_thumb_caption_local(Token *img, Accum *accum) {
 
 		const char *txt= param->children[0].text;
 		size_t txt_len= param->children[0].text_len;
+
+		if((txt_len == 5 && str_ci_eq_n(txt, "thumb", 5)) ||
+		   (txt_len == 9 && str_ci_eq_n(txt, "thumbnail", 9))) {
+			char *new_name= strdup("thumbnail");
+			if(new_name) {
+				token_set_name_owned(param, new_name);
+				free((void *)param->data.image_param.raw_syntax.start);
+				char *owned_syntax= malloc(txt_len + 1);
+				if(owned_syntax) {
+					sz_copy(owned_syntax, txt, txt_len);
+					owned_syntax[txt_len]= '\0';
+					param->data.image_param.raw_syntax = (sz_string_view_t){ .start = owned_syntax, .length = txt_len };
+				}
+				if(param->children[0].is_text && param->children[0].text_owned && param->children[0].text) {
+					free((void *)param->children[0].text);
+				}
+				param->child_count= 0;
+			}
+			continue;
+		}
+
 		size_t cut= 0;
 		if(txt_len >= 6 && str_ci_eq_n(txt, "thumb|", 6)) {
 			cut= 6;
@@ -1702,7 +1948,6 @@ static Token *parse_gallery_image_line_local(const char *line, size_t line_len,
 			parse_comment_and_ext(pre_text_tb, cfg, accum, false);
 			parse_braces(pre_text_tb, cfg, accum);
 			parse_html(pre_text_tb, cfg, accum);
-			parse_links(pre_text_tb, links_cfg, accum, NULL, false);
 			parse_quotes(pre_text_tb, cfg, accum, false);
 			parse_external_links(pre_text_tb, cfg, accum, false);
 			parse_magic_links(pre_text_tb, cfg, accum);
@@ -1812,6 +2057,7 @@ static Token *parse_gallery_image_line_local(const char *line, size_t line_len,
 			first->text_owned= true;
 		}
 		split_gallery_unclosed_caption_local(out, cfg, accum);
+		split_gallery_param_pipe_tail_local(out, accum);
 		normalize_gallery_thumb_caption_local(out, accum);
 		/* Preserve the original gallery line target text exactly as parsed. */
 		/* JS stage-log parity: link/file names are assigned later in afterBuild(). */
@@ -1896,6 +2142,7 @@ static Token *parse_gallery_image_line_local(const char *line, size_t line_len,
 						}
 
 						split_gallery_unclosed_caption_local(fallback, cfg, accum);
+						split_gallery_param_pipe_tail_local(fallback, accum);
 						normalize_gallery_thumb_caption_local(fallback, accum);
 
 						accum_push(accum, fallback);

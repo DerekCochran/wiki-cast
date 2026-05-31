@@ -1914,6 +1914,25 @@ static bool param_value_text_may_need_pipeline(const char *s, size_t n) {
 	return false;
 }
 
+static bool text_has_url_hint(const char *s, size_t len, const ParserConfig *cfg) {
+	if(!s || len == 0) return false;
+
+	/* Protocol-relative links are valid without a named scheme. */
+	if(sz_find(s, len, "//", 2)) return true;
+
+	if(!cfg || !cfg->protocol_items_valid || cfg->protocol_items.count == 0) {
+		return false;
+	}
+
+	for(size_t i= 0; i < len; i++) {
+		unsigned char ch= (unsigned char)fast_tolower((unsigned char)s[i]);
+		if(!cfg->protocol_initials[ch]) continue;
+		if(match_proto_prefix(s + i, len - i, cfg) > 0) return true;
+	}
+
+	return false;
+}
+
 static void postprocess_parameter_value_inline_impl(Token *t, const ParserConfig *cfg, Accum *accum,
 																				const char *page, const Token *parent,
 																						const Token *grandparent,
@@ -1988,6 +2007,8 @@ static void postprocess_parameter_value_inline_impl(Token *t, const ParserConfig
 		bool has_open_ext_bracket= false;
 		bool has_close_ext_bracket= false;
 		bool has_quote_markup= false;
+		bool has_magic_word_token= false;
+		bool has_url_hint= false;
 
 		for(size_t i= 0; i < t->child_count; i++) {
 			Child cur= t->children[i];
@@ -2005,9 +2026,15 @@ static void postprocess_parameter_value_inline_impl(Token *t, const ParserConfig
 					char rb= ']';
 					if(sz_find_byte(cur.text, cur.text_len, &lb)) has_open_ext_bracket= true;
 					if(sz_find_byte(cur.text, cur.text_len, &rb)) has_close_ext_bracket= true;
+					if(text_has_url_hint(cur.text, cur.text_len, cfg)) {
+						has_url_hint= true;
+					}
 				}
 			} else if(cur.token) {
 				has_token= true;
+				if(cur.token->type == TOKEN_TRANSCLUDE && cur.token->subtype == TOKEN_SUBTYPE_MAGIC_WORD) {
+					has_magic_word_token= true;
+				}
 				if(cur.token->type == TOKEN_QUOTE) {
 					has_quote_token= true;
 				}
@@ -2023,7 +2050,8 @@ static void postprocess_parameter_value_inline_impl(Token *t, const ParserConfig
 		bool has_split_link_span= has_open_links && has_close_links && !has_link_like_token;
 		bool has_split_ext_link_span= has_open_ext_bracket && has_close_ext_bracket;
 		bool has_split_quote_span= has_quote_markup && !has_quote_token;
-		if(has_text && has_token && (has_split_brace_span || has_split_link_span || has_split_ext_link_span || has_split_quote_span)) {
+		bool has_url_magic_bridge= is_parameter_value && has_magic_word_token && has_url_hint;
+		if(has_text && has_token && (has_split_brace_span || has_split_link_span || has_split_ext_link_span || has_split_quote_span || has_url_magic_bridge)) {
 			ThreadBuf *tmp_ser = wiki_thread_buf_acquire_scratch();
 			if(tmp_ser) {
 				tmp_ser->len= 0;

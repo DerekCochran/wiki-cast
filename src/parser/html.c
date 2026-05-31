@@ -422,6 +422,37 @@ static void parse_html_attrs(Token *attrs_tok, const char *attr_str, size_t attr
 
 		if(!valid_key) {
 			APPEND_HTML_DIRTY_RANGE(key_start, key_start + key_len);
+
+			/* JS parity: if an invalid key is followed by '=', treat the whole
+			 * assignment as dirty instead of re-parsing the value as a new key. */
+			size_t j = html_skip_eq_ws(attr_str, attr_len, i);
+			size_t eq_bad_len = 0;
+			if(j < attr_len && attr_str[j] == '=') {
+				eq_bad_len = 1;
+			} else {
+				eq_bad_len = html_sentinel_at(attr_str, attr_len, j, '~');
+			}
+
+			if(eq_bad_len > 0) {
+				APPEND_HTML_DIRTY_RANGE(i, j + eq_bad_len);
+				i = j + eq_bad_len;
+
+				size_t ws_after_eq = i;
+				i = html_skip_eq_ws(attr_str, attr_len, i);
+				APPEND_HTML_DIRTY_RANGE(ws_after_eq, i);
+
+				if(i < attr_len && (attr_str[i] == '"' || attr_str[i] == '\'')) {
+					char q = attr_str[i++];
+					size_t vstart = i - 1;
+					const char *qclose = sz_find_byte(attr_str + i, attr_len - i, &q);
+					i = qclose ? (size_t)(qclose - attr_str) + 1 : attr_len;
+					APPEND_HTML_DIRTY_RANGE(vstart, i);
+				} else {
+					size_t vstart = i;
+					while(i < attr_len && !isspace((unsigned char)attr_str[i])) i++;
+					APPEND_HTML_DIRTY_RANGE(vstart, i);
+				}
+			}
 			continue;
 		}
 
