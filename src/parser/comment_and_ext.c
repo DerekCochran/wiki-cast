@@ -2108,8 +2108,9 @@ static void append_gallery_params_via_wrapper_local(Token *dst,
 }
 
 static Token *parse_gallery_image_line_local(const char *line, size_t line_len,
-																			const ParserConfig *cfg,
-																			Accum *accum) {
+																				const ParserConfig *cfg,
+																				Accum *accum,
+																				bool preparse_extlinks) {
 	if(!line || line_len == 0) return NULL;
 	ParserConfig cfg_local;
 	const ParserConfig *links_cfg= cfg;
@@ -2166,8 +2167,10 @@ static Token *parse_gallery_image_line_local(const char *line, size_t line_len,
 			parse_braces(pre_text_tb, cfg, accum);
 			parse_html(pre_text_tb, cfg, accum);
 			parse_quotes(pre_text_tb, cfg, accum, false);
-			parse_external_links(pre_text_tb, cfg, accum, false);
-			parse_magic_links(pre_text_tb, cfg, accum);
+			if(preparse_extlinks) {
+				parse_external_links(pre_text_tb, cfg, accum, false);
+				parse_magic_links(pre_text_tb, cfg, accum);
+			}
 			if(pre_text_tb->len > 0) {
 				pre_text_owned= malloc(pre_text_tb->len);
 				if(pre_text_owned) {
@@ -2527,7 +2530,7 @@ static Token *parse_imagemap_image_line_local(const char *line, size_t line_len,
 
 	/* JS parity: ImagemapToken first-line image uses GalleryImageToken logic.
 	 * Reuse gallery-image parsing and retag to imagemap-image. */
-	Token *out= parse_gallery_image_line_local(parse_ptr, parse_len, cfg, accum);
+	Token *out= parse_gallery_image_line_local(parse_ptr, parse_len, cfg, accum, false);
 	if(!out || out->type != TOKEN_FILE) return NULL;
 
 	out->subtype= TOKEN_SUBTYPE_IMAGEMAP_IMAGE;
@@ -2769,7 +2772,7 @@ static Token *build_gallery_inner_token(const char *inner_str, size_t inner_len,
 		if(line_len == 0) {
 			token_append_text_n(t, "", 0);
 		} else {
-			Token *img= parse_gallery_image_line_local(line_ptr, line_len, cfg, accum);
+			Token *img= parse_gallery_image_line_local(line_ptr, line_len, cfg, accum, true);
 			if(img) {
 				token_append_child(t, img);
 			} else {
