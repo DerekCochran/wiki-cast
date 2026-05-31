@@ -239,6 +239,7 @@ typedef struct Token {
     bool       built;       /* build() has been called */
     bool       ext_inner_context; /* cached: token is nested under ext-inner */
     size_t     accum_index; /* index in Accum when present; (size_t)-1 when not in Accum */
+    unsigned   inline_seen_epoch; /* dedupe marker for inline postprocess passes */
 } Token;
 
 /* ── Lifecycle ────────────────────────────────────────────────────────────── */

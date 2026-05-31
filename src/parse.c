@@ -1918,8 +1918,11 @@ static void postprocess_parameter_value_inline_impl(Token *t, const ParserConfig
 																				const char *page, const Token *parent,
 																						const Token *grandparent,
 																																						bool in_ext_context,
-																																						bool recurse_existing_children) {
+																								bool recurse_existing_children,
+																								unsigned inline_epoch) {
 	if(!t) return;
+	if(t->inline_seen_epoch == inline_epoch) return;
+	t->inline_seen_epoch = inline_epoch;
 
 	log_debug_env_token("DEBUG_PARAM_VALUE", t, "postprocess_parameter_value_inline_impl start");
 
@@ -1929,7 +1932,7 @@ static void postprocess_parameter_value_inline_impl(Token *t, const ParserConfig
 	if(recurse_existing_children) {
 		for(size_t i= 0; i < t->child_count; i++) {
 			if(!t->children[i].is_text && t->children[i].token) {
-				postprocess_parameter_value_inline_impl(t->children[i].token, cfg, accum, page, t, parent, current_in_ext_context, true);
+				postprocess_parameter_value_inline_impl(t->children[i].token, cfg, accum, page, t, parent, current_in_ext_context, true, inline_epoch);
 			}
 		}
 	}
@@ -2058,7 +2061,6 @@ static void postprocess_parameter_value_inline_impl(Token *t, const ParserConfig
 
 				if(serializable) {
 					tmp_ser->buf[tmp_ser->len]= '\0';
-
 					parse_comment_and_ext(tmp_ser, cfg, accum, false);
 					if(allow_serialized_braces) {
 						parse_braces(tmp_ser, cfg, accum);
@@ -2101,7 +2103,7 @@ static void postprocess_parameter_value_inline_impl(Token *t, const ParserConfig
 
 						for(size_t i= 0; i < t->child_count; i++) {
 							if(!t->children[i].is_text && t->children[i].token) {
-								postprocess_parameter_value_inline_impl(t->children[i].token, cfg, accum, page, t, parent, current_in_ext_context, true);
+								postprocess_parameter_value_inline_impl(t->children[i].token, cfg, accum, page, t, parent, current_in_ext_context, true, inline_epoch);
 							}
 						}
 
@@ -2283,7 +2285,7 @@ static void postprocess_parameter_value_inline_impl(Token *t, const ParserConfig
 		 * recursion at function entry. */
 		for(size_t i= 0; i < t->child_count; i++) {
 			if(!t->children[i].is_text && t->children[i].token) {
-				postprocess_parameter_value_inline_impl(t->children[i].token, cfg, accum, page, t, parent, current_in_ext_context, true);
+				postprocess_parameter_value_inline_impl(t->children[i].token, cfg, accum, page, t, parent, current_in_ext_context, true, inline_epoch);
 			}
 		}
 
@@ -2300,14 +2302,28 @@ static void postprocess_parameter_value_inline_impl(Token *t, const ParserConfig
 	log_debug_env_token("DEBUG_PARAM_VALUE", t, "postprocess_parameter_value_inline_impl end");
 }
 
-static void postprocess_parameter_value_inline(Token *t, const ParserConfig *cfg, Accum *accum,
-																																		const char *page,
-																																		bool recurse_existing_children) {
+static unsigned next_inline_epoch(void) {
+	static unsigned inline_epoch_counter= 1;
+	unsigned inline_epoch= inline_epoch_counter++;
+	if(inline_epoch_counter == 0) inline_epoch_counter= 1;
+	return inline_epoch;
+}
+
+static void postprocess_parameter_value_inline_with_epoch(Token *t, const ParserConfig *cfg, Accum *accum,
+																								const char *page,
+																								bool recurse_existing_children,
+																								unsigned inline_epoch) {
 	bool inferred_in_ext_context= t && t->ext_inner_context;
 	if(!inferred_in_ext_context) {
 		inferred_in_ext_context = token_has_ext_inner_ancestor(t, accum);
 	}
-	postprocess_parameter_value_inline_impl(t, cfg, accum, page, NULL, NULL, inferred_in_ext_context, recurse_existing_children);
+	postprocess_parameter_value_inline_impl(t, cfg, accum, page, NULL, NULL, inferred_in_ext_context, recurse_existing_children, inline_epoch);
+}
+
+static void postprocess_parameter_value_inline(Token *t, const ParserConfig *cfg, Accum *accum,
+																																		const char *page,
+																																		bool recurse_existing_children) {
+	postprocess_parameter_value_inline_with_epoch(t, cfg, accum, page, recurse_existing_children, next_inline_epoch());
 }
 
 static void finalize_gallery_and_link_names(Token *t, const ParserConfig *cfg,
@@ -2647,12 +2663,13 @@ Token *wiki_parse_with_page(const char *wikitext, size_t input_len, const Parser
 			scan_start= scan_end;
 			pass++;
 		}
-	}
 
-	/* C-only coverage: some nested plain parameter tokens are created without
-	 * direct accum entries (unlike JS Token constructor behavior), so run one
-	 * explicit recursive pass before build phase 2 to preserve parity. */
-	postprocess_parameter_value_inline(root, cfg, &accum, page, true);
+		/* C-only coverage: some nested plain parameter tokens are created without
+		 * direct accum entries (unlike JS Token constructor behavior). Reuse the
+		 * same epoch so this recursive sweep only touches tokens not already
+		 * processed during the accum walk above. */
+		postprocess_parameter_value_inline(root, cfg, &accum, page, true);
+	}
 
 	/* ── build phase 2: recursively expand remaining sentinels ───────────── */
 	build_token_recursive(root, &accum, cfg);
@@ -2667,8 +2684,8 @@ Token *wiki_parse_with_page(const char *wikitext, size_t input_len, const Parser
 	postprocess_nested_plain(root, cfg, &accum, page);
 	postprocess_root_braces_fallback(root, cfg, &accum);
 
-	/* JS parity: run inline stages again for any new text children created
-     * during build_token_recursive (e.g. ext-inner content). */
+	/* Run inline stages again for any new text children created during
+	 * build_token_recursive / nested plain postprocess. */
 	postprocess_parameter_value_inline(root, cfg, &accum, page, true);
 	finalize_gallery_and_link_names(root, cfg, page);
 
