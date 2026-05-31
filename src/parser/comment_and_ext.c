@@ -1784,46 +1784,9 @@ static void split_gallery_param_pipe_tail_local(Token *img, Accum *accum) {
 			break;
 		}
 
-		/* Also handle tail pipes captured inside a free-ext-link token child. */
-		if(!param->name || strcmp(param->name, "link") != 0) {
+		if(param->name && strcmp(param->name, "link") == 0) {
+			/* JS parity: keep free-ext-link text pipes inside malformed link=... values. */
 			continue;
-		}
-		for(size_t cj= 0; cj < param->child_count; cj++) {
-			if(param->children[cj].is_text || !param->children[cj].token) continue;
-			Token *child_tok= param->children[cj].token;
-			if(child_tok->type != TOKEN_MAGIC_LINK || child_tok->subtype != TOKEN_SUBTYPE_FREE_EXT_LINK) continue;
-			if(child_tok->child_count == 0) continue;
-
-			size_t lj= child_tok->child_count - 1;
-			Child *last= &child_tok->children[lj];
-			if(!last->is_text || !last->text) continue;
-
-			const char *pipe_ptr= gallery_find_split_pipe_local(last->text, last->text_len);
-			if(!pipe_ptr) continue;
-
-			size_t split_at= (size_t)(pipe_ptr - last->text);
-			size_t right_len= last->text_len - (split_at + 1);
-			Token *cap2= make_gallery_caption_param_raw_local(pipe_ptr + 1, right_len, accum);
-			if(!cap2) continue;
-
-			if(split_at == 0) {
-				if(last->text_owned && last->text) free((void *)last->text);
-				memmove(&child_tok->children[lj], &child_tok->children[lj + 1],
-						(child_tok->child_count - (lj + 1)) * sizeof(Child));
-				child_tok->child_count--;
-			} else {
-				char *left_owned= malloc(split_at + 1);
-				if(!left_owned) continue;
-				sz_copy(left_owned, last->text, split_at);
-				left_owned[split_at]= '\0';
-				if(last->text_owned && last->text) free((void *)last->text);
-				last->text= left_owned;
-				last->text_len= split_at;
-				last->text_owned= true;
-			}
-
-			token_append_child(img, cap2);
-			break;
 		}
 	}
 }
@@ -1919,6 +1882,153 @@ static void normalize_gallery_thumb_caption_local(Token *img, Accum *accum) {
 	}
 }
 
+static void normalize_gallery_named_param_prefixes_local(Token *img) {
+	if(!img || img->type != TOKEN_FILE || img->subtype != TOKEN_SUBTYPE_GALLERY_IMAGE) return;
+
+	for(size_t ci= 1; ci < img->child_count; ci++) {
+		if(img->children[ci].is_text || !img->children[ci].token) continue;
+		Token *param= img->children[ci].token;
+		if(param->type != TOKEN_PLAIN || param->subtype != TOKEN_SUBTYPE_IMAGE_PARAMETER) continue;
+		if(!param->name || strcmp(param->name, "caption") != 0 || param->child_count == 0) continue;
+
+		Child *first= &param->children[0];
+		if(!first->is_text || !first->text || first->text_len < 5) continue;
+
+		size_t p= 0;
+		while(p < first->text_len && (first->text[p] == ' ' || first->text[p] == '\t')) p++;
+
+		const char *new_name_lit= NULL;
+		const char *prefix_lit= NULL;
+		size_t prefix_len= 0;
+		size_t syntax_core_len= 0;
+		if(p + 4 <= first->text_len && strncmp(first->text + p, "alt=", 4) == 0) {
+			new_name_lit= "alt";
+			prefix_lit= "alt=$1";
+			prefix_len= 4;
+			syntax_core_len= 6;
+		} else if(p + 5 <= first->text_len && strncmp(first->text + p, "link=", 5) == 0) {
+			new_name_lit= "link";
+			prefix_lit= "link=$1";
+			prefix_len= 5;
+			syntax_core_len= 7;
+		} else {
+			continue;
+		}
+
+		if(new_name_lit[0] == 'l' && new_name_lit[1] == 'i' && new_name_lit[2] == 'n' && new_name_lit[3] == 'k' && new_name_lit[4] == '\0') {
+			size_t value_off= p + prefix_len;
+			size_t value_len= first->text_len - value_off;
+			if(value_len > 0 && sz_find_byte(first->text + value_off, value_len, "|") != NULL) {
+				/* JS parity: malformed link=...|... remains caption text. */
+				continue;
+			}
+		}
+
+		char *new_name= strdup(new_name_lit);
+		if(!new_name) continue;
+		token_set_name_owned(param, new_name);
+
+		free((void *)param->data.image_param.raw_syntax.start);
+		char *owned_syntax= malloc(p + syntax_core_len + 1);
+		if(owned_syntax) {
+			if(p > 0) sz_copy(owned_syntax, first->text, p);
+			sz_copy(owned_syntax + p, prefix_lit, syntax_core_len);
+			owned_syntax[p + syntax_core_len]= '\0';
+			param->data.image_param.raw_syntax = (sz_string_view_t){ .start = owned_syntax, .length = p + syntax_core_len };
+		}
+
+		size_t strip_len= p + prefix_len;
+		size_t new_len= first->text_len - strip_len;
+		char *owned= malloc(new_len + 1);
+		if(!owned) continue;
+		if(new_len > 0) sz_copy(owned, first->text + strip_len, new_len);
+		owned[new_len]= '\0';
+		if(first->text_owned && first->text) free((void *)first->text);
+		first->text= owned;
+		first->text_len= new_len;
+		first->text_owned= true;
+	}
+}
+
+static void append_tail_to_last_image_param_local(Token *img, const char *tail, size_t tail_len) {
+	if(!img || !tail || tail_len == 0) return;
+
+	Token *last_param= NULL;
+	for(size_t ci= img->child_count; ci > 0; ci--) {
+		Child *ch= &img->children[ci - 1];
+		if(ch->is_text || !ch->token) continue;
+		Token *tok= ch->token;
+		if(tok->type == TOKEN_PLAIN && tok->subtype == TOKEN_SUBTYPE_IMAGE_PARAMETER) {
+			last_param= tok;
+			break;
+		}
+	}
+	if(!last_param) return;
+
+	if(last_param->child_count > 0) {
+		Child *last_child= &last_param->children[last_param->child_count - 1];
+		if(last_child->is_text) {
+			size_t old_len= last_child->text_len;
+			char *merged= malloc(old_len + tail_len + 1);
+			if(!merged) return;
+			if(old_len > 0 && last_child->text) sz_copy(merged, last_child->text, old_len);
+			sz_copy(merged + old_len, tail, tail_len);
+			merged[old_len + tail_len]= '\0';
+			if(last_child->text_owned && last_child->text) free((void *)last_child->text);
+			last_child->text= merged;
+			last_child->text_len= old_len + tail_len;
+			last_child->text_owned= true;
+			return;
+		}
+	}
+
+	token_append_text_n(last_param, tail, tail_len);
+}
+
+static void normalize_gallery_caption_bracket_split_local(Token *img) {
+	if(!img || img->type != TOKEN_FILE || img->subtype != TOKEN_SUBTYPE_GALLERY_IMAGE) return;
+
+	for(size_t ci= 1; ci + 1 < img->child_count; ci++) {
+		if(img->children[ci].is_text || img->children[ci + 1].is_text) continue;
+		Token *left= img->children[ci].token;
+		Token *right= img->children[ci + 1].token;
+		if(!left || !right) continue;
+		if(left->type != TOKEN_PLAIN || right->type != TOKEN_PLAIN) continue;
+		if(left->subtype != TOKEN_SUBTYPE_IMAGE_PARAMETER || right->subtype != TOKEN_SUBTYPE_IMAGE_PARAMETER) continue;
+		if(!left->name || !right->name) continue;
+		if(strcmp(left->name, "caption") != 0 || strcmp(right->name, "caption") != 0) continue;
+		if(left->child_count == 0 || right->child_count == 0) continue;
+
+		Child *l_last= &left->children[left->child_count - 1];
+		Child *r_last= &right->children[right->child_count - 1];
+		if(!l_last->is_text || !r_last->is_text || !l_last->text || !r_last->text) continue;
+		if(r_last->text_len < 2) continue;
+		if(!(r_last->text[r_last->text_len - 2] == ']' && r_last->text[r_last->text_len - 1] == ']')) continue;
+		if(l_last->text_len >= 2 && l_last->text[l_last->text_len - 2] == ']' && l_last->text[l_last->text_len - 1] == ']') continue;
+
+		char *l_new= malloc(l_last->text_len + 2 + 1);
+		if(!l_new) continue;
+		if(l_last->text_len > 0) sz_copy(l_new, l_last->text, l_last->text_len);
+		l_new[l_last->text_len]= ']';
+		l_new[l_last->text_len + 1]= ']';
+		l_new[l_last->text_len + 2]= '\0';
+		if(l_last->text_owned && l_last->text) free((void *)l_last->text);
+		l_last->text= l_new;
+		l_last->text_len+= 2;
+		l_last->text_owned= true;
+
+		size_t r_new_len= r_last->text_len - 2;
+		char *r_new= malloc(r_new_len + 1);
+		if(!r_new) continue;
+		if(r_new_len > 0) sz_copy(r_new, r_last->text, r_new_len);
+		r_new[r_new_len]= '\0';
+		if(r_last->text_owned && r_last->text) free((void *)r_last->text);
+		r_last->text= r_new;
+		r_last->text_len= r_new_len;
+		r_last->text_owned= true;
+	}
+}
+
 /* Fallback helper: parse gallery alt text into FileToken image parameters by
  * feeding a synthetic [[File:...|...]] through stage-1/5 parsing and moving
  * parameter children (index >= 1) onto the destination gallery-image token. */
@@ -1977,12 +2087,19 @@ static void append_gallery_params_via_wrapper_local(Token *dst,
 	build_from_str(tmp, tb->buf, tb->len, accum);
 	build_token_recursive(tmp, accum, cfg);
 
-	if(tmp->child_count == 1 && !tmp->children[0].is_text && tmp->children[0].token && tmp->children[0].token->type == TOKEN_FILE) {
+	if(tmp->child_count >= 1 && !tmp->children[0].is_text && tmp->children[0].token && tmp->children[0].token->type == TOKEN_FILE) {
 		Token *ft= tmp->children[0].token;
 		for(size_t pi= 1; pi < ft->child_count; pi++) {
 			if(ft->children[pi].is_text || !ft->children[pi].token) continue;
 			token_append_child(dst, ft->children[pi].token);
 			ft->children[pi].token= NULL;
+		}
+		if(tmp->child_count > 1) {
+			for(size_t ti= 1; ti < tmp->child_count; ti++) {
+				if(tmp->children[ti].is_text && tmp->children[ti].text_len > 0) {
+					append_tail_to_last_image_param_local(dst, tmp->children[ti].text, tmp->children[ti].text_len);
+				}
+			}
 		}
 	}
 
@@ -2112,54 +2229,26 @@ static Token *parse_gallery_image_line_local(const char *line, size_t line_len,
 	build_token_recursive(tmp, accum, cfg);
 
 	Token *out= NULL;
-	if(tmp->child_count == 1 && !tmp->children[0].is_text && tmp->children[0].token && tmp->children[0].token->type == TOKEN_FILE) {
+	if(tmp->child_count >= 1 && !tmp->children[0].is_text && tmp->children[0].token && tmp->children[0].token->type == TOKEN_FILE) {
 		out= tmp->children[0].token;
 		tmp->children[0].token= NULL;
 		out->subtype= TOKEN_SUBTYPE_GALLERY_IMAGE;
 		if(out->name) {
 			token_clear_name(out);
 		}
-		/* JS parity: gallery-image uses GalleryImageToken, where link=... always
-		 * remains an image link parameter (not caption fallback). */
-		for(size_t ci= 1; ci < out->child_count; ci++) {
-			if(out->children[ci].is_text || !out->children[ci].token) continue;
-			Token *param= out->children[ci].token;
-			if(param->type != TOKEN_PLAIN || param->subtype != TOKEN_SUBTYPE_IMAGE_PARAMETER) continue;
-			if(!param->name || strcmp(param->name, "caption") != 0 || param->child_count == 0) continue;
-			Child *first= &param->children[0];
-			if(!first->is_text || !first->text || first->text_len < 5) continue;
-
-			size_t p= 0;
-			while(p < first->text_len && (first->text[p] == ' ' || first->text[p] == '\t')) p++;
-			if(p + 5 > first->text_len || strncmp(first->text + p, "link=", 5) != 0) continue;
-
-			char *new_name= strdup("link");
-			if(!new_name) continue;
-			token_set_name_owned(param, new_name);
-			free((void *)param->data.image_param.raw_syntax.start);
-			char *owned_syntax= malloc(p + 8);
-			if(owned_syntax) {
-				if(p > 0) sz_copy(owned_syntax, first->text, p);
-				sz_copy(owned_syntax + p, "link=$1", 7);
-				owned_syntax[p + 7]= '\0';
-				param->data.image_param.raw_syntax = (sz_string_view_t){ .start = owned_syntax, .length = p + 7 };
+		if(tmp->child_count > 1) {
+			for(size_t ti= 1; ti < tmp->child_count; ti++) {
+				if(tmp->children[ti].is_text && tmp->children[ti].text_len > 0) {
+					append_tail_to_last_image_param_local(out, tmp->children[ti].text, tmp->children[ti].text_len);
+				}
 			}
-
-			size_t prefix_len= p + 5;
-			size_t new_len= first->text_len - prefix_len;
-			char *owned= malloc(new_len + 1);
-			if(!owned) continue;
-			if(new_len > 0) sz_copy(owned, first->text + prefix_len, new_len);
-			owned[new_len]= '\0';
-			if(first->text_owned && first->text) free((void *)first->text);
-			first->text= owned;
-			first->text_len= new_len;
-			first->text_owned= true;
 		}
+		normalize_gallery_named_param_prefixes_local(out);
 		split_gallery_unclosed_caption_local(out, cfg, accum);
 		split_gallery_param_pipe_tail_local(out, accum);
 		normalize_gallery_thumb_caption_local(out, accum);
 		normalize_gallery_image_caption_quotes_local(out);
+		normalize_gallery_caption_bracket_split_local(out);
 		/* Preserve the original gallery line target text exactly as parsed. */
 		/* JS stage-log parity: link/file names are assigned later in afterBuild(). */
 		for(size_t ci= 0; ci < out->child_count; ci++) {
@@ -2242,10 +2331,12 @@ static Token *parse_gallery_image_line_local(const char *line, size_t line_len,
 							}
 						}
 
+						normalize_gallery_named_param_prefixes_local(fallback);
 						split_gallery_unclosed_caption_local(fallback, cfg, accum);
 						split_gallery_param_pipe_tail_local(fallback, accum);
 						normalize_gallery_thumb_caption_local(fallback, accum);
 						normalize_gallery_image_caption_quotes_local(fallback);
+						normalize_gallery_caption_bracket_split_local(fallback);
 
 						accum_push(accum, fallback);
 						out= fallback;

@@ -329,6 +329,7 @@ bool table_line_classify(const char *line, size_t len, TableLineResult *out) {
 	if (!line || !out || len == 0) return false;
 	out->is_th    = false;
 	out->has_plus = false;
+	const bool has_u2028 = (sz_find(line, len, "\xE2\x80\xA8", 3) != NULL);
 
 	/* GROUP 1: table close — literal '|}' or sentinel+ '}' or sentinel '}' sentinel */
 	/* literal |} */
@@ -385,6 +386,7 @@ bool table_line_classify(const char *line, size_t len, TableLineResult *out) {
 
 	/* GROUP 3: cell opener */
 	if (line[0] == '!') {
+		if(has_u2028) return false;
 		out->kind = TABLE_LINE_CELL;
 		out->is_th = true;
 		out->rest = line + 1;
@@ -392,6 +394,7 @@ bool table_line_classify(const char *line, size_t len, TableLineResult *out) {
 		return true;
 	}
 	if (line[0] == '|') {
+		if(has_u2028) return false;
 		out->kind = TABLE_LINE_CELL;
 		out->has_plus = (len >= 2 && line[1] == '+');
 		size_t skip = out->has_plus ? 2 : 1;
@@ -401,6 +404,7 @@ bool table_line_classify(const char *line, size_t len, TableLineResult *out) {
 	}
 	sl = sentinel_at(line, len, 0, '!');
 	if (sl) {
+		if(has_u2028) return false;
 		out->kind = TABLE_LINE_CELL;
 		out->has_plus = (sl < len && line[sl] == '+');
 		size_t skip = sl + (out->has_plus ? 1 : 0);

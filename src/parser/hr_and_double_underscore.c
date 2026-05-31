@@ -362,7 +362,7 @@ void parse_hr_and_double_underscore(ThreadBuf *tb, const ParserConfig *cfg, Accu
 
 	/* Heading finalization: line-at-a-time forward scan */
 	if(allow_heading && !config_excluded(cfg, "heading") && !skip_heading_for_param_ctx && !skip_heading_for_references_ctx && !poem_ctx) {
-		bool allow_crossline_heading_trail = !(root_name && strcmp(root_name, "parameter-value") == 0);
+		bool allow_crossline_heading_trail = true;
 		ThreadBuf *out2_tb = wiki_thread_buf_acquire_scratch();
 		if(!out2_tb) { log_fatal("OOM in heading finalization"); abort(); }
 		out2_tb->len = 0;

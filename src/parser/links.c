@@ -613,6 +613,25 @@ static bool img_title_chars_ok(const char *v) {
 	return true;
 }
 
+static void normalize_image_link_param_to_text(Token *param) {
+	if(!param || param->type != TOKEN_PLAIN || param->subtype != TOKEN_SUBTYPE_IMAGE_PARAMETER) return;
+	if(!param->name || strcmp(param->name, "link") != 0) return;
+
+	for(size_t i= 0; i < param->child_count; i++) {
+		if(param->children[i].is_text || !param->children[i].token) continue;
+		Token *child= param->children[i].token;
+		if(child->type != TOKEN_MAGIC_LINK || child->subtype != TOKEN_SUBTYPE_FREE_EXT_LINK) continue;
+		if(child->child_count == 0) continue;
+		if(!child->children[0].is_text || !child->children[0].text) continue;
+
+		const char *url_view= wiki_thread_buf_append_to_tokens(child->children[0].text, child->children[0].text_len);
+		param->children[i].is_text= true;
+		param->children[i].text= url_view;
+		param->children[i].text_len= child->children[0].text_len;
+		param->children[i].text_owned= false;
+	}
+}
+
 /* JS parity: validate() from imageParameter.js */
 static bool img_param_validate(const char *name, const char *val_ptr, size_t val_len,
 																			const ParserConfig *cfg,
@@ -856,6 +875,9 @@ static void append_file_image_params(Token *file_tok,
 							page);
 						if(val) {
 							append_fragment_children(param, val);
+							if(strcmp(name, "link") == 0) {
+								normalize_image_link_param_to_text(param);
+							}
 							accum_clear_token(accum, val);
 							token_free_shallow(val);
 						}
