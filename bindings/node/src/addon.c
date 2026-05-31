@@ -13,6 +13,7 @@
 #include "parse.h"
 #include "token.h"
 #include "config.h"
+#include "util/token_to_json.h"
 
 // Cache for config
 static char* cached_config_path = NULL;
