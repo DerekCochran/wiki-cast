@@ -1043,6 +1043,102 @@ static void normalize_gallery_caption_lone_quote(Token *img) {
 	}
 }
 
+static void split_gallery_unclosed_template_caption(Token *img, Accum *accum) {
+	if(!img || !accum || img->type != TOKEN_FILE || img->subtype != TOKEN_SUBTYPE_GALLERY_IMAGE) return;
+
+	for(size_t ci= 1; ci < img->child_count; ci++) {
+		if(img->children[ci].is_text || !img->children[ci].token) continue;
+		Token *cap= img->children[ci].token;
+		if(cap->type != TOKEN_PLAIN || cap->subtype != TOKEN_SUBTYPE_IMAGE_PARAMETER) continue;
+		if(!cap->name || strcmp(cap->name, "caption") != 0) continue;
+
+		for(size_t cj= 0; cj < cap->child_count; cj++) {
+			if(!cap->children[cj].is_text || !cap->children[cj].text) continue;
+
+			const char *txt= cap->children[cj].text;
+			size_t tlen= cap->children[cj].text_len;
+			if(tlen < 4) continue;
+
+			const char *open_tpl= sz_find(txt, tlen, "{{", 2);
+			if(!open_tpl) continue;
+
+			size_t open_off= (size_t)(open_tpl - txt);
+			const char pipe_ch= '|';
+			const char *pipe_ptr= sz_find_byte(txt + open_off, tlen - open_off, &pipe_ch);
+			if(!pipe_ptr) continue;
+
+			/* JS parity: when gallery caption starts an unclosed template, FileToken
+			 * parameter splitting still treats the first pipe as a delimiter. */
+			int tpl_depth= 0;
+			for(size_t p= open_off; p + 1 < tlen; p++) {
+				if(txt[p] == '{' && txt[p + 1] == '{') {
+					tpl_depth++;
+					p++;
+					continue;
+				}
+				if(txt[p] == '}' && txt[p + 1] == '}' && tpl_depth > 0) {
+					tpl_depth--;
+					p++;
+				}
+			}
+			if(tpl_depth <= 0) continue;
+
+			size_t pipe_pos= (size_t)(pipe_ptr - txt);
+			if(pipe_pos == 0 || pipe_pos + 1 > tlen) continue;
+
+			size_t right_len= tlen - (pipe_pos + 1);
+
+			char *left_owned= malloc(pipe_pos + 1);
+			if(!left_owned) {
+				return;
+			}
+			if(pipe_pos > 0) sz_copy(left_owned, txt, pipe_pos);
+			left_owned[pipe_pos]= '\0';
+
+			if(cap->children[cj].text_owned && cap->children[cj].text) {
+				free((void *)cap->children[cj].text);
+			}
+			cap->children[cj].text= left_owned;
+			cap->children[cj].text_len= pipe_pos;
+			cap->children[cj].text_owned= true;
+
+			Token *cap2= token_new(TOKEN_PLAIN, "image-parameter");
+			if(cap2) {
+				cap2->name= strdup("caption");
+				if(right_len > 0) {
+					token_append_text_n(cap2, txt + pipe_pos + 1, right_len);
+				}
+
+				for(size_t k= cj + 1; k < cap->child_count; k++) {
+					if(cap->children[k].is_text) {
+						token_append_text_n(cap2, cap->children[k].text, cap->children[k].text_len);
+						if(cap->children[k].text_owned && cap->children[k].text) {
+							free((void *)cap->children[k].text);
+						}
+					} else if(cap->children[k].token) {
+						token_append_child(cap2, cap->children[k].token);
+						cap->children[k].token= NULL;
+					}
+				}
+				if(cap2->child_count == 0) token_append_text_n(cap2, "", 0);
+
+				cap->child_count= cj + 1;
+				accum_push(accum, cap2);
+				token_append_child(img, cap2);
+			} else {
+				for(size_t k= cj + 1; k < cap->child_count; k++) {
+					if(cap->children[k].is_text && cap->children[k].text_owned && cap->children[k].text) {
+						free((void *)cap->children[k].text);
+					}
+				}
+				cap->child_count= cj + 1;
+			}
+
+			return;
+		}
+	}
+}
+
 static Token *parse_gallery_image_line(const char *line, size_t line_len,
 																			 const ParserConfig *cfg, Accum *accum,
 																			 const char *page) {
@@ -1250,6 +1346,7 @@ static Token *parse_gallery_image_line(const char *line, size_t line_len,
 	}
 
 	if(out && out->type == TOKEN_FILE && out->subtype == TOKEN_SUBTYPE_GALLERY_IMAGE) {
+		split_gallery_unclosed_template_caption(out, accum);
 		normalize_gallery_caption_lone_quote(out);
 	}
 
@@ -1591,7 +1688,7 @@ static void run_nested_plain_pipeline(ThreadBuf *scratch,
 		sz_string_view_t hr_root_subtype= token_subtype_name(t->subtype);
 		const char *hr_root_name= hr_root_subtype.start;
 		if(is_ext_inner && t && t->name) hr_root_name= t->name;
-		parse_hr_and_double_underscore(scratch, cfg, accum, hr_root_type, hr_root_name, !is_ext_inner);
+		parse_hr_and_double_underscore(scratch, cfg, accum, hr_root_type, hr_root_name, true);
 		debug_dump_bad_sentinel_window("run_nested_plain_pipeline:after-stage4", scratch, t);
 		const ParserConfig *links_cfg= cfg;
 		ParserConfig cfg_local;
@@ -2154,6 +2251,8 @@ static void postprocess_parameter_value_inline_impl(Token *t, const ParserConfig
 		bool has_quote_markup= false;
 		bool has_magic_word_token= false;
 		bool has_url_hint= false;
+		bool has_html_open= false;
+		bool has_html_close= false;
 
 		for(size_t i= 0; i < t->child_count; i++) {
 			Child cur= t->children[i];
@@ -2169,8 +2268,12 @@ static void postprocess_parameter_value_inline_impl(Token *t, const ParserConfig
 				if(cur.text && cur.text_len > 0) {
 					char lb= '[';
 					char rb= ']';
+					char lt= '<';
+					char gt= '>';
 					if(sz_find_byte(cur.text, cur.text_len, &lb)) has_open_ext_bracket= true;
 					if(sz_find_byte(cur.text, cur.text_len, &rb)) has_close_ext_bracket= true;
+					if(sz_find_byte(cur.text, cur.text_len, &lt)) has_html_open= true;
+					if(sz_find_byte(cur.text, cur.text_len, &gt)) has_html_close= true;
 					if(text_has_url_hint(cur.text, cur.text_len, cfg)) {
 						has_url_hint= true;
 					}
@@ -2196,7 +2299,8 @@ static void postprocess_parameter_value_inline_impl(Token *t, const ParserConfig
 		bool has_split_ext_link_span= has_open_ext_bracket && has_close_ext_bracket && !has_link_like_token;
 		bool has_split_quote_span= has_quote_markup && !has_quote_token;
 		bool has_url_magic_bridge= is_parameter_value && has_magic_word_token && has_url_hint;
-		if(has_text && has_token && (has_split_brace_span || has_split_link_span || has_split_ext_link_span || has_split_quote_span || has_url_magic_bridge)) {
+		bool has_html_magic_bridge= is_parameter_value && has_magic_word_token && has_html_open && has_html_close;
+		if(has_text && has_token && (has_split_brace_span || has_split_link_span || has_split_ext_link_span || has_split_quote_span || has_url_magic_bridge || has_html_magic_bridge)) {
 			ThreadBuf *tmp_ser = wiki_thread_buf_acquire_scratch();
 			if(tmp_ser) {
 				tmp_ser->len= 0;

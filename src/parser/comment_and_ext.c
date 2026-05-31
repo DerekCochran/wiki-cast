@@ -1508,6 +1508,32 @@ static bool gallery_pipe_should_split_local(const char *txt, size_t tlen, size_t
 
 static const char *gallery_find_split_pipe_local(const char *txt, size_t tlen) {
 	if(!txt || tlen == 0) return NULL;
+
+	/* JS parity: if caption starts an unclosed template (e.g. "{{center|...")
+	 * GalleryImageToken parameter splitting still treats the first pipe as a
+	 * parameter delimiter. */
+	if(tlen >= 3 && txt[0] == '{' && txt[1] == '{') {
+		const char pipe_ch= '|';
+		const char *first_pipe= sz_find_byte(txt + 2, tlen - 2, &pipe_ch);
+		if(first_pipe) {
+			int depth= 0;
+			for(size_t p= 0; p + 1 < tlen; p++) {
+				if(txt[p] == '{' && txt[p + 1] == '{') {
+					depth++;
+					p++;
+					continue;
+				}
+				if(txt[p] == '}' && txt[p + 1] == '}' && depth > 0) {
+					depth--;
+					p++;
+				}
+			}
+			if(depth > 0) {
+				return first_pipe;
+			}
+		}
+	}
+
 	int conv_depth= 0;
 	int tpl_depth= 0;
 	int arg_depth= 0;
@@ -1585,6 +1611,7 @@ static void split_gallery_unclosed_caption_local(Token *img,
 				size_t right_len= tlen - (pipe_pos + 1);
 				Token *cap2= make_gallery_caption_param_raw_local(
 					txt + pipe_pos + 1, right_len, accum);
+				if(!cap2) continue;
 				char *left_owned= malloc(left_len + 1);
 				if(!left_owned) continue;
 
@@ -1597,7 +1624,20 @@ static void split_gallery_unclosed_caption_local(Token *img,
 				cap->children[cj].text_len= left_len;
 				cap->children[cj].text_owned= true;
 
-				if(cap2) token_append_child(img, cap2);
+				for(size_t k= cj + 1; k < cap->child_count; k++) {
+					if(cap->children[k].is_text) {
+						token_append_text_n(cap2, cap->children[k].text, cap->children[k].text_len);
+						if(cap->children[k].text_owned && cap->children[k].text) {
+							free((void *)cap->children[k].text);
+						}
+					} else if(cap->children[k].token) {
+						token_append_child(cap2, cap->children[k].token);
+						cap->children[k].token= NULL;
+					}
+				}
+				cap->child_count= cj + 1;
+
+				token_append_child(img, cap2);
 
 				split_mixed= true;
 				break;

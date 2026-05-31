@@ -722,9 +722,24 @@ static bool img_param_validate(const char *name, const char *val_ptr, size_t val
 		}
 	} else {
 		/* default: Boolean(value) && !isNaN(value) */
-		if(sz_find_byte(val_ptr, val_len, "\0") != NULL) {
-			/* JS parity: embedded sentinels remain part of the string for Number()
-			 * and make numeric validation fail; C strtod would incorrectly stop at NUL. */
+		bool has_unstripped_sentinel= false;
+		size_t spos= 0;
+		for(;;) {
+			size_t sn= 0;
+			char st= '\0';
+			size_t stotal= 0;
+			if(!scan_next_sentinel_any(val_ptr, val_len, &spos, &sn, &st, &stotal)) break;
+			(void)sn;
+			(void)stotal;
+			if(st != 'c' && st != 't') {
+				has_unstripped_sentinel= true;
+				break;
+			}
+		}
+
+		if(has_unstripped_sentinel) {
+			/* JS parity: removeComment/template stripping is already modeled above;
+			 * remaining sentinels should still cause Number() coercion to fail. */
 			result= false;
 		} else if(*value) {
 			char *endp;
