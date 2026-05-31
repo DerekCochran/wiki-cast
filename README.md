@@ -28,7 +28,7 @@ This product is still in a pre-release phase with undocumented discrepencies bet
 
 ## Performance
 
-This is based on the [english wikipedia download](https://dumps.wikimedia.org/enwiki/latest/) for 6,877,448 samples.
+This is based on the [english wikipedia download](https://dumps.wikimedia.org/enwiki/latest/) for 7,176,400 samples.
 
 | Parser          | Min  | Max     | Mean | Stnd Dev | p50 | p95  | p99  |
 |-----------------|------|---------|------|----------|-----|------|------|
@@ -38,9 +38,19 @@ This is based on the [english wikipedia download](https://dumps.wikimedia.org/en
 Speedup (mean first/second): 6.4837x  
 Mean percent change (second vs first): -84.58%
 
+**NOTE**: REDO!!  This is based on a debug build, but it does show the max has gone down.
+
+| Parser          | Min  | Max     | Mean | Stnd Dev | p50 | p95  | p99   |
+|-----------------|------|---------|------|----------|-----|------|-------|
+| wikiparser-node | 0.0  | 2150.0  | 9.09 |  23.5031 | 4.0 | 31.0 | 101.0 |
+| wiki-cast       | 0.0  | 368.0   | 2.51 |   5.2563 | 1.0 |  9.0 |  24.0 |
+
+Speedup (mean first/second): 3.6187x
+Mean percent change (second vs first): -72.37%
+
 ## Testing
 
-This closely matches the wikiparser-node AST generated.  There is a [custom JSON creation](./bindings/node/src/addon.c) to match the shape of its AST.  On the last test executed, there were around 300 wikitext articles out of 7 million that did not match.
+This closely matches the wikiparser-node AST generated.  There is a [custom JSON creation](./bindings/node/src/addon.c) to match the shape of its AST.  On the last test executed, there were 523 wikitext articles out of 7,176,400 million that did not match.
 
 This testing is just phase 1.  It gets WIKI-CAST to match at least one implementation and gives us a large number of tests to verify against other implementeations.  However, Parsoid is the source of truth.  We must [verify against it](https://github.com/DerekCochran/wiki-cast/issues/9) if we are to meet the pipe dream.
 

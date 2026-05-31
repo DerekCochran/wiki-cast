@@ -68,13 +68,13 @@ def format_stats(name, stats):
 def calculate_averages():
     first_stats = RunningStats()
     second_stats = RunningStats()
-    label = "export-1 parse"
+    label = "wikitext-1 parse"
 
     for raw_line in sys.stdin:
         line = raw_line.strip()
         if not line:
             continue
-        if "export-" not in line.lower():
+        if "wikitext-" not in line.lower():
             continue
 
         if ":" not in line:

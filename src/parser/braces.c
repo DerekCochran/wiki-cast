@@ -844,6 +844,14 @@ static Token *build_template_token(const char **parts_restored, const size_t *pa
 		}
 	}
 
+	/* JS parity: TranscludeToken validates the remaining title after modifier
+	 * extraction. Cases like {{SAFESUBST:}} leave an empty title and must be
+	 * treated as invalid template names (kept as plain text by parseBraces). */
+	if(title_part_len == 0) {
+		token_free(t);
+		return NULL;
+	}
+
 	bool transclude_is_magic= false;
 	bool invoke_magic= false;
 	size_t magic_title_len= 0;
