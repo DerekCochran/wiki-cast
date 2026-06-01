@@ -2250,6 +2250,7 @@ static void postprocess_parameter_value_inline_impl(Token *t, const ParserConfig
 		bool has_close_ext_bracket= false;
 		bool has_quote_markup= false;
 		bool has_magic_word_token= false;
+		bool has_comment_token= false;
 		bool has_url_hint= false;
 		bool has_html_open= false;
 		bool has_html_close= false;
@@ -2280,6 +2281,9 @@ static void postprocess_parameter_value_inline_impl(Token *t, const ParserConfig
 				}
 			} else if(cur.token) {
 				has_token= true;
+				if(cur.token->type == TOKEN_COMMENT) {
+					has_comment_token= true;
+				}
 				if(cur.token->type == TOKEN_TRANSCLUDE && cur.token->subtype == TOKEN_SUBTYPE_MAGIC_WORD) {
 					has_magic_word_token= true;
 				}
@@ -2299,8 +2303,9 @@ static void postprocess_parameter_value_inline_impl(Token *t, const ParserConfig
 		bool has_split_ext_link_span= has_open_ext_bracket && has_close_ext_bracket && !has_link_like_token;
 		bool has_split_quote_span= has_quote_markup && !has_quote_token;
 		bool has_url_magic_bridge= is_parameter_value && has_magic_word_token && has_url_hint;
+		bool has_url_comment_bridge= is_parameter_value && has_comment_token && has_url_hint;
 		bool has_html_magic_bridge= is_parameter_value && has_magic_word_token && has_html_open && has_html_close;
-		if(has_text && has_token && (has_split_brace_span || has_split_link_span || has_split_ext_link_span || has_split_quote_span || has_url_magic_bridge || has_html_magic_bridge)) {
+		if(has_text && has_token && (has_split_brace_span || has_split_link_span || has_split_ext_link_span || has_split_quote_span || has_url_magic_bridge || has_url_comment_bridge || has_html_magic_bridge)) {
 			ThreadBuf *tmp_ser = wiki_thread_buf_acquire_scratch();
 			if(tmp_ser) {
 				tmp_ser->len= 0;
@@ -2456,6 +2461,7 @@ static void postprocess_parameter_value_inline_impl(Token *t, const ParserConfig
 			}
 		}
 
+
 		wiki_thread_buf_set(scratch, txt, txt_len);
 
 		if(is_attr_value) {
@@ -2555,6 +2561,7 @@ static void postprocess_parameter_value_inline_impl(Token *t, const ParserConfig
 		tmp->child_count= 0;
 		tmp->child_cap= 0;
 		token_free_shallow(tmp);
+
 	}
 
 	free(old_children);
@@ -2718,6 +2725,8 @@ static void stage1_parse_braces_on_accum(const ParserConfig *cfg, Accum *accum, 
 		scratch->buf[txt_len]= '\0';
 		scratch->len= txt_len;
 
+		parse_comment_and_ext(scratch, cfg, accum, false);
+
 		/* JS parity: ext-inner parseOnce should not synthesize heading tokens. */
 		parse_braces_with_heading(scratch, cfg, accum, false);
 		if(!(scratch->len == txt_len && sz_equal(scratch->buf, txt, txt_len))) {
@@ -2730,9 +2739,8 @@ static void stage1_parse_braces_on_accum(const ParserConfig *cfg, Accum *accum, 
 static void stage0_parse_comment_and_ext_on_accum(const ParserConfig *cfg, Accum *accum, size_t scan_limit) {
 	if(!cfg || !accum) return;
 	if(scan_limit > accum->count) scan_limit = accum->count;
-	(void)scan_limit;
 
-	for(size_t ai= 0; ai < accum->count; ai++) {
+	for(size_t ai= 0; ai < scan_limit; ai++) {
 		Token *tok= accum->tokens[ai];
 		if(!tok) continue;
 			if(tok->type != TOKEN_EXT_INNER || !ext_inner_allows_nested_parse(tok->name)) continue;
