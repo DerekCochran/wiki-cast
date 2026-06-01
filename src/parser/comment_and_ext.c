@@ -1513,7 +1513,7 @@ static bool gallery_pipe_should_split_local(const char *txt, size_t tlen, size_t
 		return false;
 	}
 
-	bool nested_file_like= false;
+	int nested_file_like_count= 0;
 	int depth= 0;
 	for(size_t i= open_idx; i + 1 < tlen; ) {
 		if(txt[i] == '[' && txt[i + 1] == '[') {
@@ -1524,8 +1524,7 @@ static bool gallery_pipe_should_split_local(const char *txt, size_t tlen, size_t
 				size_t rem= tlen - p;
 				if((rem >= 5 && str_ci_eq_n(txt + p, "file:", 5)) ||
 				   (rem >= 6 && str_ci_eq_n(txt + p, "image:", 6))) {
-					nested_file_like= true;
-					break;
+					nested_file_like_count++;
 				}
 			}
 			i += 2;
@@ -1540,7 +1539,10 @@ static bool gallery_pipe_should_split_local(const char *txt, size_t tlen, size_t
 		i++;
 	}
 
-	bool split= nested_file_like;
+	/* A single nested file-like link at the beginning of caption content is a
+	 * legitimate structure (for example Lancaster). Split when nested file-like
+	 * links occur after prior caption content, or for deeper malformed nesting. */
+	bool split= ((open_idx > 0) && nested_file_like_count >= 1) || (nested_file_like_count >= 2);
 	free(stack);
 	return split;
 }
