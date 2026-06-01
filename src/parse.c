@@ -2730,8 +2730,9 @@ static void stage1_parse_braces_on_accum(const ParserConfig *cfg, Accum *accum, 
 static void stage0_parse_comment_and_ext_on_accum(const ParserConfig *cfg, Accum *accum, size_t scan_limit) {
 	if(!cfg || !accum) return;
 	if(scan_limit > accum->count) scan_limit = accum->count;
+	(void)scan_limit;
 
-	for(size_t ai= 0; ai < scan_limit; ai++) {
+	for(size_t ai= 0; ai < accum->count; ai++) {
 		Token *tok= accum->tokens[ai];
 		if(!tok) continue;
 			if(tok->type != TOKEN_EXT_INNER || !ext_inner_allows_nested_parse(tok->name)) continue;
