@@ -95,15 +95,13 @@ so ICU is required for both CMake and Node addon builds.
 
 **Build**
 
-```bash
-rm -rf build
-mkdir -p build
-```
 The project defaults to a Release build for single-config generators. Examples:
 
 Release (default):
 
 ```bash
+rm -rf build
+mkdir -p build
 cmake -S . -B build -DCMAKE_BUILD_TYPE=Release
 cmake --build build -j"$(nproc)"
 ```
