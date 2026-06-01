@@ -702,6 +702,11 @@ static void parse_table_attrs(Token *attrs_tok, const char *attr_str, size_t att
 				}
 				/* Unquoted '=value' remains one dirty chunk in JS. */
 				size_t vstart= i;
+				while(i < attr_len) {
+					size_t lead_ws= table_ws_len_at(attr_str, attr_len, i);
+					if(lead_ws == 0) break;
+					i+= lead_ws;
+				}
 				while(i < attr_len && table_ws_len_at(attr_str, attr_len, i) == 0) {
 					i++;
 				}
@@ -760,6 +765,20 @@ static void parse_table_attrs(Token *attrs_tok, const char *attr_str, size_t att
 
 		size_t eq_sl= (i < attr_len) ? sentinel_at(attr_str, attr_len, i, '~') : 0;
 		if(i >= attr_len || (attr_str[i] != '=' && eq_sl == 0)) {
+			size_t look= key_start;
+			while(look > 0) {
+				size_t ws= table_ws_len_at(attr_str, attr_len, look - 1);
+				if(ws == 0) break;
+				look--;
+			}
+			if(look > 0 && attr_str[look - 1] == '=') {
+				APPEND_DIRTY_SPAN(key_start, key_len);
+				if(ws_start < i) {
+					APPEND_DIRTY_SPAN(ws_start, i - ws_start);
+				}
+				continue;
+			}
+
 			FLUSH_DIRTY();
 			Token *at= make_table_attr(key, key_len, NULL, 0, NULL, 0, '\0', '\0', accum);
 			if(at) token_append_child(attrs_tok, at);

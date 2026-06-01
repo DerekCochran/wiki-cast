@@ -303,6 +303,13 @@ static void parse_table_attrs(Token *attrs_tok, const char *attr_str, size_t att
 					 * following fragments can still tokenize by spaces. */
 					continue;
 				}
+				while(i < attr_len) {
+					size_t lead_ws= table_ws_len_at(attr_str, attr_len, i);
+					if(lead_ws == 0) break;
+					sz_copy(dirty_buf + dirty_len, attr_str + i, lead_ws);
+					dirty_len+= lead_ws;
+					i+= lead_ws;
+				}
 				while(i < attr_len && table_ws_len_at(attr_str, attr_len, i) == 0) {
 					dirty_buf[dirty_len++]= attr_str[i++];
 				}
