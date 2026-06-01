@@ -914,6 +914,34 @@ static Token *build_template_token(const char **parts_restored, const size_t *pa
 				token_append_child(t, mw_name);
 			}
 		} else {
+			size_t hb= 0;
+			while(hb < p0_len) {
+				size_t sl= 0;
+				if(isspace((unsigned char)title_part[hb])) {
+					hb++;
+					continue;
+				}
+				if(parse_sentinel_at_allowed(title_part, p0_len, hb, "cn", 2, &sl)) {
+					hb += sl;
+					continue;
+				}
+				break;
+			}
+			bool hash_prefixed= (hb < p0_len && title_part[hb] == '#');
+			if(!hash_prefixed) {
+				for(size_t p= 0; p < p0_len;) {
+					size_t sl= 0;
+					if(title_part[p] == '<' || title_part[p] == '>') {
+						token_free(t);
+						return NULL;
+					}
+					if(parse_sentinel_at_allowed(title_part, p0_len, p, "x", 1, &sl)) {
+						token_free(t);
+						return NULL;
+					}
+					p += (sl > 0) ? sl : 1;
+				}
+			}
 			/* JS parity: template names are validated with normalizeTitle(..., 10,
 			 * {halfParsed:true, temporary:true}) and throw on invalid input. */
 			if(cfg) {
@@ -1232,6 +1260,18 @@ static Token *build_from_inner(const char *inner, size_t inner_len,
 		if(j >= inner_len) break;
 		si= j + 1;
 	} while(1);
+
+	if(!is_arg && part_count > 0 && parts[0]) {
+		for(size_t p= 0; p < plens[0]; p++) {
+			if(parts[0][p] == '<' || parts[0][p] == '>') {
+				free(parts_named);
+				for(size_t q= 0; q < part_count; q++) free(parts[q]);
+				free(parts);
+				free(plens);
+				return NULL;
+			}
+		}
+	}
 
 	Token *tok= build_template_token((const char **)parts, plens, part_count, is_arg, cfg, accum, parts_named);
 	free(parts_named);

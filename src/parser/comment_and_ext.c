@@ -1358,6 +1358,44 @@ static void normalize_gallery_caption_lone_quote_local(Token *cap) {
 	cap->children[0].text_owned= true;
 }
 
+static bool is_two_quote_token_local(const Child *c) {
+	if(!c || c->is_text || !c->token) return false;
+	Token *q= c->token;
+	return q->type == TOKEN_QUOTE && q->child_count == 1
+		&& q->children[0].is_text && q->children[0].text
+		&& q->children[0].text_len == 2
+		&& q->children[0].text[0] == '\'' && q->children[0].text[1] == '\'';
+}
+
+static void normalize_gallery_caption_quad_quote_split_local(Token *cap) {
+	if(!cap || cap->child_count < 5) return;
+	if(!is_two_quote_token_local(&cap->children[0])) return;
+	if(!cap->children[1].is_text || !cap->children[1].text) return;
+	if(!is_two_quote_token_local(&cap->children[2])) return;
+	if(!is_two_quote_token_local(&cap->children[3])) return;
+
+	size_t new_len= cap->children[1].text_len + 2;
+	char *owned= malloc(new_len + 1);
+	if(!owned) return;
+	if(cap->children[1].text_len > 0) {
+		sz_copy(owned, cap->children[1].text, cap->children[1].text_len);
+	}
+	owned[new_len - 2]= '\'';
+	owned[new_len - 1]= '\'';
+	owned[new_len]= '\0';
+
+	if(cap->children[1].text_owned && cap->children[1].text) {
+		free((void *)cap->children[1].text);
+	}
+	cap->children[1].text= owned;
+	cap->children[1].text_len= new_len;
+	cap->children[1].text_owned= true;
+
+	/* Drop the extra adjacent quote token at index 3. */
+	memmove(&cap->children[3], &cap->children[4], (cap->child_count - 4) * sizeof(Child));
+	cap->child_count--;
+}
+
 static void normalize_gallery_image_caption_quotes_local(Token *img) {
 	if(!img || img->type != TOKEN_FILE) return;
 	for(size_t ci= 1; ci < img->child_count; ci++) {
@@ -1366,6 +1404,7 @@ static void normalize_gallery_image_caption_quotes_local(Token *img) {
 		if(param->type != TOKEN_PLAIN || param->subtype != TOKEN_SUBTYPE_IMAGE_PARAMETER) continue;
 		if(!param->name || strcmp(param->name, "caption") != 0) continue;
 		normalize_gallery_caption_lone_quote_local(param);
+		normalize_gallery_caption_quad_quote_split_local(param);
 	}
 }
 
