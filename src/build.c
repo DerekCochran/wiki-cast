@@ -414,6 +414,26 @@ static void refresh_template_name(Token *t, const ParserConfig *cfg) {
 		return;
 	}
 
+	if(sz_find(text, len, "{{", 2) != NULL) {
+		ThreadBuf *name_tb= wiki_thread_buf_acquire_scratch();
+		if(name_tb) {
+			wiki_thread_buf_set(name_tb, "Template:", 9);
+			for(size_t i= 0; i < len; i++) {
+				unsigned char ch= (unsigned char)text[i];
+				if(ch == ' ' || ch == '\t' || ch == '\n' || ch == '\r' || ch == '\f' || ch == '\v') {
+					wiki_thread_buf_putc(name_tb, '_');
+				} else {
+					wiki_thread_buf_putc(name_tb, (char)ch);
+				}
+			}
+			char *name= strndup(name_tb->buf, name_tb->len);
+			wiki_thread_buf_release_scratch(name_tb);
+			wiki_thread_buf_release_scratch(scratch);
+			if(name) token_set_name_owned(t, name);
+			return;
+		}
+	}
+
 	Title *parsed= title_parse_half_parsed(text, len, 10, cfg, true, NULL);
 	/* release scratch now that parsed has copied any needed data */
 	wiki_thread_buf_release_scratch(scratch);
