@@ -762,6 +762,7 @@ static void append_file_image_params(Token *file_tok,
 
 	size_t seg_start= 0;
 	int conv_depth= 0;
+	int tpl_depth= 0;
 
 	while(seg_start <= text_len) {
 		size_t seg_end= seg_start;
@@ -776,7 +777,17 @@ static void append_file_image_params(Token *file_tok,
 				seg_end+= 2;
 				continue;
 			}
-			if(text_ptr[seg_end] == '|' && conv_depth == 0) {
+			if(seg_end + 1 < text_len && text_ptr[seg_end] == '{' && text_ptr[seg_end + 1] == '{') {
+				tpl_depth++;
+				seg_end+= 2;
+				continue;
+			}
+			if(seg_end + 1 < text_len && text_ptr[seg_end] == '}' && text_ptr[seg_end + 1] == '}' && tpl_depth > 0) {
+				tpl_depth--;
+				seg_end+= 2;
+				continue;
+			}
+			if(text_ptr[seg_end] == '|' && conv_depth == 0 && tpl_depth == 0) {
 				break;
 			}
 			seg_end++;
