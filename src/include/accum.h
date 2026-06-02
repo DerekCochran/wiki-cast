@@ -6,7 +6,7 @@
  * \0<n><ch>\x7F markers in text nodes by looking up accum[n].
  */
 #pragma once
-#include "token.h"
+#include "wiki_cast/token.h"
 #include <stddef.h>
 
 typedef struct {

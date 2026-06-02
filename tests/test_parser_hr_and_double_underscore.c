@@ -1,6 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include "config.h"
+#include "wiki_cast/config.h"
 #include "test_common.h"
 
 #ifndef CONFIG_PATH

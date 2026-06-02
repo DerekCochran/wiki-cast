@@ -4,7 +4,7 @@
 #include "util/string_util.h"
 #include "util/thread_buffer.h"
 #include "util/wiki_parser_rules.h"
-#include "token.h"
+#include "wiki_cast/token.h"
 #include "stringzilla/stringzilla.h"
 #include <assert.h>
 #include <ctype.h>

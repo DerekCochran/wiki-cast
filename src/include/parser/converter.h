@@ -1,6 +1,6 @@
 #pragma once
 #include "util/string_util.h"
-#include "config.h"
+#include "wiki_cast/config.h"
 #include "accum.h"
 
 /** Parse language-variant converter fragments `-{...}-` (stage 10).

@@ -5,6 +5,6 @@
  * entry can reference a src/converter.c implementation stub.
  */
 
-#include "token.h"
+#include "wiki_cast/token.h"
 
 /* No exported functions yet. */

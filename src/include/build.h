@@ -4,7 +4,7 @@
  * Mirrors the build() and buildFromStr() methods in dist/src/index.js.
  */
 #pragma once
-#include "token.h"
+#include "wiki_cast/token.h"
 #include "accum.h"
 #include "util/string_util.h"
 #include <stddef.h>

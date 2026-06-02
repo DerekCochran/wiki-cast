@@ -1,6 +1,6 @@
 /* td.h — TdToken constructor helper */
 #pragma once
-#include "token.h"
+#include "wiki_cast/token.h"
 #include "accum.h"
 
 /** Create a TdToken with given syntax, attr and inner text, push into accum, and return it.

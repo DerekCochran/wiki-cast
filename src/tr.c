@@ -2,7 +2,7 @@
 #include "build.h"
 #include "util/string_util.h"
 #include "stringzilla/stringzilla.h"
-#include "token.h"
+#include "wiki_cast/token.h"
 #include <assert.h>
 #include <stdlib.h>
 #include <string.h>

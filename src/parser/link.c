@@ -11,7 +11,7 @@
 #include "parser/link.h"
 #include "accum.h"
 #include "parser/quotes.h"
-#include "token.h"
+#include "wiki_cast/token.h"
 #include <assert.h>
 #include <stdlib.h>
 #include <string.h>

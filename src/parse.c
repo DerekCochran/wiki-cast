@@ -21,10 +21,10 @@
  * After all requested stages, build() expands sentinel markers into the
  * child token tree.
  */
-#include "parse.h"
+#include "wiki_cast/parse.h"
 #include "accum.h"
 #include "build.h"
-#include "config.h"
+#include "wiki_cast/config.h"
 #include "util/log.h"
 #include "util/env_cache.h"
 #include "parser/braces.h"
@@ -36,7 +36,7 @@
 #include "parser/table.h"
 #include "util/string_util.h"
 #include "util/thread_buffer.h"
-#include "token.h"
+#include "wiki_cast/token.h"
 
 /* build() is declared in build.h */
 #include "parser/comment_and_ext.h"

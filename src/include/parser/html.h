@@ -7,9 +7,9 @@
  * attributes token to the accumulator.
  */
 #pragma once
-#include "token.h"
+#include "wiki_cast/token.h"
 #include "accum.h"
-#include "config.h"
+#include "wiki_cast/config.h"
 #include "util/string_util.h"
 
 /**

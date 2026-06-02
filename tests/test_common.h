@@ -11,7 +11,7 @@
 #include <errno.h>
 #include <time.h>
 #include "parse.h"
-#include "token.h"
+#include "wiki_cast/token.h"
 #include "util/thread_buffer.h"
 
 /* Print a unified diff between expected and got using the system diff command. */

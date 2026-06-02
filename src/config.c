@@ -11,7 +11,7 @@
  *   variants       : string[]
  *   excludes       : string[]           // absent in raw JSON; added by getConfig()
  */
-#include "config.h"
+#include "wiki_cast/config.h"
 #include "util/log.h"
 #include "util/thread_buffer.h"
 #include "util/callback_parser.h"

@@ -8,8 +8,8 @@
  * build() expands the markers back into the child token tree.
  */
 #pragma once
-#include "token.h"
-#include "config.h"
+#include "wiki_cast/token.h"
+#include "wiki_cast/config.h"
 #include <stdbool.h>
 
 /**

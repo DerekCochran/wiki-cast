@@ -1,7 +1,7 @@
-/* table_token.h — helpers to construct table-related tokens */
+/* table_wiki_cast/token.h — helpers to construct table-related tokens */
 #pragma once
 #include <stddef.h>
-#include "token.h"
+#include "wiki_cast/token.h"
 #include "accum.h"
 
 /* Create a TableToken with a syntax token, attributes token, and inner plain token.

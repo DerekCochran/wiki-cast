@@ -1,5 +1,5 @@
 /*
- * token.h — Token node types and lifecycle.
+ * wiki_cast/token.h — Token node types and lifecycle.
  *
  * Mirrors dist/src/index.js and the token hierarchy under dist/src/.
  * Each token type corresponds to a JS class.  Children can be either
