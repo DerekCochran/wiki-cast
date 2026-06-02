@@ -67,12 +67,6 @@ static bool gallery_caption_may_need_inline_parse(const char *s, size_t len) {
 	return false;
 }
 
-static size_t gallery_find_last_open_link_before(const char *txt, size_t upto) {
-	if(!txt || upto < 2) return SIZE_MAX;
-	const char *open = sz_rfind(txt, upto, "[[", 2);
-	return open ? (size_t)(open - txt) : SIZE_MAX;
-}
-
 static inline bool cae_tag_name_boundary(unsigned char c) {
     return c == '>' || c == '/' || isspace(c);
 }
@@ -1249,70 +1243,6 @@ static Token *build_references_inner_token(const char *inner_str, size_t inner_l
 	return t;
 }
 
-/* JS GalleryImageToken/FileToken parity for fallback/direct gallery-image params:
- * - parse caption text through in-file inline stages so links/quotes build.
- * - for malformed outer links like [[A|[[B|C]] tail, split at first pipe and
- *   parse right side as a second caption parameter. */
-static Token *make_gallery_caption_param_local(const char *txt, size_t tlen,
-															 const ParserConfig *cfg,
-															 const ParserConfig *links_cfg,
-															 Accum *accum) {
-	Token *cap= token_new(TOKEN_PLAIN, "image-parameter");
-	if(!cap) return NULL;
-	cap->name= strdup("caption");
-	if(!cap->name) {
-		token_free(cap);
-		return NULL;
-	}
-
-	if(!gallery_caption_may_need_inline_parse(txt, tlen)) {
-		token_append_text_n(cap, txt ? txt : "", tlen);
-		accum_push(accum, cap);
-		return cap;
-	}
-
-	ThreadBuf *tb= wiki_thread_buf_acquire_scratch_from_data(txt ? txt : "", tlen);
-	if(!tb) {
-		token_free(cap);
-		return NULL;
-	}
-
-	parse_comment_and_ext(tb, cfg, accum, false);
-	parse_braces(tb, cfg, accum);
-	parse_html(tb, cfg, accum);
-	parse_links(tb, links_cfg ? links_cfg : cfg, accum, NULL, false);
-	parse_quotes(tb, cfg, accum, false);
-	parse_external_links(tb, cfg, accum, false);
-	parse_magic_links(tb, cfg, accum);
-
-	build_from_str(cap, tb->buf, tb->len, accum);
-	if(cap->child_count == 1 && !cap->children[0].is_text && cap->children[0].token
-		&& cap->children[0].token->type == TOKEN_QUOTE) {
-		Token *qt= cap->children[0].token;
-		if(qt->child_count == 1 && qt->children[0].is_text && qt->children[0].text
-			&& qt->children[0].text_len == 2
-			&& qt->children[0].text[0] == '\'' && qt->children[0].text[1] == '\'') {
-			char *owned= malloc(3);
-			if(owned) {
-				owned[0]= '\'';
-				owned[1]= '\'';
-				owned[2]= '\0';
-				cap->children[0].is_text= true;
-				cap->children[0].text= owned;
-				cap->children[0].text_len= 2;
-				cap->children[0].text_owned= true;
-			}
-		}
-	}
-	if(cap->child_count == 0) {
-		token_append_text_n(cap, "", 0);
-	}
-	accum_push(accum, cap);
-
-	wiki_thread_buf_release_scratch(tb);
-	return cap;
-}
-
 static Token *make_gallery_caption_param_raw_local(const char *txt, size_t tlen, Accum *accum) {
 	Token *cap= token_new(TOKEN_PLAIN, "image-parameter");
 	if(!cap) return NULL;
@@ -2411,14 +2341,6 @@ static Token *parse_gallery_image_line_local(const char *line, size_t line_len,
 	if(pre_text_tb) wiki_thread_buf_release_scratch(pre_text_tb);
 	wiki_thread_buf_release_scratch(tmp_tb);
 	return out;
-}
-
-static Token *make_empty_noinclude_local(Accum *accum) {
-	Token *n= token_new(TOKEN_NOINCLUDE, "noinclude");
-	if(!n) return NULL;
-	token_append_text_n(n, "", 0);
-	accum_push(accum, n);
-	return n;
 }
 
 static Token *create_raw_link_token_local(const char *s, size_t len, Accum *accum) {

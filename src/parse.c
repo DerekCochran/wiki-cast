@@ -555,32 +555,6 @@ static char nested_token_marker_char(const Token *tok) {
 	return sym;
 }
 
-/* Write a JSON-escaped string of given length to fp (surrounded by quotes). */
-static void json_write_escaped_len(const char *s, size_t len, FILE *fp) {
-	if(!fp) return;
-	fputc('"', fp);
-	for(size_t i= 0; i < len; i++) {
-		unsigned char c= (unsigned char)s[i];
-		if(c == '"')
-			fputs("\\\"", fp);
-		else if(c == '\\')
-			fputs("\\\\", fp);
-		else if(c == '\n')
-			fputs("\\n", fp);
-		else if(c == '\r')
-			fputs("\\r", fp);
-		else if(c == '\t')
-			fputs("\\t", fp);
-		else if(c < 0x20)
-			fprintf(fp, "\\u%04x", c);
-		else
-			fputc(c, fp);
-	}
-	fputc('"', fp);
-}
-
-static void stage_json_write_token(const Token *t, FILE *fp, const Accum *accum);
-
 static bool parse_sentinel_shape(const char *s, size_t len, size_t pos,
 								 char *type_out, size_t *idx_out, size_t *next_pos_out) {
 	if(!s || pos >= len || (unsigned char)s[pos] != '\0') return false;
@@ -597,32 +571,6 @@ static bool parse_sentinel_shape(const char *s, size_t len, size_t pos,
 	if(idx_out) *idx_out = idx;
 	if(type_out) *type_out = s[type_pos];
 	if(next_pos_out) *next_pos_out = type_pos + 2;
-	return true;
-}
-
-static bool stage_json_parse_sentinel(const char *s, size_t len, size_t *pos, size_t *idx_out) {
-	if(!s || !pos || !idx_out) {
-		log_debug_env_token("WTC_DEBUG_STAGE_1", NULL,
-			"[C stage_json_parse_sentinel] invalid args pos_ptr=%p", (void*)pos);
-		return false;
-	}
-	if(*pos >= len) {
-		log_debug_env_token("WTC_DEBUG_STAGE_1", NULL,
-			"[C stage_json_parse_sentinel] pos >= len: pos=%zu len=%zu", *pos, len);
-		return false;
-	}
-	char type_ch = '\0';
-	size_t next_pos = 0;
-	if(!parse_sentinel_shape(s, len, *pos, &type_ch, idx_out, &next_pos)) {
-		log_debug_env_token("WTC_DEBUG_STAGE_1", NULL,
-			"[C stage_json_parse_sentinel] invalid sentinel shape at pos=%zu", *pos);
-		return false;
-	}
-
-	/* Success: advance pos to after the DEL */
-	*pos = next_pos;
-	log_debug_env_token("WTC_DEBUG_STAGE_1", NULL,
-		"[C stage_json_parse_sentinel] OK parsed idx=%zu type=%02X next_pos=%zu", *idx_out, (unsigned char)type_ch, *pos);
 	return true;
 }
 
@@ -644,213 +592,20 @@ static bool thread_buf_has_sentinel_type(const ThreadBuf *tb, char type_ch) {
 	return false;
 }
 
-static void stage_json_write_text(const char *s, size_t len, FILE *fp) {
-	fputs("{\"type\":\"text\",\"data\":", fp);
-	json_write_escaped_len(s, len, fp);
-	fputc('}', fp);
-}
-
-static void stage_json_write_text_segments(const char *s, size_t len,
-														 FILE *fp,
-														 const Accum *accum,
-														 bool *first) {
-	if(!s || len == 0) return;
-	const char znul = '\0';
-	if(sz_find_byte(s, len, &znul) == NULL) {
-		if(!*first) fputc(',', fp);
-		*first= false;
-		stage_json_write_text(s, len, fp);
-		return;
-	}
-
-	size_t pos= 0;
-	while(pos < len) {
-		if((unsigned char)s[pos] == '\0') {
-			/* Debug: log hex around this NUL so we can see sentinel bytes */
-			{
-				char hexbuf[128];
-				size_t hexpos = 0;
-				size_t lookahead = len - pos;
-				if(lookahead > 12) lookahead = 12;
-				for(size_t i = 0; i < lookahead && hexpos + 3 < sizeof(hexbuf); i++) {
-					int wn = snprintf(hexbuf + hexpos, sizeof(hexbuf) - hexpos, "%02X", (unsigned char)s[pos + i]);
-					if(wn > 0) hexpos += (size_t)wn;
-					if(i + 1 < lookahead && hexpos + 1 < sizeof(hexbuf)) hexbuf[hexpos++] = ' ';
-				}
-				hexbuf[hexpos] = '\0';
-				log_debug_env_token("WTC_DEBUG_STAGE_1", NULL,
-					"[C stage_json_write_text_segments] NUL at pos=%zu len=%zu lookahead_hex=%s",
-					pos, len, hexbuf);
-			}
-			size_t idx= 0;
-			size_t p= pos;
-			bool _sp_ok = stage_json_parse_sentinel(s, len, &p, &idx);
-			log_debug_env_token("WTC_DEBUG_STAGE_1", NULL,
-				"[C stage_json_write_text_segments] parse_sentinel=%d idx=%zu accum_count=%zu tok=%p",
-				(int)_sp_ok, idx,
-				accum ? accum->count : (size_t)-1,
-				(void*)(accum && idx < accum->count ? accum->tokens[idx] : NULL));
-			if(_sp_ok && accum && idx < accum->count && accum->tokens[idx]) {
-				if(!*first) fputc(',', fp);
-				*first= false;
-				stage_json_write_token(accum->tokens[idx], fp, accum);
-				pos= p;
-				continue;
-			}
-		}
-
-		size_t start= pos;
-		while(pos < len && (unsigned char)s[pos] != '\0') pos++;
-		if(pos > start) {
-			if(!*first) fputc(',', fp);
-			*first= false;
-			stage_json_write_text(s + start, pos - start, fp);
-		}
-	}
-}
-
-static void stage_json_write_token(const Token *t, FILE *fp, const Accum *accum) {
-	if(!t) {
-		fputs("null", fp);
-		return;
-	}
-
-	fputs("{\"type\":", fp);
-	sz_string_view_t subtype_name= token_subtype_name(t->subtype);
-	json_write_escaped_len(subtype_name.start ? subtype_name.start : "", subtype_name.length, fp);
-
-	if(t->name) {
-		fputs(",\"name\":", fp);
-		json_write_escaped_len(t->name, strlen(t->name), fp);
-	}
-
-	bool has_stage_children= false;
-	for(size_t i= 0; i < t->child_count; i++) {
-		const Child *c= &t->children[i];
-		if(c->is_text) {
-			if(c->text_len > 0) {
-				has_stage_children= true;
-				break;
-			}
-		} else {
-			has_stage_children= true;
-			break;
-		}
-	}
-
-	if(has_stage_children) {
-		fputs(",\"childNodes\":[", fp);
-		bool first= true;
-		for(size_t i= 0; i < t->child_count; i++) {
-			const Child *c= &t->children[i];
-			if(c->is_text) {
-				{
-					char _hbuf[128]; size_t _hp = 0;
-					size_t _ls = (c->text_len > 86) ? 86 : 0;
-					size_t _le = (_ls + 6 < c->text_len) ? _ls + 6 : c->text_len;
-					for(size_t _qi = _ls; _qi < _le && _hp + 3 < sizeof(_hbuf); _qi++) {
-						int _wn = snprintf(_hbuf+_hp, sizeof(_hbuf)-_hp, "%02X", (unsigned char)c->text[_qi]);
-						if(_wn > 0) _hp += (size_t)_wn;
-						if(_qi+1 < _le && _hp < sizeof(_hbuf)) _hbuf[_hp++] = ' ';
-					}
-					_hbuf[_hp] = '\0';
-					sz_string_view_t log_subtype_name= token_subtype_name(t->subtype);
-					log_debug_env_token("WTC_DEBUG_STAGE_1", NULL,
-						"[C write_tok_child] tok_type=%s text_len=%zu ptr=%p bytes_at[%zu..%zu]=%s",
-						log_subtype_name.start ? log_subtype_name.start : "?", c->text_len, (void*)c->text,
-						_ls, _le, _hbuf);
-				}
-				stage_json_write_text_segments(c->text, c->text_len, fp, accum, &first);
-			} else {
-				if(!first) fputc(',', fp);
-				first= false;
-				stage_json_write_token(c->token, fp, accum);
-			}
-		}
-		fputs("]", fp);
-	}
-
-	fputc('}', fp);
-}
-
 /* Append a JSON snapshot representing the current root content (ws)
  * to <stage_log_dir>/native-stage.log. The ws buffer is scanned for
  * sentinel markers (\0<digits><ch>\x7F) and token entries from the
- * accumulator are embedded via json_stringify_wikiparser_node(). */
-static void append_native_stage_json(const char *stage_log_dir, int stage, ThreadBuf *ws, Accum *accum) {
+ * accumulator are embedded. */
+static void append_native_stage_json(const char *stage_log_dir, int stage, Token *Token, ThreadBuf *ws) {
 	if(!stage_log_dir || !ws) return;
-	/* Also emit human-readable dumps of the stage and tokens arena to stdout
-	 * when requested via env var WTC_DEBUG_STAGE_DUMP. This helps narrow which
-	 * stage produces or corrupts sentinel markers. */
 	wiki_thread_buf_log_state(NULL, ws);
 	char pathbuf[1024];
 	snprintf(pathbuf, sizeof(pathbuf), "%s/native-stage.log", stage_log_dir);
 	FILE *f= fopen(pathbuf, "a");
 	if(!f) return;
 	fprintf(f, "Stage %d: ", stage);
-	/* Emit a root object with childNodes array */
-	fputs("{\"type\":\"root\",\"childNodes\":[", f);
-	const char znul = '\0';
-	if(sz_find_byte(ws->buf, ws->len, &znul) == NULL) {
-		stage_json_write_text(ws->buf, ws->len, f);
-		fputs("]}\n", f);
-		fclose(f);
-		return;
-	}
-
-	bool first= true;
-	size_t pos= 0;
-	while(pos < ws->len) {
-		if((unsigned char)ws->buf[pos] == '\0') {
-			{
-				char hexbuf[128];
-				size_t hexpos = 0;
-				size_t lookahead = ws->len - pos;
-				if(lookahead > 8) lookahead = 8;
-				for(size_t i = 0; i < lookahead && hexpos + 3 < sizeof(hexbuf); i++) {
-					int wn = snprintf(hexbuf + hexpos, sizeof(hexbuf) - hexpos, "%02X", (unsigned char)ws->buf[pos + i]);
-					if(wn > 0) hexpos += (size_t)wn;
-					if(i + 1 < lookahead && hexpos + 1 < sizeof(hexbuf)) hexbuf[hexpos++] = ' ';
-				}
-				hexbuf[hexpos] = '\0';
-				log_debug_env_token("WTC_DEBUG_STAGE_1", NULL,
-					"[C append_native_stage_json] NUL at pos=%zu lookahead=%zu hex=%s",
-					pos, lookahead, hexbuf);
-			}
-			/* sentinel: \0<digits><ch>\x7F */
-			pos++;
-			size_t numStart= pos;
-			while(pos < ws->len && isdigit((unsigned char)ws->buf[pos])) pos++;
-			size_t numLen= pos - numStart;
-			if(numLen == 0) continue;
-			char numbuf[32];
-			if(numLen >= sizeof(numbuf)) continue;
-			sz_copy(numbuf, ws->buf + numStart, numLen);
-			numbuf[numLen]= '\0';
-			long idx= strtol(numbuf, NULL, 10);
-			/* skip the sentinel char and the trailing 0x7F if present */
-			if(pos < ws->len) pos++;
-			if(pos < ws->len && (unsigned char)ws->buf[pos] == 0x7F) pos++;
-
-			if(!first) fputc(',', f);
-			first= false;
-
-			if(idx >= 0 && (size_t)idx < accum->count && accum->tokens[idx]) {
-				stage_json_write_token(accum->tokens[idx], f, accum);
-			} else {
-				fputs("null", f);
-			}
-		} else {
-			size_t start= pos;
-			while(pos < ws->len && (unsigned char)ws->buf[pos] != '\0') pos++;
-			size_t seglen= pos - start;
-			if(!first) fputc(',', f);
-			first= false;
-			stage_json_write_text(ws->buf + start, seglen, f);
-		}
-	}
-
-	fputs("]}\n", f);
+	// Get the root node and write it out as JSON, replacing sentinel markers with the corresponding token JSON from the accumulator.
+	fputs(json_stringify_wikiparser_node(Token, false), f);
 	fclose(f);
 }
 
@@ -2915,7 +2670,7 @@ Token *wiki_parse_with_page(const char *wikitext, size_t input_len, const Parser
 
 		/* If stage logging enabled, append a JSON snapshot to native-stage.log */
 		if(stage_log_dir) {
-			append_native_stage_json(stage_log_dir, stage, ws, &accum);
+			append_native_stage_json(stage_log_dir, stage, root, ws);
 		}
 	}
 

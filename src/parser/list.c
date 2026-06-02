@@ -209,14 +209,6 @@ static Token *make_dd_token(const char *syntax, size_t syntax_len, Accum *accum)
  */
 static char **split_on_semicolon_lookahead_with_len(const char *s, size_t len,
 																											 size_t *out_count,
-																											 size_t **out_lens);
-
-static char **split_on_semicolon_lookahead(const char *s, size_t len, size_t *out_count) {
-	return split_on_semicolon_lookahead_with_len(s, len, out_count, NULL);
-}
-
-static char **split_on_semicolon_lookahead_with_len(const char *s, size_t len,
-																											 size_t *out_count,
 																											 size_t **out_lens) {
 	size_t cap= 8, count= 0;
 	char **parts= malloc(cap * sizeof(char *));

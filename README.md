@@ -30,10 +30,10 @@ This product is still in a pre-release phase with undocumented discrepencies wit
 
 This is based on the [english wikipedia download](https://dumps.wikimedia.org/enwiki/latest/) for 5,828,408 samples.
 
-| Parser          | Min  | Max     | Mean | Stnd Dev | p50 | p95  | p99  |
-|-----------------|------|---------|------|----------|-----|------|------|
-| wikiparser-node | 0.0  | 1880.0  | 8.85 |  22.7899 | 4.0 | 30.0 | 96.0 |
-| wiki-cast       | 0.0  |   222.0 | 1.11 |   2.6058 | 1.0 |  4.0 | 11.0 |
+| Parser          | Min  | Max    | Mean | Stnd Dev | p50 | p95  | p99  |
+|-----------------|------|--------|------|----------|-----|------|------|
+| wikiparser-node | 0.0  | 1880.0 | 8.85 |  22.7899 | 4.0 | 30.0 | 96.0 |
+| wiki-cast       | 0.0  |  222.0 | 1.11 |   2.6058 | 1.0 |  4.0 | 11.0 |
 
 Speedup (mean first/second): 7.9130x
 Mean percent change (second vs first): -87.36%

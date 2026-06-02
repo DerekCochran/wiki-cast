@@ -187,7 +187,10 @@ static void print_diff(const char *expected,
     snprintf(cmd, cmd_len,
              "diff --unified=3 --label expected --label got %s %s > %s",
              path_exp, path_got, path_diff);
-    system(cmd);
+    int status = system(cmd);
+    if (status == -1) {
+        fprintf(stderr, "Warning: Failed to execute diff command subsystem.\n");
+    }    
     free(cmd);
 
     printf("  expected file: %s\n", path_exp);
