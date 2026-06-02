@@ -159,6 +159,10 @@ const ParserRules wiki_rule_dunder_ascii = {
     .close_delim         = "__",
     .close_len           = 2,
     .match_mode          = PARSER_MATCH_FIRST_CLOSE,
+    /* JS parity: dunder keywords are compact words (no embedded whitespace).
+     * Rejecting whitespace here prevents greedy spans like URL "__" ... "__NOTOC__". */
+    .prohibited_chars    = " \t\r\n",
+    .prohibited_chars_len= 4,
 };
 
 /* FULLWIDTH LOW LINE pair: ＿＿([\s\S]*?)＿＿ */
@@ -168,6 +172,8 @@ const ParserRules wiki_rule_dunder_fullwidth = {
     .close_delim         = "\xEF\xBC\xBF\xEF\xBC\xBF",
     .close_len           = 6,
     .match_mode          = PARSER_MATCH_FIRST_CLOSE,
+    .prohibited_chars    = " \t\r\n",
+    .prohibited_chars_len= 4,
 };
 
 /* \[([\s\S]*?)\] — used by parse_external_links callback scanner */

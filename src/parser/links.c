@@ -20,25 +20,10 @@
 #include <string.h>
 #include <strings.h>
 
-/* Keep this in sync with C.5 consume_js_zs(). */
-static size_t consume_js_zs_proto(const char *s, size_t len, size_t i) {
-    if(i >= len) return 0;
-    unsigned char c0 = (unsigned char)s[i];
-    if(c0 == 0x20) return 1; /* U+0020 */
-    if(i + 1 < len && c0 == 0xC2 && (unsigned char)s[i + 1] == 0xA0) return 2; /* U+00A0 */
-    if(i + 2 < len && c0 == 0xE1 && (unsigned char)s[i + 1] == 0x9A && (unsigned char)s[i + 2] == 0x80) return 3; /* U+1680 */
-    if(i + 2 < len && c0 == 0xE2 && (unsigned char)s[i + 1] == 0x80 &&
-       (unsigned char)s[i + 2] >= 0x80 && (unsigned char)s[i + 2] <= 0x8A) return 3; /* U+2000..U+200A */
-    if(i + 2 < len && c0 == 0xE2 && (unsigned char)s[i + 1] == 0x80 && (unsigned char)s[i + 2] == 0xAF) return 3; /* U+202F */
-    if(i + 2 < len && c0 == 0xE2 && (unsigned char)s[i + 1] == 0x81 && (unsigned char)s[i + 2] == 0x9F) return 3; /* U+205F */
-    if(i + 2 < len && c0 == 0xE3 && (unsigned char)s[i + 1] == 0x80 && (unsigned char)s[i + 2] == 0x80) return 3; /* U+3000 */
-    return 0;
-}
-
 static size_t consume_links_space(const char *s, size_t len, size_t i) {
     if(i >= len) return 0;
     if(s[i] == '\t' || s[i] == '\n' || s[i] == '\r' || s[i] == '\f' || s[i] == '\v') return 1;
-    return consume_js_zs_proto(s, len, i);
+	return str_js_zs_len_at(s, len, i);
 }
 
 static bool scan_next_sentinel_any(const char *s, size_t len, size_t *pos,
@@ -737,9 +722,24 @@ static bool img_param_validate(const char *name, const char *val_ptr, size_t val
 		}
 	} else {
 		/* default: Boolean(value) && !isNaN(value) */
-		if(sz_find_byte(val_ptr, val_len, "\0") != NULL) {
-			/* JS parity: embedded sentinels remain part of the string for Number()
-			 * and make numeric validation fail; C strtod would incorrectly stop at NUL. */
+		bool has_unstripped_sentinel= false;
+		size_t spos= 0;
+		for(;;) {
+			size_t sn= 0;
+			char st= '\0';
+			size_t stotal= 0;
+			if(!scan_next_sentinel_any(val_ptr, val_len, &spos, &sn, &st, &stotal)) break;
+			(void)sn;
+			(void)stotal;
+			if(st != 'c' && st != 't') {
+				has_unstripped_sentinel= true;
+				break;
+			}
+		}
+
+		if(has_unstripped_sentinel) {
+			/* JS parity: removeComment/template stripping is already modeled above;
+			 * remaining sentinels should still cause Number() coercion to fail. */
 			result= false;
 		} else if(*value) {
 			char *endp;

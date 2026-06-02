@@ -42,6 +42,18 @@ char *str_remove_comment(const char *s, size_t len, size_t *out_len);
 /* ── trimLc: trim whitespace and lowercase ───────────────────────────────── */
 char *str_trim_lc(const char *s, size_t len);
 
+/* ── JS-parity whitespace helpers ─────────────────────────────────────────── */
+/* Unicode Zs set used by protocol/link URL regex paths. */
+size_t str_js_zs_len_at(const char *s, size_t len, size_t i);
+
+/* JS String.prototype.trim() whitespace set (
+ * ASCII ws + Unicode Zs + U+2028/U+2029 + U+FEFF). */
+size_t str_js_trim_ws_len_at(const char *s, size_t len, size_t i);
+size_t str_js_trim_ws_suffix_len(const char *s, size_t end);
+
+/* Trim a byte-range view in place using JS trim whitespace semantics. */
+void str_trim_view_js(const char **ptr, size_t *len);
+
 /* ── decodeHtmlBasic: decode basic HTML entities ────────────────────────── */
 /**
  * Decode &lt; &gt; &amp; &quot; &lbrack; &rbrack; &lbrace; &rbrace; &nbsp;

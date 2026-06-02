@@ -1,24 +1,12 @@
 #!/usr/bin/env node
 'use strict';
-// Parity test: templates, arguments, section headings (stage 1 – parseBraces).
+const fs = require('fs');
 const { runTests } = require('./helpers');
 
-const tempTests = [
-  
-`{{Infobox automobile
-| name == Dodge Viper SRT-10 (ZB II) ==
-| manufacturer = [[Chrysler LLC]]<br>[[Chrysler Group LLC]]
-|'''Coupé:''' {{convert|47.6|in|mm|abbr=on}}
-|'''Convertible:''' {{convert|48.6|in|mm|abbr=on}}
-}}
-| weight = {{ubl
-|'''SRT-10:''' {{convert|3460|lb|kg|0|abbr=on}}
-|'''ACR:''' {{convert|3408|lb|kg|abbr=on}}
-}}
-| predecessor = [[Dodge Viper (ZB I)]]
-| successor = [[Dodge Viper (VX I)]]
-}}`,
+process.env.WIKI_STAGE_LOG_DIR = process.env.WIKI_STAGE_LOG_DIR || '/tmp/wiki_native_stage_compare';
 
+const tempTests = [
+  fs.readFileSync('/tmp/wiki_latest_failed.txt', 'utf8')
 ];
 
 if (process.argv[1] === __filename) {

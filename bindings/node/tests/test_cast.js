@@ -5,6 +5,11 @@ const { runTests } = require('./helpers');
 
 const castTests = [
   // Failures from export of wikitexts
+  `[[File:Jalayirid dynasty.png|thumb|upright=1.3|[[Jalayirid dynasty]], and contribution from the line of [[Genghis Khan]].{{sfn|Wing|2016|p=231}]]`,
+  `===Scholarship distribution chart===
+ 
+`,
+  `== Awards and honors ==\n<NBSP>\n`,
 // `{| class="wikitable" width="100%"
 // ! style="width:6%" | Event
 // |-

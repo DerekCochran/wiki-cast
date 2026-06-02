@@ -914,6 +914,34 @@ static Token *build_template_token(const char **parts_restored, const size_t *pa
 				token_append_child(t, mw_name);
 			}
 		} else {
+			size_t hb= 0;
+			while(hb < p0_len) {
+				size_t sl= 0;
+				if(isspace((unsigned char)title_part[hb])) {
+					hb++;
+					continue;
+				}
+				if(parse_sentinel_at_allowed(title_part, p0_len, hb, "cn", 2, &sl)) {
+					hb += sl;
+					continue;
+				}
+				break;
+			}
+			bool hash_prefixed= (hb < p0_len && title_part[hb] == '#');
+			if(!hash_prefixed) {
+				for(size_t p= 0; p < p0_len;) {
+					size_t sl= 0;
+					if(title_part[p] == '<' || title_part[p] == '>') {
+						token_free(t);
+						return NULL;
+					}
+					if(parse_sentinel_at_allowed(title_part, p0_len, p, "x", 1, &sl)) {
+						token_free(t);
+						return NULL;
+					}
+					p += (sl > 0) ? sl : 1;
+				}
+			}
 			/* JS parity: template names are validated with normalizeTitle(..., 10,
 			 * {halfParsed:true, temporary:true}) and throw on invalid input. */
 			if(cfg) {
@@ -1233,6 +1261,18 @@ static Token *build_from_inner(const char *inner, size_t inner_len,
 		si= j + 1;
 	} while(1);
 
+	if(!is_arg && part_count > 0 && parts[0]) {
+		for(size_t p= 0; p < plens[0]; p++) {
+			if(parts[0][p] == '<' || parts[0][p] == '>') {
+				free(parts_named);
+				for(size_t q= 0; q < part_count; q++) free(parts[q]);
+				free(parts);
+				free(plens);
+				return NULL;
+			}
+		}
+	}
+
 	Token *tok= build_template_token((const char **)parts, plens, part_count, is_arg, cfg, accum, parts_named);
 	free(parts_named);
 	for(size_t p= 0; p < part_count; p++) free(parts[p]);
@@ -1525,6 +1565,37 @@ static bool braces_state_machine(ThreadBuf *tb, const ParserConfig *cfg,
 				if(stack_len == 0) {
 				const char *slice= tb->buf + top.index;
 				size_t slice_len= cur_index - top.index;
+				bool defer_to_stage4= false;
+				{
+					size_t scan= cur_index;
+					size_t last_boundary= cur_index;
+					bool consumed_non_newline= false;
+					bool consumed_newline= false;
+					while(scan < tb->len) {
+						size_t sc= 0;
+						if(parse_sentinel_at_allowed(tb->buf, tb->len, scan, "cn", 2, &sc)) {
+							scan+= sc;
+							consumed_non_newline= true;
+							if(scan == tb->len || tb->buf[scan] == '\n') last_boundary= scan;
+							continue;
+						}
+						size_t ws= str_js_trim_ws_len_at(tb->buf, tb->len, scan);
+						if(ws > 0) {
+							if(ws == 1 && tb->buf[scan] == '\n') {
+								if(consumed_newline) break;
+								consumed_newline= true;
+							} else {
+								consumed_non_newline= true;
+							}
+							scan+= ws;
+							if(scan == tb->len || tb->buf[scan] == '\n') last_boundary= scan;
+							continue;
+						}
+						break;
+					}
+					defer_to_stage4= (last_boundary > cur_index) && (consumed_non_newline || consumed_newline);
+				}
+				if(!defer_to_stage4) {
 				HeadingLineResult hr;
 				if(heading_line_parse(slice, slice_len, &hr)) {
 					size_t title_start = (size_t)(hr.content - slice);
@@ -1585,6 +1656,7 @@ static bool braces_state_machine(ThreadBuf *tb, const ParserConfig *cfg,
 						}
 						free(title);
 					}
+				}
 				}
 				}
 			} else if(has_top) {

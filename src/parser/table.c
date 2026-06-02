@@ -329,6 +329,7 @@ bool table_line_classify(const char *line, size_t len, TableLineResult *out) {
 	if (!line || !out || len == 0) return false;
 	out->is_th    = false;
 	out->has_plus = false;
+	const bool has_u2028 = (sz_find(line, len, "\xE2\x80\xA8", 3) != NULL);
 
 	/* GROUP 1: table close — literal '|}' or sentinel+ '}' or sentinel '}' sentinel */
 	/* literal |} */
@@ -385,6 +386,7 @@ bool table_line_classify(const char *line, size_t len, TableLineResult *out) {
 
 	/* GROUP 3: cell opener */
 	if (line[0] == '!') {
+		if(has_u2028) return false;
 		out->kind = TABLE_LINE_CELL;
 		out->is_th = true;
 		out->rest = line + 1;
@@ -392,6 +394,7 @@ bool table_line_classify(const char *line, size_t len, TableLineResult *out) {
 		return true;
 	}
 	if (line[0] == '|') {
+		if(has_u2028) return false;
 		out->kind = TABLE_LINE_CELL;
 		out->has_plus = (len >= 2 && line[1] == '+');
 		size_t skip = out->has_plus ? 2 : 1;
@@ -401,6 +404,7 @@ bool table_line_classify(const char *line, size_t len, TableLineResult *out) {
 	}
 	sl = sentinel_at(line, len, 0, '!');
 	if (sl) {
+		if(has_u2028) return false;
 		out->kind = TABLE_LINE_CELL;
 		out->has_plus = (sl < len && line[sl] == '+');
 		size_t skip = sl + (out->has_plus ? 1 : 0);
@@ -692,19 +696,21 @@ static void parse_table_attrs(Token *attrs_tok, const char *attr_str, size_t att
 				APPEND_DIRTY_SPAN(i, eq_take);
 				i+= eq_take;
 				if(i < attr_len && (attr_str[i] == '"' || attr_str[i] == '\'')) {
-					size_t vstart= i;
-					char q= attr_str[i++];
-					while(i < attr_len) {
-						if(attr_str[i++] == q) break;
-					}
-					APPEND_DIRTY_SPAN(vstart, i - vstart);
-				} else {
-					size_t vstart= i;
-					while(i < attr_len && table_ws_len_at(attr_str, attr_len, i) == 0) {
-						i++;
-					}
-					APPEND_DIRTY_SPAN(vstart, i - vstart);
+					/* JS parity: for malformed ='quoted...' chunks, keep only '=' dirty
+					 * so inner space-delimited fragments can still be tokenized. */
+					continue;
 				}
+				/* Unquoted '=value' remains one dirty chunk in JS. */
+				size_t vstart= i;
+				while(i < attr_len) {
+					size_t lead_ws= table_ws_len_at(attr_str, attr_len, i);
+					if(lead_ws == 0) break;
+					i+= lead_ws;
+				}
+				while(i < attr_len && table_ws_len_at(attr_str, attr_len, i) == 0) {
+					i++;
+				}
+				APPEND_DIRTY_SPAN(vstart, i - vstart);
 				continue;
 			}
 			APPEND_DIRTY_SPAN(i, 1);
@@ -759,6 +765,20 @@ static void parse_table_attrs(Token *attrs_tok, const char *attr_str, size_t att
 
 		size_t eq_sl= (i < attr_len) ? sentinel_at(attr_str, attr_len, i, '~') : 0;
 		if(i >= attr_len || (attr_str[i] != '=' && eq_sl == 0)) {
+			size_t look= key_start;
+			while(look > 0) {
+				size_t ws= table_ws_len_at(attr_str, attr_len, look - 1);
+				if(ws == 0) break;
+				look--;
+			}
+			if(look > 0 && attr_str[look - 1] == '=') {
+				APPEND_DIRTY_SPAN(key_start, key_len);
+				if(ws_start < i) {
+					APPEND_DIRTY_SPAN(ws_start, i - ws_start);
+				}
+				continue;
+			}
+
 			FLUSH_DIRTY();
 			Token *at= make_table_attr(key, key_len, NULL, 0, NULL, 0, '\0', '\0', accum);
 			if(at) token_append_child(attrs_tok, at);

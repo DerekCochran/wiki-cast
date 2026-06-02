@@ -24,33 +24,23 @@ The process of creating Wiki-CAST generated a large amount of tests.  We can use
 
 ## Issues
 
-This product is still in a pre-release phase with undocumented discrepencies between wikiparser-node.  The testing for other parsers has not been completed, or even started.  If you see an issue you want resolved, feel free to enter it.  However, I may not get to it with the other work needed.
+This product is still in a pre-release phase with undocumented discrepencies with wikiparser-node.  The testing for other parsers has not been completed, or even started.  If you see an issue you want resolved, feel free to enter it.  However, I may not get to it with the other work needed.
 
 ## Performance
 
-This is based on the [english wikipedia download](https://dumps.wikimedia.org/enwiki/latest/) for 7,176,400 samples.
+This is based on the [english wikipedia download](https://dumps.wikimedia.org/enwiki/latest/) for 5,828,408 samples.
 
 | Parser          | Min  | Max     | Mean | Stnd Dev | p50 | p95  | p99  |
 |-----------------|------|---------|------|----------|-----|------|------|
-| wikiparser-node | 0.0  | 1711.0  | 8.41 |  21.0378 | 4.0 | 28.0 | 92.0 |
-| wiki-cast       | 0.0  | 67640.0 | 1.29 |  32.9396 | 1.0 |  5.0 | 13.0 |
+| wikiparser-node | 0.0  | 1880.0  | 8.85 |  22.7899 | 4.0 | 30.0 | 96.0 |
+| wiki-cast       | 0.0  |   222.0 | 1.11 |   2.6058 | 1.0 |  4.0 | 11.0 |
 
-Speedup (mean first/second): 6.4837x  
-Mean percent change (second vs first): -84.58%
-
-**NOTE**: REDO!!  This is based on a debug build, but it does show the max has gone down.
-
-| Parser          | Min  | Max     | Mean | Stnd Dev | p50 | p95  | p99   |
-|-----------------|------|---------|------|----------|-----|------|-------|
-| wikiparser-node | 0.0  | 2150.0  | 9.09 |  23.5031 | 4.0 | 31.0 | 101.0 |
-| wiki-cast       | 0.0  | 368.0   | 2.51 |   5.2563 | 1.0 |  9.0 |  24.0 |
-
-Speedup (mean first/second): 3.6187x
-Mean percent change (second vs first): -72.37%
+Speedup (mean first/second): 7.9130x
+Mean percent change (second vs first): -87.36%
 
 ## Testing
 
-This closely matches the wikiparser-node AST generated.  There is a [custom JSON creation](./bindings/node/src/addon.c) to match the shape of its AST.  On the last test executed, there were 523 wikitext articles out of 7,176,400 million that did not match.
+This closely matches the wikiparser-node AST generated.  There is a [custom JSON creation](./bindings/node/src/addon.c) to match the shape of its AST.  On the last test executed, there were 268 wikitext articles out of 7,176,400 million that did not match.
 
 This testing is just phase 1.  It gets WIKI-CAST to match at least one implementation and gives us a large number of tests to verify against other implementeations.  However, Parsoid is the source of truth.  We must [verify against it](https://github.com/DerekCochran/wiki-cast/issues/9) if we are to meet the pipe dream.
 
@@ -95,15 +85,13 @@ so ICU is required for both CMake and Node addon builds.
 
 **Build**
 
-```bash
-rm -rf build
-mkdir -p build
-```
 The project defaults to a Release build for single-config generators. Examples:
 
 Release (default):
 
 ```bash
+rm -rf build
+mkdir -p build
 cmake -S . -B build -DCMAKE_BUILD_TYPE=Release
 cmake --build build -j"$(nproc)"
 ```
@@ -221,5 +209,84 @@ sudo chown djc:djc -R build_profile
 
 - **Interpretation:** Start with the flamegraph to find heavy call stacks. For hotspots, run Callgrind on a smaller reproducer to inspect callers/callees in detail (open `callgrind.out` with `kcachegrind`). Use `perf report` and `perf script` for quick sampling summaries.
 
+```bash
+perf report --hierarchy -M intel
+
+perf script 2>/dev/null | awk '
+  # If the line starts with a tab and isn'\''t unknown, buffer the function name
+  /^\t/ && !/\[unknown\]/ {
+    split($2, parts, "+");
+    if (parts[1] != "") {
+      stack[count++] = parts[1];
+    }
+  }
+  
+  # When we hit an empty line, we have finished capturing one full stack trace
+  /^$/ {
+    # Process the buffered stack from bottom (count-1) to top (0)
+    # This correctly maps parent -> child
+    for (i = count - 1; i > 0; i--) {
+      parent = stack[i];
+      child = stack[i-1];
+      print parent " -> " child;
+    }
+    # Clear the buffer for the next stack trace sample
+    count = 0;
+    delete stack;
+  }
+' | sort -u
+```
+
 Notes: the helper script creates/uses `build_profile/` — you can delete it after profiling. Ensure `perf`, `valgrind`, and `gprof` are installed as needed.
 
+
+## Documentation
+
+
+### Call Chain
+
+Get the call chain for a particular function.
+
+```bash
+rm -f cscope*
+find . -name "*.c" -o -name "*.h" | grep -vE 'build|node_modules|tests|addon' > cscope.files
+cscope -b -q -k
+
+# 1. Define the robust path-escaping tracker
+trace_full_path() {
+    local current_func="$1"
+    local accumulated_path="$2"
+    local visited_functions="$3"
+
+    # Query who calls the current function
+    local callers=$(cscope -L -3 "$current_func" | awk '{print $2}' | sort -u)
+    
+    # Base Case: We successfully reached an absolute entry root (like main)
+    if [[ -z "$callers" ]]; then
+        echo "${current_func}${accumulated_path}"
+        return
+    fi
+    
+    # Mark the current function as visited for this branch's history
+    local new_visited="${visited_functions} ${current_func} "
+    
+    for parent in $callers; do
+        # If the parent is a part of an A <-> B loop we already tracked in this branch,
+        # skip it so we don't spin infinitely, but don't terminate the whole function.
+        if [[ " $new_visited " == *" $parent "* ]]; then
+            continue
+        fi
+        
+        # Safely recurse upward through the clean parent
+        trace_full_path "$parent" " -> ${current_func}${accumulated_path}" "$new_visited"
+    done
+    
+}
+
+# 2. Kick off the trace at token_new
+trace_full_path "token_new" "" "" > full_path_chains.txt
+
+# 3. Filter, sort, and display the clean, escaped pathways
+sort -u full_path_chains.txt -o full_path_chains.txt
+cat full_path_chains.txt
+```

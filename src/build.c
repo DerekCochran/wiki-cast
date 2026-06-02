@@ -369,41 +369,6 @@ static void append_key_token_repr_tb(const Token *t, ThreadBuf *tb) {
 	}
 }
 
-/* JS String.prototype.trim() parity for template-name normalization. */
-static size_t js_trim_ws_at(const char *s, size_t len, size_t i) {
-	if(i >= len) return 0;
-	unsigned char c0= (unsigned char)s[i];
-	if(c0 == 0x09 || c0 == 0x0A || c0 == 0x0B || c0 == 0x0C || c0 == 0x0D || c0 == 0x20) return 1;
-	if(i + 1 < len && c0 == 0xC2 && (unsigned char)s[i + 1] == 0xA0) return 2; /* U+00A0 */
-	if(i + 2 < len && c0 == 0xE1 && (unsigned char)s[i + 1] == 0x9A && (unsigned char)s[i + 2] == 0x80) return 3; /* U+1680 */
-	if(i + 2 < len && c0 == 0xE2 && (unsigned char)s[i + 1] == 0x80) {
-		unsigned char c2= (unsigned char)s[i + 2];
-		if((c2 >= 0x80 && c2 <= 0x8A) || c2 == 0xA8 || c2 == 0xA9 || c2 == 0xAF) return 3; /* U+2000..U+200A/U+2028/U+2029/U+202F */
-	}
-	if(i + 2 < len && c0 == 0xE2 && (unsigned char)s[i + 1] == 0x81 && (unsigned char)s[i + 2] == 0x9F) return 3; /* U+205F */
-	if(i + 2 < len && c0 == 0xE3 && (unsigned char)s[i + 1] == 0x80 && (unsigned char)s[i + 2] == 0x80) return 3; /* U+3000 */
-	if(i + 2 < len && c0 == 0xEF && (unsigned char)s[i + 1] == 0xBB && (unsigned char)s[i + 2] == 0xBF) return 3; /* U+FEFF */
-	return 0;
-}
-
-static size_t js_trim_ws_before(const char *s, size_t end) {
-	if(end == 0) return 0;
-	unsigned char c1= (unsigned char)s[end - 1];
-	if(c1 == 0x09 || c1 == 0x0A || c1 == 0x0B || c1 == 0x0C || c1 == 0x0D || c1 == 0x20) return 1;
-	if(end >= 2 && (unsigned char)s[end - 2] == 0xC2 && (unsigned char)s[end - 1] == 0xA0) return 2;
-	if(end >= 3) {
-		unsigned char c0= (unsigned char)s[end - 3];
-		unsigned char c2= (unsigned char)s[end - 2];
-		unsigned char c3= (unsigned char)s[end - 1];
-		if(c0 == 0xE1 && c2 == 0x9A && c3 == 0x80) return 3;
-		if(c0 == 0xE2 && c2 == 0x80 && ((c3 >= 0x80 && c3 <= 0x8A) || c3 == 0xA8 || c3 == 0xA9 || c3 == 0xAF)) return 3;
-		if(c0 == 0xE2 && c2 == 0x81 && c3 == 0x9F) return 3;
-		if(c0 == 0xE3 && c2 == 0x80 && c3 == 0x80) return 3;
-		if(c0 == 0xEF && c2 == 0xBB && c3 == 0xBF) return 3;
-	}
-	return 0;
-}
-
 /* JS parity: TranscludeToken.afterBuild() sets the normalized template name.
  * In JS this happens after build() completes, so the name is absent from
  * stage-log snapshots captured during parseBraces (Stage 1). */
@@ -430,12 +395,12 @@ static void refresh_template_name(Token *t, const ParserConfig *cfg) {
 	size_t start= 0;
 	size_t end= len;
 	while(start < end) {
-		size_t ws= js_trim_ws_at(text, end, start);
+		size_t ws= str_js_trim_ws_len_at(text, end, start);
 		if(ws == 0) break;
 		start+= ws;
 	}
 	while(end > start) {
-		size_t ws= js_trim_ws_before(text, end);
+		size_t ws= str_js_trim_ws_suffix_len(text, end);
 		if(ws == 0) break;
 		end-= ws;
 	}
@@ -447,6 +412,26 @@ static void refresh_template_name(Token *t, const ParserConfig *cfg) {
 	if(len == 0) {
 		wiki_thread_buf_release_scratch(scratch);
 		return;
+	}
+
+	if(sz_find(text, len, "{{", 2) != NULL) {
+		ThreadBuf *name_tb= wiki_thread_buf_acquire_scratch();
+		if(name_tb) {
+			wiki_thread_buf_set(name_tb, "Template:", 9);
+			for(size_t i= 0; i < len; i++) {
+				unsigned char ch= (unsigned char)text[i];
+				if(ch == ' ' || ch == '\t' || ch == '\n' || ch == '\r' || ch == '\f' || ch == '\v') {
+					wiki_thread_buf_putc(name_tb, '_');
+				} else {
+					wiki_thread_buf_putc(name_tb, (char)ch);
+				}
+			}
+			char *name= strndup(name_tb->buf, name_tb->len);
+			wiki_thread_buf_release_scratch(name_tb);
+			wiki_thread_buf_release_scratch(scratch);
+			if(name) token_set_name_owned(t, name);
+			return;
+		}
 	}
 
 	Title *parsed= title_parse_half_parsed(text, len, 10, cfg, true, NULL);

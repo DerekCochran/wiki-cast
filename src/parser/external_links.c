@@ -43,21 +43,6 @@ static size_t skip_exturl_sentinel(const char *s, size_t len, size_t i) {
     return skip_typed_sentinel_any(s, len, i, "cn!~", 4);
 }
 
-/* JS zs = " \xA0\u1680\u2000-\u200A\u202F\u205F\u3000" */
-static size_t consume_js_zs(const char *s, size_t len, size_t i) {
-    if(i >= len) return 0;
-    unsigned char c0 = (unsigned char)s[i];
-    if(c0 == 0x20) return 1; /* U+0020 */
-    if(i + 1 < len && c0 == 0xC2 && (unsigned char)s[i + 1] == 0xA0) return 2; /* U+00A0 */
-    if(i + 2 < len && c0 == 0xE1 && (unsigned char)s[i + 1] == 0x9A && (unsigned char)s[i + 2] == 0x80) return 3; /* U+1680 */
-    if(i + 2 < len && c0 == 0xE2 && (unsigned char)s[i + 1] == 0x80 &&
-       (unsigned char)s[i + 2] >= 0x80 && (unsigned char)s[i + 2] <= 0x8A) return 3; /* U+2000..U+200A */
-    if(i + 2 < len && c0 == 0xE2 && (unsigned char)s[i + 1] == 0x80 && (unsigned char)s[i + 2] == 0xAF) return 3; /* U+202F */
-    if(i + 2 < len && c0 == 0xE2 && (unsigned char)s[i + 1] == 0x81 && (unsigned char)s[i + 2] == 0x9F) return 3; /* U+205F */
-    if(i + 2 < len && c0 == 0xE3 && (unsigned char)s[i + 1] == 0x80 && (unsigned char)s[i + 2] == 0x80) return 3; /* U+3000 */
-    return 0;
-}
-
 /* JS extUrlCharFirst parity: allow bracketed IPv6 host literals
  * like "[2404:130:0:1000::187:2]" as the first URL unit after
  * protocol or "//". */
@@ -78,7 +63,7 @@ static bool ext_lookahead_ok(const char *s, size_t len, size_t i) {
     unsigned char c = (unsigned char)s[i];
     static const char term_bytes[] = "[]<>\"\t\n\r\f\v";
     if(sz_find_byte(term_bytes, sizeof(term_bytes) - 1, (const char *)&s[i]) != NULL) return true;
-    if(consume_js_zs(s, len, i) > 0) return true;
+    if(str_js_zs_len_at(s, len, i) > 0) return true;
     if(c == 0 && i + 1 < len && s[i + 1] >= '0' && s[i + 1] <= '9') return true;
     return false;
 }
@@ -214,7 +199,7 @@ static bool parse_external_inner(const char *inner, size_t len,
                 return false;
             }
 
-            if(consume_js_zs(inner, len, i) > 0) return false;
+            if(str_js_zs_len_at(inner, len, i) > 0) return false;
             if(i + 2 < len && (unsigned char)inner[i] == 0xEF &&
                (unsigned char)inner[i + 1] == 0xBF && (unsigned char)inner[i + 2] == 0xBD) {
                 return false;
@@ -252,7 +237,7 @@ static bool parse_external_inner(const char *inner, size_t len,
                 continue;
             }
 
-            if(consume_js_zs(inner, len, i) > 0) break;
+            if(str_js_zs_len_at(inner, len, i) > 0) break;
             if(i + 2 < len && (unsigned char)inner[i] == 0xEF &&
                (unsigned char)inner[i + 1] == 0xBF && (unsigned char)inner[i + 2] == 0xBD) break;
             if(!is_url_common_byte((unsigned char)inner[i])) break;
@@ -269,7 +254,7 @@ static bool parse_external_inner(const char *inner, size_t len,
 
     size_t sp0 = i;
     while(i < len) {
-        size_t zs = consume_js_zs(inner, len, i);
+        size_t zs = str_js_zs_len_at(inner, len, i);
         if(zs == 0) break;
         i += zs;
     }

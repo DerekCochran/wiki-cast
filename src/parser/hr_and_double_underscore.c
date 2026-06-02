@@ -110,7 +110,8 @@ static bool heading_line_parse_full(const char *s, size_t len, HdLineResult *out
     bool changed = true;
 	while(changed && trail_start > eq_start + 1) {
         changed = false;
-        if(isspace((unsigned char)*(trail_start - 1))) { trail_start--; changed = true; continue; }
+		size_t ws_suffix = str_js_trim_ws_suffix_len(eq_start, (size_t)(trail_start - eq_start));
+		if(ws_suffix > 0) { trail_start -= ws_suffix; changed = true; continue; }
 		if((unsigned char)*(trail_start - 1) == 0x7F && trail_start - 2 >= eq_start) {
             const char *type_p = trail_start - 2;
             if(*type_p == 'c' || *type_p == 'n') {
@@ -361,7 +362,7 @@ void parse_hr_and_double_underscore(ThreadBuf *tb, const ParserConfig *cfg, Accu
 
 	/* Heading finalization: line-at-a-time forward scan */
 	if(allow_heading && !config_excluded(cfg, "heading") && !skip_heading_for_param_ctx && !skip_heading_for_references_ctx && !poem_ctx) {
-		bool allow_crossline_heading_trail = !(root_name && strcmp(root_name, "parameter-value") == 0);
+		bool allow_crossline_heading_trail = true;
 		ThreadBuf *out2_tb = wiki_thread_buf_acquire_scratch();
 		if(!out2_tb) { log_fatal("OOM in heading finalization"); abort(); }
 		out2_tb->len = 0;
@@ -426,21 +427,54 @@ void parse_hr_and_double_underscore(ThreadBuf *tb, const ParserConfig *cfg, Accu
 				size_t scan = line_end;
 				size_t last_boundary = line_end;
 				if(allow_crossline_heading_trail) {
+					bool consumed_any = false;
+					bool seen_non_newline = false;
 					while(scan < buf2_len) {
 						size_t sc = skip_cn_sentinel(buf2 + scan, buf2_len - scan);
 						if(sc > 0) {
 							scan += sc;
 							if(scan == buf2_len || buf2[scan] == '\n') last_boundary = scan;
+							consumed_any = true;
+							seen_non_newline = true;
 							continue;
 						}
-						if(isspace((unsigned char)buf2[scan])) {
+						if(buf2[scan] == '\n' || buf2[scan] == '\r') {
+							if(seen_non_newline) {
+								break;
+							}
+							if(!consumed_any && (scan + 1 >= buf2_len)) {
+								/* JS parity: a single terminal newline after heading text
+								 * remains outside heading-trail as plain text. */
+								break;
+							}
+							if(consumed_any) {
+								size_t look= scan;
+								while(look < buf2_len && (buf2[look] == '\n' || buf2[look] == '\r')) {
+									look++;
+								}
+								size_t look_sc= (look < buf2_len)
+									? skip_cn_sentinel(buf2 + look, buf2_len - look)
+									: 0;
+								if(look_sc == 0) {
+									break;
+								}
+							}
 							scan++;
+							if(scan == buf2_len || buf2[scan] == '\n') last_boundary = scan;
+							consumed_any = true;
+							continue;
+						}
+						size_t ws = str_js_trim_ws_len_at(buf2, buf2_len, scan);
+						if(ws > 0) {
+							consumed_any = true;
+							seen_non_newline = true;
+							scan += ws;
 							if(scan == buf2_len || buf2[scan] == '\n') last_boundary = scan;
 							continue;
 						}
 						break;
 					}
-					match_end = last_boundary;
+					match_end = consumed_any ? last_boundary : line_end;
 				}
 
 				/* 1. Emit lead sentinels verbatim */

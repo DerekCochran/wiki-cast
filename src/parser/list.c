@@ -34,29 +34,8 @@ typedef struct {
 	char          sentinel_type; /* 'x' or 'q'             */
 } FullMatch;
 
-/* JS parity helper for Unicode Zs consumed by the JS list-prefix whitespace regex. */
-static size_t consume_js_zs_list(const char *s, size_t len, size_t i) {
-	if(i >= len) return 0;
-	unsigned char c0 = (unsigned char)s[i];
-	if(c0 == 0x20) return 1; /* U+0020 */
-	if(i + 1 < len && c0 == 0xC2 && (unsigned char)s[i + 1] == 0xA0) return 2; /* U+00A0 */
-	if(i + 2 < len && c0 == 0xEF && (unsigned char)s[i + 1] == 0xBB && (unsigned char)s[i + 2] == 0xBF) return 3; /* U+FEFF */
-	if(i + 2 < len && c0 == 0xE1 && (unsigned char)s[i + 1] == 0x9A && (unsigned char)s[i + 2] == 0x80) return 3; /* U+1680 */
-	if(i + 2 < len && c0 == 0xE2 && (unsigned char)s[i + 1] == 0x80 &&
-	   (unsigned char)s[i + 2] >= 0x80 && (unsigned char)s[i + 2] <= 0x8A) return 3; /* U+2000..U+200A */
-	if(i + 2 < len && c0 == 0xE2 && (unsigned char)s[i + 1] == 0x80 &&
-	   ((unsigned char)s[i + 2] == 0xA8 || (unsigned char)s[i + 2] == 0xA9)) return 3; /* U+2028/U+2029 */
-	if(i + 2 < len && c0 == 0xE2 && (unsigned char)s[i + 1] == 0x80 && (unsigned char)s[i + 2] == 0xAF) return 3; /* U+202F */
-	if(i + 2 < len && c0 == 0xE2 && (unsigned char)s[i + 1] == 0x81 && (unsigned char)s[i + 2] == 0x9F) return 3; /* U+205F */
-	if(i + 2 < len && c0 == 0xE3 && (unsigned char)s[i + 1] == 0x80 && (unsigned char)s[i + 2] == 0x80) return 3; /* U+3000 */
-	return 0;
-}
-
 static size_t consume_list_space(const char *s, size_t len, size_t i) {
-	if(i >= len) return 0;
-	unsigned char c = (unsigned char)s[i];
-	if(c == '\t' || c == '\n' || c == '\r' || c == '\f' || c == '\v') return 1;
-	return consume_js_zs_list(s, len, i);
+	return str_js_trim_ws_len_at(s, len, i);
 }
 
 /* Find the first match of  :+ | -{ | \x00\d+[xq]\x7F  starting at or after
