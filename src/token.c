@@ -910,6 +910,32 @@ static void token_to_string_rec(const Token *t, ThreadBuf *tb) {
 	}
 }
 
+
+char *json_stringify_wikiparser_node(const Token *t, const bool pretty) {
+    char *json_str = NULL;
+    if (t) {
+		cJSON *root = token_to_json(t);
+        if (pretty) {
+            json_str = cJSON_Print(root);
+        } else {
+            json_str = cJSON_PrintUnformatted(root);
+        }
+        cJSON_Delete(root);
+    }
+    return json_str;
+}
+
+char *token_to_string_external(const Token *t) {
+	ThreadBuf *scratch= wiki_thread_buf_acquire_scratch();
+	if(!scratch) {
+		return NULL;
+	}
+	char *result= strdup(token_to_string(t, scratch));
+	wiki_thread_buf_release_scratch(scratch);
+	return result;
+}	
+
+
 char *token_to_string(const Token *t, ThreadBuf *tb) {
 	assert(tb);
 	tb->len= 0;
@@ -921,116 +947,6 @@ char *token_to_string(const Token *t, ThreadBuf *tb) {
 	if (tb->len >= tb->cap) wiki_thread_buf_reserve(tb, tb->len + 1);
 	tb->buf[tb->len] = '\0';
 	return tb->buf;
-}
-
-/* ── JSON serialization ──────────────────────────────────────────────────── */
-
-static void json_string(ThreadBuf *tb, const char *s) {
-	thread_buf_append_char(tb, '"');
-	if(!s) {
-		thread_buf_append_char(tb, '"');
-		return;
-	}
-	for(; *s; s++) {
-		unsigned char c= (unsigned char)*s;
-		if(c == '"')
-			thread_buf_append(tb, "\\\"", 2);
-		else if(c == '\\')
-			thread_buf_append(tb, "\\\\", 2);
-		else if(c == '\n')
-			thread_buf_append(tb, "\\n", 2);
-		else if(c == '\r')
-			thread_buf_append(tb, "\\r", 2);
-		else if(c == '\t')
-			thread_buf_append(tb, "\\t", 2);
-		else if(c < 0x20) {
-			char buf[8];
-			int len = snprintf(buf, sizeof(buf), "\\u%04x", c);
-			thread_buf_append(tb, buf, len);
-		}
-		else
-			thread_buf_append_char(tb, c);
-	}
-	thread_buf_append_char(tb, '"');
-}
-
-/* Write a JSON-escaped string of given length to tb (surrounded by quotes). */
-static void json_write_escaped_len(ThreadBuf *tb, const char *s, size_t len) {
-	thread_buf_append_char(tb, '"');
-	if(!s || len == 0) {
-		thread_buf_append_char(tb, '"');
-		return;
-	}
-	const char *p = s;
-	const char *end = s + len;
-	const char *chunk = p;
-	while(p < end) {
-		unsigned char ch = (unsigned char)*p;
-		if(ch == '"' || ch == '\\' || ch < 0x20) {
-			if(chunk < p) thread_buf_append(tb, chunk, p - chunk);
-			switch(ch) {
-			case '"': thread_buf_append(tb, "\\\"", 2); break;
-			case '\\': thread_buf_append(tb, "\\\\", 2); break;
-			case '\b': thread_buf_append(tb, "\\b", 2); break;
-			case '\f': thread_buf_append(tb, "\\f", 2); break;
-			case '\n': thread_buf_append(tb, "\\n", 2); break;
-			case '\r': thread_buf_append(tb, "\\r", 2); break;
-			case '\t': thread_buf_append(tb, "\\t", 2); break;
-			default: {
-				char buf[8];
-				int len_esc = snprintf(buf, sizeof(buf), "\\u%04x", ch);
-				thread_buf_append(tb, buf, len_esc);
-				break;
-			}
-			}
-			p++;
-			chunk = p;
-		} else {
-			p++;
-		}
-	}
-	if(chunk < end) thread_buf_append(tb, chunk, end - chunk);
-	thread_buf_append_char(tb, '"');
-}
-
-void json_stringify_wikiparser_node(const Token *t, ThreadBuf *tb) {
-	if(!t) {
-		thread_buf_append(tb, "null", 4);
-		return;
-	}
-
-	if(t->type == TOKEN_TEXT) {
-		/* Text node: {"data":"..."} */
-		thread_buf_append(tb, "{\"data\":", 8);
-		assert(t->child_count == 1 && t->children[0].is_text);
-		json_write_escaped_len(tb, t->children[0].text, t->children[0].text_len);
-		thread_buf_append_char(tb, '}');
-		return;
-	}
-
-	thread_buf_append_char(tb, '{');
-
-	if(t->child_count > 0) {
-		thread_buf_append(tb, "\"childNodes\":[", 14);
-		for(size_t i= 0; i < t->child_count; i++) {
-			if(i > 0) thread_buf_append_char(tb, ',');
-			const Child *c= &t->children[i];
-			if(c->is_text) {
-				thread_buf_append(tb, "{\"data\":", 8);
-				json_write_escaped_len(tb, c->text, c->text_len);
-				thread_buf_append_char(tb, '}');
-			} else {
-				json_stringify_wikiparser_node(c->token, tb);
-			}
-		}
-		thread_buf_append_char(tb, ']');
-	}
-	if(t->name && t->name[0] != '\0') {
-		thread_buf_append(tb, ",\"name\":", 8);
-		json_string(tb, t->name);
-	}
-
-	thread_buf_append_char(tb, '}');
 }
 
 char token_sentinel_char(TokenType type) {

@@ -10,7 +10,9 @@
 #include <stddef.h>
 #include <stdio.h>
 #include "stringzilla/types.h"
-#include "util/thread_buffer.h"
+
+// The ThreadBuff items should not be used external from the library, but we need to declare it here for the token_to_string() API.
+typedef struct ThreadBuf ThreadBuf;
 
 /* ── Token type enum ──────────────────────────────────────────────────────── */
 typedef enum {
@@ -272,9 +274,9 @@ void token_free(Token *t);
 void token_free_shallow(Token *t);
 
 /** Serialize a token tree to JSON, writing to fp. 
- * This is used ONLY to test between teh wikiparser-node and this tokenizer
+ * This is used ONLY to test between the wikiparser-node and this tokenizer
 */
-void json_stringify_wikiparser_node(const Token *t, ThreadBuf *tb);
+char *json_stringify_wikiparser_node(const Token *t, const bool pretty);
 
 /**
  * Recursively serialise a token tree into a caller-provided buffer,
@@ -286,6 +288,7 @@ void json_stringify_wikiparser_node(const Token *t, ThreadBuf *tb);
  * The returned pointer is owned by `tb->buf`.
  */
 char *token_to_string(const Token *t, ThreadBuf *tb);
+char *token_to_string_external(const Token *t);
 
 /** Return the sentinel char for a token type (e.g. 'c', 'e', 'n', 'o'…). */
 char token_sentinel_char(TokenType type);

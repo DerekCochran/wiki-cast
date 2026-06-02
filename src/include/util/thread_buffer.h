@@ -73,7 +73,7 @@
  * This struct is 64-byte aligned and supports Small String Optimization (SSO).
  * tb->buf points to tb->inline_data for small strings and to heap for large ones.
  */
-typedef struct {
+typedef struct ThreadBuf {
     char  *buf;         /* Active pointer: points to inline_data or heap */
     size_t len;         /* bytes of content currently stored (excl. '\0') */
     size_t cap;         /* allocated bytes */

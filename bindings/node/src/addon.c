@@ -13,33 +13,32 @@
 #include "parse.h"
 #include "token.h"
 #include "config.h"
-#include "util/token_to_json.h"
 
 // Cache for config
 static char* cached_config_path = NULL;
 static ParserConfig* cached_config = NULL;
 
-static double now_ms_monotonic(void) {
-#ifdef CLOCK_MONOTONIC
-    struct timespec ts;
-    if (clock_gettime(CLOCK_MONOTONIC, &ts) == 0) {
-        return (double)ts.tv_sec * 1000.0 + (double)ts.tv_nsec / 1000000.0;
-    }
-#endif
-    struct timespec ts_fallback;
-    timespec_get(&ts_fallback, TIME_UTC);
-    return (double)ts_fallback.tv_sec * 1000.0 + (double)ts_fallback.tv_nsec / 1000000.0;
-}
+// static double now_ms_monotonic(void) {
+// #ifdef CLOCK_MONOTONIC
+//     struct timespec ts;
+//     if (clock_gettime(CLOCK_MONOTONIC, &ts) == 0) {
+//         return (double)ts.tv_sec * 1000.0 + (double)ts.tv_nsec / 1000000.0;
+//     }
+// #endif
+//     struct timespec ts_fallback;
+//     timespec_get(&ts_fallback, TIME_UTC);
+//     return (double)ts_fallback.tv_sec * 1000.0 + (double)ts_fallback.tv_nsec / 1000000.0;
+// }
 
-static double now_ms_thread_cpu(void) {
-#ifdef CLOCK_THREAD_CPUTIME_ID
-    struct timespec ts;
-    if (clock_gettime(CLOCK_THREAD_CPUTIME_ID, &ts) == 0) {
-        return (double)ts.tv_sec * 1000.0 + (double)ts.tv_nsec / 1000000.0;
-    }
-#endif
-    return -1.0;
-}
+// static double now_ms_thread_cpu(void) {
+// #ifdef CLOCK_THREAD_CPUTIME_ID
+//     struct timespec ts;
+//     if (clock_gettime(CLOCK_THREAD_CPUTIME_ID, &ts) == 0) {
+//         return (double)ts.tv_sec * 1000.0 + (double)ts.tv_nsec / 1000000.0;
+//     }
+// #endif
+//     return -1.0;
+// }
 
 static void token_finalizer(napi_env env, void *finalize_data, void *finalize_context) {
     Token *token = (Token *)finalize_data;
@@ -88,19 +87,16 @@ static napi_value toString_wrapper(napi_env env, napi_callback_info info) {
         return NULL;
     }
 
-    ThreadBuf *scratch = wiki_thread_buf_acquire_scratch();
-    char *str = token_to_string(token, scratch);
-    
+    char *str = token_to_string_external(token);
     if (!str) {
-        wiki_thread_buf_release_scratch(scratch);
         napi_throw_error(env, NULL, "Internal conversion to string failed");
         return NULL;
     }
 
     napi_value result;
-    status = napi_create_string_utf8(env, str, scratch->len, &result);
+    status = napi_create_string_utf8(env, str, NAPI_AUTO_LENGTH, &result);
     
-    wiki_thread_buf_release_scratch(scratch);
+    free(str);
     
     if (status != napi_ok) return NULL;
     return result; 
@@ -145,13 +141,11 @@ static void node_json_add_protocol_from_url(cJSON *root, const char *url, size_t
 
 static void node_json_add_token_text_property(cJSON *root, const char *key, const Token *token) {
     if (!root || !key || !token) return;
-    ThreadBuf *scratch = wiki_thread_buf_acquire_scratch();
-    if (!scratch) return;
-    char *str = token_to_string(token, scratch);
+    char *str = token_to_string_external(token);
     if (str) {
-        cJSON_AddItemToObject(root, key, node_token_text_to_json_string(str, scratch->len));
+        cJSON_AddItemToObject(root, key, node_token_text_to_json_string(str, strlen(str)));
     }
-    wiki_thread_buf_release_scratch(scratch);
+    free(str);
 }
 
 static bool node_child_token_at(const Token *token, size_t idx, const Token **out) {
@@ -169,11 +163,6 @@ static bool node_child_text_at(const Token *token, size_t idx, const char **text
     *text = c->text;
     *len = c->text_len;
     return true;
-}
-
-static void node_json_add_view_property(cJSON *root, const char *key, sz_string_view_t view) {
-    if (!root || !key || !view.start) return;
-    cJSON_AddItemToObject(root, key, node_token_text_to_json_string(view.start, view.length));
 }
 
 static void node_json_add_token_text_property_at(cJSON *root, const char *key, const Token *token, size_t idx) {
@@ -590,22 +579,15 @@ static napi_value toInternalJson_wrapper(napi_env env, napi_callback_info info) 
         return NULL;
     }
 
-    cJSON *json = token_to_json(token);
+    char *json = json_stringify_wikiparser_node(token, false);
     if (!json) {
         napi_throw_error(env, NULL, "Failed to encode internal token JSON");
         return NULL;
     }
 
-    char *json_text = cJSON_PrintUnformatted(json);
-    cJSON_Delete(json);
-    if (!json_text) {
-        napi_throw_error(env, NULL, "Failed to stringify internal token JSON");
-        return NULL;
-    }
-
     napi_value result;
-    status = napi_create_string_utf8(env, json_text, NAPI_AUTO_LENGTH, &result);
-    cJSON_free(json_text);
+    status = napi_create_string_utf8(env, json, NAPI_AUTO_LENGTH, &result);
+    free(json);
     if (status != napi_ok) {
         return NULL;
     }
