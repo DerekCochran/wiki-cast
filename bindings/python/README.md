@@ -26,5 +26,5 @@ python3 -m venv .venv
 source .venv/bin/activate
 pip install --upgrade pip setuptools wheel pytest
 pip install -e .
-python test/simple.py
+python samples/simple.py
 ```

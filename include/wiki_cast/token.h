@@ -15,7 +15,7 @@
 typedef struct ThreadBuf ThreadBuf;
 
 /* ── Token type enum ──────────────────────────────────────────────────────── */
-typedef enum {
+typedef enum TokenType {
     TOKEN_TEXT           = 0,  /* leaf text node (AstText) */
     TOKEN_ROOT,                /* root plain token */
     TOKEN_PLAIN,               /* generic plain token */
@@ -61,7 +61,7 @@ typedef enum {
     TOKEN_TYPE_COUNT
 } TokenType;
 
-typedef enum {
+typedef enum TokenSubType {
     TOKEN_SUBTYPE_NONE = 0,
     TOKEN_SUBTYPE_ROOT,
     TOKEN_SUBTYPE_REDIRECT,

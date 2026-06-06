@@ -1,13 +1,13 @@
 from ._binding import (
-	PythonTokenSubType,
-	PythonTokenType,
+	TokenSubType,
+	TokenType,
 	WikiConfig,
 	WikiParser,
 )
 
 __all__ = [
-	"PythonTokenSubType",
-	"PythonTokenType",
+	"TokenSubType",
+	"TokenType",
 	"WikiConfig",
 	"WikiParser",
 ]
