@@ -1,0 +1,2875 @@
+{
+  "name": "test_cast",
+  "generatedAt": "2026-05-31T18:30:45.888Z",
+  "count": 717,
+  "samples": [
+    {
+      "sampleLabel": "test_cast:1",
+      "wikitext": "'''[[Classic of Poetry]]'', \"Airs of the States - Airs of [[Wey (state)|Wey]] - [https://ctext.org/book-of-poetry/bo-xi?searchu=%E4%BC%AF%E5%85%AE%E6%9C%85%E5%85%AE%E3%80%81%E9%82%A6%E4%B9%8B%E6%A1%80%E5%85%AE%E3%80%82&searchmode=showall#result Bo Xi]\". quote:「伯兮'''朅'''兮、邦之'''桀'''兮。」; [[James Legge]]'s translation: \"My noble husband is how '''martial-like'''! The '''hero''' of the country!\"; [[Zhu Xi]], ''Collected Commentaries on the Classic of Poetry'', \"vol. 2\", quote: 「'''朅'''，武貌。'''桀'''，才過人也。」. [https://ctext.org/library.pl?if=en&file=9214&page=119#%E6%9C%85%E6%AD%A6%E8%B2%8C%E6%A1%80%E6%89%8D%E9%81%8E%E4%BA%BA%E4%B9%9F p. 119 of 141]"
+    },
+    {
+      "sampleLabel": "test_cast:2",
+      "wikitext": "<ref>Scruton, Roger (1999). The Aesthetics of Music. Oxford University Press. Print ISBN 9780198167273.</ref>"
+    },
+    {
+      "sampleLabel": "test_cast:3",
+      "wikitext": "{{Tree chart|border=no | | | | | | | | | | | | | | | | | | | | | | | | | [[File:Coat of arms of Republic of Venice.svg|93px]]|[[File:Coat of arms of Republic of Venice.svg|93px]]=[[File:Coat of arms of Republic of Venice.svg|93px]]}}"
+    },
+    {
+      "sampleLabel": "test_cast:4",
+      "wikitext": "{{code|lang=html|code=<font [color=<var>color</var>] [size=<var>size</var>] [face=<var>face</var>]>...</font>}}"
+    },
+    {
+      "sampleLabel": "test_cast:5",
+      "wikitext": "{{ubli|[[Grand Jury (Ireland) Act 1837]]|[[Coroners (Ireland) Act 1846]]|[[Grand Jury Cess (Ireland) Act 1848]]|[[Summary Jurisdiction (Ireland) Act 1850]]|[[Grand Jury (Ireland) Act 1857]]|[[County Surveyors, &c. (Ireland) Act 1861]]|[[County Surveyors (Ireland) Act 1862]]|[[Vestry Cess Abolition (Ireland) Act 1864]]|[[Grand Jury (Ireland) Act 1873]]|[[Prison Officers Superannuation (Ireland) Act 1873]]|[[Statute Law Revision Act 1874]]|[[Public Works Loans (Ireland) Act 1877]]|[[General Prisons (Ireland) Act 1877]]|[[Statute Law Revision Act 1890]]|[[Statute Law Revision Act 1891|[[Grand Jury (Ireland) Act 1895]]]]}}"
+    },
+    {
+      "sampleLabel": "test_cast:6",
+      "wikitext": "[[File:Bear Valley Whaleback DCP 0776.jpg|thumb|upright=1.1[[Bear Valley Strip Mine]], southwest of [[Shamokin, Pennsylvania|Shamokin]] in the [[Coal Region]]]]"
+    },
+    {
+      "sampleLabel": "test_cast:7",
+      "wikitext": "{{Infobox automobile\n| name == Dodge Viper SRT-10 (ZB II) ==\n| manufacturer = [[Chrysler LLC]]<br>[[Chrysler Group LLC]]\n|'''Coupé:''' {{convert|47.6|in|mm|abbr=on}}\n|'''Convertible:''' {{convert|48.6|in|mm|abbr=on}}\n}}\n| weight = {{ubl\n|'''SRT-10:''' {{convert|3460|lb|kg|0|abbr=on}}\n|'''ACR:''' {{convert|3408|lb|kg|abbr=on}}\n}}\n| predecessor = [[Dodge Viper (ZB I)]]\n| successor = [[Dodge Viper (VX I)]]\n}}"
+    },
+    {
+      "sampleLabel": "test_cast:8",
+      "wikitext": "{{Mono|1==:=}}"
+    },
+    {
+      "sampleLabel": "test_cast:9",
+      "wikitext": "<imagemap>\n:File:Comparison of temperature scales blank.svg|845x580px|class=skin-invert-image|\ncircle 40 330 4  [[:File:Comparison of temperature scales blank.svg|0 K / 0 °R (−273.15 °C)]]\n</imagemap>"
+    },
+    {
+      "sampleLabel": "test_cast:10",
+      "wikitext": "{{mono|1==, -ci=, <, -ci<, >, -ci>, <=, -ci<=, >=}}"
+    },
+    {
+      "sampleLabel": "test_cast:11",
+      "wikitext": "{|border=1　\n|- style=\"background:LIGHTGREY\" \n|hitting average||Games||At bat||Runs||Hits||RBI||Double||Triple||HR||K||Walk\n|- \n||.310||9||29||2||9||4||4||0||0||5||8\n|}"
+    },
+    {
+      "sampleLabel": "test_cast:12",
+      "wikitext": "{{Infobox university\n | name                   = Canberra Institute of Technology\n  | postgrad               = \n | doctoral               = \n | '''profession''''''''' = \n | city                   = Canberra\n | state                  = [[Australian Capital Territory|ACT]]\n }}"
+    },
+    {
+      "sampleLabel": "test_cast:13",
+      "wikitext": "{{cite web|url=http://www.lnfs.es/Data/Adjuntos/1.3%20RFEF%20%20Reglamento%20General%202014-2015.pdf|title=Reglamento General|website=www.[[LNFS|publisher=[[Royal Spanish Football Federation]]|trans-title=General Regulations|access-date=26 March 2015|lnfs]].es|language=es}}"
+    },
+    {
+      "sampleLabel": "test_cast:14",
+      "wikitext": "<references>-Block vollständig erhalten.\n\nHier ist der komplette Abschluss für deinen Artikel 3rd Army Group (France):\n\nCode-Snippet\n\n==References==\n<references>\n<ref name=\"hetou3-2\">{{cite book|last=Mary|first=Jean-Yves|author2=Hohnadel, Alain|author3=Sicard|title=Hommes et Ouvrages de la Ligne Maginot, Tome 3|publisher=Histoire & Collections|year=2003|pages=150–152|isbn=2-913903-88-6|language=fr}}</ref>\n<ref name=\"hetou3-3\">Mary, Tome 3, p. 146</ref>\n<ref name=\"Mary3-4\">Mary, Tome 3, p. 189</ref>\n<ref name=\"8e-armee\">{{Cite web|url=http://france1940.free.fr/oob/8armee.html|title = 8e Armée Order of Battle / Ordre de bataille, 10/05/1940}}</ref>\n<ref name=\"ga3-reserves\">{{Cite web|url=http://france1940.free.fr/oob/ga3.html|title = Réserves du 3e Groupe d'Armées Order of Battle, 10 May 1940}}</ref>\n</references>"
+    },
+    {
+      "sampleLabel": "test_cast:15",
+      "wikitext": "<gallery mode=\"packed\" heights=\"180px\">\nFile:Santa Giustina (Padua) - Chapel of Saint Luke.jpg|Chapel of Saint Luke\nAbbazia di Santa Giustina (St Luc).jpg|Altar and Reliquary of [[St. Luke the Evangelist]]\nSanta Giustina (Padua) - Chapel of Saint Luke - Tomb of Luke the Evangelist (front).jpg|Reliquary of [[St. Luke the Evangelist]] and transept organ\nSanta Giustina (Padua) - Chapel of Saint Luke - Tomb of Luke the Evangelist (rear).jpg|Reliquary of [[St. Luke the Evangelist]] (rear)\nSanta Giustina (Padua) - Chapel of Saint Luke - Madonna of Constantinople Sixteenth-century version.jpg|''Madonna of Constantinople'' Sixteenth-century version\nPadova - Santa Giustina - MadonnaCostantinopolitana (Expo -12 Contrasto 25).jpg|''''Madonna of Constantinople'' original version\n</gallery>"
+    },
+    {
+      "sampleLabel": "test_cast:16",
+      "wikitext": "https://web.archive.org/web/20160304040450/http://www.hollywoodflip.com/articlex.php?subaction=showfull&id=1281026953&archive=&start_from=&ucat=1&; "
+    },
+    {
+      "sampleLabel": "test_cast:17",
+      "wikitext": "<span |align=right style=\"color:green;\">"
+    },
+    {
+      "sampleLabel": "test_cast:18",
+      "wikitext": "<gallery>\nFile:Oceanic whitetip shark at Elphinstone Reef.jpg|[[Oceanic whitetip shark]] at Elphinstone Reef\nFile:Elphinstone Reef soft corals.jpg|[[Soft corals]] and [[Anthias]] at Elphinstone Reef\nFile:Elphinstone Reef memorial.jpg|Memorial dedicated to [[Arno Wallaard]] on south plato\nFile:Hawksbill turtle at Elphinstone Reef, Red Sea, Egypt (35150034493).jpg|[[Hawksbill sea turtle|Hawksbill turtle]] at Elphinstone Reef[[File:The_drop-off_at_Elphinstone_Reef,_Egypt.jpg|thumb|Anthias and hard corals at the Elphinstone Reef drop-off[[File:Dendronephthya_Soft_corals_at_Elphinstone_Reef,_Egypt.jpg|thumb|Dendronephthya Soft corals at Elphinstone Reef, Egypt. They thrive in the strong currents at this offshore site.[[File:Bluecheek_butterflyfish_at_Elphinstone_Reef,_Egypt.jpg|thumb|A pair of bluecheek butterflyfish (Chaetodon semilarvatus) at Elphinstone Reef, Egypt.]]]]]]\n</gallery>"
+    },
+    {
+      "sampleLabel": "test_cast:19",
+      "wikitext": "{{Australia-hurdles\t-athletics-bio-stub}}"
+    },
+    {
+      "sampleLabel": "test_cast:20",
+      "wikitext": "{{Football kit\tbox |\n| pattern_la = \n| pattern_b  = \n| pattern_ra = \t\n| pattern_sh =\t\n| pattern_so = \n| leftarm    =  84D3EB\t\n| body       =  84D3EB\n| rightarm   =  84D3EB\t\n| shorts     =  84D3EB\t\n| socks      = 84D3EB\t\n| title  = -2025\n}}"
+    },
+    {
+      "sampleLabel": "test_cast:21",
+      "wikitext": "<ref name= \"Winfield\">Winfield p. 208</ref>"
+    },
+    {
+      "sampleLabel": "test_cast:22",
+      "wikitext": "<div style=position:center; Transform-rotate|90|display=block>"
+    },
+    {
+      "sampleLabel": "test_cast:23",
+      "wikitext": "{{safesubst<noinclude/>:#invoke:political party|fetch|Republican Party of Arkansas|color}}"
+    },
+    {
+      "sampleLabel": "test_cast:24",
+      "wikitext": "<ref>{{multiref|\n{{cite book |first3=J. S. |last3=Sandars |last1=O'Malley |first1=Edwin L. |last2=Hardcastle |first2=Henry |title=Reports of the Decisions of the Judges for the trial of Election Petitions in England and Ireland as pursuant to the Parliamentary Elections Act 1868 |location=London |publisher=Stevens & Haynes |date=1910 |volume=5 |url=https://babel.hathitrust.org/cgi/pt?id{{=}}mdp.35112103161263 |pages=212–217 }}|\n{{cite book |title=Copy of the Shorthand Writers' Notes of the Judgment of Mr. Justice Lawrance and Mr. Justice Walton on the Trial of the Election Petition of the City of Worcester; also the Minutes of Evidence taken at the Trial of the said Election Petition |date=14 June 1906 |url=https://babel.hathitrust.org/cgi/pt?id=umn.31951d02039880s&seq=5 |series=Parliamentary papers |volume=HC 1906 xcv (198) 255 }}|\n{{cite book |title=Commons Chamber |date=14 June 1906 |volume=158 |url=https://hansard.parliament.uk/Commons/1906-06-14/debates/7d1bb89d-ffd9-4973-8941-1539dda3b54b/CommonsChamber}}\n}}</ref>"
+    },
+    {
+      "sampleLabel": "test_cast:25",
+      "wikitext": "https://web.archive.org/web/20181103210140/https://www.nytimes.com/2012/11/17/world/middleeast/in-gaza-tragic-result-for-misplaced-hopes-of-cease-fire.html?_r=1&;;;; "
+    },
+    {
+      "sampleLabel": "test_cast:26",
+      "wikitext": "{{!:}}"
+    },
+    {
+      "sampleLabel": "test_cast:27",
+      "wikitext": "<gallery mode=\"packed\" style=\"text-align: center;\" caption=\"Gallery\" heights=\"140px\" perrow=\"3\">\nFile:Paul Cézanne - Gardanne (Horizontal View) (Gardanne (vue horizontale)) - BF917 - Barnes Foundation.jpg|Paul_Cézanne_-_Gardanne_(Horizontal_View)_(Gardanne_(vue_horizontale))_-_BF917_-_Barnes_Foundation]]|View of Gardanne by Paul Cézanne\n</gallery>"
+    },
+    {
+      "sampleLabel": "test_cast:28",
+      "wikitext": "<gallery>\nFile:Hawksbill Egypt (35150034493).jpg|[[Hawksbill sea turtle|Hawksbill turtle]] at Elphinstone Reef[[File:The_drop-off_at_Elphinstone_Reef,_Egypt.jpg|thumb|Anthias drop-off[[File:Dendronephthya_Soft_corals_at_Elphinstone_Reef,_Egypt.jpg|thumb|Dendronephthya Soft corals.[[File:Bluecheek_butterflyfish_at_Elphinstone_Reef,_Egypt.jpg|thumb|A .]]]]]]\n</gallery>"
+    },
+    {
+      "sampleLabel": "test_cast:29",
+      "wikitext": "{| class=\"wikitable\"\n|-\n|-bgcolor=<!-- party shade if gain -->lightblue\n|}"
+    },
+    {
+      "sampleLabel": "test_cast:30",
+      "wikitext": "{| class=\"wikitable sortable\"  style=\"font-size: 100%\"\n|}"
+    },
+    {
+      "sampleLabel": "test_cast:31",
+      "wikitext": "{| class=wikitable =wikitable \n|}"
+    },
+    {
+      "sampleLabel": "test_cast:32",
+      "wikitext": "[[Image:Barrère Pierre 1690-1755 Ornithologiae.png|thumbnail|250px|right|Plate from ''''Ornithologiae Specimen'' de Barrère showing his system of bird classification]]"
+    },
+    {
+      "sampleLabel": "test_cast:33",
+      "wikitext": "[[Image:Edward Snowden-2.jpg{{!}}border|thumb|right|200px|During the season, many critics and analysts noticed parallelisms between the series' premise and [[Edward Snowden]].]]"
+    },
+    {
+      "sampleLabel": "test_cast:34",
+      "wikitext": "{|class=wikitable\n!=width:60px|[[A Just Russia|JR]]\n|}"
+    },
+    {
+      "sampleLabel": "test_cast:35",
+      "wikitext": "<ref = name = \"galloway\"></ref>"
+    },
+    {
+      "sampleLabel": "test_cast:36",
+      "wikitext": "{| class=\"wikitable sortable\"\n| '''[[American pipit]]''' ||''Anthus rubescens'' || '''A'''||=center style=\"background: #006666\"| {{font color|White|Least concern}} || align=center|{{decrease}}|| Vagrant.|| [[Image: Anthus rubescens japonicus.JPG|175px]]\n|}"
+    },
+    {
+      "sampleLabel": "test_cast:37",
+      "wikitext": "Richardson, Dan and Jacobs, Daniel (2007) ''The Rough Guide to Egypt''. ISBN 978 -1-84353-782-3 (7th edition). p.718"
+    },
+    {
+      "sampleLabel": "test_cast:38",
+      "wikitext": "* {{ISBN|978-88-11-73836-7}}, ISBN 978 -82-91165-04-2."
+    },
+    {
+      "sampleLabel": "test_cast:39",
+      "wikitext": "ISBN 978-0-9559732 -0-8."
+    },
+    {
+      "sampleLabel": "test_cast:40",
+      "wikitext": "<gallery Mode=\"packed\" heights=\"140px\">\nFile:COLLECTIE TROPENMUSEUM De Broodbakkersstraat in Pasoeroean TMnr 60052542.jpg|Chinatown of Broodbakkerstraat (now Jalan Niaga) in Pasuruan from Hoofdstraat (now Jalan Soekarno Hatta)\nFile:COLLECTIE TROPENMUSEUM Stoplicht boven het kruispunt in de Hoofdstraat Pasoeroean TMnr 60052543.jpg|Traffic light over the intersection in the Hoofdstraat of Pasuruan\nFile:PSSM B16 at Waroeng-dowo.jpg|Warungdowo as the main operational station of PsSM with Hohenzollern B16 tram engine (right side).\nFile:Stasiun Winongan.jpg|Winongan tram station around 1910-1920s\nFile:Pasoeroan Town in 1946's map.tif|thumb|Map issued in February 1946 showing the city of Pasuruan including the main railway line of [[Staatsspoorwegen]] (SS) and PsSM's steam tram line]]\n</gallery>"
+    },
+    {
+      "sampleLabel": "test_cast:41",
+      "wikitext": "<ref>{{usurped|1={{usurped|1=[https://archive.today/20070702164815/http://www.popcultureshock.com/reviews.php?id=4542 APComics 2005 Preview » PopCultureShock<!-- Bot generated title -->]}}}}</ref>"
+    },
+    {
+      "sampleLabel": "test_cast:42",
+      "wikitext": "{{Clade|style=font-size:90%; line-height:90%\n|label1=Halobacteriales\n|1={{clade\n  |1={{clade\n    |1=[[Natronoarchaeaceae]]\n    |2={{clade\n      |1=''[[Haloparvum]]'' **\n      |2={{clade\n        |1=''[[Halopenitus]]'' **\n        |2=''[[Halorubrum]]'' {[[Halorubraceae]]}\n         }}\n       }}\n     }}\n  |2={{clade\n    |1=[[Haloferacaceae]]\n    |2={{clade\n      |1={{clade\n        |1=[[Halobacteriaceae]]\n        |2=[[Haloarculaceae]]\n         }}\n      |2={{clade\n        |1={{clade\n          |1=''[[Halostella]]'' * {\"Halostellaceae\"}\n          |2={{clade\n            |1=''[[Halalkalicoccus]]'' {\"Halalkalicoccaceae\"}\n            |2=''[[Halococcus]]'' {[[Halococcaceae]]}\n             }}\n           }}\n        |2={{clade\n          |1={{clade\n            |1=''[[Salinarchaeum]]'' * {\"Salinarchaeaceae\"}\n            |2=[[Haladaptaceae]] (Halorubellaceae)\n             }}\n          |2=[[Natrialbaceae]]\n           }}\n         }}\n       }}\n     }}\n   }}\n}}"
+    },
+    {
+      "sampleLabel": "test_cast:43",
+      "wikitext": "<ref = name=lance>[https://www.theglobeandmail.com/sports/more-sports/lance-armstrong-building-deception-upon-lies/article4500335/] \" Lance Armstrong: building deception upon lies\" ''Globe and Mail'', BRUCE DOWBIGGIN.</ref>"
+    },
+    {
+      "sampleLabel": "test_cast:44",
+      "wikitext": "[[File:Jersey yellow.svg|20px|link=General classification in the Tour de France|alt=Yellow \n]]"
+    },
+    {
+      "sampleLabel": "test_cast:45",
+      "wikitext": "{{reflist |group=Note |refs=\n<ref name=\"c\">French reports: \"The (over 5{{nbs\"[[Hectare|ha]]) era...}}</ref>\n}}"
+    },
+    {
+      "sampleLabel": "test_cast:46",
+      "wikitext": "* ﻿{{cite web |url= https://reason.com/2019/10/31/its-that-old-looney-tuner-lysander-spooner/ |title= It's That Old Looney Tuner, Lysander Spooner |last= Bagge |first= Peter |date= November 2019 |website= Reason Magazine |format= Comic strip| access-date= }}"
+    },
+    {
+      "sampleLabel": "test_cast:47",
+      "wikitext": "<ref =EJ440-444>{{Cite book|volume=18|edition=Second| location= Detroit |date= 2007| page=440-444|title=Encyclopaedia Judaica|last1=Berenbaum|first1=Michael|last2=Skolnik|first2=Fred|publisher=Thomson Gale}}</ref>"
+    },
+    {
+      "sampleLabel": "test_cast:48",
+      "wikitext": "{{ubl|\n|'''Legitimate'''<ref name=\"nyugenphuc\">Bao Dai had two sons and three daughters, according to the genealogy of the Nyugen Phuc clan. Only his children by Nam Phuong are listed. His obituary in ''[https://www.independent.co.uk/news/people/obituary-bao-dai-1243873.html The Independent]'' says he had two sons and two daughters while the ''[https://www.nytimes.com/1997/08/02/world/bao-dai-83-of-vietnam-emperor-and-bon-vivant.html New York Times]'' says two sons and four daughters. (''''[http://giapha.nguyenphuoctoc.info/download/NGUYEN-PHUC-TOC-THE-PHA.pdf Nguyễn Phúc tộc thế phả]'', 1995, p. 330).</ref>{{ubl|\n|[[Bảo Long]] (1936–2007)\n|[[Phương Mai]] (1937–2021)\n|[[Phương Liên]] (1938–)\n|Phương Dung (1942–)\n|[[Bảo Thăng]] (1943–2017)}}\n|'''Unrecognized'''{{ubl|\n|Phương Thảo (1946–)\n|Phương Minh (1949–2012)\n|[[Bảo Ân]] (1951–)\n|Bảo Hoàng (1954–1955)\n|Bảo Sơn (1957–1987)\n|Phương Từ (1955)\n|Patrick-Édouard Bloch-Carcenac (1958–)\n}}\n}}"
+    },
+    {
+      "sampleLabel": "test_cast:49",
+      "wikitext": "{{Collapsible list|title=''See list''{{[[Felix de Muelenaere|Comte de Muelenaere]] (1831-1832)|[[Albert Goblet d'Alviella|Comte d'Alviella]] (1832-1834)|[[Barthélémy de Theux de Meylandt|Chevalier de Theux de Meylandt]] (1834-1840; 1846-1847)|[[Joseph Lebeau]] (1840-1841)|[[Jean-Baptiste Nothomb]] (1841-1845)|[[Sylvain Van de Weyer]] (1845-1846)|[[Charles Rogier]] (1847-1852; 1857-1862)|[[Henri de Brouckère]] (1852-1855)|[[Pierre de Decker]] (1855-1857)}}}}"
+    },
+    {
+      "sampleLabel": "test_cast:50",
+      "wikitext": "{{&prime;}}"
+    },
+    {
+      "sampleLabel": "test_cast:51",
+      "wikitext": "<imagemap>\nImage:Menthol synthesis.png|\n\nrect 6 14 131 92 [[myrcene]]\nrect 136 46 201 63 [[diethylamine]]\nrect 468 110 628 180 [[citronellal]]\nrect 387 112 458 135 [[zinc bromide]]\nrect 95 97 223 209 [[menthol]]\n\ndesc bottom-left\n#Notes:\n#Details on the new coding for clickable images is here: [[mw:Extension:ImageMap]]\n#[https://web.archive.org/web/20080327003154/http://tools.wikimedia.de/~dapete/ImageMapEdit/ImageMapEdit.html?en This image editor] was used.\n</imagemap>"
+    },
+    {
+      "sampleLabel": "test_cast:52",
+      "wikitext": "{{refn|''StarHorse2: Fifth Expansion''\n* Fiscal year ended 31 March 2010: ¥2.8&nbsp;billion<ref name=\"sega_mar10\"/>\n* Fiscal year ended 31 March 2011: ¥2&nbsp;billion<ref name=\"sega_mar11\"/>\n* Currency conversion:<ref name=\"xe_currency\"/>\n** ¥2.8 billion = $34.6039 million\n** ¥2 billion = $24.7171 million\n|group=n|name=StarHorse2}}"
+    },
+    {
+      "sampleLabel": "test_cast:53",
+      "wikitext": "{{SAFESUBST:<noinclude />#invoke:Unsubst||date=__DATE__ |$B=\n{{More citations needed section| name  = More citations needed section\n| find  = {{#if:{{{find|}}}|{{{find|}}}|none}}\n| find2  = {{{find2|{{{unquoted|}}}}}}\n|date=June 2025| talk  = {{{talk|}}}\n| small = {{{small|}}}\n}}\n}}"
+    },
+    {
+      "sampleLabel": "test_cast:54",
+      "wikitext": "<poem>In the name of God, the Merciful, the Compassionate\nName and surname\nSignature|author=Ruhollah Khomeini|title=Iranian Constitution|source=Article 67 of the Constitution of the Islamic Republic of Iran}}\n===Monarch===\n{{blockquote|<poem>\nSo help me, God Almighty!\n(This I affirm!)</poem>"
+    },
+    {
+      "sampleLabel": "test_cast:55",
+      "wikitext": "<inputbox>\nid = style-searchbox\ntype=fulltext\nwidth=35\nbreak=yez\nsearchfilter=deepcat:\"Canadian people\"\nnamespaces=Main**\nplaceholder=e.g. female historians\nsearchbuttonlabel = Search Canadian people articles \n</inputbox>"
+    },
+    {
+      "sampleLabel": "test_cast:56",
+      "wikitext": "{{c. |1979|lk=none}}"
+    },
+    {
+      "sampleLabel": "test_cast:57",
+      "wikitext": "<gallery>\nFile:Sydney Skyline (5620756401).jpg|The [[Sydney central business district]] in [[Sydney]]'s [[Western Suburbs, Sydney|western suburbs\n</gallery>"
+    },
+    {
+      "sampleLabel": "test_cast:58",
+      "wikitext": "<ref name=\"Poznań\">''{{cite web |url=http://www.poznan.pl/mim/public/publikacje/pages.html?co=list&id=19&ch=20&instance=1017&lang=pl |title=Poznań Official Website – Twin Towns|access-date=29 November 2008 |publisher={{fontcolor|Green|(in [[Polish language|{{fontcolor|Green|Polish}}]])}} [[copyright|]] 1998–2008 Urząd Miasta Poznania }}''</ref>"
+    },
+    {
+      "sampleLabel": "test_cast:59",
+      "wikitext": "{| class=wikitable\n|+ Occitan words and their French, Catalan and Spanish cognates\n|-\n!  scope=\"col\" rowspan=2 | English\n!! scope=\"col\" colspan=2 | Cognate of French\n!! scope=\"col\" colspan=3 | Cognate of Catalan and Spanish\n|-\n!  scope=\"col\" | Occitan\n!! scope=\"col\" | French\n!! scope=\"col\" | Occitan\n!! scope=\"col\" | Catalan\n!! scope=\"col\" | Spanish\n|-\n| broom || style{{=}}\"background: Gainsboro\" | {{lang|oc|balaja}} || {{lang|fr|balai}} || style{{=}}\"background: Gainsboro\" | {{lang|oc|escoba}} || {{lang|ca|escombra}} || {{lang|es|escoba}}\n|-\n|}"
+    },
+    {
+      "sampleLabel": "test_cast:60",
+      "wikitext": "<imagemap>\nFile:Subtraction_game_SMIL.svg|thumb|Interactive subtraction game.\ndefault [http://upload.wikimedia.org/wikipedia/commons/4/4d/Subtraction_game_SMIL.svg]\n</imagemap>"
+    },
+    {
+      "sampleLabel": "test_cast:61",
+      "wikitext": "{{Infobox national military\n| name = Tatmadaw\n| native_name = {{lang|my|တပ်မတော်}} {{lang|my-latn|{{small|Tapmătau}}}}<br>{{lang|en|[[Royal Burmese Armed Forces|Royal Armed Forces]]}}\n| image = {{ubl|[[File:Full Emblem of the Myanmar Armed Forces.svg|200px|frameless]]|[[Emblem of Tatmadaw|Emblem of the Myanmar Armed Forces]]\n----\n[[File: Flag of the Armed Forces (Tatmadaw) of Myanmar.svg|225px|border]]|Flag of the Myanmar Armed Forces}}\n| image_size = \n| alt = \n| caption = \n| image2 = {{ubl|[[File: Emblem of the Myanmar Armed Forces.svg|150px|frameless]]|Mark Logo\n----\n{{Photomontage\n | photo1a = Shoulder Sleeve of Myanmar Army.svg\n | size    = 300\n | spacing = 5\n | color   = transparent\n | border  = 0\n | text    = \n}}|'''Top:''' Emblems of main service branches: [[Myanmar Army|Army]]{{efn|Also the [[formation patch]] of Chief of Staffs' office.<ref>{{cite web |url=https://www.cincds.gov.mm/ |title=CINCDS Myanmar |publisher=Cincds.gov.mm |date= |accessdate=2022-08-03 |archive-date=14 June 2022 |archive-url=https://web.archive.org/web/20220614005935/https://cincds.gov.mm/ |url-status=live }}</ref>}}, [[Myanmar Navy|Navy]] and [[Myanmar Air Force|Air Force]]|'''Bottom:''' Emblems of auxiliary services: [[Myanmar Coast Guard|Coast Guard]], [[Myanmar Police Force|Police Force]] and [[Myanmar Border Guard Forces|Border Guard Forces]]}}\n| branches = {{plainlist|\n* {{army|MYA}}\n* {{navy|MYA}}\n* {{air force|MYA}}\n* {{flagicon image|Myanmar MOHA Flag.svg}} [[Ministry of Home Affairs (Myanmar)]] (de facto)\n}}\n* {{flagicon image|Flag of the Myanmar Police Force.svg}} [[Myanmar Police Force]]{{cn|date=March 2026}}\n| headquarters = [[Naypyidaw]], [[Myanmar]]\n| website = {{Bulleted list\n| {{URL|mod.gov.mm}}\n| {{URL|cincds.gov.mm}}\n}}\n| ranks = [[Military ranks of Myanmar]]\n}}"
+    },
+    {
+      "sampleLabel": "test_cast:62",
+      "wikitext": "<imagemap>\nFile:Mustelidae-01.jpg|250px|alt=Alt text \nrect 800 1066 1599 1594 [[Honey badger |Honey badger (''Mellivora capensis'')]] \ndesc none\ndefault [[Mustelidae]]\n</imagemap>"
+    },
+    {
+      "sampleLabel": "test_cast:63",
+      "wikitext": "<gallery mode=\"packed\" caption=\"Coloniae and Municipia image gallery\">\n  File:Arco Romano.jpg|Roman arch of [[Pax Iulia|]]''[[Pax Julia|Pax Iulia]]'' ([[Beja, Portugal|Beja]])\n  </gallery>"
+    },
+    {
+      "sampleLabel": "test_cast:64",
+      "wikitext": "{{gloss|listen, earl, to [[Kvasir]]'s blood (=poetry)}}"
+    },
+    {
+      "sampleLabel": "test_cast:65",
+      "wikitext": "<ref name=\"Eaton-sep\" |pages=286 |date=July 2025}}<ref name=\"Eaton 2004\">{{cite book |last=Eaton |first=Richard M. |title=Temple desecration and Muslim states in medieval India |date=2004 |publisher=Hope India Publications |isbn=978-8178710273 |location=Gurgaon |pages=31–49 |quote=For, while  }}</ref>"
+    },
+    {
+      "sampleLabel": "test_cast:66",
+      "wikitext": "[[File:Kasparov-34.jpg{{!}}border|thumb|alt=refer to caption|Kasparov in 2007|upright=0.75]]"
+    },
+    {
+      "sampleLabel": "test_cast:67",
+      "wikitext": "[[File:Sarnia Cherie.ogg|alt=\n  Chord progression of Sarnia Chérie (English: Guernsey Dear), unofficial anthem of Guernsey]]"
+    },
+    {
+      "sampleLabel": "test_cast:68",
+      "wikitext": "{|width=50% |gap=4em\n  | '''Child'''\n  | '''Namesake'''\n  |-\n  | 1st son\n  | paternal grandfather\n  |-\n  | 2nd son\n  | maternal grandfather\n  |-\n  | 3rd son\n  | father\n  |-\n  | 4th son\n  | father's oldest brother\n  |-\n  | 1st daughter\n  | maternal grandmother\n  |-\n  | 2nd daughter\n  | paternal grandmother\n  |-\n  | 3rd daughter\n  | mother\n  |-\n  | 4th daughter\n  | mother's oldest sister\n  |}\n  "
+    },
+    {
+      "sampleLabel": "test_cast:69",
+      "wikitext": "{{cite web https://www.imf.org/external/datamapper/profile/GHA#:~:text=Here's%20some%20information%20about%20Ghana's%20GDP%20from,PPP%2C%20share%20of%20world**%200.14%25%20in%202026|url=https://www.imf.org/en/Publications/WEO/weo-database/2025/april |language=en |access-date=21 June 2025 |archive-date=28 April 2025 |archive-url=https://web.archive.org/web/20250428212902/https://www.imf.org/en/Publications/WEO/weo-database/2025/April |url-status=live }}\n  "
+    },
+    {
+      "sampleLabel": "test_cast:70",
+      "wikitext": "<gallery widths=\"160px\" heights=\"160px\" style=\"text-align:center;\" caption=\"Schlegel diagrams of some fullerenes\">\n  Graph of 20-fullerene w-nodes.svg|C20<br />([[dodecahedron]])\n  Graph of 26-fullerene 5-base w-nodes.svg|C26\n  Graph of 60-fullerene w-nodes.svg|C60<br/>([[truncated icosahedron]])\n  Graph of 70-fullerene w-nodes.svg|C70\n  </gallery>\n  "
+    },
+    {
+      "sampleLabel": "test_cast:71",
+      "wikitext": "<gallery widths=\"180px\" heights=\"180px\">\n  Caduceus on Mauryan coin.jpg | Caduceus symbol on a Maurya-era [[punch-marked coin]]\n  India Mauryan emperor Ashoka Punch-marked Coin.jpg | A punch-marked coin attributed to Ashoka<ref>{{cite book |last=Mitchiner |first=Michael |date=1978 |title=Oriental Coins & Their Values: The Ancient and Classical World 600 B.C. - A.D. 650 |publisher=Hawkins Publications |page=544 |isbn=978-0-9041731-6-1}}</ref>\n  I15 1karshapana Maurya Ashoka MACW4229 1ar (8486624862).jpg | A Maurya-era silver coin of 1 [[karshapana]], possibly from Ashoka's period, workshop of Mathura. ''Obverse:'' Symbols including a sun and an animal ''Reverse:'' Symbol ''Dimensions:'' 13.92 x 11.75&nbsp;mm ''Weight:'' 3.4 g.\n  </gallery>\n  "
+    },
+    {
+      "sampleLabel": "test_cast:72",
+      "wikitext": "<gallery mode=\"packed\">\n  File:Collins class submarine with the aircraft carrier Charles de Gaulle in May 2019.jpg|[[French aircraft carrier Charles de Gaulle|[[French aircraft carrier Charles de Gaulle|''Charles de Gaulle'' (R91)]] nuclear-powered aircraft carrier\n  File:Temeraire1048.jpg|[[Triomphant-class submarine|[[Triomphant-class submarine|''Triomphant'']]-class nuclear ballistic missile submarine\n  </gallery>"
+    },
+    {
+      "sampleLabel": "test_cast:73",
+      "wikitext": "[<!-- http://perso.univ-rennes1.fr/antoine.chambert-loir/DJVU/ -->https://www.irphe.fr/~clanet/otherpaperfile/articles/Galois/N0029062_PDF_1_84.pdf Œuvres Mathématiques]"
+    },
+    {
+      "sampleLabel": "test_cast:74",
+      "wikitext": "{{Template|}}"
+    },
+    {
+      "sampleLabel": "test_cast:75",
+      "wikitext": "{{Template|arg}}"
+    },
+    {
+      "sampleLabel": "test_cast:76",
+      "wikitext": "{{Template|key=value}}"
+    },
+    {
+      "sampleLabel": "test_cast:77",
+      "wikitext": "{{Template|a|b|c}}"
+    },
+    {
+      "sampleLabel": "test_cast:78",
+      "wikitext": "{{Outer|{{Inner}}}}"
+    },
+    {
+      "sampleLabel": "test_cast:79",
+      "wikitext": "{{{arg}}}"
+    },
+    {
+      "sampleLabel": "test_cast:80",
+      "wikitext": "{{{arg|default}}}"
+    },
+    {
+      "sampleLabel": "test_cast:81",
+      "wikitext": "{{!}}"
+    },
+    {
+      "sampleLabel": "test_cast:82",
+      "wikitext": "{{=}}"
+    },
+    {
+      "sampleLabel": "test_cast:83",
+      "wikitext": "before {{Template}} after"
+    },
+    {
+      "sampleLabel": "test_cast:84",
+      "wikitext": "{{A}} and {{B}} end"
+    },
+    {
+      "sampleLabel": "test_cast:85",
+      "wikitext": "{{ Template }}"
+    },
+    {
+      "sampleLabel": "test_cast:86",
+      "wikitext": "{{Template|}}"
+    },
+    {
+      "sampleLabel": "test_cast:87",
+      "wikitext": "{{ISBN|9781583228947}}"
+    },
+    {
+      "sampleLabel": "test_cast:88",
+      "wikitext": "= Heading ="
+    },
+    {
+      "sampleLabel": "test_cast:89",
+      "wikitext": "== Section =="
+    },
+    {
+      "sampleLabel": "test_cast:90",
+      "wikitext": "====== Deep ======"
+    },
+    {
+      "sampleLabel": "test_cast:91",
+      "wikitext": "== Section ==   "
+    },
+    {
+      "sampleLabel": "test_cast:92",
+      "wikitext": "== {{Template}} =="
+    },
+    {
+      "sampleLabel": "test_cast:93",
+      "wikitext": "[[Main Page]]"
+    },
+    {
+      "sampleLabel": "test_cast:94",
+      "wikitext": "-{zh:漢字;zh-hans:汉字}-"
+    },
+    {
+      "sampleLabel": "test_cast:95",
+      "wikitext": "{{Navboxes\n|list=\n{{Libertarian socialism}}\n{{Libertarianism}}\n}}"
+    },
+    {
+      "sampleLabel": "test_cast:96",
+      "wikitext": "{{subst:CURRENTYEAR}}"
+    },
+    {
+      "sampleLabel": "test_cast:97",
+      "wikitext": "{{safesubst:CURRENTYEAR}}"
+    },
+    {
+      "sampleLabel": "test_cast:98",
+      "wikitext": "{{#invoke:Foo|bar}}"
+    },
+    {
+      "sampleLabel": "test_cast:99",
+      "wikitext": "{{#invoke:Foo|bar|x=y}}"
+    },
+    {
+      "sampleLabel": "test_cast:100",
+      "wikitext": "{{Module:Foo}}"
+    },
+    {
+      "sampleLabel": "test_cast:101",
+      "wikitext": "{{Template:Bar}}"
+    },
+    {
+      "sampleLabel": "test_cast:102",
+      "wikitext": "{{User:Example}}"
+    },
+    {
+      "sampleLabel": "test_cast:103",
+      "wikitext": "{{:File:Example.jpg}}"
+    },
+    {
+      "sampleLabel": "test_cast:104",
+      "wikitext": "{{T|x=\n==H==\n}}"
+    },
+    {
+      "sampleLabel": "test_cast:105",
+      "wikitext": "{{A|\n=H=\n}}"
+    },
+    {
+      "sampleLabel": "test_cast:106",
+      "wikitext": "{{{a|<b>x</b>}}}"
+    },
+    {
+      "sampleLabel": "test_cast:107",
+      "wikitext": "{{{a|{{T}}}}}"
+    },
+    {
+      "sampleLabel": "test_cast:108",
+      "wikitext": "{{T|v=RFC 2119}}"
+    },
+    {
+      "sampleLabel": "test_cast:109",
+      "wikitext": "{{T|v=__NOTOC__}}"
+    },
+    {
+      "sampleLabel": "test_cast:110",
+      "wikitext": "{{T|v=-{zh-hans:简;zh-hant:繁;}-}}"
+    },
+    {
+      "sampleLabel": "test_cast:111",
+      "wikitext": "before <!--comment--> after"
+    },
+    {
+      "sampleLabel": "test_cast:112",
+      "wikitext": "a <!--\n  multi-line\n  comment\n--> b"
+    },
+    {
+      "sampleLabel": "test_cast:113",
+      "wikitext": "start <!-- unclosed"
+    },
+    {
+      "sampleLabel": "test_cast:114",
+      "wikitext": "<!-- outer <!-- inner --> still outer -->"
+    },
+    {
+      "sampleLabel": "test_cast:115",
+      "wikitext": "literal <nowiki>[[notalink]]</nowiki> tail"
+    },
+    {
+      "sampleLabel": "test_cast:116",
+      "wikitext": "<nowiki/>"
+    },
+    {
+      "sampleLabel": "test_cast:117",
+      "wikitext": "text<ref>Citation here.</ref> end"
+    },
+    {
+      "sampleLabel": "test_cast:118",
+      "wikitext": "text<ref name=\"foo\">Named ref.</ref> end"
+    },
+    {
+      "sampleLabel": "test_cast:119",
+      "wikitext": "<ref a=b c=\"d\" e>z</ref>"
+    },
+    {
+      "sampleLabel": "test_cast:120",
+      "wikitext": "text<ref>John M. (2009). ''How a ''. {{ISBN|9780300158864}}</ref> end"
+    },
+    {
+      "sampleLabel": "test_cast:121",
+      "wikitext": "<ref>[[A|]]</ref>"
+    },
+    {
+      "sampleLabel": "test_cast:122",
+      "wikitext": "text<ref>{{Cite web |title=Foo {{!}} Bar |url=https://example.com}}</ref> end"
+    },
+    {
+      "sampleLabel": "test_cast:123",
+      "wikitext": "text<ref name=\"bar\"/> end"
+    },
+    {
+      "sampleLabel": "test_cast:124",
+      "wikitext": "<references/>"
+    },
+    {
+      "sampleLabel": "test_cast:125",
+      "wikitext": "<pre>preformatted content</pre>"
+    },
+    {
+      "sampleLabel": "test_cast:126",
+      "wikitext": "<!-- a --> middle <!-- b -->"
+    },
+    {
+      "sampleLabel": "test_cast:127",
+      "wikitext": "<!-- [[NotALink]] -->"
+    },
+    {
+      "sampleLabel": "test_cast:128",
+      "wikitext": "before <includeonly>only when included</includeonly> after"
+    },
+    {
+      "sampleLabel": "test_cast:129",
+      "wikitext": "<noinclude>only on the template page</noinclude>"
+    },
+    {
+      "sampleLabel": "test_cast:130",
+      "wikitext": "just plain text"
+    },
+    {
+      "sampleLabel": "test_cast:131",
+      "wikitext": "<ref>RFC 2119</ref>"
+    },
+    {
+      "sampleLabel": "test_cast:132",
+      "wikitext": "<ref>https://example.org/a</ref>"
+    },
+    {
+      "sampleLabel": "test_cast:133",
+      "wikitext": "<ref>-{zh-hans:简;zh-hant:繁;}-</ref>"
+    },
+    {
+      "sampleLabel": "test_cast:134",
+      "wikitext": "<ref>----</ref>"
+    },
+    {
+      "sampleLabel": "test_cast:135",
+      "wikitext": "<ref>{{T|v=RFC 2119}}</ref>"
+    },
+    {
+      "sampleLabel": "test_cast:136",
+      "wikitext": "-{text}-"
+    },
+    {
+      "sampleLabel": "test_cast:137",
+      "wikitext": "-{zh-hans:简体;zh-hant:繁體}-"
+    },
+    {
+      "sampleLabel": "test_cast:138",
+      "wikitext": "-{zh:漢字;zh-hans:汉字;zh-hant:漢字}-"
+    },
+    {
+      "sampleLabel": "test_cast:139",
+      "wikitext": "-{A|zh-hans:简体;zh-hant:繁體}-"
+    },
+    {
+      "sampleLabel": "test_cast:140",
+      "wikitext": "-{R|raw text}-"
+    },
+    {
+      "sampleLabel": "test_cast:141",
+      "wikitext": "-{zh-hans:-{inner}-;zh-hant:outer}-"
+    },
+    {
+      "sampleLabel": "test_cast:142",
+      "wikitext": "{{Template|-{zh-hans:简;zh-hant:繁}-}}"
+    },
+    {
+      "sampleLabel": "test_cast:143",
+      "wikitext": "plain text without converter"
+    },
+    {
+      "sampleLabel": "test_cast:144",
+      "wikitext": "''italic'' -{ zh-hans:汉字 }- text"
+    },
+    {
+      "sampleLabel": "test_cast:145",
+      "wikitext": "-{}-"
+    },
+    {
+      "sampleLabel": "test_cast:146",
+      "wikitext": "-{|zh-hans:简体;zh-hant:繁體}-"
+    },
+    {
+      "sampleLabel": "test_cast:147",
+      "wikitext": "[http://example.com]"
+    },
+    {
+      "sampleLabel": "test_cast:148",
+      "wikitext": "[http://example.com Example site]"
+    },
+    {
+      "sampleLabel": "test_cast:149",
+      "wikitext": "[https://secure.example.org/path Secure site]"
+    },
+    {
+      "sampleLabel": "test_cast:150",
+      "wikitext": "[ftp://files.example.com FTP link]"
+    },
+    {
+      "sampleLabel": "test_cast:151",
+      "wikitext": "[//example.com Protocol-relative]"
+    },
+    {
+      "sampleLabel": "test_cast:152",
+      "wikitext": "[http://a.org A] and [http://b.org B]"
+    },
+    {
+      "sampleLabel": "test_cast:153",
+      "wikitext": "Visit [http://example.com this site] for more."
+    },
+    {
+      "sampleLabel": "test_cast:154",
+      "wikitext": "[http://example.com?q=foo&bar=baz]"
+    },
+    {
+      "sampleLabel": "test_cast:155",
+      "wikitext": "[http://example.com#anchor Anchor link]"
+    },
+    {
+      "sampleLabel": "test_cast:156",
+      "wikitext": "[http://example.com/path/(parens)/here Label]"
+    },
+    {
+      "sampleLabel": "test_cast:157",
+      "wikitext": "bare http://example.com in text"
+    },
+    {
+      "sampleLabel": "test_cast:158",
+      "wikitext": "[http://example.com unclosed"
+    },
+    {
+      "sampleLabel": "test_cast:159",
+      "wikitext": "[http://example.com/a&lt;b Label]"
+    },
+    {
+      "sampleLabel": "test_cast:160",
+      "wikitext": "[https://example.com\tlabel]"
+    },
+    {
+      "sampleLabel": "test_cast:161",
+      "wikitext": "Line above\n----\nLine below"
+    },
+    {
+      "sampleLabel": "test_cast:162",
+      "wikitext": "Line above\n-----------\nLine below"
+    },
+    {
+      "sampleLabel": "test_cast:163",
+      "wikitext": "Line above\n---\nLine below"
+    },
+    {
+      "sampleLabel": "test_cast:164",
+      "wikitext": "__NOTOC__ in text"
+    },
+    {
+      "sampleLabel": "test_cast:165",
+      "wikitext": "==Section==\n__TOC__\nContent"
+    },
+    {
+      "sampleLabel": "test_cast:166",
+      "wikitext": "Start\n__FORCETOC__\nEnd"
+    },
+    {
+      "sampleLabel": "test_cast:167",
+      "wikitext": "__NOEDITSECTION__\n== Section =="
+    },
+    {
+      "sampleLabel": "test_cast:168",
+      "wikitext": "__NEWSECTIONLINK__"
+    },
+    {
+      "sampleLabel": "test_cast:169",
+      "wikitext": "__NOTC__"
+    },
+    {
+      "sampleLabel": "test_cast:170",
+      "wikitext": "__nOtC__"
+    },
+    {
+      "sampleLabel": "test_cast:171",
+      "wikitext": "__NOCC__"
+    },
+    {
+      "sampleLabel": "test_cast:172",
+      "wikitext": "__DISAMBIG__"
+    },
+    {
+      "sampleLabel": "test_cast:173",
+      "wikitext": "__EXPECTED_UNCONNECTED_PAGE__"
+    },
+    {
+      "sampleLabel": "test_cast:174",
+      "wikitext": "__NOTAKEYWORD__"
+    },
+    {
+      "sampleLabel": "test_cast:175",
+      "wikitext": "== Section Title ==\nContent here."
+    },
+    {
+      "sampleLabel": "test_cast:176",
+      "wikitext": "=== Level 3 ==="
+    },
+    {
+      "sampleLabel": "test_cast:177",
+      "wikitext": "{|\n|-\n| before\n----\nafter\n|}"
+    },
+    {
+      "sampleLabel": "test_cast:178",
+      "wikitext": "== Before ==\n\n"
+    },
+    {
+      "sampleLabel": "test_cast:179",
+      "wikitext": "== Before ==\n\n----\n\n== After =="
+    },
+    {
+      "sampleLabel": "test_cast:180",
+      "wikitext": "== RFC 2119 =="
+    },
+    {
+      "sampleLabel": "test_cast:181",
+      "wikitext": "== https://example.org/a =="
+    },
+    {
+      "sampleLabel": "test_cast:182",
+      "wikitext": "== -{zh-hans:简;zh-hant:繁;}- =="
+    },
+    {
+      "sampleLabel": "test_cast:183",
+      "wikitext": "plain <b>bold</b> text"
+    },
+    {
+      "sampleLabel": "test_cast:184",
+      "wikitext": "<span class=\"highlight\">inside</span> end"
+    },
+    {
+      "sampleLabel": "test_cast:185",
+      "wikitext": "line break<br/>here"
+    },
+    {
+      "sampleLabel": "test_cast:186",
+      "wikitext": "<b><i>bold italic</i></b>"
+    },
+    {
+      "sampleLabel": "test_cast:187",
+      "wikitext": "<foo>not a real tag</foo>"
+    },
+    {
+      "sampleLabel": "test_cast:188",
+      "wikitext": "== Heading with <span>span</span> =="
+    },
+    {
+      "sampleLabel": "test_cast:189",
+      "wikitext": "<table><tr><td>cell</td></tr></table>"
+    },
+    {
+      "sampleLabel": "test_cast:190",
+      "wikitext": "<span id=\"x\" class=\"y\">text</span>"
+    },
+    {
+      "sampleLabel": "test_cast:191",
+      "wikitext": "<B>upper bold</B>"
+    },
+    {
+      "sampleLabel": "test_cast:192",
+      "wikitext": "<code>inline code</code> and <pre>block</pre>"
+    },
+    {
+      "sampleLabel": "test_cast:193",
+      "wikitext": "<b>unclosed bold"
+    },
+    {
+      "sampleLabel": "test_cast:194",
+      "wikitext": "<nowiki><b>not bold</b></nowiki>"
+    },
+    {
+      "sampleLabel": "test_cast:195",
+      "wikitext": "<b><i>bold italic</b></i>"
+    },
+    {
+      "sampleLabel": "test_cast:196",
+      "wikitext": "<abbr title=\"HyperText Markup Language\">HTML</abbr>"
+    },
+    {
+      "sampleLabel": "test_cast:197",
+      "wikitext": "<span></span>"
+    },
+    {
+      "sampleLabel": "test_cast:198",
+      "wikitext": "word<wbr/>break"
+    },
+    {
+      "sampleLabel": "test_cast:199",
+      "wikitext": "<meta data=\"itemprop\" content=\"x\">"
+    },
+    {
+      "sampleLabel": "test_cast:200",
+      "wikitext": "<link data=\"itemprop\" href=\"/x\">"
+    },
+    {
+      "sampleLabel": "test_cast:201",
+      "wikitext": "[[Image:Foo.jpg|caption [[Link]] text]]"
+    },
+    {
+      "sampleLabel": "test_cast:202",
+      "wikitext": "[[File:Foo.jpg|caption [[Link]] text]]"
+    },
+    {
+      "sampleLabel": "test_cast:203",
+      "wikitext": "[[File:Foo.jpg|upright|caption [[Link]] text]]"
+    },
+    {
+      "sampleLabel": "test_cast:204",
+      "wikitext": "[[Image:Foo.jpg|upright|caption [[Link]] text]]"
+    },
+    {
+      "sampleLabel": "test_cast:205",
+      "wikitext": "See [[Main Page]] for details."
+    },
+    {
+      "sampleLabel": "test_cast:206",
+      "wikitext": "[[Page|display text]]"
+    },
+    {
+      "sampleLabel": "test_cast:207",
+      "wikitext": "[[Page|]]"
+    },
+    {
+      "sampleLabel": "test_cast:208",
+      "wikitext": "[[:Category:Foo|label]]"
+    },
+    {
+      "sampleLabel": "test_cast:209",
+      "wikitext": "[[Help:Contents]]"
+    },
+    {
+      "sampleLabel": "test_cast:210",
+      "wikitext": "[[Page#Section|section link]]"
+    },
+    {
+      "sampleLabel": "test_cast:211",
+      "wikitext": "[[File:Image.jpg]]"
+    },
+    {
+      "sampleLabel": "test_cast:212",
+      "wikitext": "[[File:Image.jpg|thumb|right|Caption text]]"
+    },
+    {
+      "sampleLabel": "test_cast:213",
+      "wikitext": "[[File:Image.jpg| thumb | upright=0.8 | Caption text]]"
+    },
+    {
+      "sampleLabel": "test_cast:214",
+      "wikitext": "[[File:water_reflectivity.jpg]]"
+    },
+    {
+      "sampleLabel": "test_cast:215",
+      "wikitext": "[[File:Image.jpg|thumb|[[Pierre-Joseph Proudhon]]]]"
+    },
+    {
+      "sampleLabel": "test_cast:216",
+      "wikitext": "[[Category:Example]]"
+    },
+    {
+      "sampleLabel": "test_cast:217",
+      "wikitext": "[[Category:Example|sort key]]"
+    },
+    {
+      "sampleLabel": "test_cast:218",
+      "wikitext": "[[#Section]]"
+    },
+    {
+      "sampleLabel": "test_cast:219",
+      "wikitext": "[[en:English article]]"
+    },
+    {
+      "sampleLabel": "test_cast:220",
+      "wikitext": "[[Page|{{Template}}]]"
+    },
+    {
+      "sampleLabel": "test_cast:221",
+      "wikitext": "[[Page A]] and [[Page B]] go here."
+    },
+    {
+      "sampleLabel": "test_cast:222",
+      "wikitext": "[[Page]]s"
+    },
+    {
+      "sampleLabel": "test_cast:223",
+      "wikitext": "[[invalid link]]s or just [[valid]]"
+    },
+    {
+      "sampleLabel": "test_cast:224",
+      "wikitext": "[[A|-{zh-hans:简;zh-hant:繁;}-]]"
+    },
+    {
+      "sampleLabel": "test_cast:225",
+      "wikitext": "[[File:water_reflectivity.jpg|thumb|RFC 2119]]"
+    },
+    {
+      "sampleLabel": "test_cast:226",
+      "wikitext": "[[File:water_reflectivity.jpg|thumb|https://example.org/a]]"
+    },
+    {
+      "sampleLabel": "test_cast:227",
+      "wikitext": "[[File:Mardi&nbsp;Gras&nbsp;Mobile&nbsp;Order of Inca.jpg|thumb|left|upright|Mobile is the birthplace of Mardi Gras in the U.S.]]"
+    },
+    {
+      "sampleLabel": "test_cast:228",
+      "wikitext": "* Item 1\n* Item 2\n* Item 3"
+    },
+    {
+      "sampleLabel": "test_cast:229",
+      "wikitext": "# One\n# Two\n# Three"
+    },
+    {
+      "sampleLabel": "test_cast:230",
+      "wikitext": "; Term : Definition"
+    },
+    {
+      "sampleLabel": "test_cast:231",
+      "wikitext": ": just a definition"
+    },
+    {
+      "sampleLabel": "test_cast:232",
+      "wikitext": "* Bullet\n# Number\n* Bullet again"
+    },
+    {
+      "sampleLabel": "test_cast:233",
+      "wikitext": "* Level 1\n** Level 2\n** Level 2 again\n* Level 1 again"
+    },
+    {
+      "sampleLabel": "test_cast:234",
+      "wikitext": "# First\n## Sub-first\n## Sub-second\n# Second"
+    },
+    {
+      "sampleLabel": "test_cast:235",
+      "wikitext": "* Bullet\n*# Numbered sub-item\n* Bullet again"
+    },
+    {
+      "sampleLabel": "test_cast:236",
+      "wikitext": "* ''italic'' item"
+    },
+    {
+      "sampleLabel": "test_cast:237",
+      "wikitext": "* [[Main Page|home page]] item"
+    },
+    {
+      "sampleLabel": "test_cast:238",
+      "wikitext": ": indented paragraph"
+    },
+    {
+      "sampleLabel": "test_cast:239",
+      "wikitext": "**** fourth level"
+    },
+    {
+      "sampleLabel": "test_cast:240",
+      "wikitext": "* First list\n\n* Second list"
+    },
+    {
+      "sampleLabel": "test_cast:241",
+      "wikitext": "* item 1\nplain text\n* item 2"
+    },
+    {
+      "sampleLabel": "test_cast:242",
+      "wikitext": "* -{zh-hans:简;zh-hant:繁;}-"
+    },
+    {
+      "sampleLabel": "test_cast:243",
+      "wikitext": "* {{T|v=RFC 2119}}"
+    },
+    {
+      "sampleLabel": "test_cast:244",
+      "wikitext": "An autolink: http://example.com in text."
+    },
+    {
+      "sampleLabel": "test_cast:245",
+      "wikitext": "Secure: https://secure.example.org/path here."
+    },
+    {
+      "sampleLabel": "test_cast:246",
+      "wikitext": "See http://example.com/path?q=1&r=2 for details."
+    },
+    {
+      "sampleLabel": "test_cast:247",
+      "wikitext": "Visit http://example.com. End."
+    },
+    {
+      "sampleLabel": "test_cast:248",
+      "wikitext": "See http://example.com/foo(bar) here."
+    },
+    {
+      "sampleLabel": "test_cast:249",
+      "wikitext": "Download at ftp://files.example.com/file.tar.gz end."
+    },
+    {
+      "sampleLabel": "test_cast:250",
+      "wikitext": "See RFC 2119 for definitions."
+    },
+    {
+      "sampleLabel": "test_cast:251",
+      "wikitext": "see rfc 2119 here."
+    },
+    {
+      "sampleLabel": "test_cast:252",
+      "wikitext": "Reference PMID 12345678 here."
+    },
+    {
+      "sampleLabel": "test_cast:253",
+      "wikitext": "Book ISBN 0-306-40615-2 here."
+    },
+    {
+      "sampleLabel": "test_cast:254",
+      "wikitext": "Book ISBN 978-3-16-148410-0 here."
+    },
+    {
+      "sampleLabel": "test_cast:255",
+      "wikitext": "(ISBN 0-306-40615-2)"
+    },
+    {
+      "sampleLabel": "test_cast:256",
+      "wikitext": "wordhttps://example.com not linked."
+    },
+    {
+      "sampleLabel": "test_cast:257",
+      "wikitext": "http://example.com/a&lt;b here."
+    },
+    {
+      "sampleLabel": "test_cast:258",
+      "wikitext": "<ref>RFC 2119</ref>"
+    },
+    {
+      "sampleLabel": "test_cast:259",
+      "wikitext": "<ref>https://example.org/a</ref>"
+    },
+    {
+      "sampleLabel": "test_cast:260",
+      "wikitext": "{{T|v=RFC 2119}}"
+    },
+    {
+      "sampleLabel": "test_cast:261",
+      "wikitext": "{|\n| RFC 2119\n|}"
+    },
+    {
+      "sampleLabel": "test_cast:262",
+      "wikitext": "{{Infobox country\n| religion = {{unbulleted list\n|{{Tree list}}\n** <ref>{{cite book|year=2010|quote=...&nbsp;rules.}}</ref>\n{{Tree list/end}}\n }}\n}}\n"
+    },
+    {
+      "sampleLabel": "test_cast:263",
+      "wikitext": "{{NS}}"
+    },
+    {
+      "sampleLabel": "test_cast:264",
+      "wikitext": "{{usurped|1=[https://web.archive.org/1021500/http://www.snagfilms.com/films/ 'Afghanistan' (2000) {{!}} SnagFilms]}}"
+    },
+    {
+      "sampleLabel": "test_cast:265",
+      "wikitext": "{{Retracted|doi=10.1016/j.jbc.2021.100764|pmid=34237888|http://retractionwatch.com/?s=%22Xuetao+Cao%22 ''Retraction Watch''|intentional=yes}}"
+    },
+    {
+      "sampleLabel": "test_cast:266",
+      "wikitext": "{{cite book | last=Long | first=A. A. | title=Science and Speculation. Studies in Hellenistic Theory and Practice | publisher=Cambridge University Press | year=2005 |<!--165–191-->page=174 |editor1=Barnes, Jonathan |editor2=Brunschwig, J. | chapter=6: Astrology: arguments pro and contra |isbn=978-0-521-02218-7}}"
+    },
+    {
+      "sampleLabel": "test_cast:267",
+      "wikitext": "<div style{{=}}\"padding-left:4em;\">"
+    },
+    {
+      "sampleLabel": "test_cast:268",
+      "wikitext": "{{Dark mode invert|image=y|[[Image:Bijection.svg|thumb|A bijective function, ''f'': ''X'' → ''Y'', where set X is {1, 2, 3, 4} and set Y is {A, B, C, D}. For example, ''f''(1) = D.]]}}"
+    },
+    {
+      "sampleLabel": "test_cast:269",
+      "wikitext": "{{cite journal |last=Gupta |first=Radha Charan |author-link=Radha Charan Gupta |title=Varāhamihira's Calculation of {{tmath|{}^nC_r}} and the Discovery of Pascal's Triangle |journal=Gaṇita Bhāratī |volume=14 |number=1–4 |year=1992 |pages=45–49 }} Reprinted in {{cite book |editor-last=Ramasubramanian |editor-first=K. |year=2019 |title=Gaṇitānanda |publisher=Springer |doi=10.1007/978-981-13-1229-8_29 |pages=285–289 }}"
+    },
+    {
+      "sampleLabel": "test_cast:270",
+      "wikitext": "<gallery mode=\"packed\" heights=\"180px\">. \nhelpers.js:355\nFile:Starry Night Over the Rhone.jpg|Van Gogh's ''[[Starry Night Over the Rhône]]'' (1888). Blue used to create a mood or atmosphere. A cobalt blue sky, and cobalt or ultramarine water.\nhelpers.js:355\nFile:Matisse Conversation.jpg|''[[The Conversation (Matisse)|The Conversation]]'' by [[Henri Matisse]] (1908–1912)\nhelpers.js:355\n</gallery>\n  "
+    },
+    {
+      "sampleLabel": "test_cast:271",
+      "wikitext": "{{Script/Hebrew|כִּֽי־אַתָּ֤ה שַׁלּ֙וֹתָ֙ גּוֹיִ֣ם רַבִּ֔ים יְשָׁלּ֖וּךָ כׇּל־יֶ֣תֶר עַמִּ֑ים מִדְּמֵ֤י אָדָם֙ וַֽחֲמַס־אֶ֔רֶץ קִרְיָ֖ה וְכׇל־יֹ֥שְׁבֵי בָֽהּ׃ {פ}}}"
+    },
+    {
+      "sampleLabel": "test_cast:272",
+      "wikitext": "<section begin=\"UK General Election 2001\"/>"
+    },
+    {
+      "sampleLabel": "test_cast:273",
+      "wikitext": "[[File:A map of the descendants of Abu Bakr al-Siddiq.svg | alt=A map showing the ]]"
+    },
+    {
+      "sampleLabel": "test_cast:274",
+      "wikitext": "<ref name=\"https://pt.scribd.com/document/742344591/smartproxy-cities\"/>"
+    },
+    {
+      "sampleLabel": "test_cast:275",
+      "wikitext": "[[Mushroom poisoning|deadly mushrooms]]"
+    },
+    {
+      "sampleLabel": "test_cast:276",
+      "wikitext": "; A'''B''' : C"
+    },
+    {
+      "sampleLabel": "test_cast:277",
+      "wikitext": "; A''B'' : C"
+    },
+    {
+      "sampleLabel": "test_cast:278",
+      "wikitext": "; A'''''B''''' : C"
+    },
+    {
+      "sampleLabel": "test_cast:279",
+      "wikitext": "＿＿目次＿＿"
+    },
+    {
+      "sampleLabel": "test_cast:280",
+      "wikitext": "text ＿＿目次＿＿ more text"
+    },
+    {
+      "sampleLabel": "test_cast:281",
+      "wikitext": "  ＿＿目次＿＿  "
+    },
+    {
+      "sampleLabel": "test_cast:282",
+      "wikitext": "== Heading == "
+    },
+    {
+      "sampleLabel": "test_cast:283",
+      "wikitext": "== Heading ==Â "
+    },
+    {
+      "sampleLabel": "test_cast:284",
+      "wikitext": "== Heading ==ã"
+    },
+    {
+      "sampleLabel": "test_cast:285",
+      "wikitext": "== Normal Heading =="
+    },
+    {
+      "sampleLabel": "test_cast:286",
+      "wikitext": "=== Nested ===  "
+    },
+    {
+      "sampleLabel": "test_cast:287",
+      "wikitext": "== HeadingÂ text =="
+    },
+    {
+      "sampleLabel": "test_cast:288",
+      "wikitext": "[[/Sub]]"
+    },
+    {
+      "sampleLabel": "test_cast:289",
+      "wikitext": "[[/Sub|display text]]"
+    },
+    {
+      "sampleLabel": "test_cast:290",
+      "wikitext": "[[../Sibling]]"
+    },
+    {
+      "sampleLabel": "test_cast:291",
+      "wikitext": "[[#Section]]"
+    },
+    {
+      "sampleLabel": "test_cast:292",
+      "wikitext": "{{Template}} and [[/Subpage]]"
+    },
+    {
+      "sampleLabel": "test_cast:293",
+      "wikitext": "#REDIRECT [[WP:Foo]]"
+    },
+    {
+      "sampleLabel": "test_cast:294",
+      "wikitext": "#REDIRECT [[Project:Shortcut]]"
+    },
+    {
+      "sampleLabel": "test_cast:295",
+      "wikitext": "#REDIRECT [[en:English article]]"
+    },
+    {
+      "sampleLabel": "test_cast:296",
+      "wikitext": "#REDIRECT [[Target page|display]]"
+    },
+    {
+      "sampleLabel": "test_cast:297",
+      "wikitext": "[[File:Foo.jpg|link=<bad>|right|Caption]]"
+    },
+    {
+      "sampleLabel": "test_cast:298",
+      "wikitext": "[[File:Foo.jpg|notapixelvalue|right|Caption]]"
+    },
+    {
+      "sampleLabel": "test_cast:299",
+      "wikitext": "[[File:Foo.jpg|200px|right|Caption]]"
+    },
+    {
+      "sampleLabel": "test_cast:300",
+      "wikitext": "[[File:Foo.jpg|200x150px]]"
+    },
+    {
+      "sampleLabel": "test_cast:301",
+      "wikitext": "[[File:Diagram.svg|lang=zh]]"
+    },
+    {
+      "sampleLabel": "test_cast:302",
+      "wikitext": "[[File:Photo.jpg|lang=zh]]"
+    },
+    {
+      "sampleLabel": "test_cast:303",
+      "wikitext": "[[File:Book.djvu|page=3]]"
+    },
+    {
+      "sampleLabel": "test_cast:304",
+      "wikitext": "[[File:Photo.jpg|page=3]]"
+    },
+    {
+      "sampleLabel": "test_cast:305",
+      "wikitext": "[[File:Foo.jpg|link=Main Page]]"
+    },
+    {
+      "sampleLabel": "test_cast:306",
+      "wikitext": "[[File:Foo.jpg|link=]]"
+    },
+    {
+      "sampleLabel": "test_cast:307",
+      "wikitext": "[[File:Foo.jpg|border|200px|right|Caption]]"
+    },
+    {
+      "sampleLabel": "test_cast:308",
+      "wikitext": "-{zh:简体;zh-hant:繁體}-"
+    },
+    {
+      "sampleLabel": "test_cast:309",
+      "wikitext": "Before -{A|B}- after"
+    },
+    {
+      "sampleLabel": "test_cast:310",
+      "wikitext": "{{T|-{A|B}-}}"
+    },
+    {
+      "sampleLabel": "test_cast:311",
+      "wikitext": "<ref>-{A|B}-</ref>"
+    },
+    {
+      "sampleLabel": "test_cast:312",
+      "wikitext": "<gallery>\nFile:Foo.jpg|Caption <!-- hidden --> text\n</gallery>"
+    },
+    {
+      "sampleLabel": "test_cast:313",
+      "wikitext": "<gallery>\nFile:Foo.jpg|''italic'' and '''bold''' caption\n</gallery>"
+    },
+    {
+      "sampleLabel": "test_cast:314",
+      "wikitext": "<gallery>\nFile:Foo.jpg|See [http://example.com link]\n</gallery>"
+    },
+    {
+      "sampleLabel": "test_cast:315",
+      "wikitext": "<gallery>\nFile:Foo.jpg|See RFC 2119\n</gallery>"
+    },
+    {
+      "sampleLabel": "test_cast:316",
+      "wikitext": "<gallery>\nFile:Foo.jpg|{{Template|arg}} caption\n</gallery>"
+    },
+    {
+      "sampleLabel": "test_cast:317",
+      "wikitext": "<imagemap>\nFile:Foo.jpg|thumb|''italic'' caption\npoly 0 0 10 10 [[Link]]\n</imagemap>"
+    },
+    {
+      "sampleLabel": "test_cast:318",
+      "wikitext": "<imagemap>\nFile:Foo.jpg|See RFC 2119\npoly 0 0 10 10 [[Link]]\n</imagemap>"
+    },
+    {
+      "sampleLabel": "test_cast:319",
+      "wikitext": "<poem>\n* First item\n* Second item\n</poem>"
+    },
+    {
+      "sampleLabel": "test_cast:320",
+      "wikitext": "<poem>* First item\n* Second item</poem>"
+    },
+    {
+      "sampleLabel": "test_cast:321",
+      "wikitext": "<poem>\n# Numbered first\n# Numbered second\n</poem>"
+    },
+    {
+      "sampleLabel": "test_cast:322",
+      "wikitext": "<poem>\n; Term\n: Definition\n</poem>"
+    },
+    {
+      "sampleLabel": "test_cast:323",
+      "wikitext": "[[{{okina}}Iolani Palace]]"
+    },
+    {
+      "sampleLabel": "test_cast:324",
+      "wikitext": "[[/|]] (Back slash)"
+    },
+    {
+      "sampleLabel": "test_cast:325",
+      "wikitext": "<ref name=\"The Pulitzer Prizes {{pipe}} Poetry\">{{Cite web |title=The Pulitzer Prizes {{pipe}} Poetry |url=http://www.pulitzer.org/bycat/Poetry |access-date=October 31, 2010 |publisher=Pulitzer.org}}</ref>"
+    },
+    {
+      "sampleLabel": "test_cast:326",
+      "wikitext": "{{#tag:something|{{#expr:1+1}}|{{#time:Y}}}}"
+    },
+    {
+      "sampleLabel": "test_cast:327",
+      "wikitext": "<gallery caption=\"Prints from [[Bernard de Montfaucon]]'s ''L'antiquité expliquée et représentée en figures'' (Band 2,2) page 358 ff.\">\n  File:Montfaucon Abraxas Plaque 149.xcf|Plaque 149\n  </gallery>"
+    },
+    {
+      "sampleLabel": "test_cast:328",
+      "wikitext": "{{#tag:timeline|\n  ImageSize  = width:1500 height:auto barincrement:18\n  PlotArea   = top:10 bottom:20 right:130 left:10\n  AlignBars  = late\n  DateFormat = x.y\n  Period     = from:1816.90 till:{{#expr:{{#time:Y}}+{{#time:m}}/6}}\n  TimeAxis   = orientation:horizontal\n  ScaleMajor = unit:year increment:10 start:1820\n  ScaleMinor = unit:year increment:1 start:1817\n\n  Define $now = {{#expr:{{#time:Y}}+{{#time:m}}/12}}\n\n  Colors =\n    id:5year   value:rgb(0.8, 0.8, 0.8)\n\n  BarData =\n    barset:GovernorLine\n    barset:Governors\n    #barset:blankline\n\n  PlotData=\n  width:1 align:right fontsize:S shift:(-3,-4) anchor:from fontsize:8 color:black\n\n  barset:GovernorLine\n  from:1832 till:end text:Governors\n\n  width:6 align:left fontsize:S shift:(5,-4) anchor:till fontsize:10\n\n  barset:Governors\n  from:1819.86 till:1820.52 color:demrep text:\"William W. Bibb\"\n  from:1820.52 till:1821.86 color:demrep text:\"Thomas Bibb\"\n  from:1821.86 till:1825.9 color:demrep text:\"Israel Pickens\"\n  from:1825.9 till:1829.89 color:jackson text:\"John Murphy\"\n\n  LineData=\n  from:1817.73 till:1819.86 atpos:989 color:noparty width:6 # WWB noparty\n  from:1831.9 till:1833 atpos:883 color:jackson width:6 # JG jackson\n\n  layer:back\n  # This section creates the vertical lines.\n  at:1820.00 width:0.1 color:0year\n  at:1825.00 width:0.1 color:5year\n  at:1830.00 width:0.1 color:0year\n  at:1835.00 width:0.1 color:5year\n  at:1840.00 width:0.1 color:0year\n  at:1845.00 width:0.1 color:5year\n  at:1850.00 width:0.1 color:0year\n  }}"
+    },
+    {
+      "sampleLabel": "test_cast:329",
+      "wikitext": "<Gallery>\n  File:The Odeon of Herodes Atticus on September 13, 2020.jpg|The [[Odeon of Herodes Atticus]] built in AD 161 by [[Herodes Atticus]]\n  </Gallery>"
+    },
+    {
+      "sampleLabel": "test_cast:330",
+      "wikitext": "archive-url=https://web.archive.org/web/20160325000841/http://danmarkshistorien.dk/leksikon-og-kilder/vis/materiale/aarhus-domkirke/?chash=a83dfe233ede9644167a9b5ea9aa35a4&tx_historyview_pi1&#91;lang&#93;=1"
+    },
+    {
+      "sampleLabel": "test_cast:331",
+      "wikitext": " [[File:Maaloula square alef.svg|20px|]]"
+    },
+    {
+      "sampleLabel": "test_cast:332",
+      "wikitext": "[[File:Uranocene-3D-balls.png|thumb|upright=0.55|Predicted structure of amerocene [(η<sup>8</sup>-C<sub>8</sub>H<sub>8</sub>)<sub>2</sub><nowiki>Am]</nowiki>]]"
+    },
+    {
+      "sampleLabel": "test_cast:333",
+      "wikitext": "|- 1 CAR\n  ! 1\n  ! rowspan=\"4\" | Position\n  | style=\"background:#dfffdf;\" | 4\n  | style=\"background:#dfffdf;\" | 4"
+    },
+    {
+      "sampleLabel": "test_cast:334",
+      "wikitext": "{|\n  |- 1 CAR\n  ! 1\n  ! rowspan=\"4\" | Position\n  | style=\"background:#dfffdf;\" | 4\n  | style=\"background:#dfffdf;\" | 4\n  |}"
+    },
+    {
+      "sampleLabel": "test_cast:335",
+      "wikitext": "{|\n  |- {{T}} CAR\n  |}"
+    },
+    {
+      "sampleLabel": "test_cast:336",
+      "wikitext": "{|\n  |- -{zh-hans:a;zh-hant:b;}- CAR\n  |}"
+    },
+    {
+      "sampleLabel": "test_cast:337",
+      "wikitext": "{|\n  |- <!--c--> 1 CAR\n  |}"
+    },
+    {
+      "sampleLabel": "test_cast:338",
+      "wikitext": "== References ==\n  {{Reflist}}\n  {{refbegin}}\n  * {{Brooklands: On Audi & Auto Union 1980|editor-mask=6}}\n  {{refend}}\n  "
+    },
+    {
+      "sampleLabel": "test_cast:339",
+      "wikitext": "[[ζ Arietis]]"
+    },
+    {
+      "sampleLabel": "test_cast:340",
+      "wikitext": "<imagemap>\n  File:Actinopterygii.jpg||300px\n  rect 0 0 333 232 [[Electrophorus electricus|Electric eel]]\n  </imagemap>"
+    },
+    {
+      "sampleLabel": "test_cast:341",
+      "wikitext": "<imagemap>\n  File:Foo.jpg|thumb||alt=A\n  poly 1 1 2 2 [[L|t]]\n  </imagemap>"
+    },
+    {
+      "sampleLabel": "test_cast:342",
+      "wikitext": "<imagemap>\n  File:Foo.jpg|||alt=A\n  poly 1 1 2 2 [[L|t]]\n  </imagemap>"
+    },
+    {
+      "sampleLabel": "test_cast:343",
+      "wikitext": "<ref>Andy Pease, [http://windliterature.org/2014/07/01/america-the-beautiful-by-katharine-lee-bates-and-samuel-augustus-ward-arr-carmen-dragon/ {{\"'}}America the Beautiful' by Katharine Lee Bates and Samuel Augustus Ward, arr. Carmen Dragon\"] ({{webarchive|url=https://web.archive.org/web/20180222162222/http://windliterature.org/2014/07/01/america-the-beautiful-by-katharine-lee-bates-and-samuel-augustus-ward-arr-carmen-dragon/ |date=February 22, 2018}}), Wind Band Literature, July 1, 2014; accessed 2019-08-17.</ref>"
+    },
+    {
+      "sampleLabel": "test_cast:344",
+      "wikitext": "{| class=\"wikitable sortable\"\n  ! colspan=\"3\" |[[File:Diplomatic_relations_of_Angola.svg|frameless|425x425px]]\n  |-\n  !#\n  !Country\n  !Date\n  |-\n  |174\n  |{{Flag|Bahamas}}\n  |{{dts|26 September 2025}}<ref>{{Cite web |date=26 September 2025 |title=We established diplomatic relations with Angola by signing a memorandum to that effect in New York at the United Nations. |url=https://www.facebook.com/fredmitchellmbm/posts/pfbid02KWQbzWBsS1WiabSQRmZJMMBf9Mv6584W6jaTTufWp341bGqqLNKoFie7wdvqc3JYl |access-date=26 September 2025 |website=Fred Mitchell - Minute By Minute on Facebook}}</ref>\n  |}"
+    },
+    {
+      "sampleLabel": "test_cast:345",
+      "wikitext": "<gallery mode=\"packed\" caption=\"Road transport in Angola.\">\n  Midd Town Luanda.jpg|Automobiles in [[Luanda]].\n  The Nowhere road.jpg|New highway (2019).\n  </gallery>"
+    },
+    {
+      "sampleLabel": "test_cast:346",
+      "wikitext": "<references>\n  <ref name=\"Schopenhauer-2018\">{{cite book |author-last=Schopenhauer |author-first=Arthur |date=2018 |title=The World as Will and Representation |orig-date=1844 |volume=2 |place=Cambridge |publisher=Cambridge University Press |doi=10.1017/9780511843112 |isbn=978-0-521-87034-4 |editor-last=Welchman |editor-first=Alistair |editor2-last=Janaway |editor2-first=Christopher |editor3-last=Norman |editor3-first=Judith |author-link1=Arthur Schopenhauer |title-link=The World as Will and Representation}}</ref>\n  </references>"
+    },
+    {
+      "sampleLabel": "test_cast:347",
+      "wikitext": "\n  | style=\"text-align:center;\"| [[File:Emblem of Qatar-2022.svg|20px|Link=Emblem of Qatar|alt=Emblem]]"
+    },
+    {
+      "sampleLabel": "test_cast:348",
+      "wikitext": "|<poem style=\"margin-left:1em;\">1911 version<ref>{{cite book |url=https://archive.org/details/americabeautiful00baterich |last=Bates |first=Katharine Lee |date=1911 |title=America the Beautiful and Other Poems |location=New York |publisher=Thomas Y. Crowell Company |pages=3–4 |via=archive.org}}</ref>sea!</poem>|}"
+    },
+    {
+      "sampleLabel": "test_cast:349",
+      "wikitext": "{{Hatnote group|\n  {{Redirect|Materna||Materna (disambiguation)|and|America the Beautiful (disambiguation)}}\n  {{}}\n  }}\n  "
+    },
+    {
+      "sampleLabel": "test_cast:350",
+      "wikitext": "{| class=\"wikitable\" style=\"text-align:center\"\n  ! pentane || 2-methylbutane || 2,2-dimethylpropane\n  |}"
+    },
+    {
+      "sampleLabel": "test_cast:351",
+      "wikitext": "{{Cite web <!-- Citation bot changes to journal -->|url=https://www.cdc.gov/niosh/docs/2012-108/ |title=NIOSH Pesticide Poisoning Monitoring Program Protects Farmworkers |publisher=[[Centers for Disease Control and Prevention]] |access-date=15 April 2013 |url-status=live |archive-url=https://web.archive.org/web/20130402004253/http://www.cdc.gov/niosh/docs/2012%2D108/ |archive-date=2 April 2013|doi=10.26616/NIOSHPUB2012108 |year=2011 |doi-access=free}}"
+    },
+    {
+      "sampleLabel": "test_cast:352",
+      "wikitext": "[[File:Andorra - panoramio (2).jpg|thumb|Streets of the city centre of Andorra la Vella in 1986. From 1986 until 1989 Andorra normalised the economic treaties with the [[European Economic Community|EEC]].<ref>{{cite news |date=18 December 1989 |title=La CE concluye un acuerdo de unión aduanera con Andorra |trans-title=The EC concludes a customs union agreement with Andorra |url=https://elpais.com/diario/1989/12/18/economia/629938809_850215.html |newspaper=El País |language=es}}</ref><ref>{{cite news |date=27 September 1986 |title=François Mitterrand alienta las reformas en Andorras |trans-title=François Mitterrand encourages reforms in Andorra |url=https://elpais.com/diario/1986/09/27/internacional/528156020_850215.html |newspaper=El País |language=es}}</ref>|alt=]]"
+    },
+    {
+      "sampleLabel": "test_cast:353",
+      "wikitext": "{|{{chset-table-header1|ASCII (1977/1986)}}| {{chset-cell1 | 124 U+007C: VERTICAL LINE | [[Vertical bar|{{pipe}}]] | style=background:#ffb2b2}}|}"
+    },
+    {
+      "sampleLabel": "test_cast:354",
+      "wikitext": "{|{{chset-table-header1|ASCII (1977/1986)}}\n  | \n  }"
+    },
+    {
+      "sampleLabel": "test_cast:355",
+      "wikitext": "{|{{chset-table-header1|ASCII (1977/1986)}}|}"
+    },
+    {
+      "sampleLabel": "test_cast:356",
+      "wikitext": "{{chset-cell1 | 124 U+007C: VERTICAL LINE | [[Vertical bar|{{pipe}}]] | style=background:#ffb2b2}}"
+    },
+    {
+      "sampleLabel": "test_cast:357",
+      "wikitext": "{{chset-cell1 | 61 U+003D: EQUALS SIGN | [[=]] }}"
+    },
+    {
+      "sampleLabel": "test_cast:358",
+      "wikitext": "| {{chset-cell1 | 123 U+007B: LEFT CURLY BRACKET | [[Left curly bracket|{]] | style=background:#ffffb2}}"
+    },
+    {
+      "sampleLabel": "test_cast:359",
+      "wikitext": "This is a paragraph of plain text."
+    },
+    {
+      "sampleLabel": "test_cast:360",
+      "wikitext": "#REDIRECT [[Target]] <!-- a comment -->"
+    },
+    {
+      "sampleLabel": "test_cast:361",
+      "wikitext": "{{Template|[[Page|label]]}}"
+    },
+    {
+      "sampleLabel": "test_cast:362",
+      "wikitext": "== {{PAGENAME}} ==\nContent."
+    },
+    {
+      "sampleLabel": "test_cast:363",
+      "wikitext": "{|\n| [[Page|link]] || plain\n|}"
+    },
+    {
+      "sampleLabel": "test_cast:364",
+      "wikitext": "{|\n| alias = ISO-IR-006,<ref>reftext</ref> ANSI_X3.4-1968\n|}"
+    },
+    {
+      "sampleLabel": "test_cast:365",
+      "wikitext": "{|\n! Modern [[State of matter|state<br />of matter]]\n|}"
+    },
+    {
+      "sampleLabel": "test_cast:366",
+      "wikitext": "{{Outer|{{Inner|arg}}}}"
+    },
+    {
+      "sampleLabel": "test_cast:367",
+      "wikitext": "'''bold''' and ''[[Page|italic link]]''"
+    },
+    {
+      "sampleLabel": "test_cast:368",
+      "wikitext": "[[Page]] and [http://example.com external]."
+    },
+    {
+      "sampleLabel": "test_cast:369",
+      "wikitext": "See RFC 2119, [[Specification]] and http://example.com."
+    },
+    {
+      "sampleLabel": "test_cast:370",
+      "wikitext": "* {{Template}}\n* plain item\n* [[Page]]"
+    },
+    {
+      "sampleLabel": "test_cast:371",
+      "wikitext": "== Relationship to surface [[bulk density]] =="
+    },
+    {
+      "sampleLabel": "test_cast:372",
+      "wikitext": "Before __NOTOC__ after."
+    },
+    {
+      "sampleLabel": "test_cast:373",
+      "wikitext": "{{Template|<!-- comment -->value}}"
+    },
+    {
+      "sampleLabel": "test_cast:374",
+      "wikitext": "<nowiki>[[not a link]] {{not a template}}</nowiki>"
+    },
+    {
+      "sampleLabel": "test_cast:375",
+      "wikitext": "Claim.<ref>{{Citation|title=Foo|year=2020}}</ref> More text."
+    },
+    {
+      "sampleLabel": "test_cast:376",
+      "wikitext": "A<ref>''x'' efficacy is > <sub>2</sub>; ''y'' is > <sub>2</sub>.</ref>B"
+    },
+    {
+      "sampleLabel": "test_cast:377",
+      "wikitext": "A<ref>alpha<!--c--></ref>B"
+    },
+    {
+      "sampleLabel": "test_cast:378",
+      "wikitext": "A<ref>{{Citation|access-date= 29 June 2011<!--Added by DASHBot-->}}</ref>B"
+    },
+    {
+      "sampleLabel": "test_cast:379",
+      "wikitext": "{{T|v='''a\n''b'''}}"
+    },
+    {
+      "sampleLabel": "test_cast:380",
+      "wikitext": "<score raw=1 sound=1>\\relative c'' { x }</score>"
+    },
+    {
+      "sampleLabel": "test_cast:381",
+      "wikitext": "<ref>\n* a\n* b\n</ref>"
+    },
+    {
+      "sampleLabel": "test_cast:382",
+      "wikitext": "{{Blockquote|<poem><ref>x ''L'Etoile'' (as in ''H'')</ref></poem>}}"
+    },
+    {
+      "sampleLabel": "test_cast:383",
+      "wikitext": "{{Citation|title=Effect of land albedo, CO<sub>2</sub>, orography}}"
+    },
+    {
+      "sampleLabel": "test_cast:384",
+      "wikitext": "{{Refn|In ''Anarchism: From Theory to Practice'' (1970), historian [[Daniel Guérin]] describes [[libertarian socialism]].|group=nb}}"
+    },
+    {
+      "sampleLabel": "test_cast:385",
+      "wikitext": "{{Refn|In ''Anarchism: From Theory to Practice'' (1970),{{Sfn|Guérin|1970|p=12}} anarchist historian [[Daniel Guérin]] described it as a synonym for [[libertarian socialism]], and wrote that anarchism \"is really a synonym for socialism.\"{{Sfn|Arvidsson|2017}} In his many works on anarchism, historian [[Noam Chomsky]] describes anarchism, alongside [[libertarian Marxism]], as the [[libertarian]] wing of [[socialism]].{{Sfn|Otero|1994|p=617}}|group=nb}}"
+    },
+    {
+      "sampleLabel": "test_cast:386",
+      "wikitext": "'''Title''' (born [[1970]]) is a [[person]].\n\n== Career ==\n* [[Job A]]\n* [[Job B]]\n\n== References ==\n<references/>"
+    },
+    {
+      "sampleLabel": "test_cast:387",
+      "wikitext": "[[ẚ]]"
+    },
+    {
+      "sampleLabel": "test_cast:388",
+      "wikitext": "{{Wikisource-inline|list=\n** \"[[s:A Dictionary of the English Language/A|A]]\" in ''[[s:A Dictionary of the English Language|A Dictionary of the English Language]]'' by [[Samuel Johnson]]\n}}"
+    },
+    {
+      "sampleLabel": "test_cast:389",
+      "wikitext": "<gallery>\nFile:Achilles departure Eretria Painter CdM Paris 851.jpg|Achilles and the [[Nereid]] Cymothoe, Attic [[red-figure]] [[kantharos]] from [[Volci]] ([[Cabinet des Médailles]], Bibliothèque nationale, Paris)\n</gallery>"
+    },
+    {
+      "sampleLabel": "test_cast:390",
+      "wikitext": "<gallery>\nFile:Achilles departure Eretria Painter CdM Paris 851.jpg|Achilles and the [[Nereid]] Cymothoe\nFile:Akhilleus embassy Staatliche Antikensammlungen 8770.jpg|The embassy to Achilles, Attic red-figure [[hydria]]\n</gallery>"
+    },
+    {
+      "sampleLabel": "test_cast:391",
+      "wikitext": "(${{formatnum:{{Inflation|US|800|1861|r=-2}}}} in current dollars)"
+    },
+    {
+      "sampleLabel": "test_cast:392",
+      "wikitext": "<imagemap>\nFile:Emancipation proclamation.jpg|thumb|upright=1.25|''[[First Reading of the Emancipation Proclamation of President Lincoln]]''|alt=A dark-haired, bearded, middle-aged man holding documents is seated among seven other men.\npoly 269 892 254 775 193 738 [[Edwin M. Stanton|Edwin Stanton]]\n</imagemap>"
+    },
+    {
+      "sampleLabel": "test_cast:393",
+      "wikitext": "<ref>https://example.org/a</ref>"
+    },
+    {
+      "sampleLabel": "test_cast:394",
+      "wikitext": "<ref>RFC 2119</ref>"
+    },
+    {
+      "sampleLabel": "test_cast:395",
+      "wikitext": "<ref>----</ref>"
+    },
+    {
+      "sampleLabel": "test_cast:396",
+      "wikitext": "<ref>-{zh-hans:简;zh-hant:繁;}-</ref>"
+    },
+    {
+      "sampleLabel": "test_cast:397",
+      "wikitext": "== https://example.org/a =="
+    },
+    {
+      "sampleLabel": "test_cast:398",
+      "wikitext": "== RFC 2119 =="
+    },
+    {
+      "sampleLabel": "test_cast:399",
+      "wikitext": "== -{zh-hans:简;zh-hant:繁;}- =="
+    },
+    {
+      "sampleLabel": "test_cast:400",
+      "wikitext": "{{T|v=RFC 2119}}"
+    },
+    {
+      "sampleLabel": "test_cast:401",
+      "wikitext": "{{T|v=__NOTOC__}}"
+    },
+    {
+      "sampleLabel": "test_cast:402",
+      "wikitext": "{{T|v=-{zh-hans:简;zh-hant:繁;}-}}"
+    },
+    {
+      "sampleLabel": "test_cast:403",
+      "wikitext": "{|\n| https://example.org/a\n|}"
+    },
+    {
+      "sampleLabel": "test_cast:404",
+      "wikitext": "{|\n| RFC 2119\n|}"
+    },
+    {
+      "sampleLabel": "test_cast:405",
+      "wikitext": "{|\n| -{zh-hans:简;zh-hant:繁;}-\n|}"
+    },
+    {
+      "sampleLabel": "test_cast:406",
+      "wikitext": "A -{zh-hans:简;zh-hant:繁;}- B"
+    },
+    {
+      "sampleLabel": "test_cast:407",
+      "wikitext": "<ref>{{C|title=RFC 2119}}</ref>"
+    },
+    {
+      "sampleLabel": "test_cast:408",
+      "wikitext": "<ref>{{C|title=__NOTOC__}}</ref>"
+    },
+    {
+      "sampleLabel": "test_cast:409",
+      "wikitext": "<ref>{{C|title=-{zh-hans:简;zh-hant:繁;}-}}</ref>"
+    },
+    {
+      "sampleLabel": "test_cast:410",
+      "wikitext": "<ref>plain ; https://example.org/a</ref>"
+    },
+    {
+      "sampleLabel": "test_cast:411",
+      "wikitext": "<ref>plain ; RFC 2119</ref>"
+    },
+    {
+      "sampleLabel": "test_cast:412",
+      "wikitext": "<ref>plain ; -{zh-hans:简;zh-hant:繁;}-</ref>"
+    },
+    {
+      "sampleLabel": "test_cast:413",
+      "wikitext": "<ref>''it'' ; -{zh-hans:简;zh-hant:繁;}-</ref>"
+    },
+    {
+      "sampleLabel": "test_cast:414",
+      "wikitext": "<ref>'''bo''' ; -{zh-hans:简;zh-hant:繁;}-</ref>"
+    },
+    {
+      "sampleLabel": "test_cast:415",
+      "wikitext": "<ref>[[L|t]] ; -{zh-hans:简;zh-hant:繁;}-</ref>"
+    },
+    {
+      "sampleLabel": "test_cast:416",
+      "wikitext": "<ref>[http://example.com x] ; -{zh-hans:简;zh-hant:繁;}-</ref>"
+    },
+    {
+      "sampleLabel": "test_cast:417",
+      "wikitext": "<ref>https://example.org/a ; plain</ref>"
+    },
+    {
+      "sampleLabel": "test_cast:418",
+      "wikitext": "<ref>https://example.org/a ; https://example.org/a</ref>"
+    },
+    {
+      "sampleLabel": "test_cast:419",
+      "wikitext": "<ref>https://example.org/a ; RFC 2119</ref>"
+    },
+    {
+      "sampleLabel": "test_cast:420",
+      "wikitext": "<ref>https://example.org/a ; -{zh-hans:简;zh-hant:繁;}-</ref>"
+    },
+    {
+      "sampleLabel": "test_cast:421",
+      "wikitext": "<ref>https://example.org/a ; * item</ref>"
+    },
+    {
+      "sampleLabel": "test_cast:422",
+      "wikitext": "<ref>RFC 2119 ; plain</ref>"
+    },
+    {
+      "sampleLabel": "test_cast:423",
+      "wikitext": "<ref>RFC 2119 ; https://example.org/a</ref>"
+    },
+    {
+      "sampleLabel": "test_cast:424",
+      "wikitext": "<ref>RFC 2119 ; RFC 2119</ref>"
+    },
+    {
+      "sampleLabel": "test_cast:425",
+      "wikitext": "<ref>RFC 2119 ; -{zh-hans:简;zh-hant:繁;}-</ref>"
+    },
+    {
+      "sampleLabel": "test_cast:426",
+      "wikitext": "<ref>RFC 2119 ; * item</ref>"
+    },
+    {
+      "sampleLabel": "test_cast:427",
+      "wikitext": "<ref>CO<sub>2</sub> ; -{zh-hans:简;zh-hant:繁;}-</ref>"
+    },
+    {
+      "sampleLabel": "test_cast:428",
+      "wikitext": "<ref>a<!--c-->b ; -{zh-hans:简;zh-hant:繁;}-</ref>"
+    },
+    {
+      "sampleLabel": "test_cast:429",
+      "wikitext": "<ref>__NOTOC__ ; -{zh-hans:简;zh-hant:繁;}-</ref>"
+    },
+    {
+      "sampleLabel": "test_cast:430",
+      "wikitext": "<ref>---- ; plain</ref>"
+    },
+    {
+      "sampleLabel": "test_cast:431",
+      "wikitext": "<ref>---- ; ''it''</ref>"
+    },
+    {
+      "sampleLabel": "test_cast:432",
+      "wikitext": "<ref>---- ; '''bo'''</ref>"
+    },
+    {
+      "sampleLabel": "test_cast:433",
+      "wikitext": "<ref>---- ; [[L|t]]</ref>"
+    },
+    {
+      "sampleLabel": "test_cast:434",
+      "wikitext": "<ref>---- ; [http://example.com x]</ref>"
+    },
+    {
+      "sampleLabel": "test_cast:435",
+      "wikitext": "<ref>---- ; https://example.org/a</ref>"
+    },
+    {
+      "sampleLabel": "test_cast:436",
+      "wikitext": "<ref>---- ; RFC 2119</ref>"
+    },
+    {
+      "sampleLabel": "test_cast:437",
+      "wikitext": "<ref>---- ; CO<sub>2</sub></ref>"
+    },
+    {
+      "sampleLabel": "test_cast:438",
+      "wikitext": "<ref>---- ; a<!--c-->b</ref>"
+    },
+    {
+      "sampleLabel": "test_cast:439",
+      "wikitext": "<ref>---- ; __NOTOC__</ref>"
+    },
+    {
+      "sampleLabel": "test_cast:440",
+      "wikitext": "<ref>---- ; ----</ref>"
+    },
+    {
+      "sampleLabel": "test_cast:441",
+      "wikitext": "<ref>---- ; -{zh-hans:简;zh-hant:繁;}-</ref>"
+    },
+    {
+      "sampleLabel": "test_cast:442",
+      "wikitext": "<ref>---- ; * item</ref>"
+    },
+    {
+      "sampleLabel": "test_cast:443",
+      "wikitext": "<ref>---- ; {{T|x=y}}</ref>"
+    },
+    {
+      "sampleLabel": "test_cast:444",
+      "wikitext": "<ref>-{zh-hans:简;zh-hant:繁;}- ; plain</ref>"
+    },
+    {
+      "sampleLabel": "test_cast:445",
+      "wikitext": "<ref>-{zh-hans:简;zh-hant:繁;}- ; ''it''</ref>"
+    },
+    {
+      "sampleLabel": "test_cast:446",
+      "wikitext": "<ref>-{zh-hans:简;zh-hant:繁;}- ; '''bo'''</ref>"
+    },
+    {
+      "sampleLabel": "test_cast:447",
+      "wikitext": "<ref>-{zh-hans:简;zh-hant:繁;}- ; [[L|t]]</ref>"
+    },
+    {
+      "sampleLabel": "test_cast:448",
+      "wikitext": "<ref>-{zh-hans:简;zh-hant:繁;}- ; [http://example.com x]</ref>"
+    },
+    {
+      "sampleLabel": "test_cast:449",
+      "wikitext": "<ref>-{zh-hans:简;zh-hant:繁;}- ; https://example.org/a</ref>"
+    },
+    {
+      "sampleLabel": "test_cast:450",
+      "wikitext": "<ref>-{zh-hans:简;zh-hant:繁;}- ; RFC 2119</ref>"
+    },
+    {
+      "sampleLabel": "test_cast:451",
+      "wikitext": "<ref>-{zh-hans:简;zh-hant:繁;}- ; CO<sub>2</sub></ref>"
+    },
+    {
+      "sampleLabel": "test_cast:452",
+      "wikitext": "<ref>-{zh-hans:简;zh-hant:繁;}- ; a<!--c-->b</ref>"
+    },
+    {
+      "sampleLabel": "test_cast:453",
+      "wikitext": "<ref>-{zh-hans:简;zh-hant:繁;}- ; __NOTOC__</ref>"
+    },
+    {
+      "sampleLabel": "test_cast:454",
+      "wikitext": "<ref>-{zh-hans:简;zh-hant:繁;}- ; ----</ref>"
+    },
+    {
+      "sampleLabel": "test_cast:455",
+      "wikitext": "<ref>-{zh-hans:简;zh-hant:繁;}- ; -{zh-hans:简;zh-hant:繁;}-</ref>"
+    },
+    {
+      "sampleLabel": "test_cast:456",
+      "wikitext": "<ref>-{zh-hans:简;zh-hant:繁;}- ; * item</ref>"
+    },
+    {
+      "sampleLabel": "test_cast:457",
+      "wikitext": "<ref>-{zh-hans:简;zh-hant:繁;}- ; {{T|x=y}}</ref>"
+    },
+    {
+      "sampleLabel": "test_cast:458",
+      "wikitext": "<ref>* item ; ''it''</ref>"
+    },
+    {
+      "sampleLabel": "test_cast:459",
+      "wikitext": "<ref>* item ; '''bo'''</ref>"
+    },
+    {
+      "sampleLabel": "test_cast:460",
+      "wikitext": "<ref>* item ; [[L|t]]</ref>"
+    },
+    {
+      "sampleLabel": "test_cast:461",
+      "wikitext": "<ref>* item ; [http://example.com x]</ref>"
+    },
+    {
+      "sampleLabel": "test_cast:462",
+      "wikitext": "<ref>* item ; https://example.org/a</ref>"
+    },
+    {
+      "sampleLabel": "test_cast:463",
+      "wikitext": "<ref>* item ; RFC 2119</ref>"
+    },
+    {
+      "sampleLabel": "test_cast:464",
+      "wikitext": "<ref>* item ; CO<sub>2</sub></ref>"
+    },
+    {
+      "sampleLabel": "test_cast:465",
+      "wikitext": "<ref>* item ; a<!--c-->b</ref>"
+    },
+    {
+      "sampleLabel": "test_cast:466",
+      "wikitext": "<ref>* item ; __NOTOC__</ref>"
+    },
+    {
+      "sampleLabel": "test_cast:467",
+      "wikitext": "<ref>* item ; ----</ref>"
+    },
+    {
+      "sampleLabel": "test_cast:468",
+      "wikitext": "<ref>* item ; -{zh-hans:简;zh-hant:繁;}-</ref>"
+    },
+    {
+      "sampleLabel": "test_cast:469",
+      "wikitext": "<ref>* item ; {{T|x=y}}</ref>"
+    },
+    {
+      "sampleLabel": "test_cast:470",
+      "wikitext": "<ref>{{T|x=y}} ; -{zh-hans:简;zh-hant:繁;}-</ref>"
+    },
+    {
+      "sampleLabel": "test_cast:471",
+      "wikitext": "{{T|v=plain ; RFC 2119}}"
+    },
+    {
+      "sampleLabel": "test_cast:472",
+      "wikitext": "{{T|v=plain ; __NOTOC__}}"
+    },
+    {
+      "sampleLabel": "test_cast:473",
+      "wikitext": "{{T|v=plain ; -{zh-hans:简;zh-hant:繁;}-}}"
+    },
+    {
+      "sampleLabel": "test_cast:474",
+      "wikitext": "{{T|v=''it'' ; CO<sub>2</sub>}}"
+    },
+    {
+      "sampleLabel": "test_cast:475",
+      "wikitext": "{{T|v=''it'' ; __NOTOC__}}"
+    },
+    {
+      "sampleLabel": "test_cast:476",
+      "wikitext": "{{T|v=''it'' ; -{zh-hans:简;zh-hant:繁;}-}}"
+    },
+    {
+      "sampleLabel": "test_cast:477",
+      "wikitext": "{{T|v='''bo''' ; CO<sub>2</sub>}}"
+    },
+    {
+      "sampleLabel": "test_cast:478",
+      "wikitext": "{{T|v='''bo''' ; __NOTOC__}}"
+    },
+    {
+      "sampleLabel": "test_cast:479",
+      "wikitext": "{{T|v='''bo''' ; -{zh-hans:简;zh-hant:繁;}-}}"
+    },
+    {
+      "sampleLabel": "test_cast:480",
+      "wikitext": "{{T|v=[[L|t]] ; CO<sub>2</sub>}}"
+    },
+    {
+      "sampleLabel": "test_cast:481",
+      "wikitext": "{{T|v=[[L|t]] ; __NOTOC__}}"
+    },
+    {
+      "sampleLabel": "test_cast:482",
+      "wikitext": "{{T|v=[[L|t]] ; -{zh-hans:简;zh-hant:繁;}-}}"
+    },
+    {
+      "sampleLabel": "test_cast:483",
+      "wikitext": "{{T|v=[http://example.com x] ; CO<sub>2</sub>}}"
+    },
+    {
+      "sampleLabel": "test_cast:484",
+      "wikitext": "{{T|v=[http://example.com x] ; __NOTOC__}}"
+    },
+    {
+      "sampleLabel": "test_cast:485",
+      "wikitext": "{{T|v=[http://example.com x] ; -{zh-hans:简;zh-hant:繁;}-}}"
+    },
+    {
+      "sampleLabel": "test_cast:486",
+      "wikitext": "{{T|v=https://example.org/a ; CO<sub>2</sub>}}"
+    },
+    {
+      "sampleLabel": "test_cast:487",
+      "wikitext": "{{T|v=https://example.org/a ; __NOTOC__}}"
+    },
+    {
+      "sampleLabel": "test_cast:488",
+      "wikitext": "{{T|v=https://example.org/a ; -{zh-hans:简;zh-hant:繁;}-}}"
+    },
+    {
+      "sampleLabel": "test_cast:489",
+      "wikitext": "{{T|v=RFC 2119 ; plain}}"
+    },
+    {
+      "sampleLabel": "test_cast:490",
+      "wikitext": "{{T|v=RFC 2119 ; RFC 2119}}"
+    },
+    {
+      "sampleLabel": "test_cast:491",
+      "wikitext": "{{T|v=RFC 2119 ; CO<sub>2</sub>}}"
+    },
+    {
+      "sampleLabel": "test_cast:492",
+      "wikitext": "{{T|v=RFC 2119 ; a<!--c-->b}}"
+    },
+    {
+      "sampleLabel": "test_cast:493",
+      "wikitext": "{{T|v=RFC 2119 ; __NOTOC__}}"
+    },
+    {
+      "sampleLabel": "test_cast:494",
+      "wikitext": "{{T|v=RFC 2119 ; ----}}"
+    },
+    {
+      "sampleLabel": "test_cast:495",
+      "wikitext": "{{T|v=RFC 2119 ; -{zh-hans:简;zh-hant:繁;}-}}"
+    },
+    {
+      "sampleLabel": "test_cast:496",
+      "wikitext": "{{T|v=RFC 2119 ; * item}}"
+    },
+    {
+      "sampleLabel": "test_cast:497",
+      "wikitext": "{{T|v=RFC 2119 ; {{T|x=y}}}}"
+    },
+    {
+      "sampleLabel": "test_cast:498",
+      "wikitext": "{{T|v=CO<sub>2</sub> ; ''it''}}"
+    },
+    {
+      "sampleLabel": "test_cast:499",
+      "wikitext": "{{T|v=CO<sub>2</sub> ; '''bo'''}}"
+    },
+    {
+      "sampleLabel": "test_cast:500",
+      "wikitext": "{{T|v=CO<sub>2</sub> ; [[L|t]]}}"
+    },
+    {
+      "sampleLabel": "test_cast:501",
+      "wikitext": "{{T|v=CO<sub>2</sub> ; [http://example.com x]}}"
+    },
+    {
+      "sampleLabel": "test_cast:502",
+      "wikitext": "{{T|v=CO<sub>2</sub> ; https://example.org/a}}"
+    },
+    {
+      "sampleLabel": "test_cast:503",
+      "wikitext": "{{T|v=CO<sub>2</sub> ; RFC 2119}}"
+    },
+    {
+      "sampleLabel": "test_cast:504",
+      "wikitext": "{{T|v=CO<sub>2</sub> ; __NOTOC__}}"
+    },
+    {
+      "sampleLabel": "test_cast:505",
+      "wikitext": "{{T|v=CO<sub>2</sub> ; -{zh-hans:简;zh-hant:繁;}-}}"
+    },
+    {
+      "sampleLabel": "test_cast:506",
+      "wikitext": "{{T|v=a<!--c-->b ; RFC 2119}}"
+    },
+    {
+      "sampleLabel": "test_cast:507",
+      "wikitext": "{{T|v=a<!--c-->b ; __NOTOC__}}"
+    },
+    {
+      "sampleLabel": "test_cast:508",
+      "wikitext": "{{T|v=a<!--c-->b ; -{zh-hans:简;zh-hant:繁;}-}}"
+    },
+    {
+      "sampleLabel": "test_cast:509",
+      "wikitext": "{{T|v=__NOTOC__ ; plain}}"
+    },
+    {
+      "sampleLabel": "test_cast:510",
+      "wikitext": "{{T|v=__NOTOC__ ; ''it''}}"
+    },
+    {
+      "sampleLabel": "test_cast:511",
+      "wikitext": "{{T|v=__NOTOC__ ; '''bo'''}}"
+    },
+    {
+      "sampleLabel": "test_cast:512",
+      "wikitext": "{{T|v=__NOTOC__ ; [[L|t]]}}"
+    },
+    {
+      "sampleLabel": "test_cast:513",
+      "wikitext": "{{T|v=__NOTOC__ ; [http://example.com x]}}"
+    },
+    {
+      "sampleLabel": "test_cast:514",
+      "wikitext": "{{T|v=__NOTOC__ ; https://example.org/a}}"
+    },
+    {
+      "sampleLabel": "test_cast:515",
+      "wikitext": "{{T|v=__NOTOC__ ; RFC 2119}}"
+    },
+    {
+      "sampleLabel": "test_cast:516",
+      "wikitext": "{{T|v=__NOTOC__ ; CO<sub>2</sub>}}"
+    },
+    {
+      "sampleLabel": "test_cast:517",
+      "wikitext": "{{T|v=__NOTOC__ ; a<!--c-->b}}"
+    },
+    {
+      "sampleLabel": "test_cast:518",
+      "wikitext": "{{T|v=__NOTOC__ ; __NOTOC__}}"
+    },
+    {
+      "sampleLabel": "test_cast:519",
+      "wikitext": "{{T|v=__NOTOC__ ; ----}}"
+    },
+    {
+      "sampleLabel": "test_cast:520",
+      "wikitext": "{{T|v=__NOTOC__ ; -{zh-hans:简;zh-hant:繁;}-}}"
+    },
+    {
+      "sampleLabel": "test_cast:521",
+      "wikitext": "{{T|v=__NOTOC__ ; * item}}"
+    },
+    {
+      "sampleLabel": "test_cast:522",
+      "wikitext": "{{T|v=__NOTOC__ ; {{T|x=y}}}}"
+    },
+    {
+      "sampleLabel": "test_cast:523",
+      "wikitext": "{{T|v=---- ; RFC 2119}}"
+    },
+    {
+      "sampleLabel": "test_cast:524",
+      "wikitext": "{{T|v=---- ; __NOTOC__}}"
+    },
+    {
+      "sampleLabel": "test_cast:525",
+      "wikitext": "{{T|v=---- ; -{zh-hans:简;zh-hant:繁;}-}}"
+    },
+    {
+      "sampleLabel": "test_cast:526",
+      "wikitext": "{{T|v=-{zh-hans:简;zh-hant:繁;}- ; plain}}"
+    },
+    {
+      "sampleLabel": "test_cast:527",
+      "wikitext": "{{T|v=-{zh-hans:简;zh-hant:繁;}- ; ''it''}}"
+    },
+    {
+      "sampleLabel": "test_cast:528",
+      "wikitext": "{{T|v=-{zh-hans:简;zh-hant:繁;}- ; '''bo'''}}"
+    },
+    {
+      "sampleLabel": "test_cast:529",
+      "wikitext": "{{T|v=-{zh-hans:简;zh-hant:繁;}- ; [[L|t]]}}"
+    },
+    {
+      "sampleLabel": "test_cast:530",
+      "wikitext": "{{T|v=-{zh-hans:简;zh-hant:繁;}- ; [http://example.com x]}}"
+    },
+    {
+      "sampleLabel": "test_cast:531",
+      "wikitext": "{{T|v=-{zh-hans:简;zh-hant:繁;}- ; https://example.org/a}}"
+    },
+    {
+      "sampleLabel": "test_cast:532",
+      "wikitext": "{{T|v=-{zh-hans:简;zh-hant:繁;}- ; RFC 2119}}"
+    },
+    {
+      "sampleLabel": "test_cast:533",
+      "wikitext": "{{T|v=-{zh-hans:简;zh-hant:繁;}- ; CO<sub>2</sub>}}"
+    },
+    {
+      "sampleLabel": "test_cast:534",
+      "wikitext": "{{T|v=-{zh-hans:简;zh-hant:繁;}- ; a<!--c-->b}}"
+    },
+    {
+      "sampleLabel": "test_cast:535",
+      "wikitext": "{{T|v=-{zh-hans:简;zh-hant:繁;}- ; __NOTOC__}}"
+    },
+    {
+      "sampleLabel": "test_cast:536",
+      "wikitext": "{{T|v=-{zh-hans:简;zh-hant:繁;}- ; ----}}"
+    },
+    {
+      "sampleLabel": "test_cast:537",
+      "wikitext": "{{T|v=-{zh-hans:简;zh-hant:繁;}- ; -{zh-hans:简;zh-hant:繁;}-}}"
+    },
+    {
+      "sampleLabel": "test_cast:538",
+      "wikitext": "{{T|v=-{zh-hans:简;zh-hant:繁;}- ; * item}}"
+    },
+    {
+      "sampleLabel": "test_cast:539",
+      "wikitext": "{{T|v=-{zh-hans:简;zh-hant:繁;}- ; {{T|x=y}}}}"
+    },
+    {
+      "sampleLabel": "test_cast:540",
+      "wikitext": "{{T|v=* item ; RFC 2119}}"
+    },
+    {
+      "sampleLabel": "test_cast:541",
+      "wikitext": "{{T|v=* item ; __NOTOC__}}"
+    },
+    {
+      "sampleLabel": "test_cast:542",
+      "wikitext": "{{T|v=* item ; -{zh-hans:简;zh-hant:繁;}-}}"
+    },
+    {
+      "sampleLabel": "test_cast:543",
+      "wikitext": "{{blockquote|<ref name=\"vra\">x [http://www.protectcivilrights.org/pdf/voting/AlabamaVRA.pdf ''Voting Rights in Alabama (1982–2006)''] {{Webarchive|url=x|date=y}} z</ref>}}"
+    },
+    {
+      "sampleLabel": "test_cast:544",
+      "wikitext": "{{T|v={{T|x=y}} ; RFC 2119}}"
+    },
+    {
+      "sampleLabel": "test_cast:545",
+      "wikitext": "{{T|v={{T|x=y}} ; __NOTOC__}}"
+    },
+    {
+      "sampleLabel": "test_cast:546",
+      "wikitext": "{{T|v={{T|x=y}} ; -{zh-hans:简;zh-hant:繁;}-}}"
+    },
+    {
+      "sampleLabel": "test_cast:547",
+      "wikitext": "{{#vardefine:x|1}}"
+    },
+    {
+      "sampleLabel": "test_cast:548",
+      "wikitext": "{{#vardefine:x|{{T|y}}}}"
+    },
+    {
+      "sampleLabel": "test_cast:549",
+      "wikitext": "{{#iferror:<strong class=\"error\">x</strong>|bad|ok}}"
+    },
+    {
+      "sampleLabel": "test_cast:550",
+      "wikitext": "{|\n| plain ; https://example.org/a\n|}"
+    },
+    {
+      "sampleLabel": "test_cast:551",
+      "wikitext": "{|\n| plain ; RFC 2119\n|}"
+    },
+    {
+      "sampleLabel": "test_cast:552",
+      "wikitext": "{|\n| plain ; -{zh-hans:简;zh-hant:繁;}-\n|}"
+    },
+    {
+      "sampleLabel": "test_cast:553",
+      "wikitext": "{|\n| ''it'' ; CO<sub>2</sub>\n|}"
+    },
+    {
+      "sampleLabel": "test_cast:554",
+      "wikitext": "{|\n| ''it'' ; a<!--c-->b\n|}"
+    },
+    {
+      "sampleLabel": "test_cast:555",
+      "wikitext": "{|\n| ''it'' ; -{zh-hans:简;zh-hant:繁;}-\n|}"
+    },
+    {
+      "sampleLabel": "test_cast:556",
+      "wikitext": "{|\n| ''it'' ; {{T|x=y}}\n|}"
+    },
+    {
+      "sampleLabel": "test_cast:557",
+      "wikitext": "{|\n| '''bo''' ; CO<sub>2</sub>\n|}"
+    },
+    {
+      "sampleLabel": "test_cast:558",
+      "wikitext": "{|\n| '''bo''' ; a<!--c-->b\n|}"
+    },
+    {
+      "sampleLabel": "test_cast:559",
+      "wikitext": "{|\n| '''bo''' ; -{zh-hans:简;zh-hant:繁;}-\n|}"
+    },
+    {
+      "sampleLabel": "test_cast:560",
+      "wikitext": "{|\n| '''bo''' ; {{T|x=y}}\n|}"
+    },
+    {
+      "sampleLabel": "test_cast:561",
+      "wikitext": "{|\n| [[L|t]] ; CO<sub>2</sub>\n|}"
+    },
+    {
+      "sampleLabel": "test_cast:562",
+      "wikitext": "{|\n| [[L|t]] ; a<!--c-->b\n|}"
+    },
+    {
+      "sampleLabel": "test_cast:563",
+      "wikitext": "{|\n| [[L|t]] ; -{zh-hans:简;zh-hant:繁;}-\n|}"
+    },
+    {
+      "sampleLabel": "test_cast:564",
+      "wikitext": "{|\n| [[L|t]] ; {{T|x=y}}\n|}"
+    },
+    {
+      "sampleLabel": "test_cast:565",
+      "wikitext": "{|\n| [http://example.com x] ; CO<sub>2</sub>\n|}"
+    },
+    {
+      "sampleLabel": "test_cast:566",
+      "wikitext": "{|\n| [http://example.com x] ; a<!--c-->b\n|}"
+    },
+    {
+      "sampleLabel": "test_cast:567",
+      "wikitext": "{|\n| [http://example.com x] ; -{zh-hans:简;zh-hant:繁;}-\n|}"
+    },
+    {
+      "sampleLabel": "test_cast:568",
+      "wikitext": "{|\n| [http://example.com x] ; {{T|x=y}}\n|}"
+    },
+    {
+      "sampleLabel": "test_cast:569",
+      "wikitext": "{|\n| https://example.org/a ; plain\n|}"
+    },
+    {
+      "sampleLabel": "test_cast:570",
+      "wikitext": "{|\n| https://example.org/a ; https://example.org/a\n|}"
+    },
+    {
+      "sampleLabel": "test_cast:571",
+      "wikitext": "{|\n| https://example.org/a ; RFC 2119\n|}"
+    },
+    {
+      "sampleLabel": "test_cast:572",
+      "wikitext": "{|\n| https://example.org/a ; CO<sub>2</sub>\n|}"
+    },
+    {
+      "sampleLabel": "test_cast:573",
+      "wikitext": "{|\n| https://example.org/a ; a<!--c-->b\n|}"
+    },
+    {
+      "sampleLabel": "test_cast:574",
+      "wikitext": "{|\n| https://example.org/a ; -{zh-hans:简;zh-hant:繁;}-\n|}"
+    },
+    {
+      "sampleLabel": "test_cast:575",
+      "wikitext": "{|\n| https://example.org/a ; * item\n|}"
+    },
+    {
+      "sampleLabel": "test_cast:576",
+      "wikitext": "{|\n| https://example.org/a ; {{T|x=y}}\n|}"
+    },
+    {
+      "sampleLabel": "test_cast:577",
+      "wikitext": "{|\n| RFC 2119 ; plain\n|}"
+    },
+    {
+      "sampleLabel": "test_cast:578",
+      "wikitext": "{|\n| RFC 2119 ; https://example.org/a\n|}"
+    },
+    {
+      "sampleLabel": "test_cast:579",
+      "wikitext": "{|\n| RFC 2119 ; RFC 2119\n|}"
+    },
+    {
+      "sampleLabel": "test_cast:580",
+      "wikitext": "{|\n| RFC 2119 ; CO<sub>2</sub>\n|}"
+    },
+    {
+      "sampleLabel": "test_cast:581",
+      "wikitext": "{|\n| RFC 2119 ; a<!--c-->b\n|}"
+    },
+    {
+      "sampleLabel": "test_cast:582",
+      "wikitext": "{|\n| RFC 2119 ; -{zh-hans:简;zh-hant:繁;}-\n|}"
+    },
+    {
+      "sampleLabel": "test_cast:583",
+      "wikitext": "{|\n| RFC 2119 ; * item\n|}"
+    },
+    {
+      "sampleLabel": "test_cast:584",
+      "wikitext": "{|\n| RFC 2119 ; {{T|x=y}}\n|}"
+    },
+    {
+      "sampleLabel": "test_cast:585",
+      "wikitext": "{|\n| CO<sub>2</sub> ; ''it''\n|}"
+    },
+    {
+      "sampleLabel": "test_cast:586",
+      "wikitext": "{|\n| CO<sub>2</sub> ; '''bo'''\n|}"
+    },
+    {
+      "sampleLabel": "test_cast:587",
+      "wikitext": "{|\n| CO<sub>2</sub> ; [[L|t]]\n|}"
+    },
+    {
+      "sampleLabel": "test_cast:588",
+      "wikitext": "{|\n| CO<sub>2</sub> ; [http://example.com x]\n|}"
+    },
+    {
+      "sampleLabel": "test_cast:589",
+      "wikitext": "{|\n| CO<sub>2</sub> ; https://example.org/a\n|}"
+    },
+    {
+      "sampleLabel": "test_cast:590",
+      "wikitext": "{|\n| CO<sub>2</sub> ; RFC 2119\n|}"
+    },
+    {
+      "sampleLabel": "test_cast:591",
+      "wikitext": "{|\n| CO<sub>2</sub> ; __NOTOC__\n|}"
+    },
+    {
+      "sampleLabel": "test_cast:592",
+      "wikitext": "{|\n| CO<sub>2</sub> ; -{zh-hans:简;zh-hant:繁;}-\n|}"
+    },
+    {
+      "sampleLabel": "test_cast:593",
+      "wikitext": "{|\n| a<!--c-->b ; ''it''\n|}"
+    },
+    {
+      "sampleLabel": "test_cast:594",
+      "wikitext": "{|\n| a<!--c-->b ; '''bo'''\n|}"
+    },
+    {
+      "sampleLabel": "test_cast:595",
+      "wikitext": "{|\n| a<!--c-->b ; [[L|t]]\n|}"
+    },
+    {
+      "sampleLabel": "test_cast:596",
+      "wikitext": "{|\n| a<!--c-->b ; [http://example.com x]\n|}"
+    },
+    {
+      "sampleLabel": "test_cast:597",
+      "wikitext": "{|\n| a<!--c-->b ; https://example.org/a\n|}"
+    },
+    {
+      "sampleLabel": "test_cast:598",
+      "wikitext": "{|\n| a<!--c-->b ; RFC 2119\n|}"
+    },
+    {
+      "sampleLabel": "test_cast:599",
+      "wikitext": "{|\n| a<!--c-->b ; __NOTOC__\n|}"
+    },
+    {
+      "sampleLabel": "test_cast:600",
+      "wikitext": "{|\n| a<!--c-->b ; -{zh-hans:简;zh-hant:繁;}-\n|}"
+    },
+    {
+      "sampleLabel": "test_cast:601",
+      "wikitext": "{|\n| __NOTOC__ ; CO<sub>2</sub>\n|}"
+    },
+    {
+      "sampleLabel": "test_cast:602",
+      "wikitext": "{|\n| __NOTOC__ ; a<!--c-->b\n|}"
+    },
+    {
+      "sampleLabel": "test_cast:603",
+      "wikitext": "{|\n| __NOTOC__ ; -{zh-hans:简;zh-hant:繁;}-\n|}"
+    },
+    {
+      "sampleLabel": "test_cast:604",
+      "wikitext": "{|\n| __NOTOC__ ; {{T|x=y}}\n|}"
+    },
+    {
+      "sampleLabel": "test_cast:605",
+      "wikitext": "{|\n| ---- ; -{zh-hans:简;zh-hant:繁;}-\n|}"
+    },
+    {
+      "sampleLabel": "test_cast:606",
+      "wikitext": "{|\n| -{zh-hans:简;zh-hant:繁;}- ; plain\n|}"
+    },
+    {
+      "sampleLabel": "test_cast:607",
+      "wikitext": "{|\n| -{zh-hans:简;zh-hant:繁;}- ; ''it''\n|}"
+    },
+    {
+      "sampleLabel": "test_cast:608",
+      "wikitext": "{|\n| -{zh-hans:简;zh-hant:繁;}- ; '''bo'''\n|}"
+    },
+    {
+      "sampleLabel": "test_cast:609",
+      "wikitext": "{|\n| -{zh-hans:简;zh-hant:繁;}- ; [[L|t]]\n|}"
+    },
+    {
+      "sampleLabel": "test_cast:610",
+      "wikitext": "{|\n| -{zh-hans:简;zh-hant:繁;}- ; [http://example.com x]\n|}"
+    },
+    {
+      "sampleLabel": "test_cast:611",
+      "wikitext": "{|\n| -{zh-hans:简;zh-hant:繁;}- ; https://example.org/a\n|}"
+    },
+    {
+      "sampleLabel": "test_cast:612",
+      "wikitext": "{|\n| -{zh-hans:简;zh-hant:繁;}- ; RFC 2119\n|}"
+    },
+    {
+      "sampleLabel": "test_cast:613",
+      "wikitext": "{|\n| -{zh-hans:简;zh-hant:繁;}- ; CO<sub>2</sub>\n|}"
+    },
+    {
+      "sampleLabel": "test_cast:614",
+      "wikitext": "{|\n| -{zh-hans:简;zh-hant:繁;}- ; a<!--c-->b\n|}"
+    },
+    {
+      "sampleLabel": "test_cast:615",
+      "wikitext": "{|\n| -{zh-hans:简;zh-hant:繁;}- ; __NOTOC__\n|}"
+    },
+    {
+      "sampleLabel": "test_cast:616",
+      "wikitext": "{|\n| -{zh-hans:简;zh-hant:繁;}- ; ----\n|}"
+    },
+    {
+      "sampleLabel": "test_cast:617",
+      "wikitext": "{|\n| -{zh-hans:简;zh-hant:繁;}- ; -{zh-hans:简;zh-hant:繁;}-\n|}"
+    },
+    {
+      "sampleLabel": "test_cast:618",
+      "wikitext": "{|\n| -{zh-hans:简;zh-hant:繁;}- ; * item\n|}"
+    },
+    {
+      "sampleLabel": "test_cast:619",
+      "wikitext": "{|\n| -{zh-hans:简;zh-hant:繁;}- ; {{T|x=y}}\n|}"
+    },
+    {
+      "sampleLabel": "test_cast:620",
+      "wikitext": "{|\n| * item ; https://example.org/a\n|}"
+    },
+    {
+      "sampleLabel": "test_cast:621",
+      "wikitext": "{|\n| * item ; RFC 2119\n|}"
+    },
+    {
+      "sampleLabel": "test_cast:622",
+      "wikitext": "{|\n| * item ; -{zh-hans:简;zh-hant:繁;}-\n|}"
+    },
+    {
+      "sampleLabel": "test_cast:623",
+      "wikitext": "{|\n| {{T|x=y}} ; ''it''\n|}"
+    },
+    {
+      "sampleLabel": "test_cast:624",
+      "wikitext": "{|\n| {{T|x=y}} ; '''bo'''\n|}"
+    },
+    {
+      "sampleLabel": "test_cast:625",
+      "wikitext": "{|\n| {{T|x=y}} ; [[L|t]]\n|}"
+    },
+    {
+      "sampleLabel": "test_cast:626",
+      "wikitext": "{|\n| {{T|x=y}} ; [http://example.com x]\n|}"
+    },
+    {
+      "sampleLabel": "test_cast:627",
+      "wikitext": "{|\n| {{T|x=y}} ; https://example.org/a\n|}"
+    },
+    {
+      "sampleLabel": "test_cast:628",
+      "wikitext": "{|\n| {{T|x=y}} ; RFC 2119\n|}"
+    },
+    {
+      "sampleLabel": "test_cast:629",
+      "wikitext": "{|\n| {{T|x=y}} ; __NOTOC__\n|}"
+    },
+    {
+      "sampleLabel": "test_cast:630",
+      "wikitext": "{|\n| {{T|x=y}} ; -{zh-hans:简;zh-hant:繁;}-\n|}"
+    },
+    {
+      "sampleLabel": "test_cast:631",
+      "wikitext": "[[Image:Foo.jpg|caption [[Link]] text]]"
+    },
+    {
+      "sampleLabel": "test_cast:632",
+      "wikitext": "[[Image:Foo.jpg|upright|caption [[Link]] text]]"
+    },
+    {
+      "sampleLabel": "test_cast:633",
+      "wikitext": "<imagemap>\n\nFile:Foo.jpg|thumb|alt=A\npoly 1 1 2 2 [[L|{{T|x}}]]\npoly 3 3 4 4 [[L2]]\n\n</imagemap>"
+    },
+    {
+      "sampleLabel": "test_cast:634",
+      "wikitext": "<pre>{{T|x=[[L|t]]}}</pre>"
+    },
+    {
+      "sampleLabel": "test_cast:635",
+      "wikitext": "<hiero>{{T|x=[[L|t]]}}</hiero>"
+    },
+    {
+      "sampleLabel": "test_cast:636",
+      "wikitext": "<categorytree>Category:Physics</categorytree>"
+    },
+    {
+      "sampleLabel": "test_cast:637",
+      "wikitext": "<categorytree>[[Category:Physics|Physics]]</categorytree>"
+    },
+    {
+      "sampleLabel": "test_cast:638",
+      "wikitext": "<categorytree>{{T|x=[[L|t]]}}</categorytree>"
+    },
+    {
+      "sampleLabel": "test_cast:639",
+      "wikitext": "This is ''italic'' text."
+    },
+    {
+      "sampleLabel": "test_cast:640",
+      "wikitext": "This is '''bold''' text."
+    },
+    {
+      "sampleLabel": "test_cast:641",
+      "wikitext": "This is '''''bold italic''''' text."
+    },
+    {
+      "sampleLabel": "test_cast:642",
+      "wikitext": "''italic'' and '''bold''' on one line."
+    },
+    {
+      "sampleLabel": "test_cast:643",
+      "wikitext": "''unbalanced italic"
+    },
+    {
+      "sampleLabel": "test_cast:644",
+      "wikitext": "''''four apostrophes''''"
+    },
+    {
+      "sampleLabel": "test_cast:645",
+      "wikitext": "''''''six apostrophes''''''"
+    },
+    {
+      "sampleLabel": "test_cast:646",
+      "wikitext": "'''bold ''both''' italic''"
+    },
+    {
+      "sampleLabel": "test_cast:647",
+      "wikitext": "''a'' '''b''' ''c'''"
+    },
+    {
+      "sampleLabel": "test_cast:648",
+      "wikitext": "text '''bold with space before''' text"
+    },
+    {
+      "sampleLabel": "test_cast:649",
+      "wikitext": "'' '''"
+    },
+    {
+      "sampleLabel": "test_cast:650",
+      "wikitext": "{{Template|''arg''}}"
+    },
+    {
+      "sampleLabel": "test_cast:651",
+      "wikitext": "[[Page|''italic display'']]"
+    },
+    {
+      "sampleLabel": "test_cast:652",
+      "wikitext": "#REDIRECT [[Target Page]]"
+    },
+    {
+      "sampleLabel": "test_cast:653",
+      "wikitext": "#redirect [[Main Page]]"
+    },
+    {
+      "sampleLabel": "test_cast:654",
+      "wikitext": "#Redirect [[Article]]"
+    },
+    {
+      "sampleLabel": "test_cast:655",
+      "wikitext": "#REDIRECT: [[Target Page]]"
+    },
+    {
+      "sampleLabel": "test_cast:656",
+      "wikitext": "   #REDIRECT [[Target]]"
+    },
+    {
+      "sampleLabel": "test_cast:657",
+      "wikitext": "#REDIRECT [[Target]]   "
+    },
+    {
+      "sampleLabel": "test_cast:658",
+      "wikitext": "#REDIRECT [[Target]]\nSome trailing text"
+    },
+    {
+      "sampleLabel": "test_cast:659",
+      "wikitext": "#重定向 [[中文页面]]"
+    },
+    {
+      "sampleLabel": "test_cast:660",
+      "wikitext": "This is not a redirect"
+    },
+    {
+      "sampleLabel": "test_cast:661",
+      "wikitext": "#REDIRECT [[Target\nBroken]]"
+    },
+    {
+      "sampleLabel": "test_cast:662",
+      "wikitext": "#REDIRECT [[]]"
+    },
+    {
+      "sampleLabel": "test_cast:663",
+      "wikitext": "#REDIRECT [[Target|ignored display]]"
+    },
+    {
+      "sampleLabel": "test_cast:664",
+      "wikitext": "#REDIRECT [[Help:Contents]]"
+    },
+    {
+      "sampleLabel": "test_cast:665",
+      "wikitext": "#REDIRECT [[Page#Section]]"
+    },
+    {
+      "sampleLabel": "test_cast:666",
+      "wikitext": "#REDIRECT[[Target]]"
+    },
+    {
+      "sampleLabel": "test_cast:667",
+      "wikitext": "#REDIRECT [[Target<!--c-->]]"
+    },
+    {
+      "sampleLabel": "test_cast:668",
+      "wikitext": "{|\n| alias = ISO-IR-006,<ref>reftext</ref> ANSI_X3.4-1968\n|}"
+    },
+    {
+      "sampleLabel": "test_cast:669",
+      "wikitext": "{|\n|- 1 CAR\n|}"
+    },
+    {
+      "sampleLabel": "test_cast:670",
+      "wikitext": "{|\n|- 1 car\n|}"
+    },
+    {
+      "sampleLabel": "test_cast:671",
+      "wikitext": "{|\n|- A1 CAR\n|}"
+    },
+    {
+      "sampleLabel": "test_cast:672",
+      "wikitext": "{|\n|- _x :y\n|}"
+    },
+    {
+      "sampleLabel": "test_cast:673",
+      "wikitext": "{|\n|- data-x foo\n|}"
+    },
+    {
+      "sampleLabel": "test_cast:674",
+      "wikitext": "{|\n|- 1=2 CAR\n|}"
+    },
+    {
+      "sampleLabel": "test_cast:675",
+      "wikitext": "{|\n|- \"1\" CAR\n|}"
+    },
+    {
+      "sampleLabel": "test_cast:676",
+      "wikitext": "{|\n|- '1' CAR\n|}"
+    },
+    {
+      "sampleLabel": "test_cast:677",
+      "wikitext": "{|\n|- {{T}} CAR\n|}"
+    },
+    {
+      "sampleLabel": "test_cast:678",
+      "wikitext": "{|\n|- -{zh-hans:a;zh-hant:b;}- CAR\n|}"
+    },
+    {
+      "sampleLabel": "test_cast:679",
+      "wikitext": "{|\n|- / CAR\n|}"
+    },
+    {
+      "sampleLabel": "test_cast:680",
+      "wikitext": "{|\n|- 123 456\n|}"
+    },
+    {
+      "sampleLabel": "test_cast:681",
+      "wikitext": "{|\n|- a.b c-d e:f\n|}"
+    },
+    {
+      "sampleLabel": "test_cast:682",
+      "wikitext": "{|\n|- \u0000 1\n|}"
+    },
+    {
+      "sampleLabel": "test_cast:683",
+      "wikitext": "{|\n|-  1\n|}"
+    },
+    {
+      "sampleLabel": "test_cast:684",
+      "wikitext": "{|\n|- rowspan=4 1 CAR\n|}"
+    },
+    {
+      "sampleLabel": "test_cast:685",
+      "wikitext": "{|\n|- 1   CAR\n|}"
+    },
+    {
+      "sampleLabel": "test_cast:686",
+      "wikitext": "{|\n|- 1\tCAR\n|}"
+    },
+    {
+      "sampleLabel": "test_cast:687",
+      "wikitext": "{|\n|- <!--c--> 1 CAR\n|}"
+    },
+    {
+      "sampleLabel": "test_cast:688",
+      "wikitext": "{|\n|- \u0000 12t CAR\n|}"
+    },
+    {
+      "sampleLabel": "test_cast:689",
+      "wikitext": "{|\n|-\n| cell\n|}"
+    },
+    {
+      "sampleLabel": "test_cast:690",
+      "wikitext": "{| class=\"wikitable\"\n|+ Caption\n|-\n| A || B\n|-\n| C || D\n|}"
+    },
+    {
+      "sampleLabel": "test_cast:691",
+      "wikitext": "{|\n| R1C1 || R1C2 || R1C3\n|-\n| R2C1 || R2C2 || R2C3\n|}"
+    },
+    {
+      "sampleLabel": "test_cast:692",
+      "wikitext": "{|\n! Header1 !! Header2\n|-\n| data1 || data2\n|}"
+    },
+    {
+      "sampleLabel": "test_cast:693",
+      "wikitext": "{|\n|- class=\"odd\"\n| cell\n|}"
+    },
+    {
+      "sampleLabel": "test_cast:694",
+      "wikitext": "{|\n| outer || {|\n| inner\n|}\n|}"
+    },
+    {
+      "sampleLabel": "test_cast:695",
+      "wikitext": "prefix\n{|\n| cell\n|}\nsuffix"
+    },
+    {
+      "sampleLabel": "test_cast:696",
+      "wikitext": "{|\n| style=\"color:red\" | red text\n|}"
+    },
+    {
+      "sampleLabel": "test_cast:697",
+      "wikitext": "{|\n| {{green}} | x\n|}"
+    },
+    {
+      "sampleLabel": "test_cast:698",
+      "wikitext": "{|\n|}"
+    },
+    {
+      "sampleLabel": "test_cast:699",
+      "wikitext": ":{|\n| cell\n|}"
+    },
+    {
+      "sampleLabel": "test_cast:700",
+      "wikitext": "{|\n| cell\n|} trailing text"
+    },
+    {
+      "sampleLabel": "test_cast:701",
+      "wikitext": "{|\n|+ style=\"font-weight:bold\" | Important\n|-\n| data\n|}"
+    },
+    {
+      "sampleLabel": "test_cast:702",
+      "wikitext": "{| class=\"wikitable\"\n|-\n|Μῆνιν ἄειδε θεὰ Πηληιάδεω Ἀχιλῆος<br />\nοὐλομένην, ἣ μυρί' Ἀχαιοῖς ἄλγε' ἔθηκε, [...]\n|Sing, Goddess, of the rage of Peleus' son Achilles,<br />\nthe accursed rage that brought great suffering to the Achaeans, [...]\n|}"
+    },
+    {
+      "sampleLabel": "test_cast:703",
+      "wikitext": "{|\n| RFC 2119\n|}"
+    },
+    {
+      "sampleLabel": "test_cast:704",
+      "wikitext": "{|\n| https://example.org/a\n|}"
+    },
+    {
+      "sampleLabel": "test_cast:705",
+      "wikitext": "{|\n| -{zh-hans:简;zh-hant:繁;}-\n|}"
+    },
+    {
+      "sampleLabel": "test_cast:706",
+      "wikitext": "{|\n| {{T|v=RFC 2119}}\n|}"
+    },
+    {
+      "sampleLabel": "test_cast:707",
+      "wikitext": "-{text}-"
+    },
+    {
+      "sampleLabel": "test_cast:708",
+      "wikitext": "-{zh-hans:简体;zh-hant:繁體}-"
+    },
+    {
+      "sampleLabel": "test_cast:709",
+      "wikitext": "-{zh:漢字;zh-hans:汉字;zh-hant:漢字}-"
+    },
+    {
+      "sampleLabel": "test_cast:710",
+      "wikitext": "-{A|zh-hans:简体;zh-hant:繁體}-"
+    },
+    {
+      "sampleLabel": "test_cast:711",
+      "wikitext": "-{R|raw text}-"
+    },
+    {
+      "sampleLabel": "test_cast:712",
+      "wikitext": "-{zh-hans:-{inner}-;zh-hant:outer}-"
+    },
+    {
+      "sampleLabel": "test_cast:713",
+      "wikitext": "{{Template|-{zh-hans:简;zh-hant:繁}-}}"
+    },
+    {
+      "sampleLabel": "test_cast:714",
+      "wikitext": "''italic'' -{ zh-hans:汉字 }- text"
+    },
+    {
+      "sampleLabel": "test_cast:715",
+      "wikitext": "-{}-"
+    },
+    {
+      "sampleLabel": "test_cast:716",
+      "wikitext": "-{|zh-hans:简体;zh-hant:繁體}-"
+    },
+    {
+      "sampleLabel": "test_cast:717",
+      "wikitext": "-{a=>zh-hans:简;zh-hant:繁}-"
+    }
+  ]
+}
