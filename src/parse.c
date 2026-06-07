@@ -719,7 +719,7 @@ static bool text_has_url_hint(const char *s, size_t len, const ParserConfig *cfg
 static Token *make_empty_noinclude(Accum *accum) {
 	Token *n= token_new(TOKEN_NOINCLUDE, "noinclude");
 	if(!n) return NULL;
-	token_append_text_n(n, "", 0);
+	token_append_text_owned(n, "", 0);
 	accum_push(accum, n);
 	return n;
 }
@@ -861,12 +861,12 @@ static void split_gallery_unclosed_template_caption(Token *img, Accum *accum) {
 			if(cap2) {
 				cap2->name= strdup("caption");
 				if(right_len > 0) {
-					token_append_text_n(cap2, txt + pipe_pos + 1, right_len);
+					token_append_text_owned(cap2, txt + pipe_pos + 1, right_len);
 				}
 
 				for(size_t k= cj + 1; k < cap->child_count; k++) {
 					if(cap->children[k].is_text) {
-						token_append_text_n(cap2, cap->children[k].text, cap->children[k].text_len);
+						token_append_text_owned(cap2, cap->children[k].text, cap->children[k].text_len);
 						if(cap->children[k].text_owned && cap->children[k].text) {
 							free((void *)cap->children[k].text);
 						}
@@ -875,7 +875,7 @@ static void split_gallery_unclosed_template_caption(Token *img, Accum *accum) {
 						cap->children[k].token= NULL;
 					}
 				}
-				if(cap2->child_count == 0) token_append_text_n(cap2, "", 0);
+				if(cap2->child_count == 0) token_append_text_owned(cap2, "", 0);
 
 				cap->child_count= cj + 1;
 				accum_push(accum, cap2);
@@ -1067,7 +1067,7 @@ static Token *parse_gallery_image_line(const char *line, size_t line_len,
 				if(fallback) {
 					Token *target= token_new(TOKEN_ATOM, "link-target");
 					if(target) {
-						token_append_text_n(target, file_ptr, file_len);
+						token_append_text_owned(target, file_ptr, file_len);
 						accum_push(accum, target);
 						token_append_child(fallback, target);
 					}
@@ -1076,7 +1076,7 @@ static Token *parse_gallery_image_line(const char *line, size_t line_len,
 						Token *cap= token_new(TOKEN_PLAIN, "image-parameter");
 						if(cap) {
 													cap->name= strdup("caption");
-							token_append_text_n(cap, alt_ptr, alt_len);
+							token_append_text_owned(cap, alt_ptr, alt_len);
 							accum_push(accum, cap);
 							token_append_child(fallback, cap);
 						}
@@ -1092,7 +1092,7 @@ static Token *parse_gallery_image_line(const char *line, size_t line_len,
 					"[C gallery_line] fallback creates noinclude");
 				Token *comment_line= token_new(TOKEN_NOINCLUDE, "noinclude");
 				if(comment_line) {
-					token_append_text_n(comment_line, line, line_len);
+					token_append_text_owned(comment_line, line, line_len);
 					accum_push(accum, comment_line);
 					out= comment_line;
 				}
@@ -1218,9 +1218,9 @@ static Token *parse_imagemap_link_line(const char *line, size_t line_len,
 	accum_push(accum, t);
 
 	if(open > 0) {
-			token_append_text_n(t, line, open);
+			token_append_text_owned(t, line, open);
 	} else {
-		token_append_text_n(t, "", 0);
+		token_append_text_owned(t, "", 0);
 	}
 
 	const char *inner= line + open + 2;
@@ -1229,11 +1229,11 @@ static Token *parse_imagemap_link_line(const char *line, size_t line_len,
 	if(link) {
 		token_append_child(t, link);
 	} else {
-			token_append_text_n(t, line + open, (close + 2) - open);
+			token_append_text_owned(t, line + open, (close + 2) - open);
 	}
 
 	if(close + 2 < line_len) {
-		token_append_text_n(t, line + close + 2, line_len - (close + 2));
+		token_append_text_owned(t, line + close + 2, line_len - (close + 2));
 	}
 
 	Token *tail= make_empty_noinclude(accum);
@@ -1287,7 +1287,7 @@ static void postprocess_gallery_ext_inner(Token *t, const ParserConfig *cfg, Acc
 			if(img) {
 				token_append_child(t, img);
 			} else {
-				token_append_text_n(t, line_ptr, line_len);
+				token_append_text_owned(t, line_ptr, line_len);
 			}
 
 			line_start= eol ? (size_t)(eol - tmp->buf) + 1 : tmp->len;
@@ -1365,7 +1365,7 @@ static void postprocess_imagemap_ext_inner(Token *t, const ParserConfig *cfg, Ac
 				if(tok) {
 					token_append_child(t, tok);
 				} else {
-					token_append_text_n(t, line_ptr, line_len);
+					token_append_text_owned(t, line_ptr, line_len);
 				}
 			}
 

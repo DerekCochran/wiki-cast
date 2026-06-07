@@ -182,9 +182,9 @@ static Token *make_list_token(sz_string_view_t view, Accum *accum) {
     Token *t= token_new(TOKEN_LIST, "list");
     if(!t) return NULL;
     if(view.length > 0 && view.start) {
-        token_append_text_view(t, view);
+        token_append_text_view_owned(t, view);
 	} else {
-		token_append_text_n(t, NULL, 0);
+		token_append_text_owned(t, NULL, 0);
 	}
 	accum_push(accum, t);
 	return t;
@@ -195,9 +195,9 @@ static Token *make_dd_token(const char *syntax, size_t syntax_len, Accum *accum)
 	Token *t= token_new(TOKEN_DD, "dd");
 	if(!t) return NULL;
 	if(syntax_len > 0) {
-		token_append_text_n(t, syntax, syntax_len);
+		token_append_text_owned(t, syntax, syntax_len);
 	} else {
-		token_append_text_n(t, NULL, 0);
+		token_append_text_owned(t, NULL, 0);
 	}
 	accum_push(accum, t);
 	return t;

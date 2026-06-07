@@ -11,7 +11,7 @@ static Token *make_text_token_n(TokenType type, const char *type_name,
 												Accum *accum) {
 	Token *t= token_new(type, type_name);
 	if(!t) return NULL;
-	token_append_text_n(t, text ? text : "", text ? text_len : 0);
+	token_append_text_owned(t, text ? text : "", text ? text_len : 0);
 	accum_push(accum, t);
 	return t;
 }
@@ -54,7 +54,7 @@ Token *table_token_create_n(const char *syntax, size_t syntax_len,
 	/* Inner token: plain token holding remaining table text */
 	Token *inner_tok= token_new(TOKEN_PLAIN, "table-inner");
 	if(!inner_tok) return table;
-	token_append_text_n(inner_tok, inner_text, inner_len);
+	token_append_text_owned(inner_tok, inner_text, inner_len);
 	accum_push(accum, inner_tok);
 	token_append_child(table, inner_tok);
 

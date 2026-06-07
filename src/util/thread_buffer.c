@@ -133,7 +133,7 @@ static void registry_add(ThreadBuffers *tb) {
 
 const char *wiki_thread_buf_append_to_tokens(const char *s, size_t len) {
 	if(!s || len == 0) return NULL;
-	/* Temporary mode: token_append_text_n() now duplicates text into owned memory,
+	/* Temporary mode: token_append_text_owned() now duplicates text into owned memory,
 	 * so we can avoid using the shared tokens arena and pointer lifetime hazards. */
 	return s;
 }

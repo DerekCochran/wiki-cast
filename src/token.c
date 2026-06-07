@@ -147,7 +147,7 @@ Token *token_new_with_subtype(TokenType type, TokenSubType subtype) {
 	return t;
 }
 
-void token_append_text_n(Token *t, const char *text, size_t len) {
+void token_append_text_owned(Token *t, const char *text, size_t len) {
 	assert(t);
 	if(len > 0) assert(text);
 	if(t->child_count >= t->child_cap) {
@@ -168,7 +168,7 @@ void token_append_text_n(Token *t, const char *text, size_t len) {
 	c->text_owned = true;
 }
 
-void token_append_text_view(Token *t, sz_string_view_t view) {
+void token_append_text_view_owned(Token *t, sz_string_view_t view) {
 	assert(t);
 	if(view.length > 0) assert(view.start);
 	if(t->child_count >= t->child_cap) {

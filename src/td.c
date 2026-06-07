@@ -21,9 +21,9 @@ static Token *make_attr_key(const char *key, size_t key_len, Accum *accum) {
 	Token *t= token_new(TOKEN_ATTR_KEY, "attr-key");
 	if(!t) return NULL;
 	if(key_len > 0) {
-		token_append_text_n(t, key, key_len);
+		token_append_text_owned(t, key, key_len);
 	} else {
-		token_append_text_n(t, NULL, 0);
+		token_append_text_owned(t, NULL, 0);
 	}
 	accum_push(accum, t);
 	return t;
@@ -33,9 +33,9 @@ static Token *make_attr_value(const char *val, size_t val_len, Accum *accum) {
 	Token *t= token_new(TOKEN_ATTR_VALUE, "attr-value");
 	if(!t) return NULL;
 	if(val_len > 0) {
-		token_append_text_n(t, val, val_len);
+		token_append_text_owned(t, val, val_len);
 	} else {
-		token_append_text_n(t, NULL, 0);
+		token_append_text_owned(t, NULL, 0);
 	}
 	accum_push(accum, t);
 	return t;
@@ -45,9 +45,9 @@ static Token *make_table_attr_dirty(const char *text, size_t text_len, Accum *ac
 	Token *t= token_new(TOKEN_ATOM, "table-attr-dirty");
 	if(!t) return NULL;
 	if(text_len > 0) {
-		token_append_text_n(t, text, text_len);
+		token_append_text_owned(t, text, text_len);
 	} else {
-		token_append_text_n(t, NULL, 0);
+		token_append_text_owned(t, NULL, 0);
 	}
 	accum_push(accum, t);
 	return t;
@@ -438,7 +438,7 @@ Token *create_td_token(const char *syntax,
 	Token *syn= token_new(TOKEN_SYNTAX, "table-syntax");
 	if(!syn) return td;
 	if(syntax && syntax_len > 0) {
-		token_append_text_n(syn, syntax, syntax_len);
+		token_append_text_owned(syn, syntax, syntax_len);
 	}
 	accum_push(accum, syn);
 	token_append_child(td, syn);
@@ -472,9 +472,9 @@ Token *create_td_token(const char *syntax,
 	Token *inner_tok= token_new(TOKEN_PLAIN, "td-inner");
 	if(!inner_tok) return td;
 	if(inner && inner_len > 0) {
-		token_append_text_n(inner_tok, inner, inner_len);
+		token_append_text_owned(inner_tok, inner, inner_len);
 	} else {
-		token_append_text_n(inner_tok, NULL, 0);
+		token_append_text_owned(inner_tok, NULL, 0);
 	}
 	accum_push(accum, inner_tok);
 	token_append_child(td, inner_tok);
