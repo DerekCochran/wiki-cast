@@ -168,6 +168,27 @@ void token_append_text_n(Token *t, const char *text, size_t len) {
 	c->text_owned = true;
 }
 
+void token_append_text_view(Token *t, sz_string_view_t view) {
+	assert(t);
+	if(view.length > 0) assert(view.start);
+	if(t->child_count >= t->child_cap) {
+		t->child_cap*= 2;
+		t->children= realloc(t->children, t->child_cap * sizeof(Child));
+		assert(t->children);
+	}
+	char *owned= malloc(view.length + 1);
+	assert(owned);
+	if(view.length > 0) {
+		sz_copy(owned, view.start, view.length);
+	}
+	owned[view.length]= '\0';
+	Child *c= &t->children[t->child_count++];
+	c->is_text= true;
+	c->text_len= view.length;
+	c->text= owned;
+	c->text_owned = true;
+}
+
 void token_append_child(Token *t, Token *child) {
 	assert(t && child);
 	if(t->child_count >= t->child_cap) {

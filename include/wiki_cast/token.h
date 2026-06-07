@@ -255,6 +255,10 @@ Token *token_new_with_subtype(TokenType type, TokenSubType subtype);
 /** Append a TEXT child to a token from a pointer+length substring. */
 void token_append_text_n(Token *t, const char *text, size_t len);
 
+/** Append a TEXT child by copying from an sz_string_view_t.
+ *  The string content is copied and owned by the child (text_owned = true). */
+void token_append_text_view(Token *t, sz_string_view_t view);
+
 /** Append a TOKEN child to a token.  Takes ownership of child. */
 void token_append_child(Token *t, Token *child);
 
