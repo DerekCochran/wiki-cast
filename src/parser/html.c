@@ -169,7 +169,7 @@ static bool html_tag_allowed(const ParserConfig *cfg, const char *lcname, size_t
 static Token *make_html_attr_key(const char *key, size_t key_len, Accum *accum) {
 	Token *t= token_new(TOKEN_ATTR_KEY, "attr-key");
 	if(!t) return NULL;
-	token_append_text_n(t, key, key_len);
+	token_append_text_owned(t, key, key_len);
 	accum_push(accum, t);
 	return t;
 }
@@ -215,10 +215,10 @@ static Token *make_html_attr_value(const char *val, size_t val_len, Accum *accum
 	Token *t= token_new(TOKEN_ATTR_VALUE, "attr-value");
 	if(!t) return NULL;
 	if(val_len > 0) {
-		token_append_text_n(t, val, val_len);
+		token_append_text_owned(t, val, val_len);
 	} else {
 		/* Explicit empty value (`=` present) keeps an empty text child in JS. */
-		token_append_text_n(t, "", 0);
+		token_append_text_owned(t, "", 0);
 	}
 	accum_push(accum, t);
 	return t;
@@ -227,7 +227,7 @@ static Token *make_html_attr_value(const char *val, size_t val_len, Accum *accum
 static Token *make_html_attr_dirty(const char *text, size_t text_len, Accum *accum) {
 	Token *t= token_new(TOKEN_EXT_ATTR_DIRTY, "html-attr-dirty");
 	if(!t) return NULL;
-	token_append_text_n(t, text, text_len);
+	token_append_text_owned(t, text, text_len);
 	accum_push(accum, t);
 	return t;
 }

@@ -87,7 +87,7 @@ static bool ext_text_is_valid(const char *s, size_t len) {
 static Token *build_magic_link_token(const char *url, size_t url_len, Accum *accum) {
 	Token *t= token_new(TOKEN_MAGIC_LINK, "ext-link-url");
 	if(!t) return NULL;
-    token_append_text_n(t, url, url_len);
+    token_append_text_owned(t, url, url_len);
 	accum_push(accum, t);
 	return t;
 }
@@ -129,10 +129,10 @@ static Token *build_ext_link_token(Token *url_tok,
             if(text_len > 0) sz_copy(merged, text, text_len);
             sz_copy(merged + text_len, text2, text2_len);
             merged[merged_len] = '\0';
-            token_append_text_n(inner, merged, merged_len);
+            token_append_text_owned(inner, merged, merged_len);
             free(merged);
         } else if(text_len > 0) {
-            token_append_text_n(inner, text, text_len);
+            token_append_text_owned(inner, text, text_len);
         }
 		accum_push(accum, inner);
 		token_append_child(ext, inner);

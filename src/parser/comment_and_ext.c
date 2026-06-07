@@ -524,9 +524,9 @@ static Token *make_attr_key(const char *key, size_t key_len, Accum *accum) {
 	Token *t= token_new(TOKEN_ATTR_KEY, "attr-key");
 	if(!t) return NULL;
 	if(key && key_len > 0) {
-		token_append_text_n(t, key, key_len);
+		token_append_text_owned(t, key, key_len);
 	} else {
-		token_append_text_n(t, "", 0);
+		token_append_text_owned(t, "", 0);
 	}
 	accum_push(accum, t);
 	return t;
@@ -539,9 +539,9 @@ static Token *make_attr_value(const char *val, size_t val_len, Accum *accum) {
 	Token *t= token_new(TOKEN_ATTR_VALUE, "attr-value");
 	if(!t) return NULL;
 	if(val && val_len > 0) {
-		token_append_text_n(t, val, val_len);
+		token_append_text_owned(t, val, val_len);
 	} else {
-		token_append_text_n(t, "", 0);
+		token_append_text_owned(t, "", 0);
 	}
 	accum_push(accum, t);
 	return t;
@@ -554,9 +554,9 @@ static Token *make_attr_dirty(const char *text, size_t text_len, Accum *accum) {
 	Token *t= token_new(TOKEN_EXT_ATTR_DIRTY, "ext-attr-dirty");
 	if(!t) return NULL;
 	if(text && text_len > 0) {
-		token_append_text_n(t, text, text_len);
+		token_append_text_owned(t, text, text_len);
 	} else {
-		token_append_text_n(t, "", 0);
+		token_append_text_owned(t, "", 0);
 	}
 	accum_push(accum, t);
 	return t;
@@ -934,9 +934,9 @@ static Token *build_pre_noinclude_token(const char *substr, size_t sub_len, Accu
 	if(!t) return NULL;
 	if(sub_len > 0) {
 		const char *view= wiki_thread_buf_append_to_tokens(substr, sub_len);
-		token_append_text_n(t, view, sub_len);
+		token_append_text_owned(t, view, sub_len);
 	} else {
-		token_append_text_n(t, "", 0);
+		token_append_text_owned(t, "", 0);
 	}
 	accum_push(accum, t);
 	return t;
@@ -970,7 +970,7 @@ static Token *build_pre_inner_token(const char *inner_str, size_t inner_len, Acc
 	accum_push(accum, t);
 
 	if(!inner_str || inner_len == 0) {
-		token_append_text_n(t, "", 0);
+		token_append_text_owned(t, "", 0);
 		return t;
 	}
 
@@ -1028,9 +1028,9 @@ static Token *build_pre_inner_token(const char *inner_str, size_t inner_len, Acc
 
 	if(out_tb->len > 0) {
 		const char *view= wiki_thread_buf_append_to_tokens(out_tb->buf, out_tb->len);
-		token_append_text_n(t, view, out_tb->len);
+		token_append_text_owned(t, view, out_tb->len);
 	} else {
-		token_append_text_n(t, "", 0);
+		token_append_text_owned(t, "", 0);
 	}
 
 	wiki_thread_buf_release_scratch(out_tb);
@@ -1082,9 +1082,9 @@ static Token *build_ext_inner(const char *tag_name,
 	}
 	if(inner_str && inner_len > 0) {
 		const char *inner_view = wiki_thread_buf_append_to_tokens(inner_str, inner_len);
-		token_append_text_n(t, inner_view, inner_len);
+		token_append_text_owned(t, inner_view, inner_len);
 	} else {
-		token_append_text_n(t, "", 0); /* empty inner */
+		token_append_text_owned(t, "", 0); /* empty inner */
 	}
 	accum_push(accum, t);
 	return t;
@@ -1152,9 +1152,9 @@ static Token *build_param_tag_inner_token(const char *tag_name,
 				   pl->name= strdup(tag_name);
 			if(line_emit_len > 0) {
 				const char *line_view= wiki_thread_buf_append_to_tokens(line_emit, line_emit_len);
-				token_append_text_n(pl, line_view, line_emit_len);
+				token_append_text_owned(pl, line_view, line_emit_len);
 			} else {
-				token_append_text_n(pl, "", 0);
+				token_append_text_owned(pl, "", 0);
 			}
 			accum_push(accum, pl);
 			token_append_child(t, pl);
@@ -1183,7 +1183,7 @@ static Token *build_references_inner_token(const char *inner_str, size_t inner_l
 	accum_push(accum, t);
 
 	if(!inner_str || inner_len == 0) {
-		token_append_text_n(t, "", 0);
+		token_append_text_owned(t, "", 0);
 		return t;
 	}
 
@@ -1220,7 +1220,7 @@ static Token *build_references_inner_token(const char *inner_str, size_t inner_l
 			Token *ni= token_new(TOKEN_NOINCLUDE, "noinclude");
 			if(ni) {
 				const char *ni_view = wiki_thread_buf_append_to_tokens(tmp->buf + i, run_len);
-				token_append_text_n(ni, ni_view, run_len);
+				token_append_text_owned(ni, ni_view, run_len);
 				accum_push(accum, ni);
 				size_t idx= accum->count - 1;
 				char sent[64];
@@ -1251,9 +1251,9 @@ static Token *make_gallery_caption_param_raw_local(const char *txt, size_t tlen,
 		token_free(cap);
 		return NULL;
 	}
-	token_append_text_n(cap, txt ? txt : "", tlen);
+	token_append_text_owned(cap, txt ? txt : "", tlen);
 	if(cap->child_count == 0) {
-		token_append_text_n(cap, "", 0);
+		token_append_text_owned(cap, "", 0);
 	}
 	accum_push(accum, cap);
 	return cap;
@@ -1597,7 +1597,7 @@ static void split_gallery_unclosed_caption_local(Token *img,
 
 				for(size_t k= cj + 1; k < cap->child_count; k++) {
 					if(cap->children[k].is_text) {
-						token_append_text_n(cap2, cap->children[k].text, cap->children[k].text_len);
+						token_append_text_owned(cap2, cap->children[k].text, cap->children[k].text_len);
 						if(cap->children[k].text_owned && cap->children[k].text) {
 							free((void *)cap->children[k].text);
 						}
@@ -1635,7 +1635,7 @@ static void split_gallery_unclosed_caption_local(Token *img,
 				"[C split_gallery_caption] preserve pre-expanded caption via build_from_str");
 			build_from_str(cap, txt, tlen, accum);
 			if(cap->child_count == 0) {
-				token_append_text_n(cap, "", 0);
+				token_append_text_owned(cap, "", 0);
 			}
 			continue;
 		}
@@ -1682,7 +1682,7 @@ static void split_gallery_unclosed_caption_local(Token *img,
 					build_from_str(cap, left_tb->buf, left_tb->len, accum);
 					normalize_gallery_caption_lone_quote_local(cap);
 					if(cap->child_count == 0) {
-						token_append_text_n(cap, "", 0);
+						token_append_text_owned(cap, "", 0);
 					}
 					wiki_thread_buf_release_scratch(left_tb);
 				}
@@ -1713,7 +1713,7 @@ static void split_gallery_unclosed_caption_local(Token *img,
 		build_from_str(cap, tb->buf, tb->len, accum);
 		normalize_gallery_caption_lone_quote_local(cap);
 		if(cap->child_count == 0) {
-			token_append_text_n(cap, "", 0);
+			token_append_text_owned(cap, "", 0);
 		}
 		wiki_thread_buf_release_scratch(tb);
 	}
@@ -1953,7 +1953,7 @@ static void append_tail_to_last_image_param_local(Token *img, const char *tail, 
 		}
 	}
 
-	token_append_text_n(last_param, tail, tail_len);
+	token_append_text_owned(last_param, tail, tail_len);
 }
 
 static void normalize_gallery_caption_bracket_split_local(Token *img) {
@@ -2116,7 +2116,7 @@ static Token *parse_gallery_image_line_local(const char *line, size_t line_len,
 		Token *comment_line = token_new(TOKEN_NOINCLUDE, "noinclude");
 		if(comment_line) {
 			const char *line_view = wiki_thread_buf_append_to_tokens(line, line_len);
-			token_append_text_n(comment_line, line_view, line_len);
+			token_append_text_owned(comment_line, line_view, line_len);
 			accum_push(accum, comment_line);
 		}
 		return comment_line;
@@ -2260,7 +2260,7 @@ static Token *parse_gallery_image_line_local(const char *line, size_t line_len,
 				Token *comment_line = token_new(TOKEN_NOINCLUDE, "noinclude");
 				if(comment_line) {
 					const char *line_view = wiki_thread_buf_append_to_tokens(line, line_len);
-					token_append_text_n(comment_line, line_view, line_len);
+					token_append_text_owned(comment_line, line_view, line_len);
 					accum_push(accum, comment_line);
 					out = comment_line;
 				}
@@ -2282,7 +2282,7 @@ static Token *parse_gallery_image_line_local(const char *line, size_t line_len,
 						Token *target= token_new(TOKEN_ATOM, "link-target");
 						if(target) {
 							const char *lhs_view= wiki_thread_buf_append_to_tokens(line, lhs_len);
-							token_append_text_n(target, lhs_view, lhs_len);
+							token_append_text_owned(target, lhs_view, lhs_len);
 							accum_push(accum, target);
 							token_append_child(fallback, target);
 						}
@@ -2299,7 +2299,7 @@ static Token *parse_gallery_image_line_local(const char *line, size_t line_len,
 							if(cap) {
 													cap->name= strdup("caption");
 								const char *rhs_view= wiki_thread_buf_append_to_tokens(pipe_ptr2 + 1, rhs_len);
-								token_append_text_n(cap, rhs_view, rhs_len);
+								token_append_text_owned(cap, rhs_view, rhs_len);
 								accum_push(accum, cap);
 								token_append_child(fallback, cap);
 							}
@@ -2324,7 +2324,7 @@ static Token *parse_gallery_image_line_local(const char *line, size_t line_len,
 					Token *target= token_new(TOKEN_ATOM, "link-target");
 					if(target) {
 						const char *view= wiki_thread_buf_append_to_tokens(line, line_len);
-						token_append_text_n(target, view, line_len);
+						token_append_text_owned(target, view, line_len);
 						accum_push(accum, target);
 						token_append_child(fallback, target);
 					}
@@ -2369,9 +2369,9 @@ static Token *create_raw_link_token_local(const char *s, size_t len, Accum *accu
 			size_t text_len= len - (pipe + 1);
 			if(text_len > 0) {
 				const char *txt_view = wiki_thread_buf_append_to_tokens(text_ptr, text_len);
-				token_append_text_n(text_tok, txt_view, text_len);
+				token_append_text_owned(text_tok, txt_view, text_len);
 			} else {
-				token_append_text_n(text_tok, "", 0);
+				token_append_text_owned(text_tok, "", 0);
 			}
 			accum_push(accum, text_tok);
 			token_append_child(link, text_tok);
@@ -2399,7 +2399,7 @@ static Token *create_raw_ext_link_token_local(const char *url, size_t url_len,
 	Token *url_tok= token_new(TOKEN_MAGIC_LINK, "ext-link-url");
 	if(!url_tok) return NULL;
 	const char *url_view= wiki_thread_buf_append_to_tokens(url, url_len);
-	token_append_text_n(url_tok, url_view, url_len);
+	token_append_text_owned(url_tok, url_view, url_len);
 	accum_push(accum, url_tok);
 
 	Token *ext= token_new(TOKEN_EXT_LINK, "ext-link");
@@ -2428,7 +2428,7 @@ static Token *create_raw_ext_link_token_local(const char *url, size_t url_len,
 			return NULL;
 		}
 		const char *txt_view= wiki_thread_buf_append_to_tokens(text, text_len);
-		token_append_text_n(txt, txt_view, text_len);
+		token_append_text_owned(txt, txt_view, text_len);
 		accum_push(accum, txt);
 		token_append_child(ext, txt);
 	}
@@ -2449,9 +2449,9 @@ static Token *create_imagemap_link_wrapper_local(const char *pre, size_t pre_len
 
 	if(pre_len > 0) {
 		const char *pre_view= wiki_thread_buf_append_to_tokens(pre, pre_len);
-		token_append_text_n(t, pre_view, pre_len);
+		token_append_text_owned(t, pre_view, pre_len);
 	} else {
-		token_append_text_n(t, "", 0);
+		token_append_text_owned(t, "", 0);
 	}
 
 	token_append_child(t, link);
@@ -2460,9 +2460,9 @@ static Token *create_imagemap_link_wrapper_local(const char *pre, size_t pre_len
 	if(tail) {
 		if(post_len > 0) {
 			const char *post_view= wiki_thread_buf_append_to_tokens(post, post_len);
-			token_append_text_n(tail, post_view, post_len);
+			token_append_text_owned(tail, post_view, post_len);
 		} else {
-			token_append_text_n(tail, "", 0);
+			token_append_text_owned(tail, "", 0);
 		}
 		accum_push(accum, tail);
 		token_append_child(t, tail);
@@ -2656,9 +2656,9 @@ static Token *build_imagemap_inner_token(const char *inner_str, size_t inner_len
 			if(n) {
 				if(line_len > 0) {
 					const char *ln_view= wiki_thread_buf_append_to_tokens(line_ptr, line_len);
-					token_append_text_n(n, ln_view, line_len);
+					token_append_text_owned(n, ln_view, line_len);
 				} else {
-					token_append_text_n(n, "", 0);
+					token_append_text_owned(n, "", 0);
 				}
 				accum_push(accum, n);
 				token_append_child(t, n);
@@ -2682,7 +2682,7 @@ static Token *build_imagemap_inner_token(const char *inner_str, size_t inner_len
 			while(word_end < line_len && line_ptr[word_end] != ' ' && line_ptr[word_end] != '\t') word_end++;
 			if(word_end > lead && (word_end - lead) == 4 && strncmp(line_ptr + lead, "desc", 4) == 0) {
 				const char *ln_view= wiki_thread_buf_append_to_tokens(line_ptr, line_len);
-				token_append_text_n(t, ln_view, line_len);
+				token_append_text_owned(t, ln_view, line_len);
 				if(!nl) break;
 				line_start= i + 1;
 				continue;
@@ -2700,7 +2700,7 @@ static Token *build_imagemap_inner_token(const char *inner_str, size_t inner_len
 				Token *n= token_new(TOKEN_NOINCLUDE, "noinclude");
 				if(n) {
 					const char *ln_view= wiki_thread_buf_append_to_tokens(line_ptr, line_len);
-					token_append_text_n(n, ln_view, line_len);
+					token_append_text_owned(n, ln_view, line_len);
 					accum_push(accum, n);
 					token_append_child(t, n);
 				}
@@ -2733,7 +2733,7 @@ static Token *build_gallery_inner_token(const char *inner_str, size_t inner_len,
 		const char *line_ptr= inner_str + line_start;
 
 		if(line_len == 0) {
-			token_append_text_n(t, "", 0);
+			token_append_text_owned(t, "", 0);
 		} else {
 			Token *img= parse_gallery_image_line_local(line_ptr, line_len, cfg, accum, true);
 			if(img) {
@@ -2743,9 +2743,9 @@ static Token *build_gallery_inner_token(const char *inner_str, size_t inner_len,
 				if(ni) {
 					if(line_len > 0) {
 						const char *ln_view = wiki_thread_buf_append_to_tokens(line_ptr, line_len);
-						token_append_text_n(ni, ln_view, line_len);
+						token_append_text_owned(ni, ln_view, line_len);
 					} else {
-						token_append_text_n(ni, "", 0);
+						token_append_text_owned(ni, "", 0);
 					}
 					accum_push(accum, ni);
 					token_append_child(t, ni);
@@ -2771,9 +2771,9 @@ static Token *build_categorytree_inner_token(const char *inner_str, size_t inner
 	if(!target) return t;
 	if(inner_str && inner_len > 0) {
 		const char *tview = wiki_thread_buf_append_to_tokens(inner_str, inner_len);
-		token_append_text_n(target, tview, inner_len);
+		token_append_text_owned(target, tview, inner_len);
 	} else {
-		token_append_text_n(target, "", 0);
+		token_append_text_owned(target, "", 0);
 	}
 	accum_push(accum, target);
 	token_append_child(t, target);
@@ -2812,9 +2812,9 @@ static Token *build_comment_token(const char *substr, size_t sub_len, Accum *acc
 	t->data.comment.closed= closed;
 	if(inner_len > 0) {
 		const char *com_view = wiki_thread_buf_append_to_tokens(inner_start, inner_len);
-		token_append_text_n(t, com_view, inner_len);
+		token_append_text_owned(t, com_view, inner_len);
 	} else {
-		token_append_text_n(t, "", 0);
+		token_append_text_owned(t, "", 0);
 	}
 	accum_push(accum, t);
 	return t;
@@ -2896,9 +2896,9 @@ static Token *build_noinclude_token(const char *substr, size_t sub_len, Accum *a
 	Token *t= token_new(TOKEN_NOINCLUDE, "noinclude");
 	if(!t) return NULL;
 	if(sub_len > 0) {
-		token_append_text_n(t, substr, sub_len);
+		token_append_text_owned(t, substr, sub_len);
 	} else {
-		token_append_text_n(t, "", 0);
+		token_append_text_owned(t, "", 0);
 	}
 	accum_push(accum, t);
 	return t;
@@ -2929,18 +2929,18 @@ static Token *build_include_token(const char *tag_name, size_t tag_name_len,
 	const char *attr_src= attr ? attr : "";
 	if(attr && attr_len > 0) {
 		const char *attr_view = wiki_thread_buf_append_to_tokens(attr_src, attr_len);
-		token_append_text_n(t, attr_view, attr_len);
+		token_append_text_owned(t, attr_view, attr_len);
 	} else {
-		token_append_text_n(t, "", 0);
+		token_append_text_owned(t, "", 0);
 	}
 
 	/* inner text */
 	const char *inner_src= inner ? inner : "";
 	if(inner && inner_len > 0) {
 		const char *inner_view = wiki_thread_buf_append_to_tokens(inner_src, inner_len);
-		token_append_text_n(t, inner_view, inner_len);
+		token_append_text_owned(t, inner_view, inner_len);
 	} else {
-		token_append_text_n(t, "", 0);
+		token_append_text_owned(t, "", 0);
 	}
 
 	/* closing tag name — NULL means unclosed (JS TagPairToken.closed = false) */
@@ -2961,14 +2961,14 @@ static Token *build_translate_token(const char *attr, size_t attr_len,
 	if(!t) return NULL;
 	 t->name= strdup("translate");
 	if(attr && attr_len > 0) {
-		token_append_text_n(t, attr, attr_len);
+		token_append_text_owned(t, attr, attr_len);
 	} else {
-		token_append_text_n(t, "", 0);
+		token_append_text_owned(t, "", 0);
 	}
 	if(inner && inner_len > 0) {
-		token_append_text_n(t, inner, inner_len);
+		token_append_text_owned(t, inner, inner_len);
 	} else {
-		token_append_text_n(t, "", 0);
+		token_append_text_owned(t, "", 0);
 	}
 	accum_push(accum, t);
 	return t;
@@ -3190,9 +3190,9 @@ static bool handle_onlyinclude(ThreadBuf *tb, const ParserConfig *cfg, Accum *ac
 			Token *ni= token_new(TOKEN_NOINCLUDE, "noinclude");
 			if(rel_open > 0) {
 				const char *rem_view = wiki_thread_buf_append_to_tokens(remaining, rel_open);
-				token_append_text_n(ni, rem_view, rel_open);
+				token_append_text_owned(ni, rem_view, rel_open);
 			} else {
-				token_append_text_n(ni, "", 0);
+				token_append_text_owned(ni, "", 0);
 			}
 			accum_push(accum, ni);
 			size_t sent_len;
@@ -3207,9 +3207,9 @@ static bool handle_onlyinclude(ThreadBuf *tb, const ParserConfig *cfg, Accum *ac
 		Token *oi= token_new(TOKEN_ONLYINCLUDE, "onlyinclude");
 		if(content_len > 0) {
 			const char *cont_view = wiki_thread_buf_append_to_tokens(content_start, content_len);
-			token_append_text_n(oi, cont_view, content_len);
+			token_append_text_owned(oi, cont_view, content_len);
 		} else {
-			token_append_text_n(oi, "", 0);
+			token_append_text_owned(oi, "", 0);
 		}
 		accum_push(accum, oi);
 			size_t sent_len;
@@ -3230,7 +3230,7 @@ static bool handle_onlyinclude(ThreadBuf *tb, const ParserConfig *cfg, Accum *ac
 			size_t noincl_idx= accum->count;
 			Token *ni= token_new(TOKEN_NOINCLUDE, "noinclude");
 			const char *rem_view = wiki_thread_buf_append_to_tokens(remaining, remaining_len);
-			token_append_text_n(ni, rem_view, remaining_len);
+			token_append_text_owned(ni, rem_view, remaining_len);
 			accum_push(accum, ni);
 			size_t sent_len;
 			work_str_sentinel(noincl_idx, 'n', sent_buf, &sent_len);
