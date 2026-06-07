@@ -2,7 +2,7 @@
 #include "parser/converter.h"
 #include "util/string_util.h"
 #include "stringzilla/stringzilla.h"
-#include "token.h"
+#include "wiki_cast/token.h"
 #include "util/thread_buffer.h"
 #include <assert.h>
 #include <ctype.h>
@@ -51,12 +51,12 @@ static bool variant_in_config(const ParserConfig *cfg, const char *s, size_t len
 
 static bool token_append_text_decoded_nul(Token *t, const char *s, size_t len) {
 	if(len == 0) {
-		token_append_text_n(t, NULL, 0);
+		token_append_text_owned(t, NULL, 0);
 		return true;
 	}
 	char esc= CONVERTER_ESC_NUL;
 	if(!sz_find_byte(s, len, &esc)) {
-		token_append_text_n(t, s, len);
+		token_append_text_owned(t, s, len);
 		return true;
 	}
 	char *decoded= malloc(len);
@@ -64,7 +64,7 @@ static bool token_append_text_decoded_nul(Token *t, const char *s, size_t len) {
 	for(size_t i= 0; i < len; i++) {
 		decoded[i]= (s[i] == CONVERTER_ESC_NUL) ? '\0' : s[i];
 	}
-	token_append_text_n(t, decoded, len);
+	token_append_text_owned(t, decoded, len);
 	free(decoded);
 	return true;
 }
@@ -168,9 +168,9 @@ static Token *build_converter_token(char **flags, char **rules, const ParserConf
 		}
 		size_t flen = strlen(flags[i]);
 		if(flen > 0) {
-			token_append_text_n(f, flags[i], flen);
+			token_append_text_owned(f, flags[i], flen);
 		} else {
-			token_append_text_n(f, NULL, 0);
+			token_append_text_owned(f, NULL, 0);
 		}
 		token_append_child(flags_tok, f);
 	}

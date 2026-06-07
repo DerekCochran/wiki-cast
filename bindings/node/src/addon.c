@@ -10,9 +10,9 @@
 #include <cjson/cJSON.h>
 
 /* extern_tokenizer headers */
-#include "parse.h"
-#include "token.h"
-#include "config.h"
+#include "wiki_cast/parse.h"
+#include "wiki_cast/token.h"
+#include "wiki_cast/config.h"
 
 // Cache for config
 static char* cached_config_path = NULL;

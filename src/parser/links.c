@@ -12,7 +12,7 @@
 #include "util/string_util.h"
 #include "stringzilla/stringzilla.h"
 #include "title.h"
-#include "token.h"
+#include "wiki_cast/token.h"
 #include <assert.h>
 #include <ctype.h>
 #include <stdio.h>
@@ -219,7 +219,7 @@ static void append_fragment_children(Token *dst, Token *frag) {
 	if(!dst || !frag) return;
 	for(size_t ci= 0; ci < frag->child_count; ci++) {
 		if(frag->children[ci].is_text) {
-			token_append_text_n(dst, frag->children[ci].text, frag->children[ci].text_len);
+			token_append_text_owned(dst, frag->children[ci].text, frag->children[ci].text_len);
 		} else {
 			token_append_child(dst, frag->children[ci].token);
 			frag->children[ci].token= NULL;
@@ -875,7 +875,7 @@ static void append_file_image_params(Token *file_tok,
 						 * child (possibly empty). build() only strips text children that
 						 * contain sentinel markers, so an empty text child persists. */
 						if(param->child_count == 0) {
-							token_append_text_n(param, "", 0);
+							token_append_text_owned(param, "", 0);
 						}
 
 						size_t trail_prefix_skip= (slot_at_end && trail_has_line_break)
@@ -910,7 +910,7 @@ static void append_file_image_params(Token *file_tok,
 					}
 					/* JS parity: empty caption segment still serializes as one empty text child. */
 					if(param->child_count == 0) {
-						token_append_text_n(param, "", 0);
+						token_append_text_owned(param, "", 0);
 					}
 				}
 			}
@@ -1490,7 +1490,7 @@ void parse_links(ThreadBuf *tb, const ParserConfig *cfg, Accum *accum,
 								Token *lt= parse_inner_fragment(tp, tl, cfg, accum, "link-text", tidy, in_file, false, page);
 				if(lt) {
 					if(tl == 0 && lt->child_count == 0) {
-						token_append_text_n(lt, "", 0);
+						token_append_text_owned(lt, "", 0);
 					}
 					token_append_child(tok, lt);
 				}

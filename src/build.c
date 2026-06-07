@@ -27,7 +27,7 @@
 #include "util/string_util.h"
 #include "stringzilla/stringzilla.h"
 #include "title.h"
-#include "token.h"
+#include "wiki_cast/token.h"
 #include "util/thread_buffer.h"
 #include <assert.h>
 #include <stdio.h>
@@ -565,7 +565,7 @@ void build_from_str(Token *parent, const char *str, size_t str_len,
 			/* No more markers — emit remaining text as a single segment */
 			size_t text_len = str_len - seg_start;
 			if(text_len > 0) {
-				token_append_text_n(parent, s + seg_start, text_len);
+				token_append_text_owned(parent, s + seg_start, text_len);
 			}
 			break;
 		}
@@ -575,7 +575,7 @@ void build_from_str(Token *parent, const char *str, size_t str_len,
 		{
 			size_t text_len = nul_off - seg_start;
 			if(text_len > 0) {
-				token_append_text_n(parent, s + seg_start, text_len);
+				token_append_text_owned(parent, s + seg_start, text_len);
 			}
 		}
 

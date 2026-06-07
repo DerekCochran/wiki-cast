@@ -11,7 +11,7 @@
 #include "parser/link.h"
 #include "accum.h"
 #include "parser/quotes.h"
-#include "token.h"
+#include "wiki_cast/token.h"
 #include <assert.h>
 #include <stdlib.h>
 #include <string.h>
@@ -75,7 +75,7 @@ Token *create_link_token(TokenType type, const char *type_name,
 		if(link && link_len > 0) {
 			/* Persist the link text into the tokens arena to avoid dangling views */
 			const char *link_view = wiki_thread_buf_append_to_tokens(link, link_len);
-			token_append_text_n(target, link_view, link_len);
+			token_append_text_owned(target, link_view, link_len);
 		}
 		accum_push(accum, target);
 		token_append_child(tok, target);

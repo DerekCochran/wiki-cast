@@ -1,6 +1,6 @@
 #include "parser/braces.h"
 #include "title.h"
-#include "token.h"
+#include "wiki_cast/token.h"
 #include "util/callback_parser.h"
 #include "util/log.h"
 #include "util/string_util.h"
@@ -706,7 +706,7 @@ static Token *build_template_token(const char **parts_restored, const size_t *pa
 				return NULL;
 			}
 
-			token_append_text_n(name_tok, parts_restored[0], parts_lens[0]);
+			token_append_text_owned(name_tok, parts_restored[0], parts_lens[0]);
 			token_append_child(t, name_tok);
 
 			char *nm= trim_copy(parts_restored[0], parts_lens[0]);
@@ -716,7 +716,7 @@ static Token *build_template_token(const char **parts_restored, const size_t *pa
 		if(parts_count > 1 && parts_restored[1]) {
 			Token *def_tok= token_new(TOKEN_PLAIN, "arg-default");
 			if(def_tok) {
-				token_append_text_n(def_tok, parts_restored[1], parts_lens[1]);
+				token_append_text_owned(def_tok, parts_restored[1], parts_lens[1]);
 				token_append_child(t, def_tok);
 			}
 		}
@@ -725,7 +725,7 @@ static Token *build_template_token(const char **parts_restored, const size_t *pa
 			if(!parts_restored[k]) continue;
 			Token *hidden= token_new(TOKEN_HIDDEN, "hidden");
 			if(!hidden) continue;
-			token_append_text_n(hidden, parts_restored[k], parts_lens[k]);
+			token_append_text_owned(hidden, parts_restored[k], parts_lens[k]);
 			token_append_child(t, hidden);
 		}
 		accum_push(accum, t);
@@ -910,7 +910,7 @@ static Token *build_template_token(const char **parts_restored, const size_t *pa
 
 			Token *mw_name= token_new(TOKEN_SYNTAX, "magic-word-name");
 			if(mw_name) {
-				token_append_text_n(mw_name, title_part, magic_title_len);
+				token_append_text_owned(mw_name, title_part, magic_title_len);
 				token_append_child(t, mw_name);
 			}
 		} else {
@@ -1002,7 +1002,7 @@ static Token *build_template_token(const char **parts_restored, const size_t *pa
 
 			Token *tpl_name= token_new(TOKEN_ATOM, "template-name");
 			if(tpl_name) {
-				token_append_text_n(tpl_name, title_part, p0_len);
+				token_append_text_owned(tpl_name, title_part, p0_len);
 				token_append_child(t, tpl_name);
 			}
 
@@ -1016,13 +1016,13 @@ static Token *build_template_token(const char **parts_restored, const size_t *pa
 		if(invoke_magic) {
 			Token *mod_tok= token_new(TOKEN_ATOM, "invoke-module");
 			if(mod_tok) {
-				token_append_text_n(mod_tok, magic_first_arg, magic_first_arg_len);
+				token_append_text_owned(mod_tok, magic_first_arg, magic_first_arg_len);
 				token_append_child(t, mod_tok);
 			}
 			if(parts_count > 1 && parts_restored[1]) {
 				Token *fn_tok= token_new(TOKEN_ATOM, "invoke-function");
 				if(fn_tok) {
-					token_append_text_n(fn_tok, parts_restored[1], parts_lens[1]);
+					token_append_text_owned(fn_tok, parts_restored[1], parts_lens[1]);
 					token_append_child(t, fn_tok);
 				}
 				params_start_idx= 2;
@@ -1041,7 +1041,7 @@ static Token *build_template_token(const char **parts_restored, const size_t *pa
 					/* JS parity: the first parser-function argument after ':' is
 					 * always positional, even if it contains '='. */
 					token_append_child(param, key_tok);
-					token_append_text_n(val_tok, part, part_len);
+					token_append_text_owned(val_tok, part, part_len);
 					token_append_child(param, val_tok);
 
 					char *pname= strdup("1");
@@ -1125,8 +1125,8 @@ static Token *build_template_token(const char **parts_restored, const size_t *pa
 										  "[C build_tpl_named] val_view=%p val_len=%zu bytes_at[%zu..%zu]=%s",
 										  (void *)val_view, val_len, _vls, _vle, _vhbuf);
 			}
-			token_append_text_n(key_tok, key_view, key_len);
-			token_append_text_n(val_tok, val_view, val_len);
+			token_append_text_owned(key_tok, key_view, key_len);
+			token_append_text_owned(val_tok, val_view, val_len);
 			token_append_child(param, key_tok);
 			token_append_child(param, val_tok);
 
@@ -1137,7 +1137,7 @@ static Token *build_template_token(const char **parts_restored, const size_t *pa
 				   if(pname) param->name= pname;
 		} else {
 			token_append_child(param, key_tok);
-			token_append_text_n(val_tok, part, part_len);
+			token_append_text_owned(val_tok, part, part_len);
 			token_append_child(param, val_tok);
 
 			char idx_buf[32];
@@ -1612,14 +1612,14 @@ static bool braces_state_machine(ThreadBuf *tb, const ParserConfig *cfg,
 								heading_tok->data.heading.level= (int)hr.eq_count;
 								Token *title_tok= token_new(TOKEN_PLAIN, "heading-title");
 								if(title_tok) {
-										token_append_text_n(title_tok, title, title_len);
+										token_append_text_owned(title_tok, title, title_len);
 									token_append_child(heading_tok, title_tok);
 									Token *trail_tok= token_new(TOKEN_SYNTAX, "heading-trail");
 									if(trail_tok) {
 										if(trail_len > 0) {
-												token_append_text_n(trail_tok, slice + trail_start, trail_len);
+												token_append_text_owned(trail_tok, slice + trail_start, trail_len);
 										} else {
-											token_append_text_n(trail_tok, "", 0);
+											token_append_text_owned(trail_tok, "", 0);
 										}
 										token_append_child(heading_tok, trail_tok);
 									}

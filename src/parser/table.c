@@ -5,7 +5,7 @@
 #include "util/string_util.h"
 #include "stringzilla/stringzilla.h"
 #include "table_token.h"
-#include "token.h"
+#include "wiki_cast/token.h"
 #include "util/thread_buffer.h"
 #include <assert.h>
 #include <stdio.h>
@@ -21,9 +21,9 @@ static Token *make_attr_key(const char *key, size_t key_len, Accum *accum) {
 	Token *t= token_new(TOKEN_ATTR_KEY, "attr-key");
 	if(!t) return NULL;
 	if(key_len > 0) {
-		token_append_text_n(t, key, key_len);
+		token_append_text_owned(t, key, key_len);
 	} else {
-		token_append_text_n(t, NULL, 0);
+		token_append_text_owned(t, NULL, 0);
 	}
 	accum_push(accum, t);
 	return t;
@@ -33,9 +33,9 @@ static Token *make_attr_value(const char *val, size_t val_len, Accum *accum) {
 	Token *t= token_new(TOKEN_ATTR_VALUE, "attr-value");
 	if(!t) return NULL;
 	if(val_len > 0) {
-		token_append_text_n(t, val, val_len);
+		token_append_text_owned(t, val, val_len);
 	} else {
-		token_append_text_n(t, NULL, 0);
+		token_append_text_owned(t, NULL, 0);
 	}
 	accum_push(accum, t);
 	return t;
@@ -94,9 +94,9 @@ static Token *make_table_attr_dirty(const char *text, size_t text_len, Accum *ac
 	Token *t= token_new(TOKEN_ATOM, "table-attr-dirty");
 	if(!t) return NULL;
 	if(text_len > 0) {
-		token_append_text_n(t, text, text_len);
+		token_append_text_owned(t, text, text_len);
 	} else {
-		token_append_text_n(t, NULL, 0);
+		token_append_text_owned(t, NULL, 0);
 	}
 	accum_push(accum, t);
 	return t;
@@ -972,9 +972,9 @@ static void push_text_like_js(char **out_buf, size_t *out_len, size_t *out_cap,
 		if(!inter) return;
 		inter->stage= 3;
 		if(n > 0) {
-			token_append_text_n(inter, s, n);
+			token_append_text_owned(inter, s, n);
 		} else {
-			token_append_text_n(inter, NULL, 0);
+			token_append_text_owned(inter, NULL, 0);
 		}
 		accum_push(accum, inter);
 		token_append_child(top, inter);
@@ -1010,18 +1010,18 @@ static void push_text_like_js(char **out_buf, size_t *out_len, size_t *out_cap,
 				}
 			}
 			if(n > 0) {
-				token_append_text_n(inner, s, n);
+				token_append_text_owned(inner, s, n);
 			} else {
-				token_append_text_n(inner, NULL, 0);
+				token_append_text_owned(inner, NULL, 0);
 			}
 			return;
 		}
 	}
 
 		if(n > 0) {
-			token_append_text_n(top, s, n);
+			token_append_text_owned(top, s, n);
 		} else {
-			token_append_text_n(top, NULL, 0);
+			token_append_text_owned(top, NULL, 0);
 		}
 }
 
@@ -1035,9 +1035,9 @@ static Token *create_table_token(const char *syntax, size_t syntax_len,
 	Token *syn= token_new(TOKEN_SYNTAX, "table-syntax");
 	if(syn) {
 		if(syntax_len > 0) {
-			token_append_text_n(syn, syntax, syntax_len);
+			token_append_text_owned(syn, syntax, syntax_len);
 		} else {
-			token_append_text_n(syn, NULL, 0);
+			token_append_text_owned(syn, NULL, 0);
 		}
 		accum_push(accum, syn);
 		token_append_child(table, syn);
@@ -1115,9 +1115,9 @@ void parse_table(ThreadBuf *tb, const ParserConfig *cfg, Accum *accum) {
 				Token *dd= token_new(TOKEN_DD, "dd");
 				if(dd) {
 					if(indent_len > 0) {
-						token_append_text_n(dd, indent, indent_len);
+						token_append_text_owned(dd, indent, indent_len);
 					} else {
-						token_append_text_n(dd, NULL, 0);
+						token_append_text_owned(dd, NULL, 0);
 					}
 					accum_push(accum, dd);
 					dd_idx= accum->count - 1;
@@ -1183,9 +1183,9 @@ void parse_table(ThreadBuf *tb, const ParserConfig *cfg, Accum *accum) {
 				Token *clos = token_new(TOKEN_SYNTAX, "table-syntax");
 				if(clos) {
 					if(line_scratch->len > 0) {
-						token_append_text_n(clos, line_scratch->buf, line_scratch->len);
+						token_append_text_owned(clos, line_scratch->buf, line_scratch->len);
 					} else {
-						token_append_text_n(clos, NULL, 0);
+						token_append_text_owned(clos, NULL, 0);
 					}
 					accum_push(accum, clos);
 					token_append_child(top, clos);

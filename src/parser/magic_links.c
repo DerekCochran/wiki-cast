@@ -4,7 +4,7 @@
 #include "parser/magic_links.h"
 #include "util/string_util.h"
 #include "stringzilla/stringzilla.h"
-#include "token.h"
+#include "wiki_cast/token.h"
 #include "util/wiki_parser_rules.h"
 #include <assert.h>
 #include <ctype.h>
@@ -17,7 +17,7 @@ static Token *build_magic_link(const char *s, size_t len,
                                const char *type_name, Accum *accum) {
     Token *t = token_new(TOKEN_MAGIC_LINK, type_name);
     if (!t) return NULL;
-    token_append_text_n(t, s, len);
+    token_append_text_owned(t, s, len);
     accum_push(accum, t);
     return t;
 }

@@ -8,7 +8,7 @@
 #include <stddef.h>
 #include <stdbool.h>
 #include <stdint.h>
-#include "config.h"
+#include "wiki_cast/config.h"
 #include "util/thread_buffer.h"
 
 /* ── Sentinel marker formatting ───────────────────────────────────────────── */

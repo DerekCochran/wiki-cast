@@ -1,5 +1,5 @@
 /*
- * token.h — Token node types and lifecycle.
+ * wiki_cast/token.h — Token node types and lifecycle.
  *
  * Mirrors dist/src/index.js and the token hierarchy under dist/src/.
  * Each token type corresponds to a JS class.  Children can be either
@@ -15,7 +15,7 @@
 typedef struct ThreadBuf ThreadBuf;
 
 /* ── Token type enum ──────────────────────────────────────────────────────── */
-typedef enum {
+typedef enum TokenType {
     TOKEN_TEXT           = 0,  /* leaf text node (AstText) */
     TOKEN_ROOT,                /* root plain token */
     TOKEN_PLAIN,               /* generic plain token */
@@ -61,7 +61,7 @@ typedef enum {
     TOKEN_TYPE_COUNT
 } TokenType;
 
-typedef enum {
+typedef enum TokenSubType {
     TOKEN_SUBTYPE_NONE = 0,
     TOKEN_SUBTYPE_ROOT,
     TOKEN_SUBTYPE_REDIRECT,
@@ -253,7 +253,11 @@ Token *token_new(TokenType type, const char *type_name);
 Token *token_new_with_subtype(TokenType type, TokenSubType subtype);
 
 /** Append a TEXT child to a token from a pointer+length substring. */
-void token_append_text_n(Token *t, const char *text, size_t len);
+void token_append_text_owned(Token *t, const char *text, size_t len);
+
+/** Append a TEXT child by copying from an sz_string_view_t.
+ *  The string content is copied and owned by the child (text_owned = true). */
+void token_append_text_view_owned(Token *t, sz_string_view_t view);
 
 /** Append a TOKEN child to a token.  Takes ownership of child. */
 void token_append_child(Token *t, Token *child);

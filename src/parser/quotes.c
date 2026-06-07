@@ -2,7 +2,7 @@
 #include "parser/quotes.h"
 #include "util/string_util.h"
 #include "stringzilla/stringzilla.h"
-#include "token.h"
+#include "wiki_cast/token.h"
 #include <assert.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -24,9 +24,9 @@ static Token *build_quote_token(const char *txt, size_t txt_len, Accum *accum) {
 	t->data.quote.italic= txt_len != 3;
 
 	if(txt && txt_len > 0) {
-		token_append_text_n(t, txt, txt_len);
+		token_append_text_owned(t, txt, txt_len);
 	} else {
-		token_append_text_n(t, "", 0);
+		token_append_text_owned(t, "", 0);
 	}
 
 	accum_push(accum, t);

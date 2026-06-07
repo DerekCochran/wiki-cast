@@ -98,9 +98,9 @@ Accum *accum) {
 	if(!syn_tok) return NULL;
 	if(syn_len > 0) {
 		const char *syn_view = wiki_thread_buf_append_to_tokens(syn, syn_len);
-		if(syn_view) token_append_text_n(syn_tok, syn_view, syn_len);
+		if(syn_view) token_append_text_owned(syn_tok, syn_view, syn_len);
 	} else {
-		token_append_text_n(syn_tok, NULL, 0);
+		token_append_text_owned(syn_tok, NULL, 0);
 	}
 	accum_push(accum, syn_tok);
 
@@ -108,9 +108,9 @@ Accum *accum) {
 	if(!link_atom) return NULL;
 	if(link_len > 0) {
 		const char *link_view = wiki_thread_buf_append_to_tokens(link, link_len);
-		if(link_view) token_append_text_n(link_atom, link_view, link_len);
+		if(link_view) token_append_text_owned(link_atom, link_view, link_len);
 	} else {
-		token_append_text_n(link_atom, NULL, 0);
+		token_append_text_owned(link_atom, NULL, 0);
 	}
 	accum_push(accum, link_atom);
 
@@ -142,7 +142,7 @@ Accum *accum) {
 		if(!noinclude) return NULL;
 		if(disp_len > 0) {
 			const char *disp_view = wiki_thread_buf_append_to_tokens(disp, disp_len);
-			if(disp_view) token_append_text_n(noinclude, disp_view, disp_len);
+			if(disp_view) token_append_text_owned(noinclude, disp_view, disp_len);
 		}
 		accum_push(accum, noinclude);
 		token_append_child(target_tok, noinclude);

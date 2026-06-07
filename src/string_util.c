@@ -2,7 +2,7 @@
  * string_util.c — String helpers mirroring dist/util/string.js.
  */
 #include "util/string_util.h"
-#include "config.h"
+#include "wiki_cast/config.h"
 #include "stringzilla/stringzilla.h"
 #include <unicode/uchar.h>
 #include <unicode/utf8.h>

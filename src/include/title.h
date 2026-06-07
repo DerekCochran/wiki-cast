@@ -4,7 +4,7 @@
  * Mirrors dist/lib/title.js (halfParsed mode used by parseRedirect).
  */
 #pragma once
-#include "config.h"
+#include "wiki_cast/config.h"
 #include <stdbool.h>
 #include <stddef.h>
 

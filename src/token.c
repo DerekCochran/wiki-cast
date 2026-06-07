@@ -1,7 +1,7 @@
 /*
  * token.c — Token node lifecycle implementation.
  */
-#include "token.h"
+#include "wiki_cast/token.h"
 #include "util/log.h"
 #include "util/thread_buffer.h"
 #include "stringzilla/stringzilla.h"
@@ -147,7 +147,7 @@ Token *token_new_with_subtype(TokenType type, TokenSubType subtype) {
 	return t;
 }
 
-void token_append_text_n(Token *t, const char *text, size_t len) {
+void token_append_text_owned(Token *t, const char *text, size_t len) {
 	assert(t);
 	if(len > 0) assert(text);
 	if(t->child_count >= t->child_cap) {
@@ -164,6 +164,27 @@ void token_append_text_n(Token *t, const char *text, size_t len) {
 	Child *c= &t->children[t->child_count++];
 	c->is_text= true;
 	c->text_len= len;
+	c->text= owned;
+	c->text_owned = true;
+}
+
+void token_append_text_view_owned(Token *t, sz_string_view_t view) {
+	assert(t);
+	if(view.length > 0) assert(view.start);
+	if(t->child_count >= t->child_cap) {
+		t->child_cap*= 2;
+		t->children= realloc(t->children, t->child_cap * sizeof(Child));
+		assert(t->children);
+	}
+	char *owned= malloc(view.length + 1);
+	assert(owned);
+	if(view.length > 0) {
+		sz_copy(owned, view.start, view.length);
+	}
+	owned[view.length]= '\0';
+	Child *c= &t->children[t->child_count++];
+	c->is_text= true;
+	c->text_len= view.length;
 	c->text= owned;
 	c->text_owned = true;
 }

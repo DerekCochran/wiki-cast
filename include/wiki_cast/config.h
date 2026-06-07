@@ -1,5 +1,5 @@
 /*
- * config.h — Parser configuration loaded from a JSON file.
+ * wiki_cast/config.h — Parser configuration loaded from a JSON file.
  *
  * Mirrors the config object that wikiparser-node loads from config/<wildcard>.json.
  * The schema is:
@@ -12,7 +12,7 @@
 #pragma once
 #include <stddef.h>
 #include <stdbool.h>
-#include "types.h"
+#include "wiki_cast/types.h"
 
 /* Global default allocator for sz_string_t operations */
 extern sz_memory_allocator_t allocator_default;
