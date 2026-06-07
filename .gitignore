@@ -62,3 +62,7 @@ parse_wiki_text/input/*.pwt.json
 # Doxyfile
 html/
 latex/
+bindings/python/build_sources/
+bindings/python/src/wiki_cast/_binding.c
+
+compare/parse_wiki_text/target
