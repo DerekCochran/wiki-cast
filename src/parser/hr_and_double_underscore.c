@@ -246,7 +246,6 @@ static void dunder_cb(const char *seg, size_t len, ParserSegmentKind kind, void 
 	char *lc = lower_copy(seg, len);
 	const char *alias = NULL;
 	if(case_sensitive) {
-		/* Pass seg and len directly — avoids malloc+copy just for the key lookup */
 		alias = strmap_get_exact(&ctx->cfg->double_underscore_alias[1], seg, len);
 	} else if(lc) {
 		alias = strmap_get_exact(&ctx->cfg->double_underscore_alias[0], lc, len);
@@ -340,7 +339,6 @@ void parse_hr_and_double_underscore(ThreadBuf *tb, const ParserConfig *cfg, Accu
 	bool poem_ctx= root_name && strcmp(root_name, "poem") == 0;
 	bool prefixed= root_type != TOKEN_ROOT && !(root_type == TOKEN_EXT_INNER && poem_ctx);
 	if(prefixed) {
-		/* Prepend a NUL byte in-place with memmove — avoids malloc+copy+free */
 		wiki_thread_buf_reserve(tb, tb->len + 1);
 		if(tb->len > 0) memmove(tb->buf + 1, tb->buf, tb->len);
 		tb->buf[0]= '\0';
@@ -562,7 +560,6 @@ void parse_hr_and_double_underscore(ThreadBuf *tb, const ParserConfig *cfg, Accu
 	}
 
 	if(prefixed && tb->len > 0) {
-		/* Remove the NUL prefix in-place with memmove — avoids malloc+copy+free */
 		size_t unpref_len= tb->len - 1;
 		if(unpref_len > 0) memmove(tb->buf, tb->buf + 1, unpref_len);
 		tb->len= unpref_len;
