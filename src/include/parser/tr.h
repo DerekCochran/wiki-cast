@@ -1,6 +1,6 @@
 /* tr.h — TrToken constructor helper */
 #pragma once
-#include "token.h"
+#include "wiki_cast/token.h"
 #include "accum.h"
 
 /** Create a TrToken with given syntax and attr, push into accum, and return it.

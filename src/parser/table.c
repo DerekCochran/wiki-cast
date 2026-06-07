@@ -5,7 +5,7 @@
 #include "util/string_util.h"
 #include "stringzilla/stringzilla.h"
 #include "table_token.h"
-#include "token.h"
+#include "wiki_cast/token.h"
 #include "util/thread_buffer.h"
 #include <assert.h>
 #include <stdio.h>

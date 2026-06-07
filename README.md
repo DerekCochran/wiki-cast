@@ -28,19 +28,18 @@ This product is still in a pre-release phase with undocumented discrepencies wit
 
 ## Performance
 
-This is based on the [english wikipedia download](https://dumps.wikimedia.org/enwiki/latest/) for 5,828,408 samples.
+This is based on the [english wikipedia download](https://dumps.wikimedia.org/enwiki/latest/) for 7,176,274 samples using the [test script](./bindings/node/tests/test_export.js).
 
 | Parser          | Min  | Max    | Mean | Stnd Dev | p50 | p95  | p99  |
 |-----------------|------|--------|------|----------|-----|------|------|
-| wikiparser-node | 0.0  | 1880.0 | 8.85 |  22.7899 | 4.0 | 30.0 | 96.0 |
-| wiki-cast       | 0.0  |  222.0 | 1.11 |   2.6058 | 1.0 |  4.0 | 11.0 |
+| wikiparser-node | 0.0  | 1767.0 | 7.90 |  19.9998 | 3.0 | 27.0 | 82.0 |
+| wiki-cast       | 0.0  |  182.0 | 1.00 |   2.2814 | 0.0 |  4.0 | 10.0 |
 
-Speedup (mean first/second): 7.9130x
-Mean percent change (second vs first): -87.36%
+Speedup: 8.0850x (Mean was rounded which is why it does not match)
 
 ## Testing
 
-This closely matches the wikiparser-node AST generated.  There is a [custom JSON creation](./bindings/node/src/addon.c) to match the shape of its AST.  On the last test executed, there were 268 wikitext articles out of 7,176,400 million that did not match.
+This closely matches the wikiparser-node AST generated.  There is a [custom JSON creation](./bindings/node/src/addon.c) to match the shape of its AST.  On the last test executed, there were 374 wikitext articles out of 7,176,274 million that did not match.
 
 This testing is just phase 1.  It gets WIKI-CAST to match at least one implementation and gives us a large number of tests to verify against other implementeations.  However, Parsoid is the source of truth.  We must [verify against it](https://github.com/DerekCochran/wiki-cast/issues/9) if we are to meet the pipe dream.
 
@@ -48,7 +47,7 @@ The testing against Parsoid will only be a "small" sample based on their tests a
 
 ## Languages
 
-The current implementation has only tested against the english wikipedia.  This meets my intiial needs, but to match the pipe dream, all languages must be verified.  This is a time consuming and costly effort.  With the right financial support, I hope to accomplish this goal.
+The current implementation has only tested against the english wikipedia.  This meets my intial needs, but to match the pipe dream, all languages must be verified.  This is a time consuming and costly effort.  With the right financial support, I hope to accomplish this goal.
 
 ## Implementation
 

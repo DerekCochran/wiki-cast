@@ -18,8 +18,8 @@ pkg_check_modules(CJSON   REQUIRED libcjson)
 pkg_check_modules(ICU     REQUIRED icu-uc)
 
 # ── Library ────────────────────────────────────────────────────────────────── 
-# (Removed STATIC keyword so it respects -DBUILD_SHARED_LIBS)
-add_library(wiki_cast
+# Build as shared library for use by Node.js addon
+add_library(wiki_cast 
     src/token.c
     src/accum.c
     src/config.c
@@ -67,6 +67,7 @@ target_include_directories(wiki_cast PRIVATE
 # Modern target-scoped compile options
 target_compile_options(wiki_cast PRIVATE
     -std=gnu17
+    -fPIC
     -march=native 
     -mtune=native
     -Wall -Wextra -Wno-unused-parameter

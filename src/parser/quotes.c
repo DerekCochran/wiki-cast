@@ -2,7 +2,7 @@
 #include "parser/quotes.h"
 #include "util/string_util.h"
 #include "stringzilla/stringzilla.h"
-#include "token.h"
+#include "wiki_cast/token.h"
 #include <assert.h>
 #include <stdio.h>
 #include <stdlib.h>

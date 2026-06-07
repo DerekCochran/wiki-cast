@@ -1,7 +1,7 @@
 /*
  * token.c — Token node lifecycle implementation.
  */
-#include "token.h"
+#include "wiki_cast/token.h"
 #include "util/log.h"
 #include "util/thread_buffer.h"
 #include "stringzilla/stringzilla.h"

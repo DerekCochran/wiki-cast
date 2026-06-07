@@ -12,7 +12,7 @@
 #include "util/string_util.h"
 #include "stringzilla/stringzilla.h"
 #include "title.h"
-#include "token.h"
+#include "wiki_cast/token.h"
 #include <assert.h>
 #include <ctype.h>
 #include <stdio.h>

@@ -4,7 +4,7 @@
 #include "parser/magic_links.h"
 #include "util/string_util.h"
 #include "stringzilla/stringzilla.h"
-#include "token.h"
+#include "wiki_cast/token.h"
 #include "util/wiki_parser_rules.h"
 #include <assert.h>
 #include <ctype.h>

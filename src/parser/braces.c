@@ -1,6 +1,6 @@
 #include "parser/braces.h"
 #include "title.h"
-#include "token.h"
+#include "wiki_cast/token.h"
 #include "util/callback_parser.h"
 #include "util/log.h"
 #include "util/string_util.h"
