@@ -180,7 +180,7 @@ SZ_DYNAMIC sz_cptr_t sz_find_byteset(sz_cptr_t text, sz_size_t length, sz_bytese
 SZ_DYNAMIC sz_cptr_t sz_rfind_byteset(sz_cptr_t text, sz_size_t length, sz_byteset_t const *set);
 
 /**
- *  @brief Precompiled matcher for up to 8 bytes.
+ *  @brief Precompiled matcher for up to 16 bytes.
  *
  *  Intended for parser kernels that repeatedly scan different texts against the same
  *  small delimiter set. The `bitset` enables fast scalar fallback, while `bytes`
@@ -188,7 +188,7 @@ SZ_DYNAMIC sz_cptr_t sz_rfind_byteset(sz_cptr_t text, sz_size_t length, sz_bytes
  */
 typedef struct sz_find8_set_t {
     sz_byteset_t bitset;
-    sz_u8_t bytes[8];
+    sz_u8_t bytes[16];
     sz_u8_t length;
 } sz_find8_set_t;
 
@@ -199,11 +199,11 @@ typedef struct sz_find8_match_t {
 } sz_find8_match_t;
 
 /**
- *  @brief Initializes a precompiled matcher for up to 8 bytes.
+ *  @brief Initializes a precompiled matcher for up to 16 bytes.
  *
  *  @param[out] set Compiled matcher.
  *  @param[in] bytes Input bytes to track.
- *  @param[in] length Number of bytes in @p bytes. Values above 8 are truncated.
+ *  @param[in] length Number of bytes in @p bytes. Values above 16 are truncated.
  */
 SZ_PUBLIC void sz_find8_set_init(sz_find8_set_t *set, sz_cptr_t bytes, sz_size_t length);
 
@@ -340,14 +340,14 @@ SZ_PUBLIC sz_cptr_t sz_rfind_byte_not_from(sz_cptr_t h, sz_size_t h_length, sz_c
 SZ_PUBLIC void sz_find8_set_init(sz_find8_set_t *set, sz_cptr_t bytes, sz_size_t length) {
     sz_size_t i;
     sz_byteset_init(&set->bitset);
-    if (length > 8) length = 8;
+    if (length > 16) length = 16;
     set->length = (sz_u8_t)length;
     for (i = 0; i != length; ++i) {
         sz_u8_t byte = (sz_u8_t)bytes[i];
         set->bytes[i] = byte;
         sz_byteset_add_u8(&set->bitset, byte);
     }
-    for (; i != 8; ++i) set->bytes[i] = 0;
+    for (; i != 16; ++i) set->bytes[i] = 0;
 }
 
 #pragma endregion // Helper Shortcuts
@@ -1335,7 +1335,7 @@ SZ_PUBLIC sz_size_t sz_find8_all_haswell(sz_cptr_t text, sz_size_t length, sz_fi
     sz_size_t count = 0;
     sz_cptr_t const text_start = text;
     sz_u8_t i;
-    sz_u256_vec_t needles[8], text_vec;
+    sz_u256_vec_t needles[16], text_vec;
 
     if (!set->length || !max_matches) return 0;
     for (i = 0; i != set->length; ++i) needles[i].ymm = _mm256_set1_epi8((char)set->bytes[i]);
@@ -1343,8 +1343,19 @@ SZ_PUBLIC sz_size_t sz_find8_all_haswell(sz_cptr_t text, sz_size_t length, sz_fi
     for (; length >= 32; text += 32, length -= 32) {
         int matches_mask = 0;
         text_vec.ymm = _mm256_lddqu_si256((__m256i const *)text);
-        for (i = 0; i != set->length; ++i)
-            matches_mask |= _mm256_movemask_epi8(_mm256_cmpeq_epi8(text_vec.ymm, needles[i].ymm));
+        if (set->length <= 8) {
+            for (i = 0; i != set->length; ++i)
+                matches_mask |= _mm256_movemask_epi8(_mm256_cmpeq_epi8(text_vec.ymm, needles[i].ymm));
+        }
+        else {
+            int matches_mask_a = 0;
+            int matches_mask_b = 0;
+            for (i = 0; i != 8; ++i)
+                matches_mask_a |= _mm256_movemask_epi8(_mm256_cmpeq_epi8(text_vec.ymm, needles[i].ymm));
+            for (i = 8; i != set->length; ++i)
+                matches_mask_b |= _mm256_movemask_epi8(_mm256_cmpeq_epi8(text_vec.ymm, needles[i].ymm));
+            matches_mask = matches_mask_a | matches_mask_b;
+        }
 
         while (matches_mask) {
             int offset = sz_u32_ctz((sz_u32_t)matches_mask);
@@ -1603,7 +1614,7 @@ SZ_PUBLIC sz_size_t sz_find8_all_skylake(sz_cptr_t text, sz_size_t length, sz_fi
     sz_cptr_t const text_start = text;
     sz_u8_t i;
     __mmask64 matches_mask;
-    sz_u512_vec_t text_vec, needles[8];
+    sz_u512_vec_t text_vec, needles[16];
 
     if (!set->length || !max_matches) return 0;
     for (i = 0; i != set->length; ++i) needles[i].zmm = _mm512_set1_epi8((char)set->bytes[i]);
@@ -1611,7 +1622,16 @@ SZ_PUBLIC sz_size_t sz_find8_all_skylake(sz_cptr_t text, sz_size_t length, sz_fi
     for (; length >= 64; text += 64, length -= 64) {
         matches_mask = 0;
         text_vec.zmm = _mm512_loadu_si512(text);
-        for (i = 0; i != set->length; ++i) matches_mask |= _mm512_cmpeq_epi8_mask(text_vec.zmm, needles[i].zmm);
+        if (set->length <= 8) {
+            for (i = 0; i != set->length; ++i) matches_mask |= _mm512_cmpeq_epi8_mask(text_vec.zmm, needles[i].zmm);
+        }
+        else {
+            __mmask64 matches_a = 0;
+            __mmask64 matches_b = 0;
+            for (i = 0; i != 8; ++i) matches_a |= _mm512_cmpeq_epi8_mask(text_vec.zmm, needles[i].zmm);
+            for (i = 8; i != set->length; ++i) matches_b |= _mm512_cmpeq_epi8_mask(text_vec.zmm, needles[i].zmm);
+            matches_mask = matches_a | matches_b;
+        }
 
         while (matches_mask) {
             int offset = sz_u64_ctz(matches_mask);
@@ -1626,7 +1646,16 @@ SZ_PUBLIC sz_size_t sz_find8_all_skylake(sz_cptr_t text, sz_size_t length, sz_fi
         __mmask64 load_mask = sz_u64_mask_until_(length);
         matches_mask = 0;
         text_vec.zmm = _mm512_maskz_loadu_epi8(load_mask, text);
-        for (i = 0; i != set->length; ++i) matches_mask |= _mm512_cmpeq_epi8_mask(text_vec.zmm, needles[i].zmm);
+        if (set->length <= 8) {
+            for (i = 0; i != set->length; ++i) matches_mask |= _mm512_cmpeq_epi8_mask(text_vec.zmm, needles[i].zmm);
+        }
+        else {
+            __mmask64 matches_a = 0;
+            __mmask64 matches_b = 0;
+            for (i = 0; i != 8; ++i) matches_a |= _mm512_cmpeq_epi8_mask(text_vec.zmm, needles[i].zmm);
+            for (i = 8; i != set->length; ++i) matches_b |= _mm512_cmpeq_epi8_mask(text_vec.zmm, needles[i].zmm);
+            matches_mask = matches_a | matches_b;
+        }
         matches_mask &= load_mask;
 
         while (matches_mask) {
