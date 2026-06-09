@@ -14,139 +14,182 @@
 // The ThreadBuff items should not be used external from the library, but we need to declare it here for the token_to_string() API.
 typedef struct ThreadBuf ThreadBuf;
 
-/* ── Token type enum ──────────────────────────────────────────────────────── */
+// ============================================================================
+// 1. MASTER LISTS (The single source of truth for your tokens)
+// ============================================================================
+
+#define TOKEN_TYPE_LIST(TOKEN_TYPE) \
+    TOKEN_TYPE(TOKEN_TEXT)          /* leaf text node (AstText) */ \
+    TOKEN_TYPE(TOKEN_ROOT)          /* root plain token */ \
+    TOKEN_TYPE(TOKEN_PLAIN) /* generic plain token */ \
+    TOKEN_TYPE(TOKEN_COMMENT) /* CommentToken          'c' */ \
+    TOKEN_TYPE(TOKEN_EXT) /* ExtToken              'e' */ \
+    TOKEN_TYPE(TOKEN_NOINCLUDE) /* NoIncludeToken        'n' */ \
+    TOKEN_TYPE(TOKEN_INCLUDE) /* IncludeToken          'i' */ \
+    TOKEN_TYPE(TOKEN_TRANSLATE) /* TranslateToken        't' */ \
+    TOKEN_TYPE(TOKEN_ONLYINCLUDE) /* OnlyIncludeToken      'o' */ \
+    TOKEN_TYPE(TOKEN_ARG) /* ArgToken              'a' */ \
+    TOKEN_TYPE(TOKEN_TRANSCLUDE) /* TranscludeToken       'x' */ \
+    TOKEN_TYPE(TOKEN_HEADING) /* HeadingToken          'h' */ \
+    TOKEN_TYPE(TOKEN_HTML) /* HtmlToken             'H' */ \
+    TOKEN_TYPE(TOKEN_TABLE) /* TableToken            'T' */ \
+    TOKEN_TYPE(TOKEN_TR) /* TableRowToken         'R' */ \
+    TOKEN_TYPE(TOKEN_TD) /* TableCellToken        'C' */ \
+    TOKEN_TYPE(TOKEN_HR) /* HorizontalRuleToken   'r' */ \
+    TOKEN_TYPE(TOKEN_DOUBLE_UNDERSCORE) /* DoubleUnderscoreToken 'u' */ \
+    TOKEN_TYPE(TOKEN_LINK) /* LinkToken             'l' */ \
+    TOKEN_TYPE(TOKEN_FILE) /* FileToken             'f' */ \
+    TOKEN_TYPE(TOKEN_CATEGORY) /* CategoryToken         'g' */ \
+    TOKEN_TYPE(TOKEN_REDIRECT) /* RedirectToken         'd' */ \
+    TOKEN_TYPE(TOKEN_REDIRECT_TARGET) /* RedirectTargetToken   'D' */ \
+    TOKEN_TYPE(TOKEN_REDIRECT_SYNTAX) /* RedirectSyntaxToken   'S' */ \
+    TOKEN_TYPE(TOKEN_QUOTE) /* QuoteToken            'q' */ \
+    TOKEN_TYPE(TOKEN_EXT_LINK) /* ExtLinkToken          'x' */ \
+    TOKEN_TYPE(TOKEN_MAGIC_LINK) /* MagicLinkToken        'm' */ \
+    TOKEN_TYPE(TOKEN_LIST) /* ListToken             'L' */ \
+    TOKEN_TYPE(TOKEN_DD) /* DefinitionDescriptionToken 'D' */ \
+    TOKEN_TYPE(TOKEN_CONVERTER) /* ConverterToken        'c' */ \
+    TOKEN_TYPE(TOKEN_PARAMETER) /* ParameterToken        'p' */ \
+    TOKEN_TYPE(TOKEN_ATTRIBUTES) /* AttributesToken       'A' */ \
+    TOKEN_TYPE(TOKEN_SYNTAX) /* SyntaxToken           's' */ \
+    TOKEN_TYPE(TOKEN_ATOM) /* AtomToken             'a' */ \
+    TOKEN_TYPE(TOKEN_HIDDEN) /* HiddenToken           'h' */ \
+    TOKEN_TYPE(TOKEN_EXT_ATTRS) /* ExtAttrsToken         'E' */ \
+    TOKEN_TYPE(TOKEN_EXT_INNER) /* ExtInnerToken         'I' */ \
+    TOKEN_TYPE(TOKEN_EXT_ATTR_DIRTY) /* ExtAttrDirtyToken     'D' */ \
+    TOKEN_TYPE(TOKEN_EXT_ATTR) /* ExtAttrToken          'A' */ \
+    TOKEN_TYPE(TOKEN_ATTR_KEY) /* AttrKeyToken          'K' */ \
+    TOKEN_TYPE(TOKEN_ATTR_VALUE) /* AttrValueToken        'V' */
+
+#define TOKEN_SUBTYPE_LIST(TOKEN_SUBTYPE) \
+    TOKEN_SUBTYPE(TOKEN_SUBTYPE_NONE) \
+    TOKEN_SUBTYPE(TOKEN_SUBTYPE_ROOT) \
+    TOKEN_SUBTYPE(TOKEN_SUBTYPE_REDIRECT) \
+    TOKEN_SUBTYPE(TOKEN_SUBTYPE_REDIRECT_SYNTAX) \
+    TOKEN_SUBTYPE(TOKEN_SUBTYPE_REDIRECT_TARGET) \
+    TOKEN_SUBTYPE(TOKEN_SUBTYPE_COMMENT) \
+    TOKEN_SUBTYPE(TOKEN_SUBTYPE_EXT) \
+    TOKEN_SUBTYPE(TOKEN_SUBTYPE_NOINCLUDE) \
+    TOKEN_SUBTYPE(TOKEN_SUBTYPE_INCLUDE) \
+    TOKEN_SUBTYPE(TOKEN_SUBTYPE_INCLUDEONLY) \
+    TOKEN_SUBTYPE(TOKEN_SUBTYPE_ONLYINCLUDE) \
+    TOKEN_SUBTYPE(TOKEN_SUBTYPE_TRANSLATE) \
+    TOKEN_SUBTYPE(TOKEN_SUBTYPE_ARG) \
+    TOKEN_SUBTYPE(TOKEN_SUBTYPE_ARG_NAME) \
+    TOKEN_SUBTYPE(TOKEN_SUBTYPE_ARG_DEFAULT) \
+    TOKEN_SUBTYPE(TOKEN_SUBTYPE_TEMPLATE) \
+    TOKEN_SUBTYPE(TOKEN_SUBTYPE_MAGIC_WORD) \
+    TOKEN_SUBTYPE(TOKEN_SUBTYPE_MAGIC_WORD_NAME) \
+    TOKEN_SUBTYPE(TOKEN_SUBTYPE_PARAMETER) \
+    TOKEN_SUBTYPE(TOKEN_SUBTYPE_PARAMETER_KEY) \
+    TOKEN_SUBTYPE(TOKEN_SUBTYPE_PARAMETER_VALUE) \
+    TOKEN_SUBTYPE(TOKEN_SUBTYPE_HEADING) \
+    TOKEN_SUBTYPE(TOKEN_SUBTYPE_HEADING_TITLE) \
+    TOKEN_SUBTYPE(TOKEN_SUBTYPE_HEADING_TRAIL) \
+    TOKEN_SUBTYPE(TOKEN_SUBTYPE_HTML) \
+    TOKEN_SUBTYPE(TOKEN_SUBTYPE_HTML_ATTRS) \
+    TOKEN_SUBTYPE(TOKEN_SUBTYPE_HTML_ATTR) \
+    TOKEN_SUBTYPE(TOKEN_SUBTYPE_HTML_ATTR_DIRTY) \
+    TOKEN_SUBTYPE(TOKEN_SUBTYPE_TABLE) \
+    TOKEN_SUBTYPE(TOKEN_SUBTYPE_TR) \
+    TOKEN_SUBTYPE(TOKEN_SUBTYPE_TD) \
+    TOKEN_SUBTYPE(TOKEN_SUBTYPE_TABLE_SYNTAX) \
+    TOKEN_SUBTYPE(TOKEN_SUBTYPE_TABLE_ATTRS) \
+    TOKEN_SUBTYPE(TOKEN_SUBTYPE_TABLE_ATTR) \
+    TOKEN_SUBTYPE(TOKEN_SUBTYPE_TABLE_ATTR_DIRTY) \
+    TOKEN_SUBTYPE(TOKEN_SUBTYPE_TABLE_INTER) \
+    TOKEN_SUBTYPE(TOKEN_SUBTYPE_TABLE_INNER) \
+    TOKEN_SUBTYPE(TOKEN_SUBTYPE_TD_INNER) \
+    TOKEN_SUBTYPE(TOKEN_SUBTYPE_HR) \
+    TOKEN_SUBTYPE(TOKEN_SUBTYPE_DOUBLE_UNDERSCORE) \
+    TOKEN_SUBTYPE(TOKEN_SUBTYPE_LINK) \
+    TOKEN_SUBTYPE(TOKEN_SUBTYPE_FILE) \
+    TOKEN_SUBTYPE(TOKEN_SUBTYPE_CATEGORY) \
+    TOKEN_SUBTYPE(TOKEN_SUBTYPE_TEXT) \
+    TOKEN_SUBTYPE(TOKEN_SUBTYPE_LINK_TARGET) \
+    TOKEN_SUBTYPE(TOKEN_SUBTYPE_LINK_TEXT) \
+    TOKEN_SUBTYPE(TOKEN_SUBTYPE_QUOTE) \
+    TOKEN_SUBTYPE(TOKEN_SUBTYPE_EXT_LINK) \
+    TOKEN_SUBTYPE(TOKEN_SUBTYPE_EXT_LINK_URL) \
+    TOKEN_SUBTYPE(TOKEN_SUBTYPE_EXT_LINK_TEXT) \
+    TOKEN_SUBTYPE(TOKEN_SUBTYPE_MAGIC_LINK) \
+    TOKEN_SUBTYPE(TOKEN_SUBTYPE_FREE_EXT_LINK) \
+    TOKEN_SUBTYPE(TOKEN_SUBTYPE_LIST) \
+    TOKEN_SUBTYPE(TOKEN_SUBTYPE_DD) \
+    TOKEN_SUBTYPE(TOKEN_SUBTYPE_CONVERTER) \
+    TOKEN_SUBTYPE(TOKEN_SUBTYPE_CONVERTER_RULE) \
+    TOKEN_SUBTYPE(TOKEN_SUBTYPE_CONVERTER_RULE_FROM) \
+    TOKEN_SUBTYPE(TOKEN_SUBTYPE_CONVERTER_RULE_VARIANT) \
+    TOKEN_SUBTYPE(TOKEN_SUBTYPE_CONVERTER_RULE_TO) \
+    TOKEN_SUBTYPE(TOKEN_SUBTYPE_CONVERTER_FLAGS) \
+    TOKEN_SUBTYPE(TOKEN_SUBTYPE_CONVERTER_FLAG) \
+    TOKEN_SUBTYPE(TOKEN_SUBTYPE_ATTRIBUTES) \
+    TOKEN_SUBTYPE(TOKEN_SUBTYPE_ATTR_EQUAL_TMP) \
+    TOKEN_SUBTYPE(TOKEN_SUBTYPE_ATTR_KEY) \
+    TOKEN_SUBTYPE(TOKEN_SUBTYPE_ATTR_VALUE) \
+    TOKEN_SUBTYPE(TOKEN_SUBTYPE_ATOM) \
+    TOKEN_SUBTYPE(TOKEN_SUBTYPE_HIDDEN) \
+    TOKEN_SUBTYPE(TOKEN_SUBTYPE_EXT_ATTRS) \
+    TOKEN_SUBTYPE(TOKEN_SUBTYPE_EXT_INNER) \
+    TOKEN_SUBTYPE(TOKEN_SUBTYPE_EXT_ATTR_DIRTY) \
+    TOKEN_SUBTYPE(TOKEN_SUBTYPE_EXT_ATTR) \
+    TOKEN_SUBTYPE(TOKEN_SUBTYPE_IMAGE_PARAMETER) \
+    TOKEN_SUBTYPE(TOKEN_SUBTYPE_GALLERY_IMAGE) \
+    TOKEN_SUBTYPE(TOKEN_SUBTYPE_IMAGEMAP_IMAGE) \
+    TOKEN_SUBTYPE(TOKEN_SUBTYPE_GALLERY_LINE) \
+    TOKEN_SUBTYPE(TOKEN_SUBTYPE_GALLERY_PARAM_WRAPPER) \
+    TOKEN_SUBTYPE(TOKEN_SUBTYPE_IMAGEMAP_LINK_INNER) \
+    TOKEN_SUBTYPE(TOKEN_SUBTYPE_IMAGEMAP_IMAGE_LINE) \
+    TOKEN_SUBTYPE(TOKEN_SUBTYPE_IMAGEMAP_LINK) \
+    TOKEN_SUBTYPE(TOKEN_SUBTYPE_TEMPLATE_NAME) \
+    TOKEN_SUBTYPE(TOKEN_SUBTYPE_INVOKE_MODULE) \
+    TOKEN_SUBTYPE(TOKEN_SUBTYPE_INVOKE_FUNCTION) \
+    TOKEN_SUBTYPE(TOKEN_SUBTYPE_PARAM_LINE)
+
+// ============================================================================
+// 2. ENUM GENERATION
+// ============================================================================
+
 typedef enum TokenType {
-    TOKEN_TEXT           = 0,  /* leaf text node (AstText) */
-    TOKEN_ROOT,                /* root plain token */
-    TOKEN_PLAIN,               /* generic plain token */
-    TOKEN_COMMENT,             /* CommentToken          'c' */
-    TOKEN_EXT,                 /* ExtToken              'e' */
-    TOKEN_NOINCLUDE,           /* NoincludeToken        'n' */
-    TOKEN_INCLUDE,             /* IncludeToken          'n' */
-    TOKEN_TRANSLATE,           /* TranslateToken        'g' */
-    TOKEN_ONLYINCLUDE,         /* OnlyincludeToken      'g' */
-    TOKEN_ARG,                 /* ArgToken              'a' */
-    TOKEN_TRANSCLUDE,          /* TranscludeToken       't' */
-    TOKEN_HEADING,             /* HeadingToken          'h' */
-    TOKEN_HTML,                /* HtmlToken             'x' */
-    TOKEN_TABLE,               /* TableToken            'b' */
-    TOKEN_TR,                  /* TrToken               'b' */
-    TOKEN_TD,                  /* TdToken               'b' */
-    TOKEN_HR,                  /* HrToken               'r' */
-    TOKEN_DOUBLE_UNDERSCORE,   /* DoubleUnderscoreToken 'n' / 'u' */
-    TOKEN_LINK,                /* LinkToken             'l' */
-    TOKEN_FILE,                /* FileToken             'l' */
-    TOKEN_CATEGORY,            /* CategoryToken         'l' */
-    TOKEN_REDIRECT,            /* RedirectToken         'o' */
-    TOKEN_REDIRECT_TARGET,     /* RedirectTargetToken */
-    TOKEN_REDIRECT_SYNTAX,     /* SyntaxToken inside redirect */
-    TOKEN_QUOTE,               /* QuoteToken            'q' */
-    TOKEN_EXT_LINK,            /* ExtLinkToken          'w' */
-    TOKEN_MAGIC_LINK,          /* MagicLinkToken        'i' / 'w' / 'f' */
-    TOKEN_LIST,                /* ListToken             'd' */
-    TOKEN_DD,                  /* DdToken               'd' */
-    TOKEN_CONVERTER,           /* ConverterToken        'v' */
-    TOKEN_PARAMETER,           /* ParameterToken (child of TranscludeToken) */
-    TOKEN_ATTRIBUTES,          /* AttributesToken       'a' */
-    TOKEN_SYNTAX,              /* SyntaxToken */
-    TOKEN_ATOM,                /* AtomToken */
-    TOKEN_HIDDEN,              /* HiddenToken */
-    /* Sub-tokens for ExtToken */
-    TOKEN_EXT_ATTRS,           /* AttributesToken with type "ext-attrs" */
-    TOKEN_EXT_INNER,           /* plain Token with type "ext-inner" */
-    TOKEN_EXT_ATTR_DIRTY,      /* AtomToken with type "ext-attr-dirty" */
-    TOKEN_EXT_ATTR,            /* AttributeToken with type "ext-attr" */
-    TOKEN_ATTR_KEY,            /* plain Token with type "attr-key" */
-    TOKEN_ATTR_VALUE,          /* plain Token with type "attr-value" */
+    // Force the first item to explicitly start at 0
+#define DEFINE_TYPE(name) name,
+    TOKEN_TYPE_LIST(DEFINE_TYPE)
+#undef DEFINE_TYPE
     TOKEN_TYPE_COUNT
 } TokenType;
 
 typedef enum TokenSubType {
-    TOKEN_SUBTYPE_NONE = 0,
-    TOKEN_SUBTYPE_ROOT,
-    TOKEN_SUBTYPE_REDIRECT,
-    TOKEN_SUBTYPE_REDIRECT_SYNTAX,
-    TOKEN_SUBTYPE_REDIRECT_TARGET,
-    TOKEN_SUBTYPE_COMMENT,
-    TOKEN_SUBTYPE_EXT,
-    TOKEN_SUBTYPE_NOINCLUDE,
-    TOKEN_SUBTYPE_INCLUDE,
-    TOKEN_SUBTYPE_INCLUDEONLY,
-    TOKEN_SUBTYPE_ONLYINCLUDE,
-    TOKEN_SUBTYPE_TRANSLATE,
-    TOKEN_SUBTYPE_ARG,
-    TOKEN_SUBTYPE_ARG_NAME,
-    TOKEN_SUBTYPE_ARG_DEFAULT,
-    TOKEN_SUBTYPE_TEMPLATE,
-    TOKEN_SUBTYPE_MAGIC_WORD,
-    TOKEN_SUBTYPE_MAGIC_WORD_NAME,
-    TOKEN_SUBTYPE_PARAMETER,
-    TOKEN_SUBTYPE_PARAMETER_KEY,
-    TOKEN_SUBTYPE_PARAMETER_VALUE,
-    TOKEN_SUBTYPE_HEADING,
-    TOKEN_SUBTYPE_HEADING_TITLE,
-    TOKEN_SUBTYPE_HEADING_TRAIL,
-    TOKEN_SUBTYPE_HTML,
-    TOKEN_SUBTYPE_HTML_ATTRS,
-    TOKEN_SUBTYPE_HTML_ATTR,
-    TOKEN_SUBTYPE_HTML_ATTR_DIRTY,
-    TOKEN_SUBTYPE_TABLE,
-    TOKEN_SUBTYPE_TR,
-    TOKEN_SUBTYPE_TD,
-    TOKEN_SUBTYPE_TABLE_SYNTAX,
-    TOKEN_SUBTYPE_TABLE_ATTRS,
-    TOKEN_SUBTYPE_TABLE_ATTR,
-    TOKEN_SUBTYPE_TABLE_ATTR_DIRTY,
-    TOKEN_SUBTYPE_TABLE_INTER,
-    TOKEN_SUBTYPE_TABLE_INNER,
-    TOKEN_SUBTYPE_TD_INNER,
-    TOKEN_SUBTYPE_HR,
-    TOKEN_SUBTYPE_DOUBLE_UNDERSCORE,
-    TOKEN_SUBTYPE_LINK,
-    TOKEN_SUBTYPE_FILE,
-    TOKEN_SUBTYPE_CATEGORY,
-    TOKEN_SUBTYPE_TEXT,
-    TOKEN_SUBTYPE_LINK_TARGET,
-    TOKEN_SUBTYPE_LINK_TEXT,
-    TOKEN_SUBTYPE_QUOTE,
-    TOKEN_SUBTYPE_EXT_LINK,
-    TOKEN_SUBTYPE_EXT_LINK_URL,
-    TOKEN_SUBTYPE_EXT_LINK_TEXT,
-    TOKEN_SUBTYPE_MAGIC_LINK,
-    TOKEN_SUBTYPE_FREE_EXT_LINK,
-    TOKEN_SUBTYPE_LIST,
-    TOKEN_SUBTYPE_DD,
-    TOKEN_SUBTYPE_CONVERTER,
-    TOKEN_SUBTYPE_CONVERTER_RULE,
-    TOKEN_SUBTYPE_CONVERTER_RULE_FROM,
-    TOKEN_SUBTYPE_CONVERTER_RULE_VARIANT,
-    TOKEN_SUBTYPE_CONVERTER_RULE_TO,
-    TOKEN_SUBTYPE_CONVERTER_FLAGS,
-    TOKEN_SUBTYPE_CONVERTER_FLAG,
-    TOKEN_SUBTYPE_ATTRIBUTES,
-    TOKEN_SUBTYPE_ATTR_EQUAL_TMP,
-    TOKEN_SUBTYPE_ATTR_KEY,
-    TOKEN_SUBTYPE_ATTR_VALUE,
-    TOKEN_SUBTYPE_ATOM,
-    TOKEN_SUBTYPE_HIDDEN,
-    TOKEN_SUBTYPE_EXT_ATTRS,
-    TOKEN_SUBTYPE_EXT_INNER,
-    TOKEN_SUBTYPE_EXT_ATTR_DIRTY,
-    TOKEN_SUBTYPE_EXT_ATTR,
-    TOKEN_SUBTYPE_IMAGE_PARAMETER,
-    TOKEN_SUBTYPE_GALLERY_IMAGE,
-    TOKEN_SUBTYPE_IMAGEMAP_IMAGE,
-    TOKEN_SUBTYPE_GALLERY_LINE,
-    TOKEN_SUBTYPE_GALLERY_PARAM_WRAPPER,
-    TOKEN_SUBTYPE_IMAGEMAP_LINK_INNER,
-    TOKEN_SUBTYPE_IMAGEMAP_IMAGE_LINE,
-    TOKEN_SUBTYPE_IMAGEMAP_LINK,
-    TOKEN_SUBTYPE_TEMPLATE_NAME,
-    TOKEN_SUBTYPE_INVOKE_MODULE,
-    TOKEN_SUBTYPE_INVOKE_FUNCTION,
-    TOKEN_SUBTYPE_PARAM_LINE,
+#define DEFINE_SUBTYPE(name) name,
+    TOKEN_SUBTYPE_LIST(DEFINE_SUBTYPE)
+#undef DEFINE_SUBTYPE
     TOKEN_SUBTYPE_COUNT
 } TokenSubType;
+
+
+// ============================================================================
+// 3. STRINGIFICATION FUNCTION IMPLEMENTATIONS
+// ============================================================================
+
+// inline static lets us write the implementation directly inside the header 
+// without causing "duplicate symbol" errors during compilation linking.
+
+inline static const char* get_token_type_name(int type) {
+    switch (type) {
+#define CASE_TYPE(name) case name: return #name;
+        TOKEN_TYPE_LIST(CASE_TYPE)
+#undef CASE_TYPE
+        default: return "TOKEN_UNKNOWN";
+    }
+}
+
+inline static const char* get_token_subtype_name(int subtype) {
+    switch (subtype) {
+#define CASE_SUBTYPE(name) case name: return #name;
+        TOKEN_SUBTYPE_LIST(CASE_SUBTYPE)
+#undef CASE_SUBTYPE
+        default: return "TOKEN_SUBTYPE_UNKNOWN";
+    }
+}
 
 /* ── Child node ───────────────────────────────────────────────────────────── */
 typedef struct {

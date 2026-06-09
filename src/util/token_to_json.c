@@ -39,19 +39,26 @@ cJSON* token_to_json(const Token *token) {
 
 	// Core metadata/state for internal debugging.
 	cJSON_AddItemToObject(root, "type", token_text_to_json_string(subtype_name.start ? subtype_name.start : "", subtype_name.length));
-	cJSON_AddNumberToObject(root, "tokenType", token->type);
-	cJSON_AddNumberToObject(root, "tokenSubtype", token->subtype);
+	// Token type is an enum, but we want to add the string here
+	// cJSON_AddNumberToObject(root, "tokenType", token->type);
+	cJSON_AddStringToObject(root, "Type", get_token_type_name(token->type));
+	cJSON_AddStringToObject(root, "SubType", get_token_subtype_name(token->subtype));
+	// cJSON_AddNumberToObject(root, "tokenSubtype", token->subtype);
 	if (token->name) json_add_cstr_to_object(root, "name", token->name);
 	cJSON_AddNumberToObject(root, "childCount", token->child_count);
-	cJSON_AddNumberToObject(root, "childCap", token->child_cap);
-	cJSON_AddNumberToObject(root, "stage", token->stage);
-	cJSON_AddBoolToObject(root, "include", token->include);
-	cJSON_AddBoolToObject(root, "built", token->built);
-	cJSON_AddBoolToObject(root, "extInnerContext", token->ext_inner_context);
-	cJSON_AddNumberToObject(root, "sepCode", (unsigned char)token->sep);
-	if (token->sep != '\0') {
-		json_add_char_to_object(root, "sep", token->sep);
+	//cJSON_AddNumberToObject(root, "childCap", token->child_cap);
+	//cJSON_AddNumberToObject(root, "stage", token->stage);
+	if( token->include ) {
+		cJSON_AddBoolToObject(root, "include", token->include);
 	}
+	//cJSON_AddBoolToObject(root, "built", token->built);
+	if( token->ext_inner_context ) {
+		cJSON_AddBoolToObject(root, "extInnerContext", token->ext_inner_context);
+	}
+	//cJSON_AddNumberToObject(root, "sepCode", (unsigned char)token->sep);
+	//if (token->sep != '\0') {
+	//	json_add_char_to_object(root, "sep", token->sep);
+	//}
 
 	switch (token->type) {
 		case TOKEN_HEADING:
@@ -179,9 +186,10 @@ cJSON* token_to_json(const Token *token) {
 				cJSON_AddItemToArray(children_arr, child_obj);
             } else {
 				cJSON *child_obj = cJSON_CreateObject();
-				cJSON_AddStringToObject(child_obj, "kind", "token");
-				cJSON_AddItemToObject(child_obj, "token", token_to_json(child->token));
-				cJSON_AddItemToArray(children_arr, child_obj);
+				// cJSON_AddStringToObject(child_obj, "kind", "token");
+				// cJSON_AddItemToObject(child_obj, "token", token_to_json(child->token));
+				// cJSON_AddItemToArray(children_arr, child_obj);
+				cJSON_AddItemToArray(children_arr, token_to_json(child->token));
             }
         }
     }

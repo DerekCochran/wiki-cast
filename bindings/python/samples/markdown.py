@@ -9,6 +9,7 @@ This sample needs work!!!!!
 
 import os
 import sys
+import json
 
 from wiki_cast import WikiConfig, WikiParser, TokenSubType, TokenType
 
@@ -404,7 +405,15 @@ def main():
             '{"ext": ["ref"], "html": [[],[],[]], "protocol": "https?://|http://"}'
         )
 
-    wikitext = sys.stdin.read()
+    # Instead of stdin, we should read from a file.
+    input_file = os.path.join(script_dir, "..", "..", "node", "tests", "wikitext", "Achilles.wikitext")
+    try:
+        with open(input_file, "r", encoding="utf-8") as f:
+            wikitext = f.read()
+    except Exception as exc:
+        print(f"Error reading input file {input_file}: {exc}", file=sys.stderr)
+        sys.exit(1)
+
     if not wikitext.strip():
         print("No input provided", file=sys.stderr)
         sys.exit(1)
@@ -413,6 +422,8 @@ def main():
 
     try:
         root = parser.parse(wikitext)
+        # root = parser.parse_to_dict(wikitext)
+        
         converter = MarkdownConverter()
         print(converter.convert(root))
     except Exception as exc:
