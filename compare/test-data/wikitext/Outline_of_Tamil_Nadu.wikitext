@@ -1,0 +1,540 @@
+{{Short description|1=Overview of and topical guide to Tamil Nadu}}
+{{Use dmy dates|date=August 2020}}
+{{Use Indian English|date=August 2020}}
+<!--... Attention:  THIS IS AN OUTLINE
+
+        part of the set of 870+ outlines listed at
+             [[Wikipedia:Contents/Outlines]].
+
+                 Wikipedia outlines are
+              a special type of list article.
+              They make up one of Wikipedia's
+                content navigation systems
+
+             See [[Wikipedia: Outlines]] and 
+    [[Wikipedia:WikiProject Outlines]] for more details.
+                   Further improvements
+              to this outline are on the way
+...-->
+[[File:IN-TN.svg|thumb|220px|Location of [[Tamil Nadu]]]]
+
+The following [[outline (list)|outline]] is provided as an overview of and topical guide to Tamil Nadu:
+
+'''[[Tamil Nadu]]''' &ndash; state in South India. Tamil Nadu covers an area of 130,058 km2 (50,216 sq mi), and is the eleventh largest state in India. The bordering states are Kerala to the west, Karnataka to the north west and Andhra Pradesh to the north. To the east is the Bay of Bengal and the state encircles the union territory of Puducherry. The southernmost tip of the Indian Peninsula is Kanyakumari which is the meeting point of the Arabian Sea, the Bay of Bengal, and the Indian Ocean. When India became independent in 1947, Madras presidency became Madras state, comprising present-day Tamil Nadu, coastal Andhra Pradesh up to Ganjam district in Orissa, South Canara district Karnataka, and parts of Kerala. The state was subsequently split up along linguistic lines. In 1969, Madras State was renamed Tamil Nadu, meaning "Tamil country".
+
+[[File:TamilNadu Logo.svg|thumb|[[Seal of Tamil Nadu]]]]
+
+{{TOC limit|limit=2}}
+
+== General reference ==
+
+=== Names ===
+* Common name: Tamil Nadu
+* Native name =  தமிழ்நாடு
+* Pronunciation: {{IPAc-en|t|æ|m|ɪ|l|_|n|ɑː|d|uː}} {{Respell|TAM|il|NAH|doo}}; {{indic|lang=ta|indic=தமிழ்நாடு|trans=Tamiḻnātu}}; {{pronunciation|Tamil_Nadu.ogg}}
+* Originally known as : Madras State Established in 1773; Madras State was formed in 1950 and renamed as Tamil Nadu on 14 January 1969{{sfn|Tamil Nadu Legislative Assembly history|2012}}
+* [[States and territories of India|Official name]]: Tamil Nadu
+* Nicknames
+* [[Adjectivals and demonyms for states and territories of India|Adjectivals]]
+** [[Tamil language|Tamil]]
+* [[Adjectivals and demonyms for states and territories of India|Demonyms]]
+** [[Tamils]]
+* Abbreviations and name codes
+** [[ISO 3166-2:IN#Current codes|ISO 3166-2 code]]:  [[IN-TN]]
+** [[Vehicle registration]] code: [[Vehicle registration plates of India#States|TN]]
+
+=== Rankings (amongst India's states) ===
+
+* [[India states ranked by population|by population]]: 6th
+* [[List of states and territories of India by area|by area]] (2011 census): 11th
+* [[Indian states and territories ranking by crime rate|by crime rate]] (2015): 7th
+* [[List of Indian states by GDP|by gross domestic product (GDP)]] (2014): 2nd
+*[[List of Indian states and territories by Human Development Index|by Human Development Index (HDI)]]: 
+*[[List of Indian states by life expectancy at birth|by life expectancy at birth]]: 
+*[[Indian states ranking by literacy rate|by literacy rate]]:
+
+== Geography of Tamil Nadu ==
+[[File:Tamil Nadu topo deutsch mit Gebirgen.png|right|225px|thumb|Topographical map of Tamil Nadu]]
+
+[[Geography of Tamil Nadu]]
+* Tamil Nadu is: an [[Indian state]]
+* [[Demographics of Tamil Nadu|Population of Tamil Nadu]]: 
+* [[Geography of Tamil Nadu|Area of Tamil Nadu]]:  
+* [[:commons:Atlas of Tamil Nadu|Atlas of Tamil Nadu]]
+
+=== Location of Tamil Nadu ===
+* Tamil Nadu is situated within the following regions:
+** [[Northern Hemisphere]]
+** [[Eastern Hemisphere]]
+*** [[Eurasia]]
+**** [[Asia]]
+***** [[South Asia]]
+****** [[India]]
+******* [[South India]]
+* [[Time zone]]:  [[Indian Standard Time]] ([[UTC+05:30]])
+
+{{Geographic location
+|Centre = Tamil Nadu
+|North = [[Andhra Pradesh]]
+|Northeast =
+|East = [[Bay of Bengal]]
+|Southeast = [[Palk Strait]]
+|South = [[Indian Ocean]]
+|Southwest =
+|West = [[Kerala]]
+|Northwest = [[Karnataka]]
+}}
+
+=== Environment of Tamil Nadu ===
+
+* [[Climate of Tamil Nadu]]
+* [[#Protected areas of Tamil Nadu|Protected areas of Tamil Nadu (see below)]]
+* [[Wildlife of Tamil Nadu]]
+** Flora of Tamil Nadu
+** Fauna of Tamil Nadu
+*** [[List of birds of Tamil Nadu|Birds of Tamil Nadu]]
+
+==== Natural geographic features of Tamil Nadu ====
+
+* [[List of lakes in Tamil Nadu|Lakes of Tamil Nadu]]
+* [[List of mountains of Tamil Nadu|Mountains of Tamil Nadu]]
+** [[Western Ghats]]
+** [[Eastern Ghats]]
+** [[Nilgiri mountains]]
+* [[List of rivers of Tamil Nadu|Rivers of Tamil Nadu]]
+
+=== Protected areas of Tamil Nadu ===
+
+==== Biosphere reserves ====
+<!-- Deleted image removed: [[File:Biosphere Reserve Location MapL - Tamil Nadu.gif|thumb|200px|(MAB) Biosphere Reserves of Tamil Nadu]] -->
+
+Two of the three [[Biosphere reserves of India|biosphere reserves]] in Tamil Nadu are among four in India and ninety five in [[Asia]] that are part of [[UNESCO]]'s [[Programme on Man and the Biosphere]] (MAB).
+
+The 3 [[Biosphere Reserve]]s in Tamil Nadu listed by size are:
+#[[Gulf of Mannar Marine National Park|The Gulf of Mannar Biosphere Reserve]]
+#[[Nilgiri Biosphere Reserve]]
+#[[Agasthyamalai Biosphere Reserve]]<ref>Tamil nadu Forest Dept., Retrieved 9/9/2007 [http://www.forests.tn.nic.in/WildBiodiversity/biospherereserve.html Biosphere Reserves]</ref>
+
+==== National parks ====
+{{location map+|Tamil Nadu|float=right|width=200|caption='''National parks <br />of Tamil Nadu'''|places=
+{{location map~|Tamil Nadu|label=[[Indira Gandhi National Park|Indira Gandhi]]|position=right|lat=10.66|long=76.97}}
+{{location map~|Tamil Nadu|label=[[Guindy National Park|Guindy]]|position=left|lat=13.03|long=80.23}}
+{{location map~|Tamil Nadu|label=[[Mudumalai National Park|Mudumalai]]|position=right|lat=11.5|long=76.5}}
+{{location map~|Tamil Nadu|label=[[Mukurthi National Park|Mukurthi]]|position=right|lat=11.27|long=76.56}}
+{{location map~|Tamil Nadu|label=[[Gulf of Mannar]]|position=left|lat=9.42|long=78.99}}
+{{location map~|Tamil Nadu|label=[[Palani Hills National Park|Palani Hills]]|position=right|lat=10.29|long=77.52}}
+<div style="position:absolute; width:67px; left:2px; top:2px;"><div style="position:relative;">[[File:IN-TN.svg|67px|border|'''Thumbnail map of India with Tamil Nadu highlighted''']]</div></div>
+}}
+Tamil Nadu has 5 declared [[National parks of India|National Parks]] with a total area over {{convert|307.84|km2|sqmi|abbr=on}}, covering only 0.24% of the state. This is the third lowest % area covered of all Indian states and Union territories.<ref>Wildlife Institute of India, National Wildlife Database (November 2006), retrieved 3/25/2007 [http://www.wii.gov.in/nwdc/nparks.htm National Parks] {{webarchive|url=https://web.archive.org/web/20080622034119/http://www.wii.gov.in/nwdc/nparks.htm |date=2008-06-22 }}</ref>
+#[[Indira Gandhi National Park]]
+#[[Mudumalai National Park]]
+#[[Mukurthi National Park]]
+#[[Gulf of Mannar Marine National Park]]
+#[[Guindy National Park]]<ref>Tamil Nadu Forest Dept., Retrieved 9/9/2007 [http://www.forests.tn.nic.in/WildBiodiversity/nationalparks.html National Parks] {{Webarchive|url=https://web.archive.org/web/20170510100548/http://www.forests.tn.nic.in/wildbiodiversity/nationalparks.html |date=10 May 2017 }}</ref>
+#[[Palani Hills National Park]]
+
+==== Wildlife sanctuaries ====
+
+[[List of protected areas in India#Wildlife sanctuaries|Wildlife sanctuaries in India]] &ndash; there are 7 wildlife sanctuaries plus 13 bird sanctuaries that together cover over {{convert|2997.60|km2|sqmi|abbr=on}}, 2.30% of the total state area.<ref name=ENVIS2>{{cite web
+|url= http://www.wii.gov.in/nwdc/sanctuaries.htm
+|author= National Wildlife Data Center
+|publisher= Wildlife Institute of India
+|date= June 2008
+|title= State-wise break up of Wildlife Sanctuaries
+|access-date= 2007-03-26}}</ref>
+#[[Grizzled Squirrel Wildlife Sanctuary]]
+#[[Indira Gandhi National Park|Indira Gandhi Wildlife Sanctuary]]
+#[[Kalakkad Mundanthurai Tiger Reserve|Kalakkad Wildlife Sanctuary]]
+#[[Kalakkad Mundanthurai Tiger Reserve|Mundanthurai Sanctuary]]
+#[[Kanyakumari Wildlife Sanctuary]]
+#[[Mudumalai National Park|Mudumalai Wildlife Sanctuary]]
+#[[Vallanadu Wildlife Sanctuary]]
+#[[Sathyamangalam Wildlife Sanctuary]]<ref>{{cite news
+|url=http://www.hindu.com/2008/12/24/stories/2008122450370100.htm
+|archive-url=https://web.archive.org/web/20121107050734/http://www.hindu.com/2008/12/24/stories/2008122450370100.htm
+|archive-date=7 November 2012
+|title=Sathyamangalam forests declared as sanctuary
+|access-date=2009-04-14
+|location=Chennai, India
+|work=[[The Hindu]]
+|date=24 December 2008}}</ref><ref name="added">
+{{cite news
+|url=http://www.thehindu.com/news/cities/Chennai/article2489800.ece
+|author=B. Aravind Kumar
+|publisher=Kasturi & Sons Ltd
+|date= 2011-09-27
+|title=Sathyamangalam wildlife sanctuary expanded to 1.41 lakh hectares
+|work=The Hindi, Chennai
+|access-date=2011-09-27
+}}</ref>
+
+{| style="float:right;"
+|-
+|
+{|class="wikitable" | border= |align=right|width= 350
+!style="background:#D3D3D3;"|<small>Map<br /> Key:</small>
+!style="background:#FF4500;"|<small>Biosphere<br /> Reserve</small>
+! style="background:orange;"|<small>National<br /> Park</small>
+! style="background:#0f0;"|<small>Wildlife<br /> Sanctuary</small>
+!style="background:#00BFFF;"|<small>Bird<br /> Sanctuary</small>
+!style="background:#FFF500;"|<small>Zoo</small>
+|}
+|-
+|
+<!--This is a work in progress since some of the Bird Sanctuaries have no article and are not geo-labeled-->
+{{Location map+
+|Tamil Nadu
+|border     =
+|alt        = Map of Tamil Nadu with its Biosphere reserves, National parks, Wildlife sanctuaries, Bird sanctuaries and Zoos |caption='''Protected areas of Tamil Nadu'''<ref>{{cite web |url=http://www.forests.tn.nic.in/Ecotourism/ecotourism_home.html |title=Tamil Nadu Forest Department |publisher=Forests.tn.nic.in |access-date=2013-04-08 |archive-url=https://web.archive.org/web/20170421130822/http://www.forests.tn.nic.in/Ecotourism/ecotourism_home.html |archive-date=2017-04-21 }}</ref>
+|float      = left
+|width      = 400
+|places     =
+{{Location map~
+|Tamil Nadu|lat_deg=13|lat_min=.9|lon_deg=80|lon_min=14.0|position=right|background=orange
+|label=[[Guindy National Park|Guindy]]}}
+{{Location map~ |Tamil Nadu|lat_deg=12|lat_min=53.1|lon_deg=80|lon_min=5.7|position=left|background=yellow
+|label=[[Arignar Anna Zoological Park|Vandalur]]}}
+{{Location map~ |Tamil Nadu|lat_deg=12|lat_min=32.7|lon_deg=79|lon_min=51.3|position=left|background=DeepSkyBlue
+|label=[[Vedanthangal Bird Sanctuary|Vedanthangal]]}}
+{{Location map~ |Tamil Nadu|lat_deg=11|lat_min=30|lon_deg=76|lon_min=30|position=top|background=orange
+|label=[[Mudumalai National Park|Mudu-]]}}
+{{Location map~ |Tamil Nadu|lat_deg=11|lat_min=30|lon_deg=76|lon_min=30|position=bottom|background=#00FF00
+|label=[[Mudumalai National Park|malai]]}}
+{{Location map~ |Tamil Nadu|lat_deg=11|lat_min=24|lon_deg=77|lon_min=13.57|position=bottom|background=#00FF00
+|label=[[Sathyamangalam Wildlife Sanctuary|Sathy]]}}
+{{Location map~ |Tamil Nadu|lat_deg=11|lat_min=16|lon_deg=76|lon_min=33.5|position=bottom|background=orange
+|label=[[Mukurthi National Park|Mukurthi]]}}
+{{Location map~ |Tamil Nadu|lat_deg=11|lat_min=30|lon_deg=76|lon_min=37.5|position=right|background=OrangeRed
+|label=[[Nilgiri Biosphere Reserve|Nilgiri]]}}
+{{Location map~ |Tamil Nadu|lat_deg=10|lat_min=25|lon_deg=77|lon_min=3.4|position=top|background=orange
+|label=[[Indira Gandhi National Park|Indira]]}}
+{{Location map~ |Tamil Nadu|lat_deg=10|lat_min=25|lon_deg=77|lon_min=3.4|position=bottom|background=#00FF00
+|label=[[Indira Gandhi National Park|Gandhi]]}}
+{{Location map~ |Tamil Nadu|lat_deg=09|lat_min=16|lon_deg=79|lon_min=10|position=bottom|background=orange
+|label=[[Gulf of Mannar Marine National Park|Mannar]]}}
+{{Location map~ |Tamil Nadu|lat_deg=09|lat_min=16|lon_deg=79|lon_min=10|position=top|background=OrangeRed
+|label=[[Gulf of Mannar Marine National Park|Gulf]]}}
+{{Location map~ |Tamil Nadu|lat_deg=09|lat_min=34.5|lon_deg=77|lon_min=33.5|position=left|background=#00FF00
+|label=[[Grizzled Squirrel Wildlife Sanctuary|Grizzled]]}}
+{{Location map~ |Tamil Nadu|lat_deg=08|lat_min=39|lon_deg=77|lon_min=23|position=top|background=#00FF00
+|label=[[Kalakkad Mundanthurai Tiger Reserve|Kalakkad]]}}
+{{Location map~ |Tamil Nadu|lat_deg=08|lat_min=39|lon_deg=77|lon_min=13|position=left|background=OrangeRed
+|label=[[Agasthyamala Biosphere Reserve|Agast]]}}
+
+{{Location map~ |Tamil Nadu|lat_deg=08|lat_min=29|lon_deg=77|lon_min=23|position=bottom|background=#00FF00
+|label=[[Kanyakumari Wildlife Sanctuary|Kanya]]}}
+{{Location map~ |Tamil Nadu|lat_deg=08|lat_min=42.3|lon_deg=77|lon_min=56.3|position=right|background=#00FF00
+|label=[[Vallanadu Wildlife Sanctuary|Vallan]]}}
+{{Location map~ |Tamil Nadu|lat_deg=10|lat_min=18.6|lon_deg=79|lon_min=51.5|position=top|background=#00FF00
+|label=[[Point Calimere Wildlife and Bird Sanctuary|Point]]}}
+{{Location map~ |Tamil Nadu|lat_deg=10|lat_min=18.6|lon_deg=79|lon_min=51.5|position=bottom|background=DeepSkyBlue
+|label=[[Point Calimere Wildlife and Bird Sanctuary|Calimere]]}}
+{{Location map~ |Tamil Nadu|lat_deg=13|lat_min=34|lon_deg=80|lon_min=12|position=bottom|background=DeepSkyBlue
+|label=[[Pulicat Lake Bird Sanctuary|Pulicat]]}}
+{{Location map~ |Tamil Nadu|lat_deg=10|lat_min=17.5|lon_deg=77|lon_min=31|position=bottom|background=#00FF00
+|label=[[Palani Hills Wildlife Sanctuary and National Park|Hills]]}}
+{{Location map~ |Tamil Nadu|lat_deg=10|lat_min=17.5|lon_deg=77|lon_min=31|position=top|background=Orange
+|label=[[Palani Hills Wildlife Sanctuary and National Park|Palani]]}}
+{{Location map~ |Tamil Nadu|lat_deg=12|lat_min=46.7|lon_deg=80|lon_min=14.3|position=bottom|background=Yellow
+|label=[[Madras Crocodile Bank Trust|Crocodile]]}}
+{{Location map~ |Tamil Nadu|lat_deg=10|lat_min=11|lon_deg=78|lon_min=51|position=right|background=DeepSkyBlue
+|label=[[Vettangudi Bird Sanctuary|Vettan]]}}
+{{Location map~ |Tamil Nadu|lat_deg=08|lat_min=34.81|lon_deg=77|lon_min=45|position=bottom|background=DeepSkyBlue |label=[[Koothankulam Bird Sanctuary|Kooth]]}}
+{{Location map~ |Tamil Nadu|lat_deg=10|lat_min=36|lon_deg=78|lon_min=32|position=left|background=DeepSkyBlue |label=[[Viralimalai|Virali]]}}
+{{Location map~ |Tamil Nadu|lat_deg=10|lat_min=27|lon_deg=79|lon_min=28|position=left|background=DeepSkyBlue
+|label=[[Udayamarthandapuram Bird Sanctuary|Udaya]]}}
+{{Location map~ |Tamil Nadu|lat_deg=09|lat_min=19|lon_deg=78|lon_min=28|position=bottom|background=DeepSkyBlue |label=<small>[[Chitrangudi Bird Sanctuary|Chitran]]</small>}}
+{{Location map~ |Tamil Nadu|lat_deg=09|lat_min=20|lon_deg=78|lon_min=29|position=top|background=DeepSkyBlue
+|label=[[Kanjirankulam Bird Sanctuary|Kanji]]}}
+{{Location map~ |Tamil Nadu|lat_deg=08|lat_min=7.5|lon_deg=77|lon_min=27.5|position=bottom|background=DeepSkyBlue |label=[[Suchindram Theroor Birds Sanctuary|Suchin]]}}}}
+|}
+
+==== Elephant reserves ====
+Tamil Nadu is a major participant in [[Project Elephant]].<ref>Asian Nature Conservation Foundation, Maps & Data.[http://www.asiannature.org/gis.html Forest Divisions of South India bearing Elephants] {{Webarchive|url=https://web.archive.org/web/20080315070227/http://www.asiannature.org/gis.html |date=2008-03-15 }}</ref>
+#Nilgiri Elephant Reserve
+#Coimbatore Elephant Reserve
+#Anamalai Elephant Reserve
+#Srivilliputtur Elephant Reserve
+#Rejuvenation Camp for Temple and Private Elephants of Tamil Nadu<ref>Tamil Nadu Forest Dept.[http://www.forests.tn.nic.in/ProjectPrograms/About_wildlife_schemes.html Rehabilitation and Rescue Centre for the Temple, Private and Rescued Elephants] {{webarchive|url=https://web.archive.org/web/20110930101837/http://www.forests.tn.nic.in/ProjectPrograms/About_wildlife_schemes.html |date=2011-09-30 }}</ref>
+
+==== Tiger reserves ====
+Tamil Nadu has 4 tiger reserves which are declared as part of [[Project Tiger]]:
+#[[Kalakkad Mundanthurai Tiger Reserve]]<ref>Ashoka Trust for Research in Ecology and the Environment [http://www.atree.org/conliv_kmtr.html Community interventions in Kalakad Mundanthurai Tiger Reserve] {{webarchive|url=https://web.archive.org/web/20070315112150/http://www.atree.org/conliv_kmtr.html |date=2007-03-15 }}</ref><ref>Johnsingh, A. J. T., Wildlife Institute of India, "The Kalakad–Mundanthurai Tiger Reserve: A global heritage of biological diversity", Current Science, VOL. 80, NO. 3, 10 February 2001.[http://tejas.serc.iisc.ernet.in/~currsci/feb102001/437.pdf Kalakad–Mundanthurai Tiger Reserve] {{Webarchive|url=https://web.archive.org/web/20130511222254/http://tejas.serc.iisc.ernet.in/~currsci/feb102001/437.pdf |date=2013-05-11 }}</ref>
+# [[Mudumalai National Park]]<ref name="Thousands">{{cite news|url=https://www.planetark.org/enviro-news/item/51067|title=Thousands Protest Against Indian Tiger Reserve|last=Murari|first=S.|date=31 December 2008|work=Planet Ark|publisher=Reuters|access-date=2009-10-30|archive-url=https://web.archive.org/web/20110716234126/https://www.planetark.org/enviro-news/item/51067|archive-date=16 July 2011}}</ref>
+#[[Indira Gandhi Wildlife Sanctuary and National Park|Annamalai]]-[[Parambikulam Wildlife Sanctuary|Parambikulam Tiger Reserve]]<ref name="MOEF">{{cite web|url=http://pib.nic.in/release/release.asp?relid=44799|title=Eight New Tiger Reserves|date=13 November 2008|work=Press Release|publisher=Ministry of Environment and Forests, Press Information Bureau, Govt. of India|access-date=2009-10-31}}</ref>
+#[[Sathyamangalam Wildlife Sanctuary]]
+
+The state has 2 other significant tiger habitats:
+#[[Kanyakumari Wildlife Sanctuary]]
+#[[Mukurthi National Park]]
+<ref name="added"/><ref>{{cite news|url=http://www.hindu.com/2008/12/24/stories/2008122450370100.htm |archive-url=https://web.archive.org/web/20121107050734/http://www.hindu.com/2008/12/24/stories/2008122450370100.htm |archive-date=7 November 2012 |title=Sathyamangalam forests declared as sanctuary|access-date=2009-04-14 |location=Chennai, India |work=[[The Hindu]] |date=24 December 2008}}</ref>
+
+==== Bird sanctuaries ====
+There are 13 established bird sanctuaries at the southernmost continental range of the [[Central Asian Flyway]] in Tamil Nandu.<ref>Tamil Nadu Department of Environment (2006) State of the Environment, retrieved 9/9/2007, [http://www.environment.tn.nic.in/soe/soe_report.htm Report] {{Webarchive|url=https://web.archive.org/web/20100924230744/http://www.environment.tn.nic.in/soe/soe_report.htm |date=2010-09-24 }}</ref><ref>Tamil Nadu Forest Dept., [http://www.forests.tn.nic.in/WildBiodiversity/birdsanctuaries.html Bird sanctuaries]</ref>
+#[[Chitrangudi Bird Sanctuary]]<ref>[http://www.unep-wcmc.org/wdpa/sitedetails.cfm?siteid=308582&level=nat UNEP]{{Dead link|date=April 2020 |bot=InternetArchiveBot |fix-attempted=yes }}</ref>
+#[[Kanjirankulam Bird Sanctuary]]
+#Karaivetti Bird Sanctuary
+#Karikili Bird Sanctuary
+#[[Koothankulam Bird Sanctuary]]
+#Melaselvanur - Kilaselvanur Bird Sanctuary<ref>Migratory birds flock to Vettangudi Sanctuary, The Hindu, 9/11/2005, {{usurped|[https://web.archive.org/web/20050114024902/http://www.hinduonnet.com/2004/11/09/stories/2004110912380500.htm Hinduonnet.com]}}, Vettangudi</ref>
+#[[Point Calimere Wildlife and Bird Sanctuary]]
+#[[Pulicat Lake Bird Sanctuary]]
+#Vaduvoor Bird Sanctuary<ref>Tamil Nadu Forest Dept., Bird Sanctuaries in Tamil Nadu [http://www.forests.tn.nic.in/WildBiodiversity/bs_vadubs.html Vaduvoor] {{Webarchive|url=https://web.archive.org/web/20131021065448/http://www.forests.tn.nic.in/WildBiodiversity/bs_vadubs.html |date=2013-10-21 }}</ref>
+#[[Vedanthangal Bird Sanctuary]]
+#[[Vellode Birds Sanctuary]]
+#[[Vettangudi Bird Sanctuary]]
+#[[Viralimalai|Viralimalai Peacock Sanctuary]]<ref>Tamildnadu Tourism Development Corporation and Department of Tourism, retrieved 5/21/2007 [http://www.tamilnadutourism.org/wildlife/SanctuariesParks/VWFTiruchirapalli.aspx?catid=C5&subcat1id=C5S1&subcat2id=C5S1S9&sm=C5S1S9 Viralimalai Sanctuaries] {{Webarchive|url=https://web.archive.org/web/20080315010631/http://www.tamilnadutourism.org/wildlife/SanctuariesParks/VWFTiruchirapalli.aspx?catid=C5&subcat1id=C5S1&subcat2id=C5S1S9&sm=C5S1S9 |date=2008-03-15 }}</ref><ref>Rural Development and Panchayat Raj (PR.2) Department, G.O. (Ms) No.19, Dated: 23.1.2008 [http://www.tnrd.gov.in/Pt_Raj/linkfiles/19-23.1.2008.re.pdf TNRD.gov.in], Declaring Viralimalai as a heritage place</ref>
+#Kallaperambur lake <ref>The Hindu, [http://www.hindu.com Hindu.com], 15 December 2005 {{full citation needed|date=August 2020}}</ref>
+#[[Suchindram Theroor Birds Sanctuary]]
+
+=== Regions of Tamil Nadu ===
+
+==== Ecoregions of Tamil Nadu ====
+
+[[List of ecoregions in India|Ecoregions in Tamil Nadu]]
+
+==== Administrative divisions of Tamil Nadu ====
+
+[[List of districts of Tamil Nadu|Administrative divisions of Tamil Nadu]]
+* [[List of districts of Tamil Nadu|Districts of Tamil Nadu]]
+** [[List of urban local bodies in Tamil Nadu|Municipalities of Tamil Nadu]]
+
+===== Districts of Tamil Nadu =====
+
+* [[List of districts of Tamil Nadu|Districts of Tamil Nadu]]
+
+===== Municipalities of Tamil Nadu =====
+
+[[List of urban local bodies in Tamil Nadu|Municipalities of Tamil Nadu]]
+
+* [[Capital city|Capital]] of Tamil Nadu: [[Chennai|Capital of Tamil Nadu]]
+* [[List of cities in Tamil Nadu|Cities of Tamil Nadu]]
+
+=== Demography of Tamil Nadu ===
+
+[[Demographics of Tamil Nadu]]
+
+== Government and politics of Tamil Nadu ==
+[[File:Fort St. George, Chennai 2.jpg|210px|thumb|right|The Fort St. George, Chennai]]
+
+[[Politics of Tamil Nadu]]
+
+* [[Form of government]]: [[Indian state government]] ([[parliamentary system]] of [[representative democracy]])
+* [[Capital (political)|Capital]] of Tamil Nadu: chennai
+* [[Elections in Tamil Nadu]]
+** (specific elections)
+
+=== Union government in Tamil Nadu ===
+* [[List of Rajya Sabha members from Tamil Nadu|Rajya Sabha members from Tamil Nadu]]
+* [[Tamil Nadu Pradesh Congress Committee]]
+* [[Indian general election, 2009 (Tamil Nadu)]]
+* [[Indian general election, 2014 (Tamil Nadu)]]
+
+=== Branches of the government of Tamil Nadu ===
+
+[[Government of Tamil Nadu]]
+
+==== Executive branch of the government of Tamil Nadu ====
+
+* [[Head of state]]: [[Governor of Tamil Nadu]]
+* [[Head of government]]: [[Chief Minister of Tamil Nadu]]
+*[[Government of Tamil Nadu#Council of Ministers|Council of Ministers of Tamil Nadu]]
+
+==== Legislative branch of the government of Tamil Nadu ====
+
+[[Tamil Nadu Legislative Assembly]]
+* [[List of constituencies of Tamil Nadu Legislative Assembly|Constituencies of Tamil Nadu Legislative Assembly]]
+
+==== Judicial branch of the government of Tamil Nadu ====
+
+*[[Madras High Court]]
+**[[Amreshwar Pratap Sahi|Chief Justice of Madras High Court]]
+
+=== Law and order in Tamil Nadu ===
+
+* Law enforcement in Tamil Nadu
+** [[Tamil Nadu Police]]
+
+== History of Tamil Nadu ==
+
+[[History of Tamil Nadu]]
+
+=== History of Tamil Nadu, by period ===
+
+==== Prehistoric Tamil Nadu ====
+
+==== Ancient Tamil Nadu ====
+
+==== Medieval Tamil Nadu ====
+
+==== Colonial Tamil Nadu ====
+
+==== Contemporary Tamil Nadu ====
+
+=== History of Tamil Nadu, by state ===
+
+=== History of Tamil Nadu, by subject ===
+
+== Culture of Tamil Nadu ==
+{{Multiple image
+ | align     = right
+ | direction = vertical
+ | header    =
+ | header_align = left/right/center
+ | header_background =
+ | footer    =
+ | footer_align = left/right/center
+ | footer_background =
+ | width     = 200
+
+ | image1    =Kolam outside a house in tamil nadu.jpg|thumb
+ | width1    =
+ | alt1      = Kolam – a Traditional art form of the Tamil people
+ | caption1  = [[Kolam]] – a Traditional art form of the [[Tamil people|Tamil]]
+
+ | image2    = Pongal Celebration in home.JPG|thumb
+ | width2    =
+ | alt2      = Overflowing during cooking of Pongal indicates overflowing of joy
+ | caption2  = Overflowing during cooking of Pongal indicates overflowing of joy
+
+ | image3    = Thiuruvannamalai car festival.jpg|thumb
+ | width3    =
+ | alt3      = Tiruvannamalai Annamalaiyar chariot festival
+ | caption3  = Tiruvannamalai Annamalaiyar chariot festival
+
+ | image4    = Tamil Sappadu.jpg|thumb
+ | width4    =
+ | alt4      = Traditional Tamil lunch served in banana leaf
+ | caption4  = Traditional Tamil lunch served in banana leaf
+}}
+
+[[Culture of Tamil Nadu]]
+* [[Architecture of Tamil Nadu]]
+** [[Temples of Tamil Nadu]]
+* [[Cuisine of Tamil Nadu]]
+* [[Languages of Tamil Nadu]]
+* Monuments in Tamil Nadu
+** [[List of Monuments of National Importance in Tamil Nadu|Monuments of National Importance in Tamil Nadu]]
+** [[List of State Protected Monuments in Tamil Nadu|State Protected Monuments in Tamil Nadu]]
+* [[List of World Heritage Sites in the Americas#Tamil Nadu|World Heritage Sites in Tamil Nadu]]
+
+=== Art in Tamil Nadu ===
+* [[Cinema of Tamil Nadu]]
+* [[Karakattam]]
+* [[Nadaswaram]]
+* [[Melam]]
+* [[Mayilattam|{{IAST|mayilāṭṭam}}]]
+* [[ōyilāttam]]
+* [[Bharatanatyam]]
+* [[Devadasis]]
+* [[Terukkuttu]]
+* [[Kattaikkuttu]]
+
+=== Literature of Tamil Nadu ===
+
+[[Tamil literature]]
+* [[Tirukkural]]
+* [[Tamil Sangams]]
+* [[Tiruvalluvar]]
+* [[Paripaatal]]
+* [[Subramanya Bharathy]]
+* [[Bharathidasan]]
+* [[Jallikattu]]
+
+=== Music of Tamil Nadu ===
+
+[[Music of Tamil Nadu]]
+* [[Thevaram]]
+* [[Carnatic music]]
+* [[Villuppattu|{{IAST|Villuppāṭṭu}}]]
+* [[Naattupurapaattu|{{IAST|Nāṭṭuppuṟappāṭṭu}}]]
+* [[Ballads]]
+* [[Tyagaraja]]
+* [[Muthuswami Dikshitar]]
+* [[Syama Sastri]]
+* [[Thiruvaiyaru]]
+* [[Tamil Trinity]]
+* [[Muthu Thandavar]]
+* [[Arunachala Kavi]]
+* [[Marimutthu Pillai]]
+* [[Madras Music Season]]
+
+=== Festivals in Tamil Nadu ===
+
+* [[Pongal (festival)|Pongal]]
+* [[Tamil New Year]]
+* [[Navarathri|Dasara]]
+* [[Vinayaka Chathurthi]]
+* [[Eid ul-Fitr]]
+* [[Easter]]
+
+=== People of Tamil Nadu ===
+
+[[People of Tamil Nadu]]
+* [[List of people from Tamil Nadu|People from Tamil Nadu]]
+
+=== Religion in Tamil Nadu ===
+
+[[Religion in Tamil Nadu]]
+* [[Christianity in Tamil Nadu]]
+* [[Hinduism in Tamil Nadu]]
+** [[Temples of Tamil Nadu]]
+
+=== Sports in Tamil Nadu ===
+
+[[Sports in Tamil Nadu]]
+* Cricket in Tamil Nadu
+** [[Tamil Nadu Cricket Association]]
+** [[Tamil Nadu cricket team]]
+* Football in Tamil Nadu
+** [[Tamil Nadu football team]]
+
+=== Symbols of Tamil Nadu ===
+
+[[Symbols of Indian states and territories#Tamil Nadu|Symbols of Tamil Nadu]]
+* Animal: Nilgiri Tahr
+* Bird: Emerald Dove
+* Dance: Bharatanatyam
+* Fish:
+* Flower: Gloriosa Lily
+* Motto:  ({{langx|ta|வாய்மையே வெல்லும்|translit=Vaimaiye Vellum}})
+* [[Seal of Tamil Nadu]]
+* Song: "[[Tamil Thai Valthu (Tamil Nadu)|Invocation to Tamil Mother]]"
+* Sport: Sadugudu
+* Tree: Palm Tree
+
+== Economy and infrastructure of Tamil Nadu ==
+
+[[Economy of Tamil Nadu]]
+* [[Tourism in Tamil Nadu]]
+* [[Transport in Tamil Nadu]]
+** [[List of airports in Tamil Nadu|Airports in Tamil Nadu]]
+
+== Education in Tamil Nadu ==
+
+[[Education in Tamil Nadu]]
+* [[List of institutions of higher education in Tamil Nadu|Institutions of higher education in Tamil Nadu]]
+* [[Schools of Equality]]
+
+== Health in Tamil Nadu ==
+
+[[Department of Health and Family Welfare (Tamil Nadu)|Health in Tamil Nadu]]
+
+== See also ==
+
+* [[Outline of India]]
+
+== References ==
+{{reflist}}
+
+== External links ==
+{{Sister project links|voy=Tamil Nadu|Tamil Nadu}}
+{{wikiatlas|Tamil Nadu}}
+* [http://www.tn.gov.in/ Tamil Nadu Government Website]
+
+{{Outline footer}}
+
+[[Category:Outlines of Indian states|Tamil Nadu]]
+[[Category:Outlines|Tamil Nadu]]
+[[Category:Tamil Nadu| 1]]
+[[Category:Tamil Nadu-related lists| ]]

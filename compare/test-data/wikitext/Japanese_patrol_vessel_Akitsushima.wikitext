@@ -1,0 +1,95 @@
+{{short description|Shikishima-class patrol vessel of Japanese Coast Guard}}
+{{other ships|Japanese ship Akitsushima}}
+{{Infobox ship
+|section1={{Infobox ship/image
+ | image = JCG Akitsushima(PLH-32) left front view at Port of Kobe July 9, 2017 01.jpg
+ | image_caption = ''Akitsushima'' in [[Kobe]] on 9 July 2017 }}
+
+|section2={{Infobox ship/career
+ | country = Japan
+ | flag = [[File:Ensign of the Japanese Coast Guard.svg|75px]]
+ | name = *''Akitsushima''
+          *(あきつしま)
+ | namesake = [[Names of Japan#Classical|Classical name of Japan]]
+ | builder = *[[Ishikawajima-Harima Heavy Industries|IHI]], [[Tokyo]]
+ | laid_down = 10 May 2011
+ | launched = 4 July 2012
+ | commissioned = 28 November 2013
+ | decommissioned = 
+ | identification = *{{IMO Number|9638068}}
+                    *{{MMSI Number|431004594}}
+                    *[[Maritime call sign|Callsign]]: 7JNE
+                    *[[Pennant number]]: PLH-32
+ | motto = 
+ | nickname = 
+ | renamed = 
+ | homeport = [[Yokohama]]
+ | honours = 
+ | status = Active
+ | fate = 
+ | notes = 
+ | badge = 
+ }}
+
+|section3={{Infobox ship/characteristics
+ | hide_header = 
+ | header_caption = 
+ | class = [[Shikishima-class patrol vessel|''Akitsushima''-class]] [[patrol vessel]]
+ | tonnage             = {{GT|6500}}
+ | displacement        = 9,300 tons (full load)
+ | length              = {{convert|150.0|m|ftin|abbr=on}}
+ | beam                = {{convert|17|m|ftin|abbr=on}}
+ | draft               = {{convert|9.0|m|ftin|abbr=on}}
+ | speed               = {{convert|25|kn}}
+ | propulsion          =*2 × shafts
+                        *4 × IHI-[[SEMT Pielstick]] 16 PC2.5 V400 [[diesel engine]]s
+ | range               = {{convert|20,000|nmi|lk=in|abbr=on}}
+ | complement          =
+ | armament            =*2 × [[Bofors 40 mm Automatic Gun L/70|Bofors 40 mm gun]]
+                        *2 × [[M61 Vulcan|JM61 20 mm]] gun
+ | sensors             =
+ | EW                  =
+ | armor=
+ | aircraft            = 2 × [[Eurocopter EC225 Super Puma|EC225LP]] [[helicopter]]s
+ | notes=
+ }}
+}}
+'''''Akitsushima'' (PLH-32)''' is a [[Shikishima-class patrol vessel|''Akitsushima''-class]] [[Patrol boat|patrol vessel]] currently operated by the [[Japanese Coast Guard]].
+
+== Design ==
+{{Main|Shikishima-class patrol vessel}}
+
+This vessel is an enlarged and updated version of the earlier [[Japanese patrol vessel Shikishima|''Shikishima'']].{{Sfn|Kaijin-sha|2014}} Aviation facilities have also been enhanced: whereas ''Shikishima'' is carrying [[Eurocopter AS332 Super Puma|Eurocopter AS332]] helicopters, this vessel is able to carry the larger [[Eurocopter EC225 Super Puma|EC225LP Super Puma]].{{Sfn|Kaijin-sha|2014}}
+
+Weapons have also been updated and enhanced.{{Sfn|Kaijin-sha|2014}} As for the large calibre autocanon, the vessel is equipped with two single-mounted [[Bofors 40 mm Automatic Gun L/70|Bofors L/70 40 mm guns]], as opposed to the double-mounted [[Oerlikon GDF|Oerlikon L/90 35mm guns]] of the ''Shikishima''. These autocanons are the same as those carried by the [[Aso-class patrol vessel|''Aso''-class]] and [[Hida-class patrol vessel|''Hida''-class]], and are capable of precision firing with an optical director.{{Sfn|Nakanomyo|2015}} The [[M61 Vulcan|JM61 20 mm]] guns are also upgraded to the production version as the other vessels, while the ''Shikishima'' is equipped with the earlier prototypes.{{Sfn|Nakanomyo|2015}}
+
+== Construction and career ==
+''Akitsushima'' was [[Keel laying|laid down]] on 10 May 2011 and [[Launched (ship)|launched]] on 4 July 2012 by [[IHI Corporation|IHI]], [[Tokyo]]. She was [[Commissioned (ship)|commissioned]] on 28 November 2013.<ref>{{Cite web|title=Large Patrol Vessel Akitsushima (PLH-32) Enters Japan's Coast Guard Service|url=http://www.navyrecognition.com/index.php/news/defence-news/year-2013-news/november-2013-navy-naval-forces-maritime-industry-technology-security-global-news/1391--large-patrol-vessel-akitsushima-plh-32-enters-japans-coast-guard-service-.html|archive-url=https://web.archive.org/web/20131202081453/http://www.navyrecognition.com/index.php/news/defence-news/year-2013-news/november-2013-navy-naval-forces-maritime-industry-technology-security-global-news/1391--large-patrol-vessel-akitsushima-plh-32-enters-japans-coast-guard-service-.html|url-status=dead|archive-date=December 2, 2013|access-date=2021-05-04|website=www.navyrecognition.com}}</ref>
+
+In 2015, during the [[Emperor of Japan|Emperor]]'s and {{nihongo|[[Empress Michiko|Empress]]'s visit|[[:ja:行幸|行幸啓]]|Gyōkōkei}} to [[Palau]], ''Akitsushima'' was used as an accommodation ship. Slopes and handrails were set up so that both elderly Majesties could get on board comfortably.<ref>{{Cite news|author=Manabe Mitsuyuki|author2=Koseki Toshiki|date=2015-04-01|title=Accommodation "Akitsushima" To the details to be tailored to both Majesties|newspaper=[[Mainichi Shimbun]]|url=http://mainichi.jp/feature/koushitsu/news/20150401k0000m040158000c.html|url-status=dead|archive-url=https://web.archive.org/web/20150404000600/http://mainichi.jp/feature/koushitsu/news/20150401k0000m040158000c.html|archive-date=2015-04-04}}</ref>
+
+== Gallery ==
+<gallery mode="nolines">
+File:JCG PLH32 Akitsushima 20150604145444.jpg|''Akitsushima'' in [[Yokohama]] on 4 June 2015
+File:JCG PLH32 Akitsushima 201508.JPG|''Akitsushima'' in Yokohama on 15 August 2015
+File:JCG Akitsushima (PLH32)'s patrol boat.jpg|''Akitsushima''''s patrol boat on 1 October 2015
+File:あきつしま.jpg|''Akitsushima'' in Yokohama on 18 December 2016
+File:JCG Akitsushima(PLH-32) bridge left front view at Port of Kobe July 9, 2017.jpg|''Akitsushima'' in [[Kobe]] on 9 July 2017
+File:JCG Akitsushima(PLH-32) left rear view at Port of Kobe July 9, 2017.jpg|''Akitsushima'' in Kobe on 9 July 2017
+File:JCG Akitsushima(PLH-32) rear mast left front view at Port of Kobe July 9, 2017.jpg|''Akitsushima'' in Kobe on 9 July 2017
+File:JCG Akitsushima(PLH-32) helicopter deck left rear view at Port of Kobe July 9, 2017.jpg|''Akitsushima'' in Kobe on 9 July 2017 
+</gallery>
+
+==References==
+{{Reflist}}
+
+===Bibliography===
+* {{Cite journal|editor=Kaijin-sha|date=July 2014|title=New Type Ships of Japan Coast Guard|journal=Ships of the World|issue=800|pages=144–147|publisher=Kaijin-sha|id={{NAID|40020105615}}|language=ja}}
+* {{Cite journal|first=Masami|last=Nakanomyo|date=November 2015|title=History of shipboard guns on JCG's patrol vessels|journal=Ships of the World|issue=825|pages=168–173|publisher=Kaijin-sha|id={{NAID|40020597434}}|language=ja}}
+
+{{Shikishima-class patrol vessel}}
+
+{{DEFAULTSORT:Akitsushima}}
+[[Category:Shikishima-class patrol boats]]
+[[Category:2012 ships]]
+[[Category:Ships built by IHI Corporation]]

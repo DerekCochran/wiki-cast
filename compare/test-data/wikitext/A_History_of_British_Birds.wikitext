@@ -1,0 +1,304 @@
+{{Short description |Natural history book by Thomas Bewick}}
+{{for |the 1843 book by William Yarrell |A History of British Birds (1843)}}
+{{good article}}
+{{Infobox book
+|name        = ''A History of British Birds''
+|image       = History of British Birds by Thomas Bewick title page Vol 1 1847 edition.jpg
+|caption     = Title-page of 1847 edition
+|author      = [[Thomas Bewick]]
+|illustrator = Thomas Bewick and workshop
+|country     = England
+|subject     = [[Birds]]
+|genre       = [[Natural history]]
+|published   = {{Start date |1797}}–1804 (Bewick, [[Longman]])
+|pages       = 
+|awards      = 
+|oclc        = 
+|dewey       = 
+|congress    = 
+|wikisource  = 
+}}
+
+'''''A History of British Birds''''' is a [[natural history]] book by [[Thomas Bewick]], published in two volumes. Volume 1, '''''Land Birds''''', appeared in 1797. Volume 2, '''''Water Birds''''', appeared in 1804. A supplement was published in 1821. The text in ''Land Birds'' was written by [[Ralph Beilby]], while Bewick took over the text for the second volume. The book is admired mainly for the beauty and clarity of Bewick's [[wood-engraving]]s, which are widely considered his finest work, and among the finest in that medium.
+
+''British Birds'' has been compared to works of poetry and literature. It plays a recurring role in [[Charlotte Brontë]]'s novel ''[[Jane Eyre]]''. [[William Wordsworth]] praised Bewick in the first lines of his poem "The Two Thieves": "Oh now that the genius of Bewick were mine, And the skill which he learned on the banks of the Tyne."
+
+The book was effectively the first "[[field guide]]" for non-specialists. Bewick provides an accurate illustration of each species, from life if possible, or from skins. The common and scientific name(s) are listed, citing the naming authorities. The bird is described, with its distribution and behaviour, often with extensive quotations from printed sources or correspondents. Those who provided skins or information are acknowledged. The species are grouped into families such as "Of the Falcon", using the limited and conflicting scientific sources of the time. The families of land birds are further grouped into birds of prey, omnivorous birds, insectivorous birds, and granivorous birds, while the families of water birds are simply listed, with related families side by side.
+
+Each species entry begins on a new page; any spaces at the ends of entries are filled with tail-pieces, small, often humorous woodcuts of country life. ''British Birds'' remains in print, and has attracted the attention of authors such as [[Jenny Uglow]]. Critics note Bewick's skill as a [[naturalist]] as well as an engraver.
+
+== Background ==
+
+[[File:Pepys copy of Willughby's Ornithology.jpg |thumb |upright=0.75 |alt=A set of coloured bird prints, showing (clockwise top to bottom) a Hawfinch, a Northern Cardinal, a Bullfinch, a House Sparrow, a Crossbill and a Greenfinch. |Plate XLIII from [[Samuel Pepys]]'s hand-coloured copy of [[Francis Willughby]]'s 1678 ''Ornithology''<ref name=pepys>{{cite journal |last1=Birkhead |first1=Tim R. |last2=Montgomerie |first2=Robert |year=2009 |title=Samuel Pepys's hand-coloured copy of John Ray's 'The Ornithology of Francis Willughby' (1678) |journal=Journal of Ornithology |volume=150 |issue=4 |pages=883–891 |doi =10.1007/s10336-009-0413-3 |bibcode=2009JOrni.150..883M |s2cid=39409738 }}</ref>]]
+
+Early scientific works on birds, such as those of [[Conrad Gessner]], [[Ulisse Aldrovandi]] and [[Pierre Belon]], relied for much of their content on the authority of the [[Ancient Greek]] [[philosopher]] [[Aristotle]] and the teachings of the [[Christian Church |church]],<ref name=birkheadwis18>{{harvnb|Birkhead|2011|pp=18–22}}</ref><ref name=birkhead11>{{harvnb|Birkhead|2018|pp=11–12}}</ref> and included much extraneous material relating to the species, such as [[proverb]]s, references in history and literature, or its use as an [[emblem]].<ref name=kusukawa306>{{harvnb|Kusukawa|2016|p=306}}</ref> The arrangement of the species was by alphabetical order in Gessner's {{lang|la|[[Historia animalium (Gessner book) |Historia animalium]]}}, and by arbitrary criteria in most other early works.<ref name=birkheadwis18/> In the late 16th and early 17th centuries, [[Francis Bacon]] had advocated the advancement of knowledge through observation and experiment,<ref name=birkhead11/> and the English [[Royal Society]] and its members such as [[John Ray]], [[John Wilkins]] and [[Francis Willughby]] sought to put the [[Empirical research |empirical method]] into practice,<ref name=birkhead34>{{harvnb|Birkhead|2018|pp=34–38}}</ref> including travelling widely to collect specimens and information.<ref name= birkhead47>{{harvnb|Birkhead|2018|pp=47–50}}</ref>
+
+The first modern ornithology, intended to describe all the then-known birds worldwide,<ref name= birkhead218>{{harvnb|Birkhead |2018 |p=218}}</ref> was produced by Ray and Willughby and published in [[Latin]] as {{lang |la |Ornithologiae Libri Tres}} (''Three Books of Ornithology'') in 1676,<ref name=birkhead225>{{harvnb|Birkhead|2018|p=225}}</ref> and in English, as ''The Ornithology of Francis Willughby of Middleton'', in 1678.<ref name=birkhead236>{{harvnb|Birkhead|2018|p=236}}</ref> Its innovative features were an effective [[Biological classification |classification]] system based on [[anatomy |anatomical]] features, including the bird's beak, feet and overall size, and a [[single-access key |dichotomous key]], which helped readers to identify birds by guiding them to the page describing that group.<ref name=birkhead219>{{harvnb|Birkhead|2018|pp=219–221}}</ref> The authors also placed an asterisk against species of which they had no first-hand knowledge, and were therefore unable to verify.<ref name=birkhead292>{{harvnb|Birkhead|Smith|Doherty|Charmantier|2016|p=292}}</ref> The commercial success of the ''Ornithology'' is unknown, but it was historically significant,<ref name= birkhead239>{{harvnb|Birkhead|2018|p=239}}</ref> influencing writers including [[René Antoine Ferchault de Réaumur |René Réaumur]], [[Mathurin Jacques Brisson]], [[Georges Cuvier]] and [[Carl Linnaeus]] in compiling their own works.<ref name=charm377>{{harvnb|Charmantier|Johnston|Smith|2016|pp=377–380}}</ref><ref name=Johanson>{{harvnb|Johanson|Barrett|Richter|Smith|2016|p=139}}</ref>
+
+[[George Edwards (naturalist) |George Edwards]] was a leading British naturalist and illustrator in the 17th century. He was the librarian to the [[Royal College of Physicians]] with access to their collection of 8,000 books, and he used these, together with stuffed and live animals, to produce illustrated publications. His four-volume ''A Natural History of Uncommon Birds'' (1743–1751) and its three supplements covered more than 600 natural history topics, and his publications enabled Linnaeus to name 350 bird species, including many [[Type (biology)#Type specimen |type specimens]].<ref name= lederer2>{{harvnb|Birkhead|2018|pp=52–57}}</ref> When he was researching published sources for his bird project, Bewick relied particularly on Edwards' book and the multi-volume ''[[Histoire Naturelle]]'' of the French naturalist [[Georges-Louis Leclerc, Comte de Buffon]].<ref name=Uglow197>{{harvnb|Uglow|2006|p=197}}</ref>
+
+==Thomas Bewick==
+
+[[File:Chillingham Bull by Thomas Bewick 1789.jpg|thumb|Bewick engraved a wide variety of subjects, such as this depiction of a Chillingham Bull, executed for [[Marmaduke Tunstall]] in 1789.]]
+
+Thomas Bewick was born at [[Cherryburn]],<ref>{{cite web |url=http://www.nationaltrust.org.uk/cherryburn/ |title=Cherryburn |publisher=National Trust |access-date=21 May 2013}}</ref> a house in the parish of [[Mickley, Northumberland]],<ref name=ODNB>{{cite ODNB |id=2334 |title=Bewick, Thomas (1753–1828), wood-engraver |date=26 May 2005 |first=Iain |last=Bain |author-link=Iain Bain |freearticle=y}}</ref> and he was apprenticed at the age of 14 to [[Ralph Beilby]], an engraver in [[Newcastle upon Tyne]], and learnt how to engrave on wood and metal.<ref name=ODNB/><ref>{{harvnb|Uglow|2006|pp=39–44}}</ref>
+
+The business prospered,<ref>{{harvnb|Uglow|2006|pp=106–107}}</ref> becoming Newcastle's leading engraving service with an enviable reputation for high-quality work and good service.<ref name=Dixon265>{{harvnb|Dixon |2010 |p=265}}</ref> Now partners, Bielby and Bewick published their ''History of Quadrupeds'' in 1790,<ref name=BSmajorpubs>{{cite web |url=http://www.bewicksociety.org/galleries/publications.html |title=Major Publications |publisher=The Bewick Society |access-date=21 May 2013 |url-status=dead |archive-url=https://web.archive.org/web/20121025013656/http://www.bewicksociety.org/galleries/publications.html |archive-date=25 October 2012 |df=dmy-all }}</ref> and its success encouraged them to consider producing a new book on British birds.<ref name=ODNB/><ref>{{harvnb|Uglow|2006|pp=153–186}}</ref> In preparation for this major work, Bewick spent several years engraving the necessary wood blocks.<ref name=Dixon264>{{harvnb|Dixon|2010|p=264}}</ref> 
+
+Bewick became well known for his engravings, including  the woodcuts for [[Oliver Goldsmith]]'s ''Traveller'' and ''[[The Deserted Village]]'', for [[Thomas Parnell (poet)|Thomas Parnell]]'s ''Hermit'', and for [[William Somervile]]'s ''Chase''.<ref name=ODNB/> Perhaps the best known of his prints is ''The Chillingham Bull'', executed on an exceptionally large woodblock for [[Marmaduke Tunstall]], a Yorkshire landowner.<ref name=BSmajorpubs/> Bewick also produced and illustrated several editions of [[Aesop's Fables]] throughout his creative life.<ref>{{cite book |title=Select Fables of Aesop |publisher=T. Saint |author1=Aesop |author2=Dodsley, Robert |author3=Bewick, Thomas |year=1776 |location=Newcastle}}</ref><ref>{{cite book |title=Select Fables of Aesop |publisher=T. Saint |author1=Aesop |author2=Bewick, Thomas |year=1784 |location=Newcastle}}</ref><ref name=Aesopica>{{cite book |url=http://mythfolklore.net/aesopica/bewick/1.htm |title=Select Fables of Aesop |publisher=Aesopica |author=Bewick, Thomas |year=1818 |pages=Fables 1–141}}</ref> His success meant that Bewick had at least 30 pupils who worked for him and Beilby as apprentices, the first of whom was his younger brother John.<ref name=Dixon264>{{harvnb|Dixon|2010|p=264}}</ref>
+
+Bewick died at his home on 8 November 1828. He was buried in [[Ovingham]] churchyard, beside his late wife Isabella, who had died two years earlier on 1 February 1826, and not far from his parents and his brother John.<ref>{{harvnb|Uglow|2006|pp=384–385}}</ref><ref>{{harvnb|Uglow|2006|pp=394–395}}</ref>
+
+==Approach==
+
+[[File:Foot of the Red-necked Grebe woodcut in Bewick British Birds 1797.jpg |thumb |221px |"Foot of the [[Red-necked grebe |Red-necked Grebe]]"]]
+
+The preface to ''A History of British Birds'' states that "while one of the editors {{bracket |Bewick}} of this work was engaged in preparing the cuts, which are faithfully drawn from Nature, and [[Wood engraving |engraved upon wood]], the compilation of the descriptions .. ''(of the Land Birds)'' was undertaken by the other {{bracket |Beilby}},<ref name=Tattersfield/> subject, however, to the corrections of his friend, whose habits had led him to a more intimate acquaintance with this branch of [[Natural History]]", and goes on to mention that the compilation of text was the "production of those hours which could be spared from a laborious employment", namely the long hours of work engraving the minutely detailed wood printing blocks.{{efn |Bewick had a "strained" relationship with Beilby, who was first his tutor, then from 1777 his business partner. They produced ''A General History of Quadrupeds'' together in 1790, but after ''Land Birds'' in 1797 and "a period of dissatisfaction" they separated.<ref name=NewcastleAbout>{{cite web |url=http://www2.newcastle.gov.uk/newcastlecollection/bewick-collection/about-thomas-bewick |title=The Bewick Collection: About Thomas Bewick |publisher=Newcastle Collection |access-date=21 January 2013 |archive-url=https://web.archive.org/web/20111007211829/http://www2.newcastle.gov.uk/newcastlecollection/bewick-collection/about-thomas-bewick |archive-date=7 October 2011 |url-status=dead }}</ref>}} What the preface does not say is the reason for this statement about the "editors", which was an angry stand-off between Bewick and Beilby. Beilby's original intention was to have an introduction which merely thanked Bewick for his "assistance", and a title-page naming Beilby as the sole author. Bewick's friend (and his wife's godfather) Thomas Hornby heard of this, and informed Bewick. An informal trade panel met to judge the matter, and the preface as printed was the result; Beilby's name did not appear on the title-page.<ref>{{harvnb|Uglow|2006|pp=259–261}}</ref>
+
+Each species of bird is presented in a few pages (generally between two and four; occasionally, as with the [[mallard]] or "Common Wild Duck", a few more). The first item is a woodcut print of the bird, always either perched or standing on the ground, even in the case of water birds – such as the [[smew]] – that (as winter visitors) do not nest in Britain, and consequently are rarely seen away from water there.<ref name=CollinsBird>{{cite book |title=Collins Bird Guide |edition=2nd |publisher=Collins |others=Svensson, Lars (text, maps); Mullarney, Killian and Zetterström, Dan (plates, captions) |author=Grant, Peter J. |year=2009 |page=42}}</ref> Bewick then presents the name, with variations, and the Latin and French equivalents. For example, "The [[Musk duck |Musk Duck]]" is also named on the line below as "Cairo, Guinea, or Indian Duck", and the next line "(''[[Anas moschata]]'', Linn.—''Le Canard Musque'', Buff.)" provides the scholarly references to the giving of the Latin [[binomial nomenclature |binomial]] by [[Carl Linnaeus |Linnaeus]] (Linn) and a French description by [[Comte de Buffon |Buffon]] (Buff).<ref name=Bewick>{{harvnb|Bewick|1797–1804}}</ref>
+
+The text begins by stating the size of the bird. Bewick then describes the bird, typically in one paragraph, naming any notable features such as the colour of the eyes ("[[Iris (anatomy) |irides]]"), the bill, the legs, and plumage on each part of the body. Next, the origin and distribution of the species are discussed, with notes or quotations from authorities such as [[John Ray]], [[Gilbert White]] and Buffon.
+
+Bewick then mentions any other facts of interest about the bird; in the case of the musk duck, this concerns its "musky smell, which arises from the liquor secreted in the glands on the rump". If the bird hybridizes with other species, this is described, along with whether the hybrids are fertile ("productive").
+
+[[File:Sabine's Snipe woodcut Bewick's British Birds 1847.jpg |thumb|right|220px|"Sabine's Snipe", added to later editions, was described by [[Nicholas Aylward Vigors |Vigors]] in 1825.<ref>{{cite journal |title=XXVI. A Description of a new Species of ''Scolopax'' lately discovered in the British Islands: with Observations on the ''Anas glocitans'' of Pallas, and a Description of the Female of that Species. |author=Vigors, N. A. |journal=Transactions of the Linnean Society of London |date=May 1825 |volume=14 |issue=3 |pages=556–562 |doi=10.1111/j.1095-8339.1823.tb00102.x |url=https://zenodo.org/record/1447476 }}</ref>]]
+
+[[File:Shooting from Hide tail-piece in Bewick British Birds 1804.jpg |thumb|left|220px|One of Bewick's uncaptioned tail-pieces, miniature woodcuts showing country life. Here, shooting from a [[Bird hide |hide]], at end of "Sabine's Snipe"]]
+
+Finally, Bewick acknowledges anyone who had helped him. The musk duck is stated to have been drawn from a "living specimen" which was however "excepting the head, entirely white", unlike the "general appearance" shown in the woodcut; the bird "was lent to this work by [[William Losh]], Esq., of Point Pleasant, near Newcastle". Losh, one of Bewick's many collaborators, was a wealthy partner in [[Losh, Wilson and Bell]], manufacturers of chemicals and iron.<ref>{{cite web |url=http://www.asaplive.com/local--family-history/low-fell---additional-pages/low-fell-history-part-1 |title=Low Fell&nbsp;– Additional Pages |publisher=Gateshead Libraries |work=Low Fell History: Part 1 |year=2011 |access-date=21 March 2012 |archive-url=https://web.archive.org/web/20140108235538/http://www.asaplive.com/local--family-history/low-fell---additional-pages/low-fell-history-part-1 |archive-date=8 January 2014 |url-status=usurped }}</ref> Many of the birds, especially the rarer species, were necessarily illustrated from skins rather than from life. For example, for the Sabine's snipe, "The author was favoured by [[Nicholas Aylward Vigors |N. A. Vigors]], Esq., [who had described the supposed species] with a preserved specimen, from which the above figure is taken."{{efn |The "Sabine's snipe" species described by Vigors was treated as a common snipe by Barrett-Hamilton in 1895<ref>{{cite journal |jstor=25584879 |title=Sabine's Snipe. ''Gallinago Coelestis'', var. ''Sabinii'' |author=Barrett-Hamilton, G. E. H. |journal=The Irish Naturalist |date=January 1895 |volume=4 |issue=1 |pages=12–17}}</ref> and by Meinertzhagen in 1926, but was thought to be probably a [[Wilson's snipe]] in 1945. The skin that Bewick worked from was presumably Vigors' type specimen; it was much darker than a typical common snipe.<ref>{{cite journal |url=http://sora.unm.edu/sites/default/files/journals/wilson/v057n01/p0075-p0076.pdf |title=General Notes |journal=The Wilson Bulletin |date=March 1945 |volume=57 |issue=1 |pages=75–76}}</ref>}} In ''A Memoir'' (posthumously published in 1862), Bewick states that he intended to "stick to nature as closely as I could", but admits that he had "in several cases" to rely on the stuffed "preserved skins" of his neighbour Richard Routledge Wingate.<ref>{{cite book |title=A Memoir |url=https://archive.org/details/memoirofthomasbe0000bewi |url-access=registration |publisher=Oxford University Press |author=Bewick, Thomas |year=1979 |isbn=978-0-19-281271-1 |orig-year=1862}}</ref><ref>{{cite web |author=Sly, Debbie |url=http://eprints.worc.ac.uk/315/1/Debbie_Sly_-_With_skirmish_and_capricious_passagings.pdf |title='With skirmish and capricious passagings': ornithological and poetic discourse in the nightingale poems of Coleridge and Clare |publisher=University of Worcester |year=2005 |access-date=14 January 2013}}</ref>
+
+The grouping of species gave Bewick difficulty,<ref>{{harvnb|Uglow|2006|pp=249}}</ref> as the scientific sources of the time did not agree on how to arrange the species in families, or on a sequence or grouping of those families. Bewick, for example, uses family groups like "Of the Falcon", in which he includes [[buzzards]] and [[sparrowhawk]]s as well as what are now called [[falcon]]s. The families of land birds are further grouped into birds of prey, omnivorous birds, insectivorous birds, and granivorous birds, while the families of water birds are simply listed, with what seemed to be related families, such as "Of the Anas" (ducks) and "Of the Mergus" (sawbill ducks), side by side.
+
+Each account is closed with a miniature woodcut known from its position in the text as a tail-piece.<ref name=GuardianUglow/> These small artworks depict aspects of country life, often with humorous subjects, but all with Bewick's eye for detail, style, and precision.<ref name=Tate/> Some add to the illustration of the bird in question, as for example the heron, where the tail-piece shows one heron catching an eel, and another flying away. The tail-piece for Sabine's snipe, a [[gamebird]], shows a hunter firing, and a small bird falling to the ground. There is no exclusion of human life from the images: one tail-piece depicts a works complete with smoking chimney beside a river.{{efn |Bewick made dozens of woodcuts for coal certificates for collieries near Newcastle, in what is now Tyne and Wear. These depict buildings such as the Custom House with its smoking chimneys,<ref>{{cite web |url=http://www2.newcastle.gov.uk/collections.nsf/display?readform&id=08A7804CEDF69AE180257433004EEAB5 |title=The Bewick Collection (Pease Bequest): Coal certificates - Tyne |publisher=Newcastle Collection |access-date=21 January 2013 |url-status=dead |archive-url=https://web.archive.org/web/20110611014834/http://www.newcastle.gov.uk/collections.nsf/display?readform&id=08A7804CEDF69AE180257433004EEAB5 |archive-date=11 June 2011 }}</ref> and one woodcut is boldly headed 'NEWCASTLE'.<ref name=NewcastleAbout/>}}
+
+==Outline==
+
+===Land birds===
+[[File:Hanging Washing with Pigs and Chickens tail-piece in Bewick British Birds 1797.jpg |thumb |220px |Hanging washing with pigs and chickens: an uncaptioned tail-piece in Volume 1: ''Land Birds''. Like many others, this has a humorous touch, with a bird leaving muddy footprints on a newly laundered shirt.]]
+
+The first volume "containing the History and Description of Land Birds" begins with a preface, an introduction, and a list of technical terms illustrated with Bewick's woodcuts. The introduction begins:
+
+<blockquote>In no part of the animal creation are the wisdom, the goodness, and the bounty of Providence displayed in a more lively manner than in the structure, formation, and various endowments of the feathered tribes.</blockquote>
+
+The birds are divided into [[Seed predation |granivorous]] (grain eating) and [[carnivorous]] groups, which are explained in some detail. The speed, senses, flight, [[Bird migration |migration]], pairing behaviour and feeding of birds are then discussed, with observations from [[Spallanzani]] and [[Gilbert White]], whose ''[[Natural History and Antiquities of Selborne]]'' was published in 1789. The pleasure of watching birds is mentioned:
+
+<blockquote>To the practical ornithologist there arises a considerable gratification in being able to ascertain the [[Jizz (birding) |distinguishing characters of birds]] as they appear at a distance, whether at rest, or during their flight; for not only every [[genus]] has something peculiar to itself, but each species has its own appropriate marks, by which a judicious observer may discriminate almost with certainty.<ref>Bewick, volume 1, ''Land Birds'', 1847 edition. "Introduction".</ref></blockquote>
+
+[[File:Great Bustard woodcut in Bewick British Birds 1797.jpg |thumb |left |Woodcut of "The [[Great bustard |Great Bustard]]". A horseman and pair of greyhounds gallop after another bustard in the background.]]
+Bewick also mentions [[Nature conservation |conservation]], in the context of the probable local extinction of a valuable resource:
+
+"Both this and the [[Great bustard |Great Bustard]] are excellent eating, and would well repay the trouble of [[domestication]]; indeed, it seems surprising, that we should suffer these fine birds to be in danger of total extinction,{{efn |Bewick's prediction was correct. The great bustard became extinct in Britain in the 1830s.<ref>{{cite web |url=http://www.nhm.ac.uk/nature-online/species-of-the-day/biodiversity/endangered-species/otis-tarda/index.html |author=Cooper, Joanne |title=Otis tarda (great bustard) |publisher=Natural History Museum |year=2013 |access-date=21 January 2013}}</ref>}} although, if properly cultivated, they might afford as excellent a repast as our own domestic poultry, or even as the [[Domestic turkey |Turkey]], for which we are indebted to distant countries.<ref>Bewick, volume 1, ''Land Birds'', 2nd edition, 1847. "Little Bustard".</ref>"
+
+The 1847 edition, revised with additional woodcuts and descriptions, is organized as follows, with the species grouped into [[family (biology) |families]] such as the shrikes:
+
+{{columns-list |colwidth=30em |style=font-size:smaller |
+* [[Birds of Prey]]
+** Of the [[Falcon]] [includes [[common buzzard |buzzard]], [[Eurasian sparrowhawk |sparrowhawk]]]
+** Of the [[Owl]]
+* Omnivorous Birds
+* Insectivorous Birds
+** Of the [[Shrike]]
+** Of the [[Old World flycatcher |Flycatcher]]s
+** Of the [[Warblers]]
+** Of the [[Wagtail]]
+* Granivorous Birds
+** Of the [[Lark]]
+** Of the [[Tit (bird) |Titmouse]]
+** Of the [[Emberiza|Bunting]]
+** Of the [[Finch]]
+** Of the [[Woodpecker]]
+** Of the [[Swallows |Swallow]]
+** Of the [[Galliformes |Gallinaceous kind]]  [gamebirds]
+** Of the [[Grouse]]
+** Of the [[Bustard]]
+}}
+
+===Water birds===
+
+[[File:Bird's Eggs from Sea-Cliffs tail-piece in Bewick British Birds 1804.jpg |thumb |220px |Bird's eggs from sea-cliffs: uncaptioned tail-piece in Volume 2: ''Water Birds''. Bewick has chosen a seabird theme, but humans are closely involved, and the birds are a useful resource.]]
+The second volume "containing the History and Description of Water Birds" begins with its own preface, and its own introduction. Bewick discusses the question of where many seabirds go to breed, revisits the subject of migration, and concludes with reflections on "an all-wise Providence" as shown in Nature.
+
+[[File:Heron woodcut Bewick's British Birds 1847.jpg |thumb |left |"The Heron. Common Heron, Heronsewgh, or Heronshaw. (''[[Ardea cinerea]]'', [[John Latham (ornithologist) |Lath]].—''Héron cendré'', [[Temminck |Temm]].)" woodcut]]
+
+The 1847 edition is organized as follows:{{efn |Some of the species in the book appear without any section heading.}}
+
+{{columns-list |colwidth=30em |style=font-size:smaller |
+* Of the [[Eurasian oystercatcher |Oyster Catcher]]
+* Of the [[Plover]]
+* Of the [[Heron]]
+* Of the [[Pied avocet |Avoset]] [one species]
+* Of the [[Eurasian spoonbill |Spoonbill]] [one  species]
+* Of the [[Glossy ibis |Ibis]] [one  species]
+* Of the [[Curlew]]
+* Of the [[Sandpiper]]
+* Of the [[Godwit]]
+* Of the [[Snipe]]
+* Of the [[Water rail |Rail]]
+* Of the [[Gallinule]]
+* Of the [[Eurasian coot |Coot]]
+* Of the [[Phalarope]]
+* Of the [[Grebes]]
+* Of the [[Terns]]
+* Of the [[Gull]]
+* Of the [[Skua |Predatory Gulls]] [the skuas]
+* Of the [[Petrel]]
+* Of the [[Anatidae |Anas]] [ducks, geese and swans]
+* Of the [[Merganser |Mergus]] [sawbill ducks]
+* Of the [[Cormorant]]
+* Of the [[Northern gannet |Gannet]] [one  species]
+* Of the [[Loons |Divers]]
+* Of the [[Guillemot]]
+* Of the [[Auk]]
+}}
+; Foreign Birds
+
+The 'foreign birds' are not grouped but just listed directly as species, from Bearded Vulture to Mino. Fifteen birds are included, with no description, and despite their placement in the table of contents, they appear at the front of the volume as an 'Appendix'.
+
+==Reception==
+
+Bewick's ''Birds'' was an immediate best-seller. When ''Land Birds'' appeared, the whole print sold out by the middle of 1798; 1000 copies of the [[paper size|demy]] size ({{cvt|8+3/4|x|5+5/8|in|disp=comma}}), 850 of the royal [[octavo]]  ({{cvt|10|x|6+1/4|in|disp=comma}}), and 24 of the grand imperial ({{cvt|22|x|30|in|disp=comma}}).<ref>{{harvnb|Uglow|2006|p=263}}</ref>
+=== Contemporary ===
+
+[[File:The Sparrowhawk woodcut in Bewick British Birds 1797.jpg |thumb |220px |"The [[Eurasian sparrowhawk |Sparrow-Hawk]]" shows textures Bewick achieved with [[Burin (engraving) |engraving tools]] on the end-grain of hard [[Buxus sempervirens |boxwood]].]]
+
+In 1805, the ''[[British Critic]]'' wrote that it was "superfluous to expatiate much on the merits of a work" that everyone liked because of "the aptness of its descriptions, the accuracy of its figures, the spirit of its wood engravings, and the ingenious variety of its vignettes."<ref>{{cite journal |title=A History of British Birds by Thomas Bewick |author=Anon |journal=British Critic |year=1805 |volume=26 |pages=292–297}}</ref>
+
+The 1829 ''Magazine of Natural History'' commented that "[[George Montagu (naturalist) |Montagu]]'s ''[[Ornithological Dictionary; or Alphabetical Synopsis of British Birds |Ornithological Dictionary]]'' and Bewick's ''Birds'' .. have rendered [the] department of natural history popular throughout the land".<ref name="LoudonCharlesworth1829">{{cite book |last1=Loudon |first1=John Claudius |last2=Charlesworth |first2=Edward |last3=Denson |first3=John |title=Magazine of natural history |url=https://books.google.com/books?id=MFVIAAAAMAAJ |year=1829 |publisher=printed for Longman, Rees, Orme, Brown, and Green |pages=360–364}}</ref>
+
+''[[Ibis (journal) |Ibis]]'', reviewing the ''Memoir of Thomas Bewick, written by himself'' in 1862, compares the effect of Bewick and Gilbert White, writing "It was the pages of Gilbert White and the woodcuts of Bewick which first beguiled the English schoolboy to the observation of our feathered friends", and "how few of our living [[Natural history |naturalists]] but must gratefully acknowledge their early debt to White's 'History' and to the life-like woodcuts of Bewick!" The reviewer judges that "Probably we shall not wrong the cultivated [[The Natural History and Antiquities of Selborne |annalist of Selborne]] by giving the first place to Bewick." However, comparing them as people, "Bewick has not the slightest claim to rank with Gilbert White as a naturalist. White was what Bewick never was, a man of science; but, if no naturalist, Bewick was a lover of nature, a careful observer, and a faithful copier of her ever-varying forms. In this, and in this alone, lies his charm."<ref>{{cite journal |title=Review of the recently published Memoir of Bewick |author=Anon |journal=Ibis |date=October 1862 |volume=4 |issue=4 |pages=368–378 |doi=10.1111/j.1474-919X.1862.tb07513.x }}</ref>
+
+<!--well this is between Bewick's time and ours, not sure it deserves a section of its own though-->
+The ''[[1911 Encyclopædia Britannica]]''{{'}}s entry on Thomas Bewick describes "the ''British Birds''" as "his great achievement, that with which his name is inseparably associated", observing that "Bewick, from his intimate knowledge of the habits of animals acquired during his constant excursions into the country, was thoroughly qualified to do justice to this great task."<ref>{{cite EB1911 |wstitle=Bewick, Thomas |volume=3 |page=837}}</ref>
+
+=== Modern ===
+
+John Brewer, writing in the ''[[London Review of Books]]'', says that for his ''Birds'', "Bewick had acquired national renown as the artist who most truthfully depicted the flora and fauna of the British countryside." He adds that "Bewick's achievement was both technical and aesthetic." In his view, Bewick "reconciled nature, science and art. His engravings of British birds, which represent his work at its finest, are almost all rendered with the precision of the ornithologist: but they also portray the animals in their natural habitat&nbsp;– the [[grouse]] shelters in his covert, the [[European green woodpecker |green woodpecker]] perches on a gnarled branch, waders strut by streams&nbsp;..." He observes that "Most of the best engravings include a figure, incident or building which draws the viewer's eye beyond and behind the animal profile in the foreground. Thus the ploughboy in the distant field pulls our gaze past the [[western yellow wagtail |yellow wagtail]]&nbsp;..."<ref>{{cite journal |url=http://www.lrb.co.uk/v04/n05/john-brewer/progressive-agenda |title=Progressive Agenda |author=Brewer, John |journal=[[London Review of Books]] |date=18 March 1982 |volume=4 |issue=5 |pages=18–19}}</ref>
+
+''[[British Birds (magazine) |British Birds]]'', reviewing a "lavishly illustrated" [[British Library]] book on Bewick, writes that "No [[ornithologist]] will ever regard Thomas Bewick, known primarily for The History of British Birds (1797–1804), as a naturalist of the same standing as contemporaries such as [[Edward Donovan]], [[John Latham (ornithologist) |John Latham]] and [[James Bolton]]", noting however that Bewick helped to define "a certain English Romantic sensibility". More directly, the review notes that "Bewick was aware that his role was to offer a modest guide to birds that the common man not only could afford but would also want to possess." Bewick was not "a scientist, but he was a perfectionist". The book's text was written by "failed author" Ralph Beilby, but the text is "almost extraneous" given Bewick's masterpiece.<ref name=Tattersfield>{{cite web |url=http://www.britishbirds.co.uk/book-reviews/thomas-bewick-the-complete-illustrative-work-by-nigel-tattersfield |title=Thomas Bewick: the complete illustrative work, by Nigel Tattersfield |publisher=British Birds |date=9 April 2012 |access-date=12 January 2013 |archive-date=25 April 2012 |archive-url=https://web.archive.org/web/20120425060013/http://www.britishbirds.co.uk/book-reviews/thomas-bewick-the-complete-illustrative-work-by-nigel-tattersfield |url-status=dead }}</ref>
+
+The [[Tate Gallery]] writes that Bewick's " best illustrations&nbsp;... are in his natural history books. The History of British Birds (2 vols, Newcastle upon Tyne, 1797–1804) reveals Bewick's gifts as a naturalist as well as an engraver (the artist was responsible for the text as well as the illustrations in the second volume)." The article notes that the book makes "extensive use of narrative tailpieces: vignettes in which manifold aspects of north-country life are expressed with affection, humour and a genuine love of nature. In later years these miniature scenes came to be more highly regarded than the figures they accompany."<ref name=Tate>{{cite web |url=http://www.tate.org.uk/art/artists/thomas-bewick-35 |title=Thomas Bewick 1753–1828 |publisher=Tate Gallery |access-date=12 January 2013}}</ref>
+
+Dissenting from the general tone of praise for Bewick, [[Jacob Kainen]] cites claims that "many of the best tailpieces in the ''History of British birds'' were drawn by Robert Johnson", and that "the greater number of those contained in the second volume were engraved by [[Luke Clennell |Clennell]]. Granted that the outlook and the engraving style were Bewick's, and that these were notable contributions, the fact that the results were so close to his own points more to an effective method of illustration than to the outpourings of genius." Kainen argues that while competent, Bewick "was no [[Hans Holbein the Younger |Holbein]], no [[Botticelli]]—it is absurd to think of him in such terms—but he did develop a fresh method of handling wood engraving."<ref>{{cite journal |url=http://www.gutenberg.org/files/29928/29928-h/29928-h.htm |title=Why Bewick Succeeded: A Note in the History of Wood Engraving |author=Kainen, Jacob |journal=Smithsonian Institution United States National Museum Bulletin |year=1959 |volume=218 |pages=185–201}}</ref>
+
+[[File:Yellow Wagtail woodcut in Bewick British Birds 1797.jpg |thumb |left |220px |Bewick's woodcut of "The [[Western yellow wagtail |Yellow Wagtail]]" shows the bird in its habitat by fresh water, with a detailed illustration including figures in the background.]]
+The [[Linnean Society]] writes that the ''History'' "shows that he was also an excellent naturalist, a meticulous observer of birds and animals in their habitats."<ref>{{cite web |url=http://www.linnean.org/Meetings-and-Events/Past+Events/Thomas+Bewick+Engraver+and+Naturalist |title=Thomas Bewick, Engraver and Naturalist |publisher=Linnean Society |access-date=12 January 2013 |archive-url=https://web.archive.org/web/20130125084907/http://www.linnean.org/Meetings-and-Events/Past+Events/Thomas+Bewick+Engraver+and+Naturalist |archive-date=25 January 2013 |url-status=dead }}</ref>
+
+The [[University of Maryland]] writes that "The ''Birds'' is specific to those species indigenous to Britain and is incredibly accurate due to Bewick's personal knowledge of the habits of birds in the wild acquired during his frequent bird-watching expeditions." It adds that "Bewick's woodcarvings are considered a pinnacle example of the medium."<ref>{{cite web |url=http://lib.guides.umd.edu/bewick |title=Thomas Bewick |publisher=University of Maryland |access-date=12 January 2013}}</ref>
+
+[[Jenny Uglow]], writing in ''[[The Guardian]]'', notes that "An added delight was the way he filled the blank spaces with 'tail-pieces', tiny, witty, vivid scenes of ordinary life." She describes the importance of ''Birds'' in ''Jane Eyre'', and ends "He worked with precision and insight, in a way that we associate with poets such as [[John Clare |Clare]] and [[William Wordsworth |Wordsworth]], [[Gerard Manley Hopkins]] and [[Elizabeth Bishop]]. To Bewick, nature was the source of joy, challenge and perpetual consolation. In his woodcuts of birds and animals as well as his brilliant tail-pieces, we can still feel this today."<ref name=GuardianUglow>{{cite news |url=https://www.theguardian.com/artanddesign/2006/oct/14/art.biography |title=Small wonders |date=14 October 2006 |newspaper=The Guardian |access-date=12 January 2013 |author=Uglow, Jenny}}</ref> However, in her biography of Bewick, she adds that "The country might be beautiful but it also stank: in his vignettes men relieve themselves in hedges and ruins, a woman holds her nose as she walks between the cowpats, and a farmyard privy shows that men are as filthy as the pigs they despise."<ref>{{harvnb|Uglow|2006|p=314}}</ref>
+
+Hilary Spurling, reviewing Uglow's biography of Bewick in ''[[The Observer]]'', writes that when ''Birds'' appeared, people all over Britain "became his pupils". Spurling cites [[Charles Kingsley]]'s story of his father's hunting friends from the [[New Forest]] mocking him for buying "a book 'about dicky-birds", until, astonished, they saw the book and discovered "things they had known all their lives and never even noticed".<ref>{{cite news |url=https://www.theguardian.com/books/2006/sep/24/biography.features |title=The Observer |work=All about the birds and the bees |date=24 September 2006 |access-date=13 January 2013 |author=Spurling, Hilary}}</ref>
+
+==In culture==
+
+[[File:Fiend pinning down Thief's Back tail-piece in Bewick British Birds 1797.jpg |thumb |220px |Uncaptioned tail-piece<ref>Bewick, vol 1, p. 232</ref> mentioned in [[Charlotte Brontë]]'s ''[[Jane Eyre]]'', Chapter 1: "The fiend pinning down the thief's pack behind him, I passed over quickly: it was an object of terror."]]
+
+The ''History'' is repeatedly mentioned in [[Charlotte Brontë]]'s 1847 novel ''[[Jane Eyre]]''. John Reed throws the ''History of British Birds'' at Jane when she is ten; Jane uses the book as a place to which to escape, away from the painful Reed household; and Jane also bases her artwork on Bewick's illustrations. Jane and Mr Rochester use bird names for each other, including [[linnet]], [[dove]], [[skylark]], [[eagle]], and [[falcon]]. Brontë has Jane Eyre explain and quote Bewick:<ref name=GuardianUglow/><ref>{{cite journal |journal=The Victorian Newsletter |url=http://www.highbeam.com/doc/1G1-87352735.html |archive-url=https://web.archive.org/web/20140610214844/http://www.highbeam.com/doc/1G1-87352735.html |url-status=dead |archive-date=2014-06-10 |title=Image and Text in Jane Eyre's avian vignettes and Bewick's ''History of British Birds''. |author=Taylor, Susan B. |date=March 2002 |issn=0042-5192 |oclc=1638972}}</ref>
+
+<blockquote>I returned to my book--Bewick's History of British Birds: the letterpress thereof I cared little for, generally speaking; and yet there were certain introductory pages that, child as I was, I could not pass quite as a blank. They were those which treat of the haunts of sea-fowl; of 'the solitary rocks and promontories' by them only inhabited; of the coast of Norway, studded with isles from its southern extremity, the [[Lindesnes |Lindeness]], or Naze, to the [[North Cape, Norway |North Cape]]--<ref name=JaneEyre>{{cite book |title=Jane Eyre |publisher=Smith, Elder & Co. |author=Brontë, Charlotte |year=1847 |chapter=1 |chapter-url=http://www.gutenberg.org/files/1260/1260-h/1260-h.htm}}</ref></blockquote>
+
+<blockquote><poem>Where the Northern Ocean, in vast whirls,
+Boils round the naked, melancholy isles
+Of farthest [[Thule]]; and the Atlantic surge
+Pours in among the stormy [[Hebrides]].<ref name=JaneEyre/>{{efn |This passage from ''Jane Eyre'' is quoting from Bewick's Introduction to Volume 2, ''Water Birds'', which in turn is quoting a poem by [[James Thomson (poet, born 1700)|James Thomson]].}}</poem></blockquote>
+
+In [[M. R. James]]' short story, [[Casting the Runes]], a Bewick print is also referenced, described as "a moonlit road and a man walking along it, followed by an awful demon creature."<ref>{{cite book |title=Casting The Runes |url=https://gutenberg.ca/ebooks/james-runes/james-runes-00-h.html |publisher=Project Gutenberg |author=James, Montague Rhodes |year=1911 }}</ref>
+
+[[File:Reaper and Partridge Nest tail-piece in Bewick British Birds 1797.jpg |thumb |upright=1.5<!--size for very low image--> |Uncaptioned tail-piece woodcut for the [[grey partridge |partridge]], showing a [[Harvest |reaper]] finding he has just killed a bird sitting on its nest; the image inspired a scene in [[Peter Hall (theatre director) |Peter Hall]]'s 1974 film ''[[Akenfield]]''.]]
+The English [[romantic poet]] William Wordsworth began his 1800 poem ''The Two Thieves; or, the Last Stage of Avarice'' with the lines<ref name=WWpoem>{{cite web |url=http://www.bartleby.com/145/ww179.html |publisher=Bartleby.com |title=The Two Thieves; or, the Last Stage of Avarice |access-date=13 January 2013}}</ref><ref>{{cite book |title=Skylark Meets Meadowlark: Reimagining the Bird in British Romantic and Contemporary Native American Literature |url=https://archive.org/details/skylarkmeetsmead00gann |url-access=limited |publisher=University of Nebraska Press |author=Gannon, Thomas C. |year=2009 |page=[https://archive.org/details/skylarkmeetsmead00gann/page/n360 340]|isbn=9780803220577 }}</ref>
+
+<blockquote><poem>Oh now that the genius of Bewick were mine
+And the skill which he learned on the banks of the Tyne.
+Then the Muses might deal with me just as they chose,
+For I'd take my last leave both of verse and of prose.<ref name=WWpoem/></poem></blockquote>
+
+[[Peter Hall (theatre director) |Peter Hall]]'s 1974 film ''[[Akenfield]]'' (from the 1969 book by [[Ronald Blythe]]) contains a scene where the grandfather as a young man is reaping a cornfield. He weeps when he accidentally crushes a bird's egg, an image derived from Bewick's tail-piece woodcut for the partridge. The woodcut shows a reaper with a scythe, a dead bird and its nest of a dozen eggs on the ground under the scythe, which has just lifted. [[George Ewart Evans]] used the image on the title-page of his 1956 book about [[Blaxhall]] (near [[Charsfield]], on which 'Akenfield' is probably partly based).
+{{clear}}
+
+==Legacy==
+
+Bewick's reputation as a wood engraver was at its height in the nineteenth century, with the critic [[John Ruskin]] writing that the way Bewick had engraved the feathers of his birds was "the most masterly thing ever done in woodcutting".<ref name=Uglow400>Uglow, 2006. pp. 400–401</ref>
+
+The advent of mechanical printing techniques from the 1860s led to something of a decline in his importance,<ref name=Uglow400/> but his fame, already nationwide across Britain for his ''Birds'', grew during the nineteenth century. In 1830, [[William Yarrell]] named [[Bewick's swan]] in his honour, and Bewick's son Robert engraved the bird for later editions of ''British Birds''.<ref>Uglow, 2006. p. 396.</ref>
+
+Bewick had met the American naturalist and bird painter [[John James Audubon]] in 1827, and had given him a copy of his ''Quadrupeds'' for his children.<ref>Uglow, 2006. pp. 388–389.</ref>  The American returned the compliment by naming a newly-discovered US bird species as [[Bewick's wren]] in honour of his friend.<ref>{{ cite book |last=Audubon |first=John James |author-link=John James Audubon |year=1831 |title=Ornithological Biography, or an account of the habits of the birds of the United States of America; accompanied by descriptions of the objects represented in the work entitled The Birds of America, and interspersed with delineations of American scenery and manners |volume=1 |location=Edinburgh |publisher=Adam Black |pages=96–97 |url=https://www.biodiversitylibrary.org/page/33238890 }}</ref>
+
+The way in which Bewick had organised the text and illustrations in his ''Birds'' takes the form of, and sets a precedent for, modern [[field guide]]s.<ref name=CollinsBird/><ref>{{cite news |url=https://www.telegraph.co.uk/culture/books/3622244/A-bird-in-the-bush-is-always-best.html# |newspaper=[[The Daily Telegraph]] |title=A bird in the bush is always best |date=15 August 2004 |access-date=14 January 2013 |author=Bate, Jonathan}}</ref> Indeed, the French naturalist [[:fr:François Holandre |François Holandre]] (1753–1830) assembled a field guide using Bewick's woodcuts as early as 1800.<ref>{{cite web |author=Jordan, Mary |url=http://www.trincoll.edu/TrinityToday/Documents/Field%20Guide%20pamphle.pdf |title=Searching the Skies, Searching the Stacks: Bird Field Guides in the Watkinson Library |publisher=Trinity College, Hartford, Connecticut |work=2011 |access-date=13 January 2013 |archive-date=4 March 2016 |archive-url=https://web.archive.org/web/20160304025654/http://www.trincoll.edu/TrinityToday/Documents/Field%20Guide%20pamphle.pdf |url-status=dead }}</ref>
+
+==Tail-pieces==
+
+A selection of tail-pieces from the book, where they have no captions.
+
+<gallery class="center" mode=nolines widths=150px>
+
+File:Children in Runaway Cart tail-piece in Bewick British Birds 1797.jpg |Children in runaway cart
+File:Women Collecting Shellfish tail-piece in Bewick British Birds 1804.jpg |Women collecting shellfish
+File:Hunter Precariously Retrieving Duck from River tail-piece in Bewick British Birds 1804.jpg |Hunter precariously retrieving duck from river
+File:Old Woman with Ducks tail-piece in Bewick British Birds 1804.jpg |Old woman with ducks
+File:Industry on Riverside tail-piece in Bewick British Birds 1804.jpg |Industry on a riverside, perhaps the [[River Tyne |Tyne]] near [[Newcastle upon Tyne |Newcastle]]
+File:Toy Boats in River woodcut in Bewick British Birds 1804.jpg |Toy boats in river
+File:Hunter in the Snow tail-piece in Bewick British Birds 1804.jpg |Hunter in the snow{{efn |Jenny Uglow states that the boy is Bewick himself; the hunter Joe Liddell has wrapped the stock of his gun to keep the lock from freezing.<ref>{{harvnb|Uglow|2006|pp=137–138}}</ref>}}
+File:That Pisseth Against a Wall tail-piece in Bewick British Birds 1804.jpg |That pisseth against a wall
+File:Polecat catching Eel in Winter tail-piece in Bewick British Birds 1797.jpg |[[European polecat |Polecat]] catching [[European eel |eel]] in winter
+File:Pegleg and Peacock tail-piece in Bewick British Birds 1797.jpg |Pegleg and [[peacock]]
+
+</gallery>
+
+==Principal editions==
+[[File:Great Auk Thomas Bewick 1804.jpg |thumb |upright |The "[[Great Auk]], Northern Penguin, or Gair-Fowl". Bewick records that the species was "not numerous any where";<ref>Bewick, 1847. Volume 2, page 406.</ref> it became extinct some decades later.]]
+
+Volume 1 first appeared in 1797, and was reprinted several times in 1797, then again in 1798 and 1800. Volume 1 was priced 13s. in boards. Volume 2 first appeared in 1804 (price 11. 4s. in boards). The first imprint was "Newcastle : Printed by Sol. Hodgson, for Beilby & Bewick; London: Sold by them, and G.C. and J. Robinson, 1797–1804." The book was reprinted in 1805, 1809, 1816, and 1817.<ref name=WorldCat>{{cite book |title=History of British birds : the figures engraved on wood |publisher=WorldCat |oclc=3958198}}</ref>
+
+In 1821 a new edition appeared with supplements to both volumes and additional figures, with the imprint "Printed by Edward Walker, Pilgrim-Street, for T. Bewick: sold by him, and E. Charnley, Newcastle; and Longman and co., London, 1821." The book was reprinted in many subsequent versions with a 6th edition in 1826, another in 1832, an 8th edition in 1847, and a royal octavo 'Memorial Edition' in 1885.<ref name=WorldCat/>
+
+* ''A History of British Birds''. First Edition.
+:--- Bewick, Thomas; Beilby, Ralph (1797). Volume 1, ''Land Birds''.
+:--- Bewick, Thomas (1804). Volume 2, ''Water Birds''.
+
+===Selected modern versions===
+
+* ''Bewick's British Birds'' (2010), Arcturus. (hardback) {{ISBN |978-1-84837-647-2}}
+* Bewick, Thomas; [[Aesop]]; Bewick, Jane (2012). ''Memorial Edition Of Thomas Bewick's Works: A History Of British Birds.'' (reproduced in original format) Ulan Press.
+
+==Notes==
+
+{{notelist |33em}}
+
+==References==
+
+{{reflist |28em}}
+
+==Bibliography==
+
+* {{cite book |title=A History of British Birds |publisher=Beilby and Bewick |last=Bewick |first=Thomas |year=1797–1804 |location=Newcastle}}
+::: [https://archive.org/stream/memorialeditiono01bewirich#page/n7/mode/2up ''Volume 1: Containing the History and Description of Land Birds'']
+::: [https://archive.org/stream/memorialeditiono02bewirich#page/n5/mode/2up ''Volume 2: Containing the History and Description of Water Birds'']
+* {{cite book |last1=Birkhead |first1=Tim |title=The Wisdom of Birds: An Illustrated History of Ornithology |publisher=[[Bloomsbury Publishing|Bloomsbury]] |year=2011 |location=London |isbn=978-0-7475-9822-0}}
+* {{cite book |last1=Birkhead |first1=Tim |title=The Wonderful Mr Willughby: The First True Ornithologist |publisher=[[Bloomsbury Publishing|Bloomsbury]] |year=2018 |location=London |isbn=978-1-4088-7848-4 }}
+* {{cite book |last1=Birkhead |first1=Tim |last2=Smith |first2=Paul J. |last3=Doherty |first3=Meghan |last4=Charmantier |first4=Isabelle |year=2016 |chapter=Willughby’s Ornithology |editor-last=Birkhead |editor-first=Tim |title=Virtuoso by Nature: The Scientific Worlds of Francis Willughby FRS (1635–1672) |location=Leiden |publisher=[[Brill Publishers|Brill]] |isbn=978-90-04-28531-6 |pages=268–304 }}
+* {{cite book |last1=Charmantier |first1= Isabelle |last2= Johnston |first2= Dorothy |last3=Smith |first3=Paul J. |year=2016 |chapter=The legacies of Francis Willughby |editor-last=Birkhead |editor-first=Tim |title=Virtuoso by Nature: The Scientific Worlds of Francis Willughby FRS (1635–1672) |location=Leiden |publisher=Brill |isbn=978-90-04-28531-6 |pages=360–385 }}
+* {{cite book |last=Dixon |first=Hugh |title=Thomas Bewick and the North-Eastern Landscape |series=Northern Landscapes: Representations and Realities of North-East England |publisher=[[Boydell & Brewer]] |year=2010 |pages=261–278 |editor1=Faulkner, Tom E. |editor2=Berry, Helen |editor3=Gregory, Jeremy |url=https://books.google.com/books?id=ST8aBPUSRxwC&q=%22Thomas+Bewick%22&pg=PA265 |isbn=9781843835417}}
+* {{cite book |last1=Johanson |first1=Zerina |last2=Barrett |first2= Paul M. |last3=Richter |first3=Martha |last4=Smith |first4= Mike |title=Arthur Smith Woodward: His Life and Influence on Modern Vertebrate Palaeontology |publisher=[[Geological Society of London]] |year=2016 |location=London |volume=430 |series=Geological Society of London, Special Publications |isbn=978-1-86239-741-5}}
+* {{cite book |last= Kusukawa |first=Sachiko |year=2016 |chapter=''Historia Piscium'' (1686) and its sources |editor-last=Birkhead |editor-first=Tim |title=Virtuoso by Nature: The Scientific Worlds of Francis Willughby FRS (1635–1672) |location=Leiden |publisher=Brill |isbn=978-90-04-28531-6 |pages=305–334 }}
+* {{cite book |title=Nature's Engraver: A Life of Thomas Bewick |publisher=[[Faber and Faber]] |last=Uglow |first=Jenny |author-link=Jenny Uglow |year=2006}}
+
+==External links==
+
+* [https://web.archive.org/web/20121025013656/http://www.bewicksociety.org/galleries/publications.html The Bewick Society: Publications]
+* [https://web.archive.org/web/20111007211829/http://www2.newcastle.gov.uk/newcastlecollection/bewick-collection/about-thomas-bewick Newcastle Collection: Bewick]
+* [https://web.archive.org/web/20130127155824/http://www.foliosociety.com/book/HBB/history-of-british-birds The Folio Society]
+* [http://www.gutenberg.org/ebooks/29928 Free Project Gutenberg ebook: Why Bewick Succeeded]
+
+{{Natural history |state=expanded}}
+{{Birds in culture}}
+
+{{Authority control}}
+
+{{DEFAULTSORT:History of British Birds}}
+[[Category:1797 non-fiction books]]
+[[Category:1804 non-fiction books]]
+[[Category:Natural history books]]
+[[Category:Ornithological handbooks]]
+[[Category:Woodcuts]]
+[[Category:English-language non-fiction books]]
+[[Category:Books about British Birds]]

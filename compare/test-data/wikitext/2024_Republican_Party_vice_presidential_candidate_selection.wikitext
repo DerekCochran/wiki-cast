@@ -1,0 +1,563 @@
+{{short description|none}} <!-- "none" is preferred when the title is sufficiently descriptive; see [[WP:SDNONE]] -->
+{{Use mdy dates|date=July 2024}}
+{{Infobox election
+| election_name = 2024 Republican vice presidential nomination
+| flag_image = Republican Disc.svg
+| type = primary
+| ongoing = No
+| previous_election = 2016 Republican Party vice presidential candidate selection
+| previous_year = 2016
+| next_election = 2028 Republican Party vice presidential candidate selection
+| next_year = ''2028''
+| election_date = {{Start date|2024|07|15}}
+| image1 = [[File:March 2026 Official Vice Presidential Portrait of JD Vance (cropped).jpg|160x160px]]
+| nominee1 = '''[[JD Vance]]'''
+| home_state1 = [[Ohio]]
+| color1 = DE0100
+| title = Vice Presidential nominee
+| before_election = [[Mike Pence]]
+| before_party = 
+| after_election = [[JD Vance]]
+| after_party = 
+}}
+{{US 2024 presidential elections series}}
+Former president [[Donald Trump]], the [[2024 Republican Party presidential primaries|2024 Republican nominee]] for [[President of the United States]], considered several prominent [[Republican Party (United States)|Republicans]] and other individuals before selecting Senator [[JD Vance]] of Ohio as his candidate for [[Vice President of the United States]] on July 15, 2024, the first day of the [[2024 Republican National Convention]].<ref name="cnnvp">{{cite web |author=Main |first=Alison |title=Trump selects Ohio Sen. JD Vance as his running mate |url=https://www.cnn.com/2024/07/15/politics/trump-vp-pick-jd-vance/index.html |url-status=live |archive-url=https://web.archive.org/web/20240715210051/https://www.cnn.com/2024/07/15/politics/trump-vp-pick-jd-vance/index.html |archive-date=July 15, 2024 |access-date=July 15, 2024 |website=CNN|date=July 15, 2024 }}</ref> At age 39, Vance formally won the vice presidential nomination. The Trump–Vance ticket defeated the [[Kamala Harris 2024 presidential campaign|Harris–Walz]] ticket in the [[2024 United States presidential election|2024 presidential election]]. Vance became the youngest person elected vice president since [[Richard Nixon]] in [[1952 United States presidential election|1952]] at 40 years old.
+
+Vance is the first Ohioan to appear on a major party presidential ticket since [[John W. Bricker|John Bricker]] in [[1944 United States presidential election|1944]], the first Ohio native to be elected to the vice presidency since [[Charles G. Dawes|Charles Dawes]] in [[1924 United States presidential election|1924]], and the first veteran since [[Al Gore]] in [[1992 United States presidential election|1992]].<ref>{{Cite web |date=July 15, 2024 |title=JD Vance would be first Ohio resident to be vice president, is first in 80 years on ticket |url=https://www.dispatch.com/story/news/politics/elections/2024/07/15/jd-vance-would-be-first-ohio-resident-to-serve-as-vp/74360390007/ |access-date=July 15, 2024 |website=Dispatch.com |archive-date=July 16, 2024 |archive-url=https://web.archive.org/web/20240716142856/https://www.dispatch.com/story/news/politics/elections/2024/07/15/jd-vance-would-be-first-ohio-resident-to-serve-as-vp/74360390007/ |url-status=live }}</ref><ref>{{Cite web |date=July 15, 2024 |title=JD Vance Breaks the 'Beard Barrier' |url=https://www.newsweek.com/jd-vance-beard-vice-president-1925651 |access-date=July 15, 2024 |website=Newsweek.com |archive-date=July 16, 2024 |archive-url=https://web.archive.org/web/20240716125349/https://www.newsweek.com/jd-vance-beard-vice-president-1925651 |url-status=live}}</ref> He was also the first [[Millennials|Millennial]], U.S. Marine Corps veteran, and veteran of the [[Iraq War]] and the wider [[war on terror]] on a presidential ticket, as well as to be elected to the vice presidency, whereas his wife [[Usha Vance|Usha Vance, (née) Chilukuri]] became the youngest [[Second lady of the United States|second lady]] since [[Jane Hadley Barkley]] in 1949, and the first [[Asian American]] second lady.<ref>Kornfield, Meryl and LeVine, Marianne. [https://www.washingtonpost.com/politics/2024/07/15/jd-vance-trump-vice-president-announcement/ "Trump chooses Sen. J.D. Vance, a former critic, as his vice-presidential pick"], ''The Washington Post'', 15 July 2024. Retrieved 16 July 2024. {{Webarchive|url=https://web.archive.org/web/20240716035857/https://www.washingtonpost.com/politics/2024/07/15/jd-vance-trump-vice-president-announcement/ |date=July 16, 2024}}</ref><ref>Lawrence, Drew F. [https://www.military.com/daily-news/2024/07/16/jd-vances-marine-corps-service-would-set-him-apart-most-vice-presidents.html "JD Vance's Marine Corps Service Would Set Him Apart from Most Vice Presidents"] {{Webarchive|url=https://web.archive.org/web/20240717093101/https://www.military.com/daily-news/2024/07/16/jd-vances-marine-corps-service-would-set-him-apart-most-vice-presidents.html |date=July 17, 2024 }}, [[Military.com]], July 16, 2024. Retrieved July 16, 2024.</ref>
+
+==Background==
+{{See also|2024 Republican Party presidential primaries}}
+
+In March 2022, former president [[Donald Trump]] announced that he would not select his former vice president, [[Mike Pence]], as his running mate in 2024.<ref name=Benson>{{Cite news |last=Samuel |first=Benson |date=March 16, 2022 |title=Trump rules out Pence as VP in potential 2024 presidential bid |url=https://www.politico.com/news/2022/03/16/trump-rules-out-pence-as-vp-2024-00017783 |work=[[Politico]] |access-date=July 8, 2025}}</ref>
+
+Trump's anticipated status as the [[presumptive nominee]] was solidified upon his victories in the Super Tuesday primaries, which saw [[Nikki Haley]], his last remaining opposition, drop out the following day. Haley refused to endorse Trump at the time, leaving her out of consideration in the view of multiple news and media outlets.<ref>{{Cite web|last1=Peoples |first1=Steve |last2=Kinnard |first2=Meg |title=Nikki Haley suspends her campaign and leaves Donald Trump as the last major Republican candidate|url=https://apnews.com/article/nikki-haley-republican-trump-super-tuesday-losses-95ab56b68a8eefbbf04ef90f2f00ef29 |access-date=March 7, 2024 |website=[[Associated Press]] |language=en |date=March 6, 2024 |archive-date=March 6, 2024|archive-url=https://web.archive.org/web/20240306235443/https://apnews.com/article/nikki-haley-republican-trump-super-tuesday-losses-95ab56b68a8eefbbf04ef90f2f00ef29 |url-status=live }}</ref> Trump became the presumptive nominee on March 12.<ref>{{cite web|last=Vakil|first=Caroline|title=Trump clinches GOP nomination|url=https://thehill.com/homenews/campaign/4527253-donald-trump-gop-nomination-delegates/|website=The Hill|date=March 12, 2024|access-date=March 15, 2024|archive-date=March 14, 2024|archive-url=https://web.archive.org/web/20240314122101/https://thehill.com/homenews/campaign/4527253-donald-trump-gop-nomination-delegates/|url-status=live}}</ref>
+
+Under the [[Twelfth Amendment to the United States Constitution]], members of the [[United States electoral college|electoral college]] cannot vote for both a presidential and a vice presidential candidate who are from the same state as themselves, to prevent states from picking a [[favorite son]]. As Trump currently resides in [[Florida]], the state's electors could not vote for both Trump and his running mate if the running mate also resided in Florida. In 2000, when [[Governor of Texas|Texas Governor]] [[George W. Bush]] picked [[Dick Cheney]], who also lived in Texas, Cheney changed his voter registration to [[Wyoming]] (where he represented the state in the [[United States House of Representatives|House of Representatives]] in the 1980s) to prevent this issue from arising with Texas' critical electoral votes.<ref>{{cite web|date=May 25, 2023|last=Fins|first=Antonio|title=Trump-DeSantis 2024 ticket a likely no go? Problem isn't their feud. It's U.S. Constitution.|archiveurl=https://web.archive.org/web/20230529222900/https://www.palmbeachpost.com/story/news/politics/2023/05/25/trump-desantis-ticket-in-2024-will-not-happen-us-constitution-says-so/70028308007/|archivedate=May 29, 2023|url=https://www.palmbeachpost.com/story/news/politics/2023/05/25/trump-desantis-ticket-in-2024-will-not-happen-us-constitution-says-so/70028308007/|work=[[The Palm Beach Post]]}}</ref>
+
+== Vetting process and selection ==
+By June 2024, a shortlist of nine candidates emerged. Four of the candidates ([[Doug Burgum]], [[Marco Rubio]], [[Tim Scott]] and [[JD Vance]]) were reportedly sent "[[Vetting#Vice presidential nominees|vetting]] materials" (although Rubio himself has denied this), while the Trump campaign requested information from four others ([[Ben Carson]], [[Tom Cotton]], [[Byron Donalds]], and [[Elise Stefanik]]).<ref>{{Cite news|last1=Samuels |first1=Brett |date=June 5, 2024 |title=Trump ramps up VP search, sending vetting materials to contenders|url=https://thehill.com/homenews/campaign/4706211-trump-ramps-up-vp-search-sending-vetting-materials-to-contenders/|access-date=June 21, 2024|work=[[The Hill (newspaper)|The Hill]]|language=en-US }}</ref><ref>{{Cite web|url=https://abcnews.go.com/Politics/vp-contenders-burgum-vance-rubio-asked-documents-trump/story?id=110870278|title=Trump team asks VP contenders Burgum, Vance, Rubio for documents|date=June 5, 2024|last1=Scott|first1=Rachel|last2=Faulders|first2=Katherine|last3=Steakin|first3=Will|last4=Demissie|first4=Hannah|last5=Walsh|first5=Kelsey|website=ABCnews.go.com|access-date=June 6, 2024|archive-date=June 18, 2024|archive-url=https://web.archive.org/web/20240618183109/https://abcnews.go.com/Politics/vp-contenders-burgum-vance-rubio-asked-documents-trump/story?id=110870278|url-status=live}}</ref><ref>{{Cite news |last1=Isenstadt |first1=Alex |last2=McGraw |first2=Meredith |date=June 5, 2024 |title=Trump campaign asks for vetting records as vice presidential search intensifies |url=https://www.politico.com/news/2024/06/05/trump-vice-president-picks-records-00161936 |access-date=June 6, 2024 |work=[[Politico]] |language=en-US |archive-date=June 18, 2024 |archive-url=https://web.archive.org/web/20240618183100/https://www.politico.com/news/2024/06/05/trump-vice-president-picks-records-00161936 |url-status=live }}</ref> On June 13, 2024, Trump indicated that [[Glenn Youngkin]] was also on his shortlist.<ref>{{Cite news |last1=Cox |first1=Erin |last2=Vozzella |first2=Laura |last3=Schwartzman |first3=Paul |date=June 14, 2024 |title=Trump backs Hogan in Md., teases Va. Gov. Youngkin as potential running mate |url=https://www.washingtonpost.com/dc-md-va/2024/06/13/trump-hogan-senate-youngkin-vice-president/ |access-date=June 16, 2024 |newspaper=Washington Post|language=en-US |issn=0190-8286 |archive-date=June 14, 2024 |archive-url=https://web.archive.org/web/20240614000329/https://www.washingtonpost.com/dc-md-va/2024/06/13/trump-hogan-senate-youngkin-vice-president/ |url-status=live }}</ref>
+
+=== Finalists ===
+On June 21, [[NBC News]] reported the three finalists were Burgum, Rubio and Vance.<ref>{{Cite web |date=June 21, 2024 |title=Trump zeroes in on his VP finalists: From the Politics Desk |url=https://www.nbcnews.com/politics/trump-zeroes-in-vp-finalists-politics-desk-rcna158363 |access-date=June 22, 2024 |website=NBC News |language=en |archive-date=June 26, 2024 |archive-url=https://web.archive.org/web/20240626184301/https://www.nbcnews.com/politics/trump-zeroes-in-vp-finalists-politics-desk-rcna158363 |url-status=live }}</ref> Burgum and Vance were said to be Trump's main focus in his running mate search, while complications were noted in Rubio as a choice due to his residency in Florida.<ref>{{cite web|url=https://www.nbcnews.com/politics/2024-election/trump-doug-burgum-jd-vance-marco-rubio-vp-search-rcna157069|title=Trump is focused on Doug Burgum, JD Vance and Marco Rubio as his VP search enters the home stretch|publisher=NBC News|access-date=June 21, 2024|date=June 21, 2024|archive-date=June 21, 2024|archive-url=https://web.archive.org/web/20240621165344/https://www.nbcnews.com/politics/2024-election/trump-doug-burgum-jd-vance-marco-rubio-vp-search-rcna157069|url-status=live|author1=Gomez, Henry J.|author2=Allen, Jonathan|author3=Burns, Dasha|author4=Lee, Carol E.|author5=Dixon, Matt|author6=Sonnier, Olympia}}</ref> CNN also projected that Scott was the fourth finalist to be Trump's running mate.<ref>{{Cite AV media |url=https://www.cnn.com/2024/07/12/politics/video/trump-vp-selection-apprentice-src-digvid |title=Trump compares VP selection to 'The Apprentice'|date=2024-07-13 |last=Levin |first=Paige |language=en |access-date=2024-07-13 |work=CNN}}</ref>
+
+<gallery>
+File:Governor Doug Burgum.jpg|alt=|{{center|[[Governor of North Dakota|Governor]] and [[Doug Burgum 2024 presidential campaign|2024 presidential candidate]]<br />'''[[Doug Burgum]]''' <br />of [[North Dakota]] <br /> (2016–2024)}}
+File:Senator Rubio official portrait.jpg|alt=|{{center|[[United States Senate|Senator]] and [[Marco Rubio 2016 presidential campaign|2016 presidential candidate]]<br />'''[[Marco Rubio]]''' <br />from [[Florida]] <br /> (2011–2025)}}
+File:Tim Scott official portrait.jpg|{{center|[[United States Senate|Senator]] and [[Tim Scott 2024 presidential campaign|2024 presidential candidate]]<br />'''[[Tim Scott]]''' <br />from [[South Carolina]] <br /> (2013–present)}}
+File:Senator Vance official portrait. 118th Congress (cropped 2).jpg|{{center|[[United States Senate|Senator]]<br />'''[[JD Vance]]''' <br />from [[Ohio]] <br /> (2023–2025)}}
+</gallery>
+
+=== Shortlist ===
+<gallery>
+File:Ben Carson official portrait.jpg|{{center|Former [[United States Secretary of Housing and Urban Development|HUD Secretary]] and [[Ben Carson 2016 presidential campaign|2016 presidential candidate]]<br />'''[[Ben Carson]]'''<br />from [[Michigan]] <br /> (2017–2021)}}
+File:Tom Cotton official Senate photo.jpg|alt=|{{center|[[United States Senator|Senator]]<br />'''[[Tom Cotton]]'''<br />from [[Arkansas]] <br />(2015–present)<ref>{{Cite web|url=https://www.nytimes.com/2024/05/24/us/politics/tom-cotton-trump-vp.html|title=Trump's V.P. Pageant Has an Unexpectedly Strong Contender: Tom Cotton|last=Bender|first=Michael|date=May 24, 2024|access-date=May 24, 2024|website=[[New York Times]]|archive-date=May 24, 2024|archive-url=https://web.archive.org/web/20240524091704/https://www.nytimes.com/2024/05/24/us/politics/tom-cotton-trump-vp.html|url-status=live}}</ref>}}
+File:Rep. Byron Donalds official photo, 117th Congress (cropped).jpg|{{center|[[United States House of Representatives|Representative]]<br />'''[[Byron Donalds]]'''<br />from [[Florida's 19th congressional district|Florida]] <br /> (2021–present)}}
+File:Elise Stefanik, 115th official photo (1).jpg|alt=|{{center|[[United States House of Representatives|Representative]] and Chair of the [[House Republican Conference]]<br />'''[[Elise Stefanik]]'''<br />from [[New York's 21st congressional district|New York]] <br /> (2015–present)}}
+File:Youngkin Governor Portrait.jpg|{{center|[[Governor of Virginia|Governor]]<br />'''[[Glenn Youngkin]]'''<br />of [[Virginia]]<br />(2022–2026)}}
+</gallery>
+
+== Final selection ==
+[[File:Trump family box at 2024 RNC day 1 (1b).png|thumb|Trump and  Vance stand together during the first night of [[2024 Republican National Convention|the Republican National Convention]]]]
+
+Trump had indicated that he would announce his selection during the Republican National Convention.<ref>{{Cite web |last=Samuels |first=Brett |date=June 24, 2024 |title=These 3 Republicans are Trump's most likely VP picks |url=https://thehill.com/homenews/campaign/4737404-trump-vp-pick-potential-candidates/ |access-date=June 26, 2024 |website=The Hill |language=en}}</ref> Before and during the convention, Rubio and Burgum were informed they would not be chosen.<ref>{{cite web |title=Trump to reveal vice-presidential pick at Republican national convention; Burgum and Rubio told it won't be them – live |url=https://www.theguardian.com/us-news/live/2024/jul/15/donald-trump-republican-national-convention-speech-milwaukee-shooting-joe-biden-us-politics-latest-news-updates |access-date=July 15, 2024 |website=[[The Guardian]]}}</ref>
+
+On June 22, NBC News reported that Trump had selected his vice presidential running mate, and they would "most likely" be at the debate on June 27.<ref>{{Cite web |last1=Traylor |first1=Jake |last2=Burns |first2=Dasha |last3=Lebowitz |first3=Megan |last4=Hernández |first4=Alec |last5=Schmeler |first5=Isabelle |date=June 23, 2024 |title=Trump says he knows who his vice presidential selection will be |url=https://www.nbcnews.com/politics/2024-election/trump-says-knows-presidential-selection-will-rcna158457 |url-status=live |archive-url=https://web.archive.org/web/20240626184209/https://www.nbcnews.com/politics/2024-election/trump-says-knows-presidential-selection-will-rcna158457 |archive-date=June 26, 2024 |access-date=June 23, 2024 |website=NBC News |language=en}}</ref><ref name="nbcjune25">{{Cite web |last1=Gomez |first1=Henry |last2=Burns |first2=Dasha |last3=Dixon |first3=Matt |last4=Tsirkin |first4=Julie |last5=Allen |first5=Jonathan |date=June 25, 2024 |title=Trump's VP announcement could come as early as this week |url=https://www.nbcnews.com/politics/2024-election/trump-considering-announcing-vp-pick-this-week-debate-rcna158827 |url-status=live |archive-url=https://web.archive.org/web/20240626184258/https://www.nbcnews.com/politics/2024-election/trump-considering-announcing-vp-pick-this-week-debate-rcna158827 |archive-date=June 26, 2024 |access-date=June 25, 2024 |website=NBC News}}</ref>
+
+On July 8, it was reported by the [[Associated Press]] that the unnamed vice presidential nominee already had their own plane with its fuselage empty awaiting to be decorated with the nominee's name.<ref name="APJuly">{{cite web |date=July 8, 2024 |title=The plane is ready, the fundraisers are booked: Trump's VP search comes down to its final days |url=https://apnews.com/article/trump-vp-announcement-rubio-vance-burgum-bc0f59de167c8601572daed08b26eb69 |url-status=live |archive-url=https://web.archive.org/web/20240708045500/https://apnews.com/article/trump-vp-announcement-rubio-vance-burgum-bc0f59de167c8601572daed08b26eb69 |archive-date=July 8, 2024 |access-date=July 8, 2024 |publisher=[[Associated Press]]}}</ref> That same day, [[Jason Miller (communications strategist)|Jason Miller]] stated that the reveal announcement could come in the week prior to the convention while Trump said that the announcement would come "probably a little before the convention, but not much. It could even be during the convention that we'd do it".<ref name="APJuly" />
+
+== Announcement ==
+Donald Trump selected [[JD Vance]] as his running mate on July 15, 2024,<ref name="cnnvp" /> becoming the first major-party candidate to announce his running mate during his party's convention since [[George H. W. Bush]] chose [[Dan Quayle]] in [[1988 Republican National Convention|1988]].<ref>{{cite news |date=July 15, 2024 |title=Trump taps JD Vance, who once called him 'America's Hitler,' as vice president pick |url=https://www.timesofisrael.com/trump-announces-ohio-senator-jd-vance-as-his-vice-president-pick/ |access-date=July 31, 2024 |newspaper=[[The Times of Israel]]}}</ref> Vance's selection made him the first [[Millennials|millennial]] running mate of a major party, and the 3rd youngest running mate (behind [[John C. Breckinridge]], and [[Richard Nixon]]) in American history. Vance was serving his first term as senator for [[Ohio]]. After he was elected as vice president, Ohio Governor [[Mike DeWine]] appointed Lieutenant Governor [[Jon Husted]] as Vance's replacement. A [[2026 United States Senate special election in Ohio|special election]] is scheduled for November 3, 2026, to fill the remainder of Vance's term to be served until January 3, 2029.<ref>{{cite web |title=Filling Vacancies in Elective Office |url=https://www.ohiosos.gov/globalassets/elections/eoresources/general/fillingvacancies.pdf |access-date=July 31, 2024 |publisher=[[Ohio Secretary of State]] |location=[[Columbus, Ohio]]}}</ref>{{failed verification|date=December 2024}}
+
+== Reception ==
+One week after the Republican National Convention, Vance had a net positive rating of minus 6 points, making him the least-liked vice presidential candidate since 1980.<ref name=":0">{{Cite web |last=Dorman |first=Alice Tecotzky, John L. |title=JD Vance breaks polling records in the worst way |url=https://www.businessinsider.com/jd-vance-lowest-vice-president-approval-rating-republican-convention-2024-7 |access-date=2024-07-28 |website=Business Insider |language=en-US}}</ref> On July 22, 2024, [[Tim Alberta]] of ''[[The Atlantic]]'' reported that some members of Trump's inner circle even began questioning whether Vance should be replaced.<ref name=":0" /> A number of House Republicans also criticized Vance over his [[Isolationism|isolationist]] foreign policy positions, lack of experience, and inability to expand the Republican coalition beyond [[Trumpism|Trump's base]].<ref>{{Cite web |last=Schnell |first=Mychael |date=2024-07-26 |title=Some House Republicans slam JD Vance as Trump's VP pick: 'The worst choice' |url=https://thehill.com/homenews/4793818-vance-vp-trump-house-republicans/ |access-date=2024-07-28 |website=The Hill |language=en-US}}</ref>
+
+=== "Childless cat ladies" comment ===
+At the end of July, a 2021 interview of Vance with [[Tucker Carlson]] of [[Fox News]] triggered further backlash at his selection. In the interview, then-Senate-candidate Vance complained that the U.S. was being run by Democrats, corporate oligarchs, and "a bunch of childless cat ladies who are miserable at their own lives and the choices that they've made and so they want to make the rest of the country miserable, too." He continued, stating "It's just a basic fact — you look at [[Kamala Harris]], [[Pete Buttigieg]], [[Alexandria Ocasio-Cortez|AOC]] — the entire future of the Democrats is controlled by people without children. And how does it make any sense that we've turned our country over to people who don't really have a direct stake in it?"<ref>{{Cite news |last=Treisman |first=Rachel |date=2024-07-29 |title=JD Vance went viral for 'cat lady' comments. The centuries-old trope has a long tail |url=https://www.npr.org/2024/07/29/nx-s1-5055616/jd-vance-childless-cat-lady-history |access-date=2025-06-24 |work=NPR |language=en}}</ref>
+
+His comments drew condemnation from notable figures such as [[Jennifer Aniston]], who does not have children and has been public about her fertility struggles. [[Ella Emhoff]], Kamala Harris's step-daughter, and [[Kerstin Emhoff]], ex-wife of the [[Second Gentleman]] [[Doug Emhoff]], also responded to Vance's comments, stating “For over 10 years, since Cole and Ella were teenagers, Kamala has been a co-parent with Doug and I. She is loving, nurturing, fiercely protective, and always present. I love our blended family and am grateful to have her in it.”<ref name=":1">{{Cite web |last=Bailey |first=Sarah D. Wire, Swapna Venugopal Ramaswamy and Phillip M. |title=Single, childless women push back against Vance claims they don't care about America |url=https://www.usatoday.com/story/news/politics/elections/2024/07/27/jd-vance-childless-cat-ladies-backlash/74541493007/ |access-date=2024-07-28 |website=USA TODAY |language=en-US}}</ref>
+
+In an appearance on ''[[Megyn Kelly|The Megyn Kelly Show]]'', Vance responded to the controversy, stating "Obviously it was a sarcastic comment. I’ve got nothing against cats... People are focusing so much on the sarcasm and not on the substance... and the substance of what I said, Megyn — I’m sorry, it is true."<ref name=":1" /> On September 11, 2024, following the September Presidential Debate between Donald Trump and Kamala Harris, singer Taylor Swift publicly endorsed Harris. Along with the announcement, Swift posted a photo of herself holding her cat and signed her statement as "Taylor Swift, Childless Cat Lady".<ref>{{Cite web |last=Swift |first=Taylor |date=September 11, 2024 |title=Post: Kamala Harris Endorsement |url=https://www.instagram.com/p/C_wtAOKOW1z/?hl=en |website=Instagram}}</ref>
+
+=== Vice presidential debate ===
+''See Main Article: [[2024 United States presidential debates|2024 United States Presidential Debates]]''
+
+On October 1, Vance and Tim Walz participated in a 90-minute Vice Presidential debate hosted by CBS. The debate was moderated by [[Margaret Brennan]] and [[Norah O'Donnell]].
+
+The VP debate was broadly considered a polite and policy-focused event, in which Vance and Walz agreed with each other a lot and maintained civility throughout; after the debate, they chatted and introduced their wives to each other.<ref>{{Cite news |last=Newell |first=Jim |date=2024-10-02 |title=J.D. Vance Won the Debate. But Tim Walz Got the Clip. |url=https://slate.com/news-and-politics/2024/10/vp-debate-winner-vance-walz-aca-climate-change-china-abortion.html |access-date=2025-06-24 |work=Slate |language=en-US |issn=1091-2339}}</ref> Columnists from ''[[The Washington Post]]'' and ''[[Reuters]]'' commended both Vance and Walz for the high level of civility and focus on policy in the debate. According to a flash poll by ''CBS News'' and ''YouGov,'' 88 percent of viewers found the tone of the debate was "generally positive".<ref>{{Cite web |last1=Pinto |first1=Jennifer De |last2=Backus |first2=Fred |last3=Director |first3=Kabir Khanna |last4=Analytics |first4=Election |last5=Khanna |first5=Technical Systems Kabir |last6=Ph.D. |last7=Director |first7=is |last8=Analytics |first8=Election |last9=elections |first9=Technical Systems at CBS News He analyzes |date=2024-10-02 |title=Who won the VP debate? Here's what debate watchers said in CBS News poll - CBS News |url=https://www.cbsnews.com/news/cbs-news-vp-debate-poll-2024/ |access-date=2025-06-24 |website=www.cbsnews.com |language=en-US}}</ref>
+
+Following the debate'', [[The New York Times]]'' wrote that Vance delivered "one of the best debating performances by a Republican nominee for president or vice president in recent memory", making a strong case for Trump's record while also emphasizing his own personal biography, after facing weeks of attacks from the Democrats. Vance's debate performance was praised by political pundits, and he was declared the winner by columnists from ''[[The New York Times]]'',<ref>{{Cite news |last=Douthat |first=Ross |date=2024-10-02 |title=Opinion {{!}} Vance's Dominant Debate Performance Shows Why He's Trump's Running Mate |url=https://www.nytimes.com/2024/09/25/opinion/vance-winning-debate.html |access-date=2025-06-24 |work=The New York Times |language=en-US |issn=0362-4331}}</ref> ''[[The Wall Street Journal]]'',<ref>{{Cite web |last=Staff |first=By WSJ Opinion |title=Opinion {{!}} Who Won the Vice-Presidential Debate, Tim Walz or JD Vance? |url=https://www.wsj.com/opinion/who-won-the-vice-presidential-debate-tim-walz-or-jd-vance-5356d4e4 |access-date=2025-06-24 |website=WSJ |date=October 2, 2024 |language=en-US}}</ref> the ''[[Los Angeles Times]]'',<ref>{{Cite web |last=Jennings |first=Scott |date=2024-10-02 |title=Opinion: JD Vance won the debate with Tim Walz, hands down |url=https://www.latimes.com/opinion/story/2024-10-01/vice-president-debate-jd-vance-tim-walz |access-date=2025-06-24 |website=Los Angeles Times |language=en-US}}</ref> ''[[USA Today]]'', the ''[[Financial Times]]'',<ref>{{Cite web |last=Potas |first=Dace |title=Opinion: I was wrong about Vance. VP debate shows Republicans can win because of him. |url=https://www.usatoday.com/story/opinion/columnist/2024/10/01/vance-vice-president-debate-trump-voters-republicans/75476158007/ |access-date=2025-06-24 |website=USA TODAY |language=en-US}}</ref> and ''[[Politico]]''.<ref>{{Cite web |title=It was a very Midwestern debate. And Vance won. |url=https://www.politico.com/news/2024/10/02/vance-walz-who-won-vp-debate-roundtable-00181905 |access-date=2025-06-24 |website=POLITICO |date=October 2, 2024 }}</ref>
+
+==Media speculation on possible candidates==
+Speculative shortlists by Trump had included various names,<ref name="bloommay2">{{Cite news |last1=Cook |first1=Nancy |last2=Lai |first2=Stephanie |date=May 2, 2024 |title=Trump Auditions VP Picks Before Wealthy Donors in Palm Beach |url=https://www.bloomberg.com/news/articles/2024-05-02/trump-auditions-vp-picks-before-wealthy-donors-in-palm-beach |access-date=May 2, 2024 |work=Bloomberg News |language=en-US |archive-date=May 2, 2024 |archive-url=https://web.archive.org/web/20240502172438/https://www.bloomberg.com/news/articles/2024-05-02/trump-auditions-vp-picks-before-wealthy-donors-in-palm-beach |url-status=live }}</ref><ref>{{Cite news |last1=Dorn |first1=Sara |date=May 5, 2024 |title=Here's Who's On Trump's Most Likely VP Shortlist—And What He's Saying About The Contenders |url=https://www.forbes.com/sites/saradorn/2024/05/06/heres-whos-on-trumps-most-likely-vp-shortlist-and-what-hes-saying-about-the-contenders/?sh=3ef03dec1c3a |access-date=May 9, 2024 |work=Forbes |language=en-US |archive-date=May 10, 2024 |archive-url=https://web.archive.org/web/20240510145635/https://www.forbes.com/sites/saradorn/2024/05/06/heres-whos-on-trumps-most-likely-vp-shortlist-and-what-hes-saying-about-the-contenders/?sh=3ef03dec1c3a |url-status=live }}</ref> and evolved throughout the campaign. Trump's primary criterion for his running mate was loyalty, according to multiple sources.<ref>{{Cite web |last1=Contorno |first1=Steve|last2= Pellish|first2=Aaron|last3=Main|first3=Alison|date=February 24, 2024 |title=At CPAC, Trump's potential running mates compete to prove their loyalty|url=https://www.cnn.com/2024/02/24/politics/cpac-trump-potential-running-mates/index.html |access-date=March 21, 2024|website=CNN |language=en |archive-date=March 6, 2024|archive-url=https://web.archive.org/web/20240306061558/https://www.cnn.com/2024/02/24/politics/cpac-trump-potential-running-mates/index.html/ |url-status=live }}</ref><ref>{{Cite web |date=February 25, 2024 |title=EDITORIAL {{!}} Loyalty or Ability? President Trump's choice of running mate especially important this time around |work=Texarkana Gazette|url=https://www.texarkanagazette.com/news/2024/feb/25/editorial-loyalty-or-ability-president-trumps/ |access-date=March 7, 2024 |language=en |archive-date=February 26, 2024|archive-url=https://web.archive.org/web/20240226060547/https://www.texarkanagazette.com/news/2024/feb/25/editorial-loyalty-or-ability-president-trumps/ |url-status=live }}</ref><ref>{{Cite web|last=Jiménez |first=Miguel |date=March 6, 2024 |title=Who will Trump choose for vice president? These are the candidates in the veepstakes|url=https://english.elpais.com/usa/elections/2024-03-06/who-will-trump-choose-for-vice-president-these-are-the-candidates-in-the-veepstakes.html |access-date=March 7, 2024 |website=EL PAÍS English |language=en-us |archive-date=March 6, 2024|archive-url=https://web.archive.org/web/20240306211823/https://english.elpais.com/usa/elections/2024-03-06/who-will-trump-choose-for-vice-president-these-are-the-candidates-in-the-veepstakes.html |url-status=live }}</ref><ref name="nymagapril12">{{Cite web|last=Hartmann |first=Margaret |date=March 1, 2024 |title=Who Will Be Trump's VP Pick? The Latest 2024 Veepstake Odds|url=https://nymag.com/intelligencer/article/trump-vp-pick-2024-candidates-odds.html |access-date=May 15, 2024 |website=Intelligencer |language=en |archive-date=March 6, 2024|archive-url=https://web.archive.org/web/20240306185337/https://nymag.com/intelligencer/article/trump-vp-pick-2024-candidates-odds.html |url-status=live }}</ref> In early 2024, [[Reuters]] reported that Trump had been encouraged by associates to consider a woman or a black man as his running mate.<ref>{{Cite web |date=January 26, 2024 |title=Trump is considering a Black or female running mate, per reports|url=https://thegrio.com/2024/01/26/donald-trump-black-or-female-running-mate-news/ |access-date=March 7, 2024 |website=TheGrio |language=en-US |archive-date=February 7, 2024|archive-url=https://web.archive.org/web/20240207064241/https://thegrio.com/2024/01/26/donald-trump-black-or-female-running-mate-news/ |url-status=live }}</ref><ref>{{Cite web|title=Who is Tim Scott? Republicans' only black senator who could be Trump's pick for vice president|url=https://news.sky.com/story/who-is-tim-scott-republicans-only-black-senator-launches-2024-presidential-bid-12886999|access-date=March 7, 2024|website=Sky News |language=en |archive-date=February 13, 2024|archive-url=https://web.archive.org/web/20240213090805/https://news.sky.com/story/who-is-tim-scott-republicans-only-black-senator-launches-2024-presidential-bid-12886999|url-status=live }}</ref><ref>{{cite news|url = https://www.reuters.com/world/us/trump-seeking-advice-friends-allies-running-mate-pick-2024-01-25/|title = Friends, allies urge Trump to choose a woman or Black man as his running mate|work = [[Reuters]]|date = January 25, 2024|access-date = May 27, 2024}}</ref>
+
+Reportedly in 2022, Trump had "repeatedly" discussed the possibility of choosing [[United States Representative|Representative]] [[Marjorie Taylor Greene]] as his running mate.<ref>{{Cite web |last=Zitser |first=Joshua|date=October 22, 2022 |title=For months, Trump has 'repeatedly' discussed choosing Marjorie Taylor Greene as his 2024 running mate: journalist|url=https://www.businessinsider.com/donald-trump-repeatedly-discussing-marjorie-taylor-greene-running-mate-2022-10 |website=Business Insider |access-date=October 30, 2022 |archive-date=October 29, 2022|archive-url=https://web.archive.org/web/20221029182134/https://www.businessinsider.com/donald-trump-repeatedly-discussing-marjorie-taylor-greene-running-mate-2022-10 |url-status=live }}</ref> Greene also claimed that she had been in talks with Trump to become his running mate.<ref>{{Cite web |last=Papenfuss |first=Mary |date=October 24, 2022 |title=Marjorie Taylor Greene Tells Reporter She Is In Talks With Trump To Be Running Mate|url=https://www.huffpost.com/entry/marjorie-taylor-greene-trump-running-mate-discussions_n_6355cc19e4b04cf8f384d602|access-date=October 24, 2022 |website=HuffPost |language=en |archive-date=October 24, 2022|archive-url=https://web.archive.org/web/20221024042348/https://www.huffpost.com/entry/marjorie-taylor-greene-trump-running-mate-discussions_n_6355cc19e4b04cf8f384d602 |url-status=live }}</ref> On March 6, 2023, multiple sources close to Trump, as reported by [[Axios (website)|Axios]], narrowed the list down to four major contenders: Nikki Haley; Governor [[Sarah Huckabee Sanders]] of [[Arkansas]], former [[White House Press Secretary|White House press secretary]] for Trump; Governor [[Kristi Noem]] of [[South Dakota]]; and [[Kari Lake]], candidate for [[2022 Arizona gubernatorial election|Arizona governor in 2022]] who lost narrowly to [[Katie Hobbs]]. On July 3, 2023, [[Politico]] reported that sources close to Sanders said that she was not interested in being chosen as the vice presidential nominee as "she intends to serve as governor for eight years."<ref name="Sanders">{{cite web |date=July 3, 2023 |title=Playbook: A pre-holiday parade through the headlines|url=https://www.politico.com/newsletters/playbook/2023/07/03/a-pre-holiday-parade-through-the-headlines-00104541 |access-date=July 4, 2023 |website=Politico |archive-date=July 3, 2023|archive-url=https://web.archive.org/web/20230703135104/https://www.politico.com/newsletters/playbook/2023/07/03/a-pre-holiday-parade-through-the-headlines-00104541 |url-status=live|author1=Bade, Rachael|author2=Daniels, Eugene|author3=Lizza, Ryan}}</ref> On August 24, 2023, Trump in a media interview mentioned Noem, Governor [[Henry McMaster]] of [[South Carolina]], and former primary opponent and businessman [[Vivek Ramaswamy]] as potential vice president picks.<ref name="aug31i">{{Cite web |date=August 25, 2023 |title=Trump names McMaster, Noem and Ramaswamy as possible Veep picks in post-arrest Newsmax interview|url=https://www.the-independent.com/news/world/americas/us-politics/donald-trump-ramaswamy-mcmaster-noem-veep-picks-b2399172.html |access-date=August 31, 2023 |website=The Independent |language=en |archive-date=August 29, 2023|archive-url=https://web.archive.org/web/20230829154512/https://www.the-independent.com/news/world/americas/us-politics/donald-trump-ramaswamy-mcmaster-noem-veep-picks-b2399172.html |url-status=live }}</ref>
+
+Trump acknowledged a total of six names on his vice presidential shortlist at a [[Fox News]] townhall with [[Laura Ingraham]] in February 2024: Kristi Noem, Vivek Ramaswamy, Governor [[Ron DeSantis]] of [[Florida]], [[United States Senator|Senator]] [[Tim Scott]] of South Carolina, Representative [[Byron Donalds]] of Florida, and former Representative [[Tulsi Gabbard]] of [[Hawaii]].<ref name="forbes">{{Cite web |last=Ray |first=Siladitya |title='All Solid': Trump Acknowledges VP Shortlist That Includes Former Primary Rivals|url=https://www.forbes.com/sites/siladityaray/2024/02/21/all-solid-trump-acknowledges-vp-shortlist-that-includes-former-primary-rivals/ |access-date=March 2, 2024 |website=Forbes |language=en |archive-date=March 2, 2024|archive-url=https://web.archive.org/web/20240302183329/https://www.forbes.com/sites/siladityaray/2024/02/21/all-solid-trump-acknowledges-vp-shortlist-that-includes-former-primary-rivals/ |url-status=live }}</ref> Of those six, DeSantis declined to be considered that same month,<ref name="cnnfeb22">{{Cite web|last1=Maher|first1=Kit|last2=Contorno|first2=Steve|date=February 22, 2024|title=DeSantis says he wouldn't serve as Trump's vice president but doesn't rule out 2028 run|url=https://www.cnn.com/2024/02/22/politics/ron-desantis-vice-president-trump/index.html|access-date=March 20, 2024|website=CNN|language=en|archive-date=March 17, 2024|archive-url=https://web.archive.org/web/20240317222959/https://www.cnn.com/2024/02/22/politics/ron-desantis-vice-president-trump/index.html|url-status=live}}</ref> and while Ramaswamy was reportedly ruled out in March,<ref name="nymagapril12" /> he was back in consideration by May.<ref>{{cite web|url=https://www.nbcnews.com/politics/2024-election/trumps-presidential-contenders-show-support-loyalty-court-rcna152206|title=Trump's vice presidential contenders show their support — and loyalty — in court|work=NBC News|last1=Hernández|first1=Alec|date=May 14, 2024|access-date=May 15, 2024|archive-date=May 14, 2024|archive-url=https://web.archive.org/web/20240514223931/https://www.nbcnews.com/politics/2024-election/trumps-presidential-contenders-show-support-loyalty-court-rcna152206|url-status=live}}</ref> In March, Trump estimated that there were a total of 15 people on his shortlist in an interview with [[Newsmax]]. Three additional names were reported to have been revealed: former [[United States Secretary of Housing and Urban Development|HUD Secretary]] [[Ben Carson]], Senator [[Marco Rubio]] of Florida, and Representative [[Elise Stefanik]] of [[New York (state)|New York]].<ref>{{Cite web|url=https://www.nbcnews.com/politics/donald-trump/trump-eyes-sen-marco-rubio-potential-vp-pick-rcna144003|title=Trump eyes Sen. Marco Rubio as a potential VP pick|last1=Burns|first1=Dasha|last2=Dixon|first2=Matt|last3=Allen|first3=Jonathan|website=NBC News|date=March 20, 2024|access-date=March 21, 2024|archive-date=March 20, 2024|archive-url=https://web.archive.org/web/20240320235344/https://www.nbcnews.com/politics/donald-trump/trump-eyes-sen-marco-rubio-potential-vp-pick-rcna144003|url-status=live}}</ref> In late March, four others were added to the list: Sarah Huckabee Sanders, Governor [[Doug Burgum]] of North Dakota, Senator [[Katie Britt]] of [[Alabama]], and Senator [[JD Vance]] of [[Ohio]].<ref name="Politicomarch31">{{cite web|url=https://www.politico.com/news/2024/03/31/inside-donald-trumps-apprentice-style-search-for-a-running-mate-00149827|title=Trump's VP search is starting to get serious|work=[[Politico]]|date=March 31, 2024|access-date=March 31, 2024|last1=McGraw|first1=Meridith|last2=Allison|first2=Natalie|last3=Everett|first3=Burgess|archive-date=March 31, 2024|archive-url=https://web.archive.org/web/20240331174030/https://www.politico.com/news/2024/03/31/inside-donald-trumps-apprentice-style-search-for-a-running-mate-00149827|url-status=live}}</ref> The chances of Noem being selected reportedly waned in April 2024 because of her hardline stance on [[Abortion in South Dakota|abortion]] and backlash to a revelation in her autobiography that she shot and killed her pet dog.<ref name="puckapril12">{{Cite web|url=https://puck.news/trump-choice-for-vp-could-come-down-to-abortion/|title=Midnight at Mar-a-Lago|first=Tara|last=Palmeri|date=April 12, 2024|website=[[Puck (media company)|Puck]]|access-date=April 13, 2024|archive-date=April 14, 2024|archive-url=https://web.archive.org/web/20240414055244/https://puck.news/trump-choice-for-vp-could-come-down-to-abortion/|url-status=live}}</ref><ref name="nymagapril12" /><ref>{{Cite web |last=Samuels |first=Brett |date=April 30, 2024 |title=Noem's dog tale sinks chances of becoming Trump's VP |url=https://thehill.com/homenews/campaign/4630266-noems-dog-tale-sinks-chances-of-becoming-trumps-vp/ |access-date=April 30, 2024 |website=The Hill |language=en-US |archive-date=April 30, 2024 |archive-url=https://web.archive.org/web/20240430101216/https://thehill.com/homenews/campaign/4630266-noems-dog-tale-sinks-chances-of-becoming-trumps-vp/ |url-status=live }}</ref> As of April 30, Sanders reportedly had "slipp[ed] down the list" for not endorsing Trump quickly enough.<ref>{{Cite news |last1=Gómez |first1=Fin |last2=Rinaldi |first2=Olivia |date=April 30, 2024 |title=Who are Trump's potential VP picks? Here are some candidates who are still in the running |url=https://www.cbsnews.com/news/trumps-potential-vp-picks/ |access-date=May 1, 2024 |work=[[CBS News]] |archive-date=April 30, 2024 |archive-url=https://web.archive.org/web/20240430183147/https://www.cbsnews.com/news/trumps-potential-vp-picks/ |url-status=live }}</ref>
+
+On  July 11, 2024, it was reported that [[Donald Trump Jr.]] would speak at the 2024 Republican National Convention preceding the vice presidential pick, prompting speculation that Vance is the selected vice presidential candidate, as he and Trump Jr. have a close relationship.<ref>{{Cite news |last=Lowell |first=Hugo |date=July 11, 2024 |title=Don Jr to introduce Trump's vice-president pick at Republican convention |url=https://www.theguardian.com/us-news/article/2024/jul/11/donald-trump-vp-pick-rnc |access-date=July 11, 2024 |work=The Guardian |language=en-GB |issn=0261-3077}}</ref> Trump Jr. later said "I exerted 10,000% of my political capital" to persuade his father to choose Vance: "I may get a favor from my father in like, 2076. I used it all".<ref name="price20241125">{{Cite news |last=Price |first=Michelle |date=2024-11-25 |title=Donald Trump Jr. emerges as a political force of his own as he helps his father launch a second term |url=https://apnews.com/article/donald-trump-jr-influence-republican-party-e5e7ec407c354964b667c035c890dc0e |access-date=2025-01-18 |language=en |work=Associated Press News}}</ref>
+
+The [[Attempted assassination of Donald Trump in Pennsylvania|attempted assassination of Donald Trump]] led to speculation over its potential impact on Trump's decision on the vice presidential nominee and the manner in which the selection would be announced.<ref>{{Cite news |last1=Bade |first1=Rachael |last2=Daniels |first2=Eugene |last3=Lizza |first3=Ryan |date=July 14, 2024 |title=The known unknowns of the Trump shooting |url=https://www.politico.com/news/2024/07/14/trump-shooting-questions-00168089 |access-date=July 14, 2024 |work=Politico |archive-date=July 14, 2024 |archive-url=https://web.archive.org/web/20240714201812/https://www.politico.com/news/2024/07/14/trump-shooting-questions-00168089 |url-status=live }}</ref>
+
+=== Federal executive branch officials ===
+<gallery>
+File:Nikki Haley by Gage Skidmore 5.jpg|{{Center|[[United States Ambassador to the United Nations|UN Ambassador]] and [[Nikki Haley 2024 presidential campaign|2024 presidential candidate]] <br />'''[[Nikki Haley]]'''<br />from [[South Carolina]] <br />(2017–2018)<ref>{{Cite web |last=Thomas |first=Steff |title=Haley tries to quash Trump VP talk: 'It's done' |url=https://thehill.com/homenews/campaign/4486250-haley-tries-to-quash-trump-vp-talk/ |website=The Hill |language=en-US |date=February 23, 2024 |access-date=March 14, 2024 |archive-date=February 26, 2024 |archive-url=https://web.archive.org/web/20240226085638/https://thehill.com/homenews/campaign/4486250-haley-tries-to-quash-trump-vp-talk/ |url-status=live }}</ref>}}|alt=United States Ambassador to the United Nations and 2024 presidential candidate Nikki Haleyfrom South Carolina (2017–2018)
+File:Robert E. Lighthizer official portrait.jpg|{{center|[[United States Trade Representative]]<br />'''[[Robert Lighthizer]]'''<br />from [[Florida]] <br /> (2017–2021)<ref name="bbmarch18">{{cite web|url=https://www.bloomberg.com/news/articles/2024-03-18/trump-rules-out-ramaswamy-as-running-mate-as-he-eyes-new-team|title=Trump Rules Out Vivek Ramaswamy as Running Mate as He Eyes New Team|work=Bloomberg|last1=Jacobs|first1=Jennifer|last2=Sink|first2=Justin|date=March 18, 2024|access-date=June 23, 2024|archive-date=March 19, 2024|archive-url=https://web.archive.org/web/20240319162939/https://www.bloomberg.com/news/articles/2024-03-18/trump-rules-out-ramaswamy-as-running-mate-as-he-eyes-new-team|url-status=live}}</ref>}}
+File:Mark Meadows 2018.jpg|{{center|[[White House Chief of Staff]]<br />'''[[Mark Meadows]]'''<br />from [[North Carolina]] <br /> (2020–2021)<ref>{{cite news |last1=Caputo |first1=Marc |title='They're all begging me': Trump's 2024 veep tryouts get underway|url=https://www.politico.com/news/2021/11/29/trump-vice-president-choice-2024-523429 |work=Politico |date=November 29, 2021 |access-date=November 21, 2022 |archive-date=November 21, 2022|archive-url=https://web.archive.org/web/20221121154823/https://www.politico.com/news/2021/11/29/trump-vice-president-choice-2024-523429 |url-status=live }}</ref>}}
+File:Mike Pompeo official photo (cropped).jpg|{{center|[[United States Secretary of State|Secretary of State]]<br />'''[[Mike Pompeo]]'''<br />from [[Kansas]] <br /> (2018–2021)<ref>{{cite news|last1=Teh|first1=Cheryl|title=Ex-Trump aide Peter Navarro says the former president should pick Ron DeSantis as his 2024 running mate instead of 'losers like Nikki Haley, Ted Cruz, and Josh Hawley'|url=https://www.businessinsider.com/peter-navarro-trump-desantis-pompeo-2024-vp-danger-zone-losers-2022-7|access-date=August 11, 2022|work=Business Insider|date=July 8, 2022|archive-date=August 11, 2022|archive-url=https://web.archive.org/web/20220811184328/https://www.businessinsider.com/peter-navarro-trump-desantis-pompeo-2024-vp-danger-zone-losers-2022-7|url-status=live}}</ref>}}
+File:John Ratcliffe official photo.jpg|{{Center|[[Director of National Intelligence]]<br />'''[[John Ratcliffe]]'''<br />from [[Texas]]<br />(2020–2021)<ref name="nytnov25">{{Cite news |last1=Bender |first1=Michael C. |last2=Lieberman |first2=Rebecca |date=November 25, 2023 |title=Who Would Donald Trump Choose for Vice President? |url=https://www.nytimes.com/interactive/2023/us/politics/donald-trump-vp.html |access-date=March 14, 2024 |work=The New York Times |language=en-US |issn=0362-4331 |archive-date=March 14, 2024|archive-url=https://web.archive.org/web/20240314050403/https://www.nytimes.com/interactive/2023/us/politics/donald-trump-vp.html |url-status=live }}</ref>}}|alt=Former Director of National Intelligence John Ratcliffe of Texas(2020–2021)
+</gallery>
+
+===Members of Congress===
+<gallery>
+File:Sen. Marsha Blackburn (R-TN) official headshot - 116th Congress (cropped).jpg|{{center|[[United States Senate|Senator]]<br />'''[[Marsha Blackburn]]'''<br />from [[Tennessee]] <br />(2019–present)<ref>{{cite news|last1=Steinhauser|first1=Paul|title=Blackburn's 2022 trips to New Hampshire, Iowa spark some 2024 speculation|url=https://www.foxnews.com/politics/blackburns-new-hampshire-iowa-2024-speculation|access-date=August 19, 2022|publisher=Fox News|date=March 18, 2022|archive-date=March 18, 2022|archive-url=https://web.archive.org/web/20220318182013/https://www.foxnews.com/politics/blackburns-new-hampshire-iowa-2024-speculation|url-status=live}}</ref>}}
+File:Katie Britt (cropped).jpg|{{center|[[United States Senate|Senator]]<br />'''[[Katie Britt]]'''<br />from [[List of United States senators from Alabama|Alabama]] <br />(2023–present)<ref name="Politicomarch31"/>}}
+File:Ted Cruz senatorial portrait.jpg|{{center|[[United States Senator|Senator]] and [[Ted Cruz 2016 presidential campaign|2016 presidential candidate]]<br />'''[[Ted Cruz]]'''<br />from [[Texas]] <br />(2013–present)<ref name=cillizza>{{cite news|last1=Cillizza|first1=Chris|title=So, who might be Donald Trump's running mate?|url=https://www.cnn.com/2022/03/16/politics/trump-potential-running-mates-2024/index.html|access-date=August 10, 2022|publisher=CNN|date=March 17, 2022|archive-date=August 11, 2022|archive-url=https://web.archive.org/web/20220811011240/https://www.cnn.com/2022/03/16/politics/trump-potential-running-mates-2024/index.html|url-status=live}}</ref>}}
+File:Joni Ernst, official portrait, 116th Congress 3 (cropped).jpg|{{center|[[United States Senator|Senator]]<br />'''[[Joni Ernst]]'''<br />from [[Iowa]] <br />(2015–present)<ref name=mackinnon>{{cite news|last1=Mackinnon|first1=Douglas|title=Trump's vice presidential running mate for 2024?|url=https://thehill.com/opinion/white-house/3495831-trumps-vice-presidential-running-mate-for-2024/|access-date=August 10, 2022|work=The Hill|date=May 21, 2022|archive-date=August 11, 2022|archive-url=https://web.archive.org/web/20220811011232/https://thehill.com/opinion/white-house/3495831-trumps-vice-presidential-running-mate-for-2024/|url-status=live}}</ref>}}
+File:Tulsi Gabbard, official portrait, 113th Congress (cropped 3).jpg|alt=|{{Center|Former [[United States House of Representatives|Representative]] and [[2020 Democratic Party presidential primaries|2020 Democratic presidential candidate]]<br />'''[[Tulsi Gabbard]]'''<br />from [[Hawaii]]<br />(2013–2021) <br />(''Independent'')<ref>{{Cite web |date=January 12, 2023 |title=Donald Trump allies floating Tulsi Gabbard as 2024 running mate, report says |url=https://www.independent.co.uk/news/world/americas/us-politics/donald-trump-tulsi-gabbard-2024-b2261134.html |access-date=February 18, 2023 |website=The Independent |language=en}}</ref>}}
+File:Trey Gowdy, official portrait, 115th Congress (cropped).jpg|{{Center|Former [[United States House of Representatives|Representative]]<br />'''[[Trey Gowdy]]'''<br />from [[South Carolina]]<br />(2011–2019)<ref name="Time September 20">{{Cite magazine |last=Racker |first=Mini |date=September 20, 2023 |title=Tim Scott Floats Potential Running Mates as He Seeks Traction in New Hampshire|url=https://time.com/6316153/tim-scott-running-mates-pompeo-sununu-gowdy/ |access-date=September 21, 2023 |magazine=[[Time (magazine)|Time]] |archive-date=September 21, 2023|archive-url=https://web.archive.org/web/20230921065811/https://time.com/6316153/tim-scott-running-mates-pompeo-sununu-gowdy/ |url-status=live }}</ref>}}
+File:U.S. Senator Lindsey Graham, Official Photo, 113th Congress.jpg|{{center|[[United States Senate|Senator]] and [[Lindsey Graham 2016 presidential campaign|2016 presidential candidate]]<br />'''[[Lindsey Graham]]'''<br />from [[South Carolina]] <br />(2003–present)<ref name="dgraham">{{cite news |last1=Graham |first1=David A. |title=Trump's Veepstakes Begin|url=https://www.theatlantic.com/ideas/archive/2022/11/trump-2024-vice-president-running-mate-pick/672139/ |work=The Atlantic |date=November 21, 2022 |access-date=November 21, 2022 |archive-date=November 21, 2022|archive-url=https://web.archive.org/web/20221121153322/https://www.theatlantic.com/ideas/archive/2022/11/trump-2024-vice-president-running-mate-pick/672139/ |url-status=live |url-access=subscription}}</ref>}}
+File:Marjorie Taylor Greene 117th Congress portrait (cropped) v2.jpeg|{{center|[[United States House of Representatives|Representative]]<br />'''[[Marjorie Taylor Greene]]'''<br />from [[Georgia (U.S. state)|Georgia]] <br />(2021–2026)<ref>{{cite news|last1=Zitser|first1=Joshua|title=Marjorie Taylor Greene says she would be honored to be Trump's 2024 running mate, video shows|url=https://www.businessinsider.com/video-marjorie-taylor-green-honored-donald-trumps-running-mate-2022-7|access-date=August 10, 2022|work=Business Insider|date=July 31, 2022|archive-date=August 11, 2022|archive-url=https://web.archive.org/web/20220811011237/https://www.businessinsider.com/video-marjorie-taylor-green-honored-donald-trumps-running-mate-2022-7|url-status=live}}</ref>}}
+File:Bill Hagerty senatorial portrait.jpg|{{center|[[United States Senate|Senator]]<br />'''[[Bill Hagerty]]'''<br />from [[Tennessee]] <br />(2021–present)<ref name="cnnmay29">{{cite news|last1=Holmes|first1=Kristen|last2=Contorno|first2=Steve|title=Trump has touted potential VP picks for months. He may end up picking someone off the public's radar|url=https://www.cnn.com/2024/05/29/politics/trump-vp-dark-horse/index.html|work=[[CNN]]|date=May 29, 2024|access-date=June 1, 2024|archive-date=June 12, 2024|archive-url=https://web.archive.org/web/20240612095013/https://www.cnn.com/2024/05/29/politics/trump-vp-dark-horse/index.html|url-status=live}}</ref>}}
+File:Wesley Hunt, official portrait, 118th Congress (cropped).jpg|{{Center|[[United States House of Representatives|Representative]]<br />'''[[Wesley Hunt]]'''<br />from [[Texas]]<br />(2023–present)<ref name="nytnov25" />}}
+File:Mike Lee, official portrait (cropped).jpg|{{center|[[United States Senate|Senator]]<br />'''[[Mike Lee]]'''<br />from [[Utah]]<br />(2011–present)<ref name=TrumpAudio />}}
+File:Nancy Mace (cropped).jpg|{{center|[[United States House of Representatives|Representative]]<br />'''[[Nancy Mace]]'''<br />from [[South Carolina]] <br />(2021–present)<ref>{{cite news|last1=Allison|first1=Natalie|title=The new Trump acolyte no one saw coming: Nancy Mace|url=https://www.politico.com/news/2023/06/21/trump-mace-south-carolina-republican-00102793|access-date=June 21, 2022|work=Politico|date=June 21, 2023|archive-date=June 21, 2023|archive-url=https://web.archive.org/web/20230621191541/https://www.politico.com/news/2023/06/21/trump-mace-south-carolina-republican-00102793|url-status=live}}</ref>}}
+File:Rand Paul, official portrait, 112th Congress alternate (1).jpg|{{center|[[United States Senate|Senator]] and [[Rand Paul 2016 presidential campaign|2016 presidential candidate]]<br />'''[[Rand Paul]]'''<br />from [[Kentucky]] <br />(2011–present)<ref>{{cite web|url=https://www.nkytribune.com/2023/02/bill-straub-as-24-republican-race-for-president-heats-up-is-rand-paul-a-vice-presidential-choice/|title=Bill Straub: As '24 Republican race for president heats up, is Rand Paul a vice presidential choice?|first=Bill|last=Straub|date=February 24, 2023|access-date=June 6, 2023|work=Northern Kentucky Tribune|archive-date=June 7, 2023|archive-url=https://web.archive.org/web/20230607001108/https://www.nkytribune.com/2023/02/bill-straub-as-24-republican-race-for-president-heats-up-is-rand-paul-a-vice-presidential-choice/|url-status=live}}</ref><ref>{{cite web|url=https://www.washingtonexaminer.com/news/washington-secrets/rand-paul-could-be-the-secret-to-winning-the-white-house|title=Rand Paul could be the secret to winning the White House|first=Paul|last=Bedard|work=[[Washington Examiner]]|date=February 21, 2023|access-date=June 6, 2023|archive-date=June 7, 2023|archive-url=https://web.archive.org/web/20230607001106/https://www.washingtonexaminer.com/news/washington-secrets/rand-paul-could-be-the-secret-to-winning-the-white-house|url-status=live}}</ref>}}
+File:REP.MES Headshot (cropped 2).jpg|{{center|[[United States House of Representatives|Representative]]<br />'''[[María Elvira Salazar]]'''<br />from [[Florida]] <br />(2021–present)<ref name="cnnmay29"/>}}
+File:Official Portrait of Senator Rick Scott (R-FL).jpg|{{Center|[[United States Senate|Senator]]<br />'''[[Rick Scott]]'''<br />from [[Florida]]<br />(2019–present)<ref name="nytnov25" />}}
+File:Tommy Tuberville, official portrait, 118th Congress (slight crop).jpg|{{center|[[United States Senate|Senator]]<br />'''[[Tommy Tuberville]]'''<br />from [[Alabama]] <br />(2021–present)<ref name="dgraham"/>}}
+File:Congressman Jeff Van Drew.jpg|{{center|[[United States House of Representatives|Representative]]<br />'''[[Jeff Van Drew]]'''<br />from [[New Jersey]] <br />(2019–present)<ref>{{cite news|last1=Wildstein|first1=David|title=Trump launches Van Drew for VP trial balloon|url=https://newjerseyglobe.com/campaigns/trump-launches-van-drew-for-vp-trial-balloon/|access-date=August 11, 2022|work=New Jersey Globe|date=August 11, 2022|archive-date=August 11, 2022|archive-url=https://web.archive.org/web/20220811172906/https://newjerseyglobe.com/campaigns/trump-launches-van-drew-for-vp-trial-balloon/|url-status=live}}</ref>}}
+File:Michael Waltz, official portrait, 116th Congress (cropped).jpg|{{center|[[United States House of Representatives|Representative]]<br />'''[[Michael Waltz]]'''<br />from [[Florida]]<br />(2019–2025)<ref name=TrumpAudio>{{cite news |title=Trump audio offers tantalizing glimpses of his thoughts on VP pick |first=Jenny |last=Goldsberry |work=[[Washington Examiner]] |date=May 5, 2024 |access-date=May 5, 2024 |url=https://www.washingtonexaminer.com/news/campaigns/presidential/2992091/trump-audio-offers-tantalizing-glimpses-of-his-thoughts-on-vp-pick/ |archive-date=May 6, 2024 |archive-url=https://web.archive.org/web/20240506003713/https://www.washingtonexaminer.com/news/campaigns/presidential/2992091/trump-audio-offers-tantalizing-glimpses-of-his-thoughts-on-vp-pick/ |url-status=live }}</ref>}}|alt=RepresentativeMichael Waltzfrom Florida(2019–present)
+File:Lee Zeldin new official portrait.jpg|{{center|Former [[United States House of Representatives|Representative]] and [[2022 New York gubernatorial election|2022 nominee]] for [[List of Governors of New York|Governor of New York]]<br />'''[[Lee Zeldin]]'''<br />from [[New York (state)|New York]] <br />(2015–2023)<br /><ref>{{cite web|url=https://thehill.com/homenews/campaign/3878957-zeldin-launches-pac-aimed-at-increasing-gop-turnout-among-voters-of-color-younger-demographics/|first=Caroline|last=Vakil|title=Zeldin launches PAC aimed at increasing GOP turnout among voters of color, younger demographics|work=[[The Hill (newspaper)|The Hill]]|date=March 1, 2023|access-date=March 14, 2023|archive-date=March 8, 2023|archive-url=https://web.archive.org/web/20230308200317/https://thehill.com/homenews/campaign/3878957-zeldin-launches-pac-aimed-at-increasing-gop-turnout-among-voters-of-color-younger-demographics/|url-status=live}}</ref><ref>{{cite web|url=https://www.politico.com/news/2022/10/29/ron-desantis-stumps-for-lee-zeldin-00064123|title=DeSantis stumps for Zeldin, painting Florida as New York's future|first=Anna|last=Gronewald|work=[[Politico]]|date=October 29, 2022|access-date=March 14, 2023|archive-date=March 24, 2023|archive-url=https://web.archive.org/web/20230324144418/https://www.politico.com/news/2022/10/29/ron-desantis-stumps-for-lee-zeldin-00064123|url-status=live}}</ref><ref>{{cite web|url=https://thehill.com/homenews/campaign/3867181-trump-ally-zeldin-appears-with-desantis-at-new-york-law-enforcement-event/|title=Trump ally Zeldin appears with DeSantis at New York law enforcement event|first=Caroline|last=Vakil|date=February 20, 2023|access-date=March 14, 2023|work=[[The Hill (newspaper)|The Hill]]|archive-date=March 4, 2023|archive-url=https://web.archive.org/web/20230304132613/https://thehill.com/homenews/campaign/3867181-trump-ally-zeldin-appears-with-desantis-at-new-york-law-enforcement-event/|url-status=live}}</ref>}}
+</gallery>
+
+===Governors===
+<gallery>
+File:Governor Henry McMaster.jpg|{{center|[[Governor of South Carolina|Governor]]<br />'''[[Henry McMaster]]'''<br />of [[South Carolina]] <br />(2017–present)<ref name=aug31i/>}}
+File:Noem Portrait (cropped).jpg|alt=Governor Kristi Noem of South Dakota (2019–present)|{{center|[[Governor of South Dakota|Governor]]<br />'''[[Kristi Noem]]'''<br />of [[South Dakota]]<ref name=puckapril12/><ref name=nymagapril12/><ref>{{cite web|url=https://theblast.com/595764/donald-trump-disappointed-puppy-killer-kristi-noem-vp-pick/|title=Donald Trump 'Disappointed' In 'Puppy Killer' Kristi Noem As She Loses Shot At Being VP Pick|date=April 29, 2024|last=Adegoke|first=Favour|website=The Blast|access-date=May 1, 2024|archive-date=May 1, 2024|archive-url=https://web.archive.org/web/20240501221747/https://theblast.com/595764/donald-trump-disappointed-puppy-killer-kristi-noem-vp-pick/|url-status=live}}</ref><br />(2019–2025)}}
+File:Sarah Palin (51769866572) (cropped).jpg|alt=|{{center|Former [[Governor of Alaska|Governor]] and [[2008 Republican Party vice presidential candidate selection|2008 vice presidential nominee]]<br />'''[[Sarah Palin]]'''<br />of [[Alaska]] <br />(2006–2009)<ref>{{cite news|last1=Rahman|first1=Khaleda|title=Sarah Palin Open to Being Donald Trump's Running Mate in 2024|url=https://www.newsweek.com/sarah-palin-open-being-donald-trump-running-mate-2024-1699614|access-date= August 17, 2022|work=Newsweek|date=21 April 2022|archive-date=August 17, 2022|archive-url=https://web.archive.org/web/20220817212307/https://www.newsweek.com/sarah-palin-open-being-donald-trump-running-mate-2024-1699614|url-status=live}}</ref>}}
+File:Kim Reynolds (53129996491) (cropped).jpg|{{center|[[Governor of Iowa|Governor]]<br />'''[[Kim Reynolds]]'''<br />of [[Iowa]] <br />(2017–present)<ref name=mackinnon/><ref>{{cite news|last1=Hall|first1=Madison|title=Ron DeSantis said he'd consider Iowa Gov. Kim Reynolds as a running mate but when asked about it, she said she's 'busy'|url=https://www.businessinsider.com/iowa-gov-kim-reynolds-doesnt-want-to-be-ron-desantis-running-mate-2023-7|access-date=July 18, 2023|work=Business Insider|date=July 17, 2023|archive-date=July 18, 2023|archive-url=https://web.archive.org/web/20230718170300/https://www.businessinsider.com/iowa-gov-kim-reynolds-doesnt-want-to-be-ron-desantis-running-mate-2023-7|url-status=live}}</ref>}}
+File:Youngkin Governor Portrait.jpg|{{center|[[Governor of Virginia|Governor]]<br />'''[[Glenn Youngkin]]'''<br />of [[Virginia]] <br />(2022–2026)<ref name=cillizza/>}}
+</gallery>
+
+===Others===
+<gallery>
+File:Marla Maples LF crop (cropped).jpg|{{Center|Actress and Trump's former wife<br />'''[[Marla Maples]]'''<br /> from [[Florida]]<ref>{{Cite web |last=Barber |first=Rachel |date=July 10, 2024 |title=Donald Trump's ex-wife says she is 'open' to serving as his vice president |url=https://www.usatoday.com/story/news/politics/elections/2024/07/10/donald-trumps-ex-wife-marla-maples-vp/74352818007/ |access-date=July 10, 2024 |website=USA Today |language=en-US |archive-date=July 11, 2024 |archive-url=https://web.archive.org/web/20240711021324/https://www.usatoday.com/story/news/politics/elections/2024/07/10/donald-trumps-ex-wife-marla-maples-vp/74352818007/ |url-status=live }}</ref>}}
+File:Ronna McDaniel.jpg|alt=Former RNC chair Ronna McDaniel from Michigan (2017–present)|{{center|Former [[Republican National Committee]] Chair <br />'''[[Ronna McDaniel]]'''<br />from [[Michigan]] <br />(2017–2024)<ref name="dgraham"/>}}
+</gallery>
+
+=== Declined to be considered ===
+<gallery>
+File:Greg Abbott 2015.jpg|{{center|[[Governor of Texas|Governor]]<br />'''[[Greg Abbott]]'''<ref>{{Cite news |last=Pengelly |first=Martin |date=March 1, 2024 |title=Trump says Texas governor Greg Abbott 'absolutely' on vice-president shortlist|url=https://www.theguardian.com/us-news/2024/mar/01/trump-greg-abbott-vice-president-short-list |access-date=March 2, 2024 |work=The Guardian |language=en-GB |issn=0261-3077 |archive-date=March 2, 2024|archive-url=https://web.archive.org/web/20240302010658/https://www.theguardian.com/us-news/2024/mar/01/trump-greg-abbott-vice-president-short-list |url-status=live }}</ref><ref name=tdbmarch4>{{Cite web |date=March 4, 2024 |title=Greg Abbott Explains Why He Doesn't Want to Be Trump's VP|url=https://www.yahoo.com/news/greg-abbott-explains-why-doesn-103948990.html |access-date=March 7, 2024 |website=The Daily Beast |language=en-US |archive-date=March 4, 2024|archive-url=https://web.archive.org/web/20240304105530/https://www.yahoo.com/news/greg-abbott-explains-why-doesn-103948990.html |url-status=live }}</ref> <br />of [[Texas]] <br /> (2015–present)}}
+File:Ron DeSantis (53454825868)(crop - tilted).jpg|{{center|[[Governor of Florida|Governor]] and [[Ron DeSantis 2024 presidential campaign|2024 presidential candidate]]<br />'''[[Ron DeSantis]]'''<br />of [[Florida]] <br /> (2019–present)<ref name=cnnfeb22/>}}
+File:Josh Hawley, official portrait, 116th congress.jpg|{{Center|[[United States Senate|Senator]]<br />'''[[Josh Hawley]]'''<br />from [[Missouri]] <br />(2019–present)<ref>{{Cite web |last=Bogan |first=Ray |title=Sen. Josh Hawley a 'no' on 2024 run for president or vice president|url=https://san.com/cc/sen-josh-hawley-a-no-on-2024-run-for-president-or-vice-president/ |access-date=March 10, 2024 |website=Straight Arrow News |date=April 18, 2023 |language=en-US |archive-date=March 10, 2024|archive-url=https://web.archive.org/web/20240310220227/https://san.com/cc/sen-josh-hawley-a-no-on-2024-run-for-president-or-vice-president/ |url-status=live }}</ref>}}
+File:Robert F. Kennedy Jr. by Gage Skidmore.jpg|alt=Environmental lawyer, author and 2024 independent candidate for president of the United States in Robert F. Kennedy Jr. from California|{{center|Environmental lawyer and [[Robert F. Kennedy 2024 presidential campaign|2024 presidential candidate]]<br />'''[[Robert F. Kennedy Jr.]]'''<br />from [[California]]<br />(''Independent'')<ref>{{cite news|last1=Zee|first1=Michaela|title=Robert F. Kennedy Jr. Doesn't Want to Be Trump's Vice President: 'I Don't Think That My Marriage Would Survive It' (EXCLUSIVE)|url=https://variety.com/2024/politics/news/robert-f-kennedy-jr-does-not-want-donald-trump-vice-president-1235892569/|access-date=March 10, 2024|work=Variety|date=January 30, 2024|archive-date=March 11, 2024|archive-url=https://web.archive.org/web/20240311000545/https://variety.com/2024/politics/news/robert-f-kennedy-jr-does-not-want-donald-trump-vice-president-1235892569/|url-status=live}}</ref>}}
+File:Kevin McCarthy, official portrait, speaker (cropped).jpg|{{Center|Former [[Speaker of the House (United States)|Speaker of the House]] <br />'''[[Kevin McCarthy]]'''<br />from [[California]] <br />(2023)<ref>{{Cite web |last=Mason |first=Melanie |title=Kevin McCarthy on veepstakes: Trump's gonna play this like 'The Apprentice' |url=https://www.politico.com/news/2024/05/07/kevin-mccarthy-prediction-johnson-speaker-00156637 |website=Politico |language=en-US |date=May 7, 2024 |access-date=May 7, 2024 |archive-date=May 7, 2024 |archive-url=https://web.archive.org/web/20240507213755/https://www.politico.com/news/2024/05/07/kevin-mccarthy-prediction-johnson-speaker-00156637 |url-status=live }}</ref>}}
+File:Mike Pence official Vice Presidential portrait.jpg|alt=|{{center|Former [[Vice President of the United States|Vice President]] and [[Mike Pence 2024 presidential campaign|2024 presidential candidate]]<br />'''[[Mike Pence]]'''<br />from [[Indiana]] <br />(2017–2021)<ref>{{Cite web |last=Oshin |first=Olafimihan |title=Pence on if he'd run as VP again: 'Twice is enough'|url=https://thehill.com/homenews/administration/3753708-pence-on-if-hed-run-as-vp-again-twice-is-enough/ |access-date=November 30, 2022|website=The Hill |language=en |date=November 28, 2022 |archive-date=November 29, 2022|archive-url=https://web.archive.org/web/20221129112353/https://thehill.com/homenews/administration/3753708-pence-on-if-hed-run-as-vp-again-twice-is-enough/ |url-status=live }}</ref>
+File:Sarah Sanders September 2024 (cropped).jpg|{{Center|[[Governor of Arkansas|Governor]] <br />'''[[Sarah Huckabee Sanders]]'''<br>of [[List of governors of Arkansas|Arkansas]]<br />(2023–present)<ref>{{Cite web |last=Nazzaro |first=Miranda |title=Sanders suggests she'll keep Arkansas job over role in Trump's second term |url=https://thehill.com/homenews/state-watch/4735853-sarah-huckabee-sanders-donald-trump-administration/ |website=The Hill |language=en-US |date=June 23, 2024 |access-date=June 23, 2024}}</ref>}}
+File:GOV SUNUNU OFFICIAL PHOTO.jpg|alt=|{{center|[[Governor of New Hampshire|Governor]]<br />'''[[Chris Sununu]]'''<br />of [[New Hampshire]] <br />(2017–2025)<ref>{{cite news|last1=Downey|first1=KC|title=Gov. Chris Sununu says he's not interested in being vice president if asked|url=https://www.wmur.com/article/new-hampshire-chris-sununu-no-republican-vp/45265673|access-date=March 10, 2024|publisher=WMUR9|date=September 22, 2023|archive-date=March 11, 2024|archive-url=https://web.archive.org/web/20240311000545/https://www.wmur.com/article/new-hampshire-chris-sununu-no-republican-vp/45265673|url-status=live}}</ref>}}
+</gallery>
+
+=== Ruled out by Trump ===
+<gallery>
+File:Kari Lake by Gage Skidmore 3.jpg|{{center|Former news anchor, [[2022 Arizona gubernatorial election|2022 nominee]] for [[Governor of Arizona]], and [[2024 United States Senate election in Arizona|2024 nominee]] for the [[United States Senate|US Senate]] <br />'''[[Kari Lake]]'''<br />from [[Arizona]]<ref>{{cite news|last1=Wingett Snatcher|first1=Yvonne|last2=Dawsey|first2=Josh|last3=Goodwin|first3=Liz|title=Tensions grow between Trump and Lake in Arizona race for Senate|url=https://www.washingtonpost.com/politics/2024/04/29/trump-kari-lake-arizona-tensions/|access-date=May 1, 2024|newspaper=[[The Washington Post]]|date=April 29, 2024|archive-date=April 29, 2024|archive-url=https://web.archive.org/web/20240429233728/https://www.washingtonpost.com/politics/2024/04/29/trump-kari-lake-arizona-tensions/|url-status=live}}</ref>}}|alt=Former news anchor and 2022 nominee for Governor of Arizona Kari Lakefrom Arizona
+File:Mike Pence official Vice Presidential portrait.jpg|alt=|{{center|Former [[Vice President of the United States|Vice President]] and [[Mike Pence 2024 presidential campaign|2024 presidential candidate]]<br />'''[[Mike Pence]]'''<br />from [[Indiana]] <br />(2017–2021)<ref name=Benson/>}}
+File:Vivek Ramaswamy by Gage Skidmore.jpg|{{center|[[Entrepreneur]] and [[Vivek Ramaswamy 2024 presidential campaign|2024 presidential candidate]]<br />'''[[Vivek Ramaswamy]]'''<br />of [[Ohio]]<ref name="bbmarch18" />}}
+</gallery>
+
+==Opinion polling==
+{| class="wikitable" style="text-align:center;font-size:90%;line-height:20px"
+|+Vice presidential polling
+|- valign="bottom"
+! style="background-position: right 85%;" | Poll source
+! style="width:120px; background-position: right 85%;" |Date(s)<br />administered
+! style="width:80px; background-position: right 85%;" |Sample<br />size{{efn|name=key|Key:<br />A – all adults<br />RV – registered voters<br />LV – likely voters<br />V – unclear}}
+! {{vert header|stp=1|Greg Abbott}}
+! {{vert header|stp=1|Doug Burgum}}
+! {{vert header|stp=1|Tucker Carlson}}
+! {{vert header|stp=1|Ben Carson}}
+! {{vert header|stp=1|Liz Cheney}}
+! {{vert header|stp=1|Chris Christie}}
+! {{vert header|stp=1|Tom Cotton}}
+! {{vert header|stp=1|Ted Cruz}}
+! {{vert header|stp=1|Ron DeSantis}}
+! {{vert header|stp=1|Byron Donalds}}
+! {{vert header|stp=1|Tulsi Gabbard}}
+! {{vert header|stp=1|Marjorie Taylor Greene}}
+! {{vert header|stp=1|Nikki Haley}}
+! {{vert header|stp=1|Josh Hawley}}
+! {{vert header|stp=1|Larry Hogan}}
+! {{vert header|stp=1|Robert F. Kennedy Jr.}}
+! {{vert header|stp=1|Kari Lake}}
+! {{vert header|stp=1|Kristi Noem}}
+! {{vert header|stp=1|Mike Pence}}
+! {{vert header|stp=1|Mike Pompeo}}
+! {{vert header|stp=1|Vivek Ramaswamy}}
+! {{vert header|stp=1|Mitt Romney}}
+! {{vert header|stp=1|Marco Rubio}}
+! {{vert header|stp=1|Sarah Huckabee Sanders}}
+! {{vert header|stp=1|Rick Scott}}
+! {{vert header|stp=1|Tim Scott}}
+! {{vert header|stp=1|Elise Stefanik}}
+! {{vert header|stp=1|Donald Trump Jr.}}
+! {{vert header|stp=1|JD Vance}}
+! {{vert header|stp=1|mw=8|''Others''}}
+! {{vert header|stp=1|''Undecided''}}
+|-
+| style="text-align:left;" |[[Yahoo News]]/[[YouGov]]<ref>[https://www.yahoo.com/news/new-yahoo-newsyougov-poll-60-of-americans-say-biden-is-not-fit-for-another-term-as-president-after-disastrous-debate--yet-2024-contest-with-trump-remains-too-close-to-call-204915250.html Yahoo News/YouGov]</ref>
+|June 28 – July 1, 2024
+|633 (RV)
+|
+|4%
+|3%
+|6%
+|
+|
+|1%
+|
+|
+|3%
+|
+|1%
+|
+|
+|
+|
+|0%
+|3%
+|
+|
+| {{party shading/Republican}} |'''11%'''
+|
+|6%
+|4%
+|
+|9%
+|2%
+|
+|5%
+|18%{{efn|"Don't care who Trump picks" with 14%; "Someone else" with 4%}}
+| {{party shading/Undecided}} |'''22%'''
+|-
+| style="text-align:left;" |[[New York Post]]<ref>[https://nypost.com/2024/05/20/us-news/ron-desantis-tim-scott-among-voters-top-picks-for-trump-veep-poll/ New York Post]</ref>
+|May 15–16, 2024
+|1,660 (RV)
+|3%
+|3%
+|4%
+|
+|
+|
+|
+|
+| {{party shading/Republican}} |'''12%'''
+|3%
+|5%
+|
+|
+|
+|
+|
+|4%
+|2%
+|
+|
+|8%
+|
+|4%
+|
+|
+|9%
+|2%
+|
+|3%
+|11%{{efn|"Someone else" with 11%}}
+| {{party shading/Undecided}} |'''25%'''
+|-
+| style="text-align:left;" |[[Léger (company)|Leger]]/[[Canadian Press]]<ref>[https://leger360.com/wp-content/uploads/2024/04/Legers-North-American-Tracker-March-27th-2024-1.pdf Leger/Canadian Press]</ref>
+|March 23–25, 2024
+|285 (A)
+|
+|1%
+|
+|10%
+|
+|
+|
+|
+| {{party shading/Republican}} |'''22%'''
+|
+|
+|
+|10%
+|
+|
+|
+|
+|4%
+|
+|
+|11%
+|
+|
+|
+|
+|9%
+|4%
+|
+|
+|6%{{efn|"Someone else" with 6%}}
+| {{party shading/Undecided}} |'''24%'''
+|-
+| style="text-align:left;" |[[YouGov]]<ref>[https://d3nkl3psvxxpe9.cloudfront.net/documents/crosstabs_Republican_Vice-Presidential_Nominees_20240304.pdf YouGov]</ref>
+|February 26 – March 3, 2024
+|380 (RV)
+|
+|
+|3%
+|8%
+|
+|
+|
+|3%
+| {{party shading/Republican}} |'''13%'''
+|
+|
+|0%
+|11%
+|
+|
+|10%
+|1%
+|5%
+|7%
+|
+|12%
+|
+|
+|4%
+|
+|9%
+|2%
+|
+|2%
+|11%{{efn|"Someone else" with 11%}}
+|9%
+|-
+| style="text-align:left;" |[[Léger (company)|Leger]]/[[Canadian Press]]<ref>[https://leger360.com/wp-content/uploads/2024/04/Legers-North-American-Tracker-February-28th-2024.pdf Leger/Canadian Press]</ref>
+|February 23–25, 2024
+|300 (A)
+|
+|2%
+|
+|5%
+|
+|
+|
+|
+| {{party shading/Republican}} |'''21%'''
+|
+|
+|
+|7%
+|
+|
+|
+|
+|4%
+|
+|
+|16%
+|
+|
+|
+|
+|9%
+|4%
+|
+|
+|7%{{efn|"Someone else" with 7%}}
+| {{party shading/Undecided}} |'''26%'''
+|-
+| style="text-align:left;" |[[YouGov]]<ref>[https://d3nkl3psvxxpe9.cloudfront.net/documents/crosstabs_Republican_Vice_Presidential_Nominees_20240209.pdf YouGov]</ref>
+|February 6–9, 2024
+|365 (RV)
+|
+|
+|4%
+|8%
+|
+|
+|
+|5%
+|18%
+|
+|
+|
+| {{party shading/Republican}} |'''20%'''
+|
+|
+|
+|3%
+|9%
+|4%
+|
+|7%
+|
+|
+|
+|
+|6%
+|
+|
+|2%
+|4%{{efn|"Someone else" with 4%}}
+|11%
+|-
+| style="text-align:left;" |[[Léger (company)|Leger]]/[[Canadian Press]]<ref>[https://leger360.com/wp-content/uploads/2024/02/Legers-North-American-Tracker-January-31st-2024-1.pdf Leger/Canadian Press]</ref>
+|January 26–28, 2024
+|299 (A)
+|
+|
+|
+|5%
+|
+|
+|
+|
+|17%
+|
+|
+|
+|14%
+|
+|
+|
+|
+|2%
+|
+|
+| {{party shading/Republican}} |'''20%'''
+|
+|
+|
+|
+|8%
+|3%
+|
+|
+|3%{{efn|"Someone else" with 3%}}
+| {{party shading/Undecided}} |'''28%'''
+|-
+| style="text-align:left;" |[[Morning Consult]]/[[Politico]]<ref>[https://www.politico.com/f/?id=0000017f-b51c-d17b-a1ff-b7dde2e60000 Morning Consult/Politico]</ref>
+|March 18–21, 2022
+|2,005 (RV)
+|
+|
+|
+|
+|8%
+|3%
+|1%
+|6%
+| {{party shading/Republican}} |'''14%'''
+|
+|
+|
+|8%
+|1%
+|2%
+|
+|
+|1%
+| {{party shading/Republican}} |'''14%'''
+|2%
+|
+|10%
+|3%
+|
+|1%
+|2%
+|
+|8%
+|
+| {{party shading/Undecided}} |'''17%'''{{efn|"Someone else" with 17%}}
+|-
+|-
+|}
+
+{{hidden begin|titlestyle=background:#cff|title=Hypothetical polling|contentstyle=border:solid 1px silver; padding:8px; background:white;}}
+{|class="wikitable" style="text-align:center;font-size:90%;line-height:20px"
+|+With Trump as the nominee
+|- valign=bottom
+! style="background-position: right 85%;" | Poll source
+! style="width:120px; background-position: right 85%;"|Date(s)<br />administered
+! style="width:90px; background-position: right 85%;"|Sample<br />size{{efn|name=key|Key:<br />A – all adults<br />RV – registered voters<br />LV – likely voters<br />V – unclear}}
+! style="background-position: right 85%;" | Margin<br />of<br />error
+! {{vert header|stp=1|Tudor Dixon}}
+! {{vert header|stp=1|Marjorie Taylor Greene}}
+! {{vert header|stp=1|Nikki Haley}}
+! {{vert header|stp=1|Kari Lake}}
+! {{vert header|stp=1|Kristi Noem}}
+! {{vert header|stp=1|Mike Pence}}
+! {{vert header|stp=1|Kim Reynolds}}
+! {{vert header|stp=1|Tim Scott}}
+! {{vert header|stp=1|Elise Stefanik}}
+! {{vert header|stp=1|mw=8|''Others''}}
+|-
+|style="text-align:left;"|[[NewsNation]]/[[Decision Desk HQ]]<ref>[https://www.newsnationnow.com/polls/newsnation-poll-economy-schools/ NewsNation/Decision Desk HQ]</ref>
+|May 25–26, 2023
+|1,000 (RV)
+|±&nbsp;3%
+|2%
+|6%
+|12%
+|5%
+|3%
+|{{party shading/Republican}}|'''15%'''
+|1%
+|13%
+|5%
+|{{party shading/Undecided}}|'''38%'''{{efn|"Someone else" with 38%}}
+|}
+{{hidden end}}
+
+In March 2023, the [[Conservative Political Action Conference]] (CPAC) held a poll on vice president, [[Kari Lake]] topped the poll with 20%, [[Ron DeSantis]] on 14% and [[Nikki Haley]] on 10%.<ref>{{Cite web|url=https://thehill.com/homenews/campaign/3885392-kari-lake-wins-cpac-vice-president-poll-topping-desantis-haley/|title=Kari Lake wins CPAC vice president poll, topping DeSantis, Haley|first=Lauren|last=Sforza|work=The Hill |date=March 6, 2023|access-date=March 21, 2023|archive-date=March 15, 2023|archive-url=https://web.archive.org/web/20230315102530/https://thehill.com/homenews/campaign/3885392-kari-lake-wins-cpac-vice-president-poll-topping-desantis-haley/|url-status=live}}</ref> [[Turning Point Action]] held a straw poll in July 2023 where Lake finished first with 30%, [[Byron Donalds]] in second with 24%, and [[Vivek Ramaswamy]] in third with 22%.<ref>{{Cite web|url=https://www.washingtonexaminer.com/news/campaigns/trump-2024-gop-straw-poll-turning-point-action|title=Majority support Trump in 2024 GOP primary straw poll at Turning Point Action Conference|first=Julia|last=Johnson|date=July 16, 2023|access-date=August 2, 2023|archive-date=August 2, 2023|archive-url=https://web.archive.org/web/20230802212537/https://www.washingtonexaminer.com/news/campaigns/trump-2024-gop-straw-poll-turning-point-action|url-status=live}}</ref>
+
+The vice presidential straw poll held at CPAC in February 2024 saw Ramaswamy and [[Kristi Noem]] tied for first place with 15% each, with [[Tulsi Gabbard]] at second with 9%, followed by [[Elise Stefanik]] and [[Tim Scott]] with 8%. Donalds and Lake received 7% and 6% respectively, while DeSantis, [[Sarah Huckabee Sanders]], and [[Ben Carson]] each earned 5% of the vote. Other candidates listed who did not reach 5% were Haley, [[Tucker Carlson]], [[Robert F. Kennedy Jr.]], and [[JD Vance]].<ref>{{cite news |title=Noem, Ramaswamy tied for Trump VP pick in CPAC straw poll |first=Caroline |last=Vakil |work=[[The Hill (newspaper)|The Hill]] |date=February 24, 2024 |access-date=March 9, 2024|url=https://thehill.com/homenews/campaign/4487347-noem-ramaswamy-tied-for-trump-vp-pick-in-cpac-straw-poll/ |archive-date=February 29, 2024|archive-url=https://web.archive.org/web/20240229184756/https://thehill.com/homenews/campaign/4487347-noem-ramaswamy-tied-for-trump-vp-pick-in-cpac-straw-poll/ |url-status=live }}</ref>
+
+==See also==
+* [[Donald Trump 2024 presidential campaign]]
+* [[2024 Republican Party presidential candidates]]
+* [[2024 Republican Party presidential primaries]]
+* [[2024 Republican National Convention]]
+* [[2024 United States presidential election]]
+* [[List of United States major party presidential tickets]]
+* [[2024 Democratic Party vice presidential candidate selection]]
+
+==Notes==
+{{notelist}}
+
+==References==
+{{reflist}}
+
+{{2024 United States presidential election}}
+{{United States vice presidential candidate selection}}
+{{Donald Trump}}
+{{J. D. Vance}}
+
+{{DEFAULTSORT:Republican Party vice presidential candidate selection, 2024}}
+[[Category:2024 United States presidential campaigns]]
+[[Category:Donald Trump 2024 presidential campaign]]
+[[Category:Greg Abbott]]
+[[Category:Doug Burgum]]
+[[Category:JD Vance]]
+[[Category:Josh Hawley]]
+[[Category:Marco Rubio]]
+[[Category:Nikki Haley]]
+[[Category:Rand Paul]]
+[[Category:Republican Party (United States) campaigns]]
+[[Category:Republican Party (United States) vice presidential nominees]]
+[[Category:Ron DeSantis]]
+[[Category:Ted Cruz]]
+[[Category:Tucker Carlson]]
+[[Category:Tulsi Gabbard]]

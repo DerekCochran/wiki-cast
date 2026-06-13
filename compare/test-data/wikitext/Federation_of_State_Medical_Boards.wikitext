@@ -1,0 +1,344 @@
+{{Short description|United States non-profit organization}}
+{{primary sources|date=June 2017}}
+{{Infobox organization
+| name         = Federation of State Medical Boards
+| image        = 
+| image_border = 
+| image_size   = 163px
+| caption      = 
+| map          = 
+| map_size     = 
+| map_caption  = 
+| formation    = 1912
+| logo         = Federation of State Medical Boards logo.svg
+| type         = [[Professional association]]
+| headquarters = [[Washington, DC]]
+| location     = United States
+| membership   = 
+| language     = English
+| leader_title = President and CEO
+| leader_name  = [[Humayun Chaudhry]], [[Doctor of Osteopathic Medicine|D.O.]]
+| key_people   = 
+| budget       = 
+| website      = {{URL|http://www.fsmb.org/}}
+}}
+The '''Federation of State Medical Boards''' ('''FSMB''') of the United States is a national [[non-profit organization]] that represents the 71 state medical and osteopathic boards of the United States and its territories and co-sponsors the [[United States Medical Licensing Examination]]. Medical boards license physicians, investigate complaints, discipline those who violate the law, conduct physician evaluations, and facilitate the rehabilitation of physicians where appropriate. The FSMB's mission calls for "continual improvement in the quality, safety and integrity of [[health care]] through the development and promotion of high standards for physician licensure and practice."<ref name=state1>''State of the States: Physician Regulation 2009''. A report of the Federation of State Medical Boards, Dallas, Texas. 2009.</ref>
+
+Based in Euless, Texas and Washington, D.C., the FSMB serves as the national voice for its member boards and is a recognized authority throughout the United States and internationally on issues related to [[medical licensure]] and discipline.
+
+The [[United States Medical Licensing Examination]] (USMLE) is a three-step (three-part) professional examination for medical licensure that is sponsored by the FSMB and the [[National Board of Medical Examiners]] (NBME).
+
+==History==
+The [[Tenth Amendment to the United States Constitution]] authorizes states to establish laws and regulations protecting the health, safety and general welfare of their citizens.<ref name="state1" /> Medicine is a regulated profession in the United States because of the potential harm to the public if an incompetent or impaired physician is licensed to practice.
+
+To protect the public from the unprofessional, improper, unlawful, fraudulent and/or incompetent practice of medicine, each of the 50 states, the [[District of Columbia]] and the U.S. territories ([[Puerto Rico]], [[Guam]], the Commonwealth of the [[Northern Mariana Islands]], and the [[U.S. Virgin Islands]]) has a medical practice act that defines the practice of medicine and delegates the authority to enforce the law to a state medical board. By following up on complaints, medical boards also give the public a way to enforce basic standards of [[Skill|competence]] and ethical behavior in their [[physicians]], and physicians a way to protect the integrity of their profession. State medical boards also adopt policies and guidelines related to the practice of [[medicine]]. However, medical boards sometimes engage in the unethical practice of sham peer review.<ref>{{cite journal |last1=Ripps |first1=RA |date=October 2009 |title=Sham peer review. |journal=Connecticut Medicine |volume=73 |issue=9 |pages=553–4 |pmid=19860276}}</ref><ref>{{cite journal |last1=Pfifferling |first1=JH |last2=Meyer |first2=DN |last3=Wang |first3=CJ |date=2008 |title=Sham peer review: perversions of a powerful process. |journal=Physician Executive |volume=34 |issue=5 |pages=24–9 |pmid=19456073}}</ref><ref>{{cite journal |last1=Vyas |first1=D |last2=Hozain |first2=AE |date=7 June 2014 |title=Clinical peer review in the United States: history, legal development and subsequent abuse. |journal=World Journal of Gastroenterology |volume=20 |issue=21 |pages=6357–63 |doi=10.3748/wjg.v20.i21.6357 |pmc=4047321 |pmid=24914357 |doi-access=free }}</ref><ref>{{cite journal |last1=Berlin |first1=J |date=1 August 2015 |title=Fair Evaluations, No Witch Hunts. |journal=Texas Medicine |volume=111 |issue=8 |pages=63–9 |pmid=26263523}}</ref><ref>{{cite journal |last1=Chalifoux R |first1=Jr |date=15 November 2005 |title=So what is a sham peer review? |journal=MedGenMed |volume=7 |issue=4 |pages=47; discussion 48 |pmc=1681729 |pmid=16614669}}</ref><ref>{{cite journal |date=1999 |title=Mishler v. Clift |url=https://scholar.google.com/scholar_case?case=4050810259962299419 |volume=191 |pages=998}}</ref>
+
+The FSMB was founded in 1912 through a merger between the National Confederation of State Medical Examining and Licensing Boards (established in 1891) and the American Confederation of Reciprocating Examining and Licensing Boards (established in 1902). The founding of the FSMB coincides with the national impact of the [[Flexner Report]], which was published in 1910 by the [[Carnegie Corporation of New York|Carnegie Foundation]] and led to dramatic changes in medical education.
+
+In 1915 the FSMB began publication of the ''Monthly Bulletin'', the first regular publication since the ''Quarterly'', which ceased publication after the first volume. The FSMB was unique in that it was the first group to publish the names of disciplined physicians in its ''Monthly Bulletin''. In 1920 or 1921 the name of the publication was changed to ''Federation Bulletin'' and publication continued monthly. The year 1993 saw the development of a new, larger format for the publication, which was called the ''Journal of Medical Licensure and Discipline''. In 2010, the journal was renamed the ''Journal of Medical Regulation''.
+
+Since its establishment, the FSMB has initiated and strengthened cooperation among state medical boards and facilitated collaborative efforts between state medical boards and other entities.<ref>''FSMB Handbook 2008-09''. Handbook of the Federation of State Medical Boards of the United States, Inc. 2008.</ref> All 71 medical boards of the United States and its territories, including the 14 state boards of osteopathic medicine, belong to the FSMB. Members of these boards are known as Fellows of the FSMB, so long as they are serving as members of a member medical board and for a period of 36 months thereafter, and many of them have been prominent in the affairs of numerous other major medical organizations in the United States. The FSMB is a parent organization of the [[Accreditation Council for Continuing Medical Education]] (ACCME) and the [[Educational Commission for Foreign Medical Graduates]] (ECFMG). It was a founding member of what was to become the [[American Board of Medical Specialties]] (ABMS) and remains an associate member of that body.
+
+The FSMB's Chief Executive Officers since the organization's inception have been George H. Matson, (1912), Otto V. Huffman, (1912–1915), Walter L. Bierring, (1915–1961), Stiles D. Ezell, (1961), Harold E. Jervey Jr., (1961–1962, 1977–1984), McKinley H. Crabb, (1962–1977), Bryant L. Galusha, (1984–1989), James R. Winn, (1989–2001), Dale L. Austin, M.A. (2001–2002), James N. Thompson, (2002–2008) and Barbara S. Schneidman, (2009). [[Humayun Chaudhry]] began his tenure as President and CEO on October 19, 2009.<ref>{{Cite web |title=Press Release: Federation of State Medical Boards Names Humayun J. Chaudhry, D.O., President and CEO |url=http://www.fsmb.org/pdf/nr-dr-chaudhry.pdf |url-status=dead |archive-url=https://web.archive.org/web/20100215145448/http://www.fsmb.org/pdf/nr-dr-chaudhry.pdf |archive-date=2010-02-15 |access-date=2009-11-23}}</ref>
+
+== Organization ==
+
+=== Leadership ===
+
+==== Board of directors ====
+The federation is run by a board of directors which is elected by the 71 member state and territorial medical regulatory authorities within the federation. As of 2022:<ref>{{Cite web |title=Leadership |url=https://www.fsmb.org/about-fsmb/fsmb-leadership/ |url-status=live |archive-url=https://web.archive.org/web/20220924080002/https://www.fsmb.org/about-fsmb/fsmb-leadership/ |archive-date=2022-09-24 |access-date=2022-09-24 |website=Federation of State Medical Boards}}</ref>
+
+* '''Sarvam TerKonda''' - Chair
+* '''Jeffrey Carter''' - Chair-elect
+* '''Jone Geimer-Flanders''' - Treasurer
+* '''Kenneth Simons''' - Immediate Past Chair
+* '''[[Humayun Chaudhry]]''' - Secretary; President and CEO
+
+=== Members ===
+{{columns-list|colwidth=20em
+|Membership in the federation is made up of state and territorial medical boards across the United States.<ref>{{Cite web |title=Contact a State Medical Board |url=https://www.fsmb.org/contact-a-state-medical-board |url-status=live |archive-url=https://web.archive.org/web/20220924074101/https://www.fsmb.org/contact-a-state-medical-board/#bodyTop |archive-date=2022-09-24 |access-date=2022-09-24 |website=Federation of State Medical Boards}}</ref>
+
+==== Alabama ====
+
+* Alabama Board of Medical Examiners
+* Medical Licensure Commission of Alabama
+
+==== Alaska ====
+
+* [[Alaska State Medical Board]]
+
+==== Arizona ====
+
+* Arizona Board of Osteopathic Examiners in Medicine and Surgery
+* Arizona Medical Board
+
+==== Arkansas ====
+
+* Arkansas State Medical Board
+
+==== California ====
+
+* [[Medical Board of California]]
+* Osteopathic Medical Board of California
+
+==== Colorado ====
+
+* Colorado Medical Board
+
+==== Connecticut ====
+
+* Connecticut Medical Examining Board
+
+==== Delaware ====
+
+* Delaware Board of Medical Licensure and Discipline
+
+==== Florida ====
+
+* Florida Board of Medicine
+* Florida Board of Osteopathic Medicine
+
+==== Georgia ====
+
+* Georgia Composite Medicine Board
+
+==== Guam ====
+
+* Guam Board of Medical Examiners
+
+==== Hawaii ====
+
+* Hawaii Medical Board
+
+==== Idaho ====
+
+* Idaho Board of Medicine
+
+==== Illinois ====
+
+* Illinois Division of Professional Regulation
+** Medical Disciplinary Board
+** Medical Licensing Board
+
+==== Indiana ====
+
+* [[Medical Licensing Board of Indiana]]
+
+==== Iowa ====
+
+* Iowa Board of Medicine
+
+==== Kansas ====
+
+* Kansas State Board of Healing Arts
+
+==== Kentucky ====
+
+* Kentucky Board of Medical Licensure
+
+==== Louisiana ====
+
+* Louisiana State Board of Medical Examiners
+
+==== Maine ====
+
+* Maine Board of Licensure in Medicine
+* Maine Board of Osteopathic Licensure
+
+==== Maryland ====
+
+* Maryland Board of Physicians
+
+==== Massachusetts ====
+
+* Massachusetts Board of Registration in Medicine
+
+==== Michigan ====
+
+* Michigan Board of Medicine
+* Michigan Board of Osteopathic Medicine and Surgery
+
+==== Minnesota ====
+
+* Minnesota Board of Medical Practice
+
+==== Mississippi ====
+
+* Mississippi State Board of Medical Licensure
+
+==== Missouri ====
+
+* Missouri Board of Registration for the Healing Arts
+
+==== Montana ====
+
+* Montana Board of Medical Examiners
+
+==== Nebraska ====
+
+* Nebraska Board of Medicine and Surgery
+
+==== Nevada ====
+
+* [[Nevada State Board of Medical Examiners]]
+* Nevada State Board of Osteopathic Medicine
+
+==== New Hampshire ====
+
+* New Hampshire Board of Medicine
+
+==== New Jersey ====
+
+* New Jersey State Board of Medical Examiners
+
+==== New Mexico ====
+
+* New Mexico Medical Board
+
+==== New York ====
+
+* New York State Board for Medicine
+* New York State Office of Professional Medical Conduct
+
+==== North Carolina ====
+
+* North Carolina Medical Board
+
+==== North Dakota ====
+
+* North Dakota Board of Medicine
+
+==== Northern Mariana Islands ====
+
+* CNMI Board of Professional Licensing/Health Care Professions Licensing Board
+
+==== Ohio ====
+
+* State Medical Board of Ohio
+
+==== Oklahoma ====
+
+* Oklahoma State Board of Osteopathic Examiners
+* Oklahoma State Medical Board of Licensure and Supervision
+
+==== Oregon ====
+
+* [[Oregon Medical Board]]
+
+==== Pennsylvania ====
+
+* Pennsylvania State Board of Medicine
+* Pennsylvania State Board of Osteopathic Medicine
+
+==== Puerto Rico ====
+
+* Puerto Rico Board of Medical Licensure and Discipline
+
+==== Rhode Island ====
+
+* Rhode Island Board of Medical Licensure and Discipline
+
+==== South Carolina ====
+
+* South Carolina Board of Medical Examiners
+
+==== South Dakota ====
+
+* South Dakota Board of Medical and Osteopathic Examiners
+
+==== Tennessee ====
+
+* Tennessee Board of Medical Examiners
+* Tennessee Board of Osteopathic Examination
+
+==== Texas ====
+
+* [[Texas Medical Board]]
+
+==== Utah ====
+
+* Utah Osteopathic Physicians and Surgeons Licensing Board
+* Utah Physicians and Surgeons Licensing Board
+
+==== Vermont ====
+
+* Vermont Board of Medical Practice
+* Vermont Board of Osteopathic Physicians and Surgeons
+
+==== Virgin Islands ====
+
+* Virgin Islands Board of Medical Examiners
+
+==== Virginia ====
+
+* Virginia Board of Medicine
+
+==== Washington ====
+
+* Washington Board of Osteopathic Medicine and Surgery
+* Washington Medical Commission
+
+==== Washington, D.C. ====
+
+* District of Columbia Board of Medicine
+
+==== West Virginia ====
+
+* West Virginia Board of Medicine
+* West Virginia Board of Osteopathic Medicine and Surgery
+
+==== Wisconsin ====
+
+* Wisconsin Medical Examining Board
+
+==== Wyoming ====
+
+* Wyoming Board of Medicine
+}}
+
+==USMLE Examination==
+{{Further|USMLE}}
+
+The [[United States Medical Licensing Examination]] (USMLE) is sponsored by the FSMB.  The USMLE must be passed before a [[Doctor of Medicine]] with an M.D. degree can obtain a license to practice medicine in the United States.<ref>United States Court of Appeals for the Third Circuit. 1605859. ''John Doe v. National Board of Medical Examiners, appellant'', D.C. Civ. No. 99-cv-04532. ''AltLaw''</ref>
+
+==Activities==
+The FSMB is guided in its actions and activities by its House of Delegates, in which every member board is represented. Its activities include conducting or commissioning research to determine whether an emerging trend in medical practice requires the attention of its member boards; developing and updating policy guidelines to reflect the impact of scientific advances, new technologies and changing cultural attitudes; helping member boards carry out their duties as regulators of the medical profession through educational meetings, programs, and seminars; representing its member boards in a growing number of collaborations as new medical knowledge and new technologies demand work across old boundaries; serving as a national and international spokesperson on issues related to medical regulation and discipline; and conducting outreach to the public around new initiatives and responding to calls from the media, editors and concerned citizens.
+
+=== Foundation ===
+The FSMB Foundation (formerly the FSMB Education and Research Foundation) is the philanthropic arm of the FSMB and makes financial grants for education and research projects that support the work of the state medical boards. The Foundation, as a [[501(c)(3)]] organization, can compete for external grant funds and, when appropriate, direct them back to state medical boards in the form of grants that address education and research needs. In April 2006, the FSMB Foundation was awarded a grant to develop online physician education. The ''Online Prescriber Education Network'' portal now offers 32 available educational courses.<ref>{{cite journal |last=Benjamin |first=RM |year=2009 |title=Planting Seeds of Excellence |url=https://jmr-archives.fsmb.org/Archive/2000s/Journal%20of%20Medical%20Licensure%20and%20Discipline(Vol95N1).pdf |journal=Journal of Medical Licensure and Discipline |volume=95 |issue=1 |pages=3–4}}</ref>
+
+Starting in 2013, the foundation has hosted an annual luncheon which has raised thousands of dollars to support Foundation activities, including research into how states addressed the [[COVID-19 pandemic]].<ref>{{Cite web |title=FSMB Foundation Highlights |url=https://www.fsmb.org/fsmb-foundation/foundation-highlights/ |url-status=live |archive-url=https://web.archive.org/web/20220924074248/https://www.fsmb.org/fsmb-foundation/foundation-highlights/ |archive-date=2022-09-24 |access-date=2022-09-24 |website=Federation of State Medical Boards}}</ref><ref>{{Cite web |last=Burdick |first=Suzanne |date=2022-09-16 |title=Federation of State Medical Boards Attacks Physicians Over COVID 'Misinformation' |url=https://principia-scientific.com/federation-of-state-medical-boards-attacks-physicians-over-covid-misinformation/ |url-status=live |archive-url=https://web.archive.org/web/20220924074156/https://principia-scientific.com/federation-of-state-medical-boards-attacks-physicians-over-covid-misinformation/ |archive-date=2022-09-24 |access-date=2022-09-25 |website=Principia Scientific Intl. |language=en-US}}</ref> In April 2022, the foundation held its 10th Anniversary luncheon.
+
+==Services==
+{{Advert section|date=January 2017}}
+
+The FSMB's ''Federation Physician Data Center'' (FPDC) provides comprehensive information on regulatory actions and other vital information reported against physicians. It offers two services to assist medical boards in their credentialing efforts: the ''Board Action Data Bank Search'' and the ''Disciplinary Alert Service'', both of which are considered primary source equivalents by [[NCQA]], [[URAC]] and the [[Joint Commission]]. The FPDC permits medical boards to view a consolidated national record of disciplinary actions taken against a physician dating back to the early 1960s. Actions by medical boards and governmental agencies include revocation, suspension or denial of license renewal. Through the FPDC's ''Disciplinary Alert Service'', the FSMB electronically notifies all member boards within 48 hours when any member board reports a disciplinary action against a [[physician]] or [[physician assistant]]. A similar service advises [[hospital]]s and [[managed care organization]]s when one of their physicians has been disciplined. The FPDC is routinely consulted by licensing and disciplinary boards; military, governmental and private agencies; and organizations involved in the employment and/or credentialing of physicians. The FPDC also serves state medical boards as a back-up repository, both in hard copy and electronic files, of their disciplinary action data. In case of emergencies or local system failures, member boards can recreate all of their physician discipline files through the FPDC.<ref>Physician Data Center Provides Up-To-Date Information on Disciplinary Actions. ''FSMB Newsline''. March/April 2009.</ref> During the immediate aftermath of the effects of [[Hurricane Katrina]] in 2005, the staff of the FSMB and its members boards worked together to expedite medical care for victims while simultaneously protecting the public from dangerous doctors or imposter physicians.<ref>''Responding In Times of Need: Katrina and Beyond''. FSMB. 2006.</ref>
+
+The FSMB's ''Federation Credentials Verification Service'' (FCVS), created in 1996, provides a permanent repository for the core credentials of physicians and physician assistants. In February 2009, FCVS received its 100,000th physician applicant.
+
+The ''Post-Licensure Assessment System'' (PLAS) is a joint program of the FSMB and the National Board of Medical Examiners. The PLAS provides comprehensive services to medical licensing authorities for use in assessing the ongoing competence of licensed or previously licensed physicians. Such services benefit state medical boards, hospitals and other organizations interested in ensuring that physicians who are providing patient care are competent to do so.
+
+The FSMB publishes both electronic and print materials to inform member boards, physicians and the public about medical licensing, regulation, discipline and medical trends. The FSMB's quarterly flagship publication, the ''Journal of Medical Licensure and Discipline'', is not currently indexed by PubMed, as was its predecessor, the "Federal Bulletin."<ref>{{cite web|title=Journal of medical regulation. - NLM Catalog - NCBI|url=https://www.ncbi.nlm.nih.gov/nlmcatalog/101540511|website=www.ncbi.nlm.nih.gov|accessdate=5 August 2017}}</ref> A monthly newsletter, ''FSMB Newsline'', and a weekly e-mail publication, ''BoardNet News'', keep member boards and their staff up to date.
+
+== Controversies ==
+
+=== Pharmaceutical funding ===
+In February 2012, [[Milwaukee Journal Sentinel]] and [[MedPage Today]] revealed that in 2007 the FSMB with financial support from several opioid manufacturers, including [[Purdue Pharma]] started to distribute hundreds of thousands of the ''Responsible Opioid Prescribing: A Physician's Guide'', a guideline written by Scott Fishman, MD. This book aimed to translate the 1997 ''Model Guidelines for the use of Controlled Substances for the Treatment of Pain'' into pragmatic implementation strategies. However, some academics have argued that the publication contributed to the marked increase in opioid use by encouraging aggressive prescribing and failing to point out the lack of science 
+supporting the use of opioids for chronic, non cancer pain. <ref>{{Cite web |last=Fauber |first=John |date=2012-02-19 |title=Follow the Money: Pain, Policy, and Profit |url=https://www.medpagetoday.com/neurology/painmanagement/31256 |url-status=live |archive-url=https://web.archive.org/web/20220924074241/https://www.medpagetoday.com/neurology/painmanagement/31256 |archive-date=2022-09-24 |access-date=2022-09-25 |website=[[MedPage Today]] |language=en}}</ref><ref>{{cite web | url=https://archive.jsonline.com/watchdog/watchdogreports/painkiller-boom-fueled-by-networking-dp3p2rn-139609053.html/ | title=Painkiller boom fueled by networking }}</ref><ref>Bill McCarberg, MD, Responsible Opioid Prescribing: A Physician's Guide, Pain Medicine, Volume 9, Issue 6, September 2008, Pages 759–760, https://doi.org/10.1111/j.1526-4637.2008.00504.x
+</ref>
+
+In 2012, as a result of the Sentinel report, the US Senate Finance Committee started investigating the tight relationship of various tax-exempt organizations, including FSMB, with opioid manufacturers. That same year, the FSMB adopted a policy which precluded it from accepting any grants or funding from pharmaceutical companies.<ref>https://www.finance.senate.gov/imo/media/doc/Purdue_May_8.pdf {{Bare URL PDF|date=August 2024}}</ref><ref>https://www.finance.senate.gov/imo/media/doc/2020-12-16%20Finance%20Committee%20Bipartisan%20Opioids%20Report.pdf {{Bare URL PDF|date=August 2024}}</ref>
+
+== See also==
+* [[International Association of Medical Colleges]]
+
+== References ==
+<References/>
+
+==External links==
+* {{official|http://www.fsmb.org/}} – Federation of State Medical Boards
+
+{{authority control}}
+
+[[Category:Medical and health organizations based in Texas]]
+[[Category:Medical licensing boards in the United States| ]]

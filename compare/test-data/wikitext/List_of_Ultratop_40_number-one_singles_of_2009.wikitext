@@ -1,0 +1,127 @@
+{{short description|None}}
+
+This is a list of songs that topped the Belgian Walloon (francophone) [[Ultratop 50|Ultratop 40]] in 2009.<ref>[http://www.ultratop.be/fr/weekchart.asp?cat=s Wallonie Ultratop 40 2009 Singles Archive]</ref>
+
+{| class="wikitable sortable toccolours" style="font-size:97%; text-align:left;"
+! Issue date !! Song title !! Artist
+|- (*) = high sales.
+|-
+| January 3  ||rowspan="4"| "[[Toi + Moi (song)|Toi + Moi]]" ||rowspan="4"| [[Grégoire (musician)|Grégoire]] 
+|-
+| January 10 
+|-
+| January 17 
+|-
+| January 24 
+|-
+| January 31  ||rowspan="2"| "[[Hot n Cold]]" ||rowspan="2"| [[Katy Perry]]
+|-
+| February 7 
+|-
+| February 14  ||rowspan="6"| "[[Poker Face (Lady Gaga song)|Poker Face]]" ||rowspan="6"| [[Lady Gaga]]
+|-
+| February 21 
+|-
+| February 28 
+|-
+| March 7 
+|-
+| March 14 
+|-
+| March 21 
+|-
+| March 28  ||rowspan="1"| "Ici les Enfoirés" ||rowspan="1"| [[Les Enfoirés]]
+|-
+| April 4  ||rowspan="3"| "[[Poker Face (Lady Gaga song)|Poker Face]]" ||rowspan="3"| [[Lady Gaga]]
+|-
+| April 11  
+|-
+| April 18  
+|-
+| April 25 || "[[Right Round]]" || [[Flo Rida]] featuring [[Kesha|Ke$ha]]
+|-
+| May 2 || "[[Broken Strings (song)|Broken Strings]]" || [[James Morrison (singer)|James Morrison]] featuring [[Nelly Furtado]]
+|-
+| May 9  ||rowspan="3"| "[[C'est dit]]" ||rowspan="3"| [[Calogero (singer)|Calogero]]
+|-
+| May 16  
+|-
+| May 23  
+|-
+| May 30  ||rowspan="5"| "[[Boom Boom Pow]]" ||rowspan="5"| [[The Black Eyed Peas]]
+|-
+| June 6  
+|-
+| June 13 
+|-
+| June 20 
+|-
+| June 27 
+|-
+| July 4  ||rowspan="4"| "[[When Love Takes Over]]" ||rowspan="4"| [[David Guetta]] featuring [[Kelly Rowland]]
+|-
+| July 11 
+|-
+| July 18
+|-
+| July 25 
+|-
+| August 1  ||rowspan="5"| "[[I Gotta Feeling]]" ||rowspan="5"| [[The Black Eyed Peas]]
+|-
+| August 8 
+|-
+| August 15 
+|-
+| August 22 
+|-
+| August 29 
+|-
+| September 5 || "[[Sexy Bitch]]" || David Guetta featuring [[Akon]]
+|-
+| September 12 || "I Gotta Feeling" || Black Eyed Peas
+|-
+| September 19 || "Sexy Bitch" || David Guetta featuring Akon
+|-
+| September 26 || "I Gotta Feeling" || Black Eyed Peas
+|-
+| October 3  ||rowspan="5"| "[[Alors on danse]]" ||rowspan="5"| [[Stromae]]
+|-
+| October 10 
+|-
+| October 17 
+|-
+| October 24 
+|-
+| October 31 
+|-
+| November 7 || "I Gotta Feeling" || Black Eyed Peas
+|-
+| November 14 ||  "Sexy Bitch" || David Guetta featuring Akon
+|-
+| November 21 ||rowspan="2"| "[[Meet Me Halfway]]" ||rowspan="2"| [[The Black Eyed Peas]]
+|-
+| November 28 
+|-
+| December 5 ||rowspan="3"| "We Are The Best" ||rowspan="3"| [[The Champions]]
+|-
+| December 12 
+|-
+| December 19 
+|-
+| December 26 || "Meet Me Halfway" || The Black Eyed Peas
+|}
+
+==See also==
+*[[List of Ultratop 50 number-one hits of 2009]]
+
+==References==
+{{Reflist}}
+
+==External links==
+* [http://www.ultratop.be Ultratop 40]
+
+{{Ultratop 50 (francophone)}}
+
+[[Category:2009 in Belgium|Ultratop 40]]
+[[Category:2009 record charts|Belgium Ultratop 40]]
+[[Category:Lists of number-one songs in Belgium|2009]]

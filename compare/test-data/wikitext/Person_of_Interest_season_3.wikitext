@@ -1,0 +1,653 @@
+{{Use American English|date=May 2025}}
+{{Use mdy dates|date=September 2023}}
+{{short description|Season of television series}}
+{{Infobox television season
+| season_number = 3
+| bgcolour      = #F8BF2A
+| image         = Person of Interest Season 3.jpg
+| caption       = Home media cover art
+| starring      = {{Plainlist|
+* [[Jim Caviezel]]
+* [[Taraji P. Henson]]
+* [[Kevin Chapman]]
+* [[Amy Acker]]
+* [[Sarah Shahi]]
+* [[Michael Emerson]]
+}}
+| num_episodes  = 23
+| network       = [[CBS]]
+| first_aired   = {{Start date|2013|9|24}}
+| last_aired    = {{End date|2014|5|13}}
+| episode_list  = List of Person of Interest episodes
+}}
+
+The third season of the American television series ''[[Person of Interest (TV series)|Person of Interest]]'' premiered on September 24, 2013. The season is produced by [[Jonathan Nolan|Kilter Films]], [[Bad Robot]], and [[Warner Bros. Television]], with [[Jonathan Nolan]], Greg Plageman, [[J. J. Abrams]], and [[Bryan Burk]] serving as executive producers and Plageman serving as showrunner. 
+
+The series was renewed for a third season in March 2013<ref name="season3">{{cite web|url=http://tvbythenumbers.zap2it.com/2013/03/27/the-good-wife-elementary-person-of-interest-2-broke-girls-ncis-la-the-mentalist-mike-molly-blue-bloods-renewed-by-cbs/175317|archive-url=https://web.archive.org/web/20130330061734/http://tvbythenumbers.zap2it.com/2013/03/27/the-good-wife-elementary-person-of-interest-2-broke-girls-ncis-la-the-mentalist-mike-molly-blue-bloods-renewed-by-cbs/175317/|url-status=dead|archive-date=March 30, 2013|title='The Good Wife', 'Elementary', 'Person Of Interest', '2 Broke Girls', 'NCIS: LA', 'The Mentalist', 'Mike & Molly', 'Hawaii Five-0' & 'Blue Bloods' Renewed by CBS|last=Kondolojy|first=Amanda|work=TV by the Numbers|date=March 27, 2013|access-date=March 27, 2013}}</ref> and stars [[Jim Caviezel]], [[Taraji P. Henson]], [[Kevin Chapman]], [[Amy Acker]], [[Sarah Shahi]] and [[Michael Emerson]]. The series revolves around a team led by a mysterious reclusive billionaire computer programmer, Harold Finch, who has developed a computer program for the federal government known as "the Machine" that is capable of collating all [[Mass surveillance|sources of information]] to predict terrorist acts and to identify people planning them. The Machine also identifies perpetrators and victims of other premeditated deadly crimes; however, because the government considers these "irrelevant", Finch programs the Machine to delete this information each night and programs the Machine to notify him secretly of the "irrelevant" numbers.
+
+The season premiered on September 24, 2013, on [[CBS]] and ended on May 13, 2014. Viewership for the season averaged 14.05 million viewers, ranking as the 8th most watched series of the [[2013–14 United States network television schedule|2013–14 television season]].<ref>{{cite web |url=https://deadline.com/2014/05/tv-season-series-rankings-2013-full-list-2-733762/ |title=Full 2013–2014 TV Season Series Rankings |website=Deadline Hollywood |date=May 22, 2014 |access-date=September 20, 2014}}</ref> The season received highly positive reviews from critics, its focus on artificial intelligence was singled out for praise and the surprise twists on the season also received acclaim. The season, which aired shortly after events associated with [[Edward Snowden]], attracted more attention due to its similarities. In March 2014, CBS renewed the series for a fourth season.<ref name="season4">{{cite web |url=http://tvbythenumbers.zap2it.com/2014/03/14/cbs-renews-the-good-wife-the-millers-two-and-a-half-men-hawaii-five-0-and-13-more/244495/ |title=CBS Renews 'The Good Wife', 'The Millers', 'Two and a Half Men', 'Hawaii Five-0', 'Mom', 'Blue Bloods', 'Elementary' and 11 More |last=Kondolojy |first=Amanda |work=TV by the Numbers |date=March 13, 2014 |access-date=March 13, 2014 |archive-date=September 12, 2019 |archive-url=https://web.archive.org/web/20190912042411/https://tvbythenumbers.zap2it.com/1/cbs-renews-the-good-wife-the-millers-two-and-a-half-men-hawaii-five-0-and-13-more/244495/ |url-status=dead }}</ref>
+
+==Season summary==
+The Machine's sentience is fully revealed as it increasingly communicates with and proactively assists and directs the actions of the team. After being demoted due to HR's machinations, Carter delves deeper into her investigation of the organization and eventually uncovers and arrests its leader, thus bringing down the entire organization, but she is then killed by its rogue second-in-command. In his grief over her death, Reese briefly leaves the team. The team also battles Vigilance, a violent [[Opposition (politics)|anti-government]] [[Hacktivism|hacktivist]] organization devoted to securing people's privacy. 
+
+During the second half of the third season, the existence of code to create another [[artificial intelligence]] – called Samaritan – is revealed, which has fallen into Decima's hands. Samaritan differs from the Machine in being open to external direction and willing to remove those seen as disruptive to law and order pre-emptively, and is a more advanced design, but as seen by the Machine, should never have existed as it lacks a moral code – an attribute that Samaritan sees as a flaw. In the season three finale, it is revealed that Greer, who sees Samaritan as a means to fix humanity's problems, had covertly built Vigilance as a domestic terrorist threat, and created a terrorist event of mass destruction in their name, to manipulate the authorities into ordering Samaritan's activation and providing direct access to the NSA feeds required for full operation. Unable to prevent Samaritan's activation, the Machine creates new identities for the Team while Root and Shaw modify Samaritan to always treat the new identities as unsuspicious.
+
+==Cast and characters==
+{{See also|List of Person of Interest characters}}
+
+===Main===
+* [[Jim Caviezel]] as [[John Reese (Person of Interest)|John Reese]]
+* [[Taraji P. Henson]] as Detective Jocelyn "Joss" Carter
+* [[Kevin Chapman]] as Detective Lionel Fusco
+* [[Amy Acker]] as Samantha Groves/Root
+* [[Sarah Shahi]] as Sameen Shaw
+* [[Michael Emerson]] as Harold Finch
+
+{{Columns-start|num=2}}
+
+=== Recurring ===
+* [[John Nolan (British actor)|John Nolan]] as John Greer
+* [[Leslie Odom Jr.]] as Peter Collier
+* [[Robert John Burke]] as Officer Patrick Simmons
+* [[Camryn Manheim]] as Control
+* [[Boris McGiver]] as George Hersh
+* [[John Doman]] as Ross Garrison
+* [[Clarke Peters]] as Alonzo Quinn
+* Brian Wiles as Officer Mike Laskey
+* [[Enrico Colantoni]] as Carl Elias
+* [[Al Sapienza]] as Detective Raymond Terney
+* [[David Valcin]] as Anthony S. Marconi/Scarface
+* [[Laz Alonso]] as Paul Carter
+* [[Bruce Altman]] as Dr. Ronald Carmichael
+* Kwoade Cross as Taylor Carter
+* [[Michael Esper]] as Jason Greenfield
+* [[Joseph Mazzello|Joe Mazzello]] as Daniel Casey
+* [[Saul Rubinek]] as Arthur Claypool
+* [[Alex Shimizu]] as Tatsuro Daizo
+* [[Morgan Spector]] as Peter Yogorov
+* [[Julian Ovenden]] as Jeremy Lambert
+* Sean McCarthy as Lee Fusco
+* [[Annie Parisse]] as CIA Agent Kara Stanton
+* [[Carrie Preston]] as Grace Hendricks
+* [[Jay O. Sanders]] as Special Counsel
+* [[Paige Turco]] as Zoe Morgan
+{{column}}
+
+===Notable guests===
+* [[Rey Valentin]] as Jack Salazar ("Liberty")
+* [[Max Martini]] as RIP ("Liberty")
+* [[David Alan Basche]] as Wayne Kruger ("Nothing to Hide")
+* [[Warren Kole]] as Ian Murphy ("Lady Killer")
+* [[Paul Ben-Victor]] as Detective Gary Cameron ("Reasonable Doubt")
+* [[Daniel Cosgrove]] as Jeremy Watkins ("Reasonable Doubt")
+* [[Kirk Acevedo]] as Timothy Sloan ("Mors Praematura")
+* [[Aaron Staton]] as Hayden Price ("The Perfect Mark")
+* [[Lee Tergesen]] as Detective William Petersen ("The Crossing")
+* [[Sally Pressman]] as Holly ("4C")
+* [[Samm Levine]] as Owen Matthews ("4C")
+* [[Neil Jackson]] as Rick Dillinger ("RAM")
+* [[Yul Vazquez]] as Cyrus Wells ("/")
+* [[Colin Donnell]] as Billy Parsons ("/")
+* [[Nazneen Contractor]] as Maria Martinez ("Allegiance")
+* [[Haaz Sleiman]] as Omar Risha ("Allegiance")
+* [[Michel Gill]] as Rene Lapointe ("Allegiance")
+* [[Nestor Carbonell]] as Matthew Reed ("Most Likely To...")
+* [[John Heard (actor)|John Heard]] as Roger McCourt ("Death Benefit")
+{{Columns-end}}
+
+== Episodes ==
+{{see also|List of Person of Interest episodes}}
+<onlyinclude>{{Episode table|background=#F8BF2A|overall=5|season=5|title=17|director=14|writer=27|airdate=14|prodcode=8|viewers=10|country=U.S.|episodes={{Episode list/sublist|Person of Interest season 3
+ |EpisodeNumber = 46
+ |EpisodeNumber2 = 1
+ |Title = [[Liberty (Person of Interest)|Liberty]]
+ |DirectedBy = [[Chris Fisher (director)|Chris Fisher]]
+ |WrittenBy = Greg Plageman & Denise Thé
+ |OriginalAirDate = {{Start date|2013|9|24}}
+ |Viewers = 12.44<ref name="3.01">{{Cite web|url=http://tvbythenumbers.zap2it.com/2013/09/25/tuesday-final-ratings-marvels-agents-of-s-h-i-e-l-d-the-voice-the-goldbergs-chicago-fire-adjusted-down/204739/|archive-url=https://web.archive.org/web/20130927142738/http://tvbythenumbers.zap2it.com/2013/09/25/tuesday-final-ratings-marvels-agents-of-s-h-i-e-l-d-the-voice-the-goldbergs-chicago-fire-adjusted-down/204739/|url-status=dead|archive-date=September 27, 2013|title=Tuesday Final Ratings: 'Marvel's Agents of S.H.I.E.L.D.', 'The Voice' & 'NCIS' Adjusted Up; 'The Goldbergs' & 'Chicago Fire' Adjusted Down|work=TV by the Numbers|last=Kondolojy|first=Amanda|date=September 25, 2013|access-date=September 26, 2013}}</ref>
+ |ProdCode = 2J7601
+ |ShortSummary = Reese, Finch, and Shaw work to save the life of a sailor named Jack Salazar ([[Rey Valentin]]) who is inadvertently caught up in a diamond smuggling operation run by a team of Force Recon Marines. Shaw gets used to being a member of the team, although her propensity for violent solutions worries Finch. Meanwhile, Carter adapts to life as a uniformed police officer after being demoted. It is revealed she is conducting a secret investigation into HR, and has identified several of its high-ranking members. A troubled Root continues to receive counseling, and later reveals that she is still in contact with the Machine when she uses it to learn the unhealthy habits of her psychiatrist, Dr. Carmichael ([[Bruce Altman]]).
+ |LineColor = F8BF2A
+}}
+{{Episode list/sublist|Person of Interest season 3
+ |EpisodeNumber = 47
+ |EpisodeNumber2 = 2
+ |Title = [[Nothing to Hide (Person of Interest)|Nothing to Hide]]
+ |DirectedBy = [[Fred Toye|Frederick E. O. Toye]]
+ |WrittenBy = Erik Mountain
+ |OriginalAirDate = {{Start date|2013|10|1}}
+ |Viewers = 12.35<ref name="3.02">{{Cite web|url=http://tvbythenumbers.zap2it.com/2013/10/02/tuesday-final-ratings-marvels-agents-of-s-h-i-e-l-d-the-voice-ncis-chicago-fire-lucky-7-adjusted-down/206406/|archive-url=https://web.archive.org/web/20131005080123/http://tvbythenumbers.zap2it.com/2013/10/02/tuesday-final-ratings-marvels-agents-of-s-h-i-e-l-d-the-voice-ncis-chicago-fire-lucky-7-adjusted-down/206406/|url-status=dead|archive-date=October 5, 2013|title=Tuesday Final Ratings: 'Marvel's Agents of S.H.I.E.L.D.', 'The Voice, ' NCIS' & 'Person of Interest' Adjusted Up; 'Chicago Fire' & 'Lucky 7' Adjusted Down|work=TV by the Numbers|last=Bibel|first=Sara|date=October 2, 2013|access-date=October 2, 2013}}</ref>
+ |ProdCode = 2J7602
+ |ShortSummary = Wayne Kruger ([[David Alan Basche]]) is the owner of a company known as Lifetrace, which specializes in revealing members' privacy on their profile pages and selling it to various organizations. Reese, Finch, and Shaw monitor Kruger's activities in the company, which is currently making a deal with another large retail company called Riverton. Though the site is deemed harmless by Kruger, Finch discovers that there is a class-action suit against Kruger involving various victims of the site whose privacy has been eliminated. Members of the suit receive anonymous packages containing information on how to humiliate and attack Kruger in revenge for their lives being destroyed thanks to Lifetrace. One of these people is Stu Sommers, a man whose daughter was stalked and killed by her ex-boyfriend after he used Lifetrace to follow her. Reese convinces Sommers not to kill Kruger before being shot at by Collier, a man supposedly working for Riverton. Collier also kills Kruger before fleeing the scene. He was the one who sent the anonymous packages.
+ |LineColor = F8BF2A
+}}
+{{Episode list/sublist|Person of Interest season 3
+ |EpisodeNumber = 48
+ |EpisodeNumber2 = 3
+ |Title = [[Lady Killer (Person of Interest)|Lady Killer]]
+ |DirectedBy = [[Omar Madha]]
+ |WrittenBy = Amanda Segel
+ |OriginalAirDate = {{Start date|2013|10|8}}
+ |Viewers = 11.65<ref name="3.03">{{Cite web|url=http://tvbythenumbers.zap2it.com/2013/10/09/tuesday-final-ratings-marvels-agents-of-s-h-i-e-l-d-ncis-chicago-fire-the-goldbergs-adjusted-down/207852/|archive-url=https://web.archive.org/web/20131011233615/http://tvbythenumbers.zap2it.com/2013/10/09/tuesday-final-ratings-marvels-agents-of-s-h-i-e-l-d-ncis-chicago-fire-the-goldbergs-adjusted-down/207852/|url-status=dead|archive-date=October 11, 2013|title=Tuesday Final Ratings: 'Marvel's Agents of S.H.I.E.L.D.', 'NCIS' & 'The Voice' Adjusted Up; 'Chicago Fire', 'The Goldbergs' Adjusted Down|work=TV by the Numbers|last=Kondolojy|first=Amanda|date=October 9, 2013|access-date=October 10, 2013}}</ref>
+ |ProdCode = 2J7603
+ |ShortSummary = When the Machine gives the number of Ian Murphy ([[Warren Kole]]), a man suspected of being a stalker, Reese along with Shaw recruits Carter, Fusco and Zoe to investigate further into his background. But when they discover that Murphy has a son from a former lover who is now dead, they work to reunite the boy with his father and right the wrong set in motion by the boy's grandfather, who wanted Murphy dead after he did not approve of him and saw him at his daughter's funeral. Meanwhile, Root sets her escape plan in motion with the help of the Machine when government operative Hersh tracks her down. Finch arrives at the hospital and finds to his horror the hospital staff incapacitated and Root gone.
+ |LineColor = F8BF2A
+}}
+{{Episode list/sublist|Person of Interest season 3
+ |EpisodeNumber = 49
+ |EpisodeNumber2 = 4
+ |Title = [[Reasonable Doubt (Person of Interest)|Reasonable Doubt]]
+ |DirectedBy = [[Stephen Williams (director)|Stephen Williams]]
+ |WrittenBy = Melissa Scrivner Love
+ |OriginalAirDate = {{Start date|2013|10|15}}
+ |Viewers = 12.69<ref name="3.04">{{Cite web|url=http://tvbythenumbers.zap2it.com/2013/10/16/tuesday-final-ratings-ncis-marvels-agents-of-s-h-i-e-l-d-the-biggest-loser-dads-chicago-fire-supernatural-adjusted-down/209431|archive-url=https://web.archive.org/web/20131019004606/http://tvbythenumbers.zap2it.com/2013/10/16/tuesday-final-ratings-ncis-marvels-agents-of-s-h-i-e-l-d-the-biggest-loser-dads-chicago-fire-supernatural-adjusted-down/209431/|url-status=dead|archive-date=October 19, 2013|title=Tuesday Final Ratings: 'NCIS', 'Marvel's Agents of S.H.I.E.L.D,' 'The Biggest Loser', 'Dads' & 'Person of Interest' Adjusted Up; 'Chicago Fire' & 'Supernatural Adjusted Down|work=TV by the Numbers|last=Biebel|first=Sara|date=October 16, 2013|access-date=October 16, 2013}}</ref>
+ |ProdCode = 2J7604
+ |ShortSummary = Reese and Finch's next number is that of Vanessa Watkins ([[Kathleen Rose Perkins]]), a prominent New York prosecutor who is accused of killing her defense attorney husband, Jeremy. The police find a gun with her DNA on it and arrest her. Vanessa escapes police custody. Finch investigates Jeremy's murder and learns that he owed money to a gangster. Reese, Finch and Carter question Watkins to decide if she is guilty or innocent. Her testimony eventually convinces them that Vanessa is innocent, but they also discover that Jeremy, who turns out to be alive, has emptied his bank accounts. They then conclude that Jeremy framed her and Reese drops Vanessa at a bus station to flee as Jeremy may try to kill her. But the team discovers that Vanessa lied in the testimony, had a fake passport for herself and did not leave town, intending to kill Jeremy. On his yacht, Jeremy is held at gunpoint by Vanessa. Reese arrives, leaves his gun next to Jeremy and leaves. Reese then has Finch call the authorities as gunshots are heard from the yacht, not revealing who survived or died.
+|LineColor = F8BF2A
+}}
+{{Episode list/sublist|Person of Interest season 3
+ |EpisodeNumber = 50
+ |EpisodeNumber2 = 5
+ |Title = [[Razgovor]]
+ |AltTitle = Разговор
+ |RAltTitle = <!--Please do not delete this reference. If it is deleted, then there is nothing backing up that this alternate title was used. Thank you. --><ref>{{cite web|url=http://www.thefutoncritic.com/listings/20131015cbs07/|title=(#305) "PA3ГABOP"|work=The Futon Critic|access-date=October 16, 2013}}</ref><!--Please do not delete this reference. If it is deleted, then there is nothing backing up that this alternate title was used. Thank you. -->
+ |DirectedBy = [[Kenneth Fink]]
+ |WrittenBy = [[David Slack]]
+ |OriginalAirDate = {{Start date|2013|10|22}}
+ |Viewers = 13.17<ref name="3.05">{{cite web|url=http://tvbythenumbers.zap2it.com/2013/10/23/tuesday-final-ratings-the-voice-marvels-agents-of-s-h-i-e-l-d-ncis-los-angeles-the-mindy-project-adjusted-down/210922|archive-url=https://web.archive.org/web/20131025220650/http://tvbythenumbers.zap2it.com/2013/10/23/tuesday-final-ratings-the-voice-marvels-agents-of-s-h-i-e-l-d-ncis-los-angeles-the-mindy-project-adjusted-down/210922/|url-status=dead|archive-date=October 25, 2013|title=Tuesday Final Ratings: 'The Voice', 'Marvel's Agents of S.H.I.E.L.D.' & 'Supernatural' Adjusted Up; 'NCIS: Los Angeles' & 'The Mindy Project' Adjusted Down|last=Kondolojy|first=Amanda|work=TV by the Numbers|date=October 23, 2013|access-date=October 23, 2013}}</ref>
+ |ProdCode = 2J7605
+ |ShortSummary = In a series of flashbacks to Shaw's childhood it is revealed she was in a car with her father when he was killed in a wreck, but that she showed a lack of emotion over it. In the present, Shaw saves another number. The team's next number turns out to be a Russian immigrant girl named Genrika Zhirova (Danielle Kotch), who is deeply interested in espionage and is living with an older cousin in a run-down apartment. Shaw ends up watching after Genrika when men come to attack her. Genrika had been bugging the phones in her apartment building and overheard information she should not. Meanwhile, Carter is continuing her investigation of HR. She is eventually asked to meet her partner Laskey at a bar, where he confronts her about her work with Reese. Knowing that Laskey is corrupt, she blackmails him into working for her. Root later arrives at Shaw's loft and abducts her.
+ |LineColor = F8BF2A
+}}
+{{Episode list/sublist|Person of Interest season 3
+ |EpisodeNumber = 51
+ |EpisodeNumber2 = 6
+ |Title = [[Mors Praematura]]
+ |DirectedBy = [[Helen Shaver]]
+ |WrittenBy = Dan Dietz
+ |OriginalAirDate = {{Start date|2013|10|29}}
+ |Viewers = 12.00<ref name="3.06">{{cite web|url=http://tvbythenumbers.zap2it.com/2013/10/30/tuesday-final-ratings-the-voice-the-originals-person-of-interest-adjusted-up/212437|archive-url=https://web.archive.org/web/20131031124304/http://tvbythenumbers.zap2it.com/2013/10/30/tuesday-final-ratings-the-voice-the-originals-person-of-interest-adjusted-up/212437/|url-status=dead|archive-date=October 31, 2013|title=Tuesday Final Ratings: 'The Voice', 'The Originals' & 'Person of Interest' Adjusted Up|last=Bibel|first=Sara|work=TV by the Numbers|date=October 30, 2013|access-date=October 30, 2013}}</ref>
+ |ProdCode = 2J7606
+ |ShortSummary = While Shaw is abducted by Root, Finch and Reese get the number of Timothy Sloan ([[Kirk Acevedo]]), an estate investigator. Finch goes undercover as Sloan's assistant while Reese continues investigating Shaw's whereabouts. Sloan investigates the case of his foster brother, a man named Jason Greenfield ([[Michael Esper]]), who apparently died of a heroin overdose. Finch soon learns that Greenfield used to be a member of the organization Vigilance, which includes Peter Collier ([[Leslie Odom, Jr.]]) (from the episode "Nothing to Hide"). Meanwhile, Shaw reluctantly agrees to help Root get into a CIA black site. Jason, who is alive, is one of the people held there, awaiting transfer. The transfer is intercepted by Vigilance, leading to a shootout. Root helps Jason escape and tells him to go to a location in South America. Reese and Shaw eventually save Sloan and recapture Root, but Collier gets away. Finch locks up Root in the Library.
+ |LineColor = F8BF2A
+}}
+{{Episode list/sublist|Person of Interest season 3
+ |EpisodeNumber = 52
+ |EpisodeNumber2 = 7
+ |Title = [[The Perfect Mark]]
+ |DirectedBy = [[Stephen Surjik]]
+ |WrittenBy = Sean Hennen
+ |OriginalAirDate = {{Start date|2013|11|5}}
+ |Viewers = 11.79<ref name="3.07">{{cite web|url=http://tvbythenumbers.zap2it.com/2013/11/06/tuesday-final-ratings-the-voice-adjusted-up-trophy-wife-adjusted-down-no-adjustment-for-marvels-agents-of-s-h-i-e-l-d/213929|archive-url=https://web.archive.org/web/20131107110754/http://tvbythenumbers.zap2it.com/2013/11/06/tuesday-final-ratings-the-voice-adjusted-up-trophy-wife-adjusted-down-no-adjustment-for-marvels-agents-of-s-h-i-e-l-d/213929/|url-status=dead|archive-date=November 7, 2013|title=Tuesday Final Ratings: 'The Voice' Adjusted Up; 'Trophy Wife' Adjusted Down + No Adjustment for 'Marvel's Agents of S.H.I.E.L.D.'|last=Kondolojy|first=Amanda|work=TV by the Numbers|date=November 6, 2013|access-date=November 6, 2013}}</ref>
+ |ProdCode = 2J7607
+ |ShortSummary = Reese and Finch get the number of Hayden Price ([[Aaron Staton]]), a hypnotherapist. Finch, who poses as Hayden's patient, learns that Hayden is a con man who hypnotizes his patients into giving him their security information, which allows him to enter their bank accounts and steal from them. One of his patients, Sven Vanger ([[Carsten Norgaard]]), is in fact a money launderer for HR who bids fake items at auctions. One of the items he purchased is a baseball signed by the 1922 New York Yankees team, which is worth $4,000,000. Sven sells it for $5, believing it to be a fake. That night, Laskey shows Carter the pictures he has taken of Simmons' activities, when Terney comes in with his gun drawn. Terney shoots Laskey dead, and Carter responds by shooting Terney almost immediately after. She begs a dying Terney to tell her if the head of HR is in one of Laskey's pictures, and Terney places his bloodstained finger on the picture of Alonzo Quinn.
+ |LineColor = F8BF2A
+}}
+{{Episode list/sublist|Person of Interest season 3
+ |EpisodeNumber = 53
+ |EpisodeNumber2 = 8
+ |Title = [[Endgame (Person of Interest)|Endgame]]
+ |DirectedBy = [[Sylvain White]]
+ |WrittenBy = Nic Van Zeebroeck & Michael Sopczynski
+ |OriginalAirDate = {{Start date|2013|11|12}}
+ |Viewers = 12.60<ref name="3.08">{{cite web|url=http://tvbythenumbers.zap2it.com/2013/11/13/tuesday-final-ratings-ncis-supernatural-the-biggest-loser-adjusted-down/215417|archive-url=https://web.archive.org/web/20131113222525/http://tvbythenumbers.zap2it.com/2013/11/13/tuesday-final-ratings-ncis-supernatural-the-biggest-loser-adjusted-down/215417/|url-status=dead|archive-date=November 13, 2013|title=Tuesday Final Ratings: 'NCIS', 'Supernatural' & 'The Mindy Project' Adjusted Up; 'The Biggest Loser' Adjusted Down|last=Bibel|first=Sara|work=TV by the Numbers|date=November 13, 2013|access-date=November 13, 2013}}</ref>
+ |ProdCode = 2J7608
+ |ShortSummary = Finch receives 38 numbers, all members of HR. Carter intercepts a drug delivery of the Russian mob, causing leader Peter Yogorov to suspect HR. Carter starts a war between HR and the Russians by firing sniper shots at HR leader Alonzo Quinn, who blames the Russians. Quinn orders his right-hand man, Simmons, to have his men round up the Russians. Reese learns about Carter's plan, and Finch deduces Quinn's identity as the head of HR. The Russians' numbers come up as they are now threatened by HR, but both groups are arrested by the FBI when Carter tips them off. Carter takes Yogorov into protective custody and has him sign a statement that can earn an arrest warrant for Quinn, but the judge she approaches is member of HR. Quinn, Simmons, and two other HR cops wait for Carter at the judge's house, where Carter reveals that she called Reese and Finch, recording HR's incriminating conversation. Reese breaks in, a shootout ensues, and Carter apprehends Quinn. Simmons later accesses a dashcam that has a picture of Reese. 
+ |LineColor = F8BF2A
+}}
+{{Episode list/sublist|Person of Interest season 3
+ |EpisodeNumber = 54
+ |EpisodeNumber2 = 9
+ |Title = [[The Crossing (Person of Interest)|The Crossing]]
+ |DirectedBy = Frederick E. O. Toye
+ |WrittenBy = Denise Thé
+ |OriginalAirDate = {{Start date|2013|11|19}}
+ |Viewers = 12.28<ref name="3.09">{{cite web|url=http://tvbythenumbers.zap2it.com/2013/11/20/tuesday-final-ratings-marvels-agents-of-s-h-i-e-l-d-adjusted-up/216918|archive-url=https://web.archive.org/web/20131123190727/http://tvbythenumbers.zap2it.com/2013/11/20/tuesday-final-ratings-marvels-agents-of-s-h-i-e-l-d-adjusted-up/216918/|url-status=dead|archive-date=November 23, 2013|title=Tuesday Final Ratings: 'Marvel's Agents of S.H.I.E.L.D.' Adjusted Up|last=Kondolojy|first=Amanda|work=TV by the Numbers|date=November 20, 2013|access-date=November 20, 2013}}</ref>
+ |ProdCode = 2J7609
+ |ShortSummary = Reese and Carter are crossing town to deliver Alonzo Quinn to the FBI. Simmons alerts HR and several criminal groups of Reese's identity, limiting their means of movement. The two fight their way to, and break into, the city morgue. Simmons and Detective William Petersen ([[Lee Tergesen]]) capture and torture Fusco for the location of Carter's safe deposit box, which contains evidence against HR. To break Fusco, Simmons sends Lin ([[Khalil Kain]]) to kill his son Lee (Sean McCarthy); but Lin is killed by Shaw. Fusco breaks his own thumb to get free of the handcuffs, and kills Petersen. Reese distracts the HR cops by killing or disabling all but one, leading him onto the street. Finch arranges for two honest policemen to arrest Reese to evade HR. Carter and Quinn reach FBI Headquarters. Quinn is charged with multiple offenses and HR gets disbanded, with the exception of a few rogue officers, including the now-fugitive Simmons. Carter, re-promoted to detective, releases Reese from police custody. Simmons fires on both Reese and Carter down the street. Carter shoots Simmons back, but he escapes, merely wounded. Severely injured, Reese holds a dying Carter in his arms as she loses consciousness.
+ |LineColor = F8BF2A
+}}
+{{Episode list/sublist|Person of Interest season 3
+ |EpisodeNumber = 55
+ |EpisodeNumber2 = 10
+ |Title = [[The Devil's Share]]
+ |DirectedBy = Chris Fisher
+ |WrittenBy = Amanda Segel & [[Jonathan Nolan]]
+ |OriginalAirDate = {{Start date|2013|11|26}}
+ |Viewers = 11.89<ref name="3.10">{{cite web|url=http://tvbythenumbers.zap2it.com/2013/11/27/tuesday-final-ratings-marvels-agents-of-s-h-i-e-l-d-the-voice-supernatural-person-of-interest-adjusted-up/218703|archive-url=https://web.archive.org/web/20131130024007/http://tvbythenumbers.zap2it.com/2013/11/27/tuesday-final-ratings-marvels-agents-of-s-h-i-e-l-d-the-voice-supernatural-person-of-interest-adjusted-up/218703/|url-status=dead|archive-date=November 30, 2013|title=Tuesday Final Ratings: 'Marvel's Agents of S.H.I.E.L.D.', 'The Voice', 'Supernatural' & 'Person of Interest' Adjusted Up|last=Bibel|first=Sara|work=TV by the Numbers|date=November 27, 2013|access-date=November 27, 2013}}</ref>
+ |ProdCode = 2J7610
+ |ShortSummary = Flashbacks illuminate Finch's dealing with [[survivor's guilt]], Reese's time doing [[wetwork]], Shaw's former life as a technically excellent surgeon but completely indifferent to the people she helped, and Fusco's recounting of exacting vigilante justice to a crook that slipped through the system (the devil's share). Reese starts sliding into his old, dark ways to get Simmons while also sliding towards death. Finch, Fusco, and Shaw go to an HR attorney to know Quinn's whereabouts to question him for Simmons' plan, but the Russians have killed him, shortly after Reese got the information. The team turns to Root in desperation. Reese gets Simmons' location and is just about to kill Quinn when Finch reminds him that killing Quinn now would destroy Carter's legacy of bringing him down legally, and he collapses. Fusco finds the note that Reese dropped, and goes after Simmons. After a brutal fistfight, Fusco emotionally refuses to kill Simmons and takes him into custody, citing Carter's influence for turning his life around. Root, despite having opportunity to flee, returns to her cell, and Finch thanks her for helping him in saving Reese. Finally, Elias watches as Marconi murders Simmons in his hospital bed in retaliation for Carter.
+ |LineColor = F8BF2A
+}}
+{{Episode list/sublist|Person of Interest season 3
+ |EpisodeNumber = 56
+ |EpisodeNumber2 = 11
+ |Title = [[Lethe (Person of Interest)|Lethe]]
+ |DirectedBy = [[Richard J. Lewis]]
+ |WrittenBy = Erik Mountain
+ |OriginalAirDate = {{Start date|2013|12|17}}
+ |Viewers = 12.40<ref name="3.11">{{cite web|url=http://tvbythenumbers.zap2it.com/2013/12/18/tuesday-final-ratings-the-voice-person-of-interest-ncis-adjusted-up/223393|archive-url=https://web.archive.org/web/20131219035624/http://tvbythenumbers.zap2it.com/2013/12/18/tuesday-final-ratings-the-voice-person-of-interest-ncis-adjusted-up/223393/|url-status=dead|archive-date=December 19, 2013|title=Tuesday Final Ratings: 'The Voice', 'Person of Interest' & 'NCIS' Adjusted Up|last=Kondolojy|first=Amanda|work=TV by the Numbers|date=December 18, 2013|access-date=December 18, 2013}}</ref>
+ |ProdCode = 2J7611
+ |ShortSummary = Reese leaves the team and heads for Colorado, where his father had lived. The Machine provides a new number to Harold, who at first is reluctant, but eventually accepts it on Root's insistence. The number belongs to Arthur Claypool ([[Saul Rubinek]]), Harold's close friend during his days at MIT. Claypool has been diagnosed with a brain tumor and is being monitored at the hospital, being kept under Secret Service guard. Arthur's wife, Diane ([[Camryn Manheim]]) tells the disguised Doctor Shaw that Arthur works for the NSA, and Collier's group Vigilance tries to abduct him. They escape to a hotel, where Harold talks to Arthur to get more information about Samaritan: a project which sought to build an AI, like the later Machine, but was shut down just as it achieved consciousness. As Arthur talks with Finch, he remembers that his wife is dead, prompting the woman pretending to be Diane to reveal herself as Control. She threatens to kill either Arthur or Harold unless one of them gives up their respective AI. The Machine starts analyzing threats to its assets and itself, changing Samaritan's status from "Deactivated" to "Unknown".
+ |LineColor = F8BF2A
+}}
+{{Episode list/sublist|Person of Interest season 3
+ |EpisodeNumber = 57
+ |EpisodeNumber2 = 12
+ |Title = [[Aletheia (Person of Interest)|Aletheia]]
+ |DirectedBy = Richard J. Lewis
+ |WrittenBy = Lucas O'Connor
+ |OriginalAirDate = {{Start date|2014|1|7}}
+ |Viewers = 12.10<ref name="3.12">{{cite web|url=http://tvbythenumbers.zap2it.com/2014/01/08/tuesday-final-ratings-marvels-agents-of-s-h-i-e-l-d-ncis-trophy-wife-adjusted-down/227699|archive-url=https://web.archive.org/web/20140109004847/http://tvbythenumbers.zap2it.com/2014/01/08/tuesday-final-ratings-marvels-agents-of-s-h-i-e-l-d-ncis-trophy-wife-adjusted-down/227699/|url-status=dead|archive-date=January 9, 2014|title=Tuesday Final Ratings: 'Marvel's Agents of S.H.I.E.L.D.', 'NCIS' & 'Chicago Fire' Adjusted Up; 'Trophy Wife' Adjusted Down|last=Bibel|first=Sara|work=TV by the Numbers|date=January 8, 2014|access-date=January 8, 2014}}</ref>
+ |ProdCode = 2J7612
+ |ShortSummary = Control holds Harold, Shaw and Arthur captive. She orders Shaw killed, but Root enters, guns blazing, and frees the trio. Root herself is shot and captured by Control, who tortures her, demanding access to the Machine. Control destroys the hearing in Root's right ear and threatens to make her completely deaf and blind. Meanwhile, Arthur reveals that he has a copy of the Samaritan AI in a safe-deposit box. They go to retrieve it, and Vigilance militants attack the bank. Harold locks himself, Arthur, and the bank manager in the vault. While Shaw readies a bomb to break out of the vault, Harold tells Arthur about the Machine and convinces him to destroy Samaritan to keep it from falling into the wrong hands. Vigilance breaks into the vault and captures everyone, including Shaw, but Reese and Lionel save them. Meanwhile, the Machine helps Root to escape from Control. Root calls Harold to tell him that the Samaritan drives were not destroyed: The bank manager was an imposter who swapped the disks with replicas. The impostor is shown handing the drives to Decima Technologies head Greer, who shoots her to cover his tracks. He has great plans for Samaritan.
+ |LineColor = F8BF2A
+}}
+{{Episode list/sublist|Person of Interest season 3
+ |EpisodeNumber = 58
+ |EpisodeNumber2 = 13
+ |Title = [[4C (Person of Interest)|4C]]
+ |DirectedBy = Stephen Williams
+ |WrittenBy = Melissa Scrivner Love & Greg Plageman
+ |OriginalAirDate = {{Start date|2014|1|14}}
+ |Viewers = 12.54<ref name="3.13">{{cite web|url=http://tvbythenumbers.zap2it.com/2014/01/15/tuesday-final-ratings-the-mindy-project-adjusted-down-no-adjustment-for-chicago-fire-or-brooklyn-nine-nine/229530|archive-url=https://web.archive.org/web/20140116120051/http://tvbythenumbers.zap2it.com/2014/01/15/tuesday-final-ratings-the-mindy-project-adjusted-down-no-adjustment-for-chicago-fire-or-brooklyn-nine-nine/229530/|url-status=dead|archive-date=January 16, 2014|title=Tuesday Final Ratings: 'The Mindy Project' Adjusted Down; No Adjustment for 'Chicago Fire' or 'Brooklyn Nine-Nine'|work=TV by the Numbers|last=Kondolojy|first=Amanda|date=January 15, 2014|access-date=January 15, 2014}}</ref>
+ |ProdCode = 2J7613
+ |ShortSummary = Reese boards an international flight to get away from his former life, but the Machine makes changes to his itinerary causing him to take another one. Initially Reese is angry at Harold thinking he has made the changes, but Harold convinces him otherwise. It turns out that Owen Matthews ([[Samm Levine]]), a passenger on the plane is a witness being escorted by U.S. Marshals, and he is the intended target of multiple assassins including the [[Intelligence Support Activity#Popular culture|ISA]]. After Reese foils several assassination attempts, Finch learns that one of the assassins plans to crash the aircraft and kill everyone onboard just to ensure the witness is eliminated. Reese and Harold safely land the plane and save everyone, and all ends well. Reese goes on a date with Holly ([[Sally Pressman]]), the [[flight attendant]] who helped him and later tells Harold he wants a new suit and to come back and work again.
+ |LineColor = F8BF2A
+}}
+{{Episode list/sublist|Person of Interest season 3
+ |EpisodeNumber = 59
+ |EpisodeNumber2 = 14
+ |Title = [[Provenance (Person of Interest)|Provenance]]
+ |DirectedBy = Jeffrey Hunt
+ |WrittenBy = Sean Hennen
+ |OriginalAirDate = {{Start date|2014|2|4}}
+ |Viewers = 12.35<ref name="3.14">{{Cite web|url=http://tvbythenumbers.zap2it.com/2014/02/05/tuesday-final-ratings-ncis-marvels-agents-of-s-h-i-e-l-d-ncis-los-angeles-the-goldbergs-supernatural-trophy-wife-adjusted-down/234709/|archive-url=https://web.archive.org/web/20140222204742/http://tvbythenumbers.zap2it.com/2014/02/05/tuesday-final-ratings-ncis-marvels-agents-of-s-h-i-e-l-d-ncis-los-angeles-the-goldbergs-supernatural-trophy-wife-adjusted-down/234709/|url-status=dead|archive-date=February 22, 2014|title=Tuesday Final Ratings: 'NCIS', 'Marvel's Agents of S.H.I.E.L.D.' & 'The Originals' Adjusted Up; 'NCIS: Los Angeles', ' The Goldbergs'. 'Supernatural' & 'Trophy Wife' Adjusted Down|work=TV by the Numbers|last=Bibel|first=Sara|date=February 5, 2014|access-date=February 5, 2014}}</ref>
+ |ProdCode = 2J7614
+ |ShortSummary = The team's next case is that of Kelli Lin ([[Elaine Tan]]), a former silver medal-winning Olympic gymnast who is later revealed to be an antiquities thief long pursued by [[Interpol]]. Shaw investigates Kelli's house, learning that her next operation is to steal a Gutenberg Bible that is being shipped out that night. Shaw foils the plan but is confronted by Kelli, whose boss Cyril ([[Gene Farber]]) is an extortionist revealed to be forcing Kelli to commit robberies while her daughter is held captive. Finch takes Interpol agent Alain Bouchard (Henri Lubatti), the man in charge of the investigation against Kelli, to listen in on Kelli's conversation with Cyril so Bouchard can learn the truth. Cyril refuses to free Kelli's daughter, but sees Reese take down the thugs guarding her on the surveillance feed. Shaw stops Cyril from killing Kelli and both Kelli and Cyril are apprehended. In an interrogation room at the NYPD, Bouchard places a key on a desk, allowing her to leave. The next day, Kelli and her daughter happily reunite. That night, the team celebrates their victory and Reese honors Carter by pouring a glass for their "missing member".
+ |LineColor = F8BF2A
+}}
+{{Episode list/sublist|Person of Interest season 3
+ |EpisodeNumber = 60
+ |EpisodeNumber2 = 15
+ |Title = [[Last Call (Person of Interest)|Last Call]]
+ |DirectedBy = Jeff T. Thomas
+ |WrittenBy = Dan Dietz
+ |OriginalAirDate = {{Start date|2014|2|25}}
+ |Viewers = 11.00<ref name="3.15">{{Cite web|url=http://tvbythenumbers.zap2it.com/2014/02/26/tuesday-final-ratings-the-bachelor-ncis-person-of-interest-adjusted-up-supernatural-adjusted-down/240290/|archive-url=https://web.archive.org/web/20140302011026/http://tvbythenumbers.zap2it.com/2014/02/26/tuesday-final-ratings-the-bachelor-ncis-person-of-interest-adjusted-up-supernatural-adjusted-down/240290/|url-status=dead|archive-date=March 2, 2014|title=Tuesday Final Ratings: 'The Bachelor', 'NCIS: Los Angeles', 'Person of Interest' Adjusted Up; 'Supernatural' Adjusted Down|last=Kondolojy|first=Amanda|work=TV by the Numbers|date=February 26, 2014|access-date=February 26, 2014}}</ref>
+ |ProdCode = 2J7615
+ |ShortSummary = When the number of Sandra ([[Melissa Sagemiller]]), a 911 operator, comes up, Harold goes undercover at the 911 call-center. Later, a child is kidnapped and the call is routed specifically to Sandra. She is ordered to delete an earlier day's 911 call logs, in return for the child's life. Meanwhile, the case overlaps with one of the murder cases with which Fusco was helping a rookie detective. It turns out that a woman was killed by her married ex-boyfriend and boss, and the family hired a [[Cleaner (crime)|cleaner]] to erase the final 911 call she made. When Fusco 'convinces' the family to terminate the contract, the cleaner decides to kill both the child and Sandra. Reese and Shaw save the child from kidnappers and a bomb, while Harold traps the assassin who comes after Sandra. The team is never able to find the real cleaner, who later calls Finch to threaten him. The criminal becomes known as "The Voice".
+ |LineColor =F8BF2A
+}}
+{{Episode list/sublist|Person of Interest season 3
+ |EpisodeNumber = 61
+ |EpisodeNumber2 = 16
+ |Title = [[RAM (Person of Interest)|RAM]]
+ |DirectedBy = Stephen Surjik
+ |WrittenBy = Nic Van Zeebroeck & Michael Sopczynski
+ |OriginalAirDate = {{Start date|2014|3|4}}
+ |Viewers = 10.64<ref name="3.16">{{cite web|url=http://tvbythenumbers.zap2it.com/2014/03/05/tuesday-final-ratings-the-voice-ncis-about-a-boy-the-goldbergs-growing-up-fisher-adjusted-down/242226/|archive-url=https://web.archive.org/web/20140306045628/http://tvbythenumbers.zap2it.com/2014/03/05/tuesday-final-ratings-the-voice-ncis-about-a-boy-the-goldbergs-growing-up-fisher-adjusted-down/242226/|url-status=dead|archive-date=March 6, 2014|title=Tuesday Final Ratings: 'The Voice', 'NCIS' & 'Marvel's Agents of S.H.I.E.L.D.' Adjusted Up; 'About A Boy, 'The Goldbergs' & 'Growing Up Fisher' Adjusted Down|work=TV by the Numbers|last=Bibel|first=Sara|date=March 5, 2014|access-date=March 5, 2014}}</ref>
+ |ProdCode = 2J7616
+ |ShortSummary = In 2010, Harold works with Dillinger ([[Neil Jackson]]), an ex-[[Academi|Blackwater]] [[mercenary]] who performs the same duties later performed by Reese. Their current number is Daniel Casey ([[Joseph Mazzello]]), a hacker who tests computer security systems. Multiple parties attempt to eliminate Casey, including Reese and Stanton (secretly arranged by Control) and agents of Decima Technologies. Dillinger saves Casey and brings him to Harold, who realizes Casey's last job was to find a way to access the Machine. Although Casey failed, he learned enough to warrant Control to want him dead and his laptop destroyed. Dillinger turns on Finch and steals the laptop from him to sell on the [[black market]], but not before Finch modifies the laptop's code. The sale is busted by a Special Counsel agent (Shaw) who kills Dillinger, but one of the buyers escapes with the laptop. Casey is captured by Reese, who decides to let him live against his orders, providing him with safe passage to [[Canada]]. Control traces the laptop to [[China]], and orders that Reese and Stanton to be sent after the laptop and destroyed along with it. In the present day, Root finds Casey in Alaska and tells him to go to [[Cartagena, Colombia]] and seek out Jason Greenfield.{{efn|Her number from "[[Mors Praematura]]".}}
+ |LineColor = F8BF2A
+}}
+{{Episode list/sublist|Person of Interest season 3
+ |EpisodeNumber = 62
+ |EpisodeNumber2 = 17
+ |Title = [[/ (Person of Interest)|/]]
+ |AltTitle = Root Path
+ |RAltTitle = <ref>{{cite web|url=https://www.amazon.com/Person-Interest-Complete-Third-Season/dp/B00F3KFFPM|title=Person of Interest: The Complete Third Season|website=Amazon|access-date=December 21, 2023}}</ref>
+ |DirectedBy = Jeffrey Lee Gibson
+ |WrittenBy = David Slack
+ |OriginalAirDate = {{Start date|2014|3|18}}
+ |Viewers = 10.94<ref name="3.17">{{cite web|url=http://tvbythenumbers.zap2it.com/2014/03/19/tuesday-final-ratings-the-voice-marvel-studios-assembling-a-universe-the-goldbergs-about-a-boy-person-of-interest-adjusted-down/246069/|archive-url=https://web.archive.org/web/20140320010728/http://tvbythenumbers.zap2it.com/2014/03/19/tuesday-final-ratings-the-voice-marvel-studios-assembling-a-universe-the-goldbergs-about-a-boy-person-of-interest-adjusted-down/246069/|url-status=dead|archive-date=March 20, 2014|title=Tuesday Final Ratings: 'The Voice', 'Marvel Studios: Assembling A Universe', 'The Goldbergs' & 'Supernatural' Adjusted Up; 'About A Boy' & 'Person of Interest' Adjusted Down|work=TV by the numbers|last=Bibel|first=Sara|date=March 19, 2014|access-date=March 19, 2014}}</ref>
+ |ProdCode = 2J7617
+ |ShortSummary = The Machine orders Root on several tasks such as helping a convict escape and using him to impersonate a Department of Defense employee in order to obtain a secret note. Afterward, she and Harold's team coincidentally reach the same person, a janitor. It later turns out that NSA has been testing an advanced supercomputing chip and the janitor was one of the 15 people who had access to the development lab. This makes both Decima and Vigilance come after him. While Harold and his team's assignment was to protect the janitor, Root had to stop the chip from falling into Decima's hands. They are able to save the janitor, but Decima gets the chip.
+ |LineColor = F8BF2A
+}}
+{{Episode list/sublist|Person of Interest season 3
+ |EpisodeNumber = 63
+ |EpisodeNumber2 = 18
+ |Title = [[Allegiance (Person of Interest)|Allegiance]]
+ |DirectedBy = Jeffrey Hunt
+ |WrittenBy = Tony Camerino
+ |OriginalAirDate = {{Start date|2014|3|25}}
+ |Viewers = 12.23<ref name="3.18">{{cite web|url=http://tvbythenumbers.zap2it.com/2014/03/26/tuesday-final-ratings-the-voice-mind-games-supernatural-adjusted-up/248217/|archive-url=https://web.archive.org/web/20140327234904/http://tvbythenumbers.zap2it.com/2014/03/26/tuesday-final-ratings-the-voice-mind-games-supernatural-adjusted-up/248217/|url-status=dead|archive-date=March 27, 2014|title=Tuesday Final Ratings: 'The Voice', 'Mind Games' & 'Supernatural' Adjusted Up|last=Kondolojy|first=Amanda|work=TV by the Numbers|date=March 26, 2014|access-date=March 26, 2014}}</ref>
+ |ProdCode = 2J7618
+ |ShortSummary = The team receives the number of Maria Martinez ([[Nazneen Contractor]]), an engineer working for the international energy company HydralCorp. Maria is working to clear the name of Omar Risha ([[Haaz Sleiman]]), a man from Iraq suspected of being a terrorist. Shaw, Fusco and Reese save Maria from an assassination attempt and learn that Omar was her translator in Iraq and saved her from a terrorist ambush during the shipment of six generators. The generators went missing and Omar learned about their disappearance, being targeted for it. Finch learns that the generators were shipped elsewhere and that HydralCorp's corrupt CEO Ken Davis ([[Casey Biggs]]) is responsible. Maria and Shaw discover that Davis has created a false report of Omar's terrorist accusations, and that French [[United Nations]] diplomat Rene Lapointe ([[Michel Gill]]) has the papers approving Omar's asylum in the US in his office. Reese, Fusco and Omar break into the UN building and stop Greek diplomat Christos Sevon ([[William Abadie]]) from killing Maria. Root takes Bear to spy on Decima head Greer, where it is revealed that Davis had the generators shipped to the US so Greer can power Samaritan. Greer has Davis killed and leaves, and Root follows him.
+ |LineColor = F8BF2A
+}}
+{{Episode list/sublist|Person of Interest season 3
+ |EpisodeNumber = 64
+ |EpisodeNumber2 = 19
+ |Title = [[Most Likely To...]]
+ |DirectedBy = [[Kevin Hooks]]
+ |WrittenBy = Melissa Scrivner Love & Denise Thé
+ |OriginalAirDate = {{Start date|2014|4|1}}
+ |Viewers = 11.45<ref name="3.19">{{cite web|url=http://tvbythenumbers.zap2it.com/2014/04/02/tuesday-final-ratings-marvels-agents-of-s-h-i-e-l-d-the-voice-about-a-boy-growing-up-fisher-adjusted-down/250243/|archive-url=https://web.archive.org/web/20140404222323/http://tvbythenumbers.zap2it.com/2014/04/02/tuesday-final-ratings-marvels-agents-of-s-h-i-e-l-d-the-voice-about-a-boy-growing-up-fisher-adjusted-down/250243/|url-status=dead|archive-date=April 4, 2014|title=Tuesday Final Ratings: 'Marvel's Agents of S.H.I.E.L.D', 'The Voice' & 'NCIS' Adjusted Up; 'About A Boy' & 'Growing Up Fisher' Adjusted Down|last=Bibel|first=Sara|work=TV by the Numbers|date=April 2, 2014|access-date=April 2, 2014}}</ref>
+ |ProdCode = 2J7619
+ |ShortSummary = The team witness Leona Wainwright being killed by a suicide bomber. She worked for the government, managing security clearances; Finch deduces from cell phone information that Vigilance killed her. Their next number, prosecutor Matthew Reed ([[Nestor Carbonell]]), sends Reese and Shaw to a high school reunion in Westchester. They manage to prevent a planned murder, while fending off an ambush by Vigilance. Meanwhile, Finch and Fusco go to Washington, D.C. to find out why Leona was targeted, but Vigilance beats them to it. Collier obtains classified documents about the Machine and disseminates them world wide. Senator Ross Garrison ([[John Doman]]) publicly denies the existence of the Machine and orders Control to shut it down. She gives the command, and shreds Collier's eyes-only file. With its Primary Operations compromised, the Machine restructures, transferring massive amounts of red-flagged data to Tertiary Operations: Root.
+ |LineColor = F8BF2A
+}}
+{{Episode list/sublist|Person of Interest season 3
+ |EpisodeNumber = 65
+ |EpisodeNumber2 = 20
+ |Title = [[Death Benefit]]
+ |DirectedBy = Richard J. Lewis
+ |WrittenBy = Erik Mountain & Lucas O'Connor
+ |OriginalAirDate = {{Start date|2014|4|15}}
+ |Viewers = 10.74<ref name="3.20">{{cite web|url=http://tvbythenumbers.zap2it.com/2014/04/16/tuesday-final-ratings-the-originals-marvels-agents-of-s-h-i-e-l-d-the-voice-ncis-new-girl-supernatural-about-a-boy-growin/254567/|archive-url=https://web.archive.org/web/20140417043517/http://tvbythenumbers.zap2it.com/2014/04/16/tuesday-final-ratings-the-originals-marvels-agents-of-s-h-i-e-l-d-the-voice-ncis-new-girl-supernatural-about-a-boy-growin/254567/|url-status=dead|archive-date=April 17, 2014|title=Tuesday Final Ratings: 'The Originals', 'Marvel's Agents of S.H.I.E.L.D.', 'The Voice', 'NCIS', 'New Girl' & 'Person of Interest' Adjusted Up; 'Supernatural', 'About A Boy' & 'Growing Up Fisher' Adjusted Down|last=Bibel|first=Sara|work=TV by the Numbers|date=April 16, 2014|access-date=April 16, 2014}}</ref>
+ |ProdCode = 2J7620
+ |ShortSummary = The new number is Congressman Roger McCourt ([[John Heard (actor)|John Heard]]), who serves on the powerful Rules Committee. The team is initially baffled: He has no obvious enemies. They eventually discover a connection to Decima: McCourt admits to agreeing to help Decima with favorable legislation (granting Decima access to government surveillance feeds), in exchange for insider stock-trading tips. Reese concludes that the team is the “danger”, because the Machine wants them to kill McCourt in order to prevent future killings by  Decima. Harold is deeply disturbed at this idea, and he leaves the team, not wishing to participate in an assassination. In the end, McCourt is left alive and proceeds with Decima's plan. Greer also approaches a skeptical Senator Garrison, offering him a 24-hour [[beta test]] of their machine. Garrison agrees, and Greer immediately deploys Samaritan to track down Finch. Meanwhile, Root is travelling across the country, dealing with various relevant threats.
+ |LineColor = F8BF2A
+}}
+{{Episode list/sublist|Person of Interest season 3
+ |EpisodeNumber = 66
+ |EpisodeNumber2 = 21
+ |Title = [[Beta (Person of Interest)|Beta]]
+ |DirectedBy = Frederick E. O. Toye
+ |WrittenBy = Sean Hennen & Dan Dietz
+ |OriginalAirDate = {{Start date|2014|4|29}}
+ |Viewers = 11.31<ref name="3.21">{{cite web|url=http://tvbythenumbers.zap2it.com/2014/04/30/tuesday-final-ratings-marvels-agents-of-s-h-i-e-l-d-glee-the-goldbergs-new-girl-about-a-boy-growing-up-fisher-adjusted-down/259032/|archive-url=https://web.archive.org/web/20140502002457/http://tvbythenumbers.zap2it.com/2014/04/30/tuesday-final-ratings-marvels-agents-of-s-h-i-e-l-d-glee-the-goldbergs-new-girl-about-a-boy-growing-up-fisher-adjusted-down/259032/|url-status=dead|archive-date=May 2, 2014|title=Tuesday Final Ratings: 'Marvel's Agents of S.H.I.E.L.D.', 'Glee', 'The Goldbergs', 'New Girl' & 'Trophy Wife' Adjusted Up; 'About A Boy' & 'Growing Up Fisher' Adjusted Down|last=Bibel|first=Sara|work=TV by the Numbers|date=April 30, 2014|access-date=April 30, 2014}}</ref>
+ |ProdCode = 2J7621
+ |ShortSummary = With Finch having disappeared, Decima initiates their plan with Samaritan, and when unable to find Finch, they look for his closest connection and the number received is that of Finch's fiancee Grace. The Machine also provides Grace's number as a result, and Reese, Shaw and Root work to protect her while evading Decima, who use Samaritan to spy on them within the range of New York. Grace is eventually kidnapped and interviewed by Greer, who reveals his extensive knowledge of her and begins asking about her life with Finch. When he implies that Finch lied to her, Grace snaps and firmly tells Greer that Finch would never lie as Grace gave him her unbreakable trust. When the team manages to locate Decima's current HQ, Greer takes Grace and tells Reese and Shaw that they can get Grace back in exchange for giving them Finch. Finch agrees to the deal, and at Jefferson Bridge, Grace is blindfolded and brought to Reese and crew while Finch is taken by Decima. Reese later gives Grace an envelope, saying that she has been accepted for a job in Italy. Greer, meanwhile, finally meets Finch in person and sits down with him to talk.
+ |LineColor = F8BF2A
+}}
+{{Episode list/sublist|Person of Interest season 3
+ |EpisodeNumber = 67
+ |EpisodeNumber2 = 22
+ |Title = [[A House Divided (Person of Interest)|A House Divided]]
+ |DirectedBy = Chris Fisher
+ |WrittenBy = Amanda Segel
+ |OriginalAirDate = {{Start date|2014|5|6}}
+ |Viewers = 10.50<ref name="3.22">{{cite web|url=http://tvbythenumbers.zap2it.com/2014/05/07/tuesday-final-ratings-the-voice-marvels-agents-of-s-h-i-e-l-d-adjusted-up/261264/|archive-url=https://web.archive.org/web/20140508061924/http://tvbythenumbers.zap2it.com/2014/05/07/tuesday-final-ratings-the-voice-marvels-agents-of-s-h-i-e-l-d-adjusted-up/261264/|url-status=dead|archive-date=May 8, 2014|title=Tuesday Final Ratings: 'The Voice' & 'Marvel's Agents of S.H.I.E.L.D.' Adjusted Up|last=Kondolojy|first=Amanda|work=TV by the Numbers|date=May 7, 2014|access-date=May 7, 2014}}</ref>
+ |ProdCode = 2J7622
+ |ShortSummary = In a series of flashbacks to 2010, the narrative reveals the backstory on Collier, the face of Vigilance. His brother had been falsely accused of terrorist activities, held without trial, and had committed suicide as a result. The Machine's latest numbers include Control, Senator Garrison, a presidential assistant, and a seemingly unconcerned Greer. Vigilance kidnaps them, along with Finch, and the episode ends with Vigilance about to conduct a private trial of their detainees, while Reese and Shaw, along with Hersh (joining forces after a tense confrontation) watch from a closed-circuit TV screen set up for their benefit. Meanwhile, Root has discovered the location of the Samaritan system.
+ |LineColor = F8BF2A
+}}
+{{Episode list/sublist|Person of Interest season 3
+ |EpisodeNumber = 68
+ |EpisodeNumber2 = 23
+ |Title = [[Deus Ex Machina (Person of Interest)|Deus Ex Machina]]
+ |DirectedBy = Chris Fisher
+ |WrittenBy = Greg Plageman & David Slack
+ |OriginalAirDate = {{Start date|2014|5|13}}
+ |Viewers = 10.95<ref name="3.23">{{cite web|url=http://tvbythenumbers.zap2it.com/2014/05/14/tuesday-final-ratings-the-voice-marvels-agents-of-s-h-i-e-l-d-the-originals-supernatural-about-a-boy-adjusted-down/264168/|archive-url=https://web.archive.org/web/20140515052137/http://tvbythenumbers.zap2it.com/2014/05/14/tuesday-final-ratings-the-voice-marvels-agents-of-s-h-i-e-l-d-the-originals-supernatural-about-a-boy-adjusted-down/264168/|url-status=dead|archive-date=May 15, 2014|title=Tuesday Final Ratings: 'The Voice', 'Marvel's Agents of S.H.I.E.L.D.' & 'The Goldbergs' Adjusted Up; 'The Originals', 'Supernatural', & 'About a Boy' Adjusted Down|last=Bibel|first=Sara|work=TV by the Numbers|date=May 14, 2014|access-date=May 14, 2014}}</ref>
+ |ProdCode = 2J7623
+ |ShortSummary = The trial continues. Reese, Hersh and Fusco search for the courtroom. Shaw helps Root smuggle seven servers into the Samaritan array. Hersh finds a bomb, wired to go off when the power comes on. Control is found guilty. To save her life, Finch confesses to building the Machine. When a command post is compromised, Collier moves the trial to the roof, where Decima attacks. Greer reveals that he himself created Vigilance. He wanted an atrocity—the bomb—to justify Samaritan. The bomb explodes, Greer's lieutenant kills Collier, and Reese rescues Harold. Because of Samaritan, Vigilance members are identified, targeted and eliminated, but Harold's team is identified as “irrelevant” by the program. Finch, Reese, Shaw, Root and the programmers have new identities. The seven servers hard-wire Samaritan to ignore them. Samaritan asks for instructions. Greer replies, “What, my dear Samaritan, are your commands for us?” The answer: “Calculating response... ".
+ |LineColor = F8BF2A
+}}
+}}</onlyinclude>
+
+==Production==
+===Development===
+The series was renewed for a third season in March 2013.<ref name="season3"/> [[Jonathan Nolan]] stated that he viewed the season as two halves: the first half focusing on Carter's journey and the second half focusing more on the Machine storyline.<ref>{{cite web|url=https://www.buzzfeed.com/kateaurthur/why-person-of-interest-is-the-most-subversive-show-on-televi|title=Why "Person Of Interest" Is The Most Subversive Show On Television|last=Aurthur|first=Kate|date=May 6, 2014|access-date=September 20, 2021|work=[[BuzzFeed]]}}</ref> Nolan commented on the 22-episode season order, "It's very difficult. The number of episodes is probably calibrated not to the length of the season but to the exact point a showrunner will have a nervous breakdown."<ref>{{cite web|url=https://deadline.com/2014/01/tca-cbs-showrunners-talk-large-episode-orders-killing-off-characters-and-their-breakdown-point-664905/|title=TCA: CBS Showrunners Talk Large Episode Orders, Killing Off Characters, And Their Breakdown Point|date=January 15, 2014|access-date=September 20, 2021|work=[[Deadline Hollywood]]}}</ref>
+
+===Writing===
+[[Image:Edward Snowden-2.jpg{{!}}border|thumb|right|200px|During the season, many critics and analysts noticed parallelisms between the series' premise and [[Edward Snowden]].]]
+
+Greg Plageman said that the Machine's location is not the central theme of the season, but what its intentions are, "What is it up to? What sort of organism is it becoming? And is it expanding beyond the parameters of what even Finch designed?"<ref>{{cite web|url=https://tvline.com/2013/09/03/fall-tv-spoilers-2013-shows-ncis/|title=Fall TV Spoiler Spectacular: Exclusive Scoop and Photos on 45 Returning Favorites!|date=September 3, 2013|access-date=September 20, 2021|work=[[TVLine]]}}</ref>
+
+Amy Acker teased her role in the season, "The Machine and Root have a very special connection — at least in her mind. So it's either perpetuating her fantasies by calling her or something else." She also addressed more scenes with Shaw, saying, "She's so great, I would love to torture her again any day."<ref>{{cite web|url=https://tvline.com/2013/06/27/revenge-teen-wolf-under-the-dome-true-blood-spoilers/|title=Matt's Inside Line: Scoop on Revenge, Teen Wolf, Under the Dome, POI, True Blood, Suits and More|last=Webb Mitovich|first=Matt|date=June 27, 2013|access-date=September 20, 2021|work=[[TVLine]]}}</ref> Plageman added that the season would explore mostly Carter and Shaw's pasts.<ref name="season3preview">{{cite web|url=https://tvline.com/2013/09/24/person-of-interest-season-3-preview/|title=Person of Interest: What (and Who) Is New for Season 3? And What Is The Machine Turning Into?|last=Webb Mitovich|first=Matt|date=September 24, 2013|access-date=September 20, 2021|work=[[TVLine]]}}</ref> On Shaw's role, Plageman deemed her part of the "[[Groucho Marx]] School", explaining that she would not work for anyone following her government's betrayal but she would help the team "when she feels like it."<ref name="season3preview"/> Sarah Shahi commented on her character's past on "[[Razgovor]]", "as we were shooting it, I felt like it was a complete and total disaster and I had no idea how it was going to turn out. But then after watching it I was very pleased with it."<ref>{{cite web|url=https://tvline.com/2013/10/29/person-of-interest-season-3-preview-sarah-shahi-shaw-root/|title=Person of Interest: Sarah Shahi Ponders Shaw's Sex Life (Um, Knives?), Talks Love/Hate With Root|last=Webb Mitovich|first=Matt|date=October 29, 2013|access-date=September 20, 2021|work=[[TVLine]]}}</ref>
+
+Many analysts noticed similarities between the season's airing and [[Edward Snowden]], whose actions drew parallelisms to the series' premise, particularly to an episode in the first season, "[[No Good Deed (Person of Interest)|No Good Deed]]".<ref name="New Yorker">{{cite magazine|url=https://www.newyorker.com/culture/culture-desk/person-of-interest-the-tv-show-that-predicted-edward-snowden|title="Person of Interest": The TV Show That Predicted Edward Snowden|last=Rothman|first=Joshua|date=January 14, 2014|access-date=September 20, 2021|magazine=[[The New Yorker]]}}</ref> Nolan commented, "Occasionally, we've been accused of writing a show that's sort of an apologia for the [[Mass surveillance#Surveillance state|surveillance state]]. I totally reject that. If there's a cynicism to the show, it's in the premise not just that this is inevitable but that it's already happened. The science-fiction part of the show is that the Machine is accurate, but the invasion of civil liberties is not imaginary. If the legacy of the [[World War II|Second World War]] was the atomic age, then what might emerge from the war on terror would be artificial intelligence."<ref name="New Yorker"/> Plageman said, "What's interesting about the revelations coming from Snowden is that there are other characters, other figures — some who work for the [[Federal Bureau of Investigation|FBI]] or the [[National Security Agency|NSA]] — who indicated years ago that this was something that was going on. Certainly [[Shane Harris]] outlined all this in his book ''[[The Watchers: The Rise of America's Surveillance State|The Watchers]]'', going back as far as [[John Poindexter|Admiral Poindexter]], so what we'd like to do this year is inform people how long this has actually been going on, through drama and through fiction, but in a way that is actually quite real."<ref name="season3preview"/> Actor [[Kevin Chapman]] said, "Look at the NSA — they're making us look like a reality show! We've been talking about that for three seasons, and it's now just coming to light."<ref>{{cite web|url=https://www.hollywoodreporter.com/news/general-news/person-interest-cast-creator-jonathan-643386/|title='Person of Interest' Actor Says the NSA Is 'Making Us Look Like a Reality Show'|last=Lee|first=Ashley|date=October 4, 2013|access-date=September 20, 2021|work=[[The Hollywood Reporter]]}}</ref>
+
+===Casting===
+[[Image:Taraji P. Henson 2011.jpg|thumb|right|200px|This was the last season with [[Taraji P. Henson]] as series regular due to her character's death. She would return for a guest performance in the fourth season.]]
+
+A few days after the second season ended, it was announced that [[Sarah Shahi]], who played Sameen Shaw, would be upgraded to series regular starting with this season.<ref>{{cite web|url=https://www.hollywoodreporter.com/tv/tv-news/person-interest-adds-sarah-shahi-523213/|title='Person of Interest' Adds Sarah Shahi as Series Regular|last=Ng|first=Phyliana|date=May 15, 2013|access-date=September 20, 2021|work=[[The Hollywood Reporter]]}}</ref> In July 2013, it was reported that [[Amy Acker]] was also upgraded to series regular for the season.<ref>{{cite web|url=https://www.hollywoodreporter.com/tv/tv-news/comic-con-amy-acker-upped-589557/|title=Comic-Con: Amy Acker Upped to Series Regular on 'Person of Interest'|last=O'Connell|first=Mikey|date=July 20, 2013|access-date=September 20, 2021|work=[[The Hollywood Reporter]]}}</ref> Nolan commented on the decision to upgrade both stars, "when you add a few new characters, that actually winds up adding five or six new relationships. It gives us that much more of a challenge, which is great fun."<ref name="PaleyFest">{{cite web|url=https://deadline.com/2013/10/person-of-interest-at-ny-paleyfest-spotlight-on-new-regulars-sarah-shahi-amy-acker-603037/|title='Person Of Interest' At NY PaleyFest: Spotlight On New Regulars Sarah Shahi & Amy Acker|date=October 3, 2013|access-date=September 20, 2021|work=[[Deadline Hollywood]]}}</ref>
+
+The season brought back many actors from the series, including [[Paige Turco]] as Zoe Morgan, who reprised her role on "[[Lady Killer (Person of Interest)|Lady Killer]]".<ref>{{cite web|url=https://twitter.com/POIWritersRoom/status/365191164191731712|title=#ladiesnight|work=[[Twitter]]|date=August 7, 2013|access-date=September 20, 2021}}</ref><ref>{{cite web|url=https://tvline.com/2013/08/08/person-of-interest-season-3-paige-turco-returns-zoe/|title=Sneak Peek: Person of Interest Unleashes Its 'Secret Weapons' Zoe, Carter and Shaw|last=Webb Mitovich|first=Matt|date=August 8, 2013|access-date=September 20, 2021|work=[[TVLine]]}}</ref>
+
+"[[The Crossing (Person of Interest)|The Crossing]]" features the death of Joss Carter, played by [[Taraji P. Henson]]. During rumors of a main character death, recurring cast member [[Carrie Preston]] teased the death, "It's going to be sad for everybody — not just the fans but also the cast. But I think the way [the show] is handling it is quite remarkable."<ref>{{cite web|url=https://tvline.com/2013/11/19/greys-anatomy-april-matthew-wedding-season-10-photo-spoilers/|title=Ask Ausiello: Spoilers on Grey's, Mentalist, NCIS, Nikita, OITNB, Banshee, Maids, POI and More|last=Ausiello|first=Michael|date=November 19, 2013|access-date=June 26, 2021|work=[[TVLine]]}}</ref><ref>{{cite web|url=https://tvline.com/2013/10/17/blind-item-ausiello-series-kill-off-star/|title=Blind Item: Hit Series Poised to Kill Off Star|last=Ausiello|first=Michael|date=October 17, 2013|access-date=June 26, 2021|work=[[TVLine]]}}</ref> Nolan told Henson about her death at the beginning of 2013, indicating, "It was a bittersweet conversation, because we love working with her and vice versa. It's been a great creative collaboration. As sad as we were to see her go, I think we were all excited [Taraji, us and the writers] to get into a juicy piece of material, to tell a tragedy." He went on to explain the decision, "For this story [HR, police corruption] it was a natural boiling point that would put her first and foremost into focus. And frankly, as writers, we've long said that Carter was the heart of the show, and your perverse impulse as a writer is to do as much damage to the audience as possible. There's nothing more dastardly than — if Carter's the heart of the show — breaking that heart for the audience in the middle of the season."<ref>{{cite web|url=https://www.hollywoodreporter.com/tv/tv-news/person-interest-eps-carters-death-658306/|title='Person of Interest' Bosses Talk Major Death, Team Fallout and Reese Unhinged (Q&A)|last=Ng|first=Philiana|date=November 20, 2013|access-date=June 26, 2021|work=[[TVLine]]}}</ref> Executive producer Greg Plageman also commented on the decision, "What felt natural to us was with HR being with us from the pilot, their diabolical no-goodness, it felt like they had it in for Carter... it got to a point where you think if this person is going to hold her head up and walk into a precinct ever again she's going to have to take them on and in the conversations she had with her son, it was kind of understood what she had to do and it felt like the time was right."<ref>{{cite web|url=https://www.tvfanatic.com/2013/11/person-of-interest-post-mortem-bosses-explain-shocking-kiss-char/|title=Person of Interest Post-Mortem: Bosses Explain Shocking Kiss, Character Death|last=Halterman|first=Jim|date=November 20, 2013|access-date=June 26, 2021|work=TV Fanatic}}</ref> The kiss scene between Reese and Carter was unscripted, with Nolan commenting, "It was just a swapping scars moment. So when the actors went there, it was all of their own volition, because in that moment they both felt it. And when you removed that element, the scene didn't feel quite the same."<ref>{{cite web|url=https://tvline.com/2013/11/20/person-of-interest-season-3-why-carter-was-killed-off/|title=Person of Interest EPs Defend Shocking Twist, Talk Unscripted Kiss, Tease 'Messy' Aftermath|last=Webb Mitovich|first=Matt|date=November 20, 2013|access-date=June 26, 2021|work=[[TVLine]]}}</ref>
+
+Among the many guest stars in the season include [[Warren Kole]] as Ian Murphy, "a POI whom Detective Carter, Agent Shaw and Zoe Morgan each try to catch the eye of — by any dressed-to-kill means necessary."<ref>{{cite web|url=https://tvline.com/2013/08/23/person-of-interest-season-3-warren-kole-ladykiller/|title=Person of Interest Scoop: The Following's Warren Kole Cast as a Real Ladykiller|last=Webb Mitovich|first=Matt|date=August 23, 2013|access-date=September 20, 2021|work=[[TVLine]]}}</ref> For the first episode, [[Rey Valentin]] was cast as Jack Salazar, "a sailor on shore leave — during [[Fleet Week]] in New York City."<ref name="season3preview"/> The fourth episode guest starred [[Kathleen Rose Perkins]] as Vanessa Watkins, "a former ADA who is captured by the police for murdering her defense attorney ex-husband."<ref name="season3preview"/> In November 2013, [[Saul Rubinek]] joined for a two-episode guest performance as Arthur Claypool, a character only described as "slowly losing his mind."<ref name="Claypool"/>
+
+In July 2013, [[Leslie Odom Jr.]] joined the series in a recurring role as Peter Collier, "an educated, even-tempered tech executive. Highly analytical, he plays his cards close to the vest."<ref>{{cite web|url=https://deadline.com/2013/07/michelle-forbes-to-recur-on-chicago-fire-leslie-odom-jr-on-person-of-interest-547357/|archive-url=https://web.archive.org/web/20140831032556/http://deadline.com/2013/07/michelle-forbes-to-recur-on-chicago-fire-leslie-odom-jr-on-person-of-interest-547357/|url-status=dead|archive-date=August 31, 2014|title=Michelle Forbes To Recur On 'Chicago Fire', Leslie Odom, Jr On 'Person Of Interest'|last=Andreeva|first=Nellie|date=July 23, 2013|access-date=September 20, 2021|work=[[Deadline Hollywood]]}}</ref> In November 2013, [[Camryn Manheim]] joined the series as Diane, Arthur Claypool's wife.<ref name="Claypool">{{cite web|url=https://tvline.com/2013/11/12/person-of-interest-season-3-cast-camryn-manheim-saul-rubinek/|title=Exclusive: Person of Interest Recruits Practice Alum, Warehouse 13 Vet for Big Arc|last=Ausiello|first=Michael|date=November 12, 2013|access-date=September 20, 2021|work=[[TVLine]]}}</ref> She debuted on "[[Lethe (Person of Interest)|Lethe]]", where her character was revealed to be Control.<ref>{{cite web|url=https://tvline.com/2014/01/06/person-of-interest-season-3-winter-preview-second-machine/|title=Person of Interest EPs Tease Search for Second Machine, 'Cluster#@¢% of Villains' to Come|last=Webb Mitovich|first=Matt|date=January 6, 2014|access-date=September 20, 2021|work=[[TVLine]]}}</ref> The character was teased on "[[God Mode (Person of Interest)|God Mode]]", where she was played unseen by an uncredited actress.<ref>{{cite web|url=https://tvline.com/2013/03/28/scandal-greys-anatomy-person-interest-spoilers/|title=Matt's Inside Line: Scoop on Scandal, Red Widow, Once, Grey's, POI, Beauty and the Beast and More|last=Webb Mitovich|first=Matt|date=March 28, 2013|access-date=September 20, 2021|work=[[TVLine]]}}</ref>
+
+==Release==
+===Broadcast===
+In May 2013, CBS announced that the series would move from its Thursday time slot to Tuesdays at 10 p.m.<ref>{{cite web|url=https://tvline.com/2013/05/15/cbs-fall-tv-lineup-2013/|title=CBS Fall Schedule Revealed: Thursday Comedy Block Expands, Person of Interest, Hawaii Five-0 on the Move, Mike & Molly Held to Midseason|last=Ausiello|first=Michael|date=May 15, 2013|access-date=September 20, 2021|work=[[TVLine]]}}</ref> Many deemed the move favorable for the series, as CBS wanted to create a second comedy block on Thursday night and considered that pairing the series with ''[[NCIS (TV series)|NCIS]]'' and ''[[NCIS: Los Angeles]]'' would work on its favor.<ref>{{cite web|url=https://tvline.com/2013/05/21/fall-tv-schedule-2013-review-bones-shield-once-upon-a-time/|title=Fall TV Schedule Moves in Review: The Savvy, the Shocking and the Sorta Snoozeworthy|last=Webb Mitovich|first=Matt|date=May 21, 2013|access-date=September 20, 2021|work=[[TVLine]]}}</ref> In June 2013, CBS announced that the season would premiere on September 24, 2013.<ref>{{cite web|url=https://tvline.com/2013/06/17/cbs-premiere-dates-2013-fall/|title=Fall TV: CBS Launch Dates Include How I Met Your Mother's Hour-Long Final Premiere|last=Webb Mitovich|first=Matt|date=June 17, 2013|access-date=September 20, 2021|work=[[TVLine]]}}</ref> The season ended on May 13, 2014.<ref>{{cite web|url=https://tvline.com/2014/03/20/cbs-season-finale-dates-2014-ncis-big-bang-theory-good-wife/|title=CBS Sets Season Finale Dates for NCIS, Big Bang Theory, The Good Wife, Survivor and Others|last=Webb Mitovich|first=Matt|date=March 20, 2014|access-date=September 20, 2021|work=[[TVLine]]}}</ref>
+
+===Marketing===
+On July 20, 2013, the cast and crew attended the 2013 [[San Diego Comic-Con]] to discuss and promote the season and show a sneak peek. The panel, which revealed that [[Amy Acker]] was upgraded to series regular, also included a short reel which included Finch commenting on the [[PRISM (surveillance program)|PRISM]] disclosure.<ref>{{cite web|url=https://collider.com/comic-con-person-of-interest-panel-recap/|title=Comic-Con: PERSON OF INTEREST Panel Recap; Cast and Crew Discuss the NSA Prism Effect and Announce Amy Acker as Series Regular|last=Howard|first=Rachel|date=July 21, 2013|access-date=September 20, 2021|work=[[Collider (website)|Collider]]}}</ref> In October 2013, the cast attended the 2013 [[Paley Center for Media|Paley Fest]] and [[New York Comic Con]] for a Q&A session and show a sneak peek of an upcoming episode.<ref name="PaleyFest"/><ref>{{cite web|url=https://tvweb.com/person-of-interest-season-3-new-york-comic-con-2013-sneak-peek/|title=Person of Interest Season 3 New York Comic Con 2013 Sneak Peek|last=Orange|first=B. Alan|date=October 14, 2013|access-date=September 20, 2021|work=TVWeb.com}}</ref>
+
+As part of a stunt for the [[Nielsen ratings#Sweeps|November sweeps]], CBS promoted "[[Endgame (Person of Interest)|Endgame]]", "[[The Crossing (Person of Interest)|The Crossing]]" and "[[The Devil's Share]]" as part of a "three-episode event", which was deemed as pivotal and would change the direction of the series. Nolan and Plageman teased the episodes, "We promised our actors and our audience that these characters wouldn't be static, stuck in an endless loop — that they would have a journey. And, of course, every journey comes to an end."<ref>{{cite web|url=https://tvline.com/2013/11/05/person-of-interest-season-3-november-sweeps-promo-fusco/|title=Exclusive: As Person of Interest Touts Dark Twist, EPs Warn: 'Every Journey Comes to an End'|last=Webb Mitovich|first=Matt|date=November 5, 2013|access-date=September 20, 2021|work=[[TVLine]]|archive-date=September 21, 2021|archive-url=https://web.archive.org/web/20210921034133/https://tvline.com/2013/11/05/person-of-interest-season-3-november-sweeps-promo-fusco/|url-status=dead}}</ref>
+
+===Home media release===
+The third season was released on Blu-ray and DVD in [[DVD region code#Region codes and countries|region 1]] on September 2, 2014,<ref>{{cite web|url=http://www.tvshowsondvd.com/news/Person-Season-3/19910|title=Person of Interest – Can We Interest You In an Announcement for 'The Complete 3rd Season'?|publisher=TVShowsOnDVD.com|last=Lambert|first=David|date=June 10, 2014|access-date=June 11, 2014|url-status=dead|archive-url=https://web.archive.org/web/20140613094504/http://www.tvshowsondvd.com/news/Person-Season-3/19910|archive-date=June 13, 2014|df=mdy-all}}</ref> in region 2 on September 21, 2015,<ref>{{cite web|url=https://www.amazon.co.uk/dp/B00S80X092/|title=Person of Interest - Season 3 [Blu-ray] [Region Free]|publisher=Amazon.co.uk|access-date=March 30, 2015}}</ref> and in region 4 on October 8, 2014.<ref>{{cite web|url=http://www.ezydvd.com.au/blu-ray/person-of-interest-season-3/dp/6156236|title=Person of Interest: Season 3|publisher=EzyDVD|access-date=November 12, 2014}}</ref>
+
+In 2014, [[Warner Bros. Television Studios]] announced that it sold the off-network [[Video on demand#Subscription models|SVOD]] of the series to [[Netflix]].<ref>{{cite web|url=https://deadline.com/2014/10/person-of-interest-netflix-jj-abrams-license-deal-warner-bros-cbs-852003/|title='Person of Interest' Licensed To Netflix In Warner Bros Deal|website=[[Deadline Hollywood]]|date=October 15, 2014|access-date=September 26, 2021}}</ref> On September 1, 2015, the season became available to stream on Netflix.<ref>{{cite web|url=https://www.hollywoodreporter.com/tv/tv-news/netflix-new-releases-september-2015-movies-tv-818943/|title=Netflix New Releases Coming in September 2015|website=[[The Hollywood Reporter]]|date=August 31, 2015|access-date=September 26, 2021}}</ref> On September 22, 2020, the series left the service and was added to [[HBO Max]] on January 23, 2021.<ref>{{cite web|url=https://popculture.com/streaming/news/person-of-interest-leaving-netflix-september/|title='Person of Interest' Leaving Netflix in September|website=PopCulture.com|last=Schonter|first=Allison|date=August 25, 2020|access-date=September 26, 2021}}</ref><ref>{{cite web|url=https://www.forbes.com/sites/erikkain/2021/01/06/hbo-max-new-tv-shows-movies-january-2021-wonder-woman-leaving/|title=Everything Coming To HBO Max In January 2021 — And Everything Leaving|website=[[Forbes]]|last=Kain|first=Erik|date=January 6, 2021|access-date=September 26, 2021}}</ref>
+
+==Reception==
+===Viewers===
+{{Television episode ratings
+| title1   = [[#ep46|Liberty]]
+| date1    = September 24, 2013
+| rs1      = 2.3/6
+| viewers1 = 12.44<ref name="3.01"/>
+| dvr1     = 1.0
+| dvrv1    = 4.32
+| total1   = 3.3
+| totalv1  = 16.76<ref>{{cite web|url=http://tvbythenumbers.zap2it.com/2013/10/13/live7-dvr-ratings-marvels-agents-of-s-h-i-e-l-d-leads-adults-18-49-ratings-increase-sleepy-hollow-tops-total-viewership-gains-the-blacklist-earns-biggest-percentage-increase-in-prem/208745/|title=Updated Live+7 DVR Ratings: 'The Big Bang Theory' Tops Adults 18–49 Ratings Increase & Total Viewership Gains; 'Sleepy Hollow' Earns Biggest Percentage Increase in Premiere Week|last=Kondolojy|first=Amanda|work=TV by the Numbers|date=October 13, 2013|access-date=July 5, 2021|url-status=dead|archive-url=https://web.archive.org/web/20131015090108/http://tvbythenumbers.zap2it.com/2013/10/13/live7-dvr-ratings-marvels-agents-of-s-h-i-e-l-d-leads-adults-18-49-ratings-increase-sleepy-hollow-tops-total-viewership-gains-the-blacklist-earns-biggest-percentage-increase-in-prem/208745/|archive-date=October 15, 2013|df=mdy-all}}</ref>
+
+| title2   = [[#ep47|Nothing to Hide]]
+| date2    = October 1, 2013
+| rs2      = 2.1/6
+| viewers2 = 12.35<ref name="3.02"/>
+| dvr2     = 0.9
+| dvrv2    = 4.08
+| total2   = 3.0
+| totalv2  = 16.43<ref>{{cite web|url=http://tvbythenumbers.zap2it.com/2013/10/20/live7-dvr-ratings-the-big-bang-theory-tops-adults-18-49-ratings-increase-new-girl-earns-biggest-percentage-increase-in-week-2/210246/|title=Updated Live+7 DVR Ratings: 'The Big Bang Theory' Tops Adults 18–49 Ratings Increase, 'New Girl' Earns Biggest Percentage Increase + 'The Blacklist' Tops Viewership Gains in Week 2|last=Bibel|first=Sara|work=TV by the Numbers|date=October 21, 2013|access-date=July 5, 2021|url-status=dead|archive-url=https://web.archive.org/web/20131021171757/http://tvbythenumbers.zap2it.com/2013/10/20/live7-dvr-ratings-the-big-bang-theory-tops-adults-18-49-ratings-increase-new-girl-earns-biggest-percentage-increase-in-week-2/210246/|archive-date=October 21, 2013|df=mdy-all}}</ref>
+
+| title3   = [[#ep48|Lady Killer]]
+| date3    = October 8, 2013
+| rs3      = 2.0/6
+| viewers3 = 11.65<ref name="3.03"/>
+| dvr3     = 1.1
+| dvrv3    = 4.39
+| total3   = 3.1
+| totalv3  = 16.04<ref>{{cite web|url=http://tvbythenumbers.zap2it.com/2013/10/27/updated-live7-dvr-ratings-the-big-bang-theory-tops-adults-18-49-ratings-increase-elementary-earns-biggest-percentage-increase-in-week-3/211637/|title=Updated Live+7 DVR Ratings: 'The Big Bang Theory' Tops Adults 18–49 Ratings Increase, 'Elementary' Earns Biggest Percentage Gain,'The Blacklist' Grows Most in Total Viewers in Week 3|last=Kondolojy|first=Amanda|work=TV by the Numbers|date=October 28, 2013|access-date=July 5, 2021|url-status=dead|archive-url=https://web.archive.org/web/20131029052023/http://tvbythenumbers.zap2it.com/2013/10/27/updated-live7-dvr-ratings-the-big-bang-theory-tops-adults-18-49-ratings-increase-elementary-earns-biggest-percentage-increase-in-week-3/211637/|archive-date=October 29, 2013|df=mdy-all}}</ref>
+
+| title4   = [[#ep49|Reasonable Doubt]]
+| date4    = October 15, 2013
+| rs4      = 2.2/6
+| viewers4 = 12.69<ref name="3.04"/>
+| dvr4     = 1.1
+| dvrv4    = 4.29
+| total4   = 3.3
+| totalv4  = 16.98<ref>{{cite web|url=http://tvbythenumbers.zap2it.com/2013/11/03/live7-dvr-ratings-the-big-bang-theory-tops-adults-18-49-ratings-increase-beauty-and-the-beast-earns-biggest-percentage-gain-in-week-4/213216/|title=Updated Live+7 DVR Ratings: 'The Big Bang Theory' Tops Adults 18–49 Ratings Increase, 'Beauty And the Beast' Earns Biggest Percentage Gain & 'Toy Story of Terror' Tops Viewership Gains in Week 4|last=Bibel|first=Sara|work=TV by the Numbers|date=November 3, 2013|access-date=July 5, 2021|url-status=dead|archive-url=https://web.archive.org/web/20131105025715/http://tvbythenumbers.zap2it.com/2013/11/03/live7-dvr-ratings-the-big-bang-theory-tops-adults-18-49-ratings-increase-beauty-and-the-beast-earns-biggest-percentage-gain-in-week-4/213216/|archive-date=November 5, 2013|df=mdy-all}}</ref>
+
+| title5   = [[#ep50|Razgovor]]
+| date5    = October 22, 2013
+| rs5      = 2.2/6
+| viewers5 = 13.17<ref name="3.05"/>
+| dvr5     = 1.1
+| dvrv5    = 4.16
+| total5   = 3.3
+| totalv5  = 17.33<ref>{{cite web|url=http://tvbythenumbers.zap2it.com/2013/11/11/live7-dvr-ratings-big-bang-theory-tops-adults-18-49-ratings-increase-beauty-and-the-beast-earns-biggest-percentage-gain-the-blacklist-tops-viewer-increases-in-week-5/214563/|title=Live+7 DVR Ratings: 'Big Bang Theory' Tops Adults 18–49 Ratings Increase, 'Beauty and the Beast' Earns Biggest Percentage Gain, 'The Blacklist' Tops Viewer Increases in Week 5|last=Bibel|first=Sara|work=TV by the Numbers|date=November 11, 2013|access-date=June 25, 2021|url-status=dead|archive-url=https://web.archive.org/web/20131111191635/http://tvbythenumbers.zap2it.com/2013/11/11/live7-dvr-ratings-big-bang-theory-tops-adults-18-49-ratings-increase-beauty-and-the-beast-earns-biggest-percentage-gain-the-blacklist-tops-viewer-increases-in-week-5/214563/|archive-date=November 11, 2013|df=mdy-all}}</ref>
+
+| title6   = [[#ep51|Mors Praematura]]
+| date6    = October 29, 2013
+| rs6      = 1.9/5
+| viewers6 = 12.00<ref name="3.06"/>
+| dvr6     = 1.0
+| dvrv6    = 4.24
+| total6   = 2.9
+| totalv6  = 16.24<ref>{{cite web|url=http://tvbythenumbers.zap2it.com/2013/11/18/live7-dvr-ratings-the-blacklist-greys-anatomy-top-adults-18-49-ratings-increase-beauty-and-the-beast-parenthood-nashville-lead-percentage-gains-the-blacklist-tops-vi/216246/|title=Live+7 DVR Ratings: 'The Blacklist' & 'Grey's Anatomy' Top Adults 18–49 Ratings Increase, 'Beauty and the Beast', 'Parenthood' & 'Nashville' Lead Percentage Gains, 'The Blacklist' Tops Viewer Increases in Week 6|last=Kondolojy|first=Amanda|work=TV by the Numbers|date=November 18, 2013|access-date=July 5, 2021|archive-url=https://web.archive.org/web/20140731163901/http://tvbythenumbers.zap2it.com/2013/11/18/live7-dvr-ratings-the-blacklist-greys-anatomy-top-adults-18-49-ratings-increase-beauty-and-the-beast-parenthood-nashville-lead-percentage-gains-the-blacklist-tops-vi/216246/|archive-date=July 31, 2014|url-status=dead}}</ref>
+
+| title7   = [[#ep52|The Perfect Mark]]
+| date7    = November 5, 2013
+| rs7      = 1.9/6
+| viewers7 = 11.79<ref name="3.07"/>
+| dvr7     = 1.1
+| dvrv7    = 4.32
+| total7   = 3.0
+| totalv7  = 16.11<ref>{{cite web|url=http://tvbythenumbers.zap2it.com/2013/11/25/live7-dvr-ratings-the-big-bang-theory-tops-adults-18-49-ratings-increase-elementary-leads-percentage-gains-the-blacklist-tops-viewer-increases-in-week-7/217897/|title=Live+7 DVR Ratings: 'The Big Bang Theory' Tops Adults 18–49 Ratings Increase, 'Dracula' Leads Percentage Gains, 'The Blacklist' Tops Viewer Increases in Week 7|last=Bibel|first=Sara|work=TV by the Numbers|date=November 25, 2013|access-date=July 5, 2021|url-status=dead|archive-url=https://web.archive.org/web/20131127032415/http://tvbythenumbers.zap2it.com/2013/11/25/live7-dvr-ratings-the-big-bang-theory-tops-adults-18-49-ratings-increase-elementary-leads-percentage-gains-the-blacklist-tops-viewer-increases-in-week-7/217897/|archive-date=November 27, 2013|df=mdy-all}}</ref>
+
+| title8   = [[#ep53|Endgame]]
+| date8    = November 12, 2013
+| rs8      = 2.0/6
+| viewers8 = 12.60<ref name="3.08"/>
+| dvr8     = 1.1
+| dvrv8    = 4.49
+| total8   = 3.1
+| totalv8  = 17.09<ref>{{cite web|url=http://tvbythenumbers.zap2it.com/2013/12/03/live7-dvr-ratings-the-big-bang-theory-tops-adults-18-49-ratings-increase-elementary-leads-percentage-gains-the-blacklist-tops-viewer-increases-in-week-8/219811/|title=Live+7 DVR Ratings: 'The Big Bang Theory' Tops Adults 18–49 Ratings Increase, 'Elementary' Leads Percentage Gains, 'The Blacklist' Tops Viewer Increases in Week 8|last=Kondolojy|first=Amanda|work=TV by the Numbers|date=December 3, 2013|access-date=July 5, 2021|url-status=dead|archive-url=https://web.archive.org/web/20131207020144/http://tvbythenumbers.zap2it.com/2013/12/03/live7-dvr-ratings-the-big-bang-theory-tops-adults-18-49-ratings-increase-elementary-leads-percentage-gains-the-blacklist-tops-viewer-increases-in-week-8/219811/|archive-date=December 7, 2013|df=mdy-all}}</ref>
+
+| title9   = [[#ep54|The Crossing]]
+| date9    = November 19, 2013
+| rs9      = 2.0/6
+| viewers9 = 12.28<ref name="3.09"/>
+| dvr9     = 1.2
+| dvrv9    = 4.77
+| total9   = 3.2
+| totalv9  = 17.05<ref>{{cite web|url=http://tvbythenumbers.zap2it.com/2013/12/09/live7-dvr-ratings-the-big-bang-theory-tops-adults-18-49-ratings-total-viewers-increase-elementary-parenthood-lead-percentage-gains-in-week-9/221052/|title=Live+7 DVR Ratings: 'The Big Bang Theory' Tops Adults 18–49 Ratings & Total Viewers Increase + 'Elementary' & 'Parenthood' Lead Percentage Gains in Week 9|last=Bibel|first=Sara|work=TV by the Numbers|date=December 9, 2013|access-date=July 5, 2021|url-status=dead|archive-url=https://web.archive.org/web/20131211225445/http://tvbythenumbers.zap2it.com/2013/12/09/live7-dvr-ratings-the-big-bang-theory-tops-adults-18-49-ratings-total-viewers-increase-elementary-parenthood-lead-percentage-gains-in-week-9/221052/|archive-date=December 11, 2013|df=mdy-all}}</ref>
+
+| title10   = [[#ep55|The Devil's Share]]
+| date10    = November 26, 2013
+| rs10      = 2.2/6
+| viewers10 = 11.89<ref name="3.10"/>
+| dvr10     = 1.2
+| dvrv10    = 5.27
+| total10   = 3.4
+| totalv10  = 17.16<ref>{{cite web|url=http://tvbythenumbers.zap2it.com/2013/12/16/live7-dvr-ratings-the-blacklist-tops-adults-18-49-ratings-total-viewers-increase-grimm-leads-percentage-gains-in-week-10/222807/|archive-url=https://web.archive.org/web/20131227012136/http://tvbythenumbers.zap2it.com/2013/12/16/live7-dvr-ratings-the-blacklist-tops-adults-18-49-ratings-total-viewers-increase-grimm-leads-percentage-gains-in-week-10/222807/|url-status=dead|archive-date=December 27, 2013|title=Live+7 DVR Ratings: ''The Blacklist'' Tops Adults 18-49 Ratings & Total Viewers Increase + ''Grimm'' Leads Percentage Gains in Week 10|first=Amanda|last=Kondolojy|work=TV by the Numbers|date=December 16, 2013|access-date=July 5, 2021}}</ref>
+
+| title11   = [[#ep56|Lethe]]
+| date11    = December 17, 2013
+| rs11      = 2.0/6
+| viewers11 = 12.40<ref name="3.11"/>
+| dvr11     = 1.0
+| dvrv11    = 4.28
+| total11   = 3.0
+| totalv11  = 16.68<ref>{{cite web|url=http://tvbythenumbers.zap2it.com/2014/01/06/live7-dvr-ratings-how-i-met-your-mother-tops-adults-18-49-almost-human-hawaii-five-0-lead-percentage-increase-person-of-interest-biggest-viewership-gains-in-week-13/226873/|archive-url=https://web.archive.org/web/20140106221720/http://tvbythenumbers.zap2it.com/2014/01/06/live7-dvr-ratings-how-i-met-your-mother-tops-adults-18-49-almost-human-hawaii-five-0-lead-percentage-increase-person-of-interest-biggest-viewership-gains-in-week-13/226873/|url-status=dead|archive-date=January 6, 2014|title=Live+7 DVR Ratings: ''How I Met Your Mother'' Tops Adults 18-49, ''Almost Human'' & ''Hawaii Five-0'' Lead Percentage Increase, ''Person of Interest'' Biggest Viewership Gains in Week 13|first=Sara|last=Bibel|work=TV by the Numbers|date=January 6, 2014|access-date=July 5, 2021}}</ref>
+
+| title12   = [[#ep57|Aletheia]]
+| date12    = January 7, 2014
+| rs12      = 2.0/6
+| viewers12 = 12.10<ref name="3.12"/>
+| dvr12     = 1.0
+| dvrv12    = 4.52
+| total12   = 3.0
+| totalv12  = 16.62<ref>{{cite web|url=http://tvbythenumbers.zap2it.com/2014/01/26/live7-dvr-ratings-the-big-bang-theory-has-biggest-18-49-ratings-increase-enlisted-tops-percentage-gains-in-week-16/232118/|title=Live+7 DVR Ratings: 'The Big Bang Theory' Has Biggest 18–49 Ratings & Total Viewer Increase, 'Enlisted' Tops Percentage Gains in Week 16 (Updated)|last=Bibel|first=Sara|work=TV by the Numbers|date=January 27, 2014|access-date=July 5, 2021|url-status=dead|archive-url=https://web.archive.org/web/20140129032940/http://tvbythenumbers.zap2it.com/2014/01/26/live7-dvr-ratings-the-big-bang-theory-has-biggest-18-49-ratings-increase-enlisted-tops-percentage-gains-in-week-16/232118/|archive-date=January 29, 2014|df=mdy-all}}</ref>
+
+| title13   = [[#ep58|4C]]
+| date13    = January 14, 2014
+| rs13      = 2.0/6
+| viewers13 = 12.54<ref name="3.13"/>
+| dvr13     = 1.2
+| dvrv13    = 4.81
+| total13   = 3.2
+| totalv13  = 17.35<ref>{{cite web|url=http://tvbythenumbers.zap2it.com/2014/02/03/live7-dvr-ratings-modern-family-has-biggest-18-49-ratings-beauty-the-beast-tops-percentage-gains-the-blacklist-leads-in-total-viewer-increase-in-week-17/233895/|archive-url=https://web.archive.org/web/20140221124506/http://tvbythenumbers.zap2it.com/2014/02/03/live7-dvr-ratings-modern-family-has-biggest-18-49-ratings-beauty-the-beast-tops-percentage-gains-the-blacklist-leads-in-total-viewer-increase-in-week-17/233895/|url-status=dead|archive-date=February 21, 2014|title=Live+7 DVR Ratings: ''Modern Family'' Has Biggest 18-49 Ratings Gain, ''Beauty & the Beast'' Tops Percentage Gains & ''The Blacklist'' Leads in Total Viewer Increase in Week 17|first=Sara|last=Bibel|work=TV by the Numbers|date=February 3, 2014|access-date=July 5, 2021}}</ref>
+
+| title14   = [[#ep59|Provenance]]
+| date14    = February 4, 2014
+| rs14      = 2.1/6
+| viewers14 = 12.35<ref name="3.14"/>
+| dvr14     = 1.1
+| dvrv14    = 4.80
+| total14   = 3.2
+| totalv14  = 17.15<ref>{{cite web|url=http://tvbythenumbers.zap2it.com/2014/02/24/live7-dvr-ratings-the-big-bang-theory-has-biggest-18-49-ratings-gain-total-viewer-increase-nashville-tops-percentage-gain-in-week-20/239637/|title=Live+7 DVR Ratings: 'The Big Bang Theory' Has Biggest 18–49 Ratings Gain & Total Viewer Increase + 'Nashville' Tops Percentage Gain in Week 20|last=Kondolojy|first=Amanda|work=TV by the Numbers|date=February 24, 2014|access-date=July 5, 2021|url-status=dead|archive-url=https://web.archive.org/web/20140301090906/http://tvbythenumbers.zap2it.com/2014/02/24/live7-dvr-ratings-the-big-bang-theory-has-biggest-18-49-ratings-gain-total-viewer-increase-nashville-tops-percentage-gain-in-week-20/239637/|archive-date=March 1, 2014|df=mdy-all}}</ref>
+
+| title15   = [[#ep60|Last Call]]
+| date15    = February 25, 2014
+| rs15      = 1.8/5
+| viewers15 = 11.00<ref name="3.15"/>
+| dvr15     = 1.1
+| dvrv15    = 4.75
+| total15   = 2.9
+| totalv15  = 15.75<ref>{{cite web|url=http://tvbythenumbers.zap2it.com/2014/03/17/live7-dvr-ratings-the-big-bang-theory-has-biggest-18-49-ratings-gain-parenthood-tops-percentage-gain-the-blacklist-adds-most-total-viewers-in-week-23/245241/|title=Live+7 DVR Ratings: 'The Big Bang Theory' Has Biggest 18-49 Ratings Gain, 'Parenthood' Tops Percentage Gain & 'The Blacklist' Adds Most Total Viewers in Week 23|last=Bibel|first=Sara|work=TV by the Numbers|date=March 17, 2014|access-date=July 5, 2021|url-status=dead|archive-url=https://web.archive.org/web/20140318050919/http://tvbythenumbers.zap2it.com/2014/03/17/live7-dvr-ratings-the-big-bang-theory-has-biggest-18-49-ratings-gain-parenthood-tops-percentage-gain-the-blacklist-adds-most-total-viewers-in-week-23/245241/|archive-date=March 18, 2014|df=mdy-all}}</ref>
+
+| title16   = [[#ep61|RAM]]
+| date16    = March 4, 2014
+| rs16      = 1.7/5
+| viewers16 = 10.64<ref name="3.16"/>
+| dvr16     = 1.0
+| dvrv16    = 4.68
+| total16   = 2.7
+| totalv16  = 15.32<ref>{{cite web|url=http://tvbythenumbers.zap2it.com/2014/03/24/live7-dvr-ratings-the-big-bang-theory-has-biggest-18-49-ratings-gain-the-following-tops-percentage-gain-the-blacklist-adds-most-total-viewers-in-week-24/247383/|title=Live+7 DVR Ratings: 'The Big Bang Theory' Has Biggest 18-49 Ratings Gain, 'The Following' Tops Percentage Gain & 'The Blacklist' Adds Most Total Viewers in Week 24|last=Kondolojy|first=Amanda|work=TV by the Numbers|date=March 24, 2014|access-date=July 5, 2021|url-status=dead|archive-url=https://web.archive.org/web/20140324225104/http://tvbythenumbers.zap2it.com/2014/03/24/live7-dvr-ratings-the-big-bang-theory-has-biggest-18-49-ratings-gain-the-following-tops-percentage-gain-the-blacklist-adds-most-total-viewers-in-week-24/247383/|archive-date=March 24, 2014|df=mdy-all}}</ref>
+
+| title17   = [[#ep62|/]]
+| date17    = March 18, 2014
+| rs17      = 1.7/5
+| viewers17 = 10.94<ref name="3.17"/>
+| dvr17     = 1.1
+| dvrv17    = 4.36
+| total17   = 2.8
+| totalv17  = 15.30<ref>{{cite web|url=http://tvbythenumbers.zap2it.com/2014/04/07/live7-dvr-ratings-greys-anatomy-the-blacklist-have-biggest-18-49-ratings-viewership-gains-raising-hope-hart-of-dixie-top-percentage-gains-in-week-26/251829/|archive-url=https://web.archive.org/web/20140408215223/http://tvbythenumbers.zap2it.com/2014/04/07/live7-dvr-ratings-greys-anatomy-the-blacklist-have-biggest-18-49-ratings-viewership-gains-raising-hope-hart-of-dixie-top-percentage-gains-in-week-26/251829/|url-status=dead|archive-date=April 8, 2014|title=Live+7 DVR Ratings: ''Grey's Anatomy'' & ''The Blacklist'' Have Biggest 18-49 Ratings Gains, ''Raising Hope'' & ''Hart of Dixie'' Top Percentage Gains in Week 26|first=Amanda|last=Kondolojy|work=TV by the Numbers|date=April 7, 2014|access-date=July 5, 2021}}</ref>
+
+| title18   = [[#ep63|Allegiance]]
+| date18    = March 25, 2014
+| rs18      = 2.0/6
+| viewers18 = 12.23<ref name="3.18"/>
+| dvr18     = 1.2
+| dvrv18    = 4.41
+| total18   = 3.2
+| totalv18  = 16.64<ref>{{cite web|url=http://tvbythenumbers.zap2it.com/2014/04/14/live7-dvr-ratings-modern-family-has-biggest-18-49-ratings-gain-the-following-enlisted-the-tomorrow-people-hart-of-dixie-top-percentage-gains-the-blacklist-gains-most-v/253705/|archive-url=https://web.archive.org/web/20140415132735/http://tvbythenumbers.zap2it.com/2014/04/14/live7-dvr-ratings-modern-family-has-biggest-18-49-ratings-gain-the-following-enlisted-the-tomorrow-people-hart-of-dixie-top-percentage-gains-the-blacklist-gains-most-v/253705/|url-status=dead|archive-date=April 15, 2014|title=Live+7 DVR Ratings: ''Modern Family'' Has Biggest 18-49 Ratings Gain, ''The Following'', ''Enlisted'', ''The Tomorrow People'' & ''Hart of Dixie'' Top Percentage Gains, ''The Blacklist'' Gains Most Viewers in Week 27|first=Sara|last=Bibel|work=TV by the Numbers|date=April 14, 2014|access-date=July 5, 2021}}</ref>
+
+| title19   = [[#ep64|Most Likely To...]]
+| date19    = April 1, 2014
+| rs19      = 1.9/6
+| viewers19 = 11.45<ref name="3.19"/>
+| dvr19     = 0.9
+| dvrv19    = 3.97
+| total19   = 2.8
+| totalv19  = 15.42<ref>{{cite web|url=http://tvbythenumbers.zap2it.com/2014/04/21/live7-dvr-ratings-the-big-bang-theory-has-biggest-18-49-ratings-gain-hart-of-dixie-tops-percentage-gains-the-blacklist-gains-most-viewers-in-week-28/256065/|title=Live+7 DVR Ratings: 'The Big Bang Theory' Has Biggest 18-49 Ratings Gain, 'Hart of Dixie' Tops Percentage Gains & 'The Blacklist' Gains Most Viewers in Week 28|last=Kondolojy|first=Amanda|work=TV by the Numbers|date=April 21, 2014|access-date=July 5, 2021|url-status=dead|archive-url=https://web.archive.org/web/20140422232134/http://tvbythenumbers.zap2it.com/2014/04/21/live7-dvr-ratings-the-big-bang-theory-has-biggest-18-49-ratings-gain-hart-of-dixie-tops-percentage-gains-the-blacklist-gains-most-viewers-in-week-28/256065/|archive-date=April 22, 2014|df=mdy-all}}</ref>
+
+| title20   = [[#ep65|Death Benefit]]
+| date20    = April 15, 2014
+| rs20      = 1.8/5
+| viewers20 = 10.74<ref name="3.20"/>
+| dvr20     = 1.0
+| dvrv20    = 4.38
+| total20   = 2.8
+| totalv20  = 15.12<ref>{{cite web|url=http://tvbythenumbers.zap2it.com/2014/05/05/live7-dvr-ratings-greys-anatomy-has-biggest-18-49-ratings-gain-person-of-interest-tops-viewership-gain-the-following-the-vampire-diaries-reign-top-percentage-gains-in-week/260482/|archive-url=https://web.archive.org/web/20140505202145/http://tvbythenumbers.zap2it.com/2014/05/05/live7-dvr-ratings-greys-anatomy-has-biggest-18-49-ratings-gain-person-of-interest-tops-viewership-gain-the-following-the-vampire-diaries-reign-top-percentage-gains-in-week/260482/|url-status=dead|archive-date=May 5, 2014|title=Live+7 DVR Ratings: ''Grey's Anatomy'' Has Biggest 18-49 Ratings Gain, ''Person of Interest'' Tops Viewership Gain, ''The Following'', ''The Vampire Diaries'' & ''Reign'' Top Percentage Gains in Week 30|first=Amanda|last=Kondolojy|work=TV by the Numbers|date=May 5, 2014|access-date=July 5, 2021}}</ref>
+
+| title21   = [[#ep66|Beta]]
+| date21    = April 29, 2014
+| rs21      = 1.9/6
+| viewers21 = 11.31<ref name="3.21"/>
+| dvr21     = 0.9
+| dvrv21    = 3.82
+| total21   = 2.8
+| totalv21  = 15.13<ref>{{cite web|url=http://tvbythenumbers.zap2it.com/2014/05/19/live7-dvr-ratings-big-bang-theory-has-biggest-18-49-ratings-gain-the-blacklist-tops-viewership-gain-hart-of-dixie-nashville-top-percentage-gains-in-week-32/265618/|archive-url=https://web.archive.org/web/20140519224439/http://tvbythenumbers.zap2it.com/2014/05/19/live7-dvr-ratings-big-bang-theory-has-biggest-18-49-ratings-gain-the-blacklist-tops-viewership-gain-hart-of-dixie-nashville-top-percentage-gains-in-week-32/265618/|url-status=dead|archive-date=May 19, 2014|title=Live+7 DVR Ratings: ''Big Bang Theory'' Has Biggest 18-49 Ratings Gain, ''The Blacklist'' Tops Viewership Gain, ''Hart of Dixie'' & ''Nashville'' Top Percentage Gains in Week 32|first=Amanda|last=Kondolojy|work=TV by the Numbers|date=May 19, 2014|access-date=July 5, 2021}}</ref>
+
+| title22   = [[#ep67|A House Divided]]
+| date22    = May 6, 2014
+| rs22      = 1.7/5
+| viewers22 = 10.50<ref name="3.22"/>
+| dvr22     = 1.0
+| dvrv22    = 3.98
+| total22   = 2.7
+| totalv22  = 14.48<ref>{{cite web|url=http://tvbythenumbers.zap2it.com/2014/05/27/live7-dvr-ratings-the-big-bang-theory-has-biggest-18-49-ratings-viewership-gains-nashville-top-percentage-gains-in-week-33/267393/|archive-url=https://web.archive.org/web/20140528005516/http://tvbythenumbers.zap2it.com/2014/05/27/live7-dvr-ratings-the-big-bang-theory-has-biggest-18-49-ratings-viewership-gains-nashville-top-percentage-gains-in-week-33/267393/|url-status=dead|archive-date=May 28, 2014|title=Live+7 DVR Ratings: ''The Big Bang Theory'' Has Biggest 18-49 Ratings & Viewership Gains, ''Nashville'' Top Percentage Gains in Week 33|first=Sara|last=Bibel|work=TV by the Numbers|date=May 27, 2014|access-date=July 5, 2021}}</ref>
+
+| title23   = [[#ep68|Deus Ex Machina]]
+| date23    = May 13, 2014
+| rs23      = 1.9/6
+| viewers23 = 10.95<ref name="3.23"/>
+| dvr23     = 0.9
+| dvrv23    = 3.68
+| total23   = 2.8
+| totalv23  = 14.63<ref>{{cite web|url=http://tvbythenumbers.zap2it.com/2014/06/02/live7-dvr-ratings-the-big-bang-theory-has-biggest-18-49-ratings-increase-glee-tops-percentage-gains-in-week-34/269578/|archive-url=https://web.archive.org/web/20140602195509/http://tvbythenumbers.zap2it.com/2014/06/02/live7-dvr-ratings-the-big-bang-theory-has-biggest-18-49-ratings-increase-glee-tops-percentage-gains-in-week-34/269578/|url-status=dead|archive-date=June 2, 2014|title=Live+7 DVR Ratings: ''The Big Bang Theory'' Has Biggest 18-49 Ratings & Viewership Increase, ''Glee'' Tops Percentage Gains in Week 34|first=Amanda|last=Kondolojy|work=TV by the Numbers|date=June 2, 2014|access-date=July 5, 2021}}</ref>
+}}
+
+===Critical reception===
+The third season received highly positive reviews, and is noteworthy for drawing in more critics for its exploration of [[artificial intelligence]], as well as its timely storytelling format. On [[Rotten Tomatoes]], the season has an approval rating of 100% and average rating of 7.7 out of 10 based on 11 reviews. The site's critical consensus is, "''Person of Interest'' weaves compelling standalone stories into its engrossing serial narrative, and incorporates welcome bursts of humor into its sci-fi mystery core."<ref>{{cite web |url=https://www.rottentomatoes.com/tv/person-of-interest/s03/ |title=Person of Interest: Season 3 |publisher=Rotten Tomatoes |access-date=August 24, 2017}}</ref>
+
+In regards to the season, ''[[Slant Magazine]]'' said that the show "is at its best when sticking to cutting-edge topics" and called it a "solid action-thriller that intersperses twist-filled standalone episodes into its season-long arcs."<ref>{{cite web|last=Riccio|first=Aaron|title=Person of Interest: Season 3|url=https://www.slantmagazine.com/tv/review/person-of-interest-season-three|work=Slant Magazine|date=October 17, 2013|access-date=September 20, 2014}}</ref> ''[[The A.V. Club]]'' said that the show captures the "national post-post-9/11 mood"<ref>{{cite web|last=Dyess-Nugent|first=Phil|title=How Person Of Interest captures the national post-post-9/11 mood|url=https://www.avclub.com/article/how-iperson-of-interest-icaptures-the-national-ipo-92502|work=The A.V. Club|date=February 14, 2013|access-date=September 20, 2014}}</ref> and that with the mid-season arc in season three, "turns conspiracy theory into art".<ref>{{cite web|last=Handlen|first=Zack|title=Person Of Interest turns conspiracy theory into art|url=https://www.avclub.com/review/person-of-interest-turns-conspiracy-theory-into-ar-200648|work=The A.V. Club|date=December 17, 2013|access-date=September 20, 2014}}</ref> 
+
+The season's two story arcs both received a considerable amount of praise: the two episodes ending the HR storyline are commonly considered to be some of the best episodes of ''Person of Interest''. Matt Fowler of [[IGN]] gave "The Crossing" a 10 out of 10, reacting extremely positively to the cliffhanger at the ending.<ref>{{cite web|url=https://www.ign.com/articles/2013/.../person-of-interest-the-crossing-review|title=Person of Interest: "The Crossing" Review|last=Fowler|first=Matt|work=IGN|date=November 20, 2013|access-date=February 19, 2015}}{{Dead link|date=September 2024 |bot=InternetArchiveBot |fix-attempted=yes }}</ref> The episode to follow, "[[The Devil's Share]]", was the most acclaimed episode of the season, being praised for its opening sequence, its writing, [[Chris Fisher (director)|Chris Fisher]]'s direction, and the acting performances, especially those by Jim Caviezel and Kevin Chapman. Surette called the episode a "stunner" and declared it as the series' possible best episode, praising the opening sequence as the "greatest sequence the series ever put together", feeling it succeeded in eclipsing the devastation induced by Carter's death. Surette also praised Fusco's effectiveness and character development in the episode, as well naming the cinematography and direction to be the best of the series, and identifying points of symbolism in the episode he felt were noteworthy and effective.<ref>{{cite web|url=http://www.tv.com/shows/person-of-interest-2011/community/post/person-of-interest-the-devils-share-review-season-3-episode-10-138549683486/|last=Surette|first=Tim|date=November 27, 2013|work=TV.com|title=Person of Interest "The Devil's Share" Review: Revenge, Redemption, and Resolution|access-date=November 26, 2014|archive-date=May 16, 2017|archive-url=https://web.archive.org/web/20170516104414/http://www.tv.com/shows/person-of-interest-2011/community/post/person-of-interest-the-devils-share-review-season-3-episode-10-138549683486/|url-status=dead}}</ref> Fowler gave the episode an "amazing" rating of a 9.3 out of 10, also praising the opening sequence, as well as the flashbacks and the ending scene.<ref>{{cite web|url=https://www.ign.com/articles/2013/11/27/person-of-interest-the-devils-share-review|last=Fowler|first=Matt|title=Person of Interest: "The Devil's Share" Review|work=IGN|date=November 26, 2013|access-date=November 26, 2014}}</ref> Phil Dyess-Nugent of ''The A.V. Club'' gave the episode a perfect A rating, praising the atmosphere of grief the episode built and feeling Fusco's character development served as an appropriate tribute to Carter.<ref>{{cite web|url=https://www.avclub.com/person-of-interest-the-devils-share-1798178831|title=Person Of Interest: "The Devil's Share" Review|last=Dyess-Nugent|first=Phil|work=The A.V. Club|date=November 27, 2013|access-date=November 27, 2014}}</ref> Sean McKenna of ''TV Fanatic'' called the opening sequence "brilliant",<ref>{{cite web|url=http://www.tvfanatic.com/2013/11/person-of-interest-review-reeses-revenge/|last=McKenna|first=Sean|title=Person of Interest Review: Reese's Revenge|work=TV Fanatic|date=November 27, 2013|access-date=November 27, 2014}}</ref> while Courtney Vaudreuil of ''TV Equals'' praised the ending.<ref>{{cite web|url=http://www.tvequals.com/2013/11/27/person-of-interest-season-3-review-the-devils-share/|title=Person of Interest Season 3 Review "The Devil's Share"|last=Vaudreuil|first=Courtney|work=TV Equals|date=November 27, 2013|access-date=November 27, 2014}}</ref>
+
+==Notes==
+{{Notelist}}
+
+==References==
+{{reflist}}
+
+== External links ==
+* {{IMDb episodes|1839578|Person of Interest|season=3}}
+
+{{Person of Interest}}
+
+[[Category:Person of Interest seasons]]
+[[Category:2013 American television seasons]]
+[[Category:2014 American television seasons]]

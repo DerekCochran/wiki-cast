@@ -1,0 +1,61 @@
+{{Short description|New Zealand jeweller (born 1952)}}
+{{Infobox artist
+| name          = Pauline Bern
+| image         =
+| image_size    =
+| alt           =
+| caption       =
+| birth_name    = Pauline Bern
+| birth_date    = {{birth year and age|1952}}
+| birth_place   = [[Auckland]], New Zealand
+| death_date    =
+| death_place   =
+| known_for     = Jewellery
+| training      =
+| movement      =
+| notable_works =
+| patrons       =
+| awards        =
+| elected       =
+| website       = 
+}}
+
+'''Pauline Bern''' (born 1952) is a New Zealand [[Jewellery|jeweller]].
+
+==Early life==
+Bern was born in [[Auckland]] in 1952.
+
+==Career==
+Bern is a self-taught jeweller who began making jewellery while living in the United States in the 1970s.<ref>{{cite web|title=Pauline Bern|url=http://www.avidgallery.co.nz/pauline-bern/|website=Avid Gallery|accessdate=6 December 2014}}</ref> She has exhibited consistently in New Zealand since the mid 1980s.<ref name = 'Tyler'>{{cite web|last1=Tyler|first1=Linda|title=From small beginnings come beautiful things|url=http://www.artnews.co.nz/summer-2014-feature/|website=Arts news|accessdate=6 December 2014|date=Summer 2014}}</ref> In 1988 she became a lecturer in craft design at Carrington Polytechnic in Auckland (now [[Unitec Institute of Technology]]).<ref>{{cite book|last1=Skinner|first1=Damian|title=Pocket Guide to New Zealand Jewelry|date=2010|publisher=Velvet Da Vinci and The Society of Arts and Crafts, Boston|location=San Francisco|isbn=9780615340104|page=60}}</ref> In 1992 Bern became Head of Jewellery, and continued to teach at Unitec until 2012, working with a number of students who went on to become significant artists in their own right, including [[Areta Wilkinson]], [[Octavia Cook]], [[Jane Dodd]] and [[Joe Sheehan (artist)|Joe Sheehan]].<ref name = 'Tyler'/>
+
+==Work==
+Bern's work often references domestic activity.<ref>{{cite book|last1=Skinner|first1=Damian|last2=Murray|first2=Kevin|title=Place and Adornment: A history of contemporary jewellery in Australia and New Zealand|date=2014|publisher=University of Hawai'i|location=Honolulu|isbn=9781454702771|page=220}}</ref> A necklace of silver strands woven to resemble small steel wool pot scrubbers won her the Thomas Foundation Gold Award in 2000,<ref name = 'Clifford'>{{cite web |url=https://www.nzherald.co.nz/lifestyle/at-the-end-of-the-garden/SYDHFAHEFICAEOYMZVZJUD46V4/ |last1=Clifford|first1=Andrew|title=At the end of the garden|website=NZ Herald|publisher=APN New Zealand Limited|date=17 November 2004}}</ref> and the piece she created as a result, made from 80 metres of 18ct gold wire, is in the collection of the [[Dowse Art Museum]].<ref name = 'Clifford'/>
+
+==Recognition==
+In 2003 Bern was awarded the [[Creative New Zealand]] Craft/Object Art Residency, giving her the opportunity to spend two months working with other jewellers at the Gray Street Workshop in [[Adelaide]].<ref name='CNZ'>{{cite web|title=Auckland jeweller relishes residency opportunity|url=http://www.creativenz.govt.nz/en/news/auckland-jeweller-relishes-residency-opportunity|website=Creative New Zealand Toi Aotearoa|accessdate=6 December 2014|date=19 June 2003|url-status=dead|archiveurl=https://web.archive.org/web/20141207235955/http://www.creativenz.govt.nz/en/news/auckland-jeweller-relishes-residency-opportunity|archivedate=7 December 2014}}
+
+==Exhibitions==
+</ref> Major exhibitions include 'Strain, Grate, Whisk, Scrub' which toured New Zealand galleries in 2000–01 and 'Colonial Goose' at [[Objectspace]], Auckland, in 2011.<ref name ='CNZ'/><ref>{{cite web|title=Colonial Goose|url=http://www.objectspace.org.nz/Exhibitions/Detail/Colonial+Goose|website=Objectspace|accessdate=6 December 2014}}</ref>
+
+==References==
+{{Reflist}}
+
+==External links==
+* Douglas Lloyd Jenkins, ''[http://natlib.govt.nz/records/20797717 Strain, grate, whisk, scrub : jewellery by Pauline Bern]'', Auckland: DOT, 2000. {{ISBN|047306927X}}
+* Bronwyn Lloyd, ''[http://natlib.govt.nz/records/30032070 Colonial Goose]'', Auckland: Rim Books, 2011. {{ISBN|9780473204303}}. Excerpt available online from Rim Books http://www.rimbooks.com/wordpress/wp-content/uploads/2012/02/P_Bern-Colonial-Goose-Web-excerpt.pdf
+* The Dowse Art Museum; Kobi Bosshard, [http://repository.digitalnz.org/system/uploads/record/attachment/753/the_second_new_zealand_jewellery_biennial.pdf The Second New Zealand Jewellery Biennial: Same But Different], 1996.
+* Deborah Crowe; The Dowse Art Museum, [http://repository.digitalnz.org/system/uploads/record/attachment/755/4th_new_zealand_jewellery_biennale__grammar__subjects_and_objects.pdf 4th New Zealand Jewellery Biennale: Grammar: Subjects and Objects], 2001.
+* [http://collections.tepapa.govt.nz/Person/44621 Pauline Bern] in the collection of the [[Museum of New Zealand Te Papa Tongarewa]]
+
+{{Authority control}}
+
+{{Use dmy dates|date=June 2019}}
+
+{{DEFAULTSORT:Bern, Pauline}}
+[[Category:1952 births]]
+[[Category:New Zealand jewellers]]
+[[Category:Living people]]
+[[Category:Artisans from Auckland]]
+[[Category:Academic staff of Unitec Institute of Technology]]
+[[Category:New Zealand women jewellers]]
+{{NewZealand-artist-stub}}

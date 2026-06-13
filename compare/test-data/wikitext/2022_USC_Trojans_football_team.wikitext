@@ -1,0 +1,3809 @@
+{{Short description|American college football season}}
+{{Use mdy dates|date=July 2023}}
+{{Use American English|date=February 2026}}
+{{Infobox college sports team season
+| year = 2022
+| team = USC Trojans
+| sport = football
+| image = USC Trojans logo.svg
+| image_size = 100
+| conference = [[Pac-12 Conference]]
+| short_conf = Pac-12
+| CoachRank = 13
+| APRank = 12
+| CFPRank = 
+| record = 11–3
+| conf_record = 8–1
+| head_coach = [[Lincoln Riley]]
+| hc_year = 1st
+| off_coach = [[Josh Henson]]
+| oc_year = 1st
+| off_scheme = [[Air raid offense|Air raid]]<ref>{{cite web |publisher=[[ESPN]] |last=Uggetti |first=Paolo |url=https://www.espn.com/college-football/story/_/id/34599023/oozing-talent-usc-trojans-air-raid-offense-best-college-football |title=Oozing with talent, USC Trojans' Air Raid offense among best in college football |date=September 20, 2022 |access-date=November 9, 2023}}</ref>
+| def_coach = [[Alex Grinch]]
+| dc_year = 1st
+| def_scheme = [[3–4 defense|3–4]]
+| captain = [[Caleb Williams]]
+| captain2 = Justin Dedich
+| captain3 = [[Tuli Tuipulotu]]
+| captain4 = Shane Lee 
+| stadium = [[Los Angeles Memorial Coliseum]] 
+| conf_champ = [[2022 Pac-12 Football Championship Game|Pac-12 Championship Game]]
+| conf_champ_result = L 24–47 vs. [[2022 Utah Utes football team|Utah]]
+| bowl = [[2023 Cotton Bowl Classic (January)|Cotton Bowl Classic]]
+| bowl_result = L 45–46 vs. [[2022 Tulane Green Wave football team|Tulane]]
+| uniform = [[File:Sc trojans football unif.png|200px]]
+}}
+{{2022 Pac-12 Conference football standings}}
+
+The '''2022 USC Trojans football team''' represented the [[University of Southern California]] as a member of the [[Pac-12 Conference]] during the [[2022 NCAA Division I FBS football season]]. Led by first-year head coach [[Lincoln Riley]], the Trojans played their home games at the [[Los Angeles Memorial Coliseum]] in [[Los Angeles]]. They finished the season 11–3, 8–1 in [[2022 Pac-12 Conference football season|Pac-12 play]] to earn a trip to the [[2022 Pac-12 Football Championship Game|Pac-12 championship game]]. Ranked No. 4 in the [[College Football Playoff]], they lost to [[2022 Utah Utes football team|Utah]] in the conference championship game eliminating them from national championship consideration.<ref>{{Cite news |last=Witz |first=Billy |date=2022-12-03 |title=Utah Injects Twist Into Playoff Race by Downing U.S.C. for Pac-12 Title |language=en-US |work=The New York Times |url=https://www.nytimes.com/2022/12/03/sports/ncaafootball/pac-12-championship-utah-usc.html |access-date=2023-01-03 |issn=0362-4331}}</ref> They received a bid to the [[2023 Cotton Bowl Classic (January)|Cotton Bowl Classic]] where they lost to No. 16-ranked [[2022 Tulane Green Wave football team|Tulane]].<ref>{{Cite web |date=2023-01-02 |title=Tulane scores 16 in final 4 minutes to stun USC |url=https://www.espn.com/college-football/story/_/id/35367280/tulane-scores-16-final-4-minutes-stuns-usc-cotton-bowl |access-date=2023-01-03 |website=ESPN.com|agency=Associated Press |language=en}}</ref> Trojans quarterback [[Caleb Williams]] was awarded the [[Heisman Trophy]] for his performances during the season.<ref>{{cite web|url=https://www.heisman.com/heisman-winners/caleb-williams/|title=Caleb Williams - Heisman|publisher=[[Heisman Trophy]] official website|accessdate=14 May 2023}}</ref>
+
+==Offseason==
+
+===Coaching staff departures===
+
+{| class="wikitable"
+! style="text-align:center; {{CollegePrimaryStyle|USC Trojans|border=2|color=white}}"|Name
+! style="text-align:center; {{CollegePrimaryStyle|USC Trojans|border=2|color=white}}"|Position
+! style="text-align:center; {{CollegePrimaryStyle|USC Trojans|border=2|color=white}}"|New Team
+! style="text-align:center; {{CollegePrimaryStyle|USC Trojans|border=2|color=white}}"|New Position 
+|-
+| [[Clay Helton]]
+| Head coach
+| [[Georgia Southern Eagles football|Georgia Southern]]
+| Head coach 
+|- 
+| [[Graham Harrell]]
+| Offensive coordinator
+| [[West Virginia Mountaineers football|West Virginia]]
+| Offensive coordinator / quarterbacks
+|-  
+| [[Todd Orlando]]
+| Defensive coordinator
+| [[Florida Atlantic Owls football|Florida Atlantic]]
+| Defensive coordinator / safeties
+|- 
+| [[Sean Snyder]]
+| Special teams coordinator
+| [[Illinois Fighting Illini football|Illinois]]
+| Special teams coordinator
+|-  
+| [[Mike Jinks]]
+| Tailbacks coach
+| [[Houston Cougars football|Houston]]
+| Tailbacks coach
+|-  
+| [[Keary Colbert]]
+| Wide receiver coach
+| [[Florida Gators football|Florida]]
+| Assistant coach / wide receivers
+|- 
+| [[Seth Doege]]
+| Tight end coach
+| [[Ole Miss Rebels football|Ole Miss]]
+| Offensive analyst
+|-  
+| Clay McGuire
+| Offensive line coach
+| [[Washington State Cougars football|Washington State]]
+| Offensive line coach
+|- 
+| [[Vic So'oto]]
+| Defensive line coach
+| [[California Golden Bears football|California]]
+| Outside linebackers coach
+|-
+| Michael Hutchings
+| Linebackers coordinator
+| [[Western Kentucky Hilltoppers football|Western Kentucky]]
+| Outside linebackers coach
+|-  
+| Craig Naivar
+| Safeties coach
+| [[SMU Mustangs football|SMU]]
+| Special teams coordinator / safeties coach
+|-  
+| Robert Stiner Jr.
+| Director of football sports performance
+| [[Georgia Southern Eagles football|Georgia Southern]]
+| Head strength & conditioning coach 
+|-
+| [[C. J. Ah You]]
+| Defensive Quality Control Analyst
+| [[Texas Tech Red Raiders football|Texas Tech]]
+| Outside linebackers
+|-
+|}
+
+===Transfers===
+====Transfers out====
+The Trojans lost 27 players via transfer.
+
+{| class="wikitable sortable"
+|-
+! style="text-align:center; {{CollegePrimaryStyle|USC Trojans|border=2|color=white}}"|Name !!  style="text-align:center; {{CollegePrimaryStyle|USC Trojans|border=2|color=white}}"|Pos. !! style="text-align:center; {{CollegePrimaryStyle|USC Trojans|border=2|color=white}}"|Height !! style="text-align:center; {{CollegePrimaryStyle|USC Trojans|border=2|color=white}}"|Weight !! style="text-align:center; {{CollegePrimaryStyle|USC Trojans|border=2|color=white}}"|Year !! style="text-align:center; {{CollegePrimaryStyle|USC Trojans|border=2|color=white}}"|Hometown !! style="text-align:center; {{CollegePrimaryStyle|USC Trojans|border=2|color=white}}"|New school
+|-
+| [[Jaxson Dart]] || QB || 6’3 || 215 || Freshman || [[Kaysville, UT]] || [[Ole Miss Rebels football|Ole Miss]]
+|-  
+| [[Bru McCoy]] || WR || 6’3 || 220 || [[File:Redshirt.svg|10px|Redshirt]] Sophomore || [[Palos Verdes Estates, CA]] || [[Tennessee Volunteers football|Tennessee]]
+|-
+| Chase Williams || DB || 6’2 || 200 || [[File:Redshirt.svg|10px|Redshirt]] Junior || [[Corona, CA]] || [[San José State Spartans football|San José State]]
+|-
+| [[Michael Trigg (tight end)|Michael Trigg]] || TE || 6’4 || 245 || Freshman || [[Tampa, FL]] || [[Ole Miss Rebels football|Ole Miss]]
+|-  
+| [[Kedon Slovis]] || QB || 6’3 || 205 || Junior || [[Scottsdale, AZ]] || [[Pittsburgh Panthers football|Pittsburgh]]
+|- 
+| Joseph Manjack IV || WR || 6'3 || 205 || Freshman || [[Tomball, TX]] || [[Houston Cougars football|Houston]]
+|- 
+| Zach Wilson|| WR || 6'1 || 210 || [[File:Redshirt.svg|10px|Redshirt]] Junior || [[Scottsdale, AZ]] || –
+|-
+| Raymond Scott || LB || 6’2 || 235 || [[File:Redshirt.svg|10px|Redshirt]] Junior || [[Los Angeles, CA]] || [[Fresno State Bulldogs football|Fresno State]]
+|- 
+| Dorian Hewett || CB || 6’0 || 180 || Junior || [[Houston, TX]] || –
+|-   
+| Kenan Christon || TB || 5’10 || 185 || Junior || [[San Diego, CA]] || [[San Diego State Aztecs football|San Diego State]]
+|-  
+| Brandon Campbell || TB || 5’11 || 210 || Freshman || [[Houston, TX]] || [[Houston Cougars football|Houston]]
+|-   
+| Hunter Echols || OLB || 6'5 || 245 || [[File:Redshirt.svg|10px|Redshirt]] Senior || [[Los Angeles, CA]] || [[Arizona Wildcats football|Arizona]]
+|-
+| Eli'jah Winston || LB || 6'3 || 230 || [[File:Redshirt.svg|10px|Redshirt]] Senior || [[Portland, OR]] || [[Nevada Wolf Pack football|Nevada]]
+|- 
+| Kaulana Makaula || LB/S || 6'3 || 220 || [[File:Redshirt.svg|10px|Redshirt]] Sophomore || [[Kailua, HI]] || [[Hawaii Rainbow Warriors football|Hawaii]]
+|-  
+| Juliano Falaniko || OLB || 6'4 || 230 || [[File:Redshirt.svg|10px|Redshirt]] Senior || [[Pago Pago, American Samoa|Pago Pago, AS]] || [[Idaho Vandals football|Idaho]]
+|- 
+| Ishmael Sopsher|| DL || 6’4 || 330 || [[File:Redshirt.svg|10px|Redshirt]] Junior || [[Amite, LA]] || [[Southwest Mississippi Community College|Southwest Mississippi C.C.]]
+|-  
+| Parker Lewis || K || 6'3 || 205 || Sophomore || [[Phoenix, AZ]] || [[Ohio State Buckeyes football|Ohio State]]
+|-
+| Casey Collier || OT || 6’7 || 300 || [[File:Redshirt.svg|10px|Redshirt]] Freshman || [[Baytown, TX]] || [[Oklahoma State Cowboys football|Oklahoma State]]
+|-
+| Spencer Gilbert|| LB || 6'0 || 220 || [[File:Redshirt.svg|10px|Redshirt]] Junior || [[Madison, AL]] || –
+|-
+| Danny Lockhart Jr. || LB || 6’0 || 225 || [[File:Redshirt.svg|10px|Redshirt]] Freshman || [[Redlands, CA]] || [[Ole Miss Rebels football|Ole Miss]]
+|-
+| Maximus Gibbs || OL || 6’7 || 390 || Freshman || [[Norwalk, CA]] || [[Jackson State Tigers football|Jackson State]]
+|-
+| Damian Lopez || OL || 6’5 || 315 || [[File:Redshirt.svg|10px|Redshirt]] Junior || [[San Pedro, CA]] ||
+|-  
+| Liam Douglass || OL || 6’5 || 305 || [[File:Redshirt.svg|10px|Redshirt]] Senior || [[Topanga, CA]] || [[UCLA Bruins football|UCLA]]
+|-
+| Ty Buchanan|| OL || 6’6 || 285 || Freshman || [[Corpus Christi, TX]] || [[Texas Tech Red Raiders football|Texas Tech]]
+|-  
+| Chase Locke || WR || 6'3 || 195 || [[File:Redshirt.svg|10px|Redshirt]] Sophomore || [[San Antonio, TX]] || [[Wyoming Cowboys football|Wyoming]]
+|- 
+| Maninoa Tufono || DL/LB || 6'3 || 290 || [[File:Redshirt.svg|10px|Redshirt]] Sophomore || [[Halawa, HI]] ||
+|-  
+| Jacob Lichtenstein || DL || 6'6 || 270 || [[File:Redshirt.svg|10px|Redshirt]] Junior || [[Weston, FL]] || [[Miami Hurricanes football|Miami]]
+|- 
+|}
+
+====Transfers in====
+The Trojans added 23 players via transfer.
+
+{| class="wikitable sortable"
+|-
+! style="text-align:center; {{CollegePrimaryStyle|USC Trojans|border=2|color=white}}"|Name !! style="text-align:center; {{CollegePrimaryStyle|USC Trojans|border=2|color=white}}"|Pos. !! style="text-align:center; {{CollegePrimaryStyle|USC Trojans|border=2|color=white}}"|Height !! style="text-align:center; {{CollegePrimaryStyle|USC Trojans|border=2|color=white}}"|Weight !! style="text-align:center; {{CollegePrimaryStyle|USC Trojans|border=2|color=white}}"|Year !! style="text-align:center; {{CollegePrimaryStyle|USC Trojans|border=2|color=white}}"|Hometown !! style="text-align:center; {{CollegePrimaryStyle|USC Trojans|border=2|color=white}}"|Old school 
+|-
+| [[Jordan Addison]] || WR || 6’0 || 175 || Junior || [[Frederick, MD]] || [[Pitt Panthers football|Pittsburgh]]
+|-
+| Sinjun Astani || DL || 6’4 || 261 || [[File:Redshirt.svg|10px|Redshirt]]Junior || [[Malibu, CA]] || [[San Jose State Spartans football|San José State]]
+|- 
+| Earl Barquet Jr. || DL || 6’3 || 277 || [[File:Redshirt.svg|10px|Redshirt]] Sophomore || [[Marrero, LA]] || [[TCU Horned Frogs football|TCU]]
+|-
+| [[Mekhi Blackmon]] || CB || 6’0 || 175 || Senior || [[East Palo Alto, CA]] || [[Colorado Buffaloes football|Colorado]]
+|- 
+| [[Terrell Bynum (American football)|Terrell Bynum]] || WR || 6’1 || 190 || Senior || [[Long Beach, CA]] || [[Washington Huskies football|Washington]]
+|-
+| [[Solomon Byrd]] || DL || 6’4 || 249 || Junior || [[Palmdale, CA]] || [[Wyoming Cowboys football|Wyoming]]
+|- 
+| Jacobe Covington || DB || 6’2 || 195 || [[File:Redshirt.svg|10px|Redshirt]] Freshman || [[Chandler, AZ]] || [[Washington Huskies football|Washington]]
+|- 
+| [[Travis Dye]] || TB || 5’10 || 190 || Senior || [[Norco, CA]] || [[Oregon Ducks football|Oregon]]
+|- 
+| [[Eric Gentry]] || LB || 6’6 || 205 || Freshman || [[Philadelphia, PA]] || [[Arizona State Sun Devils football|Arizona State]]
+|- 
+| Bobby Haskins || OT || 6’7 || 295 || Senior || [[Princeton, NJ]] || [[Virginia Cavaliers football|Virginia]]
+|-
+| [[Romello Height]] || OLB || 6’5 || 220 || Sophomore || [[Dublin, GA]] || [[Auburn Tigers football|Auburn]]
+|-
+| Jake Jensen || QB || 6’2 || 210 || Sophomore || [[Pleasant Grove, UT]] || [[Contra Costa College]]
+|-   
+| [[Austin Jones (running back)|Austin Jones]] || TB || 5’10 || 190 || Junior || [[Antioch, CA]] || [[Stanford Cardinal football|Stanford]]
+|-   
+| [[Shane Lee (American football)|Shane Lee]] || LB || 6’0 || 240 || Senior || [[Burtonsville, MD]] || [[Alabama Crimson Tide football|Alabama]]
+|-   
+| Cooper Lovelace || OL || 6’5 || 320 || [[File:Redshirt.svg|10px|Redshirt]] Sophomore || [[Kansas City, KS]] || [[Butler Grizzlies|Butler C.C.]]
+|-   
+| Latrell McCutchin || CB || 6’1 || 185 || Freshman || [[Austin, TX]] || [[Oklahoma Sooners football|Oklahoma]]
+|-  
+| [[Brenden Rice]] || WR || 6’3 || 205 || Freshman || [[Chandler, AZ]] || [[Colorado Buffaloes football|Colorado]]
+|-
+| Bryson Shaw || S || 6’0 || 195 || [[File:Redshirt.svg|10px|Redshirt]] Junior || [[Eldersburg, MD]] || [[Ohio State Buckeyes football|Ohio State]]
+|-
+| Carson Tabaracci || LB || 6’2 || 225 || Freshman || [[Park City, UT]] || [[Utah Utes football|Utah]]
+|-
+| Tyrone Taleni || DL || 6’2 || 275 || Junior || [[Savaiʻi|Savaiʻi, Samoa]] || [[Kansas State Wildcats football|Kansas State]]
+|- 
+| Garth White|| K/P || 6’4 || 200 || Freshman || [[Westlake Village, California|Westlake, CA]] || [[Ventura College|Ventura C.C.]]   
+|-  
+| [[Caleb Williams]] || QB || 6’1 || 218 || Freshman || [[Washington, D.C.]] || [[Oklahoma Sooners football|Oklahoma]]
+|-   
+| [[Mario Williams (wide receiver)|Mario Williams]] || WR || 5’9 || 186 || Freshman || [[Tampa, FL]] || [[Oklahoma Sooners football|Oklahoma]]
+|-  
+|}
+
+===Returning starters===
+
+Key departures include : <br/>
+[[Vavae Malepeai]] ([[Halfback (American football)|TB]] – 12 games, 5 started). <br/>
+[[Keaontay Ingram]] ([[Halfback (American football)|TB]] – 10 games, 7 started). <br/>
+[[Drake London]] ([[Wide receiver|WR]] – 8 games, 8 started). <br/>
+Erik Krommenhoek ([[Tight end|TE]] – 12 games, 10 started). <br/> Jalen McKenzie ([[Offensive tackle|OT]] – 12 games, 6 started). <br/> Liam Jimmons ([[Offensive guard|OG]] – 12 games, 12 started). <br/> [[Kana'i Mauga]] ([[Linebacker|LB]] – 12 games, 12 started). <br/> [[Drake Jackson]] ([[Outside linebacker|OLB]] – 11 games, 9 started). <br/> Chris Steele ([[Cornerback|CB]] – 11 games, 11 started). <br/> Isaac Taylor-Stuart ([[Cornerback|CB]] – 11 games, 10 started). 
+<br/> [[Isaiah Pola-Mao]] ([[Safety (gridiron football position)|S]] – 11 games, 9 started). <br/> Greg Johnson ([[Safety (gridiron football position)|S]] – 10 games, 9 started). <br/> Ben Griffiths ([[Punter (football)|P]] – 12 games, 12 started). <br/> Parker Lewis ([[Placekicker|K]] – 10 games, 10 started). <br/> Damon Johnson ([[Long snapper|LS]] – 12 games, 12 started).
+
+Other departures include : <br/>
+[[Kedon Slovis]] ([[Quarterback|QB]] – 9 games, 9 started). <br/> [[Jaxson Dart]] ([[Quarterback|QB]] – 6 games, 3 started). <br/> KD Nixon ([[Wide receiver|WR]] – 10 games). <br/> [[Michael Trigg (tight end)|Michael Trigg]] ([[Tight end|TE]] – 6 games, 4 started). <br/> Jacob Lichtenstein ([[Defensive line|DL]] – 12 games, 8 started). <br/> Hunter Echols ([[Outside linebacker|OLB]] – 11 games, 3 started). <br/> Raymond Scott ([[Linebacker|LB]] – 11 games, 3 started). <br/> Chase Williams ([[Safety (gridiron football position)|S]] – 12 games, 9 started).
+
+'''Offense'''
+{{Col-begin}}
+{{Col-3}}
+{| class="wikitable"
+|-
+! style="text-align:center; {{CollegePrimaryStyle|USC Trojans|border=2|color=white}}"|Player
+! style="text-align:center; {{CollegePrimaryStyle|USC Trojans|border=2|color=white}}"|Position
+! style="text-align:center; {{CollegePrimaryStyle|USC Trojans|border=2|color=white}}"|Games started 
+|-
+| Darwin Barlow
+| Tailback
+| 1 game
+|-
+| [[Tahj Washington]]
+| Wide receiver
+| 11 games
+|-
+| [[Gary Bryant Jr.]]
+| Wide receiver
+| 7 games
+|-
+| Michael Jackson III
+| Wide receiver
+| 1 game 
+|-
+| Michael Epps
+| Tight end
+| 5 games
+|-
+| Jude Wolfe
+| Tight end
+| 1 game
+|-
+| [[Lake McRee]]
+| Tight end
+| 1 game
+|-
+| Brett Neilon
+| Center
+| 12 games
+|-
+| [[Andrew Vorhees]]
+| Offensive guard
+| 12 games
+|-
+| Courtland Ford
+| Offensive tackle
+| 8 games
+|-
+| [[Jonah Monheim]]
+| Offensive tackle
+| 6 games
+|-
+| [[Justin Dedich]]
+| Offensive guard
+| 4 games
+|-
+| colspan="4"  style="font-size:8pt; text-align:left;"|'''Reference:'''
+|}
+{{Col-4}}
+
+'''Defense'''
+{| class="wikitable"
+|-;
+! style="text-align:center; {{CollegePrimaryStyle|USC Trojans|border=2|color=white}}"|Player
+! style="text-align:center; {{CollegePrimaryStyle|USC Trojans|border=2|color=white}}"|Position
+! style="text-align:center; {{CollegePrimaryStyle|USC Trojans|border=2|color=white}}"|Games started 
+|-
+| [[Tuli Tuipulotu]]
+| Defensive line
+| 12 games
+|-
+| Stanley Ta’ufo’ou 
+| Defensive line
+| 9 games
+|-
+| Nick Figueroa
+| Defensive line
+| 8 games
+|-
+| Jamar Sekona
+| Defensive line
+| 1 game
+|-
+| De’jon Benton
+| Defensive line
+| 1 game
+|-
+| [[Ralen Goforth]]
+| Linebacker 
+| 8 games
+|-
+| Joshua Jackson Jr.
+| Cornerback
+| 2 games
+|-
+| Prophet Brown
+| Cornerback 
+| 1 game
+|-
+| [[Calen Bullock]]
+| Safety
+| 6 games
+|-
+| [[Xavion Alford]]
+| Safety
+| 2 games
+|-
+| Chris Thompson Jr. 
+| Safety
+| 2 games
+|-
+| [[Jaylin Smith]]
+| Safety
+| 1 game
+|-
+| colspan="4"  style="font-size:8pt; text-align:center;"|'''Reference:'''
+|}
+{{Col-4}}
+
+'''Special teams'''
+{{Col-begin}}
+{{Col-3}}
+{| class="wikitable"
+|-
+! style="text-align:center; {{CollegePrimaryStyle|USC Trojans|border=2|color=white}}"|Player
+! style="text-align:center; {{CollegePrimaryStyle|USC Trojans|border=2|color=white}}"|Position
+! style="text-align:center; {{CollegePrimaryStyle|USC Trojans|border=2|color=white}}"|Games started 
+|-
+| Alex Stadthaus
+| Kicker
+| 2 games
+|-
+| colspan="4"  style="font-size:8pt; text-align:right;"|'''Reference:'''
+|}
+{{Col-4}}
+{{Col-end}}
+
+{{Col-end}}
+
+'''†''' Indicates player was a starter in 2021 but missed all of 2022 due to injury.
+
+===Recruiting class===
+The Trojans signed a total of yet scholarship recruits and walk-ons during national signing period.
+
+====Overall class rankings====
+{| class="wikitable"
+|-
+{{CollegePrimaryHeader|team=USC Trojans|Website|Overall rank|Conference rank|5 star recruits|4 star recruits|3 star recruits|2 star recruits}}
+|-
+| ESPN || – || – || 1 || 4 || 1 || 0
+|-
+| On3 Recruits || 30 || 3 || 1 || 4 || 3 || 0
+|-
+| Rivals || 63 || 9 || 2 || 3 || 2 || 0
+|-
+| 247 Sports || 59 || 8 || 2 || 3 || 2 || 1
+|}
+
+====Recruits====
+{{see also|American football positions|Glossary of American football|Recruiting (college athletics)}}
+{{College Athlete Recruit Start|collapse=yes|year=2022}}
+
+{{College Athlete Recruit Entry
+| recruit    = [[Domani Jackson]]
+| position   = #2 [[Cornerback|CB]] <br /> #7 nat.
+| hometown   = [[Santa Ana, CA]]
+| highschool = Mater Dei HS
+| feet   = 6
+| inches = 1
+| weight = 190
+| commitdate   = December 17, 2021 (Committed) / December 17, 2021 (Signed)
+| On3 stars = 5
+| rivals stars =
+| 247 stars    = 5
+| espn grade   = 92
+| espn stars   = 5
+}}
+{{College Athlete Recruit Entry
+| recruit    = [[Raleek Brown]]
+| position   = #2 [[Halfback (American football)|TB]] <br /> #33 nat.
+| hometown   = [[Santa Ana, CA]]
+| highschool = Mater Dei HS
+| feet   = 5
+| inches = 8
+| weight = 185
+| commitdate   = December 2, 2021 (Committed) / December 15, 2021 (Signed)
+| On3 stars = 4
+| rivals stars =
+| 247 stars    = 5
+| espn grade   = 86
+| espn stars   = 4
+}}
+{{College Athlete Recruit Entry
+| recruit    = Zion Branch
+| position   = #6 [[Safety (American and Canadian football position)|S]] <br /> #47 nat.
+| hometown   = [[Las Vegas, NV]]
+| highschool = Bishop Gorman HS
+| feet   = 6
+| inches = 2
+| weight = 195
+| commitdate   = December 15, 2021 (Committed) / December 15, 2021 (Signed)
+| On3 stars = 4
+| rivals stars =
+| 247 stars    = 4
+| espn grade   = 85
+| espn stars   = 4
+}}
+{{College Athlete Recruit Entry
+| recruit    = [[CJ Williams (American football)|CJ Williams]]
+| position   = #11 [[Wide receiver|WR]] <br /> #76 nat.
+| hometown   = [[Santa Ana, CA]]
+| highschool = Mater Dei HS
+| feet   = 6
+| inches = 2
+| weight = 193
+| commitdate   = January 8, 2022 (Committed) / December 15, 2021 (Signed)
+| On3 stars = 4
+| rivals stars =
+| 247 stars    = 4
+| espn grade   = 83
+| espn stars   = 4
+}}
+{{College Athlete Recruit Entry
+| recruit    = Fabian Ross
+| position   = #28 [[Cornerback|CB]] <br /> #234 nat.
+| hometown   = [[Las Vegas, NV]]
+| highschool = Bishop Gorman HS
+| feet   = 6
+| inches = 0
+| weight = 185
+| commitdate   = January 4, 2021 (Committed) / December 15, 2021 (Signed)
+| On3 stars = 4
+| rivals stars =
+| 247 stars    = 4
+| espn grade   = 82
+| espn stars   = 4
+}}
+{{College Athlete Recruit Entry
+| recruit    = Devan Thompkins
+| position   = #40 [[Edge rusher|EDGE]] <br /> #609 nat.
+| hometown   = [[Stockton, CA]]
+| highschool = Edison HS
+| feet   = 6
+| inches = 5
+| weight = 230
+| commitdate   = November 19, 2021 (Committed) / December 15, 2021 (Signed)
+| On3 stars = 3
+| rivals stars =
+| 247 stars    = 3
+| espn grade   = 77
+| espn stars   = 3
+}}
+{{College Athlete Recruit Entry
+| recruit    = Garrison Madden
+| position   = #89 [[Linebacker|LB]] <br /> #949 nat.
+| hometown   = [[Hampton, GA]]
+| highschool = Dutchtown HS
+| feet   = 6
+| inches = 2
+| weight = 200
+| commitdate   = December 15, 2021 (Committed) / December 15, (Signed)
+| On3 stars = 3
+| rivals stars =
+| 247 stars    = 3
+| espn grade   = 
+| espn stars   = 
+}}
+{{College Athlete Recruit Entry
+| recruit    = Daniel Meunier
+| position   = JuCo [[Long snapper|LS]]
+| hometown   = [[Los Angeles, CA]]
+| highschool = [[El Camino College]] 
+| feet   = 6
+| inches = 1
+| weight = 230
+| commitdate   = Walk-On
+| On3 stars = –
+| rivals stars =
+| 247 stars    = 
+| espn grade   =
+| espn stars   =
+}}
+{{College Athlete Recruit Entry
+| recruit    = Keegan Patterson
+| position   = [[Quarterback|QB]]
+| hometown   = [[Longmont, CO]]
+| highschool = Longmont HS
+| feet   = 6
+| inches = 0
+| weight = 185
+| commitdate   = Walk-On
+| On3 stars =
+| rivals stars =
+| 247 stars    =
+| espn grade   =
+| espn stars   = 
+}}
+{{College Athlete Recruit Entry
+| recruit    = Gage Roy
+| position   = [[Quarterback|QB]]
+| hometown   = [[Dallas, TX]]
+| highschool = Jesuit HS
+| feet   = 6
+| inches = 2
+| weight = 185
+| commitdate   = Walk-On
+| On3 stars =
+| rivals stars =
+| 247 stars    =
+| espn grade   =
+| espn stars   = 
+}}
+{{College Athlete Recruit Entry
+| recruit    = Austin Overn
+| position   = [[Wide receiver|WR]]
+| hometown   = [[Santa Ana, California]]
+| highschool = Foothill High School
+| feet   = 5
+| inches = 11
+| weight = 170
+| commitdate   = Walk-On
+| On3 stars = – 
+| rivals stars = –
+| 247 stars    = –
+| espn grade   = –
+| espn stars   = –
+}} 
+{{College Athlete Recruit Entry
+| recruit    = Kilian O’Connor
+| position   = [[Offensive line|OL]]
+| hometown   = [[Ladera Ranch, California]]
+| highschool = Santa Margarita Catholic High School
+| feet   = 6
+| inches = 2
+| weight = 275
+| commitdate   = Walk-On
+| On3 stars = – 
+| rivals stars = –
+| 247 stars    = –
+| espn grade   = –
+| espn stars   = –
+}} 
+{{College Athlete Recruit Entry
+| recruit    = Roman Marchetti
+| position   = [[Linebacker|LB]]
+| hometown   =  [[Santa Ana, CA]]
+| highschool = Foothill HS
+| feet   = 6
+| inches = 2
+| weight = 205
+| commitdate   = Walk-On
+| On3 stars = 
+| rivals stars =
+| 247 stars    = 
+| espn grade   = 
+| espn stars   = 
+}}
+{{College Athlete Recruit Entry
+| recruit    = Garrett Pomerantz
+| position   = [[Linebacker|LB]]
+| hometown   =  [[Las Vegas, NV]]
+| highschool = Bishop Gorman HS
+| feet   = 6
+| inches = 4
+| weight = 210
+| commitdate   = Walk-On
+| On3 stars = 
+| rivals stars =
+| 247 stars    = 
+| espn grade   = 
+| espn stars   = 
+}}
+{{College Athlete Recruit End
+| year             = 2022
+| rivals ref title = USC Signee List 2022
+| 247 overall      = 70
+| On3 overall = 43
+| espn overall      =
+| scout overall      = –
+| rivals overall      = 
+| accessdate       =
+| collapse         = yes
+}}
+
+==Preseason==
+
+===Spring Game===
+{{See also|USC Trojans football}}
+
+{{Americanfootballbox
+|bg=#fff
+|bg2=#eee
+|titlestyle={{CollegePrimaryStyle|USC Trojans|color=white}}; ;text-align:center;
+|state=collapsed
+
+|title=USC Offense vs USC Defense Spring Game
+|date= April 23, 2022
+|time= 12:00pm [[Pacific Daylight Time|PDT]]
+
+|road=Defense 
+|R1=21|R2=9|
+|home=Offense
+|H1=17|H2=17|
+
+|stadium=[[Los Angeles Memorial Coliseum]], [[Los Angeles, CA]]
+|TV=[[ESPN]]
+}}
+
+===Award watch lists===
+<small>Listed in the order that they were released</small>
+
+{| class="wikitable"
+{{CollegePrimaryHeader|team=USC Trojans|Award|Player|Position|Year}}
+|- 
+|rowspan="2" | [[Lott Trophy]]<ref>{{cite web|url= https://lottimpacttrophy.org/lott-trophy/lott-impact-trophy-announces-2022-watch-list/|title= LOTT IMPACT® TROPHY ANNOUNCES 2022 WATCH LIST|date=May 19, 2022|access-date=May 19, 2022}}</ref> 
+|Nick Figueroa
+|DL
+|[[File:Redshirt.svg|10px|Redshirt]] Sr
+|- 
+|Shane Lee
+|ILB
+|Sr
+|-
+|rowspan="2" | [[Maxwell Award]]<ref>{{cite web|url=https://maxwellfootballclub.org|title=2022 Maxwell Award Watch List Recipients – Maxwell Football Club|date=18 July 2022}}</ref>
+|[[Jordan Addison]]
+|WR
+|Jr
+|- 
+|[[Caleb Williams]]
+|QB
+|So
+|-
+|[[Davey O'Brien Award]]<ref>{{cite web|url=https://daveyobrienaward.org/2022/07/davey-obrien-award-announces-2022-preseason-watch-list/|title=Davey O’Brien award announces 2022 preseason watch list|date=19 July 2022}}</ref>
+|Caleb Williams
+|QB
+|So
+|-
+|rowspan="2" |[[Doak Walker Award]]<ref>{{cite web|url=https://www.smu.edu/DoakWalkerAward/Candidates|title=2022 Doak Walker Award Candidates|date=20 July 2022}}</ref>
+|[[Travis Dye]]
+|RB
+|[[File:Redshirt.svg|10px|Redshirt]] Sr
+|-
+|Austin Jones
+|RB
+|Sr
+|-
+|[[Fred Biletnikoff Award|Biletnikoff Award]]<ref>{{cite web|url=https://biletnikoffaward.com/2022-watch-list/|title=2022 Biletnikoff Award Watch List|date=22 July 2022}}</ref>
+|Jordan Addison
+|WR
+|Jr
+|-  
+|[[Rimington Trophy]]<ref>{{cite web|url=https://rimingtontrophy.com/watchlist/|title=The 2022 Rimington Trophy Watchlist|date=22 July 2022}}</ref>
+|Brett Neilon
+|C
+|[[File:Redshirt.svg|10px|Redshirt]] Sr
+|-
+|[[John Mackey Award]]<ref>{{cite web|url=https://www.johnmackeyaward.com/index.html#|title= 2022 Watchlist|date=22 July 2022}}</ref>
+|Michael Epps
+|TE
+|[[File:Redshirt.svg|10px|Redshirt]] Sr
+|-
+|rowspan="2" |[[Outland Trophy]]<ref>{{cite web|url= https://www.sportswriters.net/fwaa/news/2022/07/26/2022-outland-trophy-watch-list-unveiled |title= 2022 Outland Trophy Watch List unveiled |date=26 July 2022}}</ref>
+|[[Tuli Tuipulotu]]
+|DL
+|Jr
+|- 
+|[[Andrew Vorhees]]
+|OL
+|[[File:Redshirt.svg|10px|Redshirt]] Sr
+|- 
+|[[Bronko Nagurski Trophy]]<ref>{{cite web|url=https://www.sportswriters.net/fwaa/news/2022/07/26/2022-bronko-nagurski-trophy-watch-list-unveiled|title=2022 Bronko Nagurski Trophy Watch List unveiled|date=26 July 2022}}</ref> 
+|Tuli Tuipulotu
+|DL
+|Jr
+|-
+|[[Paul Hornung Award]]<ref>{{cite web|url= https://www.louisvillesports.org/ph-article/52-players-from-10-conferences-plus-3-independents-named-to-2022-paul-hornung-award-watch-list|title= 52 PLAYERS FROM 10 CONFERENCES, PLUS 3 INDEPENDENTS, NAMED TO 2022 PAUL HORNUNG AWARD WATCH LIST|date=28 July 2022}}</ref>
+|[[Brenden Rice]]
+|WR
+|Jr
+|-
+|[[Wuerffel Trophy]]<ref>{{cite web|url= https://wuerffeltrophy.org/wuerffel-trophy-unveils-watch-list-for-2022|title=Wuerffel Trophy Unveils Watch List For 2022|date=28 July 2022}}</ref>
+|Caleb Williams 
+|QB
+|So
+|-
+|rowspan="2" | [[Walter Camp Award]]<ref>{{cite web|url= https://waltercamp.org/walter-camp-2022-player-of-year-preseason-watch-list|title=Walter Camp 2022 Player of Year Preseason Watch|date=29 July 2022}}</ref>
+|Jordan Addison
+|WR
+|Jr
+|- 
+|Caleb Williams
+|QB
+|So
+|-
+|[[Bednarik Award]]<ref>{{cite web|url=https://maxwellfootballclub.org/|title=2022 Bednarik Award Watch List|date=1 August 2022}}</ref>
+|Tuli Tuipulotu 
+|DL
+|Jr
+|- 
+|rowspan="2" |[[Lombardi Award|Rotary Lombardi Award]]<ref>{{cite web|url=https://www.rotarylombardiaward.org/_files/ugd/ae9e43_6277ce2af583489995a75d3db03181f6.pdf|title= 2022 Lombardi Trophy Watch List unveiled |date=1 August 2022}}</ref>
+|Tuli Tuipulotu 
+|DL
+|Jr
+|- 
+|Andrew Vorhees
+|OL
+|[[File:Redshirt.svg|10px|Redshirt]] Sr
+|- 
+|rowspan="2" |[[Earl Campbell Tyler Rose Award]]
+|Malcolm Epps
+|TE
+|[[File:Redshirt.svg|10px|Redshirt]] Sr
+|- 
+|Courtland Ford
+|OL
+|[[File:Redshirt.svg|10px|Redshirt]] So
+|- 
+|rowspan="3" |Polynesian College Football Player Of The Year Award<ref>{{cite web|url=https://www.polynesianfootballhof.org/releases/2022-polynesian-college-football-player-of-the-year-award-watch-list|title=2022 Polynesian College Football Player Of The Year Award Watch List|date=18 August 2022}}</ref>
+|[[Brandon Pili]]
+|DL
+|[[File:Redshirt.svg|10px|Redshirt]] Sr
+|- 
+|Stanley Ta’ufo’ou
+|OL
+|[[File:Redshirt.svg|10px|Redshirt]] Jr
+|-
+|Tuli Tuipulotu 
+|DL
+|Jr
+|-
+|[[Ted Hendricks Award]]
+|
+|
+|
+|-
+|}
+
+===Pac-12 Media Day===
+The Pac-12 Media Day was held on July 29, 2022 in [[Hollywood, California]] with [[Lincoln Riley]] (HC), [[Caleb Williams]] (QB) and Shane Lee (LB) representing USC. 
+ 
+{| class="wikitable" style="display: inline-table;"
+|align="center" Colspan="3" |'''Media poll'''
+|- align="center"
+{{CollegePrimaryHeader|team=USC Trojans|Predicted finish|Team|Votes (1st place)}}
+|- align="center"
+| 1
+| Utah
+| 26
+|- align="center"
+| 2
+| Oregon
+| 2
+|- align="center"
+| 3
+| '''USC'''
+| 5
+|- align="center"
+| 4
+| UCLA
+| –
+|- align="center"
+| 5
+| Oregon State
+| –
+|- align="center"
+| 6
+| Washington
+| –
+|- align="center"
+| 7
+| Washington State
+| –
+|- align="center"
+| 8
+| Stanford
+| –
+|- align="center"
+| 9
+| California
+| –
+|- align="center"
+| 10
+| Arizona State
+| –
+|- align="center"
+| 11
+| Arizona
+| –
+|- align="center"
+| 12
+| Colorado
+| —
+|}
+
+===Preseason All-Pac-12 teams===
+'''First team'''
+{| class="wikitable"
+|-
+! Position
+! Player
+! Class
+! Team
+|-  
+| colspan="4" style="text-align:center; background:#ddd;"| '''First Team Offense'''
+|- style="text-align:center;"
+! rowspan="1" |QB
+|[[Caleb Williams]]
+|SO
+!style={{NCAA color cell|USC Trojans}} | USC
+|-
+|- style="text-align:center;"
+! rowspan="1" |WR
+|[[Jordan Addison]]
+|JR
+!style={{NCAA color cell|USC Trojans}} | USC
+|-
+|- style="text-align:center;"
+! rowspan="1" |WR
+|[[Mario Williams (wide receiver)|Mario Williams]]
+|SO
+!style={{NCAA color cell|USC Trojans}} | USC
+|-
+|- style="text-align:center;"
+! rowspan="1" |OL
+|[[Andrew Vorhees]]
+|[[File:Redshirt.svg|10px|Redshirt]] SR
+!style={{NCAA color cell|USC Trojans}} | USC
+|-
+| colspan="4" style="text-align:center; background:#ddd;"| '''First Team Defense'''
+|- style="text-align:center;"
+! rowspan="1" |DL
+|[[Tuli Tuipulotu]]
+|JR
+!style={{NCAA color cell|USC Trojans}} | USC
+|-
+| colspan="4" style="text-align:center; background:#ddd;"| '''First Team Special teams'''
+|- style="text-align:center;"
+! rowspan="1" |AP/ST
+|Travis Dye
+|[[File:Redshirt.svg|10px|Redshirt]] SR
+!style={{NCAA color cell|USC Trojans}} | USC
+|-
+|}
+
+'''Second team'''
+{| class="wikitable"
+|-
+! Position
+! Player
+! Class
+! Team
+|-  
+| colspan="4" style="text-align:center; background:#ddd;"| '''Second Team Offense'''
+|- style="text-align:center;"
+! rowspan="1" |RB
+|[[Travis Dye]]
+|[[File:Redshirt.svg|10px|Redshirt]] SR
+!style={{NCAA color cell|USC Trojans}} | USC
+|-
+|- style="text-align:center;"
+! rowspan="1" |OL
+|Brett Neilon
+|[[File:Redshirt.svg|10px|Redshirt]] SR
+!style={{NCAA color cell|USC Trojans}} | USC
+|-
+| colspan="4" style="text-align:center; background:#ddd;"| '''Second Team Defense'''
+|- style="text-align:center;"
+! rowspan="1" |DB
+|[[Mekhi Blackmon]]
+|[[File:Redshirt.svg|10px|Redshirt]] SR
+!style={{NCAA color cell|USC Trojans}} | USC
+|-
+| colspan="4" style="text-align:center; background:#ddd;"| '''Second Team Special teams'''
+|- style="text-align:center;"
+! rowspan="1" |RS
+|[[Gary Bryant Jr.]]
+|JR
+!style={{NCAA color cell|USC Trojans}} | USC
+|-
+|}
+
+'''All-Pac-12 Honorable Mention'''
+{| class="wikitable"
+|-
+! Position
+! Player
+! Class
+! Team
+|-  
+| colspan="4" style="text-align:center; background:#ddd;"| '''Offense'''
+|- style="text-align:center;"
+! rowspan="1" |WR
+|Gary Bryant Jr.
+|WR
+!style={{NCAA color cell|USC Trojans}} | USC
+|-
+| colspan="4" style="text-align:center; background:#ddd;"| '''Defense'''
+|- style="text-align:center;"
+! rowspan="1" |DL
+|Nick Figueroa
+|[[File:Redshirt.svg|10px|Redshirt]] SR
+!style={{NCAA color cell|USC Trojans}} | USC
+|-
+|- style="text-align:center;"
+! rowspan="1" |DL
+|Solomon Byrd
+|SR
+!style={{NCAA color cell|USC Trojans}} | USC
+|-
+|- style="text-align:center;"
+! rowspan="1" |LB
+|Korey Foreman
+|SO
+!style={{NCAA color cell|USC Trojans}} | USC
+|-
+|- style="text-align:center;"
+! rowspan="1" |DB
+|Xavion Alford Jr.
+|[[File:Redshirt.svg|10px|Redshirt]] SO
+!style={{NCAA color cell|USC Trojans}} | USC
+|-
+| colspan="4" style="text-align:center; background:#ddd;"| '''Special teams'''
+|- style="text-align:center;"
+! rowspan="1" |RS
+|[[Brenden Rice]]
+|JR
+!style={{NCAA color cell|USC Trojans}} | USC
+|-
+|}
+
+==Schedule==
+{{CFB schedule
+| rankyear = 2022
+| poll = [[2022 NCAA Division I FBS football rankings#AP Poll|AP Poll]] (and [[2022 NCAA Division I FBS football rankings#CFP Rankings|CFP Rankings]], after November 1) – Released prior to game
+| timezone = Pacific
+
+|{{CFB schedule entry
+| date = September 3
+| time = 3:00 p.m.
+| w/l = w
+| nonconf = y
+| rank = 14
+| opponent = [[2022 Rice Owls football team|Rice]]
+| site_stadium = [[Los Angeles Memorial Coliseum]]
+| site_cityst = [[Los Angeles|Los Angeles, CA]]
+| tv = [[Pac-12 Networks|P12N]]
+| score = 66–14
+| attend = 60,113
+}} 
+|{{CFB schedule entry
+| date = September 10
+| time = 4:30 p.m.
+| w/l = w
+| away = y 
+| rank = 10
+| opponent = [[2022 Stanford Cardinal football team|Stanford]]
+| site_stadium = [[Stanford Stadium]]
+| site_cityst = [[Stanford, California|Stanford, CA]]
+| gamename = [[Stanford–USC football rivalry|rivalry]]
+| tv = [[Saturday Night Football|ABC]]
+| score = 41–28
+| attend = 43,813
+}} 
+|{{CFB schedule entry
+| date = September 17
+| time = 7:30 p.m.
+| w/l = w
+| nonconf = y
+| rank = 7
+| opponent = [[2022 Fresno State Bulldogs football team|Fresno State]]
+| site_stadium = Los Angeles Memorial Coliseum
+| site_cityst = Los Angeles, CA
+| tv = [[Fox College Football|FOX]]
+| score = 45–17
+| attend = 67,226
+}} 
+|{{CFB schedule entry
+| date = September 24
+| time = 6:30 p.m.
+| w/l =w
+| away = y 
+| nonconf = 
+| rank = 7
+| opponent = [[2022 Oregon State Beavers football team|Oregon State]]
+| site_stadium = [[Reser Stadium]]
+| site_cityst = [[Corvallis, Oregon|Corvallis, OR]]
+| tv = P12N
+| score = 17–14
+| attend = 28,769
+}} 
+|{{CFB schedule entry
+| date = October 1
+| time = 7:30 p.m.
+| w/l = w
+| nonconf = 
+| rank = 6
+| opponent = [[2022 Arizona State Sun Devils football team|Arizona State]]
+| site_stadium = Los Angeles Memorial Coliseum
+| site_cityst = Los Angeles, CA
+| tv = [[ESPN College Football|ESPN]]
+| score = 42–25
+| attend = 62,133
+}} 
+|{{CFB schedule entry
+| date = October 8
+| time = 4:30 p.m.
+| w/l = w
+| nonconf = 
+| rank = 6
+| opponent = [[2022 Washington State Cougars football team|Washington State]]
+| site_stadium = Los Angeles Memorial Coliseum
+| site_cityst = Los Angeles, CA
+| tv = FOX
+| score = 30–14
+| attend = 63,204
+}} 
+|{{CFB schedule entry
+| date = October 15
+| time = 5:00 p.m.
+| w/l = l
+| away = y 
+| nonconf = 
+| rank = 7
+| opponent = [[2022 Utah Utes football team|Utah]]
+| opprank = 20
+| site_stadium = [[Rice–Eccles Stadium]]
+| site_cityst = [[Salt Lake City|Salt Lake City, UT]]
+| tv = FOX
+| score = 42–43
+| attend = 53,609
+}} 
+|{{CFB schedule entry
+| date = October 29
+| time = 4:00 p.m.
+| w/l = w
+| away = y 
+| nonconf = 
+| rank = 10
+| opponent = [[2022 Arizona Wildcats football team|Arizona]]
+| site_stadium = [[Arizona Stadium]]
+| site_cityst = [[Tucson, Arizona|Tucson, AZ]]
+| tv = P12N
+| score = 45–37
+| attend = 44,006
+}} 
+|{{CFB schedule entry
+| date = November 5
+| time = 7:30 p.m.
+| w/l = w
+| homecoming = y
+| nonconf = 
+| rank = 9
+| opponent = [[2022 California Golden Bears football team|California]]
+| site_stadium = Los Angeles Memorial Coliseum
+| site_cityst = Los Angeles, CA
+| tv = ESPN
+| score = 41–35
+| attend = 64,916
+}} 
+|{{CFB schedule entry
+| date = {{dow tooltip|November 11, 2022}}
+| time = 6:30 p.m.
+| w/l = w
+| rank = 8
+| opponent = [[2022 Colorado Buffaloes football team|Colorado]]
+| site_stadium = Los Angeles Memorial Coliseum
+| site_cityst = Los Angeles, CA
+| tv = [[Fox College Football|FS1]]
+| score = 55–17
+| attend = 61,206
+}} 
+|{{CFB schedule entry
+| date = November 19
+| time = 5:00 p.m.
+| w/l = w
+| away = y 
+| rank = 7
+| opponent = [[2022 UCLA Bruins football team|UCLA]]
+| opprank = 16
+| site_stadium = [[Rose Bowl (stadium)|Rose Bowl]]
+| site_cityst = [[Pasadena, California|Pasadena, CA]]
+| gamename = [[Victory Bell (UCLA–USC)|Victory Bell]]
+| tv = FOX
+| score = 48–45
+| attend = 70,865
+}} 
+|{{CFB schedule entry
+| date = November 26
+| time = 4:30 p.m.
+| w/l = w
+| nonconf = y
+| rank = 6
+| opponent = [[2022 Notre Dame Fighting Irish football team|Notre Dame]]
+| opprank = 15
+| site_stadium = Los Angeles Memorial Coliseum
+| site_cityst = Los Angeles, CA
+| gamename = [[Notre Dame–USC football rivalry|rivalry]]
+| tv = ABC
+| score = 38–27
+| attend = 72,613
+}} 
+|{{CFB schedule entry
+| date = December 2
+| time = 5:00 p.m.
+| w/l = l
+| neutral = y
+| rank = 4
+| opponent = Utah
+| opprank = 11
+| site_stadium = [[Allegiant Stadium]]
+| site_cityst = [[Paradise, Nevada|Paradise, NV]]
+| gamename = [[2022 Pac-12 Football Championship Game|Pac-12 Championship Game]]
+| tv = FOX
+| score = 24–47
+| attend = 61,195
+}}
+|{{CFB schedule entry
+| date = {{tooltip|January 2, 2023|Monday}}
+| time = 10:00 a.m.
+| w/l = l
+| nonconf = y
+| neutral = y
+| rank = 10
+| opprank = 16
+| opponent = [[2022 Tulane Green Wave football team|Tulane]]
+| site_stadium = [[AT&T Stadium]]
+| site_cityst = [[Arlington, Texas|Arlington, TX]]
+| gamename = [[2023 Cotton Bowl Classic (January)|Cotton Bowl Classic]]
+| tv = ESPN
+| score = 45–46
+| attend = 55,329
+}}
+}} 
+{{notelist}}
+
+==Personnel==
+
+===Roster===
+{{American football roster/Header|year=2022|team=USC Trojans|teamcolors=y
+
+|offensive_players=
+{{American football roster/Player|num=0|class=SR|first=Terrell|last=Bynum|pos=WR|rs=y|link=y|dab=Terrell Bynum (American football)}}
+{{American football roster/Player|num=1|class=JR|first=Gary|last=Bryant Jr.|pos=WR|link=y}}
+{{American football roster/Player|num=2|class=JR|first=Brenden|last=Rice|pos=WR|link=y}}
+{{American football roster/Player|num=3|class=JR|first=Jordan|last=Addison|pos=WR|link=y}}
+{{American football roster/Player|num=4|class=SO|first=Mario|last=Williams|pos=WR|dab=Mario Williams (wide receiver)|link=y}}
+{{American football roster/Player|num=6|class=SR|first=Austin|last=Jones|pos=RB|link=y|dab=Austin Jones (running back)}}
+{{American football roster/Player|num=7|class=FR|first=Miller|last=Moss|pos=QB|rs=y|link=y|dab=Miller Moss (American football)}}
+{{American football roster/Player|num=8|class=FR|first=C. J.|last=Williams|pos=WR|link=y|dab=CJ Williams (American football)}}
+{{American football roster/Player|num=9|class=SO|first=Michael|last=Jackson III|pos=WR}}
+{{American football roster/Player|num=10|class=FR|first=Kyron|last=Hudson|pos=WR|rs=y|link=y}}
+{{American football roster/Player|num=13|class=SO|first=Caleb|last=Williams|pos=QB|link=y}}
+{{American football roster/Player|num=14|class=FR|first=Raleek|last=Brown|pos=RB|link=y}}
+{{American football roster/Player|num=15|class=SR|first=Mo|last=Hasan|pos=QB|rs=y}}
+{{American football roster/Player|num=16|class=JR|first=Tahj|last=Washington|pos=WR|rs=y|link=y}}
+{{American football roster/Player|num=17|class=SO|first=Jake|last=Jensen|pos=QB}}
+{{American football roster/Player|num=18|class=JR|first=Jude|last=Wolfe|pos=TE|rs=y}}
+{{American football roster/Player|num=19|class=SR|first=Malcolm|last=Epps|pos=TE|rs=y}}
+{{American football roster/Player|num=22|class=JR|first=Darwin|last=Barlow|pos=RB|rs=y}}
+{{American football roster/Player|num=26|class=SR|first=Travis|last=Dye|pos=RB|rs=y|link=y}}
+{{American football roster/Player|num=28|class=FR|first=Gage|last=Roy|pos=QB}}
+{{American football roster/Player|num=29|class=FR|first=Keegan|last=Patterson|pos=QB}}
+{{American football roster/Player|num=31|class=SO|first=Isaac|last=Ward|pos=QB|rs=y}}
+{{American football roster/Player|num=34|class=SO|first=Matt|last=Colombo|pos=RB|rs=y}}
+{{American football roster/Player|num=40|class=SO|first=Ty|last=Shamblin|pos=WR|rs=y}}
+{{American football roster/Player|num=41|class=SR|first=Brandon|last=Outlaw|pos=RB|rs=y}}
+{{American football roster/Player|num=42|class=SO|first=Danny|last=Ryan|pos=WR|rs=y}}
+{{American football roster/Player|num=44|class=FR|first=Josiah|last=Zamora|pos=WR|rs=y}}
+{{American football roster/Player|num=46|class=JR|first=Corey|last=Nerhus|pos=WR}}
+{{American football roster/Player|num=47|class=JR|first=Christian|last=Catlin|pos=RB}}
+{{American football roster/Player|num=49|class=FR|first=Grant|last=Zane|pos=WR|rs=y}}
+{{American football roster/Player|num=56|class=SO|first=Andres|last=Dewerk|pos=OL|rs=y}}
+{{American football roster/Player|num=57|class=SR|first=Justin|last=Dedich|pos=OL|rs=y|link=y}}
+{{American football roster/Player|num=61|class=SR|first=Joe|last=Bryson|pos=OL|rs=y}}
+{{American football roster/Player|num=62|class=SR|first=Brett|last=Neilon|pos=OL|rs=y}}
+{{American football roster/Player|num=64|class=SR|first=A. J.|last=Mageo|pos=OL|rs=y}}
+{{American football roster/Player|num=66|class=JR|first=Gino|last=Quinones|pos=OL|rs=y}}
+{{American football roster/Player|num=67|class=FR|first=Kilian|last=O'Connor|pos=OL}}
+{{American football roster/Player|num=70|class=SR|first=Bobby|last=Haskins|pos=OL|rs=y}}
+{{American football roster/Player|num=71|class=JR|first=Cooper|last=Lovelace|pos=OL|rs=y}}
+{{American football roster/Player|num=72|class=SR|first=Andrew|last=Vorhees|pos=OL|rs=y|link=y}}
+{{American football roster/Player|num=73|class=SO|first=Caadyn|last=Stephen|pos=OL|rs=y}}
+{{American football roster/Player|num=74|class=SO|first=Courtland|last=Ford|pos=OL|rs=y}}
+{{American football roster/Player|num=75|class=JR|first=Grant|last=Tucker|pos=OL}}
+{{American football roster/Player|num=76|class=FR|first=Mason|last=Murphy|pos=OL|rs=y}}
+{{American football roster/Player|num=77|class=JR|first=Jason|last=Rodriguez|pos=OL|rs=y}}
+{{American football roster/Player|num=78|class=SO|first=Andrew|last=Milek|pos=OL|rs=y}}
+{{American football roster/Player|num=79|class=SO|first=Jonah|last=Monheim|pos=OL|rs=y|link=y}}
+{{American football roster/Player|num=80|class=SR|first=John|last=Jackson III|pos=WR|link=y|dab=John Jackson (wide receiver, born 1999)}}
+{{American football roster/Player|num=81|class=JR|first=Kyle|last=Ford|pos=WR|rs=y}}
+{{American football roster/Player|num=82|class=FR|first=Austin|last=Overn|pos=WR}}
+{{American football roster/Player|num=83|class=SR|first=Josh|last=Falo|pos=TE|rs=y}}
+{{American football roster/Player|num=85|class=JR|first=Ethan|last=Rae|pos=TE|rs=y}}
+{{American football roster/Player|num=87|class=FR|first=Lake|last=McRee|pos=TE|rs=y|link=y}}
+{{American football roster/Player|num=89|class=JR|first=Sean|last=Mahoney|pos=TE|rs=y}}
+
+|defensive_players=
+{{American football roster/Player|num=0|class=SO|first=Korey|last=Foreman|pos=RUSH|link=y}}
+{{American football roster/Player|num=1|class=FR|first=Domani|last=Jackson|pos=DB|link=y}}
+{{American football roster/Player|num=2|class=SO|first=Romello|last=Height|pos=RUSH|rs=y|link=y}}
+{{American football roster/Player|num=4|class=JR|first=Max|last=Williams|pos=DB|rs=y}}
+{{American football roster/Player|num=6|class=SR|first=Mekhi|last=Blackmon|pos=DB|rs=y|link=y}}
+{{American football roster/Player|num=7|class=SO|first=Calen|last=Bullock|pos=DB|link=y}}
+{{American football roster/Player|num=8|class=FR|first=Zion|last=Branch|pos=DB}}
+{{American football roster/Player|num=9|class=SO|first=Raesjon|last=Davis|pos=ILB}}
+{{American football roster/Player|num=10|class=SR|first=Ralen|last=Goforth|pos=ILB|link=y}}
+{{American football roster/Player|num=13|class=JR|first=Adonis|last=Otey|pos=DB|rs=y}}
+{{American football roster/Player|num=14|class=SO|first=Jacobe|last=Covington|pos=DB|rs=y}}
+{{American football roster/Player|num=15|class=FR|first=Anthony|last=Beavers Jr.|pos=DB|rs=y}}
+{{American football roster/Player|num=16|class=FR|first=Prophet|last=Brown|pos=DB|rs=y}}
+{{American football roster/Player|num=17|class=SR|first=Micah|last=Croom|pos=DB|rs=y}}
+{{American football roster/Player|num=18|class=SO|first=Eric|last=Gentry|pos=ILB|link=y}}
+{{American football roster/Player|num=19|class=SO|first=Jaylin|last=Smith|pos=DB|link=y}}
+{{American football roster/Player|num=21|class=SO|first=Latrell|last=McCutchin|pos=DB}}
+{{American football roster/Player|num=22|class=FR|first=Ceyair|last=Wright|pos=DB|rs=y|link=y}}
+{{American football roster/Player|num=23|class=SO|first=Joshua|last=Jackson Jr.|pos=DB|rs=y}}
+{{American football roster/Player|num=24|class=FR|first=Julien|last=Simon|pos=LB|rs=y}}
+{{American football roster/Player|num=25|class=JR|first=Briton|last=Allen|pos=DB|rs=y}}
+{{American football roster/Player|num=26|class=FR|first=Fabian|last=Ross|pos=DB}}
+{{American football roster/Player|num=27|class=JR|first=Bryson|last=Shaw|pos=DB|rs=y}}
+{{American football roster/Player|num=28|class=FR|first=Xamarion|last=Gordon|pos=DB|rs=y}}
+{{American football roster/Player|num=29|class=SO|first=Xavion|last=Alford|pos=DB|rs=y|link=y}}
+{{American football roster/Player|num=30|class=JR|first=Chris|last=Thompson Jr.|pos=ILB}}
+{{American football roster/Player|num=31|class=SR|first=Tyrone|last=Taleni|pos=DL}}
+{{American football roster/Player|num=34|class=FR|first=Carson|last=Tabaracci|pos=ILB}}
+{{American football roster/Player|num=35|class=JR|first=Clyde|last=Moore|pos=ILB|rs=y}}
+{{American football roster/Player|num=36|class=SR|first=John|last=Armistead|pos=DB}}
+{{American football roster/Player|num=37|class=FR|first=Devan|last=Thompkins|pos=RUSH|link=y}}
+{{American football roster/Player|num=39|class=FR|first=Garrett|last=Pomerantz|pos=RUSH}}
+{{American football roster/Player|num=40|class=SO|first=L|last=Simpson|pos=DB|rs=y}}
+{{American football roster/Player|num=41|class=FR|first=Garrison|last=Madden|pos=ILB}}
+{{American football roster/Player|num=44|class=JR|first=Tuasivi|last=Nomura|pos=ILB|rs=y}}
+{{American football roster/Player|num=47|class=JR|first=Stanley|last=Ta'ufo'ou|pos=DL|rs=y}}
+{{American football roster/Player|num=48|class=FR|first=Daniel|last=Jimenez-Fulton|pos=DB|rs=y}}
+{{American football roster/Player|num=49|class=JR|first=Tuli|last=Tuipulotu|pos=DL|link=y}}
+{{American football roster/Player|num=51|class=SR|first=Solomon|last=Byrd|pos=DL|rs=y|link=y}}
+{{American football roster/Player|num=52|class=SO|first=Theo|last=Bravos|pos=ILB}}
+{{American football roster/Player|num=53|class=SR|first=Shane|last=Lee|pos=ILB|link=y|dab=Shane Lee (American football)}}
+{{American football roster/Player|num=54|class=SR|first=Tayler|last=Katoa|pos=ILB|rs=y}}
+{{American football roster/Player|num=57|class=FR|first=Roman|last=Marchetti|pos=ILB}}
+{{American football roster/Player|num=58|class=SR|first=Solomon|last=Tuliaupupu|pos=RUSH|rs=y|link=y}}
+{{American football roster/Player|num=77|class=SO|first=Jamar|last=Sekona|pos=DL|rs=y}}
+{{American football roster/Player|num=79|class=JR|first=De'jon|last=Benton|pos=DL|rs=y}}
+{{American football roster/Player|num=82|class=SR|first=Vincent|last=Ragsdale|pos=DB}}
+{{American football roster/Player|num=90|class=FR|first=Colin|last=Mobley|pos=DL|rs=y}}
+{{American football roster/Player|num=91|class=SR|first=Brandon|last=Pili|pos=DL|rs=y|link=y}}
+{{American football roster/Player|num=93|class=SR|first=Sinjun|last=Astani|pos=DL|rs=y}}
+{{American football roster/Player|num=94|class=SO|first=Kobe|last=Pepe|pos=DL|rs=y}}
+{{American football roster/Player|num=95|class=SR|first=Luke|last=Otte|pos=DL}}
+{{American football roster/Player|num=97|class=JR|first=Earl|last=Barquet Jr.|pos=DL|rs=y}}
+{{American football roster/Player|num=99|class=SR|first=Nick|last=Figueroa|pos=DL|rs=y}}
+
+|special_teams_players=
+{{American football roster/Player|num=35|class=SO|first=Michael|last=McAllister|pos=P|rs=y}}
+{{American football roster/Player|num=36|class=JR|first=Will|last=Rose|pos=P|rs=y}}
+{{American football roster/Player|num=38|class=SR|first=Alex|last=Stadthaus|pos=K|rs=y}}
+{{American football roster/Player|num=39|class=SR|first=Jac|last=Casasante|pos=LS|rs=y}}
+{{American football roster/Player|num=42|class=JR|first=Aadyn|last=Sleep-Dalton|pos=P}}
+{{American football roster/Player|num=46|class=FR|first=Denis|last=Lynch|pos=K|rs=y}}
+{{American football roster/Player|num=48|class=JR|first=Daniel|last=Meunier|pos=LS}}
+{{American football roster/Player|num=53|class=SO|first=Nathan|last=Weneta|pos=LS|rs=y}}
+{{American football roster/Player|num=98|class=SO|first=Garth|last=White|pos=K/P}}
+}}
+{{American football roster/Footer|roster_url=https://usctrojans.com/sports/football/roster/2022|accessdate=8/11/22
+
+|head_coach=
+*[[Lincoln Riley]]
+|asst_coach=
+*Dennis Simmons – ''Assistant head coach/passing game coordinator/outside wide receivers''
+*[[Josh Henson]] – ''Offensive coordinator/offensive line''
+*[[Alex Grinch]] – ''Defensive coordinator/safeties''
+*[[Donte Williams]] – ''Defensive backs/defensive pass game coordinator''
+*Zach Hanson – ''Tight ends''
+*Kiel McDonald – ''Running backs''
+*[[Brian Odom]] – ''Inside linebackers''
+*[[Roy Manning]] – ''Outside linebackers/nickels''
+*[[Shaun Nua]] – ''Defensive line''
+*[[Luke Huard]] – ''Inside wide receivers''
+*Bennie Wylie – ''Director, football sports performance''
+*Bryan Kegans – ''Associate director of football sports performance''
+*Caesar Martinez – ''Assistant director of football sports performance''
+*Andrew Smith – ''Assistant strength coach''
+*Caleb Withrow – ''Assistant strength coach''
+*Derek Faavi – ''Offensive analyst''
+*[[Will Harriger]] – ''Offensive analyst/assistant quarterbacks / game management coordinator''
+*Parker Henry – ''Defensive analyst/assistant linebackers''
+*Lenny Vandermade – ''Offensive analyst/assistant offensive line''
+*Austin Woods – ''Defensive analyst/assistant defensive line''
+*Ryan Dougherty – ''Assistant special teams coordinator''
+*Zach Crabtree – ''Offensive graduate assistant''
+*Will Johnson – ''Defensive graduate assistant''
+*[[Conner McQueen]] – ''Offensive graduate assistant''
+*Peyton Pelluer – ''Defensive graduate assistant''
+*[[Taylor Mays]] – ''Student assistant''
+*Jackson Polk – ''Assistant director of sports science''
+*Eric Espinoza – ''Director, video operations''
+*Alex Nederhoff – ''Football video & systems analyst''
+}}
+
+===Depth chart===
+{{CFB Team Depth Chart
+| OScheme       = Spread Option
+| DScheme       = 3-4
+| SpecialTeams  = Yes
+| KeyReserves   = Yes
+| 3Deep         = Yes
+| QB_Starter    = [[Caleb Williams]]
+| QB_Backup     = [[Miller Moss (American football)|Miller Moss]]
+| QB_Third      = Jake Jensen
+| RB1_Starter   = [[Austin Jones (running back)|Austin Jones]]
+| RB1_Backup    = "OR" Darwin Barlow
+| RB1_Third     = [[Raleek Brown]]
+| RB2_Starter   = 
+| RB2_Backup    = 
+| RB2_Third     =
+| FB_Starter    = 
+| FB_Backup     = 
+| FB_Third      = 
+| SB1_Starter   = 
+| SB1_Backup    = 
+| SB1_Third     = 
+| SB2_Starter   =
+| SB2_Backup    =
+| SB2_Third     =
+| WR1_Starter   = [[Mario Williams (wide receiver)|Mario Williams]]
+| WR1_Backup    = [[Tahj Washington]]
+| WR1_Third      = ''OR'' [[Gary Bryant Jr.]]
+| WR1_SchoolName = 
+| WR2_Starter    = [[Jordan Addison]]
+| WR2_Backup      = [[Terrell Bynum (American football)|Terrell Bynum]]
+| WR2_Third      = ''[[CJ Williams (American football)|CJ Williams]]''
+| WR2_SchoolName =  
+| WR3_Starter    = [[Brenden Rice]]
+| WR3_Backup      = [[Kyron Hudson]]
+| WR3_Third      = ''OR'' Kyle Ford
+| WR3_SchoolName = 
+| WR4_Starter   = 
+| WR4_Backup    = 
+| WR4_Third     = 
+| TE1_Starter    = [[Lake McRee]]
+| TE1_Backup      = ''OR'' Malcolm Epps
+| TE1_Third      = Josh Falo
+| TE2_Starter   = 
+| TE2_Backup    = 
+| TE2_Third     = 
+| TE2_SchoolName = 
+| LT_Starter    = Courtland Ford
+| LT_Backup      = ''OR'' Bobby Haskins 
+| LT_Third      = –
+| LG_Starter    = [[Andrew Vorhees]]
+| LG_Backup      = Gino Quinones
+| LG_Third      = –
+| C_Starter    = Brett Neilon
+| C_Backup      = [[Justin Dedich]]
+| C_Third      = Andrew Milek
+| RG_Starter    = [[Justin Dedich]]
+| RG_Backup      = [[Jonah Monheim]]
+| RG_Third      = Joe Bryson
+| RT_Starter    = [[Jonah Monheim]]
+| RT_Backup      = Mason Murphy
+| RT_Third      = –
+| WLB_Starter    = 
+| WLB_Backup     = 
+| WLB_Third      = 
+| ROLB_Starter    = [[Jaylin Smith]]
+| ROLB_Backup      = Latrell McCutchin
+| ROLB_Third      = –
+| ROLB_SchoolName = Nickel
+| RILB_Starter  = [[Eric Gentry]]
+| RILB_Backup   = Tuasivi Nomura
+| RILB_Third    = Raesjon Davis
+| RILB_SchoolName = MIKE 
+| MLB_Starter   = 
+| MLB_Backup    = 
+| MLB_Third     = 
+| LILB_Starter  = [[Shane Lee (American football)|Shane Lee]]
+| LILB_Backup   = ''OR'' [[Ralen Goforth]]
+| LILB_Third    = – 
+| LILB_SchoolName = WILL 
+| LOLB_Starter  =
+| LOLB_Backup   = 
+| LOLB_Third    = 
+| SLB_Starter    = Nick Figueroa 
+| SLB_Backup      = [[Solomon Byrd]]
+| SLB_Third      = ''OR'' [[Korey Foreman]]
+| SLB_SchoolName = SAM
+| FS_Starter    = Max Williams
+| FS_Backup      = Xamarion Gordon
+| FS_Third      = ''OR'' Bryson Shaw
+| SS_Starter    = [[Calen Bullock]]
+| SS_Backup      = Anthony Beavers Jr. 
+| SS_Third      = [[Xavion Alford|Xavion Alford Jr.]]
+| SS_SchoolName = SS
+| S_Starter     = 
+| S_Backup      = 
+| S_Third       = 
+| DB1_Starter    = [[Mekhi Blackmon]]
+| DB1_Backup      = Prophet Brown
+| DB1_Third      = –
+| DB2_Starter    = [[Ceyair Wright]]
+| DB2_Backup      = Jacobe Covington
+| DB2_Third      = –
+| RDE_Starter    = De’jon Benton
+| RDE_Backup      = ''OR'' Tyrone Taleni
+| RDE_Third      = Sinjun Astani ''OR'' Earl Barquet Jr. 
+| RDE_SchoolName = DT
+| RDT_Starter    = 
+| RDT_Backup      = 
+| RDT_Third      = 
+| NT_Starter    = Stanley Ta’ufo’ou
+| NT_Backup      = ''OR'' [[Brandon Pili]]
+| NT_Third      = Jamar Sekona
+| LDT_Starter    = 
+| LDT_Backup      =  
+| LDT_Third      = 
+| LDE_Starter    = [[Tuli Tuipulotu]]
+| LDE_Backup      = [[Solomon Tuliaupupu]]
+| LDE_Third      = -
+| PK_Starter    = Denis Lynch
+| PK_Backup    = Alex Stadthaus
+| P_Starter     = Aadyn Sleep-Dalton
+| P_Backup     = Will Rose
+| Kick_Returner = Gary Bryant Jr.
+| Punt_Returner = [[Tahj Washington]]
+| Long_Snapper  = Jac Casasante 
+| Holder        = Will Rose
+ 
+| Key_Reserve_1 ='''Offense'''<br/>
+QB Jake Jensen <br/>  
+RB Darwin Barlow <br/> 
+WR Michael Jackson III <br/> 
+WR [[John Jackson (wide receiver, born 1999)|John Jackson III]] <br/> 
+TE Ethan Rae <br/> 
+TE Sean Mahoney <br/>
+OL Cooper Lovelace <br/>  
+OL Jason Rodriguez <br/> 
+OL Caadyn Stephen <br/> 
+OL Andres Dewerk  
+| Key_Reserve_2 ='''Defense'''<br/> 
+DL Kobe Pepe <br/> 
+DL Colin Mobley <br/> 
+RUSH ''Devan Thompkins'' <br/> 
+LB ''Carson Tabaracci'' <br/> 
+LB Chris Thompson Jr. <br/> 
+LB ''Garrison Madden'' <br/> 
+LB Julien Simon <br/>  
+LB Tayler Katoa <br/>  
+DB ''[[Domani Jackson]]'' <br/>  
+DB ''Fabian Ross'' <br/>   
+DB Adonis Otey <br/> 
+DB Briton Allen <br/> 
+DB Joshua Jackson Jr. <br/>  
+DB Micah Croom 
+| Key_Reserve_3 ='''Special teams'''<br/> 
+K/P Garth White <br/> 
+LS Nathan Weneta 
+| Key_Reserve_4 = '''Out (indefinitely)'''<br/>TE Jude Wolfe <br/> S ''Zion Branch''
+| Key_Reserve_5 = '''Out (season)'''<br/> QB Mo Hasan <br/> RUSH ''[[Romello Height]]'' <br/> RB [[Travis Dye]]
+| Key_Reserve_6 = '''Out (suspended)'''
+| Key_Reserve_7 = '''Out (retired)'''
+| ColWidth      = 170
+| Autosize      = Yes
+| RowHeight     =
+| FontSize      = 100
+| Debug         = no
+}}
+''True Freshman''
+ 
+official Depth Chart Week 1 vs Rice (09/01/22)
+
+===Injury report===
+{| class="wikitable" border="1" style="font-size:90%;"
+|-
+! Name !! Position !! Injury !! Duration
+|-
+|Mo Hasan
+|QB
+|Torn Achilles
+|Season
+|-
+|Zion Branch
+|S
+|Torn ACL
+|Season
+|-
+|Jude Wolfe
+|TE
+|Foot
+|Mid-Season
+|-
+|[[Travis Dye]]
+|RB
+|Leg
+|Season
+|-
+|}
+
+===Scholarship distribution chart===
+ 
+{| class="wikitable collapsible collapsed" style="font-size:90%;" width=100%
+|-
+! style="text-align:center; {{CollegePrimaryStyle|USC Trojans|border=2|color=#FFC72C}}"|Position/Year !! style="text-align:center; {{CollegePrimaryStyle|USC Trojans|border=2|color=white}}"|Freshman (18) !! style="text-align:center; {{CollegePrimaryStyle|USC Trojans|border=2|color=white}}"|Sophomore (21) !! style="text-align:center; {{CollegePrimaryStyle|USC Trojans|border=2|color=white}}"|Junior (22) !! style="text-align:center; {{CollegePrimaryStyle|USC Trojans|border=2|color=white}}"|Senior (20) !! {{grey|2023 commit (20)}} !! {{grey|2023 transfer portal (3)}} !! {{grey|2024 commit (3)}} !! {{grey|2025 commit (1)}}
+|- align="center"
+! style="text-align:center; {{CollegePrimaryStyle|USC Trojans|border=2|color=white}}"|QB 3 (1)
+| {{red|Miller Moss}} || Jake Jensen <br/> Caleb Williams || – || – || {{grey|Malachi Nelson}} || {{grey|-}} || {{grey|-}} || {{grey|-}}
+|-
+|- align="center"
+! style="text-align:center; {{CollegePrimaryStyle|USC Trojans|border=2|color=white}}"|RB 4 (1)
+| Raleek Brown || – || {{red|Darwin Barlow}} || {{red|Travis Dye}} <br/> Austin Jones || {{grey|Quinten Joyner}} <br/> {{grey|A’Marion Peterson}} || {{grey|-}} || {{grey|-}} || {{grey|-}}
+|-
+|- align="center"
+! style="text-align:center; {{CollegePrimaryStyle|USC Trojans|border=2|color=white}}"|WR 11 (4)
+| {{red|Kyron Hudson}} <br/> CJ Williams || Michael Jackson III <br/> Mario Williams || Jordan Addison <br/> Gary Bryant Jr. <br/> {{red|Kyle Ford}} <br/> Brenden Rice <br/> {{red|Tahj Washington}} || {{red|Terrell Bynum}} <br/> John Jackson III || {{grey|Zachariah Branch}} <br/> {{grey|Ja’Kobi Lane}} <br/> {{grey|Makai Lemon}} || {{grey|-}} || {{grey|Jason Robinson Jr.}} || {{grey|-}}
+|-
+|- align="center"
+! style="text-align:center; {{CollegePrimaryStyle|USC Trojans|border=2|color=white}}"|TE 5 (2)
+| {{red|Lake McRee}} || – || {{red|Ethan Rae}} <br/> {{red|Jude Wolfe}} || {{red|Michael Epps}} <br/> {{red|Josh Falo}} || {{grey|Kade Eldridge}} || {{grey|-}} || {{grey|Joey Olsen}} || {{grey|-}}
+|-
+|- align="center"
+! style="text-align:center; {{CollegePrimaryStyle|USC Trojans|border=2|color=white}}"|OL 13 (5)
+| {{red|Mason Murphy}} || {{red|Andres Dewerk}} <br/> {{red|Courtland Ford}} <br/> {{red|Andrew Milek}} <br/> {{red|Jonah Monheim}} <br/> {{red|Caadyn Stephen}} || {{red|Gino Quinones}} <br/> {{red|Cooper Lovelace}} <br/> {{red|Jason Rodriguez}} || {{red|Justin Dedich}} <br/> {{red|Bobby Haskins}} <br/> {{red|Brett Neilon}} <br/> {{red|Andrew Vorhees}} || {{grey|Micah Bañuelos}} <br/> {{grey|Alani Noa}} <br/> {{grey|Elijah Paige}} <br/> {{grey|Tobias Raymond}} <br/> {{grey|Amos Talalele}} || {{grey|-}} || {{grey|-}} || {{grey|-}}
+|-
+|- align="center"
+! style="text-align:center; {{CollegePrimaryStyle|USC Trojans|border=2|color=white}}"|DL 11 (3)
+| {{red|Colin Mobley}} || {{red|Kobe Pepe}} <br/> {{red|Jamar Sekona}} || {{red|Earl Barquet Jr.}} <br/> {{red|De’jon Benton}} <br/>{{red|Stanley Ta’ufo’ou}} <br/> Tuli Tuipulotu <br/> || {{red|Solomon Byrd}} <br/> {{red|Nick Figueroa}} <br/> {{red|Brandon Pili}} <br/> Tyrone Taleni || {{grey|Sam Greene}} <br/> {{grey|Elijah Hughes}} <br/> {{grey|Deijon Laffitte}} || {{grey|Kyon Barrs}} || {{grey|-}} || {{grey|-}}
+|-
+|- align="center"
+! style="text-align:center; {{CollegePrimaryStyle|USC Trojans|border=2|color=white}}"|RUSH 4 (2)
+| Devan Thompkins || Korey Foreman <br/> {{red|Romello Height}}|| – || {{red|Solomon Tuliaupupu}} || {{grey|David Peevy}} <br/> {{grey|Braylan Shelby}} || {{grey|-}} || {{grey|-}} || {{grey|-}}
+|-
+|- align="center"
+! style="text-align:center; {{CollegePrimaryStyle|USC Trojans|border=2|color=white}}"|ILB 10 (1)
+| Garrison Madden <br/> {{red|Julien Simon}}  <br/> Carson Tabaracci || Raesjon Davis <br/> Eric Gentry|| {{red|Tuasivi Nomura}} <br/> Chris Thompson Jr. || Ralen Goforth <br/> {{red|Tayler Katoa}} <br/> Shane Lee || {{grey|Tackett Curtis}} || {{grey|Jamil Muhammad}} || {{grey|-}} || {{grey|-}}
+|-
+|- align="center"
+! style="text-align:center; {{CollegePrimaryStyle|USC Trojans|border=2|color=white}}"|DB 18 (2)
+| {{red|Anthony Beavers Jr.}} <br/> Zion Branch <br/> {{red|Prophet Brown}} <br/> {{red|Xamarion Gordon}} <br/> Domani Jackson <br/> Fabian Ross <br/> {{red|Ceyair Wright}} || {{red|Xavion Alford}} <br/> Calen Bullock <br/> {{red|Jacobe Covington}} <br/> {{red|Joshua Jackson Jr.}} <br/> Latrell McCutchin <br/> Jaylin Smith || {{red|Briton Allen}} <br/> {{red|Adonis Otey}} <br/> {{red|Bryson Shaw}} <br/> {{red|Max Williams}} || {{red|Mekhi Blackmon}} || {{grey|Maliki Crawford}} <br/> {{grey|Christian Pierce}} || {{grey|-}} || {{grey|-}} || {{grey|-}}
+|-
+|- align="center"
+! style="text-align:center; {{CollegePrimaryStyle|USC Trojans|border=2|color=white}}"|SP 2 (-)
+| – || – || Aadyn Sleep-Dalton || {{red|Alex Stadthaus}}* || {{grey|–}} || {{grey|Eddie Czaplicki}} || {{grey|-}} || {{grey|-}}
+|-
+|- align="center"
+! {{grey|ATH}} {{grey|(2)}}
+| x || x || x || x || {{grey|-}} || {{grey|-}} || {{grey|Aaron Butler}} || {{grey|Arron White}}
+|-
+|}
+ 
+*Scholarship Distribution 2022
+ 
+{{red|redshirt year used}} / {{black|redshirt year eligible}} / * Former Walk-on
+ 
+– 80 players on scholarship / 85 scholarships permitted
+
+==Game summaries==
+
+===vs Rice===
+
+{{See also|2022 Rice Owls football team}}
+
+{{Americanfootballbox
+|bg=#fff
+|bg2=#eee
+|titlestyle={{CollegePrimaryStyle|USC Trojans}} ;text-align:center;
+|state=autocollapse
+|title=Rice Owls (0–0) vs No. 14 USC Trojans (0–0) – Game summary
+|date=September 3, 2022
+|time=3:00 p.m.
+|road=Owls
+|R1=7|R2=7|R3=0|R4=0
+|home='''No. 14 Trojans'''
+|H1=7|H2=24|H3=28|H4=7
+|stadium=[[Los Angeles Memorial Coliseum]] • [[Los Angeles|Los Angeles, CA]]
+|attendance=60,113
+|weather=Sunny, {{convert|94|F|C}}
+|referee= Jim Wharrie
+|TV=[[Pac-12 Network]]
+|TVAnnouncers= [[Ted Robinson (sportscaster)|Ted Robinson]] (play-by-play), [[Yogi Roth]] (analyst) 
+|scoring=
+;First quarter
+*(11:22) USC – Jordan Addison 5-yard pass from Caleb Williams, Denis Lynch kick (''Drive: 7 plays, 75 yards, 3:42; '''USC 7–0''''')
+*(3:11) RICE – Ari Broussard 1-yard run, Christian VanSickle kick (''Drive: 16 plays, 74 yards, 8:09; '''Tied 7–7''''')
+;Second quarter
+*(14:15) USC – Austin Jones 4-yard run, Denis Lynch kick (''Drive: 9 plays, 84 yards, 3:56; '''USC 14–7''''')
+*(10:54) USC – [[Raleek Brown]] 14-yard run, Denis Lynch kick (''Drive: 4 plays, 70 yards, 1:47; '''USC 21–7''''')
+*(8:05) USC – Calen Bullock 93-yard interception return, Denis Lynch kick (''Drive: 5 plays, 63 yards, 2:44; '''USC 28–7''''')
+*(1:37) RICE – Ari Broussard 2-yard run, Christian VanSickle kick (''Drive: 10 plays, 75 yards, 6:30; '''USC 28–14''''')
+*(0:00) USC – Denis Lynch 25-yard field goal (''Drive: 11 plays, 67 yards, 1:35; '''USC 31–14''''')
+;Third quarter
+*(13:48) USC – Shane Lee 40-yard interception return, Denis Lynch kick (''Drive: 3 plays, 6 yards, 1:21; '''USC 38–14''''')
+*(13:00) USC – Ralen Goforth 31-yard interception return, Denis Lynch kick (''Drive: 3 plays, 1 yards, 0:47; '''USC 45–14''''')
+*(9:16) USC – Jordan Addison 3-yard pass from Caleb Williams, Denis Lynch kick (''Drive: 4 plays, 34 yards, 2:07; '''USC 52–14''''')
+*(1:38) USC – Austin Jones 28-yard run, Denis Lynch kick (''Drive: 8 plays, 85 yards, 4:59; '''USC 59–14''''')
+;Fourth quarter
+*(6:13) USC – Darwin Barlow 2-yard run, Denis Lynch kick (''Drive: 5 plays, 71 yards, 3:04; '''USC 66–14''''')
+}}
+
+{| class="wikitable" style="float: left;"
+! Statistics !! style="{{CollegeSecondaryStyle|Rice Owls|border=1}}"|RICE !!style="{{CollegePrimaryStyle|USC Trojans|border=1}}"|USC
+|-
+| First downs || 14 || 27
+|-
+| Total yards || 280 || 538
+|-
+| Rushes/yards || 34–146 || 28–208
+|-
+| Passing yards || 134 || 330
+|-
+| Passing: Comp–Att–Int || 14–28–4 || 25–30–0
+|-
+| Time of possession || 32:52 || 27:08 
+|-
+|}
+{| class="wikitable" style="float: right;"
+! Team !! Category !! Player !! Statistics
+|-
+|rowspan=3 style="{{CollegeSecondaryStyle|Rice Owls|border=1}}; text-align:center;"|'''Rice''' || Passing || Wiley Green || 8/13, 169 yards, INT 
+|-
+| Rushing || Cameron Montgomery || 6 carries, 99 yards
+|-
+| Receiving || [[Luke McCaffrey]] || 5 receptions, 51 yards
+|-
+|rowspan=3 style="{{CollegePrimaryStyle|USC Trojans|border=1}}; text-align:center;"|'''USC''' || Passing || [[Caleb Williams]] || 19/22, 249 yards, 2 TD
+|-
+| Rushing || Caleb Williams || 6 carries, 68 yards
+|-
+| Receiving || [[Tahj Washington]] || 4 receptions, 65 yards 
+|}
+{{Clear}}
+
+===at Stanford===
+
+{{See also|2022 Stanford Cardinal football team|Stanford-USC football rivalry}}
+
+{{Americanfootballbox
+|bg=#fff
+|bg2=#eee
+|titlestyle={{CollegeSecondaryStyle|USC Trojans}} ;text-align:center;
+|state=autocollapse
+|title=No. 10 USC Trojans (1–0) at Stanford Cardinal (1–0) – Game summary
+|date=September 10, 2022
+|time=4:30 p.m.
+|road='''No. 10 Trojans'''
+|R1=21|R2=14|R3=6|R4=0
+|home=Cardinal
+|H1=7|H2=7|H3=0|H4=14
+|stadium= [[Stanford Stadium]] • [[Stanford, California|Stanford, CA]]
+|attendance=43,813
+|weather=Sunny, {{convert|79|F|C}}
+|referee=Michael Mothershed
+|TV=[[Saturday Night Football|ABC]]
+|TVAnnouncers= [[Rece Davis]] (play-by-play), [[Kirk Herbstreit]] (analyst), [[Holly Rowe]] (sideline)
+|scoring=
+;First quarter
+*(12:38) USC – Lake McRee 5-yard pass from Caleb Williams, Denis Lynch kick (''Drive: 4 plays, 33 yards, 1:22; '''USC 7–0''''')
+*(4:03) USC – Jordan Addison 22-yard pass from Caleb Williams, Denis Lynch kick (''Drive: 8 plays, 83 yards, 3:23; '''USC 14–0''''')
+*(0:57) STAN – E. J. Smith 3-yard pass from Tanner McKee, [[Joshua Karty]] kick (''Drive: 7 plays, 93 yards, 3:06; '''USC 14–7''''')
+*(0:46) USC – Jordan Addison 75-yard pass from Caleb Williams, Denis Lynch kick (''Drive: 1 play, 75 yards, 0:11; '''USC 21–7''''')
+;Second quarter
+*(9:02) USC – Mario Williams 15-yard pass from Caleb Williams, Denis Lynch kick (''Drive: 7 plays, 98 yards, 3:13; '''USC 28–7''''')
+*(6:13) STAN – E. J. Smith 5-yard run, Joshua Karty kick (''Drive: 8 plays, 67 yards, 2:49; '''USC 28–14''''')
+*(2:33) USC – Travis Dye 27-yard run, Denis Lynch kick (''Drive: 7 plays, 75 yards, 3:40; '''USC 35–14''''')
+;Third quarter
+*(13:49) USC – Denis Lynch 45-yard field goal (''Drive: 5 plays, 47 yards, 1:11; '''USC 38–14''''')
+*(0:55) USC – Denis Lynch 42-yard field goal (''Drive: 4 plays, 4 yards, 2:14; '''USC 41–14''''')
+;Fourth quarter
+*(10:21) STAN – Casey Filkins 2-yard run, Joshua Karty kick (''Drive: 13 plays, 75 yards, 5:34; '''USC 41–21''''')
+*(5:03) STAN – Tanner McKee 2-yard run, Joshua Karty kick (''Drive: 7 plays, 70 yards, 2:51; '''USC 41–28''''')
+}}
+
+{| class="wikitable" style="float: left;"
+! Statistics !! style="{{CollegeSecondaryStyle|USC Trojans|border=1}}"|USC !!style="{{CollegePrimaryStyle|Stanford Cardinal|border=1}}"|STAN
+|-
+| First downs || 24 || 33
+|-
+| Total yards || 505 || 441
+|-
+| Rushes/yards || 36–164 || 45–221
+|-
+| Passing yards || 341 || 220
+|-
+| Passing: Comp–Att–Int || 20–27–0 || 20–35–2
+|-
+| Time of possession || 30:33 || 29:27
+|-
+|}
+{| class="wikitable" style="float: right;"
+! Team !! Category !! Player !! Statistics
+|-
+|rowspan=3 style="{{CollegeSecondaryStyle|USC Trojans|border=1}}; text-align:center;"|'''USC''' || Passing || Caleb Williams || 20/27, 341 yards, 4 TD 
+|-
+| Rushing || [[Travis Dye]] || 14 carries, 105 yards, TD
+|-
+| Receiving || [[Jordan Addison]] || 7 receptions, 172 yards, 2 TD
+|-
+|rowspan=3 style="{{CollegePrimaryStyle|Stanford Cardinal|border=1}}; text-align:center;"|'''Stanford''' || Passing || [[Tanner McKee]] || 20/35, 220 yards, TD, 2 INT
+|-
+| Rushing || [[E. J. Smith (American football)|E. J. Smith]] || 19 carries, 88 yards, TD
+|-
+| Receiving || [[Elijah Higgins]] || 3 receptions, 50 yards
+|}
+{{Clear}}
+
+===vs Fresno State===
+
+{{See also|2022 Fresno State Bulldogs football team}}
+
+{{Americanfootballbox
+|bg=#fff
+|bg2=#eee
+|titlestyle={{CollegePrimaryStyle|USC Trojans}} ;text-align:center;
+|state=autocollapse
+|title=Fresno State Bulldogs (1–1) vs No. 7 USC Trojans (2–0) – Game summary
+|date=September 17, 2022
+|time=7:30 p.m.
+|road=Bulldogs
+|R1=0|R2=10|R3=7|R4=0
+|home='''No. 7 Trojans'''
+|H1=14|H2=7|H3=14|H4=10
+|stadium= Los Angeles Memorial Coliseum • Los Angeles, CA
+|attendance=67,226
+|weather=Clear, {{convert|69|F|C}}
+|referee= Steven Strimling
+|TV=[[Fox College Football|Fox]]
+|TVAnnouncers= [[Noah Eagle]] (play-by-play), [[Mark Helfrich (American football)|Mark Helfrich]] (analyst)
+|reference=
+|scoring=
+;First quarter
+*(10:05) USC – Jordan Addison 2-yard pass from Caleb Williams, Denis Lynch kick (''Drive: 12 plays, 83 yards, 4:55; '''USC 7–0''''')
+*(3:35) USC – Caleb Williams 8-yard run, Denis Lynch kick (''Drive: 12 plays, 65 yards, 5:21; '''USC 14–0''''')
+;Second quarter
+*(14:52) FRES – Abraham Montano 23-yard field goal (''Drive: 10 plays, 70 yards, 3:40; '''USC 14–3''''')
+*(8:04) USC – Caleb Williams 1-yard run, Denis Lynch kick (''Drive: 15 plays, 83 yards, 6:42; '''USC 21–3''''')
+*(6:30) FRES – [[Erik Brooks (Canadian football)|Erik Brooks]] 39-yard pass from [[Jake Haener]], Abraham Montano kick (''Drive: 5 plays, 75 yards, 1:24; '''USC 21–10''''')
+;Third quarter
+*(11:44) USC – Austin Jones 3-yard run, Denis Lynch kick (''Drive: 5 plays, 46 yards, 1:47; '''USC 28–10''''')
+*(9:04) FRES – Malik Sherrod 32-yard run, Abraham Montano kick (''Drive: 5 plays, 71 yards, 1:57; '''USC 28–17''''')
+*(7:13) USC – Travis Dye 25-yard run, Denis Lynch kick (''Drive: 4 plays, 75 yards, 1:42; '''USC 35–17''''')
+;Fourth quarter
+*(14:44) USC – Malcolm Epps 10-yard pass from Caleb Williams, Denis Lynch kick (''Drive: 10 plays, 70 yards, 3:41; '''USC 42–17''''')
+*(4:09) USC – Denis Lynch 41-yard field goal (''Drive: 9 plays, 61 yards, 5:17; '''USC 45–17''''')
+}}
+
+{| class="wikitable" style="float: left;"
+! Statistics !! style="{{CollegeSecondaryStyle|Fresno State Bulldogs|border=1}}"|FRES !!style="{{CollegePrimaryStyle|USC Trojans|border=1}}"|USC
+|-
+| First downs || 23 || 29
+|-
+| Total yards || 421 || 517
+|-
+| Rushes/yards || 32–164 || 28–233
+|-
+| Passing yards || 257 || 284
+|-
+| Passing: Comp–Att–Int || 21–30–1 || 25–37–0
+|-
+| Time of possession || 25:52 || 34:08 
+|-
+|}
+{| class="wikitable" style="float: right;"
+! Team !! Category !! Player !! Statistics
+|-
+|rowspan=3 style="{{CollegeSecondaryStyle|Fresno State Bulldogs|border=1}}; text-align:center;"|'''Fresno State''' || Passing || Logan Fife || 1/12, 140 yards 
+|-
+| Rushing || [[Jordan Mims]] || 15 carries, 114 yards
+|-
+| Receiving || [[Erik Brooks (Canadian football)|Erik Brooks]]|| 6 receptions, 89 yards, TD
+|-
+|rowspan=3 style="{{CollegePrimaryStyle|USC Trojans|border=1}}; text-align:center;"|'''USC''' || Passing || Caleb Williams || 25/37, 284 yards, 2 TD
+|-
+| Rushing || [[Austin Jones (running back)|Austin Jones]] || 12 carries, 110 yards, TD
+|-
+| Receiving || [[Mario Williams (wide receiver)|Mario Williams]] || 6 receptions, 77 yards 
+|}
+{{Clear}}
+
+===at Oregon State===
+
+{{See also|2022 Oregon State Beavers football team}}
+
+{{Americanfootballbox
+|bg=#fff
+|bg2=#eee
+|titlestyle={{CollegeSecondaryStyle|USC Trojans}} ;text-align:center;
+|state=autocollapse
+|title=No. 7 USC Trojans (3–0) at Oregon State Beavers (3–0) – Game summary
+|date=September 24, 2022
+|time=6:30 p.m.
+|road='''No. 7 Trojans'''
+|R1=0|R2=3|R3=0|R4=14
+|home=Beavers
+|H1=0|H2=7|H3=0|H4=7
+|stadium=[[Reser Stadium]] • [[Corvallis, Oregon|Corvallis, OR]]
+|attendance=28,768
+|weather= Sunny, {{convert|76|°F|°C}}
+|referee= Mike Richards
+|TV=[[Pac-12 Network]]
+|TVAnnouncers= [[Ted Robinson (sportscaster)|Ted Robinson]] (play-by-play), [[Yogi Roth]] (analyst)
+|scoring=
+;First quarter
+''None''
+;Second quarter
+*(13:18) OSU – Deshaun Fenwick 4-yard run, Everett Hayes kick (''Drive: 10 plays, 80 yards, 4:58; '''Oregon State 7–0''''')
+*(5:38) USC – Denis Lynch 42-yard field goal (''Drive: 7 plays, 41 yards, 1:59; '''Oregon State 7–3''''')
+;Third quarter
+''None''
+;Fourth quarter
+*(14:18) USC – Travis Dye 7-yard run, Denis Lynch kick (''Drive: 7 plays, 26 yards, 3:07; '''USC 10–7''''')
+*(4:41) OSU – Jam Griffin 18-yard, Everett Hayes kick (''Drive: 2 plays, 22 yards, 0:44; '''Oregon State 14–10''''')
+*(1:13) USC – Jordan Addison 21-yard pass from Caleb Williams, Denis Lynch kick (''Drive: 11 plays, 84 yards, 3:22; '''USC 17–14''''')
+}}
+
+{| class="wikitable" style="float: left;"
+! Statistics !! style="{{CollegeSecondaryStyle|USC Trojans|border=1}}"|USC !!style="{{CollegePrimaryStyle|Oregon State Beavers|border=1}}"|OSU
+|-
+| First downs || 21 || 18
+|-
+| Total yards || 357 || 320
+|-
+| Rushes/yards || 37–177 || 31–153
+|-
+| Passing yards || 180 || 167
+|-
+| Passing: Comp–Att–Int || 16–36–0 || 17–29–4
+|-
+| Time of possession || 30:15 || 29:45
+|-
+|}
+{| class="wikitable" style="float: right;"
+! Team !! Category !! Player !! Statistics
+|-
+|rowspan=3 style="{{CollegeSecondaryStyle|USC Trojans|border=1}}; text-align:center;"|'''USC''' || Passing || Caleb Williams || 16/36, 180 yards, TD 
+|-
+| Rushing || Travis Dye || 19 carries, 133 yards, TD
+|-
+| Receiving || Tahj Washington || 6 receptions, 67 yards
+|-
+|rowspan=3 style="{{CollegePrimaryStyle|Oregon State Beavers|border=1}}; text-align:center;"|'''Oregon State''' || Passing || [[Chance Nolan]] || 17/29, 167 yards, 4 INT
+|-
+| Rushing || Jam Griffin || 12 carries, 84 yards, TD
+|-
+| Receiving || [[Tyjon Lindsey]] || 5 receptions, 44 yards
+|}
+{{Clear}}
+
+===vs Arizona State===
+
+{{See also|2022 Arizona State Sun Devils football team}}
+
+{{Americanfootballbox
+|bg=#fff
+|bg2=#eee
+|titlestyle={{CollegePrimaryStyle|USC Trojans}} ;text-align:center;
+|state=autocollapse
+|title=Arizona State Sun Devils (1–3) vs No. 6 USC Trojans (4–0) – Game summary
+|date=October 1, 2022
+|time=7:30 p.m.
+|road=Sun Devils
+|R1=7|R2=10|R3=0|R4=8
+|home='''No. 6 Trojans'''
+|H1=14|H2=7|H3=7|H4=14
+|stadium=Los Angeles Memorial Coliseum • Los Angeles, CA
+|attendance= 62,133
+|weather= Clear, {{convert|66|°F|°C}} 
+|referee=Chris Coyte
+|TV=[[ESPN College Football|ESPN]]
+|TVAnnouncers=[[Dave Flemming]] (play-by-play), [[Rod Gilmore]] (analyst), [[Tiffany Blackmon]] (sideline)
+|scoring=
+;First quarter
+*(10:28) USC – Caleb Williams 1-yard run, Denis Lynch kick (''Drive: 9 plays, 75 yards, 4:32; '''USC 7–0''''')
+*(6:28) ASU – Xazavian Valladay 29-yard pass from Emory Jones, Carter Brown kick (''Drive: 8 plays, 74 yards, 4:00; '''Tied 7–7''''')
+*(1:52) USC – Mario Williams 7-yard pass from Caleb Williams, Denis Lynch kick (''Drive: 10 plays, 75 yards, 4:36; '''USC 14–7''''')
+;Second quarter
+*(9:53) ASU – Carter Brown 40-yard field goal (''Drive: 12 plays, 53 yards, 6:59; '''USC 14–10''''')
+*(6:05) USC – Malcolm Epps 4-yard pass from Caleb Williams, Denis Lynch kick (''Drive: 10 plays, 94 yards, 3:48; '''USC 21–10''''')
+*(2:27) ASU – Emory Jones 6-yard run, Denis Lynch kick (''Drive: 7 plays, 75 yards, 3:38; '''USC 21–17''''')
+;Third quarter
+*(1:10) USC – Travis Dye 2-yard run, Denis Lynch kick (''Drive: 9 plays, 50 yards, 5:28; '''USC 28–17''''')
+;Fourth quarter
+*(10:54) USC – Kyron Hudson 2-yard pass from Caleb Williams, Denis Lynch kick (''Drive: 8 plays, 60 yards, 3:20; '''USC 35–17''''')
+*(6:16) ASU – Xazavian Valladay 2-yard run, Emory Jones two-point pass to Xazavian Valladay (''Drive: 10 plays, 75 yards, 4:38; '''USC 35–25''''')
+*(3:46) USC – Travis Dye 1-yard run, Denis Lynch kick (''Drive: 5 plays, 39 yards, 2:30; '''USC 42–25''''')
+}}
+
+{| class="wikitable" style="float: left;"
+! Statistics !! style="{{CollegeSecondaryStyle|Arizona State Sun Devils|border=1}}"|ASU !!style="{{CollegePrimaryStyle|USC Trojans|border=1}}"|USC
+|-
+| First downs || 20 || 29
+|-
+| Total yards || 331 || 485
+|-
+| Rushes/yards || 29–88 || 30–137
+|-
+| Passing yards || 243 || 348
+|-
+| Passing: Comp–Att–Int || 23–32–1 || 27–37–1
+|-
+| Time of possession || 29:55 || 30:05 
+|-
+|}
+{| class="wikitable" style="float: right;"
+! Team !! Category !! Player !! Statistics
+|-
+|rowspan=3 style="{{CollegeSecondaryStyle|Arizona State Sun Devils|border=1}}; text-align:center;"|'''Arizona State''' || Passing || [[Emory Jones]] || 23/32, 243 yards, TD, INT 
+|-
+| Rushing || [[Xazavian Valladay]] || 13 carries, 64 yards, TD
+|-
+| Receiving || [[Bryan Thompson (American football)|Bryan Thompson]] || 5 receptions, 86 yards
+|-
+|rowspan=3 style="{{CollegePrimaryStyle|USC Trojans|border=1}}; text-align:center;"|'''USC''' || Passing || Caleb Williams || 27/37, 348 yards, 3 TD, INT
+|-
+| Rushing || Travis Dye || 13 carries, 62 yards, 2 TD
+|-
+| Receiving || Jordan Addison || 8 receptions, 105 yards 
+|}
+{{Clear}}
+
+===vs Washington State===
+
+{{See also|2022 Washington State Cougars football team}}
+
+{{Americanfootballbox
+|bg=#fff
+|bg2=#eee
+|titlestyle={{CollegePrimaryStyle|USC Trojans}};text-align:center;
+|state=autocollapse
+|title=Washington State Cougars (4–1) vs No. 6 USC Trojans (5–0) – Game summary
+|date=October 8, 2022
+|time=4:30 p.m.
+|road=Cougars
+|R1=0|R2=14|R3=0|R4=0
+|home='''No. 6 Trojans'''
+|H1=10|H2=7|H3=7|H4=3
+|stadium= Los Angeles Memorial Coliseum • Los Angeles, CA
+|attendance= 63,204
+|weather= Clear, {{convert|80|°F|°C}}
+|referee=Francisco Villar
+|TV=[[Fox College Football|Fox]]
+|TVAnnouncers= [[Noah Eagle]] (play-by-play), [[Mark Helfrich (American football)|Mark Helfrich]] (analyst)
+|scoring=
+;First quarter
+*(8:31) USC – Mario Williams 38-yard pass from Caleb Williams, Denis Lynch kick (''Drive: 8 plays, 82 yards, 3:32; '''USC 7–0''''')
+*(3:32) USC – Denis Lynch 31-yard field goal (''Drive: 7 plays, 46 yards, 2:50; '''USC 10–0''''')
+;Second quarter
+*(14:56) WSU – Robert Ferrel 12-yard pass from Cameron Ward, Dean Janikowski kick (''Drive: 8 plays, 92 yards, 3:36; '''USC 10–7''''')
+*(11:48) WSU – Nakia Watson 1-yard pass from Cameron Ward, Dean Janikowski kick (''Drive: 5 plays, 75 yards, 1:49; '''Washington State 14–10''''')
+*(2:10) USC – Travis Dye 4-yard run, Denis Lynch kick (''Drive: 11 plays, 75 yards, 6:19; '''USC 17–14''''')
+;Third quarter
+*(5:17) USC – Mario Williams 24-yard pass from Caleb Williams, Denis Lynch kick (''Drive: 5 plays, 62 yards, 2:24; '''USC 24–14''''')
+;Fourth quarter
+*(9:09) USC – Denis Lynch 27-yard field goal (''Drive: 13 plays, 70 yards, 7:27; '''USC 27–14''''')
+*(2:08) USC – Denis Lynch 31-yard field goal (''Drive: 11 plays, 51 yards, 5:21; '''USC 30–14''''')
+}}
+
+{| class="wikitable" style="float: left;"
+! Statistics !! style="{{CollegeSecondaryStyle|Washington State Cougars|border=1|color=white}}"|WSU !!style="{{CollegePrimaryStyle|USC Trojans|border=1}}"|USC
+|-
+| First downs || 17 || 23
+|-
+| Total yards || 316 || 369
+|-
+| Rushes/yards || 29–144 || 40–181
+|-
+| Passing yards || 172 || 188
+|-
+| Passing: Comp–Att–Int || 19–32–0 || 15–29–0
+|-
+| Time of possession || 27:12 || 32:48 
+|-
+|}
+{| class="wikitable" style="float: right;"
+! Team !! Category !! Player !! Statistics
+|-
+|rowspan=3 style="{{CollegeSecondaryStyle|Washington State Cougars|border=1|color=white}}; text-align:center;"|'''Washington State''' || Passing || [[Cam Ward (American football)|Cam Ward]] || 19/32, 172 yards, 2 TD
+|-
+| Rushing || Jaylen Jenkins || 13 carries, 130 yards
+|-
+| Receiving || Jaylen Jenkins || 2 receptions, 54 yards
+|-
+|rowspan=3 style="{{CollegePrimaryStyle|USC Trojans|border=1}}; text-align:center;"|'''USC''' || Passing || Caleb Williams || 15/29, 188 yards, 2 TD
+|-
+| Rushing || Travis Dye || 28 carries, 149 yards, TD
+|-
+| Receiving || Mario Williams || 4 receptions, 82 yards, 2 TD
+|}
+{{Clear}}
+
+===at No. 20 Utah===
+
+{{See also|2022 Utah Utes football team}}
+
+{{Americanfootballbox
+|bg=#fff
+|bg2=#eee
+|titlestyle={{CollegeSecondaryStyle|USC Trojans}} ;text-align:center;
+|state=autocollapse
+|title=No. 7 USC Trojans (6–0) at No. 20 Utah Utes (4–2) – Game summary
+|date=October 15, 2022
+|time=5:00 p.m.
+|road=No. 7 Trojans
+|R1=14|R2=14|R3=7|R4=7
+|home='''No. 20 Utes'''
+|H1=7|H2=14|H3=7|H4=15
+|stadium=[[Rice-Eccles Stadium]] • [[Salt Lake City, Utah|Salt Lake City, UT]]
+|attendance= 53,609
+|weather=Sunny, {{convert|68|°F|°C}}
+|referee=Mark Duddy
+|TV=[[Fox College Football|Fox]]
+|TVAnnouncers= [[Jason Benetti]] (play-by-play), [[Brock Huard]] (analyst), [[Allison Williams (reporter)|Allison Williams]] (sideline)
+|scoring=
+;First quarter
+*(13:16) USC – Travis Dye 8-yard run, Denis Lynch kick (''Drive: 5 plays, 75 yards, 1:44; '''USC 7–0''''')
+*(4:53) USC – Jordan Addison 2-yard pass from Caleb Williams, Denis Lynch kick (''Drive: 9 plays, 80 yards, 4:04; '''USC 14–0''''')
+*(1:08) UTAH – Micah Bernard 12-yard run, Jadon Redding kick (''Drive: 9 plays, 75 yards, 3:45; '''USC 14–7''''')
+;Second quarter
+*(14:20) USC – Kyron Hudson 2-yard pass from Caleb Williams, Denis Lynch kick (''Drive: 4 plays, 69 yards, 1:48; '''USC 21–7''''')
+*(4:01) UTAH – Cameron Rising 2-yard run, Jadon Redding kick (''Drive: 4 plays, 60 yards, 1:37; '''USC 21–14''''')
+*(1:15) USC – Josh Falo 3-yard pass from Caleb Williams, Denis Lynch kick (''Drive: 9 plays, 79 yards, 2:46; '''USC 28–14''''')
+*(0:30) UTAH – Devaughn Vele 16-yard pass from Cameron Rising, Jadon Redding kick (''Drive: 5 plays, 70 yards, 0:45; '''USC 28–21''''')
+;Third quarter
+*(12:02) UTAH – Dalton Kincaid 4-yard pass from Cameron Rising, Jadon Redding kick (''Drive: 7 plays, 75 yards, 2:58; '''Tied 28–28''''')
+*(11:02) USC – Josh Falo 11-yard pass from Caleb Williams, Denis Lynch kick (''Drive: 3 plays, 50 yards, 1:00; '''USC 35–28''''')
+;Fourth quarter
+*(10:55) UTAH – Cameron Rising 1-yard run, Jadon Redding kick (''Drive: 10 plays, 79 yards, 4:10; '''Tied 35–35''''')
+*(6:15) USC – Michael Jackson III 20-yard pass from Caleb Williams, Denis Lynch kick (''Drive: 11 plays, 90 yards, 4:40; '''USC 42–35''''')
+*(0:48) UTAH – Cameron Rising 1-yard run, Cameron Rising two-point run (''Drive: 15 plays, 75 yards, 5:27; '''Utah 43–42''''')
+}}
+
+{| class="wikitable" style="float: left;"
+! Statistics !! style="{{CollegeSecondaryStyle|USC Trojans|border=1}}"|USC !!style="{{CollegePrimaryStyle|Utah Utes|border=1}}"|UTAH
+|-
+| First downs || 28 || 31
+|-
+| Total yards || 556 || 562
+|-
+| Rushes/yards || 27–175 || 32–138
+|-
+| Passing yards || 381 || 424
+|-
+| Passing: Comp–Att–Int || 25–42–0 || 31–45–0
+|-
+| Time of possession || 28:10 || 31:50
+|-
+|}
+{| class="wikitable" style="float: right;"
+! Team !! Category !! Player !! Statistics
+|-
+|rowspan=3 style="{{CollegeSecondaryStyle|USC Trojans|border=1}}; text-align:center;"|'''USC''' || Passing || Caleb Williams || 25/42, 381 yards, 5 TD 
+|-
+| Rushing || Travis Dye || 11 carries, 76 yards, TD
+|-
+| Receiving || Mario Williams || 4 receptions, 145 yards
+|-
+|rowspan=3 style="{{CollegePrimaryStyle|Utah Utes|border=1}}; text-align:center;"|'''Utah''' || Passing || [[Cameron Rising]] || 30/44, 415 yards, 2 TD
+|-
+| Rushing || Cameron Rising || 11 carries, 60 yards, 3 TD
+|-
+| Receiving || [[Dalton Kincaid]] || 16 receptions, 234 yards, TD
+|}
+{{Clear}}
+
+===at Arizona===
+{{See also|2022 Arizona Wildcats football team}}
+
+{{Americanfootballbox
+|bg=#fff
+|bg2=#eee
+|titlestyle={{CollegeSecondaryStyle|USC Trojans}} ;text-align:center;
+|state=autocollapse
+|title=No. 10 USC Trojans (6–1) at Arizona Wildcats (3–4) – Game summary
+|date=October 29, 2022
+|time=4:00 p.m.
+|road='''No. 10 Trojans'''
+|R1=10|R2=7|R3=14|R4=14
+|home=Wildcats
+|H1=10|H2=3|H3=16|H4=8
+|stadium=[[Arizona Stadium]] • [[Tucson, Arizona|Tucson, AZ]]
+|attendance=44,006
+|weather=Sunny, {{convert|79|F|C}}
+|referee= Michael Mothershed
+|TV=[[Pac-12 Network]]
+|TVAnnouncers=[[Ted Robinson (sportscaster)|Ted Robinson]] (play-by-play), [[Yogi Roth]] (sideline)
+|scoring=
+;First quarter
+*(10:56) USC – Denis Lynch 45-yard field goal (''Drive: 10 plays, 47 yards, 4:04; '''USC 3–0''''')
+*(7:01) ARIZ – Dorian Singer 23-yard pass from Jayden de Laura, Tyler Loop kick (''Drive: 8 plays, 75 yards, 3:55; '''Arizona 7–3''''')
+*(2:57) USC – Raleek Brown 6-yard pass from Caleb Williams, Denis Lynch kick (''Drive: 10 plays, 75 yards, 4:04; '''USC 10–7''''')
+*(0:49) ARIZ – Tyler Loop 42-yard field goal (''Drive: 7 plays, 50 yards, 2:08; '''Tied 10–10''''')
+;Second quarter
+*(12:33) USC – Brenden Rice 2-yard pass from Caleb Williams, Denis Lynch kick (''Drive: 8 plays, 75 yards, 3:16; '''USC 17–10''''')
+*(6:59) ARIZ – Tyler Loop 25-yard field goal (''Drive: 13 plays, 67 yards, 5:34; '''USC 17–13''''')
+;Third quarter
+*(12:07) ARIZ – Tyler Loop 29-yard goal (''Drive: 7 plays, 74 yards, 2:53; '''USC 17–16''''')
+*(10:58) USC – Tahj Washington 5-yard pass from Caleb Williams, Denis Lynch kick (''Drive: 4 plays, 75 yards, 1:09; '''USC 24–16''''')
+*(5:08) USC – Tahj Washington 47-yard pass from Caleb Williams, Denis Lynch kick (''Drive: 1 plays, 47 yards, 0:12; '''USC 31–16''''')
+*(3:58) ARIZ – Dorian Singer 19-yard pass from Jayden de Laura, Tyler Loop kick (''Drive: 4 plays, 60 yards, 1:10; '''USC 31–23''''')
+*(1:42) ARIZ – Michael Wiley 10-yard run (''Drive: 3 plays, 57 yards, 1:06; '''USC 31–29''''')
+;Fourth quarter
+*(13:38) USC – Kyle Ford 5-yard pass from Caleb Williams, Denis Lynch kick (''Drive: 9 plays, 75 yards, 3:04; '''USC 38–29''''')
+*(6:24) USC – Travis Dye 2-yard run, Denis Lynch kick (''Drive: 11 plays, 83 yards, 5:23; '''USC 45–29''''')
+*(1:26) ARIZ – Dorian Singer 5-yard pass from Jayden de Laura, Jayden de Laura two-point pass to [[Jacob Cowing]] (''Drive: 12 plays, 75 yards, 4:58; '''USC 45–37''''')
+}}
+
+{| class="wikitable" style="float: left;"
+! Statistics !! style="{{CollegeSecondaryStyle|USC Trojans|border=1}}"|USC !!style="{{CollegePrimaryStyle|Arizona Wildcats|border=1|color=white}}"|ARIZ
+|-
+| First downs || 26 || 28
+|-
+| Total yards || 621 || 543
+|-
+| Rushes/yards || 32–210 || 26–163
+|-
+| Passing yards || 411 || 380
+|-
+| Passing: Comp–Att–Int || 31–45–0 || 26–43–1
+|-
+| Time of possession || 30:51 || 29:09
+|-
+|}
+{| class="wikitable" style="float: right;"
+! Team !! Category !! Player !! Statistics
+|-
+|rowspan=3 style="{{CollegeSecondaryStyle|USC Trojans|border=1}}; text-align:center;"|'''USC''' || Passing || Caleb Williams || 31/45, 411 yards, 5 TD 
+|-
+| Rushing || Travis Dye || 20 carries, 113 yards, TD
+|-
+| Receiving || Tahj Washington || 7 receptions, 118 yards, 2 TD
+|-
+|rowspan=3 style="{{CollegePrimaryStyle|Arizona Wildcats|border=1|color=white}}; text-align:center;"|'''Arizona''' || Passing || [[Jayden de Laura]] || 26/43, 380 yards, 3 TD, INT
+|-
+| Rushing || Jayden de Laura || 8 carries, 54 yards
+|-
+| Receiving || [[Dorian Singer]] || 7 receptions, 141 yards, 3 TD
+|}
+{{Clear}}
+
+===vs California===
+
+{{See also|2022 California Golden Bears football team}}
+
+{{Americanfootballbox
+|bg=#fff
+|bg2=#eee
+|titlestyle={{CollegePrimaryStyle|USC Trojans}} ;text-align:center;
+|state=autocollapse
+|title=California Golden Bears (3–5) vs No. 9 USC Trojans (7–1) – Game summary
+|date=November 5, 2022
+|time=7:30 p.m.
+|road=Golden Bears
+|R1=7|R2=0|R3=7|R4=21
+|home='''No. 9 Trojans'''
+|H1=6|H2=14|H3=14|H4=7
+|stadium=Los Angeles Memorial Coliseum • Los Angeles, CA
+|attendance=64,916
+|weather=Clear, {{convert|57|F|C}}
+|referee= Chris Coyte
+|TV=[[ESPN College Football|ESPN]]
+|TVAnnouncers=[[Dave Pasch]] (play-by-play), [[Dusty Dvoracek]] (analyst), [[Tom Luginbill]] (sideline) 
+|scoring=
+;First quarter
+*(10:29) CAL – Jaydn Ott 10-yard run, Dario Longhetto kick (''Drive: 5 plays, 76 yards, 1:46; '''California 7–0''''')
+*(5:58) USC – Caleb Williams 1-yard run (''Drive: 10 plays, 72 yards, 4:23; '''California 7–6''''')
+;Second quarter
+*(11:44) USC – Travis Dye 12-yard run, Denis Lynch kick (''Drive: 7 plays, 58 yards, 2:26; '''USC 13–7''''')
+*(0:53) USC – Michael Jackson III 7-yard pass from Caleb Williams, Denis Lynch kick (''Drive: 3 plays, 50 yards, 0:59; '''USC 20–7''''')
+;Third quarter
+*(11:00) USC – Michael Jackson III 59-yard pass from Caleb Williams, Denis Lynch kick (''Drive: 5 plays, 70 yards, 2:21; '''USC 27–7''''')
+*(7:27) CAL – Monroe Young 2-yard pass from Jack Plummer, Dario Longhetto kick (''Drive: 6 plays, 73 yards, 3:26; '''USC 27–14''''')
+*(1:18) USC – Tahj Washington 8-yard pass from Caleb Williams, Denis Lynch kick (''Drive: 8 plays, 86 yards, 4:03; '''USC 34–14''''')
+;Fourth quarter
+*(12:56) CAL – Mavin Anderson 47-yard pass from Jack Plummer, Dario Longhetto kick (''Drive: 8 plays, 92 yards, 3:17; '''USC 34–21''''')
+*(9:00) CAL – Jeremiah Hunter 3-yard pass from Jack Plummer (''Drive: 10 plays, 52 yards, 3:52; '''USC 34–28''''')
+*(5:34) USC – Lake McCree 2-yard pass from Caleb Williams, Denis Lynch kick (''Drive: 6 plays, 77 yards, 3:20; '''USC 41–28''''')
+*(2:31) CAL – Jaydn Ott 4-yard run, Jack Plummer two-point pass to Monroe Young (''Drive: 12 plays, 85 yards, 2:54; '''USC 41–35''''')
+}}
+
+{| class="wikitable" style="float: left;"
+! Statistics !! style="{{CollegeSecondaryStyle|California Golden Bears|border=1}}"|CAL !!style="{{CollegePrimaryStyle|USC Trojans|border=1}}"|USC
+|-
+| First downs || 22 || 24
+|-
+| Total yards || 469 || 515 
+|-
+| Rushes/yards || 24–63 || 28–155
+|-
+| Passing yards || 406 || 360 
+|-
+| Passing: Comp–Att–Int || 35–49–1 || 26–41–0
+|-
+| Time of possession || 32:00 || 28:00 
+|-
+|}
+{| class="wikitable" style="float: right;"
+! Team !! Category !! Player !! Statistics
+|-
+|rowspan=3 style="{{CollegeSecondaryStyle|California Golden Bears|border=1}}; text-align:center;"|'''California''' || Passing || [[Jack Plummer]] || 35/49, 406 yards, 3 TD, INT 
+|-
+| Rushing || [[Jaydn Ott]] || 14 carries, 50 yards, TD
+|-
+| Receiving || [[Jeremiah Hunter]] || 6 receptions, 102 yards, TD
+|-
+|rowspan=3 style="{{CollegePrimaryStyle|USC Trojans|border=1}}; text-align:center;"|'''USC''' || Passing || Caleb Williams || 26/41, 360 yards, 4 TD
+|-
+| Rushing || Travis Dye || 15 carries, 98 yards, TD
+|-
+| Receiving || Michael Jackson III || 5 receptions, 115 yards, 2 TD 
+|}
+{{Clear}}
+
+===vs Colorado===
+
+{{See also|2022 Colorado Buffaloes football team}}
+
+{{Americanfootballbox
+|bg=#fff
+|bg2=#eee
+|titlestyle={{CollegePrimaryStyle|USC Trojans}} ;text-align:center;
+|state=autocollapse
+|title=Colorado Buffaloes (1–8) vs No. 8 USC Trojans (8–1) – Game summary
+|date=November 11, 2022
+|time=6:30 p.m.
+|road=Buffaloes
+|R1=3|R2=0|R3=7|R4=7
+|home='''No. 8 Trojans'''
+|H1=2|H2=24|H3=15|H4=14
+|stadium=Los Angeles Memorial Coliseum • Los Angeles, CA
+|attendance=61,206
+|weather=Clear, {{convert|71|°F|°C}}
+|referee= Mike McCabe
+|TV=[[Fox College Football|FS1]]
+|TVAnnouncers= [[Alex Faust]] (play-by-play), [[Petros Papadakis]] (analyst)
+|scoring=
+;First quarter
+*(7:18) USC – Team safety (''Drive: 1 plays, −12 yards, 0:06; '''USC 2–0''''')
+*(1:24) COL – Cole Becker 28-yard field goal (''Drive: 9 plays, 58 yards, 3:58; '''Colorado 3–2''''')
+;Second quarter
+*(10:09) USC – Caleb Williams 2-yard run, Denis Lynch kick (''Drive: 12 plays, 72 yards, 6:07; '''USC 9–3''''')
+*(7:55) USC – Caleb Williams 4-yard run, Denis Lynch kick (''Drive: 2 plays, 8 yards, 0:49; '''USC 16–3''''')
+*(1:58) USC – Brenden Rice 32-yard pass from Caleb Williams, Denis Lynch kick (''Drive: 8 plays, 67 yards, 3:37; '''USC 23–3''''')
+*(0:00) USC – Denis Lynch 34-yard field goal (''Drive: 6 plays, 45 yards, 0:45; '''USC 26–3''''')
+;Third quarter
+*(5:49) COL – Alex Fontenot 3-yard run, Cole Becker kick (''Drive: 9 plays, 53 yards, 4:37; '''USC 26–10''''')
+*(4:50) USC – Tahj Washington 61-yard pass from Caleb Williams, Will Rose two-point run (''Drive: 2 plays, 60 yards, 0:50; '''USC 34–10''''')
+*(0:27) USC – Austin Jones 12-yard pass from Caleb Williams, Denis Lynch kick (''Drive: 8 plays, 71 yards, 4:09; '''USC 41–10''''')
+;Fourth quarter
+*(11:34) USC – Raleek Brown 25-yard pass from Miller Moss, Denis Lynch kick (''Drive: 5 plays, 63 yards, 2:32; '''USC 48–10''''')
+*(7:22) COL – J. T. Shrout 8-yard run, Cole Becker kick (''Drive: 9 plays, 71 yards, 4:12; '''USC 48–17''''')
+*(0:36) USC – Darwin Barlow 3-yard run, Denis Lynch kick (''Drive: 12 plays, 75 yards, 6:46; '''USC 55–17''''')
+}}
+
+{| class="wikitable" style="float: left;"
+! Statistics !! style="{{CollegeSecondaryStyle|Colorado Buffaloes|border=1}}"|COL !!style="{{CollegePrimaryStyle|USC Trojans|border=1}}"|USC
+|-
+| First downs || 14 || 27
+|-
+| Total yards || 259 || 351
+|-
+| Rushes/yards || 35–135 || 41–185
+|-
+| Passing yards || 124 || 346 
+|-
+| Passing: Comp–Att–Int || 11–21–1 || 20–33–1
+|-
+| Time of possession || 25:30 || 34:30 
+|-
+|}
+{| class="wikitable" style="float: right;"
+! Team !! Category !! Player !! Statistics
+|-
+|rowspan=3 style="{{CollegeSecondaryStyle|Colorado Buffaloes|border=1}}; text-align:center;"|'''Colorado''' || Passing || [[J. T. Shrout]] || 11/21, 124 yards, INT 
+|-
+| Rushing || Alex Fontenot || 20 carries, 108 yards, TD
+|-
+| Receiving || Jack Hestera || 3 receptions, 39 yards
+|-
+|rowspan=3 style="{{CollegePrimaryStyle|USC Trojans|border=1}}; text-align:center;"|'''USC''' || Passing || Caleb Williams || 14/26, 268 yards, 3 TD, INT
+|-
+| Rushing || Austin Jones || 11 carries, 74 yards
+|-
+| Receiving || Kyle Ford || 3 receptions, 73 yards
+|}
+{{Clear}}
+
+===at No. 16 UCLA===
+
+{{See also|2022 UCLA Bruins football team|UCLA–USC rivalry|Victory Bell (UCLA–USC)}}
+
+{{Americanfootballbox
+|bg=#fff
+|bg2=#eee
+|titlestyle={{CollegeSecondaryStyle|USC Trojans}} ;text-align:center;
+|state=autocollapse
+|title= No. 7 USC Trojans (9–1) at No. 16 UCLA Bruins (8–2) – Game summary
+|date=November 19, 2022
+|time=5:00 p.m.
+|road='''No. 7 Trojans'''
+|R1=0|R2=20|R3=14|R4=14
+|home=No. 16 Bruins
+|H1=14|H2=7|H3=10|H4=14
+|stadium=[[Rose Bowl (stadium)|Rose Bowl]] • [[Pasadena, California|Pasadena, CA]]
+|attendance=70,865
+|weather=Clear, {{convert|66|F|C}}
+|referee= Steven Strimling
+|TV=[[Fox College Football|Fox]]
+|TVAnnouncers=[[Gus Johnson (sportscaster)|Gus Johnson]] (play-by-play), [[Joel Klatt]] (analyst), [[Allison Williams (reporter)|Allison Williams]] (sideline)
+|scoring=
+;First quarter
+*(3:07) UCLA – Dorian Thompson-Robinson 1-yard run, Nicholas Barr-Mira kick (''Drive: 14 plays, 80 yards, 4:59; '''UCLA 7–0''''')
+*(2:05) UCLA – Michael Ezeike 30-yard pass from Dorian Thompson-Robinson, Nicholas Barr-Mira kick (''Drive: 1 play, 30 yards, 0:18; '''UCLA 14–0''''')
+;Second quarter
+*(12:46) USC – Caleb Williams 6-yard run, Denis Lynch kick (''Drive: 10 plays, 75 yards, 4:55; '''UCLA 14–7''''')
+*(6:27) USC – Denis Lynch 44-yard field goal (''Drive: 7 plays, 72 yards, 2:41; '''UCLA 14–10''''')
+*(4:26) UCLA – Dorian Thompson-Robinson 1-yard run, Nicholas Barr-Mira kick (''Drive: 6 plays, 63 yards, 1:57; '''UCLA 21–10''''')
+*(2:28) USC – Austin Jones 8-yard run, Denis Lynch kick (''Drive: 5 plays, 79 yards, 2:06; '''UCLA 21–17''''')
+*(0:01) USC – Denis Lynch 49-yard field goal (''Drive: 3 plays, 15 yards, 0:20; '''UCLA 21–20''''')
+;Third quarter
+*(10:55) UCLA – Nicholas Barr-Mira 46-yard field goal (''Drive: 11 plays, 47 yards, 4:05; '''UCLA 24–20''''')
+*(9:16) USC – Jordan Addison 35-yard pass from Caleb Williams, Denis Lynch kick (''Drive: 4 plays, 65 yards, 1:42; '''USC 27–24''''')
+*(7:24) USC – Austin Jones 2-yard run, Denis Lynch kick (''Drive: 2 plays, 9 yards, 0:48; '''USC 34–24''''')
+*(4:32) UCLA – Michael Ezeike 6-yard pass from Dorian Thompson-Robinson, Nicholas Barr-Mira kick (''Drive: 8 plays, 85 yards, 2:50; '''USC 34–31''''')
+;Fourth quarter
+*(15:00) USC – Kyle Ford 16-yard pass from Caleb Williams, Denis Lynch kick (''Drive: 8 plays, 75 yards, 3:55; '''USC 41–31''''')
+*(14:51) UCLA – [[Kazmeir Allen]] 55-yard pass from Dorian Thompson-Robinson, Nicholas Barr-Mira kick (''Drive: 1 play, 55 yards, 0:16; '''USC 41–38''''')
+*(10:01) USC – Darwin Barlow 6-yard run, Denis Lynch kick (''Drive: 10 plays, 75 yards, 5:25; '''USC 48–38''''')
+*(7:15) UCLA – Michael Ezeike 3-yard pass from Dorian Thompson-Robinson, Nicholas Barr-Mira kick (''Drive: 8 plays, 75 yards, 2:32; '''USC 48–45''''')
+}}
+
+{| class="wikitable" style="float: left;"
+! Statistics !! style="{{CollegeSecondaryStyle|USC Trojans|border=1}}"|USC !!style="{{CollegePrimaryStyle|UCLA Bruins|border=1}}"|UCLA
+|-
+| First downs || 30 || 27
+|-
+| Total yards || 649 || 513
+|-
+| Rushes/yards || 38–179 || 37–204
+|-
+| Passing yards || 470 || 309
+|-
+| Passing: Comp–Att–Int || 32–43–1 || 23–38–3
+|-
+| Time of possession || 35:20 || 24:40
+|-
+|}
+{| class="wikitable" style="float: right;"
+! Team !! Category !! Player !! Statistics
+|-
+|rowspan=3 style="{{CollegeSecondaryStyle|USC Trojans|border=1}}; text-align:center;"|'''USC''' || Passing || Caleb Williams || 32/43, 470 yards, 2 TD, INT 
+|-
+| Rushing || Austin Jones || 21 carries, 120 yards, 2 TD
+|-
+| Receiving || Jordan Addison || 11 receptions, 178 yards, TD
+|-
+|rowspan=3 style="{{CollegePrimaryStyle|UCLA Bruins|border=1}}; text-align:center;"|'''UCLA''' || Passing || [[Dorian Thompson-Robinson]] || 28/39, 309 yards, 4 TD, 3 INT
+|-
+| Rushing || [[Zach Charbonnet]] || 19 carries, 95 yards
+|-
+| Receiving || [[Jake Bobo]] || 4 receptions, 76 yards
+|}
+{{Clear}}
+
+===vs No. 15 Notre Dame===
+
+{{See also|2022 Notre Dame Fighting Irish football team|Notre Dame–USC football rivalry|Jeweled Shillelagh}}
+
+{{Americanfootballbox
+|bg=#fff
+|bg2=#eee
+|titlestyle={{CollegePrimaryStyle|USC Trojans}} ;text-align:center;
+|state=autocollapse
+|title=No. 15 Notre Dame Fighting Irish (8–3) vs No. 6 USC Trojans (10–1) – Game summary
+|date=November 26, 2022
+|time=4:30 p.m.
+|road=No. 15 Fighting Irish
+|R1=0|R2=7|R3=7|R4=13
+|home='''No. 6 Trojans'''
+|H1=10|H2=7|H3=7|H4=14
+|stadium=Los Angeles Memorial Coliseum • Los Angeles, CA
+|attendance=72,613
+|weather=Clear, {{convert|64|F|C}}
+|referee= Jerry Magallanes
+|TV=[[Saturday Night Football|ABC]]
+|TVAnnouncers= [[Chris Fowler]] (play-by-play), [[Kirk Herbstreit]] (analyst), [[Holly Rowe]] (sideline)
+|scoring=
+;First quarter
+*(11:24) USC – Tahj Washington 11-yard pass from Caleb Williams, Denis Lynch kick (''Drive: 8 plays, 75 yards, 4:24; '''USC 7–0''''')
+*(4:08) USC – Denis Lynch 31-yard field goal (''Drive: 9 plays, 37 yards, 4:18; '''USC 10–0''''')
+;Second quarter
+*(6:55) ND – Michael Mayer 22-yard pass from Drew Pyne, [[Blake Grupe]] kick (''Drive: 8 plays, 75 yards, 4:24; '''USC 10–7''''')
+*(0:52) USC – Caleb Williams 5-yard run, Denis Lynch kick (''Drive: 10 plays, 75 yards, 5:40; '''USC 17–7''''')
+;Third quarter
+*(8:31) USC – Raleek Brown 5-yard run, Denis Lynch kick (''Drive: 7 plays, 74 yards, 2:58; '''USC 24–7''''')
+*(6:37) ND – Deion Colzie 23-yard pass from Drew Pyne, Blake Grupe kick (''Drive: 5 plays, 75 yards, 2:27; '''USC 24–14''''')
+;Fourth quarter
+*(15:00) USC – Caleb Williams 3-yard run, Denis Lynch kick (''Drive: 10 plays, 75 yards, 6:01; '''USC 31–14''''')
+*(12:17) ND – Logan Diggs 5-yard run, Blake Grupe kick (''Drive: 7 plays, 75 yards, 2:36; '''USC 31–21''''')
+*(3:26) USC – Caleb Williams 16-yard run, Denis Lynch kick (''Drive: 4 plays, 24 yards, 2:32; '''USC 38–21''''')
+*(1:24) ND – Michael Mayer 24-yard pass from Drew Pyne (''Drive: 6 plays, 56 yards, 1:25; '''USC 38–27''''')
+}}
+
+{| class="wikitable" style="float: left;"
+! Statistics !! style="{{CollegeSecondaryStyle|Notre Dame Fighting Irish|border=1}}"|ND !!style="{{CollegePrimaryStyle|USC Trojans|border=1}}"|USC
+|-
+| First downs || 22 || 23
+|-
+| Total yards || 52–408 || 61–436
+|-
+| Rushes/yards || 90 || 204
+|-
+| Passing yards || 318 || 232
+|-
+| Passing: Comp–Att–Int || 23–26–1 || 18–22–0
+|-
+| Time of possession || 24:37 || 35:23
+|-
+|}
+{| class="wikitable" style="float: right;"
+! Team !! Category !! Player !! Statistics
+|-
+|rowspan=3 style="{{CollegeSecondaryStyle|Notre Dame Fighting Irish|border=1}}; text-align:center;"|'''Notre Dame''' || Passing || [[Drew Pyne]] || 23/26, 318 yards, 3 TD, INT
+|-
+| Rushing || [[Audric Estimé]] || 6 carries, 43 yards
+|-
+| Receiving || [[Michael Mayer (American football)|Michael Mayer]] || 8 receptions, 98 yards, 2 TD
+|-
+|rowspan=3 style="{{CollegePrimaryStyle|USC Trojans|border=1}}; text-align:center;"|'''USC''' || Passing || Caleb Williams || 18/22, 232 yards, TD
+|-
+| Rushing || Austin Jones || 25 carries, 154 yards
+|-
+| Receiving || Jordan Addison || 3 receptions, 45 yards
+|}
+{{Clear}}
+
+===vs No. 11 Utah ([[2022 Pac-12 Football Championship Game|Pac-12 Championship Game]])===
+{{See also|2022 Utah Utes football team}}
+{{Main|2022 Pac-12 Football Championship Game}}
+
+{{Americanfootballbox
+|bg=#fff
+|bg2=#eee
+|titlestyle={{CollegePrimaryStyle|USC Trojans}}; ;text-align:center;
+|state=autocollapse
+|title=No. 11 Utah Utes (9–3) vs No. 4 USC Trojans (11–1) – Game summary<br> (2022 Pac-12 Football Championship Game presented by 76)
+|date=December 2nd, 2022
+|time= 5:00 p.m.
+|road='''No. 11 Utes'''
+|R1=3|R2=14|R3=7|R4=23
+|home=No. 4 Trojans
+|H1=14|H2=3|H3=0|H4=7
+|stadium=[[Allegiant Stadium]] • [[Paradise, Nevada|Paradise, NV]]
+|attendance= 61,195
+|weather=Indoors, {{convert|59|°F|°C}}
+|referee=Chris Coyte
+|TV= [[Fox College Football|Fox]]
+|TVAnnouncers=[[Jason Benetti]] (play-by-play), [[Brock Huard]] (analyst), [[Allison Williams (reporter)|Allison Williams]] (sideline)
+|scoring=
+;1st quarter
+*(11:58) USC – Tahj Washington 2-yard pass from Caleb Williams, Denis Lynch kick (''Drive: 7 plays, 75 yards, 3:32; '''USC 7–0''''')
+*(6:22) UTAH – Jadon Redding 25-yard field goal (''Drive: 12 plays, 68 yards, 5:06; '''USC 7–3''''')
+*(3:40) USC – Raleek Brown 3-yard pass from Caleb Williams, Denis Lynch kick (''Drive: 6 plays, 75 yards, 3:18; '''USC 14–3''''')
+;2nd quarter
+*(12:14) USC – Denis Lynch 20-yard field goal (''Drive: 12 plays, 71 yards, 4:45; '''USC 17–3''''')
+*(4:42) UTAH – Ja'Quinden Jackson 8-yard run, Jadon Redding kick (''Drive: 11 plays, 63 yards, 6:39; '''USC 17–10''''')
+*(0:11) UTAH – Jaylen Dixon 4-yard pass from Cameron Rising, Jadon Redding kick (''Drive: 14 plays, 81 yards, 1:44; '''USC 17–17''''')
+;3rd quarter
+*(10:48 UTAH – Money Parks 57-yard pass from Cameron Rising, Jadon Redding kick (''Drive: 3 plays, 48 yards, 1:03; '''Utah 24–17''''')
+;4th quarter
+*(15:00) UTAH – Jadon Redding 35-yard field goal (''Drive: 9 plays, 41 yards, 5:15; '''Utah 27–17''''')
+*(11:37) USC – Mario Williams 12-yard pass from Caleb Williams, Denis Lynch kick (''Drive: 9 plays, 75 yards, 4:04; '''Utah 27–24''''')
+*(10:52 UTAH – Thomas Yassmin 60-yard pass from Cameron Rising, Jadon Redding kick (''Drive: 2 plays, 75 yards, 0:44; '''Utah 34–24''''')
+*(6:18) UTAH – Ja'Quinden Jackson 53-yard run (''Drive: 3 plays, 46 yards, 1:38; '''Utah 40–24''''')
+*(2:39) UTAH – Micah Bernard 23-yard run, Jadon Redding kick (''Drive: 3 plays, 38 yards, 1:39; '''Utah 47–24''''')
+}}
+With the loss, USC was knocked out of playoff contention, letting [[2022 Ohio State Buckeyes football team|Ohio State]] taking over the #4 seed.
+
+{| class="wikitable" style="float: left;"
+! Statistics !! style="{{CollegeSecondaryStyle|Utah Utes|border=1}}"|UTAH !!style="{{CollegePrimaryStyle|USC Trojans|border=1}}"|USC
+|-
+| First downs || 25 || 19
+|-
+| Total yards || 69–533 || 68–419
+|-
+| Rushes/yards || 35–223 || 27–56
+|-
+| Passing yards || 310 || 363
+|-
+| Passing: Comp–Att–Int || 22–34–0 || 28–41–1
+|-
+| Time of possession || 29:49 || 30:11
+|-
+|}
+{| class="wikitable" style="float: right;"
+! Team !! Category !! Player !! Statistics
+|-
+|rowspan=3 style="{{CollegeSecondaryStyle|Utah Utes|border=1}}; text-align:center;"|'''Utah''' || Passing || [[Cameron Rising]] || 22/34, 310 yards, 3 TD
+|-
+| Rushing || [[Ja'Quinden Jackson]] || 13 carries, 105 yards, 2 TD
+|-
+| Receiving || [[Money Parks]] || 4 receptions, 88 yards, TD
+|-
+|rowspan=3 style="{{CollegePrimaryStyle|USC Trojans|border=1}}; text-align:center;"|'''USC''' || Passing || Caleb Williams || 28/41, 363 yards, 3 TD, INT
+|-
+| Rushing || Austin Jones || 15 carries, 35 yards
+|-
+| Receiving || Tahj Washington || 6 receptions, 93 yards, TD
+|}
+{{Clear}}
+
+===vs No. 16 Tulane ([[2023 Cotton Bowl Classic (January)|Cotton Bowl]])===
+{{See also|2022 Tulane Green Wave football team}}
+{{Main|2023 Cotton Bowl Classic (January)}}
+
+{{Americanfootballbox
+|bg=#fff
+|bg2=#eee
+|titlestyle={{CollegePrimaryStyle|USC Trojans}}; ;text-align:center;
+|state=autocollapse
+|title=No. 16 Tulane Green Wave (11–2) vs No. 10 USC Trojans (11–2)– Game summary<br> (2023 Goodyear Cotton Bowl Classic)
+|date=January 2nd, 2023
+|time= 12:00 p.m. CST
+|road='''No. 16 Green Wave'''
+|R1=0 |R2=14 |R3=16 |R4=16
+|home=No. 10 Trojans
+|H1=7 |H2=21 |H3=7 |H4=10
+|stadium=[[AT&T Stadium]] • [[Arlington, Texas|Arlington, TX]]
+|attendance=55,329
+|weather= Indoor
+|referee= Steve Marlowe
+|TV= [[ESPN College Football|ESPN]]
+|TVAnnouncers= [[Mark Jones (sportscaster)|Mark Jones]] (play-by-play), [[Robert Griffin III]] (analyst), [[Quint Kessenich]] (sideline)
+|scoring=
+;First quarter
+*(5:58) USC – Michael Jackson III 9-yard pass from Caleb Williams, Denis Lynch kick (''Drive: 17 plays, 75 yards, 9:02; '''USC 7–0''''')
+;Second quarter
+*(12:33) USC – [[Terrell Bynum (American football)|Terrell Bynum]] 3-yard pass from Caleb Williams, Denis Lynch kick (''Drive: 12 plays, 95 yards, 5:13; '''USC 14–0''''')
+*(9:30) TUL – Tyjae Spears 3-yard run, [[Valentino Ambrosio]] kick (''Drive: 8 plays, 75 yards, 3:03; '''USC 14–7''''')
+*(5:42) TUL – Jha'Quan Jackson 87-yard pass from Michael Pratt, Valentino Ambrosio kick (''Drive: 2 plays, 92 yards, 0:50; '''Tied 14–14''''')
+*(2:21) USC – [[Raleek Brown]] 39-yard run, Denis Lynch kick (''Drive: 6 plays, 75 yards, 3:21; '''USC 21–14''''')
+*(0:12) USC – Brenden Rice 4-yard pass from Caleb Williams, Denis Lynch kick (''Drive: 6 plays, 68 yards, 1:07; '''USC 28–14''''')
+;Third quarter
+*(11:55) TUL – Tyjae Spears 4-yard run, Valentino Ambrosio kick (''Drive: 7 plays, 76 yards, 3:05; '''USC 28–21''''')
+*(4:02) TUL – Valentino Ambrosio 42-yard field goal (''Drive: 7 plays, 40 yards, 3:06; '''USC 28–24''''')
+*(1:24) USC – Brenden Rice 19-yard pass from Caleb Williams, Denis Lynch kick (''Drive: 5 plays, 97 yards, 2:38; '''USC 35–24''''')
+*(0:40) TUL – Tyjae Spears 3-yard run (''Drive: 3 plays, 65 yards, 0:44; '''USC 35–30''''')
+;Fourth quarter
+*(12:09) USC – Kyron Hudson 4-yard pass from Caleb Williams, Denis Lynch kick (''Drive: 7 plays, 47 yards, 3:31; '''USC 42–30''''')
+*(4:30) USC – Denis Lynch 43-yard field goal (''Drive: 11 plays, 46 yards, 6:16; '''USC 45–30''''')
+*(4:07) TUL – Tyjae Spears 4-yard run, Valentino Ambrosio kick (''Drive: 2 plays, 63 yards, 0:23; '''USC 45–37''''')
+*(3:20) TUL – Team safety (''Drive: 2 plays, -1 yards, 0:47; '''USC 45–39''''')
+*(0:09) TUL – Alex Bauman 6-yard pass from Michael Pratt, Valentino Ambrosio kick (''Drive: 12 plays, 66 yards, 3:11; '''Tulane 46–45''''')
+}}
+
+{| class="wikitable" style="float: left;"
+! Statistics !! style="{{CollegeSecondaryStyle|Tulane Green Wave|border=1}}"|TUL !!style="{{CollegePrimaryStyle|USC Trojans|border=1}}"|USC
+|-
+| First downs || 16 || 29
+|-
+| Total yards || 539 || 594
+|-
+| Rushes/yards || 34–305 || 32–132
+|-
+| Passing yards || 234 || 462
+|-
+| Passing: Comp–Att–Int || 8–18–0 || 37–52–1
+|-
+| Time of possession || 20:11 || 39:49
+|-
+|}
+{| class="wikitable" style="float: right;"
+! Team !! Category !! Player !! Statistics
+|-
+|rowspan=3 style="{{CollegeSecondaryStyle|Tulane Green Wave|1}}; text-align:center;"|'''Tulane''' || Passing || [[Michael Pratt (American football)|Michael Pratt]] || 8/17, 234 yards, 2 TD
+|-
+| Rushing || [[Tyjae Spears]] || 17 carries, 205 yards, 4 TD
+|-
+| Receiving || [[Jha'Quan Jackson]] || 1 reception, 87 yards, TD
+|-
+|rowspan=3 style="{{CollegePrimaryStyle|USC Trojans|border=1}}; text-align:center;"|'''USC''' || Passing || Caleb Williams || 37/52, 462 yards, 5 TD, INT
+|-
+| Rushing || [[Raleek Brown]] || 6 carries, 61 yards, TD
+|-
+| Receiving || [[Brenden Rice]] || 6 receptions, 174 yards, 2 TD
+|}
+{{Clear}}
+
+USC seemed to be in control for most of the contest, but in a shocking turn of events, Tulane scored 16 points in the final four and a half minutes of regulation to snatch the victory from the Trojans. With 4:30 remaining in the game and a 15-point lead, USC's win probability stood at 99.8%.<ref>{{cite news |url=https://www.espn.com/college-football/game/_/gameId/401442013 |title=Tulane 46-45 USC (Jan 2, 2023) Box Score - ESPN |date=January 2, 2023 |accessdate=July 6, 2023}}</ref>
+
+==Rankings==
+{{Further|2022 NCAA Division I FBS football rankings}}
+{{NCAA Division I FBS CFP ranking movements
+| year            = {{2022}}
+| finalpollweek   = 15
+| cfpfirstweek    = 9
+| AP_pre          = 14
+| coaches_pre     = 15
+| AP_1            = 10
+| coaches_1       = 12
+| AP_2            = 7
+| coaches_2       = 8
+| AP_3            = 7
+| coaches_3       = 7
+| AP_4            = 6
+| coaches_4       = 6
+| AP_5            = 6
+| coaches_5       = 6
+| AP_6            = 7
+| coaches_6       = 6
+| AP_7            = 12
+| coaches_7       = 12
+| AP_8            = 10т
+| coaches_8       = 11
+| AP_9            = 9
+| coaches_9       = 9
+| cfp_9           = 9
+| AP_10           = 8
+| coaches_10      = 7
+| cfp_10          = 8
+| AP_11           = 7
+| coaches_11      = 6
+| cfp_11          = 7
+| AP_12           = 5
+| coaches_12      = 5
+| cfp_12          = 6
+| AP_13           = 4
+| coaches_13      = 4
+| cfp_13          = 4
+| AP_14           = 8
+| coaches_14      = 8
+| cfp_14          = 10
+| AP_15           = 12
+| coaches_15      = 13
+}}
+
+==Statistics==
+
+===Team===
+{|-
+| valign="top" |
+{| class="wikitable" style="white-space:nowrap;"
+! !! USC !! Opp
+|-
+| &nbsp;&nbsp;Points per game || 41 || 29
+|-
+| Total || 579 || 409
+|-
+| First downs || 359 || 310
+|-
+| &nbsp;&nbsp;Rushing || 138 || 120
+|-
+| &nbsp;&nbsp;Passing || 195 || 162
+|-
+| &nbsp;&nbsp;Penalty || 26 || 28
+|-
+| Rushing yards  || 2,396 || 2,237
+|-
+| &nbsp;&nbsp;Avg per attempt || 5.1 || 5.0
+|-
+| &nbsp;&nbsp;Avg per game || 171.1 || 159.8
+|-
+| &nbsp;&nbsp;Rushing touchdowns || 30 || 29
+|-
+| Passing yards  || - || -
+|-
+| &nbsp;&nbsp;Att-Comp-Int || 515-345-5 || 460-293-19
+|-
+| &nbsp;&nbsp;Avg per attempt || 9.12 || 8.04
+|-
+| &nbsp;&nbsp;Avg per game || 335.43 || 264.14
+|-
+| &nbsp;&nbsp;Passing touchdowns || 43 || 25
+|-
+| Total offense (Total Plays) || ||
+|-
+| &nbsp;&nbsp;Avg per play  || ||
+|-
+| &nbsp;&nbsp;Avg per game  || ||
+|-
+| Fumbles-Lost  || ||
+|-
+| Penalties-Yards  || || 
+|-
+| &nbsp;&nbsp;Avg per game || ||
+|-
+| Punts-Yards  || ||
+|-
+| &nbsp;&nbsp;Avg per punt || ||
+|-
+| Time of possession/Game  || ||
+|-
+| 3rd down conversions || ||
+|-
+| 4th down conversions || ||
+|-
+| Touchdowns scored  || ||
+|-
+| Field goals-Attempts || ||
+|-
+| PAT-Attempts || || 
+|-
+| Attendance   || ||
+|-
+| &nbsp;&nbsp;Games/Avg per Game || || 
+|-
+| &nbsp;&nbsp;Neutral Site || colspan="2" align="center" | 
+|}
+|}
+
+===Individual Leaders===
+
+====Offense====
+
+{| style="width:60%; text-align:center;" class="wikitable collapsible collapsed"
+|-
+! style="text-align:center; {{CollegePrimaryStyle|USC Trojans|border=2|color=white}}" colspan="12"| Passing statistics
+|-
+! # !! NAME !! POS !! RAT !! CMP !! ATT !! YDS !! AVG/G !! CMP% !! TD !! INT !! LONG
+|-
+| 7 || [[Miller Moss (American football)|Miller Moss]] || QB || 182.9 || 6 || 7 || 81 || 81 || 85.7 || 0 || 0 || 40
+|-
+| 13 || [[Caleb Williams]] || QB || 221.1 || 39 || 49 || 590 || 295 || 79.5 || 6 || 0 || 75
+|-
+| || '''TOTALS''' || || '''212.5''' || '''45''' || '''57''' || '''671''' || '''335.5''' || '''78.9%''' || '''6''' || '''0''' || '''75'''
+|}
+
+{| style="width:60%; text-align:center;" class="wikitable collapsible collapsed"
+|-
+! style="text-align:center; {{CollegePrimaryStyle|USC Trojans|border=2|color=white}}" colspan="10"| Rushing statistics
+|-
+! # !! NAME !! POS !! ATT !! GAIN !! AVG !! TD !! LONG !! AVG/G
+|-
+| 6 || [[Austin Jones (running back)|Austin Jones]] || RB || 12 || 86 || 7.2 || 2 || 28 || 43
+|-
+| 14 || [[Raleek Brown]] || RB || 10 || 55 || 5.5 || 1 || 14 || 27.5
+|-
+| 22 || Darwin Barlow || RB || 5 || 16 || 3.2 || 1 || 6 || 8
+|-
+| 26 || [[Travis Dye]] || RB || 19 || 126 || 6.6 || 1 || 27 || 62.5
+|-
+| 7 || Miller Moss || QB || 1 || 10 || 10.0 || 0 || 10 || 10
+|-
+| 13 || Caleb Williams || QB || 15 || 72 || 4.8 || 0 || 28 || 36
+|-
+| 4 || [[Mario Williams (wide receiver)|Mario Williams]] || WR || 1 || 10 || 10.0 || 0 || 10 || 5
+|-
+| || '''TOTALS''' || || '''64''' || '''372''' || '''5.8''' || '''5''' || '''28''' || '''186'''
+|}
+
+{| style="width:60%; text-align:center;" class="wikitable collapsible collapsed"
+|-
+! style="text-align:center; {{CollegePrimaryStyle|USC Trojans|border=2|color=white}}" colspan="9"| Receiving statistics
+|-
+! # !! NAME !! POS !! CTH !! YDS !! AVG !! TD !! LONG !! AVG/G
+|-
+| 1 || [[Gary Bryant Jr.]] || WR || 2 || 15 || 7.5 || 0 || 8 || 7.5
+|-
+| 2 || [[Brenden Rice]] || WR || 2 || 25 || 12.5 || 0 || 20 || 12.5
+|- 
+| 3 || [[Jordan Addison]] || WR || 12 || 226 || 18.8 || 4 || 75 || 113
+|-
+| 4 || [[Mario Williams (wide receiver)|Mario Williams]] || WR || 6 || 117 || 19.5 || 1 || 43 || 58.5
+|-
+| 8 || CJ Williams || WR || 1 || 11 || 11.0 || 0 || 11 || 11
+|-
+| 10 || [[Kyron Hudson]] || WR || 3 || 34 || 11.3 || 0 || 29 || 17
+|-
+| 16 || [[Tahj Washington]] || WR || 4 || 65 || 16.25 || 0 || 43 || 32.5
+|- 
+| 81 || Kyle Ford || WR || 1 || 20 || 20.0 || 0 || 20 || 20
+|-
+| 19 || Malcolm Epps || TE || 1 || 4 || 4.0 || 0 || 4 || 2
+|-
+| 87 || Lake McRee || TE || 3 || 22 || 7.3 || 1 || 9 || 11
+|-
+| 6 || Austin Jones || RB || 4 || 52 || 13.0 || 0 || 26 || 26
+|- 
+| 14 || Raleek Brown || RB || 2 || 40 || 20.0 || 0 || 40 || 20
+|-
+| 26 || Travis Dye || RB || 4 || 40 || 10.0 || 0 || 19 || 20
+|-
+| || '''TOTALS''' || || '''45''' || '''671''' || '''14.9''' || '''6''' || '''75''' || '''335.5'''
+|}
+
+====Defense====
+
+{| style="width:90%; text-align:center;" class="wikitable collapsible collapsed"
+|-
+! style="text-align:center; {{CollegePrimaryStyle|USC Trojans|border=2|color=white}}" colspan="16"| Defense statistics
+|-
+! # !! NAME !! POS !! SOLO !! AST !! TOT !! TFL-YDS !! SACK-YDS !! INT-YDS !! BU !! QBH !! FR !! FF !! BLK !! SAF !! TD
+|-
+| 31 || Tyrone Taleni || DL || 2 || – || 2 || 2.0–8 || 1.0–7 || – || – || – || – || – || – || – || –
+|-
+| 47 || Stanley Ta’ufo’ou || DL || 2 || 1 || 3 || 1.0–1 || – || – || – || – || – || – || – || – || –
+|-
+| 49 || [[Tuli Tuipulotu]] || DL || 6 || 1 || 7 || 4.0–19 || 1.0–11 || – || 1 || – || – || 1 || – || – || –
+|-
+| 51 || [[Solomon Byrd]] || DL || 2 || 2 || 4 || 2.0–11 || 2.0–11 || – || 1 || – || – || – || – || – || –
+|-
+| 77 || Jamar Sekona || DL || 3 || – || 3 || 1.0–4 || 1.0–4 || – || – || 1 || – || – || – || – || –
+|-
+| 79 || De’jon Benton || DL || 1 || 4 || 5 || 0.5- || – || – || – || – || – || – || – || – || –
+|-
+| 91 || [[Brandon Pili]] || DL || 2 || 1 || 3 || – || – || – || – || – || – || – || – || – || –
+|-
+| 99 || Nick Figueroa || DL || 3 || 1 || 4 || 1.5–7 || 1.0–5 || – || 1 || 1 || – || – || – || – || –
+|-
+| 0 || [[Korey Foreman]] || RUSH || 2 || 2 || 4 || – || – || – || – || – || – || – || – || – || –
+|-
+| 58 || [[Solomon Tuliaupupu]] || RUSH || 1 || 2 || 3 || 1.0–3 || 0.5–2 || – || – || – || – || – || – || – || –
+|-
+| 10 || [[Ralen Goforth]] || LB || 2 || – || 2 || – || – || 1–31 || – || – || – || – || – || – || 1
+|-
+| 18 || [[Eric Gentry]] || LB || 12 || 5 || 17 || 0.5–2 || 0.5–2 || – || – || – || – || – || – || – || –
+|-
+| 44 || Tuasivi Nomura || LB || – || 4 || 4 || 0.5–1 || – || – || 1 || – || – || – || – || – || –
+|-
+| 53 || [[Shane Lee (American football)|Shane Lee]] || LB || 11 || 1 || 12 || 3.0–10 || 1.0–8 || 1–40 || 1 || – || – || – || – || – || 1
+|-
+| 4 || Max Williams || DB || 9 || 3 || 12 || – || – || 1–32 || – || 1 || – || 1 || – || – || –
+|-
+| 6 || [[Mekhi Blackmon]] || DB || 5 || 5 || 10 || 0.5–3 || – || 1–17 || 1 || – || 1 || – || – || – || –
+|-
+| 7 || [[Calen Bullock]] || DB || 7 || 2 || 9 || – || – || 1–93 || – || – || – || – || – || – || 1
+|-
+| 14 || Jacobe Covington || DB || 2 || – || 2 || – || – || – || – || – || – || – || – || – || –
+|-
+| 15 || Anthony Beavers Jr. || DB || 2 || 1 || 3 || 1.5–2 || – || – || – || – || – || – || – || – || –
+|-
+| 17 || Micah Croom || DB || 1 || – || 1 || – || – || – || – || – || – || – || – || – || –
+|-
+| 19 || [[Jaylin Smith]] || DB || 2 || 3 || 5 || – || – || – || – || – || – || – || – || – || –
+|-
+| 21 || Latrell McCutchin || DB || 2 || – || 2 || 1.0–5 || 1.0–5 || – || – || – || – || – || – || – || –
+|-
+| 22 || [[Ceyair Wright]] || DB || 3 || 1 || 4 || – || – || – || 1 || – || – || – || – || – || –
+|-
+| 28 || Xamarion Gordon || DB || 2 || – || 2 || – || – || 1–0 || – || – || – || – || – || – || –
+|-
+| || Team ||  || 2 || 1 || 3 || – || – || – || – || – || – || – || – || – || –
+|-
+| || '''TOTAL''' || || '''86''' || '''40''' || '''126''' || '''20.0–76''' || '''9.0–55''' || '''6–213''' || '''7''' || '''3''' || '''1''' || '''2''' || '''-''' || '''-''' || '''3'''
+|}
+<small>Key: POS: Position, SOLO: Solo Tackles, AST: Assisted Tackles, TOT: Total Tackles, TFL: Tackles-for-loss, SACK: Quarterback Sacks, INT: Interceptions, BU: Passes Broken Up, PD: Passes Defended, QBH: Quarterback Hits, FR: Fumbles Recovered, FF: Forced Fumbles, BLK: Kicks or Punts Blocked, SAF: Safeties, TD : Touchdown</small>
+
+====Special teams====
+
+{| style="width:60%; text-align:center;" class="wikitable collapsible collapsed"
+|-
+! style="text-align:center; {{CollegePrimaryStyle|USC Trojans|border=2|color=white}}" colspan="16"| Kicking statistics
+|-
+! # !! NAME !! POS !! XPM !! XPA !! XP% !! FGM !! FGA !! FG% !! 1–19 !! 20–29 !! 30–39 !! 40–49 !! 50+ !! LNG
+|-
+| 46 || Denis Lynch || K || 14 || 14 || 100.0% || 3 || 4 || 75.0% || 0/0 || 1/1 || 0/1 || 2/2 || 0/0 || 45
+|-
+| || '''TOTALS''' || || '''14''' || '''14''' || '''100.0%''' || '''3''' || '''4''' || '''75.0%''' || '''0/0''' || '''1/1''' || '''0/1''' || '''2/2''' || '''0/0''' || '''45'''
+|}
+
+{| style="width:60%; text-align:center;" class="wikitable collapsible collapsed"
+|-
+! style="text-align:center; {{CollegePrimaryStyle|USC Trojans|border=2|color=white}}" colspan="8"| Kickoff statistics
+|-
+! # !! NAME !! POS !! KICKS !! YDS !! AVG !! TB !! OB
+|-
+| 38 || Alex Stadthaus || K || 18 || 1157 || 64.3 || 11 || 0
+|-
+| || '''TOTALS''' || || '''18''' || '''1157''' || '''64.3''' || '''11''' || '''0''' 
+|}
+
+{| style="width:60%; text-align:center;" class="wikitable collapsible collapsed"
+|-
+! style="text-align:center; {{CollegePrimaryStyle|USC Trojans|border=2|color=white}}" colspan="12"| Punting statistics
+|-
+! # !! NAME !! POS !! PUNTS !! YDS !! AVG !! LONG !! TB !! I–20 !! 50+ !! BLK
+|-
+| 42 || Aadyn Sleep-Dalton || P || 3 || 90 || 30.0 || 36 || 0 || 1 || 0 || 0
+|-
+|  || '''TOTALS''' || || '''3''' || '''90''' || '''30.0''' || '''36''' || '''0''' || '''1''' || '''0''' || '''0'''
+|}
+
+{| style="width:60%; text-align:center;" class="wikitable collapsible collapsed"
+|-
+! style="text-align:center; {{CollegePrimaryStyle|USC Trojans|border=2|color=white}}" colspan="8"| Kick return statistics
+|-
+! # !! NAME !! POS !! RTNS !! YDS !! AVG !! TD !! LNG
+|-
+| 2 || [[Brenden Rice]] || WR || 1 || 16 || 16.0 || 0 || 16
+|-
+| ||  '''TOTALS''' || || '''1''' || '''16''' || '''16.0''' || '''0''' || '''16'''
+|}
+
+{| style="width:60%; text-align:center;" class="wikitable collapsible collapsed"
+|-
+! style="text-align:center; {{CollegePrimaryStyle|USC Trojans|border=2|color=white}}" colspan="8"| Punt return statistics
+|-
+! # !! NAME !! POS !! RTNS !! YDS !! AVG !! TD !! LONG
+|-
+| 1 || [[Gary Bryant Jr.]]
+|| WR || 2 || 4 || 2.0 || 0 || 5
+|-
+| 3 || [[Jordan Addison]]
+|| WR || 1 || −3 || −3.0 || 0 || 0
+|-
+| ||  '''TOTALS''' || || '''3''' || '''1''' || '''0.3''' || '''0''' || '''5'''
+|}
+
+===Scoring===
+
+====USC vs. non-conference opponents====
+{|
+|- style="text-align:left;"
+|{{Linescore Amfootball|
+|Road=USC
+|R1=7
+|R2=24
+|R3=28
+|R4=7
+|Home=Opponents
+|H1=7
+|H2=7
+|H3=0
+|H4=0
+}}
+|}
+
+====USC vs. Pac-12 opponents====
+{|
+|- style="text-align:left;"
+|{{Linescore Amfootball|
+|Road=USC
+|R1=21
+|R2=14
+|R3=6
+|R4=0
+|Home=Pac-12 opponents
+|H1=7
+|H2=7
+|H3=0
+|H4=14
+}}
+|}
+
+====USC vs. all opponents====
+{|
+|- style="text-align:left;"
+|{{Linescore Amfootball|
+|Road=USC
+|R1=28
+|R2=38
+|R3=34
+|R4=14
+|Home=Opponents
+|H1=14
+|H2=14
+|H3=0
+|H4=14
+}}
+|}
+
+==After the season==
+
+===Awards and honors===
+
+==== Pac-12 Conference Individual awards====
+{| class="wikitable sortable" style="text-align:center"
+|-
+! style="{{CollegePrimaryStyle|USC Trojans|color=white}};" width="5%" | Recipient
+! style="{{CollegePrimaryStyle|USC Trojans|color=white}};" width="9%" | Award (Pac-12 Conference) 
+! style="{{CollegePrimaryStyle|USC Trojans|color=white}};" width="5%" | Date awarded
+! style="{{CollegePrimaryStyle|USC Trojans|color=white}};" width="1%" class="unsortable" | Ref.
+|-
+|Caleb Williams
+|Offensive Player of the Year
+|December 6, 2022
+|
+|-
+| Andrew Vorhees
+|[[Pac-12 Conference football individual awards|Morris Trophy]]
+|December 20, 2022
+|
+|-
+| rowspan="2" | Tuli Tuipulotu 
+|Defensive Player of the Year
+|December 6, 2022
+|
+|-
+|[[Pac-12 Conference football individual awards|Morris Trophy]]
+|December 20, 2022
+|
+|-
+|Nick Figueroa 
+|Scholar-Athlete of the Year
+|December 5, 2022
+|
+|-
+|}
+
+==== Individual Yearly Awards ====
+{| class="wikitable sortable" style="text-align:center"
+|-
+! style="{{CollegePrimaryStyle|USC Trojans|color=white}};" width="5%" | Recipient
+! style="{{CollegePrimaryStyle|USC Trojans|color=white}};" width="9%" | Award  
+! style="{{CollegePrimaryStyle|USC Trojans|color=white}};" width="5%" | Date awarded
+! style="{{CollegePrimaryStyle|USC Trojans|color=white}};" width="1%" class="unsortable" | Ref.
+|-
+| rowspan="5" | [[Tuli Tuipulotu]]
+||[[Bronko Nagurski Trophy]] (finalist)
+|5 December
+|<ref>{{cite web|url=https://www.sportswriters.net/fwaa/news/2022/07/26/2022-bronko-nagurski-trophy-watch-list-unveiled|title=Four finalists named for 2022 Bronko Nagurski Trophy|date=16 November 2022}}</ref> 
+|-
+|[[Lombardi Award|Rotary Lombardi Award]] (finalist)
+|7 December
+|<ref>{{cite web|url=https://sportstalk790.iheart.com/content/2022-11-17-the-rotary-lombardi-award-announces-2022-four-finalists/|title=The Rotary Lombardi Award® Announces 2022 Four Finalists|date=17 November 2022}}</ref> 
+|-
+||[[Bednarik Award]] (finalist)
+|8 December
+|<ref>{{cite web|url= https://maxwellfootballclub.org/|title= 2022 Bednarik Award Finalists |date=29 November 2022}}</ref> 
+|-
+|[[Lott Trophy|Lott IMPACT Trophy]] (finalist)
+|11 December
+|<ref>{{cite web|url=https://lottimpacttrophy.org/lott-trophy/the-lott-impact-trophy-announces-the-2022-finalists/|title= The Lott IMPACT® Trophy Announces the 2022 Finalists|date=22 November 2022}}</ref>  
+|-
+| Polynesian College Football Player Of The Year Award
+| 13 December
+|<ref>{{cite web|url=https://247sports.com/Article/2022-Polynesian-College-Football-Player-of-the-Year-Finalists-199953786/|title= 2022 Polynesian College Football Player of the Year Finalists|date=8 December 2022}}</ref>  
+|-
+| rowspan="5" | [[Caleb Williams]]
+|[[Walter Camp Award]] '''Winner'''
+|8 December
+| –
+|-
+||[[Maxwell Award]] '''Winner'''
+|8 December
+|<ref>{{cite web|url= https://maxwellfootballclub.org/|title= 2022 Maxwell Award Finalists |date=29 November 2022}}</ref> 
+|- 
+||[[Davey O'Brien Award]] (finalist)
+|8 December
+| –
+|-
+|[[Heisman Trophy]] '''Winner'''
+|10 December
+|<ref>{{cite web|url=https://www.heisman.com/articles/bennett-duggan-stroud-williams-named-2022-heisman-trophy-finalists/|title=BENNETT, DUGGAN, STROUD, WILLIAMS NAMED 2022 HEISMAN TROPHY FINALISTS|date=5 December 2022}}</ref>
+|-
+|[[Manning Award]] (finalist)
+| January 2023
+|<ref>{{cite web|url=https://allstatesugarbowl.org/news/2022/12/2/manning-award-finalists.aspx|title=Allstate Sugar Bowl Announces Manning Award Finalists|date=5 December 2022}}</ref>
+|-
+|Brett Neilon
+|[[Rimington Trophy]] (finalist)
+|8 December
+| –
+|-
+|USC Offensive line
+|[[Joe Moore Award]] (semifinalist)
+| –
+|<ref>{{cite web|url=https://joemooreaward.com/press-release/2022/11/15/2022-joe-moore-award-semifinalists-announced|title=Joe Moore Award Semifinalists Announced|date=13 November 2022}}</ref>
+|-
+|[[Lincoln Riley]]
+|[[Eddie Robinson Award]] (finalist)
+|8 December
+| –
+|-
+|}
+
+====All-America====
+{{col-begin}}
+{{col-3}}
+{| class="wikitable" style="text-align: center"
+|+ style="{{CollegePrimaryStyle|USC Trojans}}" | PFF
+|- align=center
+! style="{{CollegeSecondaryStyle|USC Trojans}}" |Player
+! style="{{CollegeSecondaryStyle |USC Trojans}}" |Position
+! style="{{CollegeSecondaryStyle |USC Trojans}}" |1st/2nd team
+|-
+| [[Caleb Williams]]
+| QB
+| rowspan="3" | 1st
+|-
+| [[Andrew Vorhees]] 
+| OG
+|-
+| [[Calen Bullock]] 
+| S
+|-
+| [[Jordan Addison]] 
+| WR
+| rowspan="4" | 2nd
+|- 
+| Brett Neilon
+| C
+|-
+| [[Tuli Tuipulotu]]
+| DL 
+|- 
+| [[Mekhi Blackmon]] 
+| CB
+|-
+| colspan="3" | Source:<ref>{{cite web|url=https://www.pff.com/news/college-football-2022-pff-all-america-team-caleb-williams-bijan-robinson |title= 2022 PFF College All-America Team: USC QB Caleb Williams, Texas RB Bijan Robinson and more |date=November 29, 2022|access-date=November 29, 2022}}</ref>
+|}
+{{col-end}}
+
+{{col-begin}}
+{{col-3}}
+{| class="wikitable" style="text-align: center"
+|+ style="{{CollegePrimaryStyle|USC Trojans}}" | CBS Sports / 247Sports 
+|- align=center
+! style="{{CollegeSecondaryStyle|USC Trojans}}" |Player
+! style="{{CollegeSecondaryStyle|USC Trojans}}" |Position
+! style="{{CollegeSecondaryStyle|USC Trojans}}" |1st/2nd team
+|-
+| Caleb Williams
+| QB
+| rowspan="2" | 1st
+|-
+| Tuli Tuipulotu
+| DL 
+|-  
+| Andrew Vorhees
+| OG
+| rowspan="2" | 2nd 
+|-
+| Brett Neilon
+| C
+|-
+| Calen Bullock 
+| DB
+| Honorable Mention
+|-
+| colspan="3" | Source:<ref>{{cite web|url= https://www.cbssports.com/college-football/news/2022-cbs-sports-all-america-team-big-ten-dominates-list-with-ohio-state-holding-most-selections/ |title= 2022 CBS Sports All-America team: Big Ten dominates list with Ohio State holding most selections |date=December 7, 2022|access-date=December 9, 2022}}</ref>
+|}
+{{col-end}}
+
+{{col-begin}}
+{{col-3}}
+{| class="wikitable" style="text-align: center"
+|+ style="{{CollegePrimaryStyle|USC Trojans}}" | The Associated Press
+|- align=center
+! style="{{CollegeSecondaryStyle|USC Trojans}}" |Player
+! style="{{CollegeSecondaryStyle|USC Trojans}}" |Position
+! style="{{CollegeSecondaryStyle|USC Trojans}}" |1st/2nd team
+|-
+| Caleb Williams
+| QB
+| rowspan="3" | 1st
+|-
+| Andrew Vorhees 
+| OG
+|-
+| Tuli Tuipulotu 
+| DL
+|-
+| Brett Neilon
+| C
+| rowspan="2" | 3rd
+|- 
+| Mekhi Blackmon 
+| CB
+|-
+| colspan="3" | Source:
+|}
+{{col-end}}
+
+{{col-begin}}
+{{col-3}}
+{| class="wikitable" style="text-align: center"
+|+ style="{{CollegePrimaryStyle|USC Trojans}}" | Walter Camp
+|- align=center
+! style="{{CollegeSecondaryStyle|USC Trojans}}" |Player
+! style="{{CollegeSecondaryStyle|USC Trojans}}" |Position
+! style="{{CollegeSecondaryStyle|USC Trojans}}" |1st/2nd team
+|-
+| Caleb Williams
+| QB
+| rowspan="2" | 1st
+|-
+| Tuli Tuipulotu
+| DL 
+|-  
+| Andrew Vorhees 
+| OG
+| 2nd
+|-
+| colspan="3" | Source:<ref>{{cite web|url= https://waltercamp.org/introducing-the-2022-walter-camp-all-america-1st-and-2nd-teams-the-nations-oldest-college-football-all-america-team-133rd-edition/ |title= 
+Introducing the 2022 Walter Camp All-America 1st and 2nd Teams – the nation’s oldest college football All-America team (133rd edition)|date=December 8, 2022|access-date=December 8, 2022}}</ref>
+|}
+{{col-end}}
+
+====PAC-12 Conference====
+{{col-begin}}
+{{col-3}}
+{| class="wikitable" style="text-align: center"
+|+ style="{{NCAA color cell|USC Trojans}}" | PAC-12
+|- align=center
+! style="{{NCAA color cell|USC Trojans}}" |Player
+! style="{{NCAA color cell|USC Trojans}}" |Position
+! style="{{NCAA color cell|USC Trojans}}" |1st/2nd team
+|-
+| Caleb Williams
+| QB
+| rowspan="5" | 1st
+|-
+| Jordan Addison 
+| WR
+|- 
+| Andrew Vorhees 
+| OG
+|-
+| Tuli Tuipulotu
+| DL 
+|- 
+| Mekhi Blackmon 
+| CB 
+|-
+| Travis Dye
+| RB
+| rowspan="3" | 2nd
+|-
+| Calen Bullock 
+| S
+|-
+| Brett Neilon
+| C
+|- 
+| [[Justin Dedich]]
+| OG
+| rowspan="5" | Honorable Mention
+|-
+| [[Jonah Monheim]]
+| OT
+|-
+| [[Shane Lee (American football)|Shane Lee]]
+| LB
+|-
+| [[Tahj Washington]]
+| WR
+|-
+| Max Williams 
+| DB
+|-
+| colspan="3" | Source:<ref>{{Cite web |date=December 6, 2022 |title=2022 Pac-12 Football Performance Awards, presented by Nextiva, and All-Conference honors announced |url=https://pac-12.com/news/2022/12/6/2022-pac-12-football-performance-awards-presented-nextiva-and-all-conference.aspx |access-date=December 6, 2022 |website=Pac-12 Conference}}</ref>
+|}
+{{col-end}}
+
+{{col-begin}}
+{{col-3}}
+{| class="wikitable" style="text-align: center"
+|+ style="{{NCAA color cell|USC Trojans}}" | PFF
+|- align=center
+! style="{{NCAA color cell|USC Trojans}}" |Player
+! style="{{NCAA color cell|USC Trojans}}" |Position
+! style="{{NCAA color cell|USC Trojans}}" |1st/2nd team
+|-
+| Caleb Williams
+| QB
+| rowspan="9" | 1st
+|-
+| Jordan Addison 
+| WR
+|- 
+| Brett Neilon
+| C
+|- 
+| Andrew Vorhees 
+| OG
+|-
+| Justin Dedich
+| OG
+|-
+| Tuli Tuipulotu
+| DL 
+|- 
+| Tyrone Taleni
+| DL
+|-
+| Mekhi Blackmon 
+| CB 
+|-
+| Calen Bullock 
+| S
+|-
+| Travis Dye
+| RB
+| rowspan="2" | 2nd
+|-
+| Jonah Monheim
+| OT
+|-
+| colspan="3" | Source:<ref name="l156">{{cite web | last=Treash | first=Anthony | title=2022 PFF College All-Pac-12 Team: USC QB Caleb Williams, UCLA RB Zach Charbonnet and more | website=PFF | date=2022-11-30 | url=https://www.pff.com/news/college-football-2022-pff-all-pac-12-team-usc-caleb-williams-ucla-zach-charbonnet | access-date=2024-11-26}}</ref>
+|}
+{{col-end}}
+
+{{col-begin}}
+{{col-5}}
+{| class="wikitable" style="width: 90%;text-align: center;"
+|+ style={{CollegePrimaryStyle|USC Trojans|color=white}} | All-Pac-12 Academic
+!style={{CollegePrimaryStyle|USC Trojans|color=white}} | Player
+!style={{CollegePrimaryStyle|USC Trojans|color=white}} | Position
+!style={{CollegePrimaryStyle|USC Trojans|color=white}} | Class
+!style={{CollegePrimaryStyle|USC Trojans|color=white}} | Major
+!style={{CollegePrimaryStyle|USC Trojans|color=white}} | Ref.
+|- align="center"
+| 
+| 
+|  
+| 
+|
+|-
+| colspan="5" | <small>HM = Honorable mention. Source: </small>
+|}
+{{col-end}}
+
+{| class="wikitable" style="width: 90%;text-align: center;"
+|+ style={{CollegePrimaryStyle|USC Trojans|color=white}} | NCAA Recognized All-American Honors
+!style={{CollegePrimaryStyle|USC Trojans|color=white}} | Player
+!style={{CollegePrimaryStyle|USC Trojans|color=white}} |[[College Football All-America Team#Associated Press|<span style="color:white;">''AP''</span>]]
+!style={{CollegePrimaryStyle|USC Trojans|color=white}} |[[College Football All-America Team#AFCA|<span style="color:white;">''AFCA''</span>]]
+!style={{CollegePrimaryStyle|USC Trojans|color=white}} |[[College Football All-America Team#FWAA|<span style="color:white;">''FWAA''</span>]]
+!style={{CollegePrimaryStyle|USC Trojans|color=white}} |[[College Football All-America Team#Sporting News|<span style="color:white;">''TSN''</span>]]
+!style={{CollegePrimaryStyle|USC Trojans|color=white}} |[[College Football All-America Team#WCFF|<span style="color:white;">''WCFF''</span>]]
+!style={{CollegePrimaryStyle|USC Trojans|color=white}} | Designation
+|- align="center"
+|  || || || || || ||
+|- align="center"
+| colspan=7 | <small>The NCAA recognizes a selection to all five of the AP, AFCA, FWAA, TSN and WCFF first teams for unanimous selections and three of five for consensus selections.</small> <small>HM = Honorable mention. Source: </small>
+|}
+
+{{col-begin}}
+{{col-5}}
+{| class="wikitable sortable sortable" style="text-align: center"
+|+ style="{{CollegePrimaryStyle|USC Trojans|color=white|border=no}}" |Other All-American Honors
+{{CollegeSecondaryHeader|team=USC Trojans|Player|AP|Athletic|Athlon|BR|CBS Sports|CFN|ESPN|FOX Sports|Phil Steele|SI|USA Today}}
+|-
+|Caleb Williams
+|Player of the Year
+| 
+| 
+|  
+|Player of the Year
+|
+|  
+|
+|
+| 
+| 
+|- 
+|}
+{{col-end}}
+
+===Bowl games===
+
+====Senior Bowl====
+{{see also|2023 Senior Bowl}}
+{| class="wikitable sortable" style="text-align:center"
+|-
+! style="{{CollegePrimaryStyle|USC Trojans|color=white}};" | Player
+! style="{{CollegePrimaryStyle|USC Trojans|color=white}};" width="5%" | #
+! style="{{CollegePrimaryStyle|USC Trojans|color=white}};" | Position
+! style="{{CollegePrimaryStyle|USC Trojans|color=white}};" | Class
+|-
+|Andrew Vorhees
+| –
+|OG
+|[[File:Redshirt.svg|10px|Redshirt]] Senior
+|-
+|Mekhi Blackmon
+| –
+|CB
+|[[File:Redshirt.svg|10px|Redshirt]] Senior
+|-
+|}
+
+====East–West Shrine Bowl====
+{{see also|2023 East–West Shrine Bowl}}
+{| class="wikitable sortable" style="text-align:center"
+|-
+! style="{{CollegePrimaryStyle|USC Trojans|color=white}};" | Player
+! style="{{CollegePrimaryStyle|USC Trojans|color=white}};" width="5%" | #
+! style="{{CollegePrimaryStyle|USC Trojans|color=white}};" | Position
+! style="{{CollegePrimaryStyle|USC Trojans|color=white}};" | Class
+|-
+|Travis Dye
+| –
+|RB
+||[[File:Redshirt.svg|10px|Redshirt]] Senior
+|-
+|Josh Falo
+| –
+|TE
+||[[File:Redshirt.svg|10px|Redshirt]] Senior
+|-
+|}
+
+====NFLPA Collegiate Bowl====
+
+{{see also|NFLPA Collegiate Bowl}}
+{| class="wikitable sortable" style="text-align:center"
+|-
+! style="{{CollegePrimaryStyle|USC Trojans|color=white}};" | Player
+! style="{{CollegePrimaryStyle|USC Trojans|color=white}};" width="5%" | #
+! style="{{CollegePrimaryStyle|USC Trojans|color=white}};" | Position
+! style="{{CollegePrimaryStyle|USC Trojans|color=white}};" | Class
+|-
+|Bobby Haskins
+| –
+|OT
+|[[File:Redshirt.svg|10px|Redshirt]] Senior
+|-
+|}
+
+===NFL draft===
+{{see also|2023 NFL draft}}
+
+The [[NFL draft]] will be held at [[Arrowhead Stadium]] in [[Kansas City, Missouri|Kansas City, MO]] on April 27–29, 2023.
+ 
+'''Trojans who were picked in the 2023 NFL Draft:'''
+{| class="wikitable sortable" style="text-align:center" "width:75%;"
+{{CollegePrimaryHeader|team=USC Trojans|border=2|Round |Pick |Player |Position |NFL Team |NFL Jersey #}}
+|-
+| 1 || 23 || [[Jordan Addison]] || WR || [[Minnesota Vikings]] || 3
+|- 
+| 2 || 54 || [[Tuli Tuipulotu]] || DL || [[Los Angeles Chargers]] || 45
+|-
+| 3 || 102 || [[Mekhi Blackmon]] || CB || [[Minnesota Vikings]] || 11
+|-
+| 7 || 229 || [[Andrew Vorhees]] || OG || [[Baltimore Ravens]] || 72
+|- 
+| UDFA || - || [[Travis Dye]] || RB || [[New York Jets]]
+|-
+| UDFA || - || [[Brandon Pili]] || DL || [[Miami Dolphins]] || 96
+|-
+| UDFA || - || Bobby Haskins || OT || [[Chicago Bears]] || 71
+|-
+| UDFA || - || [[Terrell Bynum (American football)|Terrell Bynum]] || WR || [[Los Angeles Chargers]] || 35
+|-
+| UDFA || - || Mo Hasan || QB || [[Tennessee Titans]]
+|-
+| Rookie Camp || - || Josh Falo || TE || [[New York Jets]]
+|-
+| || || Brett Neilon || C ||
+|-
+| || || Brandon Outlaw || WR / RB || 
+|-
+| || || Micah Croom || S || 
+|}
+
+====NFL Draft combine====
+Two members of the 2022 team were invited to participate in drills at the [[2023 NFL Scouting Combine]].
+ 
+{| class="wikitable sortable" style="text-align:center" "width:75%;"
+| colspan="14" style="font-weight:bold; {{NCAA color cell|USC Trojans}}" |2023 NFL combine participants
+{{CollegePrimaryHeader|team=USC Trojans|border=2|Name | POS | HT | WT | Arms | Hands | 40 | 10-yd Split | Bench press | Vert jump | Broad jump | 3-cone drill | 20-yd shuttle | Ref}}
+|-
+| [[Mekhi Blackmon]]
+| CB
+| 5’ 11’’
+| 178
+| 31’’
+| 9 1/4’’
+| 4.47
+| 1.54
+| 11
+| 36’’
+| 10’ 5’’
+| colspan="2" | DNP
+| <ref>{{cite web|url= https://www.nfl.com/prospects/mekhi-blackmon/3200424c-4128-9825-2a67-246736ad314a|title= Mekhi Blackmon NFL Combine Profil |date=February 3, 2023|access-date=February 3, 2023}}</ref>
+|-
+| Tuli Tuipulotu 
+| DL
+| 6’ 3’’
+| 266
+| 32 1/4’’
+| 10 1/8’’
+| colspan="7" | DNP
+| <ref>{{cite web|url= https://www.nfl.com/prospects/tuli-tuipulotu/32005455-4972-0077-cdfc-f4d029d13b39|title= Tuli Tuipulotu NFL Combine Profil |date=February 2, 2023|access-date=February 2, 2023}}</ref>
+|-
+| Jordan Addison
+| WR
+| 5’ 11’’
+| 173
+| 30 7/8’’
+| 8 3/4’’
+| 4.49
+| 1.56
+| DNP
+| 34’’
+| 10’ 2’’
+| colspan="2" | DNP
+| <ref>{{cite web|url= https://www.nfl.com/prospects/jordan-addison/32004144-4449-1056-9ba9-b09766bad478|title= Jordan Addison NFL Combine Profil |date=February 4, 2023|access-date=February 4, 2023}}</ref>
+|-
+| Andrew Vorhees
+| OG
+| 6’ 6’’
+| 310
+| 32 1/8’’
+| 10’’
+| colspan="2" | DNP
+| 38
+| 29’’
+| 8’ 9’’
+| colspan="2" | DNP
+| <ref>{{cite web|url= https://www.nfl.com/prospects/andrew-vorhees/3200564f-5214-8318-1d8d-426c413b6104|title= Andrew Vorhees NFL Combine Profil |date=February 5, 2023|access-date=February 5, 2023}}</ref>
+|-
+| Travis Dye
+| RB
+| 5’ 10’’
+| 201
+| 28 7/8’’
+| 9 1/4’’
+| colspan="7" | DNP
+| <ref>{{cite web|url= https://www.nfl.com/prospects/travis-dye/32004459-4525-6368-cb85-619138146a89|title= Travis Dye NFL Combine Profil |date=February 5, 2023|access-date=February 5, 2023}}</ref>
+|-
+|}
+† Top performer
+ 
+DNP = Did not participate
+
+====USC Pro Day====
+{| class="wikitable sortable" style="text-align:center" "width:75%;"
+| colspan="14" style="font-weight:bold; {{NCAA color cell|USC Trojans}}" |2023 USC Pro Day
+{{CollegePrimaryHeader|team=USC Trojans|border=2|Name | POS | HT | WT | Arms | Hands | 40 | Bench press | Vert jump | Broad jump | 3-cone drill | 20-yd shuttle | 60-yd shuttle | Ref}}
+|-
+| Jordan Addison 
+| WR
+| –
+| –
+| –
+| –
+| –
+| –
+| –
+| –
+| –
+| –
+| –
+| –
+|-
+| [[Mekhi Blackmon]] 
+| CB
+| –
+| –
+| –
+| –
+| –
+| –
+| –
+| –
+| –
+| –
+| –
+| –
+|-
+| [[Terrell Bynum (American football)|Terrell Bynum]]
+| WR
+| –
+| –
+| –
+| –
+| –
+| –
+| –
+| –
+| –
+| –
+| –
+| –
+|-
+| Micah Croom
+| DB
+| –
+| –
+| –
+| –
+| –
+| –
+| –
+| –
+| –
+| –
+| –
+| –
+|-
+| Travis Dye
+| RB
+| –
+| –
+| –
+| –
+| –
+| –
+| –
+| –
+| –
+| –
+| –
+| –
+|-
+| Josh Falo
+| TE
+| –
+| –
+| –
+| –
+| –
+| –
+| –
+| –
+| –
+| –
+| –
+| –
+|-
+| Mo Hasan
+| QB
+| –
+| –
+| –
+| –
+| –
+| –
+| –
+| –
+| –
+| –
+| –
+| –
+|-
+| Bobby Haskins
+| OT
+| –
+| –
+| –
+| –
+| –
+| –
+| –
+| –
+| –
+| –
+| –
+| –
+|-
+| Brett Neilon
+| C
+| –
+| –
+| –
+| –
+| –
+| –
+| –
+| –
+| –
+| –
+| –
+| –
+|-
+| Brandon Outlaw
+| RB
+| –
+| –
+| –
+| –
+| –
+| –
+| –
+| –
+| –
+| –
+| –
+| –
+|-
+|-
+| [[Brandon Pili]]
+| DL
+| –
+| –
+| –
+| –
+| –
+| –
+| –
+| –
+| –
+| –
+| –
+| –
+|-
+| Tuli Tuipulotu 
+| DL
+| –
+| –
+| –
+| –
+| –
+| –
+| –
+| –
+| –
+| –
+| –
+| –
+|-
+| Andrew Vorhees 
+| OG
+| –
+| –
+| –
+| –
+| –
+| –
+| –
+| –
+| –
+| –
+| –
+| –
+|-
+| Erik Krommenhoek
+| TE (2021)
+| –
+| –
+| –
+| –
+| –
+| –
+| –
+| –
+| –
+| –
+| –
+| –
+|-
+| Vavae Malepeai
+| RB (2021)
+| –
+| –
+| –
+| –
+| –
+| –
+| –
+| –
+| –
+| –
+| –
+| –
+|-
+|}
+† Top performer
+ 
+DNP = Did not participate
+
+==Notes==
+* November 28, 2021 – Lincoln Riley Named New USC Football Head Coach.<ref>{{cite web |title= Lincoln Riley Named New USC Football Head Coach|url=https://usctrojans.com/news/2021/11/28/usc-trojans-college-football-lincoln-riley-named-new-head-coach-announcement-oklahoma-sooners.aspx |work=USCTrojans|date=November 28, 2021|access-date=29 November 2021}}</ref>
+
+==References==
+{{Reflist}}
+
+{{USC Trojans football navbox}}
+
+[[Category:2022 Pac-12 Conference football season|USC]]
+[[Category:USC Trojans football seasons]]
+[[Category:2022 in sports in Los Angeles|USC Trojans football]]

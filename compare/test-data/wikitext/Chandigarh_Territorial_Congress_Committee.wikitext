@@ -1,0 +1,236 @@
+{{Use dmy dates|date=August 2023}}
+{{More citations needed|date=September 2023}}
+{{Infobox Indian Political Party
+| colorcode        = {{party color|Indian National Congress}} 
+| party_name       = Chandigarh Territorial Congress Committee
+| native_name      =
+| party_logo       = [[File:Indian National Congress hand logo.svg|180px]]
+| president        = [[Harmohinder Singh Lucky]]
+| headquarters     = Congress Bhawan, Sector-35,  [[Chandigarh]]-160036
+| alliance         = [[INDIA Alliance|INDIA]]
+| ideology         = {{ubl|[[Secularism]]|[[Social liberalism]]|[[Economic liberalism]]|[[Social democracy]]|[[Civic nationalism]]}}
+| youth            = Chandigarh Youth Congress
+| women            = Chandigarh Territorial Mahila Congress Committee
+| loksabha_seats   = {{Composition bar|1|1|hex=#00BFFF}}
+| state_seats_name = [[Municipal Corporation Chandigarh]]
+| state_seats      = {{Composition bar|6|35|hex=#00BFFF}}
+| website          = 
+| symbol           = [[File:Hand_INC.svg|150px]]
+|eci= An Union Territorial Unit of [[Indian National Congress]]}}
+{{Indian National Congress sidebar}}
+
+'''Chandigarh Territorial Congress Committee''' is the wing of the [[Indian National Congress]] in the union territory of [[Chandigarh]]. [[Harmohinder Singh Lucky]] is its current State unit president, is a former mayor of Chandigarh, and has almost 4 decades of experience in politics and social life.<ref>{{cite news |last1=Nagarkoti |first1=Rajinder |title=Pardeep Chhabra is new Cong chief |url=https://www.tribuneindia.com/news/chandigarh/pardeep-chhabra-is-new-cong-chief/28336.html |access-date=13 August 2018 |agency=Tribune News Service |publisher=Tribune India |date=10 Jan 2015 |location=Chandigarh |archive-date=13 August 2018 |archive-url=https://web.archive.org/web/20180813213231/https://www.tribuneindia.com/news/chandigarh/pardeep-chhabra-is-new-cong-chief/28336.html |url-status=dead }}</ref><ref>{{cite news |last1=Dhall |first1=Rajesh |title=Pradeep Chhabra to remain Pradesh Congress president |url=https://www.amarujala.com/chandigarh/pradeep-chhabra-will-remain-the-president-of-chandigarh-congress |access-date=13 August 2018 |publisher=Amar Ujala |date=8 Jan 2018 |location=Chandigarh |language=hi}}</ref><ref>{{cite news |last1=Upadhyay |first1=Ramkrishan |title=AICC chief's decision comes as reprieve to Pradeep Chhabra |url=https://www.tribuneindia.com/news/chandigarh/aicc-chief-s-decision-comes-as-reprieve-to-pradeep-chhabra/525200.html |access-date=13 August 2018 |agency=Tribune News Network |publisher=Tribune India |date=8 Jan 2018 |archive-date=13 August 2018 |archive-url=https://web.archive.org/web/20180813213225/https://www.tribuneindia.com/news/chandigarh/aicc-chief-s-decision-comes-as-reprieve-to-pradeep-chhabra/525200.html |url-status=dead }}</ref> Sh. Pawan Kumar Bansal is one of the most prominent faces and seniormost leader of Chandigarh Congress and has been a former MP and Union Minister from Chandigarh. He is currently the Treasurer of Indian National Congress.Shri Manish Tewari of Indian National Congress party is currently the member of parliament from Chandigarh lok sabha seat.
+
+==List of presidents==
+{| class="wikitable sortable" style="text-align:center;"
+! Style="background-color:#00BFFF; color:white" | S.no
+! Style="background-color:#00BFFF; color:white" | President 
+! Style="background-color:#00BFFF; color:white" colspan=2 | Term
+|- 
+!1.
+|B. B. Bahl 
+|May 2000
+|9 January 2015
+|-
+!2.
+|Pardeep Chhabra 
+|9 January 2015
+|9 February 2021
+|-
+!3.
+|Subhash Chawla 
+|9 February 2021
+|13 June 2022
+|-
+!4.
+|Harmohinder Singh Lucky
+|13 June 2022
+|'''Incumbent'''
+|-
+|}
+
+==Performance in General Elections (Lok Sabha)==
+{|class="wikitable sortable" style="text-align:center;"
+|+[[File:Lok Sabha.svg{{!}}class=skin-invert|100px]] [[Lok Sabha]] Elections
+!style="background-color:#00BFFF;color:black"|Year
+!style="background-color:#00BFFF;color:black"|Lok Sabha
+!style="background-color:#00BFFF;color:black"|Seats contested
+!style="background-color:#00BFFF;color:black"|Seats won
+!style="background-color:#00BFFF;color:black"|(+/-) in seats
+!style="background-color:#00BFFF;color:black"|% of votes
+!style="background-color:#00BFFF;color:black"|Vote swing
+!style="background-color:#00BFFF;color:black"|Popular vote
+!style="background-color:#00BFFF;color:black"|Outcome
+|-
+|[[1967 Indian general election|1967]]
+|[[4th Lok Sabha|4th]]
+|1
+|{{Composition bar|0|1|{{party color|Indian National Congress}}}}
+|{{new}}
+|23.04%
+|{{new}}
+|11,323
+|{{yes2|Government}}
+|-
+|[[1971 Indian general election|1971]]
+|[[5th Lok Sabha|5th]]
+|1
+|{{Composition bar|1|1|{{party color|Indian National Congress}}}}
+|{{increase}} 1
+|66.85%
+|{{increase}} 43.81
+|48,335 
+|{{yes2|Government}}
+|-
+|[[1977 Indian general election|1977]]
+|[[6th Lok Sabha|6th]]
+|1
+|{{Composition bar|0|1|{{party color|Indian National Congress}}}}
+|{{decrease}} 1
+|28.37%
+|{{decrease}} 38.48
+|30,382
+|{{no2|Opposition}}
+|-
+|[[1980 Indian general election|1980]]
+|[[7th Lok Sabha|7th]]
+|1
+|{{Composition bar|1|1|{{party color|Indian National Congress}}}}
+|{{increase}} 1
+|49.65%
+|{{increase}} 21.28
+|61,624
+|{{yes2|Government}}
+|-
+|[[1984 Indian general election|1984]]
+|[[8th Lok Sabha|8th]]
+|1
+|{{Composition bar|1|1|{{party color|Indian National Congress}}}}
+|{{Steady}}
+|66.02%
+|{{increase}} 16.37
+|103,090
+|{{yes2|Government}}
+|-
+|[[1989 Indian general election|1989]]
+|[[9th Lok Sabha|9th]]
+|1
+|{{Composition bar|0|1|{{party color|Indian National Congress}}}}
+|{{decrease}} 1
+|40.22%
+|{{decrease}} 25.80
+|87,238
+|{{no2|Opposition}}
+|-
+|[[1991 Indian general election|1991]]
+|[[10th Lok Sabha|10th]]
+|1
+|{{Composition bar|1|1|{{party color|Indian National Congress}}}}
+|{{increase}} 1
+|35.86%
+|{{decrease}} 4.36
+|76,628
+|{{yes2|Government}}
+|-
+|[[1996 Indian general election|1996]]
+|[[11th Lok Sabha|11th]]
+|1
+|{{Composition bar|0|1|{{party color|Indian National Congress}}}}
+|{{decrease}} 1
+|29.79%
+|{{decrease}} 6.07
+|77,168
+|{{no2|Opposition}}
+|-
+|[[1998 Indian general election|1998]]
+|[[12th Lok Sabha|12th]]
+|1
+|{{Composition bar|0|1|{{party color|Indian National Congress}}}}
+|{{Steady}}
+|38.70%
+|{{increase}} 8.91
+|109,421
+|{{no2|Opposition}}
+|-
+|[[1999 Indian general election|1999]]
+|[[13th Lok Sabha|13th]]
+|1
+|{{Composition bar|1|1|{{party color|Indian National Congress}}}}
+|{{increase}} 1
+|47.00%
+|{{increase}} 8.30
+|132,924
+|{{no2|Opposition}}
+|-
+|[[2004 Indian general election|2004]]
+|[[14th Lok Sabha|14th]]
+|1
+|{{Composition bar|1|1|{{party color|Indian National Congress}}}}
+|{{Steady}}
+|52.06%
+|{{increase}} 5.06
+|139,880
+|{{yes2|Government}}
+|-
+|[[2009 Indian general election|2009]]
+|[[15th Lok Sabha|15th]]
+|1
+|{{Composition bar|1|1|{{party color|Indian National Congress}}}}
+|{{Steady}}
+|46.87%
+|{{decrease}} 5.19
+|161,042
+|{{yes2|Government}}
+|-
+|[[2014 Indian general election|2014]]
+|[[16th Lok Sabha|16th]]
+|1
+|{{Composition bar|0|1|{{party color|Indian National Congress}}}}
+|{{decrease}} 1
+|26.84%
+|{{decrease}} 20.03
+|121,720
+|{{no2|Opposition}}
+|-
+|[[2019 Indian general election|2019]]
+|[[17th Lok Sabha|17th]]
+|1
+|{{Composition bar|0|1|{{party color|Indian National Congress}}}}
+|{{Steady}}
+|40.35%
+|{{increase}} 13.51
+|184,218
+|{{no2|Opposition}}
+|-
+|[[2024 Indian general election|2024]]
+|[[18th Lok Sabha|18th]]
+|1
+|{{Composition bar|1|1|{{party color|Indian National Congress}}}}
+|{{increase}} 1
+|48.22%
+|{{increase}} 7.87
+|216,657
+|{{no2|Opposition}}
+|-
+|}
+
+==See also==
+* [[Indian National Congress]]
+* [[Congress Working Committee]]
+* [[All India Congress Committee]]
+* [[Pradesh Congress Committee]]
+
+==References==
+{{reflist}}
+
+==External links==
+{{twitter|INCChandigarh}}
+{{Indian National Congress}}
+{{Indian political parties}}
+{{India topics}}
+
+{{DEFAULTSORT:Chandigarh Territorial Congress Committee}}
+[[Category:Indian National Congress by state or union territory]]
+
+
+{{india-party-stub}}

@@ -1,0 +1,108 @@
+{{short description|District of São Paulo, Brazil}}
+{{Coord|-23.887|-46.714|display=title}}
+{{Infobox settlement
+|official_name            = Marsilac
+
+<!-- Maps -->
+|image_map                = Marsilac.png
+|mapsize                  = 250px
+|map_caption              = Location of Marsilac in São Paulo
+|image_map1               = 
+|mapsize1                 = 
+|map_caption1             =
+
+== LOCATIONS ==
+<!-- Location -->
+|subdivision_type         = Country
+|subdivision_name         = {{flag|Brazil}}
+|subdivision_type1        = [[States of Brazil|State]]
+|subdivision_name1        = [[File:Bandeira do Estado de São Paulo.svg|border|22px]] [[São Paulo (state)|São Paulo]]
+|subdivision_type2        = [[Municipalities of Brazil|Municipality]]
+|subdivision_name2        = [[São Paulo]]
+|subdivision_type3        = [[Subprefecture]]
+|subdivision_name3        = [[Subprefecture of Parelheiros|Parelheiros]]
+|government_footnotes     = 
+|government_type          = 
+|leader_title             = 
+|leader_name              = 
+|leader_title1            = 
+|leader_name1             = 
+|established_title        = 
+|established_date         =
+
+<!-- Area -->
+|area_total_km2            = 200
+
+<!-- Population -->
+|population_as_of         = 2007
+|population_total         = 8,258
+|population_density_km2   = 41
+<!-- THIS INFORMATION DOES NOT MATCH UP WITH THE HDI DATA ON THE PORTUGUESE ARTICLE (WHICH IS NOT CITED AT ALL (OMIT UNTIL VERIFIED)
+|blank_name = '''[[Human Development Index|HDI]]'''<ref name=HDI2002>{{cite web|author1=Prefeitura do Município de São Paulo|title=Desigualdade em São Paulo: o IDH|url=http://www2.uol.com.br/aprendiz/n_noticias/imprescindivel/|website=Aprendiz: Imprendizível|publisher=UOL|access-date=28 December 2014|pages=5-7|language=pt|date=August 15, 2002|quote=Fonte: IBGE/Censo 2000 e Fundação SEADE. Elaboração SDTS/PMSP.}}</ref>
+|blank_info = 0.245 – <span style="color: red">very low</span>
+-->
+|footnotes                = 
+|website                  = [http://parelheiros.prefeitura.sp.gov.br Subprefecture of Parelheiros]
+}}
+'''Marsilac''' is one of 96 districts of [[São Paulo]], Brazil, located in the [[South Zone of São Paulo|extreme south]] tip of the city in the [[subprefecture of Parelheiros]].<ref name=dados>{{cite web|title=Dados Demográficos dos Distritos pertencentes as Subprefeituras|url=http://www.prefeitura.sp.gov.br/cidade/secretarias/subprefeituras/subprefeituras/dados_demograficos/index.php?p=12758|website=prefeitura.sp.gov.br|publisher=City of São Paulo|language=pt|access-date=28 December 2014|url-status=dead|archive-url=https://web.archive.org/web/20150204055340/http://www.prefeitura.sp.gov.br/cidade/secretarias/subprefeituras/subprefeituras/dados_demograficos/index.php?p=12758|archive-date=4 February 2015}}</ref> Its name is a tribute to engineer [[Jose Alfredo Marsilac]], who developed many techniques for building roads and tunnels, even after losing 99% of his vision from being hit by a bomb in the [[Constitutionalist Revolution|Revolution of 1932]].
+
+== History ==
+Early settlement of the area owed mainly to the construction of the Mairinque–Santos by [[Estrada de Ferro Sorocabana]] connecting [[Mairinque]] and [[Santos, São Paulo|Santos]], completed in 1935. Along its extension, there were three stations in the district: Engineer Marsilac (which gave name to the surrounding neighborhood and later to its own district), Evangelista de Souza, and Rio de Campos.
+
+== Features ==
+Located near the [[Serra do Mar]] and almost entirely rural, Marsilac has the largest land area of the municipality, equivalent to all of the municipality's [[Central Zone of São Paulo|central area]]. It also has the lowest population density of all the districts, largely covered by reserves of the [[Atlantic Forest]].
+
+This is the most remote district of the capital, located about 60–70 kilometers from ''[[Marco Zero (São Paulo)|Marco Zero]]'' and only about 10–15&nbsp;km from the Atlantic Ocean, which is visible from some points. It borders the municipalities of [[São Vicente, São Paulo|São Vicente]] and [[Itanhaém]]. A tiny area of the town lies at sea level, located in the [[Capivari River (Tietê River)|Capivari River]] valley.
+
+It is the poorest district and has the lowest [[Human Development Index]] (HDI) of the city of São Paulo.
+
+== Adjacent districts and municipalities ==
+* [[Parelheiros (district of São Paulo)|Parelheiros]] (North)
+* Municipality of [[São Bernardo do Campo]] (East)
+* City of Itanhaém and São Vicente (South)
+* City of [[Juquitiba]] and [[Embu-Guaçu]] (West)
+
+== Neighborhoods of Marsilac ==
+{{div col|colwidth=18em}}
+* [[Banhado]]
+* [[Bela Vista (Marsilac)|Bela Vista]]
+* [[Capivari (Marsilac)|Capivari]]
+* [[Cipó do Meio]]
+* [[Chácara Sanni]]
+* [[Embura]]
+* [[Parque Florestal Paulista]]
+* [[Chácara Galo Azul]] 
+* [[Parque Internacional]]
+* [[Chácara Itajaá]]
+* [[Mambu (Marsilac)|Mambu]]
+* [[Engenheiro Marsilac]]
+* [[Evangelista de Sousa]]
+* [[Gramado (Marsilac)|Gramado]]
+* [[Jardim dos Eucaliptos]]
+* [[Paiol]]
+* [[Ponte Alta (Marsilac)|Ponte Alta]]{{div col end}}
+
+==See also==
+* [[Roman Catholic Diocese of Santo Amaro]]
+* [[Line 9 (CPTM) |Line 9 (CPTM) of Train]]
+* [[Estrada de Ferro Santos-Jundiaí |Railway Line Santos-Jundiaí]]
+* [[Colônia crater]]
+* [[Guarapiranga |Guarapiranga reservoir]]
+* [[SP-57 |Parelheiros-Itanhaém Highway 57]]
+
+==References==
+<references />
+
+==External links==
+* [http://www.diocesedesantoamaro.org.br/ Roman Catholic Diocese of Santo Amaro]
+* [http://www.gruposulnews.com.br/parelheiros Parelheiros News]
+* [http://www.folhadaminhasampa.com.br Sheet of My Sampa]
+* [http://www.grajaunews.com Grajaú News]
+
+{{Subdivisions of São Paulo |state=autocollapse}}
+{{City Districts of São Paulo |state=expanded}}
+
+{{DEFAULTSORT:Marsilac (District Of Sao Paulo)}}
+[[Category:Districts of São Paulo]]
+
+{{MesoregionSãoPaulo-geo-stub}}

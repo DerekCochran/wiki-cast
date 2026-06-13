@@ -1,0 +1,80 @@
+{{Short description|UK Parliamentary by-election}}
+{{Use dmy dates|date=August 2019}}
+{{Use British English|date=August 2019}}
+A [[UK parliamentary by-election]] in the constituency of [[Worcester (UK Parliament constituency)|Worcester]] was held on 7 February 1908 and won by the [[Conservative Party (UK)|Conservative]] candidate [[Edward Goulding, 1st Baron Wargrave|Edward Goulding]].
+
+==Vacancy==
+The election was held after the voiding of the election for Worcester at the [[1906 UK general election]] of Conservative [[George Henry Williamson]]. The losing [[Liberal Party (UK)|Liberal Party]] candidate, [[Henry Devenish Harben]], lodged an [[election petition]] alleging corruption, and after a trial from 22 to 26 May, Sir [[John Compton Lawrance]] and Sir [[Joseph Walton (judge)|Joseph Walton]] adjudged Williamson "guilty by his agents of the corrupt practice of bribery", so that on 14 June his seat was vacated.<ref>{{multiref|
+{{cite book |first3=J. S. |last3=Sandars |last1=O'Malley |first1=Edwin L. |last2=Hardcastle |first2=Henry |title=Reports of the Decisions of the Judges for the trial of Election Petitions in England and Ireland as pursuant to the Parliamentary Elections Act 1868 |location=London |publisher=Stevens & Haynes |date=1910 |volume=5 |url=https://babel.hathitrust.org/cgi/pt?id{{=}}mdp.35112103161263 |pages=212–217 }}|
+{{cite book |title=Copy of the Shorthand Writers' Notes of the Judgment of Mr. Justice Lawrance and Mr. Justice Walton on the Trial of the Election Petition of the City of Worcester; also the Minutes of Evidence taken at the Trial of the said Election Petition |date=14 June 1906 |url=https://babel.hathitrust.org/cgi/pt?id=umn.31951d02039880s&seq=5 |series=Parliamentary papers |volume=HC 1906 xcv (198) 255 }}|
+{{cite book |title=Commons Chamber |date=14 June 1906 |volume=158 |url=https://hansard.parliament.uk/Commons/1906-06-14/debates/7d1bb89d-ffd9-4973-8941-1539dda3b54b/CommonsChamber}}
+}}</ref> The [[writ of election]] was suspended and a [[Royal Commission]] was established to investigate the extent of corruption, and its report was published in December, concluding that there had been extensive corruption.<ref>{{multiref|
+{{cite book |author=Royal Commission Appointed to Inquire Into the Existence of Corrupt Practices at the Last Election for the City of Worcester |title=Report |date=1906 |publisher=HMSO |language=en |series=[[Command paper]]s |volume=Cd.3268}}|
+{{cite book |author=Royal Commission Appointed to Inquire Into the Existence of Corrupt Practices at the Last Election for the City of Worcester |title=Minutes of Evidence  |date=1906 |publisher=HMSO |language=en |series=Command papers |volume=Cd.3269}}
+}}</ref> New writs were proposed unsuccessfully on 17 December 1906<ref>[https://api.parliament.uk/historic-hansard/commons/1906/dec/17/the-worcester-vacancy HC Deb 17 December 1906 vol 167 cc1051–1063]</ref> and 14 February 1907,<ref>[https://api.parliament.uk/historic-hansard/commons/1907/feb/14/new-writ-borough-of-worcester HC Deb 14 February 1907 vol 169 cc317–329]</ref> and the writ was not finally moved until 31 January 1908,<ref>[https://api.parliament.uk/historic-hansard/commons/1908/jan/31/new-writ-borough-of-worcester HC Deb 31 January 1908 vol 183 cc373–375]</ref> leaving the seat without an MP for two years.<ref name="craig1885-1918">{{cite book
+ |last=Craig
+ |first=F. W. S.
+ |author-link= F. W. S. Craig
+ |title=British parliamentary election results 1885–1918
+ |orig-year=1974
+ |edition= 2nd
+ |year=1989
+ |publisher= Parliamentary Research Services
+ |location=Chichester
+ |isbn= 0-900178-27-2
+ |page=215
+}}</ref>
+
+==Campaign==
+The campaign was "short but exceptionally keen".<ref name="times38564">{{cite news |title=Election Intelligence; Worcester |work=The Times |issue=38564 |date=8 February 1908 |location=London |page=10}}</ref> Goulding campaigned for [[Tariff Reform League|tariff reform]] and had the support of most of [[Worcester City Council]].<ref name="times38564"/> The 1906 election court case had to be paid for by the [[county borough]], which duly increased the [[rates (tax)|rates]], causing resentment against the Liberals as the party whose previous candidate had lodged the petition.<ref name="times38564"/> There was also an [[anti-incumbency]] sentiment against the [[Liberal government, 1905–1915|Liberal government]], which was blamed for food price inflation.<ref name="times38564"/>
+
+==Result==
+
+{{Election box begin |
+|title=1908 Worcester by-election<ref name="craig1885-1918"/>
+}}
+{{Election box winning candidate with party link|
+|party      = Conservative Party (UK)
+|candidate  = [[Edward Goulding, 1st Baron Wargrave|Edward Goulding]]
+|votes  = 4,361
+|percentage  =58.7
+|change  = +7.9
+}}
+{{Election box candidate with party link|
+|party      = Liberal Party (UK)
+|candidate  = [[Harold Elverston]]
+|votes  = 3,069
+|percentage  = 41.3
+|change  = -7.9
+}}
+{{Election box majority|
+|votes  = 1,292
+|percentage  = 17.4
+|change  = +15.8
+}}
+{{Election box turnout|
+|votes  = 7,430
+|percentage  = 87.8
+|change  = -2.9
+}}
+{{Election box registered electors|
+ |reg. electors = 8,460
+}}
+{{Election box hold with party link|
+|winner     = Conservative Party (UK)
+|swing      = +7.9
+}}
+{{Election box end}}
+
+==References==
+{{reflist}}
+
+{{By-elections to the 28th UK Parliament}}
+
+[[Category:1908 elections in the United Kingdom]]
+[[Category:1908 in England]]
+[[Category:20th century in Worcestershire]]
+[[Category:Politics of Worcester, England]]
+[[Category:By-elections to the Parliament of the United Kingdom in Worcestershire constituencies]]
+
+{{WestMidlands-UK-Parl-by-election-stub}}

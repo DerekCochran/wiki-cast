@@ -1,0 +1,266 @@
+{{Short description|Family of mammals}}
+{{EngvarB|date=June 2022}}
+{{Use dmy dates|date=June 2022}}
+{{Automatic taxobox
+| name = Mustelidae
+| image = <!--imagemap maps to original image coordinates:  1,599 × 1,594 pixels
+rect top-left cords, bottom-right corners-->
+<imagemap>
+File:Mustelidae-01.jpg|250px|alt=Alt text 
+rect   0    0  799  532 [[European pine marten|European pine marten (''Martes martes'')]] 
+rect 800    0 1599  532 [[European badger |European badger (''Meles meles'')]] 
+rect   0  533  799 1064 [[Eurasian otter |Eurasian otter (''Lutra lutra'')]] 
+rect 800  533 1599 1064 [[Wolverine |Wolverine (''Gulo gulo'')]] 
+rect   0 1066  799 1594 [[Stoat |Stoat or short-tailed weasel (''Mustela erminea'')]] 
+rect 800 1066 1599 1594 [[Honey badger |Honey badger (''Mellivora capensis'')]] 
+desc none
+default [[Mustelidae]]
+</imagemap>
+| image_caption =
+|range_map = Mustelid_Distribution.png
+|range_map_caption = The native distribution and density of extant mustelid species.
+| fossil_range = {{Fossil range|Oligocene|Recent}}<ref name=Paterson2020 />
+| taxon = Mustelidae
+| authority = [[Johann Fischer von Waldheim|G. Fischer de Waldheim]], 1817
+| type_genus = ''[[Weasel|Mustela]]''
+| type_genus_authority = [[Carl Linnaeus|Linnaeus]], 1758
+| subdivision_ranks = Subfamilies
+| subdivision =
+*[[Guloninae]] ([[marten]]s, [[tayra]], [[fisher (animal)|fisher]], [[wolverine]])
+*[[Helictidinae]] ([[ferret-badger]]s)
+*[[Ictonychinae]] ([[grison]]s, [[Ictonyx|African polecat]]s)
+*[[Otter|Lutrinae]] (otters)
+*[[Badger (animal)|Melinae]] (Eurasian badgers)
+*[[Mellivorinae]] (honey badger)
+*[[Mustelinae]] (weasels)
+*[[American badger|Taxidiinae]] (American badger)
+*{{extinct}}[[Oligobuninae]]
+}}
+
+The '''Mustelidae''' ({{IPAc-en|m|ʌ|ˈ|s|t|ɛ|l|ᵻ|d|iː}};<ref>{{cite Merriam-Webster|Mustelidae}}</ref> from Latin {{Lang|la|mustela}}, weasel) are a diverse family of [[carnivora|carnivoran]] mammals, including [[weasel]]s, [[badger]]s, [[otter]]s, [[polecat]]s, [[marten]]s, [[grison]]s, and [[wolverine]]s. Otherwise known as '''mustelids''' ({{IPAc-en|ˈ|m|ʌ|s|t|ᵻ|l|ɪ|d|z}}<ref>{{cite Dictionary.com|mustelid}}</ref>), they form the largest family in the suborder [[Caniformia]] of the [[order (biology)|order]] [[Carnivora]] with about 66 to 70 species in nine subfamilies.<ref name="Law-2018">{{Cite journal|last1= Law|first1=C. J.|last2= Slater|first2=G. J.|last3= Mehta|first3=R. S.|date= 2018-01-01|title= Lineage Diversity and Size Disparity in Musteloidea: Testing Patterns of Adaptive Radiation Using Molecular and Fossil-Based Methods|journal= Systematic Biology|volume= 67|issue= 1|pages= 127–144|doi= 10.1093/sysbio/syx047|pmid=28472434|doi-access= free}}</ref>
+
+== Variety ==
+{{more citations needed section|date=March 2022}}
+Mustelids vary greatly in size and behaviour. The smaller variants of the [[least weasel]] can be under {{convert|20|cm|0|abbr=on}} in length, while the [[giant otter]] of [[Amazon rainforest|Amazonian]] South America can measure up to {{convert|1.7|m|abbr=on}} and [[sea otter]]s can exceed {{convert|45|kg|lb|abbr=on}} in weight.  [[Wolverine]]s can crush bones as thick as the femur of a [[moose]] to get at the [[Bone marrow|marrow]], and have been seen attempting to drive [[bear]]s away from their kills. The sea otter uses rocks to break open shellfish to eat. [[Marten]]s are largely [[arboreal]], while  [[European badger]]s dig extensive tunnel networks, called [[sett]]s. Only one mustelid has been domesticated; the [[ferret]]. [[Tayra]] are also kept as pets (although they require a [[Dangerous Wild Animals Act 1976|Dangerous Wild Animals]] licence in the UK), or as working animals for hunting or vermin control. Others have been important in the [[fur trade]]—the [[mink]] is often [[Fur farming|raised for its fur]].
+
+Mustelidae is one of the oldest and most species-rich families in the order Carnivora. Mustelid-like forms appeared about 40&nbsp;million years ago (Mya), roughly coinciding with the appearance of [[rodent]]s. The common ancestor of modern mustelids appeared about 18&nbsp;Mya.<ref name="Law-2018" />
+
+== Characteristics ==
+[[File:Black-footed ferret skeleton.jpg|thumb|Skeleton of a [[black-footed ferret]] (''Mustela nigripes'') on display at the [[Museum of Osteology]]]]
+Within a large range of variation, the mustelids exhibit some common characteristics. They are typically small animals with elongated bodies, short legs, short skulls, short, round ears, and thick fur.<ref>{{Cite journal|last1=Law|first1=C. J.|last2=Slater|first2=G. J.|last3=Mehta|first3=R. S.|title=Shared extremes by ectotherms and endotherms: Body elongation in mustelids is associated with small size and reduced limbs|journal= Evolution|issue=4|pages=735–749|doi= 10.1111/evo.13702|year=2019|volume=73|pmid=30793764|bibcode=2019Evolu..73..735L |doi-access=free}}</ref> Mustelids' long, slender body structure is adapted to three main lifestyles: terrestrial, arboreal, and aquatic/semi-aquatic.<ref name=":0">{{Cite book |title=Biology and conservation of musteloids |date=2018 |publisher=Oxford University Press |isbn=978-0-19-182051-9 |editor-last=Macdonald |editor-first=David W. |edition=First |location=Oxford |editor-last2=Newman |editor-first2=Christopher |editor-last3=Harrington |editor-first3=L. A.}}</ref> They exhibit digitigrade or plantigrade locomotion, with five toes on each foot, enabling them to move in different ways (i.e. digging, climbing, swimming).<ref name=":1">{{Cite book |title=Mammalogy: adaptation, diversity, ecology |date=2020 |publisher=Johns Hopkins university press |isbn=978-1-4214-3652-4 |edition=5th |location=Baltimore, Maryland}}</ref> Most mustelids are solitary, nocturnal animals, and are active year-round.<ref name=EoM>{{cite book|editor-last=Macdonald |editor-first=D.|last= King |first=Carolyn|year= 1984|title= The Encyclopedia of Mammals|publisher= Facts on File|location= New York|pages= [https://archive.org/details/encyclopediaofma00mals_0/page/108 108–109]|isbn= 978-0-87196-871-5|url= https://archive.org/details/encyclopediaofma00mals_0/page/108}}</ref> Their dense fur, often serving as natural camouflage, undergoes seasonal changes to help them adjust to varying environmental conditions.<ref name=":0" />
+
+With the exception of the sea otter<ref>{{cite book | title=The Sea Otter in the Eastern Pacific Ocean | last=Kenyon |first=Karl W.|
+year=1969|publisher=U.S. Bureau of Sport Fisheries and Wildlife|location=Washington, D.C.|url=https://books.google.com/books?id=JKUeAQAAIAAJ}}</ref> they have [[anal scent gland]]s that produce a strong-smelling secretion the animals use for [[sexual signalling]] and [[marking territory]].
+
+{{anchor|Reproduction}}
+Mustelids exhibit sexual dimorphism, with males being larger than females, but degree varies between species as well as geographically within species.<ref name=":0" /> Male mustelids have a bifurcated penis and baculum.<ref name=":1" /> Most mustelid reproduction involves [[embryonic diapause]].<ref>Amstislavsky, Sergei, and Yulia Ternovskaya. "[https://web.archive.org/web/20171117174933/https://pdfs.semanticscholar.org/f3b8/69a6701e7bb11035119faf36745f0bd0fafc.pdf Reproduction in mustelids.]" Animal Reproduction Science 60 (2000): 571–581.</ref> The [[embryo]] does not immediately implant in the [[uterus]], but remains dormant for some time. No development takes place as long as the embryo remains unattached to the uterine lining. As a result, the normal gestation period is extended, sometimes up to a year. This allows the young to be born under favourable environmental conditions. Reproduction has a large energy cost, so it is to a female's benefit to have available food and mild weather. The young are more likely to survive if birth occurs after previous offspring have been [[wean]]ed.
+
+Mustelids are predominantly carnivorous, although some eat vegetable matter at times. While not all mustelids share an identical [[dentition]], they all possess teeth adapted for eating flesh, including the presence of shearing [[carnassial]]s. One characteristic trait is a meat-shearing upper-back molar that is rotated 90°, towards the inside of the mouth.<ref>{{cite web | last = Pratt | first = Philip | title = Dentition of the Wolverine | publisher = The Wolverine Foundation, Inc. | url = http://www.wolverinefoundation.org/dentition.htm | archive-url = https://web.archive.org/web/20080527021506/http://www.wolverinefoundation.org/dentition.htm | archive-date = 27 May 2008 | access-date = 1 July 2007}}</ref><ref name="akfishgame">{{cite web | last = Taylor | first = Ken | title = Wolverine | work = Wildlife Notebook Series | publisher = Alaska Department of Fish & Game | year = 1994 | url = http://www.adfg.state.ak.us/pubs/notebook/furbear/wolverin.php | access-date = 21 January 2007 | url-status = live | archive-url = https://web.archive.org/web/20061206233223/http://www.adfg.state.ak.us/pubs/notebook/furbear/wolverin.php | archive-date = 6 December 2006}}</ref> With variation between species, the most common [[dental formula]] is {{DentalFormula|upper=3.1.3.1|lower=3.1.3.2}}.<ref name=EoM />
+
+== Ecology ==
+{{unref section|date=January 2026}}[[File:Stoat killing a rabbit.jpg|thumb|[[Stoat]] killing a [[European rabbit|rabbit]]]]
+The [[Fisher (animal)|fisher]], tayra, and martens are partially arboreal, while badgers are [[fossorial]]. A number of mustelids have aquatic lifestyles, ranging from [[semiaquatic]] minks and [[River otter (disambiguation)|river otter]]s<!--intentional link to DAB page--> to the [[aquatic mammal|fully aquatic]] sea otter, which is one of the few nonprimate mammals known to [[Tool use by sea otters|use tools]] while foraging. It uses "anvil" stones to crack open the shellfish that form a significant part of its diet. It is a "[[keystone species]]", keeping its prey populations in balance so some do not outcompete the others and destroy the [[kelp]] in which they live.
+
+The [[black-footed ferret]] is entirely dependent on another keystone species, the [[prairie dog]]. A family of four ferrets eats 250 prairie dogs in a year; this requires a stable population of prairie dogs from an area of some {{convert|500|acre|km2|abbr=on}}.
+
+== Animals of similar appearance ==
+[[Skunk]]s were previously included as a subfamily of the mustelids, but DNA research placed them in their own separate family (Mephitidae).<ref>{{cite journal | author = Dragoo and Honeycutt | year = 1997 | title= Systematics of Mustelid-like Carnivores | journal = [[Journal of Mammalogy]] | volume = 78 | issue = 2 | pages = 426–443 | doi= 10.2307/1382896 | jstor = 1382896 | author2 = Honeycutt, Rodney L | doi-access = free }}</ref> [[Mongoose]]s bear a striking resemblance to many mustelids, but belong to a distinctly different [[Order (biology)|suborder]]—the [[Feliformia]] (all those carnivores sharing more recent origins with the [[Felidae|cats]]) and not the [[Caniformia]] (those sharing more recent origins with the [[Canidae|dogs]]). Because mongooses and mustelids occupy similar [[ecological niche]]s, [[convergent evolution]] has led to similarity in form and behavior.<ref>{{Cite journal |last1=Mills |first1=David R. |last2=Do Linh San |first2=Emmanuel |last3=Robinson |first3=Hugh |last4=Isoke |first4=Sam |last5=Slotow |first5=Rob |last6=Hunter |first6=Luke |date=September 2019 |title=Competition and specialization in an African forest carnivore community |journal=Ecology and Evolution |language=en |volume=9 |issue=18 |pages=10092–10108 |doi=10.1002/ece3.5391 |issn=2045-7758 |pmc=6787825 |pmid=31624540|bibcode=2019EcoEv...910092M }}</ref>
+
+== Human uses ==
+[[File:Léonard de Vinci - Dame à l'.jpg|thumb|upright|Detail from [[Leonardo da Vinci]]'s ''[[Lady with an Ermine]]'',  1489–1490]]
+
+Several mustelids, including the mink, the [[sable]] (a type of marten), and the [[stoat]] (ermine), possess [[furs]] that are considered beautiful and valuable, so have been  hunted since prehistoric times. From the early Middle Ages, the [[fur trade|trade in furs]] was of great economic importance for northern and eastern European nations with large native populations of fur-bearing mustelids, and was a major economic impetus behind Russian expansion into [[Siberia]] and French and English expansion in North America. In recent centuries [[fur farming]], notably of mink, has also become widespread and provides the majority of the fur brought to market.
+
+One species, the [[sea mink]] (''Neogale macrodon'') of New England and Canada, was driven to [[extinction]] by fur trappers. Its appearance and habits are almost unknown today because no complete specimens can be found and no systematic contemporary studies were conducted.
+
+The [[sea otter]], which has the densest fur of any animal,<ref>{{cite encyclopedia |last1= Yochem |first1= Pamela K. |last2= Stewart |first2= Brent S. |date= 2002 |title= Hair and Fur |editor-last1= Perrin |editor-first1= William F. |editor-last2= Würsig |editor-first2= Bernd |editor-last3= Thewissen |editor-first3= J. G. M. |editor-link3= Hans Thewissen |encyclopedia= Encyclopedia of Marine Mammals |publisher= Academic Press |location= San Diego |page= 548 |url= https://archive.org/details/encyclopedia-of-marine-mammals-pdfdrive/page/548/}} "Sea otters have the densest fur of any mammal, with approximately {{val|130,000|u=hairs|up=cm2|fmt=commas}}, about twice as dense as that of northern fur seals ({{itco|''Callorhinus ursinus''}})."</ref> narrowly escaped the fate of the sea mink. The discovery of large populations in the North Pacific was the major economic driving force behind Russian expansion into [[Kamchatka]], the [[Aleutian Islands]], and [[Alaska]], as well as a cause for conflict with [[Japan]] and foreign hunters in the [[Kuril Islands]]. Together with widespread hunting in California and British Columbia, the species was brought to the brink of extinction until an international moratorium came into effect in 1911.
+
+Today, some mustelids are threatened for other reasons. Sea otters are vulnerable to [[oil spill]]s and the indirect effects of overfishing; the [[black-footed ferret]], a relative of the [[European polecat]], suffers from the loss of American [[prairie]]; and [[wolverine]] populations are slowly declining because of [[habitat destruction]] and persecution. The rare [[European mink]] (''Mustela lutreola'') is one of the most [[endangered]] mustelid species.<ref>{{cite journal |author-link=Thierry Lodé |first1=Thierry |last1=Lodé |first2=J. P. |last2=Cornier |first3=D. |last3=Le Jacques |year=2001 |title=Decline in endangered species as an indication of anthropic pressures: the case of European mink Mustela lutreola western population |journal=Environmental Management |volume=28 |issue=6 |pages=727–735 |doi=10.1007/s002670010257 |pmid=11915962 |bibcode=2001EnMan..28..727L |s2cid=27062634 }}</ref>
+
+The [[ferret]], a domesticated European polecat, is a fairly common [[pet]].
+
+== Evolution and systematics ==
+Mustelidae is a subfamily in [[Musteloidea]], a superfamily of mammals that is united by shared skull and teeth characteristics. Mustelids are believed to have separated from their next closest related family, [[Procyonidae]], around 29 million years ago.<ref>{{Cite journal |last1=Yonezawa |first1=Takahiro |last2=Nikaido |first2=Masato |last3=Kohno |first3=Naoki |last4=Fukumoto |first4=Yukio |last5=Okada |first5=Norihiro |last6=Hasegawa |first6=Masami |date=2007-07-01 |title=Molecular phylogenetic study on the origin and evolution of Mustelidae |url=https://linkinghub.elsevier.com/retrieve/pii/S0378111907000285 |journal=Gene |volume=396 |issue=1 |pages=1–12 |doi=10.1016/j.gene.2006.12.040 |pmid=17449200 |issn=0378-1119|url-access=subscription }}</ref> The oldest known mustelid from North America is ''[[Corumictis]] wolsani'' from the early and late Oligocene (early and late [[Arikareean]], Ar1–Ar3) of [[Oregon]].<ref name=Paterson2020 /> Middle Oligocene ''Mustelictis'' from Europe might be a mustelid, as well.<ref name=Paterson2020 /> Other early fossils of the mustelids were dated at the end of the Oligocene to the beginning of the Miocene. Which of these forms are Mustelidae ancestors and which should be considered the first mustelids is unclear.<ref name="Wund2005">{{cite web |url= https://animaldiversity.org/accounts/Mustelidae/ |title= Mustelidae|last= Wund|first= M.|date= 2005|website= [[Animal Diversity Web]]|publisher= University of Michigan|access-date= 2020-08-14}}</ref>
+
+The fossil record indicates that mustelids appeared in the late Oligocene period (33&nbsp;Mya) in Eurasia and migrated to every continent except Antarctica and Australia (all the continents that were connected during or since the early Miocene). They reached the Americas via the [[Bering land bridge]].
+
+{{Main|List of mustelids}}
+
+The 69 recent mustelids (67 extant species) are classified into eight subfamilies in 22 genera:<ref name="Law-2018" /><ref>{{Cite web|title=Explore the Database|url=https://www.mammaldiversity.org/explore.html|access-date=2021-06-25|website=www.mammaldiversity.org|archive-date=28 October 2020|archive-url=https://web.archive.org/web/20201028140029/https://www.mammaldiversity.org/explore.html|url-status=dead}}</ref>
+
+{{col-begin}}
+{{col-2}}'''Subfamily [[Taxidiinae]]'''
+* Genus ''[[Taxidea]]''
+** [[American badger]], ''T. taxus''
+
+'''Subfamily [[Mellivorinae]]'''
+* Genus ''[[Mellivora]]''
+** [[Honey badger]], ''M. capensis''
+
+'''Subfamily [[Melinae]]'''
+* Genus ''[[Arctonyx]]''
+** [[Northern hog badger]], ''A. albogularis''
+** [[Greater hog badger]], ''A. collaris''
+** [[Sumatran hog badger]], ''A. hoevenii''
+* Genus ''[[Meles (genus)|Meles]]''
+** [[Japanese badger]], ''M. anakuma''
+** [[Asian badger]], ''M. leucurus''
+** [[European badger]], ''M. meles''
+** [[Caucasian badger]], ''M. canescens''
+
+'''Subfamily [[Helictidinae]]'''
+* Genus ''[[Melogale]]''
+** [[Vietnam ferret-badger]], ''M. cucphuongensis''
+** [[Bornean ferret-badger]], ''M. everetti''
+** [[Chinese ferret-badger]], ''M. moschata''
+** [[Javan ferret-badger]], ''M. orientalis''
+** [[Burmese ferret-badger]], ''M. personata''
+** [[Formosan ferret-badger]], ''M. subaurantiaca''
+
+'''Subfamily [[Guloninae]]'''<ref name="Nascimento2014">{{cite journal|last1= Nascimento|first1=F. O. do|title=On the correct name for some subfamilies of Mustelidae (Mammalia, Carnivora)|journal= Papéis Avulsos de Zoologia|volume= 54|issue= 21|year= 2014|pages= 307–313|doi= 10.1590/0031-1049.2014.54.21|doi-access= free}}</ref>
+* Genus ''[[Tayra|Eira]]''
+** [[Tayra]], ''E. barbara''
+* Genus ''[[Gulo]]''
+** [[Wolverine]], ''G. gulo''
+* Genus ''[[Martes]]''
+** [[American marten]], ''M. americana''
+** [[Pacific marten]], ''M. caurina''
+** [[Yellow-throated marten]], ''M. flavigula''
+** [[Beech marten]], ''M. foina''
+** [[Nilgiri marten]], ''M. gwatkinsii''
+** [[European pine marten]], ''M. martes''
+** [[Japanese marten]], ''M. melampus''
+** [[Sable]], ''M. zibellina''
+* Genus ''[[Pekania]]''
+** [[Fisher (animal)|Fisher]], ''P. pennanti''
+
+'''Subfamily [[Ictonychinae]]'''<ref name="Nascimento2014" />
+* Genus ''[[Galictis]]''
+** [[Lesser grison]], ''G. cuja''
+** [[Greater grison]], ''G. vittata''
+* Genus ''[[Ictonyx]]''
+** [[Saharan striped polecat]], ''I. libycus''
+** [[Striped polecat]], ''I. striatus''
+* Genus ''[[Lyncodon]]''
+** [[Patagonian weasel]], ''L. patagonicus''
+* Genus ''[[Poecilogale]]''
+** [[African striped weasel]], ''P. albinucha''
+* Genus ''[[Vormela]]''
+** [[Marbled polecat]], ''V. peregusna''{{col-2}}
+
+'''Subfamily [[Lutrinae]]''' ([[otter]]s)
+* Genus ''[[Aonyx]]''
+** [[African clawless otter]], ''A. capensis''
+** [[Asian small-clawed otter]], ''A. cinerea''
+** [[Congo clawless otter]], ''A. congicus''
+* Genus ''[[Enhydra]]''
+** [[Sea otter]], ''E. lutris''
+* Genus ''[[Lontra]]''
+** [[North American river otter]], ''L. canadensis''
+** [[Marine otter]], ''L. felina''
+** [[Neotropical otter]], ''L. longicaudis''
+** [[Southern river otter]], ''L. provocax''
+* Genus ''[[Lutra]]''
+** [[Eurasian otter]], ''L. lutra''
+** [[Hairy-nosed otter]], ''L. sumatrana''
+** {{extinct}} [[Japanese otter]]. ''L. nippon''
+* Genus ''[[Hydrictis]]''
+** [[Spotted-necked otter]], ''H. maculicollis''
+* Genus ''[[Lutrogale]]''
+** [[Smooth-coated otter]], ''L. perspicillata''
+* Genus ''[[Pteronura]]''
+** [[Giant otter]], ''P. brasiliensis''
+
+'''Subfamily [[Mustelinae]]''' (weasels, ferrets, and mink)
+* Genus ''[[Mustela]]''
+** [[Mountain weasel]], ''M. altaica''
+** ''[[Mustela mopbie|M. mopbie]]''<ref name=jse>{{Cite journal |title=Phylogenomics of the Genus Mustela with description of a new species from China |journal=[[Journal of Systematics and Evolution]] |last1=Wei |first1=Qiu-Jin |date=2025-12-08 |url=https://onlinelibrary.wiley.com/doi/full/10.1111/jse.70029 |last2=Cao |first2=Lei |last3=He |first3=Xing-Cheng |last4=Abramov |first4=Alexei |last5=Wang |first5=Jin |last6=Fu |first6=Jie |last7=Li |first7=Rui |last8=Yang |first8=Qi-Sen |last9=Fu |first9=Li-Qiang |last10=Huang |first10=Yao-Hua |last11=Zhou |first11=Cai-Quan |last12=Wen |first12=Zhi-Xin |last13=Ge |first13=De-Yan |publication-date=2025-11-14 |doi=10.1111/jse.70029|url-access=subscription }}</ref>
+** [[Stoat]] (Beringian ermine), ''M. erminea''
+** [[Steppe polecat]], ''M. eversmannii''
+** [[Domestic ferret]], ''M. furo''
+** [[Haida ermine]], ''M. haidarum''
+** [[Japanese weasel]], ''M. itatsi''
+** [[Yellow-bellied weasel]], ''M. kathiah''
+** [[European mink]], ''M. lutreola''
+** [[Indonesian mountain weasel]], ''M. lutreolina''
+** [[Black-footed ferret]], ''M. nigripes''
+** [[Least weasel]], ''M. nivalis''
+** [[Malayan weasel]], ''M. nudipes''
+** [[European polecat]], ''M. putorius''
+** [[American ermine]], ''M. richardsonii''
+** [[Siberian weasel]], ''M. sibirica''
+** [[Back-striped weasel]], ''M. strigidorsa''
+* Genus ''[[Neogale]]''<ref>{{cite journal|first1=Bruce D. |last1=Patterson |first2=Héctor E. |last2=Ramírez-Chaves |first3=Júlio F. |last3=Vilela |first4=André E. R. |last4=Soares |first5=Felix |last5=Grewe 
+|title=On the nomenclature of the American clade of weasels (Carnivora: Mustelidae) 
+|journal=Journal of Animal Diversity |volume=3 |issue=2 |year=2021 |pages=1–8 |issn=2676-685X |doi=10.52547/JAD.2021.3.2.1  |s2cid=236299740 |doi-access=free }}</ref>
+** [[Amazon weasel]], ''N. africana''
+** [[Colombian weasel]], ''N. felipei''
+** [[Long-tailed weasel]], ''N. frenata''
+** [[American mink]], ''N. vison''
+** {{extinct}}[[Sea mink]], ''N. macrodon''{{col-end}}
+
+'''Fossil mustelids'''
+Extinct genera of the family Mustelidae include:
+
+* ''[[Brachypsalis]]''
+* ''[[Chamitataxus]]''
+* ''[[Corumictis]]''<ref name=Paterson2020>{{cite journal |last1= Paterson |first1= R. |last2=Samuels |first2= J. X. |last3=Rybczynski |first3= N. |last4= Ryan |first4= M. J. |last5= Maddin |first5= H. C. |date= 2019 |title= The earliest mustelid in North America |journal= [[Zoological Journal of the Linnean Society]] |volume= 188| issue= 4 |pages= 1318–1339 |doi=10.1093/zoolinnean/zlz091}}</ref>
+* ''[[Cyrnaonyx]]''
+* ''[[Ekorus]]''
+* ''[[Enhydriodon]]''
+* ''[[Eomellivora]]''
+* ''Hoplictis''<ref name=Valenciano2019>{{cite journal |last1= Valenciano |first1= A. |last2= Jiangzuo |first2= Q. |display-authors = etal |date= March 2019 |title= First Record of ''Hoplictis'' (Carnivora, Mustelidae) in East Asia from the Miocene of the Ulungur River Area, Xinjiang, Northwest China |journal= Acta Geologica Sinica |volume= 93 |issue= 2 |pages= 251–264 |doi= 10.1111/1755-6724.13820|bibcode= 2019AcGlS..93..251V |s2cid= 133900941 }}</ref>
+* ''[[Megalictis]]''
+* ''[[Oligobunis]]''
+* ''[[Oaxacagale]]''
+* ''[[Plesictis]]''
+* ''[[Sthenictis]]''
+* ''[[Teruelictis]]''
+* ''Trochictis''<ref>{{cite journal |last1= Morlo |first1= M. |last2= LeMaitre |first2= A. |display-authors = etal |date= November 2019 |title= First record of the mustelid Trochictis (Carnivora, Mammalia) from the early Late Miocene (MN 9/10) of Germany and a re-appraisal of the genus Trochictis  |journal= Historical Biology |volume= 33 |issue= 8 |pages= 1183–1195 |doi= 10.1080/08912963.2019.1683172 |s2cid= 209607263 }}</ref>
+
+===Phylogeny===
+Multigene phylogenies constructed by Koepfli et al. (2008)<ref name="Koepfli2008" /> and Law et al. (2018)<ref name="Law-2018" /> found that Mustelidae comprises eight living subfamilies. The early mustelids appear to have undergone two rapid bursts of diversification in Eurasia, with the resulting species spreading to other continents only later.<ref name="Koepfli2008">{{cite journal |last1= Koepfli |first1= Klaus-Peter |title= Multigene phylogeny of the Mustelidae: Resolving relationships, tempo and biogeographic history of a mammalian adaptive radiation |journal= BMC Biology |volume= 6 |article-number= 10 |date= February 2008 |doi= 10.1186/1741-7007-6-10 |pmid= 18275614 |last2= Deere |first2= K. A. | last3= Slater |first3= G. J. |last4= Begg |first4= C. |last5= Begg |first5= K. |last6= Grassman |first6= L. |last7= Lucherini |first7= M. |last8= Veron |first8= G. |last9= Wayne |first9= R. K. |pmc= 2276185 |doi-access= free }}</ref>
+
+<gallery mode="packed" heights="500">
+File:MustelidaePhylogeneticTree (edited).jpg|Phylogenetic tree of Mustelidae. Contains 53 of the 79 putative mustelid species.<ref name="Law-2018" />
+File:Mustelidae timetree (edited).jpg|Time-calibrated tree of Mustelidae showing divergence times between lineages. Split times include: 28.8&nbsp;million years ([[megaannum|Ma]]) for mustelids vs. procyonids; 17.8 Ma for Taxidiinae; 15.5 Ma for Mellivorinae; 14.8 Ma for Melinae; 14.0 Ma for Guloninae + Helictidinae; 11.5 Ma for Guloninae + Naquinae vs. Helictidinae; 12.0 Ma for Ictonychinae; 11.6 Ma for Lutrinae vs. Mustelinae.<ref name="Law-2018" /> 
+</gallery>
+
+Mustelid species diversity is often attributed to an adaptive radiation coinciding with the [[Middle Miocene disruption|mid-Miocene climate transition]]. Contrary to expectations, Law et al. (2018)<ref name="Law-2018" /> found no evidence for rapid bursts of lineage diversification at the origin of the Mustelidae, and further analyses of lineage diversification rates using molecular and fossil-based methods did not find associations between rates of lineage diversification and mid-Miocene climate transition as previously hypothesized.
+
+==See also==
+* [[List of heaviest extant mustelids]]
+
+==References==
+{{Reflist}}
+
+== Further reading ==
+{{Refbegin}}
+* {{cite book
+| publisher = Alfred A. Knopf
+| isbn = 978-0-394-50762-0
+| page = [https://archive.org/details/audubonsocietyfi00john/page/n754 745]
+| last = Whitaker
+| first = John O.
+| title = The Audubon Society Field Guide to North American Mammals
+| date = 1980-10-12
+| url = https://archive.org/details/audubonsocietyfi00john
+| url-access = registration
+}}
+{{Refend}}
+
+==External links==
+{{Commons category|Mustelidae}}
+{{Wikispecies|Mustelidae}}
+*"[https://www.pbs.org/wnet/nature/mighty-weasel-preview-nzu4nn/21080/ The Mighty Weasel]" (February 19, 2020) – ''[[List of Nature episodes|Nature]]''
+
+{{Carnivora|M.}}
+
+{{Taxonbar|from=Q25437}}
+{{Authority control}}
+
+[[Category:Mustelidae| ]]
+[[Category:Carnivora]]
+[[Category:Mammal families]]
+[[Category:Extant Oligocene first appearances]]
+[[Category:Taxa named by Gotthelf Fischer von Waldheim]]

@@ -1,0 +1,83 @@
+{{short description|Canadian AI technologist and serial entrepreneur}}{{Infobox person
+| name = Paul Kruszewski
+| image =
+| birth_date = {{birth year and age|1967}}
+| birth_place = Alberta, Canada
+| alma_mater = McGill University
+| occupation = Founder and CEO of QARL
+}}
+
+'''Paul Kruszewski''' (born 1967) is a [[Canadians|Canadian]] [[Artificial intelligence|AI]] technologist and serial entrepreneur known for his work in [[Artificial intelligence (video games)|artificial intelligence]] and [[Computer graphics (computer science)|computer graphics]].<ref name=":0">{{Cite web |title=Digitizing the real world with Paul Kruszewski, CEO & Founder @ Wrnch {{!}} Business growth consultant and strategic management firm {{!}} PNR |url=https://thepnr.com/what-we%E2%80%99re-learning/digitizing-the-real-world-with-paul-kruszewski-ceo-founder-wrnch |access-date=2025-12-11 |website=thepnr.com |language=en}}</ref> He has previously founded and sold three AI startups, specializing in [[crowd simulation]], [[Non-player character|NPC behaviours]], and [[Articulated body pose estimation|human pose estimation]].
+
+== Academic life ==
+Kruszewski obtained a BSc in computer science from [[University of Alberta]] and an MSc and PhD in computer science from [[McGill University]].<ref>{{Cite web|url=https://www.researchgate.net/publication/30508329_The_Botanical_Beauty_of_Random_Binary_Trees.|title=Research Gate Publications|website=Research Gate|access-date=October 16, 2025}}</ref> For graduate school, Kruszewski received a [[Natural Sciences and Engineering Research Council of Canada]] (NSERC) Science and Engineering scholarship in 1992.<ref>{{Cite web|url=http://www.nserc-crsng.gc.ca/ase-oro/Details-Detailles_eng.asp?id=74811|title=Details - NSERC's Awards Database - Natural Sciences and Engineering Research Council of Canada|last=|first=|website=www.nserc-crsng.gc.ca|language=en|access-date=2017-07-27|date=2016-06-28}}</ref> His PhD thesis on [[random binary tree]]s suggested a method to produce realistic images of trees digitally.<ref>Kruszewski, Paul. ''The botanical beauty of random binary trees: a method for the synthetic imagery of botanical trees''. Diss. McGill University, 1996.</ref> His work was inspired by ''[[The Algorithmic Beauty of Plants]]'' by [[Przemysław Prusinkiewicz]]. After completing his thesis, Kruszewski developed and commercialized the software, naming it the "Tree Druid."
+
+== Professional life ==
+Earlier in his career, he founded BioGraphic Technologies and Grip/Grip Entertainment, developing crowd simulation, NPC behavior systems, and AI tools used in major games and visual-effects pipelines.<ref name=":0" /> Across three decades, Kruszewski has built a technical portfolio spanning digital humans, motion understanding, embodied AI, real-time simulation, [[spatial computing]], and interactive systems, supported by peer-reviewed publications, patents, and ongoing involvement in AI ecosystems such as NVIDIA GTC, CVPR, and Creative Destruction Lab.<ref name=":1" />
+
+=== Work in industry ===
+After obtaining his PhD, Kruszewski held various positions within the AI/computer graphics ecosystem in Montreal.<ref>{{Cite web |title=MIF Summer Networking Session 2024 |url=https://www.mcgill.ca/innovation/channels/event/mif-summer-networking-session-2024-357123 |access-date=2025-12-12 |website=McGill Innovation Fund (MIF) |language=en}}</ref>
+
+During this time he developed the first [[Cloud-based integration|cloud-based]] human simulator at My Virtual Model. As CTO, he led development of a multiplatform  [[PlayStation 2|PS2]] and Xbox game engine at [[Behaviour Interactive]].<ref name="riga">{{Cite news|url=http://etlebut.openface.ca/~zibalatz/misc/AI-implant_in_gazette.pdf|title=Virtual minds of their own|last=Riga|first=Andy|date=2000|access-date=October 16, 2025|archive-date=July 31, 2017|archive-url=https://web.archive.org/web/20170731145051/http://etlebut.openface.ca/~zibalatz/misc/AI-implant_in_gazette.pdf|url-status=dead}}</ref><ref name=":1">{{Cite journal |last=Kruszewski |first=Paul |date=2006-06-20 |title=Believable and Reactive Crowds in Next Generation Games |url=https://ojs.aaai.org/index.php/AIIDE/article/view/18767 |journal=Proceedings of the AAAI Conference on Artificial Intelligence and Interactive Digital Entertainment |language=en |volume=2 |issue=1 |pages=143–144 |doi=10.1609/aiide.v2i1.18767 |issn=2334-0924}}</ref>
+
+=== Entrepreneurial initiatives ===
+
+==== BioGraphic Technologies Inc. ====
+Kruszewski founded BioGraphic Technologies (BGT) in 2000.<ref name=riga /> BGT is best known for developing "AI.implant", a [[crowd simulation]] program. Working from his previous experience in video game development, Kruszewski focused BGT's vision on the [[Film industry|film]] and [[Gaming industry|gaming]] industries, collaborating with such companies as [[Lucasfilm]], [[Disney]] and [[Sony Computer Entertainment]].<ref name=riga /><ref name="MAE">{{cite web |title=Engenuity Technologies Acquires BGT BioGraphic Technologies |url=https://www.militaryaerospace.com/communications/article/16712771/engenuity-technologies-acquires-bgt-biographic-technologies |website=Military and Aerospace Electronics |date=11 November 2005 |publisher=Endeavor Business Media |accessdate=19 June 2019}}</ref> Engenuity Technologies, now Presagis, a modeling and simulation software provider, saw the benefits of simulating large civilian crowds for training purposes, purchasing the company in 2005. Kruszewski became the CTO of Engenuity.<ref name="MAE" />
+
+==== GripHeavyIndustries ====
+In July 2007, Kruszewski founded GripHeavyIndustries, better known as Grip Entertainment, which created complex AI characters for a range of game developers, such as [[Electronic Arts|EA]], [[The Walt Disney Company|Disney]], and [[BioWare]].<ref name= autodesk>{{Cite news|url=http://business.financialpost.com/entrepreneur/fp-startups/autodesk-acquires-montreals-grip-entertainment|title=Autodesk Acquires Montreal's Grip Entertainment|last=Berkow|first=Jameson|date=November 7, 2011|work=Financial Post|access-date=October 12, 2017}}</ref> The company is credited on such titles as [[Army of Two: The 40th Day]] and [[Deus Ex: Human Revolution]].<ref name=":2">{{Cite web|url=http://www.mobygames.com/developer/sheet/view/developerId,419068/|title=Paul Kruszewski Video Game Credits and Biography - MobyGames|website=MobyGames|access-date=2017-10-12}}</ref>
+
+In 2011, the company experienced some controversy when gamers rallied against Grip's boss fights at the end of the game Deus Ex: Human Revolution. [[Eidos Montréal|Eidos Montreal]] had outsourced the development of the game's boss fights to Grip due to time constraints and the complex nature of the open-ended gameplay.<ref name= eidos>{{Cite news|url=http://www.bit-tech.net/news/gaming/pc/eidos-deus-ex-bosses-were-our-fault/1/|title=Eidos: 'Deus Ex bosses were our fault' {{!}} bit-tech.net|access-date=2017-10-12|language=en-GB}}</ref> Players felt that the fights were inflexible when compared with the rest of the game, causing a stir in the industry.<ref>{{Cite news|url=https://kotaku.com/5841910/those-horribad-deus-ex-human-revolution-boss-battles-were-outsourced|archive-url=https://web.archive.org/web/20110923175813/http://kotaku.com/5841910/those-horribad-deus-ex-human-revolution-boss-battles-were-outsourced|url-status=dead|archive-date=September 23, 2011|title=Those Horribad Deus Ex: Human Revolution Boss Battles Were Outsourced|last=Hamilton|first=Kirk|work=Kotaku|access-date=2017-10-12|language=en-US}}</ref><ref name= eidos /> Later, Eidos pubically apologized and explained that Grip was not responsible<ref>{{Cite news |last=Co-founder |first=Jim Rossignol |last2=Rossignol |first2=Jim |date=2011-09-23 |title=DXHR Interview: Boss Fights, Endings, DLC |url=https://www.rockpapershotgun.com/deus-ex-interview-jean-francois-dugas |access-date=2025-12-12 |work=Rock, Paper, Shotgun |language=en}}</ref> for the That same year, [[Autodesk]], a multinational software company, acquired Grip Entertainment.<ref name= autodesk />
+
+==== {{not a typo|wrnch}} ====
+Kruszewski's third venture built on previous experience gained from working with [[computer vision]] technology. He founded {{not a typo|wrnch}} in April 2014 in Montreal's TandemLaunch incubator.<ref>{{cite web |title=Portfolio - wrnch |url=https://www.tandemlaunch.com/en/portfolio/wrnch/ |website=Tandemlaunch |accessdate=19 June 2019}}</ref> Initially, wrnch was developing a video denoising technology but quickly pivoted into deep learning based computer vision.<ref name=":0" />  
+
+Through {{not a typo|wrnch}}, he developed BodySLAM, a deep learning AI body-tracking software.<ref>{{Cite news|url=https://appdevelopermagazine.com/5258/2017/6/2/wrnch-debuts-latest-ar-tech-at-augmented-world-expo-2017/|title=wrnch debuts latest AR tech at Augmented World Expo 2017|last=Hargrave|first=Christian|date=June 2, 2017|work=App Developer Magazine|access-date=October 16, 2025}}</ref> As a man-machine interface, BodySLAM had many  possible applications in various industries, such as health care, security, retail and entertainment. On Sept. 17, 2021, it was announced that Hinge Health, the world’s #1 Digital Musculoskeletal Clinic™, had acquired wrnch. <ref>{{Cite press release|url=https://www.hingehealth.com/resources/press-releases/hinge-health-acquires-the-most-advanced-computer-vision-technology/|title=Hinge Health acquires the most advanced computer vision technology|publisher=Hinge Health|date=September 17, 2021|access-date=October 16, 2025|location=San Francisco}}</ref> After the acquisition, Kruszewski served as Hinge Health's VP of Deep Technology for 2 years, where he oversaw the integration of the wrnch virtual motion capture into Hinge Health's suite of offerings. <ref>{{Cite web|url=https://www.hingehealth.com/resources/movement-conference/|title=Movement 2023 Conference Highlights|website=Hinge Health|year=2023|access-date=October 16, 2025|type=Conference highlights}}</ref>
+
+==== QARL ====
+In 2024, Kruszewski founded QARL, his latest venture building at the intersection of deep tech, AI and human-machine interaction. <ref>{{Cite web|url=https://www.qarl.ai/meet-the-team|title=Meet the Team|website=QARL|access-date=October 16, 2025|publisher=QARL AI}}</ref>
+
+== Views ==
+Kruszewski advocates for human-centered AI, emphasizing systems that interpret and collaborate with human movement rather than replace human expertise.<ref name=":2" /> His long-term vision focuses on natural, embodied interaction between people and intelligent systems, a philosophy reflected in his work on [[motion capture]], [[simulation]], and therapeutic AI tools.<ref name="autodesk" />
+
+He frequently highlights the importance of deep-tech entrepreneurship, valuing perseverance, creativity, curiosity, and applied research as the foundation for building world-class teams.<ref name="riga" /> Influences he cites include Turing, Kurzweil, Edison, and Mozart—reflecting a worldview that spans science, engineering, and creativity.<ref name=":1" />
+
+His personal interests include video games, generative 3D art, and long-term technological shifts in [[Artificial intelligence|AI]], [[Augmented reality|AR]], and virtual environments. He describes his professional alignment as “chaotic good,” emphasizing innovation driven by impact and exploration.<ref name="autodesk" /> 
+
+== Publications and patents ==
+
+=== Publications ===
+* [https://link.springer.com/bookseries/558 The Botanical Beauty of Random Binary Trees], (1995)
+* [http://archive.numdam.org/article/ITA_1996__30_5_443_0.pdf On the Horton-Strahler Number for Random Tries], (1996)
+* [http://www.sciencedirect.com/science/article/pii/S0097849399000965?lipi=urn%3Ali%3Apage%3Ad_flagship3_profile_view_base%3BuO4SigPETkGneRmle8ISng%3D%3D An algorithm for sculpting trees], (1999)
+* [http://www.sciencedirect.com/science/article/pii/S0097849399000382?lipi=urn%3Ali%3Apage%3Ad_flagship3_profile_view_base%3BuO4SigPETkGneRmle8ISng%3D%3D A probabilistic technique for the synthetic imagery of lightning], (1999)
+* [http://www.sciencedirect.com/science/article/pii/S0020019098001926?lipi=urn%3Ali%3Apage%3Ad_flagship3_profile_view_base%3BuO4SigPETkGneRmle8ISng%3D%3D A Note on the Horton-Strahler Number for Random Binary Search Trees], (1999)
+* [http://www.presagis.com/files/whitepapers/Pub%20-%20Crowd%20Modeling%20for%20Mil%20Sim.pdf?lipi=urn%3Ali%3Apage%3Ad_flagship3_profile_view_base%3BuO4SigPETkGneRmle8ISng%3D%3D Crowd Modeling For Military Simulations Using Game Technology]{{Dead link|date=May 2020 |bot=InternetArchiveBot |fix-attempted=yes }}, (2005)
+* [http://www.aaai.org/Papers/AIIDE/2006/AIIDE06-034.pdf?lipi=urn%3Ali%3Apage%3Ad_flagship3_profile_view_base%3BuO4SigPETkGneRmle8ISng%3D%3D Believable and Reactive Crowds in Next Generation Games], (2006)
+* [http://www.aaai.org/Papers/AIIDE/2007/AIIDE07-024.pdf?lipi=urn%3Ali%3Apage%3Ad_flagship3_profile_view_base%3BuO4SigPETkGneRmle8ISng%3D%3D Navigation Challenges in Massively Destructible Worlds] (2007)
+* [http://s3.amazonaws.com/academia.edu.documents/50837995/Integrating_crowd-behavior_modeling_into20161211-20063-17u4a5q.pdf?AWSAccessKeyId=AKIAIWOWYYGZ2Y53UL3A&Expires=1499805169&Signature=MW01VnN%2FHYzBq6qhmN0wVpDS1mY%3D&response-content-disposition=inline%3B%20filename%3DIntegrating_crowd-behavior_modeling_into.pdf Integrating Crowd-Behavior Modeling into Military Simulation using Game Technology]{{dead link|date=November 2017}}, (2008)
+* [https://www.computer.org/csdl/mags/so/2011/05/mso2011050027.pdf Engineering Fun], (2011)
+
+=== Patents ===
+* Method and Stem for On-Screen Animation of Digital Objects or Characters, ([http://patents.justia.com/patent/20050071306 2004])
+* System and Method for Displaying Selected Garments on a Computer-Simulated Mannequin, ([http://patents.justia.com/patent/7663648 1999], [http://patents.justia.com/patent/20100302275 2009], [http://patents.justia.com/patent/20110273444 2011], [http://patents.justia.com/patent/20120188232 2012])
+
+== References ==
+{{reflist}}
+
+{{Authority control}}
+
+__FORCETOC__
+
+{{DEFAULTSORT:Kruszewski, Paul}}
+[[Category:1967 births]]
+[[Category:Living people]]
+[[Category:McGill University alumni]]
+[[Category:Canadian people of Polish descent]]
+[[Category:Computer vision researchers]]
+[[Category:Canadian artificial intelligence researchers]]
+[[Category:University of Alberta alumni]]
+[[Category:Canadian software engineers]]
+[[Category:Businesspeople from Montreal]]
+[[Category:Scientists from Montreal]]

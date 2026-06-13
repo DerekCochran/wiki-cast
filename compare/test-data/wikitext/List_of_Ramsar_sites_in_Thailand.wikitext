@@ -1,0 +1,105 @@
+{{short description|None}}
+
+This '''list of Ramsar sites in Thailand''' comprises Thai [[wetlands]] deemed to be of "international importance" under the [[Ramsar Convention]]. For a full list of all Ramsar sites worldwide, see the [[Ramsar list of wetlands of international importance]].
+
+{{Asof|2020}} there are 15 Ramsar sites in Thailand, totalling 405,219 [[hectare]]s.<ref>{{cite web|title=THAILAND|url=https://www.ramsar.org/wetland/thailand|publisher=Ramsar.org|access-date=2021-09-20 |work=Ramsar|date=2021-09-20}}</ref><ref>{{cite news |last1=Rujivanarom |first1=Pratch |title=Loss of wetlands could be devastating: experts |url=https://www.nationthailand.com/detail/national/30363464 |access-date=2019-02-09 |work=The Nation |date=2019-02-04}}</ref>
+
+According to [[World Wide Fund for Nature|WWF]], wetlands are one of the most threatened of all [[ecosystem]]s, because of progressive loss of vegetation, [[Salinity|salinization]], excessive [[inundation]], [[water pollution]], [[invasive species]], [[land development|development]], and [[road building]].{{Citation needed|date=September 2018}}
+{{GeoGroup}}{{clear}}
+
+{|class="wikitable sortable"
+! style="background-color:{{RAMSAR color}}" | Name<ref name="Ramsar list">{{cite web|title=Ramsar List|url=http://www.ramsar.org/pdf/sitelist.pdf|publisher=Ramsar.org|access-date=31 March 2013}}</ref>
+! style="background-color:{{RAMSAR color}}" | Ramsar&nbsp;ID
+! style="background-color:{{RAMSAR color}}" width = 15% | Provinces
+! style="background-color:{{RAMSAR color}}" | Area&nbsp;(km<sup>2</sup>)
+! style="background-color:{{RAMSAR color}}" | Designated
+! style="background-color:{{RAMSAR color}}" class="unsortable" | Image
+|-
+||[[Kuan Ki Sian of the Thale Noi Non-hunting Area Wetlands]]||948||[[Songkhla Province|Songkhla]]||4.94||1998-05||
+|-
+||[[Bueng Khong Long Non-hunting Area]]||1098||[[Nong Khai Province|Nong Khai]]||22.14||2001-07-05||
+|-
+||[[Don Hoi Lot]]||1099||[[Samut Songkhram Province|Samut Songkhram]]||875||2001-07-05||[[File:Don Hoi Lot submerged trees.jpg|200px]]
+|-
+||[[Krabi River Estuary]]||1100||[[Krabi Province|Krabi]]||212.9914||2001-07-05||
+|-
+||[[Nong Bong Kai Non-hunting Area]]||1101||[[Chiang Rai Province|Chiang Rai]]||4.34||2001-07-05||
+|-
+||[[Princess Sirindhorn Wildlife Sanctuary]]<br/>([[Pru To Daeng]] Wildlife Sanctuary)||1102||[[Narathiwat Province|Narathiwat]]||201||2001-07-05||
+|-
+||[[Hat Chao Mai Marine National Park]] -<br/>[[Ko Libong Non-Hunting Area]] -<br/>[[Trang River]] Estuaries||1182||[[Trang Province|Trang]]||663.13||2002-08-14||
+|-
+||[[Kaper Estuary]] -<br/>[[Laem Son National Park]] -<br/>[[Kraburi River|Kraburi]] Estuary||1183||[[Ranong Province|Ranong]]||1220.46||2002-08-14||
+|-
+||[[Mu Ko Ang Thong Marine National Park]]||1184||[[Surat Thani Province|Surat Thani]]||102||2002-08-14||
+[[File:Mu Ko Ang Thong, Bay, Thailand.jpg|200px]]
+|-
+||[[Phang Nga Bay Marine National Park]]||1185||[[Phang Nga Province|Phang Nga]]||400||2002-08-14||[[File:Streams,_rivers_and_mangrove_forests_of_Than_Bok_Khorani,_Thailand.jpg|200px]]
+|-
+||[[Khao Sam Roi Yot National Park|Khao Sam Roi Yot Wetlands]]||-||[[Prachuap Khiri Khan Province|Prachuap Khiri Khan]]||18|| 2008-01-08||
+|-
+||[[Bueng Kut Ting]]||-||[[Nong Khai Province|Nong Khai]]|| ||2009-06-19 ||
+|-
+||[[Ko Kra Archipelago]]||2152||[[Nakhon Si Thammarat Province|Nakhon Si Thammarat]]||3.74||2013-08-12||
+|-
+||[[Ko Ra-Ko Phra Thong Archipelago]]||2153||[[Phang Nga Province|Phang Nga]]||196.48||2013-08-12||
+|-
+||Lower [[Songkhram River]] ||2420||[[Nong Khai Province|Nong Khai]], [[Sakon Nakhon Province|Sakon Nakhon]], [[Nakhon Phanom Province|Nakhon Phanom]], || 55.045||2019-05-15||
+|-
+||[[Mekong River]]||-||[[Chiang Rai Province|Chiang Rai]]|| ||nominated||[[File:Mekong River (Luang Prabang).jpg|200px]]
+|-
+||[[Pai River]] Basin ||-||[[Mae Hong Son Province|Mae Hong Son]]|| ||nominated||
+[[File:Pai River near Mae Hong Son, Bridge, Thailand.jpg|200px]]
+|-
+||[[Salween River]] Basin ||-||[[Mae Hong Son Province|Mae Hong Son]], [[Tak Province|Tak]]||||nominated||
+|-
+||Upper [[Nan River]] Basin ||-||[[Nan Province|Nan]]|| ||nominated||
+|-
+||[[Khlong Chompu]] Basin ||-||[[Phitsanulok Province|Phitsanulok]]|| ||nominated||
+|-
+||[[Bung Boraphet]]||-||[[Nakhon Sawan Province|Nakhon Sawan]]|| ||nominated||
+|-
+||[[Mekong River]]||-||[[Loei Province|Loei]]|| ||nominated||
+|-
+||Lower [[Mun River]] Basin and [[Mekong River]] ||-||[[Ubon Ratchathani Province|Ubon Ratchathani]]|| ||nominated||
+|-
+||Inner [[Gulf of Thailand]]||-||[[Chonburi Province|Chonburi]], [[Chachoengsao Province|Chachoengsao]], [[Samut Prakan Province|Samut Prakan]],<br/>[[Samut Sakhon Province|Samut Sakhon]], [[Samut Songkhram Province|Samut Songkhram]] and [[Phetchaburi Province|Phetchaburi]]|| ||nominated||
+|-
+||[[Hin Krud]] Koh Ram Ra to Ban Klang Ao ||-||[[Prachuap Khiri Khan Province|Prachuap Khiri Khan]]|| ||nominated||
+|-
+||Chumphon Coast and [[Wetland]]||-||[[Chumphon Province|Chumphon]]|| ||nominated||
+|-
+||[[Ao Ban Don]]||-||[[Surat Thani Province|Surat Thani]]|| ||nominated||
+|-
+||[[Pak Phanang]] Coast and [[Talumphuk Cape]]||-||[[Nakhon Si Thammarat Province|Nakhon Si Thammarat]]|| ||nominated||
+|-
+||[[Ao Pattani]]||-||[[Pattani Province|Pattani]]|| ||nominated||
+|-
+||[[Songkhla Lake]] and Coast (''[[Amphoe Sathing Phra|Sathing Phra]] Peninsula'')||-||[[Songkhla Province|Songkhla]] and [[Phatthalung Province|Phatthalung]]|| ||nominated||[[File:Songkhla Lake (747291297).jpg|200px]]
+|-
+||[[Hat Thai Mueang]] and Northwestern Coast of [[Phuket city|Phuket]] (''Tha Chat Chai'')||-||[[Phang Nga Province|Phang Nga]] and [[Phuket Province|Phuket]]|| ||nominated|| 
+|-
+||[[Trat Mangrove forest]]||-||[[Trat Province|Trat]]|| ||nominated|| 
+|}
+
+==See also==
+*[[List of protected areas of Thailand]]
+
+==References==
+{{Reflist}}
+
+==External links==
+*[http://www.ramsar.org/cda/en/ramsar-documents-list-anno-thailand/main/ramsar/1-31-218%5E16158_4000_0__ Annotated Ramsar List: Thailand]
+*[http://www.panda.org/th/index.cfm WWF - Thailand (in Thai)]
+*[http://www.panda.org/who_we_are/wwf_offices/thailand/ WWF - Environmental conservation work in Thailand]
+*[http://www2.onep.go.th/wetlands/frontend/theme/ris_data.php?Submit=Clear&Lang=0 Ramsar Information Sheet]{{dead link|date=December 2017 |bot=InternetArchiveBot |fix-attempted=yes}}
+*[http://www.panda.org/what_we_do/where_we_work/greatermekong/news/?148484 A push for 20 new Ramsar sites in Thailand]
+*[http://assets.panda.org/downloads/20thris_map.pdf Map of 20 nominated Ramsar sites in Thailand © WWF]
+
+{{National and forest parks in Thailand}}
+
+__NOTOC__
+
+[[Category:Ramsar sites in Thailand|*]]
+[[Category:Thailand geography-related lists|Ramsar]]
+[[Category:Lists of Ramsar sites|Thailand]]

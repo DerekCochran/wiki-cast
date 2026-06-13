@@ -1,0 +1,88 @@
+{{Refimprove|date=September 2018}}
+{{Infobox musical artist  <!-- See Wikipedia:WikiProject Musicians -->
+| name             = Gran Coquivacoa
+| image            = 
+| caption          = 
+| image_size       = 
+| background       = group_or_band
+| alias            = 
+| origin           = [[Cabimas|Cabimas, Zulia]], [[Venezuela]]
+| genre            = [[Gaita (music style)|Gaita zuliana]]
+| years_active     = 1968&ndash;present
+| label            = 
+| associated_acts  = 
+| website          = http://www.grancoquivacoa.net
+| current_members  = Neguito Borjas<br>Jesús Petit<br>Oscar Borjas<br>Marcos Díaz<br>Michell
+| past_members     = 
+}}
+
+'''Gran Coquivacoa''' is a Venezuelan [[gaita zuliana]] group founded in 1968 by Jesús "Bocachico" Petit, Nelson Suárez, Rody Tigrera, Pedro Arteaga and Manolo Salazar in [[Cabimas]], [[Zulia State]].
+
+They were named Best Gaita Artist at the [[Pepsi Venezuela Music Awards#2015|2015 Pepsi Venezuela Music Awards]].<ref>{{Cite news |url=http://www.2001.com.ve/en-el-chisme/109414/la-que-se-armo-en-los-premios-pepsi-music.html |title=La que se armó en los Premios Pepsi Music |trans-title=What was Assembled at the Pepsi Music Awards |first=Rosa |last=González |work=[[Diario 2001]] |language=Spanish |date=11 September 2015 |access-date=7 September 2018}}</ref>
+
+== Discography ==
+
+=== Studio albums ===
+
+{{columns-list|colwidth=30em|
+* Con El Conjunto Gran Coquivacoa (1969)
+* Gran Gaitón (1970)
+* Seguimos Gateando (1971)
+* El Gaitón del Diablo (1972)
+* Fiesta Santoral (1973)
+* Los Reyes de la Tamborera (1974)
+* Los Reyes de la Tamborera (1975)
+* Los Reyes de la Tamborera (1976) 
+* Gran Coquivacoa (1977)
+* Gran Coquivacoa (1978)
+* Libertad (1979)
+* Soy Zuliano (1980)
+* El Gran Coquivacoa (1981)
+* Los Reyes de la Tamborera (1982)
+* 15 Aniversario (1983)
+* La Catira de la Guaira (1984)
+* y Punto (1985)
+* Completo (1986)
+* La Maquina del Sabor (1987)
+* La Maquina del Sabor (1988)
+* La Alianza (1989)
+* La Maquina del Sabor (1990)
+* La Maquina del Sabor (1991)
+* La Maquina del Sabor (1992)
+* La Maquina del Sabor 25 años (1993)
+* Los Súper Reyes de la Tamborera (1994)
+* De Antología (1995)
+* Alegrando Corazones (1996)
+* Alquimia (1997)
+* 30 Aniversario (1998)
+* Unplugged (Desenchufao) (1999)
+* Por siempre Gaitas (1999)
+* Energía Universal (2000)
+* …de punto alfa (2001)
+* En Alta Vibración (2002)
+* Guerreros de la Luz (2003)
+* Luminós (2004)
+* Madre Tierra (2008)
+* Gran Coquivacoa (2009)
+* Neguito y sus Invitados (2011)
+
+=== Compilation albums ===
+
+* Grandes Exitos (1986)
+* La Maquina del Sabor con todo (1990)
+* 30 Aniversario (1998)
+}}
+
+== See also ==
+*[[Gaita zuliana]]
+*[[Music of Venezuela]]
+
+== References ==
+{{Reflist}}
+
+== External links ==
+* {{Official website|http://www.grancoquivacoa.net}} {{in lang|es}}
+* [https://web.archive.org/web/20051113121204/http://www.ultimasnoticias.com.ve/ediciones/2002/10/27/p56n3.htm Interview to Neguito Borjas] {{in lang|es}}
+
+[[Category:Venezuelan musical groups]]
+[[Category:Zulia]]

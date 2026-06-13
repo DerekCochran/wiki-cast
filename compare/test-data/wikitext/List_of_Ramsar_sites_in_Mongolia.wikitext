@@ -1,0 +1,138 @@
+{{short description|None}}
+
+Mongolia joined the [[Ramsar Convention]]  on [[Wetlands]] of International Importance Especially as [[Waterfowl]] Habitat on April 8, 1998. There are currently 11 wetlands designated as [[Ramsar site]]s in Mongolia.<ref name="Ramsar list">{{cite web|title=Ramsar List|url=http://www.ramsar.org/pdf/sitelist.pdf|publisher=Ramsar.org|access-date=31 March 2013}}</ref>
+{{GeoGroup}}{{clear}}
+
+==List==
+{| class="wikitable sortable"
+! style="background-color:{{RAMSAR color}}" width="20%" | Name<ref name="Ramsar list"/>
+! style="background-color:{{RAMSAR color}}" width="15%" | Location
+! style="background-color:{{RAMSAR color}}" | Area&nbsp;(km<sup>2</sup>)
+! style="background-color:{{RAMSAR color}}" | Designated
+! style="background-color:{{RAMSAR color}}" class="unsortable" | Description
+! style="background-color:{{RAMSAR color}}" class="unsortable" | Image
+|-
+|[[Mongol Daguur]] || <small>{{Coord|49|42|N|115|6|E|region:MN_type:waterbody|name=Mongol Daguur}}</small> || 2100 || 1997 || ||
+|-
+|[[Valley of the Lakes]] || <small>{{Coord|45|19|N|99|58|E|region:MN_type:waterbody|name=Valley of the Lakes}}</small> || 456 || 1998 || The valley includes the four saline lakes of [[Böön Tsagaan Lake]], [[Taatsiin Tsagaan Lake]], [[Adgiin Tsagaan Lake]] and [[Orog Lake]] that provide a staging area for migratory waterfowl. || [[File:Lake Buuntsagaan, Mongolia.jpg|200px]]
+|-
+|[[Ögii Lake]] || <small>{{Coord|47|46|N|102|46|E|region:MN_type:waterbody|name=Ögii Lake}}</small> || 25.1 || 1998 || || [[File:Ögii Lake.jpg|200px]]
+|-
+|[[Terkhiin Tsagaan Lake]] || <small>{{Coord|48|10|N|99|43|E|region:MN_type:waterbody|name=Terkhiin Tsagaan Lake}}</small> || 61.1 || 1998 || || [[File:TerkhiinTsagaanNuurPan.jpg|200px]]
+|-
+|[[Airag Lake]] || <small>{{Coord|48|53|N|93|25|E|region:MN_type:waterbody|name=Airag Lake}}</small> || 450 || 1999 || || [[File:Airag lake, Mongolia, Landsat image.jpg|200px]]
+|-
+|[[Khar-Us Lake]] National Park || <small>{{Coord|47|58|N|92|50|E|region:MN_type:waterbody|name=Khar-Us Lake}}</small> || 3213.6 || 1999 || || [[File:Khar-Us-Nuur Lake ISS006-E-7827 cropped, rotated.jpg|200px]]
+|-
+|[[Achit Lake]] and surrounding wetlands || <small>{{Coord|49|40|N|90|35|E|region:MN_type:waterbody|name=Achit Lake}}</small> || 737.3 || 2004 || || [[File:Achit-Nuur_Lake,_Mongolia,_Landsat-7,_2007-08-13.jpg|200px]]
+|-
+|[[Buir Lake]] and surrounding wetlands || <small>{{Coord|47|48|N|117|40|E|region:MN_type:waterbody|name=Buir Lake}}</small> || 1040 || 2004 || || [[File:Buir_Nuur_in_Eastern_Mongolia_and_in_China_(Inner_Mongolia),_LandSat-7_2005-08-9.png|200px]]
+|-
+|[[Ganga Lake (Mongolia)|Ganga Lake]] and surrounding wetlands || <small>{{Coord|45|15|N|114|00|E|region:MN_type:waterbody|name=Ganga Lake}}</small> || 32.8 || 2004 || ||
+|-
+|[[Uvs Lake]] and surrounding wetlands || <small>{{Coord|50|20|N|92|45|E|region:MN_type:waterbody|name=Uvs Lake}}</small> || 5850 || 2004 || || [[File:Uvs núr.JPG|200px]]
+|-
+|Lakes in the [[Khurkh River|Khurkh]]-[[Khüiten River|Khüiten]] river valley || <small>{{Coord|48|18|N|110|34|E|region:MN_type:waterbody|name=Khurkh-Khüiten river valley}}</small> || 429.4 || 2004 || ||
+|}
+
+==Map==
+{{Location map+ | Mongolia
+| caption =
+| width = 600
+| float = center
+| relief = 1
+| places =
+  {{Location map~ | Mongolia
+    | label = Mongol Daguur
+    | position = bottom
+    | marksize = 10
+    | lat_deg = 49  | lat_min = 42 | lat_dir = N
+    | lon_deg = 115 | lon_min = 6 | lon_dir = E
+  }}
+  {{Location map~ | Mongolia
+    | label = Valley of the Lakes
+    | position = right
+    | marksize = 10
+    | lat_deg = 45  | lat_min = 19 | lat_dir = N
+    | lon_deg = 99 | lon_min = 58 | lon_dir = E
+  }}
+  {{Location map~ | Mongolia
+    | label = Ögii Lake
+    | position = top
+    | marksize = 10
+    | lat_deg = 47  | lat_min = 46 | lat_dir = N
+    | lon_deg = 102 | lon_min = 46 | lon_dir = E
+  }}
+  {{Location map~ | Mongolia
+    | label = Terkhiin Tsagaan Lake
+    | position = left
+    | marksize = 10
+    | lat_deg = 48  | lat_min = 10 | lat_dir = N
+    | lon_deg = 99 | lon_min = 43 | lon_dir = E
+  }}
+  {{Location map~ | Mongolia
+    | label = Airag Lake
+    | position = right
+    | marksize = 10
+    | lat_deg = 48  | lat_min = 53 | lat_dir = N
+    | lon_deg = 93 | lon_min = 25 | lon_dir = E
+  }}
+  {{Location map~ | Mongolia
+    | label = Khar-Us Lake
+    | position = bottom
+    | marksize = 10
+    | lat_deg = 47  | lat_min = 58 | lat_dir = N
+    | lon_deg = 92 | lon_min = 50 | lon_dir = E
+  }}
+  {{Location map~ | Mongolia
+    | label = Achit Lake
+    | position = bottom
+    | marksize = 10
+    | lat_deg = 49  | lat_min = 40 | lat_dir = N
+    | lon_deg = 90 | lon_min = 35 | lon_dir = E
+  }}
+  {{Location map~ | Mongolia
+    | label = Buir Lake
+    | position = bottom
+    | marksize = 10
+    | lat_deg = 47  | lat_min = 48 | lat_dir = N
+    | lon_deg = 117 | lon_min = 40 | lon_dir = E
+  }}
+  {{Location map~ | Mongolia
+    | label = Ganga Lake
+    | position = top
+    | marksize = 10
+    | lat_deg = 45  | lat_min = 15 | lat_dir = N
+    | lon_deg = 114 | lon_min = 00 | lon_dir = E
+  }}
+  {{Location map~ | Mongolia
+    | label = Uvs Lake
+    | position = right
+    | marksize = 10
+    | lat_deg = 50  | lat_min = 20 | lat_dir = N
+    | lon_deg = 92 | lon_min = 45 | lon_dir = E
+  }}
+  {{Location map~ | Mongolia
+    | label = Khurkh-Khüiten river valley
+    | position = left
+    | marksize = 10
+    | lat_deg = 48  | lat_min = 18 | lat_dir = N
+    | lon_deg = 110 | lon_min = 34 | lon_dir = E
+  }}
+}}
+
+==See also==
+* [[Ramsar Convention]]
+* [[List of Ramsar wetlands of international importance|List of Ramsar sites worldwide]]
+
+==References==
+{{Reflist}}
+
+==External links==
+*[http://www.ramsar.org/cda/en/ramsar-pubs-notes-anno-mongolia/main/ramsar/1-30-168%5E16502_4000_0__ The Annotated Ramsar List: Mongolia]
+
+__NOTOC__
+
+[[Category:Ramsar sites in Mongolia| ]]
+[[Category:Geography of Mongolia]]
+[[Category:Lists of Ramsar sites|Mongolia]]

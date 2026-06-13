@@ -1,0 +1,134 @@
+{{Short description|Metro station in Paris, France}}
+{{Infobox station
+| name               = Porte de Versailles<br /><small>''Parc des Expositions de Paris''</small>
+| other_name         = 
+| symbol             = m
+| symbol_location    = paris
+| type               = [[Paris Métro]] station
+| image              = File:Station Porte Versailles Métro Paris Ligne 12 - Paris XV (FR75) - 2022-07-02 - 7.jpg
+| alt                = 
+| caption            = The [[island platform]] at Porte de Versailles
+| address            = [[15th arrondissement of Paris]]
+| borough            = [[Île-de-France]]
+| country            = France
+| coordinates        = {{coord|48.832328|2.287841|region:FR_scale:2000|format=dms|display=inline,title}}
+| owned              = [[RATP Group|RATP]]
+| operator           = [[RATP Group|RATP]]
+| line               = {{R-I|paris|m}} {{R-I|paris|m|12}}
+| connections        = {{rint|paris|t}} {{rint|paris|t|2}} {{rint|paris|t|3a}}
+| platforms          = 2 ([[1 island platform]], [[1 side platform]])
+| tracks             = 3
+| accessible         = no
+| code               = 1606
+| zone               = 1
+| opened             = {{Start date text|5 November 1910}}
+| closed             = <!-- {{End date|YYYY|MM|DD|df=y}} -->
+| passengers         = 3,268,157 <small>(2021)</small>
+| services           = {{Adjacent stations|system=Paris Métro|line=12|left=Corentin Celton|right=Convention
+|system2=Tramways in Île-de-France
+|line2=2|left2=Porte d'Issy
+|line3=3a|left3=Desnouettes|right3=Georges Brassens
+}}
+| map_type           = France Paris
+| symbol2            = 
+}}
+
+'''Porte de Versailles''' ({{IPA|fr|pɔʁt də vɛʁsɑj}}; {{literal translation}} 'Gate of Versailles') is a [[Metro station|station]] on [[Paris Métro Line 12|Line 12]] of the [[Paris Métro]], a stop on [[Île-de-France tramway lines 3a and 3b|tramway Line T3a]], as well as the southern terminus of [[Île-de-France tramway Line 2|tramway Line T2]] in the [[15th arrondissement of Paris|15th arrondissement]]. It is named after the ''Porte de Versailles'', a [[City gates of Paris|gate]] in the 19th-century [[Thiers wall]] of Paris, which led to the city of [[Versailles, Yvelines|Versailles]].
+
+==History==
+The station opened on 5 November 1910 as part of the original section of the [[Nord-Sud Company|Nord-Sud Company's]] line A between [[Porte de Versailles (Paris Métro)|Porte de Versailles]] and [[Notre-Dame-de-Lorette (Paris Métro)|Notre-Dame-de-Lorette]].
+
+On 23 April 1930, a collision between two trains near the station resulted in the deaths of two people and 37 injured. A northbound train parked in front of a red signal between ''Porte de Versailles'' and [[Convention (Paris Métro)|Convention]] was hit in the rear by another train that had passed two stop signals at full speed.<ref name=":0">{{Cite web |date=31 August 2000 |title=Une dizaine d'accidents en un siècle |url=https://www.leparisien.fr/faits-divers/une-dizaine-d-accidents-en-un-siecle-31-08-2000-2001598594.php |url-status=live |archive-url=https://web.archive.org/web/20230428195522/https://www.leparisien.fr/faits-divers/une-dizaine-d-accidents-en-un-siecle-31-08-2000-2001598594.php |archive-date=28 April 2023 |access-date=18 June 2023 |website=[[Le Parisien]] |language=fr}}</ref><ref>{{Cite web |date=8 November 2020 |title=A Paris, la ligne 12 du métro a 110 ans : ces deux accidents graves qui ont marqué son histoire |url=https://actu.fr/ile-de-france/paris_75056/a-paris-la-ligne-12-du-metro-a-110-ans-ces-deux-accidents-graves-qui-ont-marque-son-histoire_37338902.html |url-status=live |archive-url=https://web.archive.org/web/20220504173338/https://actu.fr/ile-de-france/paris_75056/a-paris-la-ligne-12-du-metro-a-110-ans-ces-deux-accidents-graves-qui-ont-marque-son-histoire_37338902.html |archive-date=4 May 2022 |access-date=18 June 2023 |website=actu.fr |language=fr}}</ref><ref>{{Cite web |last=Les Actualités Françaises |date=1 January 1963 |others=Camera operated by Claude Becognee |title=Après l'accident de métro, Porte de Versailles |url=https://www.ina.fr/ina-eclaire-actu/video/afe04004511/apres-l-accident-de-metro-porte-de-versailles |url-status=live |archive-url=https://web.archive.org/web/20211127001507/https://www.ina.fr/ina-eclaire-actu/video/afe04004511/apres-l-accident-de-metro-porte-de-versailles |archive-date=27 November 2021 |access-date=18 June 2023 |website=ina.fr |language=fr}}</ref>
+[[File:Porte de Versailles L12 3.jpg|left|thumb|Remnants of the original station to the north of current station, with the tiling on the vault still intact.]]
+In anticipation of its extension south to [[Mairie d'Issy (Paris Métro)|Mairie d'Issy]], the station was relocated south of its original location on 31 December 1929. The old platforms were removed and additional sidings to store trains were installed in its place. The tiling on the vault are the only remaining remnants of the original station; it can still be seen on passing trains. The new station was operated by the Nord-Sud Company for a single day as it was absorbed by its competitor, the [[Compagnie du chemin de fer métropolitain de Paris]] (CMP) the next day. Hence, the station was decorated in the traditional Nord-Sud style. On 27 March 1931, line A was renamed line 12. On 24 March 1934, the line's extension to ''Mairie d'Issy'' opened, ending the station's role as the southern terminus of the line.
+
+On 10 January 1963, a second collision occurred near the station, injuring around 40 people.<ref name=":0" /><ref>{{Cite web |date=31 August 2000 |title=Le métro parisien a frôlé la catastrophe |url=https://www.ladepeche.fr/article/2000/08/31/102611-le-metro-parisien-a-frole-la-catastrophe.html |url-status=live |archive-url=https://web.archive.org/web/20211122093006/https://www.ladepeche.fr/article/2000/08/31/102611-le-metro-parisien-a-frole-la-catastrophe.html |archive-date=22 November 2021 |access-date=23 June 2023 |website=[[La Dépêche du Midi]] |language=fr}}</ref>
+
+As part of the "Un métro + beau" programme by the [[RATP Group|RATP]], the station's corridors were renovated and modernised on 18 December 2009.<ref>{{Cite web |title=SYMBIOZ - Le Renouveau du Métro |url=https://www.symbioz.net/index.php?id=42 |url-status= |access-date=23 June 2023 |website=www.symbioz.net |language=fr}}</ref>
+
+Since 2016, the Vaugirard Workshops, used for the maintenance of trains on line 12 just north of the station, has been under renovation as part of memorandum of understanding between the RATP and the city of Paris. It includes the construction of a new equipment maintenance workshop (EMW), the restructuring of its train maintenance workshop (TMW), as well as the creation of new social and private housing in two phases on a 2.3-hectare site. The new mixed-used development due for completion by 2029.<ref>{{Cite web |date=28 January 2021 |title=Restructuring the Vaugirard Workshops |url=https://www.ratp.fr/en/ateliersvaugirard |url-status=live |archive-url=https://web.archive.org/web/20230510084114/https://www.ratp.fr/en/ateliersvaugirard |archive-date=10 May 2023 |access-date=23 June 2023 |website=[[RATP Group|RATP]]}}</ref><ref>{{Cite web |date=4 January 2019 |title=Paris : aux ateliers du métro, un nouveau quartier dans le quartier |url=https://www.leparisien.fr/paris-75/paris-aux-ateliers-du-metro-un-nouveau-quartier-dans-le-quartier-04-01-2019-7980960.php |archive-url=https://web.archive.org/web/20230623073432/https://www.leparisien.fr/paris-75/paris-aux-ateliers-du-metro-un-nouveau-quartier-dans-le-quartier-04-01-2019-7980960.php |archive-date=23 June 2023 |access-date=23 June 2023 |website=[[Le Parisien]] |language=fr}}</ref>
+
+In 2019, the station was used by 5,923,995 passengers, making it the 65th busiest of the Métro network out of 302 stations.<ref>{{Cite web |title=Trafic annuel entrant par station du réseau ferré 2019 |url=https://dataratp2.opendatasoft.com/explore/dataset/trafic-annuel-entrant-par-station-du-reseau-ferre-2019/table/?sort=-rang&refine.reseau=M%C3%A9tro |url-status=live |archive-url=https://web.archive.org/web/20220121165739/https://dataratp2.opendatasoft.com/explore/dataset/trafic-annuel-entrant-par-station-du-reseau-ferre-2019/table/?sort=-rang&refine.reseau=M%C3%A9tro |archive-date=21 January 2022 |access-date=18 June 2023 |website=dataratp2.opendatasoft.com |language=fr}}</ref>
+
+In 2020, the station was used by 2,449,859 passengers amidst the [[COVID-19 pandemic]], making it the 89th busiest of the Métro network out of 304 stations.<ref>{{Cite web |title=Trafic annuel entrant par station du réseau ferré 2020 |url=https://data.ratp.fr/explore/dataset/trafic-annuel-entrant-par-station-du-reseau-ferre-2020/table/?sort=-rang&dataChart=eyJxdWVyaWVzIjpbeyJjaGFydHMiOlt7InR5cGUiOiJjb2x1bW4iLCJmdW5jIjoiQVZHIiwieUF4aXMiOiJ0cmFmaWMiLCJzY2llbnRpZmljRGlzcGxheSI6dHJ1ZSwiY29sb3IiOiIjNjZjMmE1In1dLCJ4QXhpcyI6InN0YXRpb24iLCJtYXhwb2ludHMiOjIwLCJzb3J0Ijoic2VyaWUxLTEiLCJjb25maWciOnsiZGF0YXNldCI6InRyYWZpYy1hbm51ZWwtZW50cmFudC1wYXItc3RhdGlvbi1kdS1yZXNlYXUtZmVycmUtMjAyMCIsIm9wdGlvbnMiOnsic29ydCI6Ii10cmFmaWMifX19XSwidGltZXNjYWxlIjoiIiwiZGlzcGxheUxlZ2VuZCI6dHJ1ZSwiYWxpZ25Nb250aCI6dHJ1ZX0=&refine.reseau=M%C3%A9tro |url-status=live |archive-url=https://web.archive.org/web/20220121081214/https://data.ratp.fr/explore/dataset/trafic-annuel-entrant-par-station-du-reseau-ferre-2020/table/?sort=-rang&dataChart=eyJxdWVyaWVzIjpbeyJjaGFydHMiOlt7InR5cGUiOiJjb2x1bW4iLCJmdW5jIjoiQVZHIiwieUF4aXMiOiJ0cmFmaWMiLCJzY2llbnRpZmljRGlzcGxheSI6dHJ1ZSwiY29sb3IiOiIjNjZjMmE1In1dLCJ4QXhpcyI6InN0YXRpb24iLCJtYXhwb2ludHMiOjIwLCJzb3J0Ijoic2VyaWUxLTEiLCJjb25maWciOnsiZGF0YXNldCI6InRyYWZpYy1hbm51ZWwtZW50cmFudC1wYXItc3RhdGlvbi1kdS1yZXNlYXUtZmVycmUtMjAyMCIsIm9wdGlvbnMiOnsic29ydCI6Ii10cmFmaWMifX19XSwidGltZXNjYWxlIjoiIiwiZGlzcGxheUxlZ2VuZCI6dHJ1ZSwiYWxpZ25Nb250aCI6dHJ1ZX0=&refine.reseau=M%C3%A9tro |archive-date=21 January 2022 |access-date=18 June 2023 |website=data.ratp.fr |language=fr}}</ref>
+
+In 2021, the station was used by 3,268,157 passengers, making it the 93rd busiest of the Métro network out of 304 stations.<ref>{{Cite web |title=Trafic annuel entrant par station du réseau ferré 2021 |url=https://data.ratp.fr/explore/dataset/trafic-annuel-entrant-par-station-du-reseau-ferre-2021/table/?sort=-rang&refine.reseau=M%C3%A9tro |access-date=18 June 2023 |website=data.ratp.fr |language=fr}}</ref>
+
+== Passenger services ==
+
+=== Access ===
+The station has 5 accesses:
+
+* Access 1: avenue Ernest Renan ''Parc des Expositions Halls 2 à 8''
+* Access 2: [[Dôme de Paris|Palais des Sports]] ''Parc des Expositions Halls 1''
+* Access 3: [[rue de Vaugirard]]
+* Access 4: Boulevard Victor
+* Access 5: [[Boulevard Lefebvre]]
+
+===Station layout===
+{| cellspacing="0" cellpadding="3" border="0"
+| colspan="3" data-darkreader-inline-border-top="" data-darkreader-inline-border-bottom="" style="border-bottom:solid 1px gray;border-top:solid 1px gray;" width="50" valign="top" |'''Street Level'''
+|-
+| data-darkreader-inline-border-bottom="" style="border-bottom:solid 1px gray;" width="50" valign="top" |'''B1'''
+| colspan="2" data-darkreader-inline-border-bottom="" style="border-bottom:solid 1px gray;" width="100" valign="top" |Mezzanine
+|-
+| rowspan="10" style="border-bottom:solid 1px gray;" width="50" valign="top" |'''Platform level'''
+|Yard track
+|No regular service
+|-
+| colspan="2" style="border-top:solid 2px black;border-right:solid 2px black;border-left:solid 2px black;border-bottom:solid 2px black;text-align:center;" |{{small|[[Island platform]], doors will open on the right}}
+|-
+| style="border-bottom:solid 1px gray;" width="100" |Southbound
+| style="border-bottom:solid 1px gray;" width="390" |← {{R-I|paris|m}} {{R-I|paris|m|12}} toward [[Mairie d'Issy (Paris Métro)|Mairie d'Issy]] {{small|([[Corentin Celton (Paris Métro)|Corentin Celton]])}}
+|-
+|Northbound
+|{{0|→}} {{R-I|paris|m}} {{R-I|paris|m|12}} toward [[Mairie d'Aubervilliers (Paris Métro)|Mairie d'Aubervilliers]] {{small|([[Convention (Paris Métro)|Convention]])}} →
+|-
+| colspan="2" style="border-top:solid 2px black;border-right:solid 2px black;border-left:solid 2px black;border-bottom:solid 1px gray;text-align:center;" |{{small|[[Side platform]], doors will open on the right}}
+|}
+
+=== Platforms ===
+The station has a particular arrangement specific to the stations serving or had served as a terminus. It has 3 tracks divided amongst 1 island platform and 1 side platform. The two platforms are offset from each other by about 40 metres and are separated by a wall. Trains towards ''Mairie d'Aubervilliers'' utilise the southern track (on the side platform) whereas trains towards ''Mairie d'Issy'' utilise the central track (on the island platform). The yard track is not used in regular service and is normally used as a siding to store trains. However, it is occasionally used to terminate trains from Mairie d'Aubervilliers on weekend evenings; passengers who are heading towards ''Mairie d'Issy'' will have to wait for the next train.
+
+=== Other connections ===
+
+==== Tramway ====
+The station has been served by [[Île-de-France tramway Lines 3a and 3b|tramway T3a]] since 16 December 2006 (as part of its initial section between [[Pont du Garigliano]] and [[Porte d'Ivry (Paris Métro)|Porte d'Ivry]]) and by [[Île-de-France tramway Line 2|tramway T2]] since 21 November 2009 (when it was extended from [[Issy–Val de Seine station|Issy – Val de Seine]]), serving as its southern terminus. The tram station's name subtitle is shortened to ''Parc des Expositions''. It is one of four métro stations on the network that are located at one of the [[City gates of Paris|former gates of Paris]] and are served by two tram lines; the other three are [[Balard (Paris Métro)|Balard]] ([[Paris Métro Line 8|line 8]]), [[Porte de Choisy (Paris Métro)|Porte de Choisy]] ([[Paris Métro Line 7|line 7]]), and [[Porte de Vincennes (Paris Métro)|Porte de Vincennes]] ([[Paris Métro Line 1|line 1]]). [[Basilique de Saint-Denis (Paris Métro)|Basilique de Saint-Denis]] ([[Paris Métro Line 13|line 13]]) is the only station served by two tram lines not located at one of the gates of Paris.
+
+==== Bus ====
+The station is also served by the following bus networks:
+
+* [[RATP bus network]]: line 80
+* [[Noctilien]]: lines N13, N62, and N145
+* Sénart bus network: line 54
+* BE Green: Traverse Brancion-Commerce<ref>{{Cite web |date=24 March 2021 |title=Mobilité décarbonée : voyagez au cœur du 15e avec la Traverse ! |url=https://mairie15.paris.fr/pages/mobilite-decarbonee-voyagez-au-coeur-du-15e-avec-la-traverse-15630 |url-status=live |archive-url=https://web.archive.org/web/20230325072121/https://mairie15.paris.fr/pages/mobilite-decarbonee-voyagez-au-coeur-du-15e-avec-la-traverse-15630 |archive-date=25 March 2023 |access-date=8 June 2023 |website=mairie15.paris.fr |language=fr}}</ref><ref>{{Cite web |title=Une ligne de bus 100% électrique dans Paris |url=https://www.b-e-green.com/references/la-traverse-brancion-commerce/ |url-status=live |archive-url=https://web.archive.org/web/20230326053417/https://www.b-e-green.com/references/la-traverse-brancion-commerce/ |archive-date=26 March 2023 |access-date=8 June 2023 |website=Be Green |language=fr-FR}}</ref>
+
+== Nearby ==
+
+* [[Dôme de Paris]]
+* [[Paris Expo Porte de Versailles]]
+
+==Gallery==
+<gallery widths="200" heights="165">
+File:Station Porte Versailles Métro Paris Ligne 12 - Paris XV (FR75) - 2022-07-02 - 1.jpg|link=https://en.wikipedia.org/wiki/File:Station%20Porte%20Versailles%20M%C3%A9tro%20Paris%20Ligne%2012%20-%20Paris%20XV%20(FR75)%20-%202022-07-02%20-%201.jpg|The [[side platform]] at the station
+File:Station Porte Versailles Métro Paris Ligne 12 - Paris XV (FR75) - 2022-07-02 - 6.jpg|link=https://en.wikipedia.org/wiki/File:Station%20Porte%20Versailles%20M%C3%A9tro%20Paris%20Ligne%2012%20-%20Paris%20XV%20(FR75)%20-%202022-07-02%20-%206.jpg|Another view of the island platform
+File:Sprague-Thomson Nord-Sud.jpg|Former [[Sprague-Thomson|Nord-Sud Sprague-Thomson]]  first class carriages at the station
+File:Station Tramway IdF Ligne 3a Porte Versailles - Paris XV (FR75) - 2022-01-22 - 3.jpg|link=https://en.wikipedia.org/wiki/File:Station%20Tramway%20IdF%20Ligne%203a%20Porte%20Versailles%20-%20Paris%20XV%20(FR75)%20-%202022-01-22%20-%203.jpg|Tramway T3a stop
+File:Station Tramway IdF Ligne 2 Porte Versailles - Paris XV (FR75) - 2022-01-22 - 8.jpg|link=https://en.wikipedia.org/wiki/File:Station%20Tramway%20IdF%20Ligne%202%20Porte%20Versailles%20-%20Paris%20XV%20(FR75)%20-%202022-01-22%20-%208.jpg|Tramway T2 terminus
+File:Accès Station Métro Porte Versailles Avenue Ernest Renan - Paris XV (FR75) - 2022-01-22 - 1.jpg|link=https://en.wikipedia.org/wiki/File:Acc%C3%A8s%20Station%20M%C3%A9tro%20Porte%20Versailles%20Avenue%20Ernest%20Renan%20-%20Paris%20XV%20(FR75)%20-%202022-01-22%20-%201.jpg|Access 1
+File:Accès Station Métro Porte Versailles Avenue Ernest Renan - Paris XV (FR75) - 2022-01-22 - 6.jpg|link=https://en.wikipedia.org/wiki/File:Acc%C3%A8s%20Station%20M%C3%A9tro%20Porte%20Versailles%20Avenue%20Ernest%20Renan%20-%20Paris%20XV%20(FR75)%20-%202022-01-22%20-%206.jpg|Access 2
+File:Accès Station Métro Porte Versailles Boulevard Lefebvre - Paris XV (FR75) - 2022-01-22 - 1.jpg|link=https://en.wikipedia.org/wiki/File:Acc%C3%A8s%20Station%20M%C3%A9tro%20Porte%20Versailles%20Boulevard%20Lefebvre%20-%20Paris%20XV%20(FR75)%20-%202022-01-22%20-%201.jpg|Access 3
+File:Accès Station Métro Porte Versailles Boulevard Victor - Paris XV (FR75) - 2022-01-22 - 2.jpg|link=https://en.wikipedia.org/wiki/File:Acc%C3%A8s%20Station%20M%C3%A9tro%20Porte%20Versailles%20Boulevard%20Victor%20-%20Paris%20XV%20(FR75)%20-%202022-01-22%20-%202.jpg|Access 4
+File:Accès Station Métro Porte Versailles Place Porte Versailles - Paris XV (FR75) - 2022-01-22 - 4.jpg|link=https://en.wikipedia.org/wiki/File:Acc%C3%A8s%20Station%20M%C3%A9tro%20Porte%20Versailles%20Place%20Porte%20Versailles%20-%20Paris%20XV%20(FR75)%20-%202022-01-22%20-%204.jpg|Access 5
+</gallery>{{commons category|Porte de Versailles (Paris Metro)}}
+
+==References==
+<references/>
+
+* Roland, Gérard (2003). ''Stations de métro. D’Abbesses à Wagram.'' Éditions Bonneton.
+{{Paris Metro/line 12}}
+
+{{DEFAULTSORT:Porte de Versailles (Paris Metro)}}
+[[Category:Paris Metro stations in the 15th arrondissement of Paris]]
+[[Category:Railway stations in France opened in 1910]]
+[[Category:Paris Metro Line 12]]

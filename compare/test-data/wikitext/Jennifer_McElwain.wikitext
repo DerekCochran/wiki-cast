@@ -1,0 +1,56 @@
+{{Short description|Irish palaeobotanist}}
+{{Use dmy dates|date=January 2022}}
+{{Use Hiberno-English|date=January 2024}}
+{{Infobox academic
+| honorific_prefix  = [[Professor]]
+| name = Jennifer McElwain
+| image = Jennifer McElwain.jpg
+| image_size = 230px
+| caption = McElwain in 2014
+| birth_date = 
+| birth_place = 
+| death_date = 
+| education = BA, Botany, 1993, [[Trinity College Dublin]] <br> PhD, Paleobotany, 1997, [[Royal Holloway, University of London]]
+| thesis_title = Fossil stomatal parameters as indicators of palaeo-atmospheric CO←2 concentration through Phanerozoic time.
+| thesis_year = 1997
+| spouse = 
+| children = 
+| awards = 
+| website = 
+| workplaces = [[Trinity College Dublin]]
+}}
+'''Jennifer Claire McElwain''', MRIA, is an Irish researcher and educator, specialised in palaeobotany. She is a full professor in the [[Trinity College Dublin]]'s (TCD) School of Natural Sciences, holding the 1711 Chair of Botany. She is also the Director of the Trinity College Botanic Garden. McElwain held the position of Assistant Curator of Paleobotany at the [[Field Museum of Natural History]] in Chicago between 2000 and 2003 and later that of Associate Curator of Paleobotany from 2003 until 2006.
+ 
+==Early life and education==
+McElwain was born into an academic family; her father was a chemical engineer and her mother was a gardener. When speaking of her childhood, she said: "I knew the Latin names of all the plants at the age of three. It was seeded early."<ref>{{cite web |title=Remarkable women in science |url=https://www.europeanwomeninmaths.org/reports/remarkable-women-in-science/ |website=europeanwomeninmaths.org |access-date=15 March 2021}}</ref> McElwain completed her [[Bachelor of Arts]] degree in botany from [[Trinity College Dublin]] (TCD) in 1993 and her PhD in Paleobotany in 1997 from the [[Royal Holloway, University of London]].<ref name="TCD bio">{{cite web |title=Professor Jennifer Mc Elwain |url=https://www.tcd.ie/Botany/people/jmcelwai/ |website=tcd.ie |access-date=15 March 2021}}</ref> During her first year at TCD, she was influenced to pursue a career as a palaeobotanist after enrolling in a course focusing on quaternary palynology and geomorphology of the Irish landscape.<ref name="course">{{cite web |last1=Hellawell |first1=Jo |title=Careering off Course: Jenny McElwain (Academic Professor) |url=https://www.palass.org/careers/series-careering-course/careering-course-jenny-mcelwain-academic-professor |website=palass.org |access-date=15 March 2021}}</ref> Following this, she was a Natural Environment Research Council postdoctoral student and a Leverhulme Postdoctoral Fellow between 1998 and 2000 at the [[University of Sheffield]].<ref name="TCD bio"/> As a postgraduate student at Sheffield University, McElwain studied the impact carbon dioxide had on global warming by examining plant fossils collected in Greenland during the 1920s.<ref name="Mullen">{{cite news |last1=Mullen |first1=William |title=Unlocking the mystery of extinction |url=https://www.chicagotribune.com/news/ct-xpm-2002-12-09-0212090194-story.html |access-date=15 March 2021 |publisher=Chicago Tribune |date=9 December 2002}}</ref> In order to gather the fossils, she led a team of scientists in Greenland for one month to collect over 1,000 fossils.<ref>{{cite news |last1=Loomis |first1=Brandon |title=Plant fossils checked for global warming cues |url=https://www.newspapers.com/clip/73559841/jennifer-mcelwain/ |access-date=15 March 2021 |publisher=The Republic |date=20 December 2002|via=newspapers.com}}</ref>
+
+==Career==
+While engaging in post-doctoral work at the University of Sheffield, McElwain also held the position of Assistant Curator of Paleobotany at the [[Field Museum of Natural History]] in Chicago between 2000 and 2003 and was later Associate Curator of Paleobotany (from 2003 until 2006).<ref name="TCD bio"/> In these roles, she studied fossil leaves of plants that grew before, during and after the die-off of Triassic plants and animals. Through these fossils, McElwain found evidence of a rapid surge of seven times the normal amount of CO<sub>2</sub> in the atmosphere.<ref name="Mullen"/><ref>{{cite news |title=In ancient leaves, a warning for us |url=https://www.newspapers.com/clip/73559450/jennifer-mcelwain/ |access-date=15 March 2021 |publisher=The Springfield News-Leader |date=23 December 2002|via=newspapers.com}}</ref> This included pioneering a new type of [[cuticle analysis]] that used their record of stomatal density as a proxy for CO<sub>2</sub> partial pressure (pCO<sub>2</sub>).<ref>{{Cite journal | vauthors = McElwain JC |date=2004-12-01 |title=Climate-independent paleoaltimetry using stomatal density in fossil leaves as a proxy for {{CO<sub>2</sub>}} partial pressure |journal=Geology |volume=32 |issue=12 |pages=1017–1020 |doi=10.1130/G20915.1 |bibcode=2004Geo....32.1017M |issn=0091-7613}}</ref> In 2004, she counted [[stomata]] to know where mountains and plateaus were located in the past, presenting barriers to atmospheric circulation.<ref name="Levy">{{cite journal |last1=Levy |first1=Sharon |title=As the Arctic warms, beavers move in |journal=Knowable Magazine |date=1 December 2022 |doi=10.1146/knowable-120122-1 |url=https://knowablemagazine.org/content/article/living-world/2022/as-arctic-warms-beavers-move-in |access-date=19 December 2023|doi-access=free |url-access=subscription }}</ref><ref>{{cite news |last1=Mullen |first1=William |title=Blueprint of mountain found in fossil leaves |url=https://www.newspapers.com/clip/73559771/jennifer-mcelwain/ |access-date=15 March 2021 |publisher=[[Chicago Tribune]] |date=29 November 2004 |location=Chicago, Illinois|via=newspapers.com}}</ref> Two years later, McElwain accepted a faculty position at [[University College Dublin]]<ref>{{cite web |title=Professor Jenny McElwain BA, PHD |url=https://www.ucd.ie/bioenvsci/ourstaff/academic/mcelwainjennifer/ |website=ucd.ie |access-date=15 March 2021 |archive-date=21 April 2021 |archive-url=https://web.archive.org/web/20210421150252/https://www.ucd.ie/bioenvsci/ourstaff/academic/mcelwainjennifer/ |url-status=dead }}</ref> and received the Award for Excellence in EU research by the President of Ireland in 2012.<ref name="TCD bio"/>
+
+McElwain continued her research into  CO<sub>2</sub> in the atmosphere, and led a study in 2019 which found that holly and ivy are more climate change-ready in the face of warming temperatures than birch and oak.<ref>{{cite web |title=New research pinpoints which of the world's trees are climate change-ready |url=https://www.tcd.ie/news_events/articles/new-research-pinpoints-which-of-the-worlds-trees-are-climate-change-ready/ |website=tcd.ie |access-date=15 March 2021 |date=12 December 2019}}</ref> During the [[COVID-19 pandemic]], McElwain came up with the idea to film five-minute videos to showcase Ireland's native plants and wild places.<ref>{{cite web |title=Trinity College Botanical Gardens 5 in five |url=https://www.tcd.ie/Botany/news/2020/fiveinfive.php |website=tcd.ie |access-date=15 March 2021 |date=2020}}</ref>
+
+==Selected publications==
+*''The Evolution of Plants'' (2002), as author (and 2nd edition in 2013)
+*'' 14 Expeditions'' as editor, which she said "showcases the breadth and importance of botany as a modern science addressing global research challenges."<ref>{{cite web |title=New 14 Expeditions book showcases globetrotting adventures of botanists |url=https://www.tcd.ie/news_events/articles/new-14-expeditions-book-showcases-globetrotting-adventures-of-botanists/ |website=tcd.ie |access-date=15 March 2021 |date=1 October 2018}}</ref>
+
+==Recognition==
+In 2017 she was admitted as a member of the [[Royal Irish Academy]]<ref>{{cite web |url=https://www.ria.ie/news/membership/18-new-members-royal-irish-academy |archive-url=https://web.archive.org/web/20171205084156/https://www.ria.ie/news/membership/18-new-members-royal-irish-academy |url-status=dead |archive-date=5 December 2017 |title=18 New Members of the Royal Irish Academy |work=Royal Irish Academy |date=26 May 2017 |access-date=27 Nov 2021 }}</ref> and elected a [[Fellow of the Royal Society]] in 2025.<ref>{{Cite web |date=2025-05-20 |title=Exceptional scientists elected as Fellows of the Royal Society |url=https://royalsociety.org/news/2025/05/new-fellows/ |access-date=2025-05-22 |website=Royal Society |language=en}}</ref>
+
+==References==
+{{reflist}}
+
+==External links==
+*{{Google Scholar id |x1bwH_sAAAAJ&hl }}
+
+{{Authority control}}
+
+{{DEFAULTSORT:McElwain, Jennifer}}
+[[Category:Living people]]
+[[Category:Irish women scientists]]
+[[Category:Irish women botanists]]
+[[Category:Paleobotanists]]
+[[Category:Academics of Trinity College Dublin]]
+[[Category:Alumni of Royal Holloway, University of London]]
+[[Category:Members of the Royal Irish Academy]]
+[[Category:Year of birth missing (living people)]]
+[[Category:Fellows of the Royal Society]]

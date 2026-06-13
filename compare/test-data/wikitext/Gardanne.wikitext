@@ -1,0 +1,130 @@
+{{Use dmy dates|date=August 2023}}
+{{short description|Commune in Provence-Alpes-Côte d'Azur, France}}
+{{Infobox French commune
+|name               = Gardanne 
+|native name            = {{native name|oc|Gardana}}
+|commune status     = [[Communes of France|Commune]]
+|image              = Gardanne.JPG
+|caption            = View of Gardanne
+|image coat of arms = Blason de la ville de Gardanne (13).svg
+|arrondissement     = Aix-en-Provence
+|canton             = Gardanne
+|INSEE              = 13041
+|postal code        = 13120
+|mayor              = Hervé Granier<ref>{{cite web|title=Répertoire national des élus: les maires|url=https://www.data.gouv.fr/fr/datasets/r/2876a346-d50c-4911-934e-19ee07b0e503|publisher=data.gouv.fr, Plateforme ouverte des données publiques françaises|date=4 May 2022|language=fr}}</ref>
+|term               = 2020&ndash;2026
+|intercommunality   = [[Aix-Marseille-Provence Metropolis|Aix-Marseille-Provence]]
+|coordinates        = {{coord|43.4553|5.476|format=dms|display=inline,title}}
+|elevation m        = 205
+|elevation min m    = 170
+|elevation max m    = 387
+|area km2           = 27.02
+|population         = {{France metadata Wikidata|population_total}}
+|population date    = {{France metadata Wikidata|population_as_of}}
+|population footnotes   = {{France metadata Wikidata|population_footnotes}}
+}}
+
+'''Gardanne''' ({{IPA|fr|ɡaʁdan}}; {{langx|oc|Gardana}}) is a [[Communes of France|commune]] in the [[Bouches-du-Rhône]] [[Departments of France|department]] in southern [[France]]. Its inhabitants are called Gardannais.
+
+==Geography==
+Situated close to [[Aix-en-Provence]] and [[Marseille]] and on the rail link connecting the two cities, Gardanne is bordered by the Massif du Montaiguet. The terrain is moderately elevated, with some areas reaching over 200 meters (656 feet) above sea level. The surrounding countryside includes forests, [[vineyards]], and former mining sites from the town's historical coal-mining industry. The [[Arc (Provence)|Arc River]] flows nearby, contributing to the region's drainage and agricultural viability. Following devastating [[bush fires]] in 1979 and 2005, garrigue now covers a wide area of the region.
+
+==History==
+The history of Gardanne dates back to 4000 BC, with the discovery of a [[Neolithic]] site in 2003. Walls dating back to the first century AD have also been found.<ref name="Official website">[http://www.ville-gardanne.fr/Histoire :: Ville de Gardanne ::<!-- Bot generated title -->]</ref>
+
+Throughout the [[Middle Ages]] the town was enclosed within ramparts and the lordship of Gardanne belonged to different noble families. From the 13th century, the inhabitants claimed franchises and freedoms through their municipal magistrates. In 1454 [[René d'Anjou]] bought the estate and would go there until 1480.<ref name="Official website"/> In 1482 it was bought back by the [[Forbin]]s<ref name="Official website"/> and in 1676 the villagers themselves bought back their own land.<ref name="Official website"/>
+
+In the 1860s a railway was built<ref name="Official website"/> and mines were dug, attracting Italian, Armenian, Polish, Czech, Spanish and African workers to the village.<ref name="Official website"/> The deep mine, one of the last surviving in France, was closed down in 2003.<ref name="Official website"/> During this time frame, The population grew rapidly, from 1,600 inhabitants in 1809, to 20,000 in 1999) until the mine ceased operations in 2003.
+
+In 1886, French painter [[Paul Cézanne]] settled in Gardanne with his family, and that year, he began his [[Mont Sainte-Victoire (Cézanne)|cycle of paintings on Mount Sainte-Victoire]].
+
+== Energy ==
+The Centrale thermique de Provence, a thermal power station is located in Gardanne. It runs on coal and biomass and uses the technology known as the circulating fluidized bed.<ref>{{Cite web|url=https://www.lakko.fr/centrale-gardanne.html|title=Charbon propre : la centrale thermique de Gardanne|website=www.lakko.fr|access-date=2020-04-19}}</ref> It has the highest chimney in France which rises to 297 m. In 2018, the site director presented it as the third tallest building in France, after the Eiffel Tower and the Millau viaduct.<ref>{{Cite web|url=https://www.varmatin.com/environnement/la-centrale-biomasse-de-gardanne-effraie-le-var-26174|title=La centrale biomasse de Gardanne effraie le Var|date=2016-02-25|website=Var-Matin|language=fr|access-date=2020-04-19}}</ref> The plant will be closed before 2022 in order to reduce greenhouse gas ({{CO2}}) emissions in accordance with the PPE law.<ref>{{Cite web|url=https://france3-regions.francetvinfo.fr/provence-alpes-cote-d-azur/bouches-du-rhone/aix-en-provence/gardanne-gouvernement-confirme-fermeture-centrale-charbon-2022-1637708.html|title=Gardanne : le gouvernement confirme la fermeture de la centrale à charbon en 2022|website=France 3 Provence-Alpes-Côte d'Azur|language=fr|access-date=2020-04-19}}</ref>
+{|
+|}
+<gallery mode="packed" style="text-align: center;" caption="Gallery" heights="140px" perrow="3">
+File:Centrale_Gardanne_aout_2001.jpg|Gardanne power station seen from [[Mimet]]
+File:Paul Cézanne - Gardanne (Horizontal View) (Gardanne (vue horizontale)) - BF917 - Barnes Foundation.jpg|Paul_Cézanne_-_Gardanne_(Horizontal_View)_(Gardanne_(vue_horizontale))_-_BF917_-_Barnes_Foundation]]|View of Gardanne by Paul Cézanne
+File:Clocher de Gardanne.jpg|Clocher of Gardanne
+</gallery>
+
+==Population==
+
+{{Historical populations
+| align = none
+| cols = 2
+| percentages = pagr
+| source = EHESS<ref name=ehess>{{Cassini-Ehess|15049|Gardanne}}</ref> and INSEE (1968-2023)<ref name=pophist>[https://www.insee.fr/fr/statistiques/8643952?geo=COM-13041#tableau-POPREF_G1 Population municipale entre 1968 et 2023], INSEE</ref>
+| graph-pos = bottom
+|1793 |2253
+|1800 |2353
+|1806 |2428
+|1821 |2823
+|1831 |3234
+|1836 |2795
+|1841 |2609
+|1846 |2869
+|1851 |2837
+|1856 |2710
+|1861 |2739
+|1866 |2570
+|1872 |2566
+|1876 |3062
+|1881 |2781
+|1886 |2657
+|1891 |2797
+|1896 |3062
+|1901 |3593
+|1906 |4062
+|1911 |4242
+|1921 |5301
+|1926 |6460
+|1931 |7128
+|1936 |7334
+|1946 |7979
+|1954 |8973
+|1962 |11261
+|1968 |12601
+|1975 |14120
+|1982 |15122
+|1990 |17864
+|1999 |19323
+|2007 |20903
+|2012 |20616
+|2017 |20794
+|2023 |21597
+}}
+
+==Politics==
+The [[commune in France|commune]] of Gardanne was governed by the [[French Communist Party]] under Mayor Roger Meï from 1977 until 2020. Voting is usually towards the left-wing, but rather uncharacteristically, [[Nicolas Sarkozy]] gained 53.1% of the vote at the second round of the [[2007 French presidential election]].{{citation needed|date=May 2007}}
+
+{| class="wikitable"
+|+ | List of successive mayors
+! Term !! Name !! Party
+|-
+| 1977–2020 || Roger Meï || [[French Communist Party|PCF]]
+|- 
+| 2020–incumbent || Herve Granier || [[The_Republicans_(France)|LR]] 
+|}
+
+== See also ==
+* [[Provence Power Station]]
+* [[Communes of the Bouches-du-Rhône department]]
+* [[Olivier Dubuquoy]]
+
+==References==
+{{reflist}}
+
+==External links==
+{{Commons category|Gardanne}}
+*[http://www.ville-gardanne.fr/ Official website] {{in lang|fr}}
+
+{{Bouches-du-Rhône communes}}
+
+{{Authority control}}
+
+[[Category:Communes of Bouches-du-Rhône]]
+[[Category:Bouches-du-Rhône communes articles needing translation from French Wikipedia]]
+
+
+{{BouchesRhône-geo-stub}}
