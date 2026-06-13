@@ -33,8 +33,8 @@ build_profile/
 build_profile_regex/
 dist/
 # Keep the new-js mirror checked in for parser parity work.
-!new-js/dist/
-!new-js/dist/**
+!compare/wikiparser-node/dist/
+!compare/wikiparser-node/dist/**
 *.egg-info/
 
 # --- VS Code ---

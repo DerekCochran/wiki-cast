@@ -1,0 +1,1 @@
+These are the relevent files from wikiparser-node version 1.38.1.  They have been updated with logging to assist with the development of the Wiki-CAST library. 

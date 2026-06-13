@@ -45,20 +45,20 @@ cJSON* token_to_json(const Token *token) {
 	cJSON_AddStringToObject(root, "SubType", get_token_subtype_name(token->subtype));
 	// cJSON_AddNumberToObject(root, "tokenSubtype", token->subtype);
 	if (token->name) json_add_cstr_to_object(root, "name", token->name);
-	cJSON_AddNumberToObject(root, "childCount", token->child_count);
-	//cJSON_AddNumberToObject(root, "childCap", token->child_cap);
-	//cJSON_AddNumberToObject(root, "stage", token->stage);
+	// cJSON_AddNumberToObject(root, "childCount", token->child_count);
+	// cJSON_AddNumberToObject(root, "childCap", token->child_cap);
+	// cJSON_AddNumberToObject(root, "stage", token->stage);
 	if( token->include ) {
 		cJSON_AddBoolToObject(root, "include", token->include);
 	}
-	//cJSON_AddBoolToObject(root, "built", token->built);
+	// cJSON_AddBoolToObject(root, "built", token->built);
 	if( token->ext_inner_context ) {
 		cJSON_AddBoolToObject(root, "extInnerContext", token->ext_inner_context);
 	}
-	//cJSON_AddNumberToObject(root, "sepCode", (unsigned char)token->sep);
-	//if (token->sep != '\0') {
+	// cJSON_AddNumberToObject(root, "sepCode", (unsigned char)token->sep);
+	// if (token->sep != '\0') {
 	//	json_add_char_to_object(root, "sep", token->sep);
-	//}
+	// }
 
 	switch (token->type) {
 		case TOKEN_HEADING:
@@ -181,8 +181,8 @@ cJSON* token_to_json(const Token *token) {
 				cJSON *child_obj = cJSON_CreateObject();
 				cJSON_AddStringToObject(child_obj, "kind", "text");
 				cJSON_AddItemToObject(child_obj, "text", token_text_to_json_string(child->text, child->text_len));
-				cJSON_AddNumberToObject(child_obj, "textLen", child->text_len);
-				cJSON_AddBoolToObject(child_obj, "textOwned", child->text_owned);
+				// cJSON_AddNumberToObject(child_obj, "textLen", child->text_len);
+				// cJSON_AddBoolToObject(child_obj, "textOwned", child->text_owned);
 				cJSON_AddItemToArray(children_arr, child_obj);
             } else {
 				cJSON *child_obj = cJSON_CreateObject();
