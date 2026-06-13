@@ -32,7 +32,7 @@ build_asan/
 build_profile/
 build_profile_regex/
 dist/
-# Keep the new-js mirror checked in for parser parity work.
+# Keep the compare/wikiparser-node mirror checked in for parser parity work.
 !compare/wikiparser-node/dist/
 !compare/wikiparser-node/dist/**
 *.egg-info/

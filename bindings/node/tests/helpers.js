@@ -14,7 +14,7 @@ try {
   Ajv = null;
 }
 
-const wikiparser = require(path.join(__dirname, '..', '..', '..', 'new-js', 'dist', 'index.js'));
+const wikiparser = require(path.join(__dirname, '..', '..', '..', 'compare/wikiparser-node', 'dist', 'index.js'));
 // Get the native parser by looking in the Release directory fist, then Debug if not found.  This allows running tests in both dev and prod builds without changing the test code.
 let nativeParser;
 try {  
