@@ -19,16 +19,7 @@ class MarkdownConverter:
         self.list_level = 0
         self.table_rows = []
         self.current_row = []
-
-    def convert(self, root_token):
-        self._process_token(root_token)
-        return "".join(self.output)
-
-    def _process_token(self, token):
-        if token is None:
-            return
-
-        type_handlers = {
+        self.type_handlers = {
             TokenType.TOKEN_TEXT: self._h_text,
             TokenType.TOKEN_ROOT: self._h_root,
             TokenType.TOKEN_PLAIN: self._h_plain,
@@ -71,54 +62,107 @@ class MarkdownConverter:
             TokenType.TOKEN_ATTR_KEY: self._h_passthrough,
             TokenType.TOKEN_ATTR_VALUE: self._h_passthrough,
         }
-
-        subtype_handlers = {
-            TokenSubType.TOKEN_SUBTYPE_TEMPLATE: self._h_template_subtype,
-            TokenSubType.TOKEN_SUBTYPE_TEMPLATE_NAME: self._h_passthrough,
-            TokenSubType.TOKEN_SUBTYPE_MAGIC_WORD: self._h_magic_word_subtype,
-            TokenSubType.TOKEN_SUBTYPE_MAGIC_WORD_NAME: self._h_passthrough,
-            TokenSubType.TOKEN_SUBTYPE_PARAMETER: self._h_parameter,
-            TokenSubType.TOKEN_SUBTYPE_PARAMETER_KEY: self._h_passthrough,
-            TokenSubType.TOKEN_SUBTYPE_PARAMETER_VALUE: self._h_passthrough,
-            TokenSubType.TOKEN_SUBTYPE_HEADING_TITLE: self._h_passthrough,
-            TokenSubType.TOKEN_SUBTYPE_HEADING_TRAIL: self._h_passthrough,
-            TokenSubType.TOKEN_SUBTYPE_LINK_TARGET: self._h_passthrough,
-            TokenSubType.TOKEN_SUBTYPE_LINK_TEXT: self._h_passthrough,
-            TokenSubType.TOKEN_SUBTYPE_EXT_LINK_URL: self._h_passthrough,
-            TokenSubType.TOKEN_SUBTYPE_EXT_LINK_TEXT: self._h_passthrough,
-            TokenSubType.TOKEN_SUBTYPE_FREE_EXT_LINK: self._h_passthrough,
-            TokenSubType.TOKEN_SUBTYPE_TABLE_SYNTAX: self._h_skip,
-            TokenSubType.TOKEN_SUBTYPE_TABLE_ATTRS: self._h_skip,
-            TokenSubType.TOKEN_SUBTYPE_TABLE_ATTR: self._h_skip,
-            TokenSubType.TOKEN_SUBTYPE_TABLE_ATTR_DIRTY: self._h_skip,
-            TokenSubType.TOKEN_SUBTYPE_TABLE_INTER: self._h_passthrough,
-            TokenSubType.TOKEN_SUBTYPE_TABLE_INNER: self._h_passthrough,
-            TokenSubType.TOKEN_SUBTYPE_TD_INNER: self._h_passthrough,
-            TokenSubType.TOKEN_SUBTYPE_EXT_ATTRS: self._h_skip,
-            TokenSubType.TOKEN_SUBTYPE_EXT_INNER: self._h_passthrough,
-            TokenSubType.TOKEN_SUBTYPE_EXT_ATTR_DIRTY: self._h_skip,
-            TokenSubType.TOKEN_SUBTYPE_EXT_ATTR: self._h_skip,
-            TokenSubType.TOKEN_SUBTYPE_ATTR_KEY: self._h_passthrough,
-            TokenSubType.TOKEN_SUBTYPE_ATTR_VALUE: self._h_passthrough,
-            TokenSubType.TOKEN_SUBTYPE_IMAGE_PARAMETER: self._h_image_parameter,
-            TokenSubType.TOKEN_SUBTYPE_GALLERY_IMAGE: self._h_file,
-            TokenSubType.TOKEN_SUBTYPE_IMAGEMAP_IMAGE: self._h_file,
-            TokenSubType.TOKEN_SUBTYPE_GALLERY_LINE: self._h_passthrough,
-            TokenSubType.TOKEN_SUBTYPE_GALLERY_PARAM_WRAPPER: self._h_passthrough,
-            TokenSubType.TOKEN_SUBTYPE_IMAGEMAP_LINK_INNER: self._h_passthrough,
-            TokenSubType.TOKEN_SUBTYPE_IMAGEMAP_IMAGE_LINE: self._h_passthrough,
-            TokenSubType.TOKEN_SUBTYPE_IMAGEMAP_LINK: self._h_passthrough,
-            TokenSubType.TOKEN_SUBTYPE_INVOKE_MODULE: self._h_passthrough,
-            TokenSubType.TOKEN_SUBTYPE_INVOKE_FUNCTION: self._h_passthrough,
-            TokenSubType.TOKEN_SUBTYPE_PARAM_LINE: self._h_passthrough,
+        self.subtype_handlers = {
+            TokenSubType.TOKEN_SUBTYPE_NONE: self._hs_none,
+            TokenSubType.TOKEN_SUBTYPE_ROOT: self._hs_root,
+            TokenSubType.TOKEN_SUBTYPE_REDIRECT: self._hs_redirect,
+            TokenSubType.TOKEN_SUBTYPE_REDIRECT_SYNTAX: self._hs_redirect_syntax,
+            TokenSubType.TOKEN_SUBTYPE_REDIRECT_TARGET: self._hs_redirect_target,
+            TokenSubType.TOKEN_SUBTYPE_COMMENT: self._hs_comment,
+            TokenSubType.TOKEN_SUBTYPE_EXT: self._hs_ext,
+            TokenSubType.TOKEN_SUBTYPE_NOINCLUDE: self._hs_noinclude,
+            TokenSubType.TOKEN_SUBTYPE_INCLUDE: self._hs_include,
+            TokenSubType.TOKEN_SUBTYPE_INCLUDEONLY: self._hs_includeonly,
+            TokenSubType.TOKEN_SUBTYPE_ONLYINCLUDE: self._hs_onlyinclude,
+            TokenSubType.TOKEN_SUBTYPE_TRANSLATE: self._hs_translate,
+            TokenSubType.TOKEN_SUBTYPE_ARG: self._hs_arg,
+            TokenSubType.TOKEN_SUBTYPE_ARG_NAME: self._hs_arg_name,
+            TokenSubType.TOKEN_SUBTYPE_ARG_DEFAULT: self._hs_arg_default,
+            TokenSubType.TOKEN_SUBTYPE_TEMPLATE: self._hs_template,
+            TokenSubType.TOKEN_SUBTYPE_MAGIC_WORD: self._hs_magic_word,
+            TokenSubType.TOKEN_SUBTYPE_MAGIC_WORD_NAME: self._hs_magic_word_name,
+            TokenSubType.TOKEN_SUBTYPE_PARAMETER: self._hs_parameter,
+            TokenSubType.TOKEN_SUBTYPE_PARAMETER_KEY: self._hs_parameter_key,
+            TokenSubType.TOKEN_SUBTYPE_PARAMETER_VALUE: self._hs_parameter_value,
+            TokenSubType.TOKEN_SUBTYPE_HEADING: self._hs_heading,
+            TokenSubType.TOKEN_SUBTYPE_HEADING_TITLE: self._hs_heading_title,
+            TokenSubType.TOKEN_SUBTYPE_HEADING_TRAIL: self._hs_heading_trail,
+            TokenSubType.TOKEN_SUBTYPE_HTML: self._hs_html,
+            TokenSubType.TOKEN_SUBTYPE_HTML_ATTRS: self._hs_html_attrs,
+            TokenSubType.TOKEN_SUBTYPE_HTML_ATTR: self._hs_html_attr,
+            TokenSubType.TOKEN_SUBTYPE_HTML_ATTR_DIRTY: self._hs_html_attr_dirty,
+            TokenSubType.TOKEN_SUBTYPE_TABLE: self._hs_table,
+            TokenSubType.TOKEN_SUBTYPE_TR: self._hs_tr,
+            TokenSubType.TOKEN_SUBTYPE_TD: self._hs_td,
+            TokenSubType.TOKEN_SUBTYPE_TABLE_SYNTAX: self._hs_table_syntax,
+            TokenSubType.TOKEN_SUBTYPE_TABLE_ATTRS: self._hs_table_attrs,
+            TokenSubType.TOKEN_SUBTYPE_TABLE_ATTR: self._hs_table_attr,
+            TokenSubType.TOKEN_SUBTYPE_TABLE_ATTR_DIRTY: self._hs_table_attr_dirty,
+            TokenSubType.TOKEN_SUBTYPE_TABLE_INTER: self._hs_table_inter,
+            TokenSubType.TOKEN_SUBTYPE_TABLE_INNER: self._hs_table_inner,
+            TokenSubType.TOKEN_SUBTYPE_TD_INNER: self._hs_td_inner,
+            TokenSubType.TOKEN_SUBTYPE_HR: self._hs_hr,
+            TokenSubType.TOKEN_SUBTYPE_DOUBLE_UNDERSCORE: self._hs_double_underscore,
+            TokenSubType.TOKEN_SUBTYPE_LINK: self._hs_link,
+            TokenSubType.TOKEN_SUBTYPE_FILE: self._hs_file,
+            TokenSubType.TOKEN_SUBTYPE_CATEGORY: self._hs_category,
+            TokenSubType.TOKEN_SUBTYPE_TEXT: self._hs_text,
+            TokenSubType.TOKEN_SUBTYPE_LINK_TARGET: self._hs_link_target,
+            TokenSubType.TOKEN_SUBTYPE_LINK_TEXT: self._hs_link_text,
+            TokenSubType.TOKEN_SUBTYPE_QUOTE: self._hs_quote,
+            TokenSubType.TOKEN_SUBTYPE_EXT_LINK: self._hs_ext_link,
+            TokenSubType.TOKEN_SUBTYPE_EXT_LINK_URL: self._hs_ext_link_url,
+            TokenSubType.TOKEN_SUBTYPE_EXT_LINK_TEXT: self._hs_ext_link_text,
+            TokenSubType.TOKEN_SUBTYPE_MAGIC_LINK: self._hs_magic_link,
+            TokenSubType.TOKEN_SUBTYPE_FREE_EXT_LINK: self._hs_free_ext_link,
+            TokenSubType.TOKEN_SUBTYPE_LIST: self._hs_list,
+            TokenSubType.TOKEN_SUBTYPE_DD: self._hs_dd,
+            TokenSubType.TOKEN_SUBTYPE_CONVERTER: self._hs_converter,
+            TokenSubType.TOKEN_SUBTYPE_CONVERTER_RULE: self._hs_converter_rule,
+            TokenSubType.TOKEN_SUBTYPE_CONVERTER_RULE_FROM: self._hs_converter_rule_from,
+            TokenSubType.TOKEN_SUBTYPE_CONVERTER_RULE_VARIANT: self._hs_converter_rule_variant,
+            TokenSubType.TOKEN_SUBTYPE_CONVERTER_RULE_TO: self._hs_converter_rule_to,
+            TokenSubType.TOKEN_SUBTYPE_CONVERTER_FLAGS: self._hs_converter_flags,
+            TokenSubType.TOKEN_SUBTYPE_CONVERTER_FLAG: self._hs_converter_flag,
+            TokenSubType.TOKEN_SUBTYPE_ATTRIBUTES: self._hs_attributes,
+            TokenSubType.TOKEN_SUBTYPE_ATTR_EQUAL_TMP: self._hs_attr_equal_tmp,
+            TokenSubType.TOKEN_SUBTYPE_ATTR_KEY: self._hs_attr_key,
+            TokenSubType.TOKEN_SUBTYPE_ATTR_VALUE: self._hs_attr_value,
+            TokenSubType.TOKEN_SUBTYPE_ATOM: self._hs_atom,
+            TokenSubType.TOKEN_SUBTYPE_HIDDEN: self._hs_hidden,
+            TokenSubType.TOKEN_SUBTYPE_EXT_ATTRS: self._hs_ext_attrs,
+            TokenSubType.TOKEN_SUBTYPE_EXT_INNER: self._hs_ext_inner,
+            TokenSubType.TOKEN_SUBTYPE_EXT_ATTR_DIRTY: self._hs_ext_attr_dirty,
+            TokenSubType.TOKEN_SUBTYPE_EXT_ATTR: self._hs_ext_attr,
+            TokenSubType.TOKEN_SUBTYPE_IMAGE_PARAMETER: self._hs_image_parameter,
+            TokenSubType.TOKEN_SUBTYPE_GALLERY_IMAGE: self._hs_gallery_image,
+            TokenSubType.TOKEN_SUBTYPE_IMAGEMAP_IMAGE: self._hs_imagemap_image,
+            TokenSubType.TOKEN_SUBTYPE_GALLERY_LINE: self._hs_gallery_line,
+            TokenSubType.TOKEN_SUBTYPE_GALLERY_PARAM_WRAPPER: self._hs_gallery_param_wrapper,
+            TokenSubType.TOKEN_SUBTYPE_IMAGEMAP_LINK_INNER: self._hs_imagemap_link_inner,
+            TokenSubType.TOKEN_SUBTYPE_IMAGEMAP_IMAGE_LINE: self._hs_imagemap_image_line,
+            TokenSubType.TOKEN_SUBTYPE_IMAGEMAP_LINK: self._hs_imagemap_link,
+            TokenSubType.TOKEN_SUBTYPE_TEMPLATE_NAME: self._hs_template_name,
+            TokenSubType.TOKEN_SUBTYPE_INVOKE_MODULE: self._hs_invoke_module,
+            TokenSubType.TOKEN_SUBTYPE_INVOKE_FUNCTION: self._hs_invoke_function,
+            TokenSubType.TOKEN_SUBTYPE_PARAM_LINE: self._hs_param_line,
         }
 
-        subtype_handler = subtype_handlers.get(token.subtype)
+    def convert(self, root_token):
+        self._process_token(root_token)
+        return "".join(self.output)
+
+    def _process_token(self, token):
+        if token is None:
+            return
+        # Dispatch policy: semantic subtype first, then structural type fallback.
+        subtype = getattr(token, "subtype", TokenSubType.TOKEN_SUBTYPE_NONE)
+        subtype_handler = self.subtype_handlers.get(subtype)
         if subtype_handler is not None:
             subtype_handler(token)
             return
 
-        type_handler = type_handlers.get(token.type, self._h_passthrough)
+        type_handler = self.type_handlers.get(token.type, self._h_passthrough)
         type_handler(token)
 
     def _children(self, token):
@@ -175,6 +219,288 @@ class MarkdownConverter:
             return value
         return key + "=" + value
 
+    # Subtype handlers (one method per subtype for debug visibility)
+    def _hs_none(self, token):
+        self._h_subtype_none(token)
+
+    def _hs_root(self, token):
+        self._h_root(token)
+
+    def _hs_redirect(self, token):
+        self._h_redirect(token)
+
+    def _hs_redirect_syntax(self, token):
+        # The '#REDIRECT' keyword text — not content.
+        self._h_skip(token)
+
+    def _hs_redirect_target(self, token):
+        # Child of redirect (which is already skipped).
+        self._h_skip(token)
+
+    def _hs_comment(self, token):
+        self._h_comment(token)
+
+    def _hs_ext(self, token):
+        self._h_ext(token)
+
+    def _hs_noinclude(self, token):
+        # In page-view mode, noinclude tokens commonly represent raw tag syntax.
+        # Skip the tag token itself.
+        self._h_skip(token)
+
+    def _hs_include(self, token):
+        # <includeonly>: content is NOT shown when viewing the page, only when transcluded.
+        self._h_skip(token)
+
+    def _hs_includeonly(self, token):
+        # <includeonly>: same as above.
+        self._h_skip(token)
+
+    def _hs_onlyinclude(self, token):
+        self._h_include_like(token)
+
+    def _hs_translate(self, token):
+        self._h_translate(token)
+
+    def _hs_arg(self, token):
+        # Template argument placeholders {{{1}}} — no markdown equivalent.
+        self._h_skip(token)
+
+    def _hs_arg_name(self, token):
+        # Internal to arg (which is skipped).
+        self._h_skip(token)
+
+    def _hs_arg_default(self, token):
+        # Internal to arg (which is skipped).
+        self._h_skip(token)
+
+    def _hs_template(self, token):
+        self._h_template_subtype(token)
+
+    def _hs_magic_word(self, token):
+        # {{PAGENAME}}, {{#if:}}, etc. — no meaningful markdown output.
+        self._h_skip(token)
+
+    def _hs_magic_word_name(self, token):
+        # Internal name node inside magic-word (which is skipped).
+        self._h_skip(token)
+
+    def _hs_parameter(self, token):
+        # Template parameters — only appear inside templates (JSON-encoded) or magic-words (skipped).
+        self._h_skip(token)
+
+    def _hs_parameter_key(self, token):
+        # Internal to parameter (which is skipped).
+        self._h_skip(token)
+
+    def _hs_parameter_value(self, token):
+        # Internal to parameter (which is skipped).
+        self._h_skip(token)
+
+    def _hs_heading(self, token):
+        self._h_heading(token)
+
+    def _hs_heading_title(self, token):
+        self._h_passthrough(token)
+
+    def _hs_heading_trail(self, token):
+        # Trailing == markers and whitespace after heading text — heading handler already adds \n\n.
+        self._h_skip(token)
+
+    def _hs_html(self, token):
+        self._h_html(token)
+
+    def _hs_html_attrs(self, token):
+        self._h_skip(token)
+
+    def _hs_html_attr(self, token):
+        self._h_skip(token)
+
+    def _hs_html_attr_dirty(self, token):
+        self._h_skip(token)
+
+    def _hs_table(self, token):
+        self._h_table(token)
+
+    def _hs_tr(self, token):
+        self._h_tr(token)
+
+    def _hs_td(self, token):
+        self._h_td(token)
+
+    def _hs_table_syntax(self, token):
+        self._h_skip(token)
+
+    def _hs_table_attrs(self, token):
+        self._h_skip(token)
+
+    def _hs_table_attr(self, token):
+        self._h_skip(token)
+
+    def _hs_table_attr_dirty(self, token):
+        self._h_skip(token)
+
+    def _hs_table_inter(self, token):
+        self._h_passthrough(token)
+
+    def _hs_table_inner(self, token):
+        self._h_passthrough(token)
+
+    def _hs_td_inner(self, token):
+        self._h_passthrough(token)
+
+    def _hs_hr(self, token):
+        self._h_hr(token)
+
+    def _hs_double_underscore(self, token):
+        # __TOC__, __NOTOC__, __FORCETOC__ etc. are control words with no markdown equivalent.
+        self._h_skip(token)
+
+    def _hs_link(self, token):
+        self._h_link(token)
+
+    def _hs_file(self, token):
+        self._h_file(token)
+
+    def _hs_category(self, token):
+        self._h_category(token)
+
+    def _hs_text(self, token):
+        self._h_text(token)
+
+    def _hs_link_target(self, token):
+        self._h_passthrough(token)
+
+    def _hs_link_text(self, token):
+        self._h_passthrough(token)
+
+    def _hs_quote(self, token):
+        self._h_quote(token)
+
+    def _hs_ext_link(self, token):
+        self._h_ext_link(token)
+
+    def _hs_ext_link_url(self, token):
+        self._h_passthrough(token)
+
+    def _hs_ext_link_text(self, token):
+        self._h_passthrough(token)
+
+    def _hs_magic_link(self, token):
+        self._h_magic_link(token)
+
+    def _hs_free_ext_link(self, token):
+        self._h_magic_link(token)
+
+    def _hs_list(self, token):
+        self._h_list(token)
+
+    def _hs_dd(self, token):
+        self._h_dd(token)
+
+    def _hs_converter(self, token):
+        # Language variant converter -{...}- — no markdown equivalent.
+        self._h_skip(token)
+
+    def _hs_converter_rule(self, token):
+        # Internal to converter.
+        self._h_skip(token)
+
+    def _hs_converter_rule_from(self, token):
+        # Internal to converter.
+        self._h_skip(token)
+
+    def _hs_converter_rule_variant(self, token):
+        # Internal to converter.
+        self._h_skip(token)
+
+    def _hs_converter_rule_to(self, token):
+        # Internal to converter.
+        self._h_skip(token)
+
+    def _hs_converter_flags(self, token):
+        # Internal to converter.
+        self._h_skip(token)
+
+    def _hs_converter_flag(self, token):
+        # Internal to converter.
+        self._h_skip(token)
+
+    def _hs_attributes(self, token):
+        # HTML/table attribute container — attributes are not emitted in markdown.
+        self._h_skip(token)
+
+    def _hs_attr_equal_tmp(self, token):
+        # Transient attribute = separator — not content.
+        self._h_skip(token)
+
+    def _hs_attr_key(self, token):
+        # HTML attribute key — not content.
+        self._h_skip(token)
+
+    def _hs_attr_value(self, token):
+        # HTML attribute value — not content.
+        self._h_skip(token)
+
+    def _hs_atom(self, token):
+        self._h_passthrough(token)
+
+    def _hs_hidden(self, token):
+        self._h_skip(token)
+
+    def _hs_ext_attrs(self, token):
+        self._h_skip(token)
+
+    def _hs_ext_inner(self, token):
+        self._h_passthrough(token)
+
+    def _hs_ext_attr_dirty(self, token):
+        self._h_skip(token)
+
+    def _hs_ext_attr(self, token):
+        self._h_skip(token)
+
+    def _hs_image_parameter(self, token):
+        self._h_image_parameter(token)
+
+    def _hs_gallery_image(self, token):
+        self._h_file(token)
+
+    def _hs_imagemap_image(self, token):
+        self._h_file(token)
+
+    def _hs_gallery_line(self, token):
+        self._h_passthrough(token)
+
+    def _hs_gallery_param_wrapper(self, token):
+        # Gallery settings wrapper (mode=packed, widths=200, etc.) — metadata, not content.
+        self._h_skip(token)
+
+    def _hs_imagemap_link_inner(self, token):
+        self._h_passthrough(token)
+
+    def _hs_imagemap_image_line(self, token):
+        self._h_passthrough(token)
+
+    def _hs_imagemap_link(self, token):
+        self._h_passthrough(token)
+
+    def _hs_template_name(self, token):
+        # Template name node — internal to template which is JSON-encoded as a whole.
+        self._h_skip(token)
+
+    def _hs_invoke_module(self, token):
+        # Lua module name — internal to template JSON.
+        self._h_skip(token)
+
+    def _hs_invoke_function(self, token):
+        # Lua function name — internal to template JSON.
+        self._h_skip(token)
+
+    def _hs_param_line(self, token):
+        # Gallery/imagemap config lines (widths=200px etc.) — metadata, not content.
+        self._h_skip(token)
+
     # Handlers
     def _h_root(self, token):
         self._process_children(token)
@@ -187,6 +513,10 @@ class MarkdownConverter:
 
     def _h_comment(self, token):
         _ = token
+
+    def _h_subtype_none(self, token):
+        type_handler = self.type_handlers.get(token.type, self._h_passthrough)
+        type_handler(token)
 
     def _h_skip(self, token):
         _ = token
@@ -257,8 +587,11 @@ class MarkdownConverter:
         _ = token
 
     def _h_redirect(self, token):
-        self.output.append("<!-- Redirect -->\n")
-        self._process_children(token)
+        target = getattr(token, "redirect_link", None)
+        if target:
+            self.output.append(f"[Redirect: {target}]({target})\n")
+            return
+        self._h_skip(token)
 
     # TODO:  Should the bold and italic tokens contain the text that depicts it is bold/itelic as a value instead of having a child token?
     def _h_quote(self, token):
@@ -288,10 +621,12 @@ class MarkdownConverter:
         if token.html_self_closing:
             self.output.append(f"<{tag}/>")
             return
+        if token.html_closing:
+            self.output.append(f"</{tag}>")
+            return
         self.output.append(f"<{tag}>")
         self._process_children(token)
-        if not token.html_closing:
-            self.output.append(f"</{tag}>")
+        self.output.append(f"</{tag}>")
 
     def _h_ext(self, token):
         name = token.ext_name or token.name or "ext"
@@ -318,9 +653,12 @@ class MarkdownConverter:
         self._process_children(token)
 
     def _h_template_subtype(self, token):
-        # Requirement: template should be single tick and raw data.
-        raw = self._raw_from_token(token)
-        self.output.append("`" + raw + "`")
+        # Templates are preserved as JSON payload for now.
+        try:
+            payload = token.to_json(False)
+        except Exception:
+            payload = self._raw_from_token(token)
+        self.output.append("`" + payload + "`")
 
     def _h_magic_word_subtype(self, token):
         raw = self._extract_text(token)
@@ -405,7 +743,7 @@ def main():
         )
 
     # Instead of stdin, we should read from a file.
-    input_file = os.path.join(script_dir, "..", "..", "node", "tests", "wikitext", "Achilles.wikitext")
+    input_file = os.path.join(script_dir, "..", "..", "..", "compare", "test-data", "Achilles.wikitext")
     try:
         with open(input_file, "r", encoding="utf-8") as f:
             wikitext = f.read()
