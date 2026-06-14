@@ -2,8 +2,6 @@
 """
 WikiCast to Markdown converter.
 
-Reads wikitext from stdin, parses using parser.parse(), and writes Markdown to stdout.
-
 This sample needs work!!!!!
 """
 
