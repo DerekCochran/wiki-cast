@@ -9,8 +9,12 @@ This sample needs work!!!!!
 
 import os
 import sys
+from urllib.parse import quote
 
 from wiki_cast import WikiConfig, WikiParser, TokenSubType, TokenType
+
+
+WIKI_ROOT_URL = "https://en.wikipedia.org/wiki/"
 
 
 class MarkdownConverter:
@@ -19,9 +23,12 @@ class MarkdownConverter:
         self.list_level = 0
         self.table_rows = []
         self.current_row = []
+        self.footnotes = []
+        self.footnote_index_by_name = {}
+        self.references_emitted = False
         self.type_handlers = {
             TokenType.TOKEN_TEXT: self._h_text,
-            TokenType.TOKEN_ROOT: self._h_root,
+            TokenType.TOKEN_ROOT: self._hs_root,
             TokenType.TOKEN_PLAIN: self._h_plain,
             TokenType.TOKEN_COMMENT: self._h_comment,
             TokenType.TOKEN_EXT: self._h_ext,
@@ -150,6 +157,7 @@ class MarkdownConverter:
 
     def convert(self, root_token):
         self._process_token(root_token)
+        self._emit_references_if_needed()
         return "".join(self.output)
 
     def _process_token(self, token):
@@ -190,6 +198,18 @@ class MarkdownConverter:
                 parts.append(self._extract_text(child))
         return "".join(parts)
 
+    def _wiki_target_url(self, target):
+        if not target:
+            return ""
+        t = target.strip()
+        if not t:
+            return ""
+        if "://" in t:
+            return t
+        # MediaWiki page paths are underscore-separated and URL-encoded.
+        page = t.replace(" ", "_")
+        return WIKI_ROOT_URL + quote(page, safe="():'%")
+
     def _raw_from_token(self, token):
         # Raw-ish serializer for template code output.
         if token is None:
@@ -219,12 +239,89 @@ class MarkdownConverter:
             return value
         return key + "=" + value
 
+    def _extract_ext_attributes(self, token):
+        attrs = {}
+        for child in self._token_children(token):
+            if child.subtype != TokenSubType.TOKEN_SUBTYPE_EXT_ATTRS:
+                continue
+            for attr in self._token_children(child):
+                if attr.subtype != TokenSubType.TOKEN_SUBTYPE_EXT_ATTR:
+                    continue
+                key = (getattr(attr, "name", "") or "").strip().lower()
+                val = ""
+                for attr_child in self._token_children(attr):
+                    if attr_child.subtype == TokenSubType.TOKEN_SUBTYPE_ATTR_KEY and not key:
+                        key = self._extract_text(attr_child).strip().lower()
+                    elif attr_child.subtype == TokenSubType.TOKEN_SUBTYPE_ATTR_VALUE:
+                        val = self._extract_text(attr_child).strip()
+                if key:
+                    attrs[key] = val
+        return attrs
+
+    def _extract_ext_inner_text(self, token):
+        for child in self._token_children(token):
+            if child.subtype == TokenSubType.TOKEN_SUBTYPE_EXT_INNER:
+                saved = self.output
+                temp = []
+                self.output = temp
+                self._process_token(child)
+                self.output = saved
+                return "".join(temp).strip()
+        return ""
+
+    def _make_ref_id(self, ref_name):
+        if ref_name:
+            safe = []
+            for c in ref_name:
+                if c.isalnum() or c in "-_":
+                    safe.append(c)
+                elif c.isspace():
+                    safe.append("-")
+            ref_id = "".join(safe).strip("-")
+            if ref_id:
+                return ref_id
+        return str(len(self.footnotes) + 1)
+
+    def _register_reference(self, ref_name, content):
+        if ref_name and ref_name in self.footnote_index_by_name:
+            idx = self.footnote_index_by_name[ref_name]
+            if content and not self.footnotes[idx]["content"]:
+                self.footnotes[idx]["content"] = content
+            return self.footnotes[idx]["id"]
+
+        ref_id = self._make_ref_id(ref_name)
+        used = {item["id"] for item in self.footnotes}
+        if ref_id in used:
+            n = 2
+            base = ref_id
+            while f"{base}-{n}" in used:
+                n += 1
+            ref_id = f"{base}-{n}"
+
+        idx = len(self.footnotes)
+        self.footnotes.append({"id": ref_id, "content": content})
+        if ref_name:
+            self.footnote_index_by_name[ref_name] = idx
+        return ref_id
+
+    def _emit_references_if_needed(self):
+        if self.references_emitted:
+            return
+        visible = [f for f in self.footnotes if f["content"]]
+        if not visible:
+            self.references_emitted = True
+            return
+        self.output.append("\n\n## References\n\n")
+        for item in visible:
+            self.output.append(f"[^{item['id']}]: {item['content']}\n")
+        self.references_emitted = True
+
     # Subtype handlers (one method per subtype for debug visibility)
     def _hs_none(self, token):
         self._h_subtype_none(token)
 
     def _hs_root(self, token):
-        self._h_root(token)
+        self._process_children(token)
 
     def _hs_redirect(self, token):
         self._h_redirect(token)
@@ -501,10 +598,6 @@ class MarkdownConverter:
         # Gallery/imagemap config lines (widths=200px etc.) — metadata, not content.
         self._h_skip(token)
 
-    # Handlers
-    def _h_root(self, token):
-        self._process_children(token)
-
     def _h_text(self, token):
         self._process_children(token)
 
@@ -525,7 +618,7 @@ class MarkdownConverter:
         self._process_children(token)
 
     def _h_heading(self, token):
-        level = token.level if token.level is not None else 1
+        level = token.level if token.level is not None else 2
         level = max(1, min(6, int(level)))
         self.output.append("\n" + ("#" * level) + " ")
         self._process_children(token)
@@ -544,7 +637,7 @@ class MarkdownConverter:
             return
         if not text:
             text = target
-        self.output.append(f"[{text}]({target})")
+        self.output.append(f"[{text}]({self._wiki_target_url(target)})")
 
     def _h_ext_link(self, token):
         url = ""
@@ -589,7 +682,7 @@ class MarkdownConverter:
     def _h_redirect(self, token):
         target = getattr(token, "redirect_link", None)
         if target:
-            self.output.append(f"[Redirect: {target}]({target})\n")
+            self.output.append(f"[Redirect: {target}]({self._wiki_target_url(target)})\n")
             return
         self._h_skip(token)
 
@@ -630,6 +723,56 @@ class MarkdownConverter:
 
     def _h_ext(self, token):
         name = token.ext_name or token.name or "ext"
+        lower = name.strip().lower()
+        attrs = self._extract_ext_attributes(token)
+
+        if lower == "ref":
+            ref_name = attrs.get("name")
+            content = ""
+            if not token.ext_self_closing:
+                content = self._extract_ext_inner_text(token)
+            ref_id = self._register_reference(ref_name, content)
+            self.output.append(f"[^{ref_id}]")
+            return
+
+        if lower == "references":
+            self._emit_references_if_needed()
+            return
+
+        if lower == "nowiki":
+            self.output.append(self._extract_text(token))
+            return
+
+        if lower in {"pre", "source", "syntaxhighlight"}:
+            code = self._extract_ext_inner_text(token)
+            lang = attrs.get("lang", "")
+            self.output.append("\n```" + lang + "\n" + code + "\n```\n")
+            return
+
+        if lower in {"math", "chem", "ce"}:
+            math_text = self._extract_ext_inner_text(token)
+            if "\n" in math_text:
+                self.output.append("\n$$\n" + math_text + "\n$$\n")
+            else:
+                self.output.append("$" + math_text + "$")
+            return
+
+        if lower == "poem":
+            poem = self._extract_ext_inner_text(token)
+            self.output.append("\n" + poem + "\n")
+            return
+
+        if lower in {"gallery", "imagemap", "mapframe", "maplink", "score", "phonos", "timeline", "graph", "hiero"}:
+            label = self._extract_ext_inner_text(token)
+            if label:
+                self.output.append(f"[unsupported ext: {name}] " + label)
+            else:
+                self.output.append(f"[unsupported ext: {name}]")
+            return
+
+        if lower in {"indicator", "inputbox", "categorytree", "templatestyles", "templatedata", "section", "page-collection", "charinsert", "langconvert"}:
+            return
+
         if token.ext_self_closing:
             self.output.append(f"<{name}/>")
             return
@@ -705,7 +848,7 @@ class MarkdownConverter:
                 break
         self.output.append(indent + marker)
         self._process_children(token)
-        self.output.append("\n")
+        #self.output.append("\n")
         self.list_level -= 1
 
     def _h_dd(self, token):
@@ -743,7 +886,7 @@ def main():
         )
 
     # Instead of stdin, we should read from a file.
-    input_file = os.path.join(script_dir, "..", "..", "..", "compare", "test-data", "Achilles.wikitext")
+    input_file = os.path.join(script_dir, "..", "..", "..", "compare", "test-data", "wikitext", "Achilles.wikitext")
     try:
         with open(input_file, "r", encoding="utf-8") as f:
             wikitext = f.read()
