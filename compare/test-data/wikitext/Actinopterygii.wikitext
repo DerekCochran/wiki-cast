@@ -1,0 +1,367 @@
+{{Short description|Class of ray-finned bony fishes}}
+{{Use dmy dates|date=October 2020}}
+{{Automatic taxobox
+| taxon = Actinopterygii
+| name = Ray-finned fish
+| fossil_range = <br />[[Ludlow Epoch|Late Silurian]]–[[Holocene|present]], {{fossil range|earliest=Late Silurian|425|0|ref=<ref name="Zhao2021">{{Cite journal |last1=Zhao |first1=W. |last2=Zhang |first2=X. |last3=Jia |first3=G. |last4=Shen |first4=Y. |last5=Zhu |first5=M. |year=2021 |title=The Silurian-Devonian boundary in East Yunnan (South China) and the minimum constraint for the lungfish-tetrapod split |url=https://www.researchgate.net/publication/353479392 |journal=Science China Earth Sciences |volume=64 |issue=10 |pages=1784–1797 |doi=10.1007/s11430-020-9794-8 |bibcode=2021ScChD..64.1784Z |s2cid=236438229}}</ref>}}
+| image = {{center|<imagemap>
+File:Actinopterygii.jpg||300px
+rect 0 0 333 232 [[Electrophorus electricus|Electric eel]]
+rect 0 232 333 470 [[Red-bellied piranha]]
+rect 0 696 333 470 [[Sockeye salmon]]
+rect 0 928 333 700 [[Peacock flounder]]
+rect 0 1160 333 930 [[Atlantic cod]]
+rect 0 1392 333 1160 [[Spotted gar]]
+rect 666 0 333 232 [[Yellowfin tuna]]
+rect 666 232 333 470 [[Pterois antennata|Spotfin lionfish]]
+rect 666 696 333 470 [[Caulophryne|Fanfin]]
+rect 666 928 333 700 [[Monocentris japonica|Japanese pineconefish]]
+rect 666 1160 333 930 [[American paddlefish]]
+rect 666 1392 333 1160 [[Striped marlin]]
+rect 999 0 666 232 [[Queen angelfish]]
+rect 999 232 666 470 [[Northern pike]]
+rect 999 696 666 470 [[Long-spine porcupinefish]]
+rect 999 929 666 700 [[Leafy seadragon]]
+rect 999 1160 666 930 [[Wels catfish]]
+rect 999 1392 666 1160 [[Diplodus vulgaris|Two-banded seabream]]
+</imagemap>}}
+| image_caption = 
+| subdivision_ranks = Subclasses
+| subdivision = *[[Cladistia]] (bichirs)
+*[[Actinopteri]]
+**[[Chondrostei]] (sturgeon and paddlefish)
+**[[Neopterygii]]
+***[[Holostei]] (bowfin and gars)
+***[[Teleosteomorpha]]
+**** [[Teleostei]] (teleosts)
+| authority = [[Adolf von Klein|Klein]]<!--1805–1892-->, 1885
+}}
+'''Actinopterygii''' ({{IPAc-en|ˌ|æ|k|t|ᵻ|n|ɒ|p|t|ə|ˈ|r|ɪ|dʒ|i|aɪ|audio=LL-Q1860 (eng)-Naomi Persephone Amethyst (NaomiAmethyst)-actinopterygii.wav}}; {{etymology|grc|''{{wikt-lang|grc|ἀκτίς}}'' ({{lang|grc-Latn|aktís}})|ray, beam||''{{wikt-lang|grc|πτέρυξ}}'' ({{lang|grc-Latn|ptérux}})|wing, fins}}), members of which are known as '''ray-finned fish''' or '''actinopterygians''', is a [[class (biology)|class]] of [[Osteichthyes|bony fish]]<ref>{{cite book |title=Vertebrates: Comparative Anatomy, Function, Evolution |last=Kardong |first=Kenneth |publisher=[[McGraw-Hill Education]] |year=2015 |isbn=978-0-07-802302-6 |location=New York |pages=99–100}}</ref> that constitutes nearly 99% of the over 30,000 living [[species]] of [[fish]].<ref>(Davis, Brian 2010).</ref> The vast majority of [[extant taxon|extant]] actinopterygian species are [[teleost]]s, and by species count they dominate the [[subphylum]] [[Vertebrata]], comprising over 50% of all living vertebrates.<ref name="NelsonFoW">{{cite book |last=Nelson |first=Joseph S. |author-link=Joseph S. Nelson |title=Fishes of the World |year=2016 |publisher=[[Wiley (publisher)|John Wiley & Sons]] |isbn=978-1-118-34233-6}}</ref> They are the most abundant [[nektonic]] [[aquatic animal]]s and are ubiquitous throughout [[freshwater]], [[brackish]] and [[ocean|marine]] environments from the [[deep sea]] to [[subterranean river|subterranean water]]s to the highest [[mountain stream]]s. Extant species can range in size from ''[[Paedocypris]]'', at {{cvt|8|mm|in|1}}, to the [[giant sunfish]], at {{cvt|2700|kg|lb|-2}}, and the [[giant oarfish]], at {{cvt|8|m|ft|0}} (or possibly {{cvt|11|m|ft|0}}). The largest ever known ray-finned fish, the extinct ''[[Leedsichthys]]'' from the [[Jurassic]], is estimated to have grown to {{cvt|16.5|m|ft|0}}.
+
+Ray-finned fish are so called because of their lightly built [[fish fin|fin]]s made of webbings of [[skin]] supported by radially extended thin bony [[spine (zoology)|spine]]s called ''[[lepidotrichia]]'', as opposed to the bulkier, fleshy fins of the [[sister taxon|sister]] [[clade]] [[Sarcopterygii]] (lobe-finned fish). Resembling [[folding fan]]s, the actinopterygian fins can easily change shape, orientation and [[wetted area]], providing superior [[thrust-to-weight ratio]]s per movement compared to sarcopterygian and [[chondrichthyian]] fins. The fin rays attach directly to the proximal or basal skeletal elements, the radials, which represent the [[articulation (anatomy)|articulation]] between these fins and the internal skeleton (e.g., pelvic and pectoral girdles).
+
+==Characteristics==
+[[File:Anatomia dei pesci.jpg|thumb|left|upright=1.2|{{center|Anatomy of a typical ray-finned fish ([[cichlid]])}}
+'''A''': [[dorsal fin]], '''B''': [[fin ray]]s, '''C''': [[lateral line]], '''D''': kidney, '''E''': [[swim bladder]], '''F''': [[Weberian apparatus]], '''G''': [[inner ear]], '''H''': brain, '''I''': nostrils, '''L''': eye, '''M''': [[gill]]s, '''N''': heart, '''O''': stomach, '''P''': gall bladder, '''Q''': spleen, '''R''': internal sex organs (ovaries or testes), '''S''': [[pelvic fin]]s, '''T''': spine, '''U''': [[anal fin]], '''V''': tail ([[caudal fin]]). Possible other parts not shown: [[barbel (anatomy)|barbels]], [[adipose fin]], external genitalia ([[gonopodium]])]]
+Ray-finned fishes occur in many variant forms. The main features of typical ray-finned fish are shown in the adjacent diagram.
+The [[swim bladder]] is a more derived structure and used for [[buoyancy]].<ref name="Funk">{{cite journal |last1=Funk |first1=Emily |last2=Breen |first2=Catriona |last3=Sanketi |first3=Bhargav |last4=Kurpios |first4=Natasza |last5=McCune |first5=Amy |author5-link=Amy McCune |title=Changing in Nkx2.1, Sox2, Bmp4, and Bmp16 expression underlying the lung-to-gas bladder evolutionary transition in ray-finned fishes |journal=Evolution & Development |date=2020 |volume=22 |issue=5 |pages=384–402|doi=10.1111/ede.12354 |pmid=33463017 |pmc=8013215 }}</ref> Except from the [[bichir]]s, which just like the [[lung]]s of [[lobe-finned fish]] have retained the ancestral condition of ventral budding from the [[foregut]], the swim bladder in ray-finned fishes derives from a dorsal bud above the foregut.<ref name="Funk" /> In early forms the swim bladder could still be used for breathing, a trait still present in [[Holostei]] ([[bowfin]]s and [[gar]]s).<ref>{{Cite journal|title=A single-cell atlas of West African lungfish respiratory system reveals evolutionary adaptations to terrestrialization|first1=Ruihua|last1=Zhang|first2=Qun|last2=Liu|first3=Shanshan|last3=Pan|first4=Yingying|last4=Zhang|first5=Yating|last5=Qin|first6=Xiao|last6=Du|first7=Zengbao|last7=Yuan|first8=Yongrui|last8=Lu|first9=Yue|last9=Song|first10=Mengqi|last10=Zhang|first11=Nannan|last11=Zhang|first12=Jie|last12=Ma|first13=Zhe|last13=Zhang|first14=Xiaodong|last14=Jia|first15=Kun|last15=Wang|first16=Shunping|last16=He|first17=Shanshan|last17=Liu|first18=Ming|last18=Ni|first19=Xin|last19=Liu|first20=Xun|last20=Xu|first21=Huanming|last21=Yang|first22=Jian|last22=Wang|first23=Inge|last23=Seim|first24=Guangyi|last24=Fan|date=13 September 2023|journal=Nature Communications|volume=14|issue=1|page=5630|doi=10.1038/s41467-023-41309-3|pmid=37699889 |pmc=10497629 |bibcode=2023NatCo..14.5630Z }}</ref> In some fish like the [[arapaima]], the swim bladder has been modified for breathing air again,<ref>{{Cite journal|title=Morphology of the Amazonian Teleost Genus Arapaima Using Advanced 3D Imaging|first1=Miriam|last1=Scadeng|first2=Christina|last2=McKenzie|first3=Weston|last3=He|first4=Hauke|last4=Bartsch|first5=David J.|last5=Dubowitz|first6=Dominik|last6=Stec|first7=Judy|last7=St. Leger|date=25 November 2020|journal=Frontiers in Physiology|volume=11|article-number=260 |doi=10.3389/fphys.2020.00260 |pmid=32395105 |pmc=7197331 |doi-access=free }}</ref> and in other lineages it has been completely lost.<ref>{{Cite journal|title=Bone Density Variation in Rattails (Macrouridae, Gadiformes): Buoyancy, Depth, Body Size, and Feeding|first1=Rene P|last1=Martin|first2=Abigail S|last2=Dias|first3=Adam P|last3=Summers|first4=Mackenzie E|last4=Gerringer|date=16 October 2022|journal=Integrative Organismal Biology|volume=4|issue=1|article-number=obac044|doi=10.1093/iob/obac044|pmid=36381998|pmc=9652093}}</ref>
+The teleosts have urinary and reproductive tracts that are fully separated, while the Chondrostei have common urogenital ducts, and partially connected ducts are found in Cladistia and Holostei.<ref>{{cite journal | last1=Dzyuba | first1=Viktoriya | last2=Shelton | first2=William L. | last3=Hiott | first3=Ana E. | last4=Cosson | first4=Jacky | last5=Bondarenko | first5=Olga | last6=Kholodnyy | first6=Vitaliy | last7=Dzyuba | first7=Borys | title=Post-testicular sperm maturation in ancient holostean species | journal=Scientific Reports | date=2023 | volume=13 | issue=1 | article-number=19746 | doi=10.1038/s41598-023-46900-8 | pmid=37957184 | pmc=10643692 | bibcode=2023NatSR..1319746D }}</ref>
+Ray-finned fishes have many different types of [[fish scale|scale]]s; but all [[teleost]]s have [[leptoid scale]]s. The outer part of these scales fan out with bony ridges, while the inner part is crossed with fibrous connective tissue. Leptoid scales are thinner and more transparent than other types of scales, and lack the hardened [[tooth enamel|enamel]]- or [[dentine]]-like layers found in the scales of many other fish. Unlike [[ganoid scale]]s, which are found in non-teleost actinopterygians, new scales are added in concentric layers as the fish grows.<ref>{{Cite web|title=Actinopterygii Klein, 1885|url=https://www.gbif.org/species/113225725|access-date=2021-09-20|website=www.gbif.org|language=en}}</ref>
+Teleosts and chondrosteans (sturgeons and paddlefish) also differ from the bichirs and holosteans (bowfin and gars) in having gone through a whole-genome duplication ([[paleopolyploidy]]). The WGD is estimated to have happened about 320 million years ago in the teleosts, which on average has retained about 17% of the gene duplicates, and around 180 (124–225) million years ago in the chondrosteans. It has since happened again in some teleost lineages, like Salmonidae (80–100 million years ago) and several times independently within the [[Cyprinidae]] (in goldfish and common carp as recently as 14 million years ago).<ref>{{Cite journal|title=Fossilized cell structures identify an ancient origin for the teleost whole-genome duplication|first1=Donald|last1=Davesne|first2=Matt|last2=Friedman|first3=Armin D.|last3=Schmitt|first4=Vincent|last4=Fernandez|first5=Giorgio|last5=Carnevale|first6=Per E.|last6=Ahlberg|first7=Sophie|last7=Sanchez|first8=Roger B. J.|last8=Benson|date=27 July 2021|journal=Proceedings of the National Academy of Sciences|volume=118|issue=30|article-number=e2101780118 |doi=10.1073/pnas.2101780118|pmid=34301898|pmc=8325350 |bibcode=2021PNAS..11801780D |doi-access=free }}</ref><ref>{{Cite journal|url=https://genome.cshlp.org/content/early/2022/08/12/gr.276953.122|title=An atlas of fish genome evolution reveals delayed rediploidization following the teleost whole-genome duplication|first1=Elise|last1=Parey|first2=Alexandra|last2=Louis|first3=Jerome|last3=Montfort|first4=Yann|last4=Guiguen|first5=Hugues Roest|last5=Crollius|first6=Camille|last6=Berthelot|date=12 August 2022|journal=Genome Research|volume=32 |issue=9 |pages=1685–1697|via=genome.cshlp.org|doi=10.1101/gr.276953.122|pmid=35961774|pmc=9528989 }}</ref><ref>{{Cite journal |last1=Du |first1=Kang |last2=Stöck |first2=Matthias |last3=Kneitz |first3=Susanne |last4=Klopp |first4=Christophe |last5=Woltering |first5=Joost M. |last6=Adolfi |first6=Mateus Contar |last7=Feron |first7=Romain |last8=Prokopov |first8=Dmitry |last9=Makunin |first9=Alexey |last10=Kichigin |first10=Ilya |last11=Schmidt |first11=Cornelia |last12=Fischer |first12=Petra |last13=Kuhl |first13=Heiner |last14=Wuertz |first14=Sven |last15=Gessner |first15=Jörn |date=2020 |title=The sterlet sturgeon genome sequence and the mechanisms of segmental rediploidization |journal=Nature Ecology & Evolution |language=en |volume=4 |issue=6 |pages=841–852 |doi=10.1038/s41559-020-1166-x |pmid=32231327 |bibcode=2020NatEE...4..841D |issn=2397-334X|pmc=7269910 }}</ref><ref>{{Cite journal |last1=Kuraku |first1=Shigehiro |last2=Sato |first2=Mana |last3=Yoshida |first3=Kohta |last4=Uno |first4=Yoshinobu |date=2024 |title=Genomic reconsideration of fish non-monophyly: why cannot we simply call them all 'fish'? |journal=Ichthyological Research |language=en |volume=71 |issue=1 |pages=1–12 |doi=10.1007/s10228-023-00939-9 |bibcode=2024IchtR..71....1K |issn=1616-3915|doi-access=free }}</ref><ref>{{Cite journal |last1=Xu |first1=Peng |last2=Xu |first2=Jian |last3=Liu |first3=Guangjian |last4=Chen |first4=Lin |last5=Zhou |first5=Zhixiong |last6=Peng |first6=Wenzhu |last7=Jiang |first7=Yanliang |last8=Zhao |first8=Zixia |last9=Jia |first9=Zhiying |last10=Sun |first10=Yonghua |last11=Wu |first11=Yidi |last12=Chen |first12=Baohua |last13=Pu |first13=Fei |last14=Feng |first14=Jianxin |last15=Luo |first15=Jing |date=2019 |title=The allotetraploid origin and asymmetrical genome evolution of the common carp Cyprinus carpio |journal=Nature Communications |language=en |volume=10 |issue=1 |page=4625 |doi=10.1038/s41467-019-12644-1 |pmid=31604932 |bibcode=2019NatCo..10.4625X |issn=2041-1723|pmc=6789147 }}</ref>
+{{clear left}}
+
+==Body shapes and fin arrangements==
+{{Further|Fish fin|Diversity of fish}}
+Ray-finned fish vary in size and shape, in their feeding specializations, and in the number and arrangement of their ray-fins.
+{{gallery 
+| height=100px
+| mode=nolines
+| noborder=true
+|File:Bluefin-big.jpg|[[Tuna]] are streamlined for straight line speed with a [[Caudal fin|deeply forked tail]]
+|File:Swordfish (Duane Raver).png|The [[swordfish]] is even faster and more streamlined than the tuna
+|File:Salmo salar.jpg|[[Salmon]] generate enough thrust with their [[Caudal fin|tail fin]] to jump obstacles during river migrations
+|File:Atlantic cod.jpg|[[Cod]] have three [[Dorsal fin|dorsal]] and two [[anal fin]]s, which give them great maneuverability
+|File:Ancylopsetta dilecta 2.jpg|[[Flatfish]] have developed partially symmetric [[Dorsal fin|dorsal]] and [[pelvic fin]]s
+|File:Anableps anableps2.jpg|The four-eyed fish ''[[Anableps anableps]]'' can see both below and above the water surface
+|File:Diaphus metopoclampus.jpg|[[Lanternfish]]
+|File:Gonostoma elongatum.jpg|[[Gonostoma|Elongated bristlemouth]]
+|File:Anoplogaster cornuta 2.jpg|[[Fangtooth]] are indifferent swimmers who try to ambush their prey
+|File:Melanocetus johnsonii.jpg|The first spine of the dorsal fin of [[anglerfish]] is modified like a fishing rod with a lure
+|File:Beryx decadactylus.jpg|[[Alfonsino]]
+|File:Polypterus bichir (cropped).jpg|[[Bichirs]] and their relatives in the order Polypteriformes are sister to all other extant ray-fins; they possess lungs
+|File:King of herrings.png|[[Giant oarfish]]
+|File:Conger conger Gervais.jpg|[[European conger]] are ray-finned fish
+|File:FMIB 42560 Pterois sphex Jordan & Evermann; from the type 2.jpeg|[[Hawaiian turkeyfish]]
+|File:Ogcocephalus notatus Castelnau.jpg|The [[benthic]] [[Ogcocephalidae|batfish]] ''[[Ogcocephalus notatus]]''
+|File:Saccopharynx.JPG|The [[deep sea]] [[eel]] ''[[Saccopharynx ampullaceus]]''
+|File:Campylomormyrus curvirostris (Boulenger, 1898).jpg|The [[Mormyridae|freshwater elephant fish]] ''[[Campylomormyrus|Campylomormyrus curvirostris]]''
+|File:Acipenser oxyrhynchus (edit).png|The [[sturgeon]] ''[[Atlantic sturgeon|Acipenser oxyrhynchus]]'' has a [[cartilaginous]] [[endoskeleton]]
+|File:Belone belone1.jpg|The [[ambush predator]] [[needlefish]] ''[[Belone belone]]''
+|File:Seahorse-col.svg|[[Seahorse]]s are in the [[Syngnathidae|extended pipefish family]]
+|File:Mirror dory.png|[[Mirror dory]]
+|File:Coryphaena hippurus.png|[[Mahi-mahi]]
+|File:Exocoetus obtusirostris.jpg|The "[[flying fish]]" ''[[Exocoetus obtusirostris]]'' has specialized [[pectoral fins]] for gliding
+|File:Momol u0.gif|The hoodwinker sunfish ''[[Mola tecta]]'' has no [[caudal fin]]
+|File:Leedsichthys problematicus.jpg|The [[Jurassic]] {{extinct}}''[[Leedsichthys]]'' was a [[filter-feeder]] and the largest ray-finned fish to have ever lived
+|File:Lactoria fornasini1.jpg|''[[Lactoria fornasini]]'' is a poisonous species of [[boxfish]]
+|File:Lepisosteus platostomus drawing.jpg|[[Gar]]s (along with the [[bowfin]]) are the only surviving members of the [[Holostei]]
+}}
+==Reproduction==
+[[File:Gasterosteus aculeatus 1879.jpg|thumb|left|[[Three-spined stickleback]] (''Gasterosteus aculeatus'') males (red belly) build nests and compete to attract females to lay eggs in them. Males then defend and fan the eggs. Painting by [[Alexander Francis Lydon]], 1879]]
+In nearly all ray-finned fish, the sexes are separate, and in most species the females spawn eggs that are fertilized externally, typically with the male inseminating the eggs after they are laid. Development then proceeds with a free-swimming larval stage.<ref>{{cite book |title=Zoology |url=https://archive.org/details/zoology0000dori |url-access=registration |last1=Dorit |first1=R.L. |last2=Walker |first2=W.F. |last3=Barnes |first3=R.D. |year=1991 |publisher=Saunders College Publishing |isbn=978-0-03-030504-7 |page=[https://archive.org/details/zoology0000dori/page/819 819] }}</ref> However other patterns of [[ontogeny]] exist, with one of the commonest being [[sequential hermaphroditism]]. In most cases this involves [[protogyny]], fish starting life as females and converting to males at some stage, triggered by some internal or external factor. [[Protandry]], where a fish converts from male to female, is much less common than protogyny.<ref>{{cite journal |title=Evolutionary perspectives on hermaphroditism in fishes |journal=Sexual Development |year=2009 |first=J.C. |last=Avise |author-link=John Avise |author2=Mank, J.E. |volume=3 |issue=2–3 |pages=152–163|doi=10.1159/000223079|pmid=19684459 |s2cid=22712745 |url=https://escholarship.org/uc/item/1px4b8qn }}</ref>
+Most families use [[external fertilization|external]] rather than [[internal fertilization]].<ref name=Pitcher>{{cite book|last=Pitcher|first=T|title=The Behavior of Teleost Fishes|year=1993|publisher=Chapman & Hall|location=London}}</ref> Of the [[oviparity|oviparous]] teleosts, most (79%) do not provide parental care.<ref name=Reynolds>{{cite journal |last=Reynolds |first=John|author2=Nicholas B. Goodwin |author3=Robert P. Freckleton |title=Evolutionary Transitions in Parental Care and Live Bearing in Vertebrates |journal=Philosophical Transactions of the Royal Society B: Biological Sciences |date=19 March 2002 |volume=357 |issue=1419 |pmc=1692951 |pmid=11958696 |doi=10.1098/rstb.2001.0930 |pages=269–281}}</ref> [[Viviparity]], [[ovoviviparity]], or some form of parental care for eggs, whether by the male, the female, or both parents is seen in a significant fraction (21%) of the 422 teleost families; no care is likely the ancestral condition.<ref name=Reynolds /> The oldest case of viviparity in ray-finned fish is found in [[Middle Triassic]] species of {{extinct}}''[[Saurichthys]]''.<ref>{{cite journal | author = Maxwell | display-authors = etal | year = 2018 | title = Re-evaluation of the ontogeny and reproductive biology of the Triassic fish ''Saurichthys'' (Actinopterygii, Saurichthyidae) | journal = Palaeontology | volume = 61 | pages = 559–574 | doi = 10.5061/dryad.vc8h5 }}</ref> Viviparity is relatively rare and is found in about 6% of living teleost species; male care is far more common than female care.<ref name=Reynolds /><ref name=Clutton-Brock>{{cite book|last=Clutton-Brock|first=T. H.|author-link=Tim Clutton-Brock|title=The Evolution of Parental Care|year=1991|publisher=Princeton UP|location=Princeton, NJ}}</ref> Male territoriality [[exaptation|"preadapts"]] a species for evolving male parental care.<ref name=Werren>{{cite journal |last=Werren |first=John|author2=Mart R. Gross |author3=Richard Shine |author3-link=Richard Shine |title=Paternity and the evolution of male parentage |journal=Journal of Theoretical Biology |year=1980 |volume=82|issue=4 |doi=10.1016/0022-5193(80)90182-4 |pmid=7382520|url=https://www.researchgate.net/publication/222458526 |access-date=15 September 2013 |pages=619–631}}</ref><ref name=Baylis>{{cite journal |last=Baylis |first=Jeffrey |title=The Evolution of Parental Care in Fishes, with reference to Darwin's rule of male sexual selection |journal=Environmental Biology of Fishes |year=1981 |volume=6 |issue=2 |doi=10.1007/BF00002788 |pages=223–251|bibcode=1981EnvBF...6..223B |s2cid=19242013 }}</ref>
+There are a few examples of fish that self-fertilise. The [[mangrove rivulus]] is an amphibious, simultaneous hermaphrodite, producing both eggs and spawn and having internal fertilisation. This mode of reproduction may be related to the fish's habit of spending long periods out of water in the mangrove forests it inhabits. Males are occasionally produced at temperatures below {{convert|19|°C}} and can fertilise eggs that are then spawned by the female. This maintains genetic variability in a species that is otherwise highly inbred.<ref name=Wootton>{{cite book|author1=Wootton, Robert J.|author2=Smith, Carl|title=Reproductive Biology of Teleost Fishes|url=https://books.google.com/books?id=_YnjBAAAQBAJ|year=2014|publisher=Wiley |isbn=978-1-118-89139-1}}</ref>
+{{clear}}
+==Classification and fossil record==
+{{See also|Evolution of fish}}
+[[File:Evolution_of_ray-finned_fish.png|right|frameless|upright=2]]
+Actinopterygii is divided into the subclasses [[Cladistia]], [[Chondrostei]] and [[Neopterygii]]. The [[Neopterygii]], in turn, is divided into the infraclasses [[Holostei]] and [[Teleostei]]. During the [[Mesozoic]] ([[Triassic]], [[Jurassic]], [[Cretaceous]]) and [[Cenozoic]] the teleosts in particular [[evolution of fish#Post Devonian|diversified]] widely. As a result, 96% of living fish species are teleosts (40% of all fish species belong to the teleost subgroup [[Acanthomorpha]]), while all other groups of actinopterygians represent depauperate lineages.<ref name="Sallan 2014">{{cite journal |last1=Sallan |first1=Lauren C. |author1-link=Lauren Sallan |title=Major issues in the origins of ray-finned fish (Actinopterygii) biodiversity |journal=Biological Reviews |date=February 2014 |volume=89 |issue=4 |pages=950–971 |doi=10.1111/brv.12086|pmid=24612207 |hdl=2027.42/109271 |s2cid=24876484 |hdl-access=free }}</ref>
+The classification of ray-finned fishes can be summarized as follows:
+* Cladistia, which include bichirs and reedfish
+* Actinopteri, which include:
+** Chondrostei, which include Acipenseriformes (paddlefishes and sturgeons)
+** Neopterygii, which include:
+***Teleostei (most living fishes)
+***Holostei, which include:
+****Lepisosteiformes (gars)
+****Amiiformes (bowfin)
+The [[cladogram]] below shows the main clades of living actinopterygians and their evolutionary relationships to other [[extant taxon|extant]] groups of [[fishes]] and the four-limbed vertebrates ([[tetrapods]]).<ref name=PNAS>{{cite journal |title=Resolution of ray-finned fish phylogeny and timing of diversification |author=Thomas J. Near |author-link=Thomas J. Near |journal=PNAS |doi=10.1073/pnas.1206625109 |pmid=22869754 |date=2012 |volume=109 |issue=34 |pages=13698–13703 |display-authors=etal |pmc=3427055 |bibcode=2012PNAS..10913698N|doi-access=free }}</ref><ref name=TOL>{{cite journal|author=Betancur-R, Ricardo |display-authors=etal |year=2013 |title=The Tree of Life and a New Classification of Bony Fishes |journal=PLOS Currents Tree of Life |volume=5 |issue=Edition 1 |doi=10.1371/currents.tol.53ba26640df0ccaee75bb165c8c26288 |pmid=23653398 |pmc=3644299 |hdl=2027.42/150563 |doi-access=free }}</ref> The latter include mostly terrestrial [[species]] but also groups that became [[Secondarily aquatic tetrapods|secondarily aquatic]] (e.g. [[Cetacea|whales and dolphins]]). Tetrapods [[Evolution of tetrapods|evolved]] from a group of [[bony fish]] during the [[Devonian]] [[period (geology)|period]].<ref name=laurin&reisz1995>{{cite journal|author1=Laurin, M. |author2=Reisz, R.R. |year=1995 |title=A reevaluation of early amniote phylogeny|journal=Zoological Journal of the Linnean Society|volume=113 |issue=2 |pages=165–223 |doi=10.1111/j.1096-3642.1995.tb00932.x}}</ref> Approximate [[Divergent evolution|divergence]] dates for the different actinopterygian clades (in [[myr|millions of years]], mya) are from Near et al., 2012.<ref name=PNAS />
+{{clade
+|label1=[[Vertebrates]]
+|1={{clade
+ |1=[[Cyclostomata|Jaw-less fishes]] ([[hagfish]], [[lampreys]]) [[File:Nejonöga, Iduns kokbok.jpg|80px]]
+ |label2=[[Gnathostomata|Jawed vertebrates]]
+ |2={{clade
+  |1=[[Chondrichthyes|Cartilaginous fishes]] ([[shark]]s, [[ray (fish)|rays]], [[ratfish]]) <span style="{{MirrorH}}">[[File:White shark (Duane Raver).png|80px]]</span>
+  |label2=[[Euteleostomi]]
+  |sublabel2=('bony fish')
+  |2={{clade
+   |label1=[[Sarcopterygii]]
+   |sublabel1=(lobe-fins)
+   |1={{clade
+    |label1=[[Actinistia]]
+    |1=[[Coelacanth]]s [[File:Coelacanth flipped.png|70px]]
+    |label2=[[Rhipidistia]]
+    |2={{clade
+     |1=[[Dipnoi|Lungfish]] <span style="{{MirrorH}}">[[File:Chinle fish Arganodus cropped cropped.png|70 px]]</span>
+     |label2=[[Tetrapod]]s
+     |2={{clade
+      |1=[[Amphibian]]s [[File:Salamandra salamandra (white background).jpg|70px]]
+      |label2=[[Amniote|Amniota]]
+      |2={{clade
+       |1=[[Mammal]]s [[File:Phylogenetic tree of marsupials derived from retroposon data (Paucituberculata).png|60px]]
+       |2=[[Sauropsida|Sauropsids]] ([[reptile]]s, [[bird]]s) [[File:British reptiles, amphibians, and fresh-water fishes (1920) (Lacerta agilis).jpg|70px]]
+      }}
+     }}
+    }}
+   }}
+   |label2='''Actinopterygii'''
+   |sublabel2={{small|400 mya}}
+   |2={{clade
+    |label1=[[Cladistia]]
+    |1=[[Polypteriformes]] ([[bichir]]s, [[reedfish]]es) [[File:Cuvier-105-Polyptère.jpg|80px]]
+    |label2=[[Actinopteri]]
+    |2={{clade
+     |label1=[[Chondrostei]]
+     |1=[[Acipenseriformes]] ([[sturgeon]]s, [[paddlefish]]es) [[File:Atlantic sturgeon flipped.jpg|80px]]
+     |label2=[[Neopterygii]] |sublabel2={{small|360 mya}}
+     |2={{clade
+      |sublabel1={{small|310 mya}}
+      |1=[[Teleostei]] [[File:Common carp (white background).jpg|70px]]
+      |label2=[[Holostei]]
+      |sublabel2={{small|275 mya}}
+      |2={{clade
+       |1=[[Amiiformes]] ([[bowfin]]s) [[File:Amia calva (white background).jpg|70px]]
+       |2=[[Lepisosteiformes]] ([[gar]]s) [[File:Alligator gar fish (white background).jpg|80px]]
+      }}
+      }}
+     }}
+    }}
+   }}
+  }}
+ }}
+}}
+The polypterids (bichirs and reedfish) are the [[Sister group|sister lineage]] of all other actinopterygians, the Acipenseriformes (sturgeons and paddlefishes) are the sister lineage of Neopterygii, and Holostei (bowfin and gars) are the sister lineage of teleosts. The [[Elopomorpha]] ([[eel]]s and [[tarpon]]s) appear to be the most [[Basal (phylogenetics)|basal]] teleosts.<ref name=PNAS />
+The earliest known [[fossil]] actinopterygian is ''[[Andreolepis hedei]]'', dating back 420&nbsp;million years ([[Late Silurian]]), remains of which have been found in [[Russia]], [[Sweden]], and [[Estonia]].<ref>{{cite web|url=https://paleobiodb.org/classic/checkTaxonInfo?taxon_no=34968|title=Fossilworks: Andreolepis|access-date=14 May 2008|archive-url=https://web.archive.org/web/20100212023014/http://paleodb.org/cgi-bin/bridge.pl?action=checkTaxonInfo&taxon_no=34968&is_real_user=1|archive-date=12 February 2010|url-status=live}}</ref> Crown group actinopterygians most likely originated near the Devonian-Carboniferous boundary.<ref name="HendersonDunneFaseyGiles2022">{{cite journal |last1=Henderson |first1=Struan |last2=Dunne |first2=Emma M. |last3=Fasey |first3=Sophie A. |last4=Giles |first4=Sam |author4-link=Sam Giles |date=3 October 2022 |title=The early diversification of ray-finned fishes (Actinopterygii): hypotheses, challenges and future prospects |journal=Biological Reviews |volume=98 |issue=1 |pages=284–315 |doi=10.1111/brv.12907 |pmid=36192821 |pmc=10091770 |s2cid=241850484 }}</ref> The earliest fossil relatives of modern teleosts are from the [[Triassic]] [[period (geology)|period]] (''[[Prohalecites]]'', ''[[Pholidophorus]]''),<ref name="Arratia 2015">{{Cite journal|author1=Arratia, G. |name-list-style=amp |year=2015 |title=Complexities of early teleostei and the evolution of particular morphological structures through time. |journal=Copeia |volume=103 |issue=4 |pages=999–1025 |doi=10.1643/CG-14-184|s2cid=85808890 }}</ref><ref name="Romano et al 2016">{{cite journal |last1=Romano |first1=Carlo |last2=Koot |first2=Martha B. |last3=Kogan |first3=Ilja |last4=Brayard |first4=Arnaud |last5=Minikh |first5=Alla V. |last6=Brinkmann |first6=Winand |last7=Bucher |first7=Hugo |last8=Kriwet |first8=Jürgen |title=Permian-Triassic Osteichthyes (bony fishes): diversity dynamics and body size evolution |journal=Biological Reviews |date=February 2016 |volume=91 |issue=1 |pages=106–147 |doi=10.1111/brv.12161 |pmid=25431138 |s2cid=5332637 |url=https://hal.archives-ouvertes.fr/hal-01253154 }}</ref> although it is suspected that teleosts originated already during the [[Paleozoic]] [[era (geology)|Era]].<ref name=PNAS />
+{|class="wikitable"
+|-
+! [[Chondrostei]]
+|[[File:Atlantic sturgeon flipped.jpg|140px]]{{center|[[Atlantic sturgeon]]}}
+|valign=top |[[Chondrostei]] ''(cartilage bone)'' is a subclass of primarily [[cartilage|cartilaginous]] fish showing some [[ossification]]. Earlier definitions of Chondrostei are now known to be [[paraphyly|paraphyletic]], meaning that this subclass does not contain all the descendants of their common ancestor. There used to be 52 species divided among two orders, the [[Acipenseriformes]] ([[sturgeon]]s and [[paddlefish]]es) and the [[Polypteriformes]] ([[reedfish]]es and [[bichir]]s). Reedfish and birchirs are now separated from the Chondrostei into their own sister lineage, the [[Cladistia]]. It is thought that the chondrosteans evolved from bony fish but lost the bony hardening of their cartilaginous skeletons, resulting in a lightening of the frame. Elderly chondrosteans show beginnings of ossification of the skeleton, suggesting that this process is delayed rather than lost in these fish.<ref name="chondro">{{cite web|url=http://www.palaeos.com/Vertebrates/Units/090Teleostomi/090.300.html |title=Chondrosteans: Sturgeon Relatives |publisher=paleos.com |archive-url=https://web.archive.org/web/20101225152809/http://www.palaeos.com/Vertebrates/Units/090Teleostomi/090.300.html |archive-date=25 December 2010}}</ref> This group had once been classified with the [[shark]]s: the similarities are obvious, as not only do the chondrosteans mostly lack bone, but the structure of the jaw is more akin to that of sharks than other bony fish, and both lack [[Scale (zoology)|scales]] (excluding the Polypteriforms). Additional shared features include [[Spiracle (vertebrates)|spiracle]]s and, in sturgeons, a heterocercal tail (the [[vertebra]]e extend into the larger lobe of the [[caudal fin]]). However the fossil record suggests that these fish have more in common with the [[Teleostei]] than their external appearance might suggest.<ref name="chondro" />
+|-
+! [[Neopterygii]]
+|[[File:Salmo salar flipped.jpg|140px]]{{center|[[Atlantic salmon]]}}
+|[[Neopterygii]] ''(new fins)'' is a subclass of ray-finned fish that appeared somewhere in the Late [[Permian]]. There were only few changes during its evolution from the earlier actinopterygians. Neopterygians are a very successful group of fishes because they can move more rapidly than their ancestors. Their scales and skeletons began to lighten during their evolution, and their jaws became more powerful and efficient. While [[electroreception]] and the [[ampullae of Lorenzini]] is present in all other groups of fish, with the exception of [[hagfish]], neopterygians have lost this sense, though it later re-evolved within [[Gymnotiformes]] and [[catfish]]es, who possess nonhomologous teleost ampullae.<ref>{{cite book|author=Theodore Holmes Bullock|author-link=Theodore Holmes Bullock|author2=Carl D. Hopkins|author3=Arthur N. Popper|title=Electroreception|url=https://books.google.com/books?id=d1-rak1asv0C&pg=PA229|year=2005|publisher=Springer Science+Business Media, Incorporated|isbn=978-0-387-28275-6|page=229 }}</ref>
+|}
+[[File:Cheirolepis canadensis.jpg|thumb|Fossil of the [[Devonian]] {{extinct}}[[Cheirolepidiformes|cheirolepidiform]] {{extinct}}''[[Cheirolepis|Cheirolepis canadensis]]'']]
+[[File:Elonichthys peltigerus.jpg|thumb|Fossil of the [[Carboniferous]] {{extinct}}[[Elonichthyiformes|elonichthyiform]] {{extinct}}''[[Elonichthys |Elonichthys peltigerus]]'']]
+[[File:Aeduella sp.JPG|thumb|Fossil of the [[Permian]] {{extinct}}[[Aeduelliformes|aeduelliform]] {{extinct}}''[[Aeduella|Aeduella blainvillei]]'']]
+[[File:PalaeoniscusFreieslebenensis-NaturalHistoryMuseum-August23-08.jpg|thumb|Fossil of the [[Permian]] {{extinct}}[[Palaeonisciformes|palaeonisciform]] {{extinct}}''[[Palaeoniscum|Palaeoniscum freieslebeni]]'']]
+[[File:Bobasatrania canadensis 1.jpg|thumb|Fossil of the [[Triassic]] {{extinct}}[[Bobasatraniiformes|bobasatraniiform]] {{extinct}}''[[Bobasatrania|Bobasatrania canadensis]]'']]
+[[File:Italopterus magnificus 01.jpg|thumb|Fossil of the [[Triassic]] {{extinct}}[[Perleidiformes|perleidiform]] {{extinct}}''[[Thoracopterus|Thoracopterus magnificus]]'']]
+[[File:Prohalecites sp Rasa 1.JPG|thumb|Fossils of the [[Triassic]] {{extinct}}[[Prohaleciteiformes|prohaleciteiform]] {{extinct}}''[[Prohalecites]]'' sp., the earliest [[Teleosteomorpha|teleosteomorph]]]]
+[[File:Aspidorhynchus sp.jpg|thumb|Fossil of the [[Jurassic]] {{extinct}}[[Aspidorhynchiformes|aspidorhynchiform]] {{extinct}}''[[Aspidorhynchus|Aspidorhynchus sp.]]'']]
+[[File:Pachycormus curtus SMNS 55300.jpg|thumb|Fossil of the [[Jurassic]] {{extinct}}[[Pachycormiformes|pachycormiform]] {{extinct}}''[[Pachycormus (fish)|Pachycormus curtus]]'']]
+[[File:Yanosteus longidorsalis MHNT.jpg|thumb|Fossil of the [[Cretaceous]] [[Acipenseriformes|acipenseriform]] {{extinct}}''[[Yanosteus|Yanosteus longidorsalis]]'']]
+[[File:Nematonotus longispinus.jpg|thumb|Fossil of the [[Cretaceous]] [[Aulopiformes|aulopiform]] {{extinct}}''[[Nematonotus |Nematonotus longispinus]]'']]
+[[File:Thrissops formosus 3.JPG|thumb|Fossil of the [[Cretaceous]] {{extinct}}[[Ichthyodectiformes|ichthyodectiform]] {{extinct}}''[[Thrissops|Thrissops formosus]]'']]
+[[File:Mene oblonga 23.JPG|thumb|Fossil of the [[Eocene]] [[Carangiformes|carangiform]] {{extinct}}''[[Mene|Mene oblonga]]'']]
+[[File:Amphistium.JPG|thumb|Fossil of the [[Eocene]] [[Pleuronectiformes|pleuronectiform]] {{extinct}}''[[Amphistium|Amphistium paradoxum]]'']]
+[[File:Priscacara serrata FMNH PF13014 img1.jpg|thumb|right|Fossil of a ray-finned perch ({{extinct}}''[[Priscacara serrata]]'') from the [[Lower Eocene]] about 50 million years ago]]
+[[File:Nerophis (7992564775).jpg|thumb|Fossil of the [[Miocene]] [[Syngnathiformes|syngnathiform]] {{extinct}}''[[Nerophis|Nerophis zapfei]]'']]
+[[File:Lophius piscatorius MHNT.jpg|thumb|Skeleton of the angler fish, ''[[Lophius piscatorius]]''. The first spine of the dorsal fin of the anglerfish is modified so it functions like a fishing rod with a lure]]
+[[File:Lingcodskeleton1600ppx.JPG|thumb|right|Skeleton of another ray-finned fish, the [[lingcod]]]]
+[[File:Blue catfish skeleton.jpg|thumb|{{center|[[Blue catfish]] skeleton}}]]
+===Taxonomy===
+The listing below is a summary of all [[extinct]] (indicated by a [[dagger (mark)|dagger]], †) and living groups of Actinopterygii with their respective [[taxonomic rank]]. The [[Taxonomy (biology)|taxonomy]] follows ''[[Eschmeyer's Catalog of Fishes]]'''<ref name=":13222">{{Cite web |last1=Fricke |first1=R. |last2=Eschmeyer |first2=W. N. |last3=Van der Laan |first3=R. |date=2025 |title=ESCHMEYER'S CATALOG OF FISHES: CLASSIFICATION |url=https://www.calacademy.org/eschmeyers-catalog-of-fishes-classification |access-date=2025-02-10 |website=California Academy of Sciences |language=en}}</ref>''''' and Phylogenetic Classification of Bony Fishes<ref name=TOL /> with notes when this differs from Nelson,<ref name="NelsonFoW"/> [[ITIS]]<ref>{{ITIS |id=161061 |taxon=Actinopterygii |access-date=3 April 2006}}</ref> and [[FishBase]]<ref>{{cite web |editor=R. Froese and D. Pauly|title=FishBase |url=http://www.fishbase.org |date=February 2006 |access-date=8 January 2020 |archive-url=https://web.archive.org/web/20180705004623/http://www.fishbase.org/Summary/FamilySummary.php?ID=11 |archive-date=5 July 2018 |url-status=live }}</ref> and extinct groups from Van der Laan 2016<ref>{{cite book|last=Van der Laan|first=Richard|title=Family-group names of fossil fishes|year=2016|doi=10.13140/RG.2.1.2130.1361|url=https://www.researchgate.net/publication/317888989}}</ref> and Xu 2021.<ref>{{Cite journal|last=Xu|first=Guang-Hui|date=2021-01-09|title=A new stem-neopterygian fish from the Middle Triassic (Anisian) of Yunnan, China, with a reassessment of the relationships of early neopterygian clades|url=https://academic.oup.com/zoolinnean/article/191/2/375/5859858|journal=Zoological Journal of the Linnean Society|language=en|volume=191|issue=2|pages=375–394|doi=10.1093/zoolinnean/zlaa053|issn=0024-4082|doi-access=free}}</ref>
+* Order †?[[Asarotiformes]] Schaeffer 1968
+* Order †?[[Discordichthyiformes]] Minikh 1998
+* Order †?[[Paphosisciformes]] Grogan & Lund 2015
+* Order †[[Cheirolepidiformes]] Kazantseva-Selezneva 1977
+* Order †[[Paramblypteriformes]] Heyler 1969
+* Order †[[Rhadinichthyiformes]]
+* Order †[[Palaeonisciformes]] Hay 1902
+* Order †[[Tarrasiiformes]] sensu Lund & Poplin 2002
+* Order †[[Ptycholepiformes]] Andrews et al. 1967
+* Order †[[Haplolepidiformes]] Westoll 1944
+* Order †[[Aeduelliformes]] Heyler 1969
+* Order †[[Platysomiformes]] Aldinger 1937
+* Order †[[Dorypteriformes]] Cope 1871
+* Order †[[Eurynotiformes]] Sallan & Coates 2013
+* '''Subclass [[Cladistia]]''' Pander 1860
+** Order [[Polypteriformes]] Bleeker 1859 ([[bichir]]s and [[reedfish]]es)<ref>In Nelson, [[Polypteriformes]] is placed in its own subclass [[Cladistia]].</ref>
+** Order †?[[Scanilepiformes]] Selezneya 1985
+* '''Subclass [[Actinopteri]]''' Cope 1972 s.s.
+** Order †[[Elonichthyiformes]] Kazantseva-Selezneva 1977
+** Order †[[Phanerorhynchiformes]]
+** Order †[[Bobasatraniiformes]] Berg 1940<ref name=":0">{{Cite journal |last=Stack |first=Jack |title=An ontological morphological phylogenetic framework for living and extinct ray-finned fishes (Actinopterygii) |url=https://onlinelibrary.wiley.com/doi/abs/10.1002/ar.70090 |journal=The Anatomical Record |language=en |volume=n/a |issue=n/a |doi=10.1002/ar.70090 |issn=1932-8494 |doi-access=free}}</ref>
+** Order †[[Guildayichthyiformes]] Lund 2000<ref name=":0" />
+** Order †[[Saurichthyiformes]] Aldinger 1937
+* '''Subclass [[Chondrostei]]''' Müller, 1844
+** Order †[[Birgeria|Birgeriiformes]] Heyler 1969
+** Order †[[Chondrosteiformes]] Aldinger, 1937
+** Order [[Acipenseriformes]] Berg 1940 (includes [[sturgeon]]s and [[paddlefish]]es)
+* '''Subclass [[Neopterygii]]''' Regan 1923 sensu Xu & Wu 2012
+** Order †[[Pholidopleuriformes]] Berg 1937
+** Order †[[Redfieldiiformes]] Berg 1940
+** Order †[[Platysiagiformes]] Brough 1939
+** Order †[[Polzbergiiformes]] Griffith 1977
+** Order †[[Perleidiformes]] Berg 1937
+** Order †[[Louwoichthyiformes]] Xu 2021
+** Order †[[Peltopleuriformes]] Lehman 1966
+** Order †[[Colobodontiformes]] Xu ''et al'' 2024<ref name="Xu2024">{{cite journal |last1=Xu |first1=G. |last2=Yuan |first2=Z. |last3=Ren |first3=Y. |last4=Liao |first4=J. |last5=Zhao |first5=L. |last6=Song |first6=H |date=2024 |title=''Teffichthys wui'' sp. nov., a new perleidid fish from the Early Triassic of Jiangsu and Anhui, China |journal=Vertebrata PalAsiatica |volume=62 |issue=3 |pages=165–185 |doi=10.19615/j.cnki.2096-9899.240528}}</ref>
+** Order †[[Luganoiiformes]] Lehman 1958
+** Order †[[Pycnodontiformes]] Berg 1937
+** '''Infraclass''' '''[[Holostei]]''' Müller 1844
+*** '''Division''' [[Halecomorphi]] Cope 1872 sensu Grande & Bemis 1998
+**** Order †[[Parasemionotiformes]] Lehman 1966
+**** Order †[[Ionoscopiformes]] Grande & Bemis 1998
+**** Order [[Amiiformes]] Huxley 1861 sensu Grande & Bemis 1998 ([[bowfin]]s)
+*** '''Division''' [[Ginglymodi]] Cope 1871
+**** Order †[[Dapediiformes]] Thies & Waschkewitz 2015
+**** Order †[[Semionotiformes]] Arambourg & Bertin 1958
+**** Order [[Lepisosteiformes]] Hay 1929 ([[gar]]s)
+** '''[[Teleosteomorpha]]''' Arratia 2000 sensu Arratia 2013
+*** Order †[[Prohaleciteiformes]] Arratia 2017
+*** '''Division [[Aspidorhynchei]]''' Nelson, Grand & Wilson 2016
+**** Order †[[Aspidorhynchiformes]] Bleeker 1859
+**** Order †[[Pachycormiformes]] Berg 1937
+*** '''Infraclass''' '''[[Teleostei]]''' Müller 1844 sensu Arratia 2013
+**** Order †?[[Araripichthyiformes]]
+**** Order †?[[Ligulelliiformes]] Taverne 2011
+**** Order †?[[Tselfatiiformes]] Nelson 1994
+**** Order †[[Pholidophoriformes]] Berg 1940
+**** Order †[[Dorsetichthyiformes]] Nelson, Grand & Wilson 2016
+**** Order †[[Leptolepidiformes]]
+**** Order †[[Crossognathiformes]] Taverne 1989
+**** Order †[[Ichthyodectiformes]] Bardeck & Sprinkle 1969
+**** [[Teleocephala]] de Pinna 1996 s.s.
+*****'''Megacohort Elopocephalai''' Patterson 1977 sensu Arratia 1999 ([[Elopomorpha]] Greenwood et al. 1966)
+****** Order [[Elopiformes]] Gosline 1960 ([[ladyfish]]es and [[tarpon]])
+****** Order [[Albuliformes]] Greenwood et al. 1966 sensu Forey et al. 1996 (bonefishes)
+****** Order [[Notacanthiformes]] Goodrich 1909 ([[halosaurs]] and [[spiny eel]]s)
+****** Order [[Anguilliformes]] Jarocki 1822 sensu Goodrich 1909 (true [[eel]]s)
+***** '''Megacohort Osteoglossocephalai''' sensu Arratia 1999
+******'''Supercohort Osteoglossocephala''' sensu Arratia 1999 ([[Osteoglossomorpha]] Greenwood et al. 1966)
+******* Order †[[Lycopteriformes]] Chang & Chou 1977
+******* Order [[Hiodontiformes]] McAllister 1968 sensu Taverne 1979 ([[mooneye]] and [[goldeye]])
+******* Order [[Osteoglossiformes]] Regan 1909 sensu Zhang 2004 (bony-tongued fishes)
+****** '''Supercohort Clupeocephala''' Patterson & Rosen 1977 sensu Arratia 2010
+*******'''Cohort Otomorpha''' Wiley & Johnson 2010 ([[Otocephala]]; Ostarioclupeomorpha)
+******** '''Subcohort Clupei''' Wiley & Johnson 2010 ([[Clupeomorpha]] Greenwood et al. 1966)
+********* Order †[[Ellimmichthyiformes]] Grande 1982
+********* Order [[Clupeiformes]] Bleeker 1859 ([[herring]]s and [[anchovy|anchovies]])
+******** '''Subcohort Alepocephali'''
+********* Order [[Alepocephaliformes]] Marshall 1962
+******** '''Subcohort [[Ostariophysi]]''' Sagemehl 1885
+********* '''Section Anotophysa''' (Rosen & Greenwood 1970) Sagemehl 1885
+********** Order †[[Sorbininardiformes]] Taverne 1999
+********** Order [[Gonorynchiformes]] Regan 1909 ([[milkfish]]es)
+********* '''Section Otophysa''' Garstang 1931
+********** Order [[Cypriniformes]] Bleeker 1859 sensu Goodrich 1909 ([[Barb (fish)|barbs]], [[carp]], [[danios]], [[goldfish]]es, [[Loach (fish)|loaches]], [[minnow]]s, [[rasbora]]s)
+********** Order [[Characiformes]] Goodrich 1909 ([[characin]]s, [[pencilfish]]es, [[Freshwater hatchetfish|hatchetfishes]], [[piranha]]s, [[tetra]]s, [[Golden dorado|dourado / golden (genus ''Salminus'')]] and [[Piaractus mesopotamicus|pacu]])
+********** Order [[Gymnotiformes]] Berg 1940 ([[electric eel]]s and [[knifefish (disambiguation)|knifefishes]])
+********** Order [[Siluriformes]] Cuvier 1817 sensu Hay 1929 ([[catfish]]es)
+******* '''Cohort Euteleosteomorpha''' (Greenwood et al. 1966) ([[Euteleostei]] Greenwood 1967 sensu Johnson & Patterson 1996)
+********'''Subcohort Lepidogalaxii'''
+********* Order [[Lepidogalaxiiformes]] Betancur-Rodriguez et al. 2013 ([[Lepidogalaxias salamandroides|salamanderfish]])
+******** '''Subcohort [[Protacanthopterygii]]''' Greenwood et al. 1966 sensu Johnson & Patterson 1996
+********* Order [[Argentiniformes]] ([[barreleye]]s and [[slickhead]]s) (formerly in Osmeriformes)
+********* Order [[Galaxiiformes]]
+********* Order [[Salmoniformes]] Bleeker 1859 sensu Nelson 1994 ([[salmon]], [[trout]] and [[esox|pike]])
+******** '''Subcohort Stomiati'''
+********* Order [[Osmeriformes]] ([[Smelt (fish)|smelts]])
+********* Order [[Stomiiformes]] Regan 1909 ([[bristlemouth]]s and [[marine hatchetfish]]es)
+******** '''Subcohort [[Neoteleostei]]''' Nelson 1969
+*********'''Infracohort Ateleopodia'''
+********** Order [[Ateleopodiformes]] ([[jellynose fish]])
+********* '''Infracohort Eurypterygia''' Rosen 1973
+**********'''Section Aulopa''' [Cyclosquamata Rosen 1973]
+*********** Order [[Aulopiformes]] Rosen 1973 ([[Bombay duck]] and [[lancetfish]]es)
+********** '''Section Ctenosquamata''' Rosen 1973
+***********'''Subsection Myctophata''' [Scopelomorpha]
+************ Order [[Myctophiformes]] Regan 1911 ([[lanternfish]]es)
+*********** '''Subsection [[Acanthomorpha]]''' Betancur-Rodriguez et al. 2013
+************'''Division Lampridacea''' Betancur-Rodriguez et al. 2013 [Lampridomorpha; Lampripterygii]
+************* Order [[Lampriformes]] Regan 1909 ([[oarfish]], [[opah]] and [[ribbonfishes]])
+************ '''Division Paracanthomorphacea''' sensu Grande et al. 2013 ([[Paracanthopterygii]] Greenwood 1937)
+************* Order [[Percopsiformes]] Berg 1937 ([[Amblyopsidae|cavefishes]] and [[trout-perch]]es)
+************* Order †[[Sphenocephaliformes]] Rosen & Patterson 1969
+************* Order [[Zeiformes]] Regan 1909 ([[List of fishes known as dory|dories]])
+************* Order [[Gadiformes]] Goodrich 1909 ([[cod]]s)
+************ '''Division Polymixiacea''' Betancur-Rodriguez et al. 2013 (Polymyxiomorpha; Polymixiipterygii)
+************* Order †[[Pattersonichthyiformes]] Gaudant 1976
+************* Order †[[Ctenothrissiformes]] Berg 1937
+************* Order [[Polymixiiformes]] Lowe 1838 ([[beardfish]]es)
+************ '''Division Euacanthomorphacea''' Betancur-Rodriguez et al. 2013 (Euacanthomorpha sensu Johnson & Patterson 1993; [[Acanthopterygii]] Gouan 1770 sensu])
+*************Order [[Trachichthyiformes]] ([[fangtooth]]s and [[pineconefish]]es)
+*************'''Subdivision Berycimorphaceae''' Betancur-Rodriguez et al. 2013
+************** Order [[Beryciformes]] ([[alfonsino]]s and [[Holocentridae|holocentrids]]) (incl. [[Holocentriformes]], [[Stephanoberyciformes]]; [[Cetomimiformes]])
+************* '''Subdivision Percomorphaceae''' Betancur-Rodriguez et al. 2013 ([[Percomorpha]] sensu Miya et al. 2003; [[Acanthopteri]])
+**************'''Series Ophidiimopharia''' Betancur-Rodriguez et al. 2013
+*************** Order [[Ophidiiformes]] ([[pearlfish]]es)
+************** '''Series Batrachoidimopharia''' Betancur-Rodriguez et al. 2013
+*************** Order [[Batrachoidiformes]] ([[Batrachoididae|toadfishes]])
+************** '''Series Gobiomopharia''' Betancur-Rodriguez et al. 2013
+*************** Order [[Gobiiformes]] ([[cardinalfish]]es, sleepers and [[gobies]])
+************** '''Series Syngnathomorpharia''' Betancur-Rodriguez et al. 2013
+*************** Order [[Syngnathiformes]] ([[Seahorse (fish)|seahorses]], [[pipefish]]es, [[sea moth]]s, [[cornetfish]]es and [[flying gurnard]]s<ref>In Nelson and ITIS, [[Syngnathiformes]] is placed as the suborder Syngnathoidei of the order [[Gasterosteiformes]].</ref>)
+*************** Order [[Scombriformes]] ([[Tuna]]s and ([[mackerel]]s)
+************** '''Series Carangimopharia''' Betancur-Rodriguez et al. 2013
+*************** '''Subseries Anabantaria''' Betancur-Rodriguez et al. 2014
+**************** Order [[Synbranchiformes]] ([[swamp eel]]s)
+**************** Order [[Anabantiformes]] (Labyrinthici) ([[gourami]]es, [[Snakehead (fish)|snakeheads]], )
+*************** '''Subseries Carangaria''' Betancur-Rodriguez et al. 2014
+**************** Order [[Carangiformes]] ([[Jack mackerel]]s, [[pompano]]s, [[flatfish]]es, [[billfish]]es)
+*************** '''Subseries Ovalentaria''' Smith & Near 2012 ([[Stiassnyiformes]] sensu Li et al. 2009)
+**************** Order [[Atheriniformes]] Rosen 1964 ([[Silverside (fish)|silversides]] and [[rainbowfish]]es)
+**************** Order [[Cyprinodontiformes]] Berg 1940 ([[live-bearing aquarium fish|livebearers]], [[killifish]]es)
+**************** Order [[Beloniformes]] Berg 1940 ([[flyingfish]]es and [[ricefish]]es)
+**************** Order [[Cichliformes]] Betancur-Rodriguez et al. 2013 ([[Cichlid]]s, [[Convict blenny]], leaf fishes)
+**************** Order [[Mugiliformes]] Berg 1940 ([[mullet (fish)|mullets]])
+**************** Order [[Blenniiformes]] Springer 1993 ([[Blennies]], [[damselfish]], [[Clingfish]]es)
+************** '''Series Eupercaria''' Betancur-Rodriguez et al. 2014 (Percomorpharia Betancur-Rodriguez et al. 2013)
+***************Order [[Perciformes]] Bleeker 1859
+***************Order [[Centrarchiformes]] Bleeker 1859 ([[Centrarchidae|Sunfishes]] and mandarin fishes)
+***************Order [[Labriformes]] ([[Wrasse]]s and [[Parrotfish]]es)
+***************Order [[Acropomatiformes]]
+***************Order [[Acanthuriformes]]
+*************** Order [[Lophiiformes]] Garman 1899 ([[Anglerfish]]es)
+*************** Order [[Tetraodontiformes]] Regan 1929 ([[Filefish]]es and [[pufferfish]])
+{{clear}}
+
+==References==
+<!-- AnimalBiology58:23. MolecularPhylogeneticsAndEvolution46:224. -->
+{{Reflist|20em}}
+==External links==
+* {{Commons category-inline}}
+* {{Wikispecies-inline}}
+{{Actinopterygii|}}
+{{Chordata}}
+{{Evolution of fish}}
+{{Fins, limbs and wings}}
+{{Taxonbar|from=Q127282}}
+{{Authority control}}
+[[Category:Actinopterygii| ]]
+[[Category:Fish classes]]
+[[Category:Extant Silurian first appearances]]

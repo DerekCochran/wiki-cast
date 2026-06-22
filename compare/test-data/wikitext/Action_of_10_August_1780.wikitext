@@ -1,0 +1,49 @@
+{{Short description|1790 naval battle}}
+{{Use dmy dates|date=February 2024}}
+{{Infobox military conflict
+|conflict=Action of 10 August 1780
+|partof=the [[American Revolutionary War]]
+|image= Naval battle at Ushant, 1780 RCIN 734058.4.a.jpg
+|caption=Naval battle at Ushant, 1780, engraved by [[Robert Pollard (engraver)|Robert Pollard]], after [[Robert Dodd (artist)|Robert Dodd]]
+|date=10 August 1780
+|place=Off [[Ushant]]
+|image_size =300
+|result=British victory
+|combatant1={{flagcountry|Kingdom of Great Britain}}
+|combatant2={{flagcountry|Kingdom of France}}
+|commander1={{flagicon|Kingdom of Great Britain}}[[William Peere Williams-Freeman|William Williams]]
+|commander2={{flagicon|Kingdom of France}} [[Charles-Marie de Trolong du Rumain|Charles-Marie du Rumain]]{{KIA}}
+|strength1=1 frigate 36 gun
+|strength2=1 frigate 32 gun 
+|casualties1=9 killed & 17 wounded
+|casualties2=1 frigate captured,<br>51 killed,<br>81 wounded<br>159 POW<ref name="Clowes">{{cite book |last=Clowes |first=W. Laird |authorlink=William Laird Clowes |year=1899 |url=https://www.archive.org/details/royalnavyhistory04clow |title=The Royal Navy, a history from the earliest times to present |volume=IV |location=London, UK |page=56 |publisher=S. Low, Marston, Co.}}</ref>
+|campaignbox={{Campaignbox American War of Independence: European Waters}}
+}}
+The '''action of 10 August 1780''' was a minor naval engagement that took place off [[Brest, France|Brest]] during the [[American Revolutionary War]] between a [[Royal Navy]] [[frigate]] and a French Navy frigate.<ref name="Clowes"/> This was the first engagement thought to involve the use of the [[carronade]].<ref name="AOS">{{cite web |title=Introducing the Carronade: The Debut Under Fire |url=https://ageofsail.wordpress.com/2009/02/22/introducing-the-carronade-the-debut-under-fire/ |website=Age Of Sail |publisher=WordPress.com |accessdate=5 January 2019}}</ref>
+
+==Events==
+===Background===
+The 36-gun frigate {{HMS|Flora|1780}} under Captain [[William Peere Williams-Freeman|William Williams]] was patrolling off [[Ushant]] not far from [[Brest, France|Brest]] on the afternoon of 10 August 1780.<ref name= "Winfield">Winfield p. 208</ref> ''Flora'', as well as her nominal armament also carried six recently-introduced 18-pounder [[carronade]]s.{{fact|date=February 2024}}
+
+Through the [[haze]] she sighted two vessels, a square-rigged vessel and a cutter, about four miles away. As ''Flora'' approached, the cutter edged away, while the square-rigged vessel waited, accepted battle.<ref name="MTN">{{cite web |last1=Hiscocks |first1=Richard |title=Flora v Nymphe – 10 August 1780|url=https://morethannelson.com/flora-v-nymphe-10-august-1780/ |website=More Than Nelson |publisher=Web & Prosper |accessdate=30 December 2018}}</ref>
+
+===Action===
+[[File:Charles-Marie de Trolong du Rumain-IMG 8595.jpg|thumb|Portrait of [[Charles-Marie de Trolong du Rumain]]]]
+When the two ships were within two [[Cable length|cables length]] the French ship raised her colours and opened fire.<ref>{{London Gazette|issue=12110|date=15 August 1780|page=4|nolink=yes}}</ref> Moving in, for over an hour the two frigates battered each other relentlessly; ''Flora'' being much cut up, moved closer in which the carronades were able to sweep the decks of the French ship with [[grapeshot]]. After another 15 minutes the French abandoned their guns and attempted to board, but ''Flora''{{'}}s  crew repulsed the attempt. An explosion of a box of cartridges aboard the Frenchman added further to the carnage. ''Flora''{{'}}s crew then boarded the French vessel and within moments the French vessel struck. She proved to be the frigate [[HMS Nymphe (1780)|''La Nymphe'']], pierced for 40 guns, but mounting only 32, and commanded by the [[Knight|Chevalier]] [[Charles-Marie de Trolong du Rumain]], who died that evening of his wounds with command being passed to Lieutenant Pennandref de Keranstret.<ref name="MTN"/>
+
+===Aftermath===
+''Flora''{{'}}s guns were heavier, 18- and 9-pounders, against the French ship's 12- and 6-pounders. The effect of the new carronades on ''Flora'' is reflected in the number of casualties; 9 killed and 17 wounded on ''Flora'' out of a crew of 259, and 55 killed and 81 wounded aboard ''La Nymphe'', from a crew of 291.<ref name="Clowes"/> ''Nymphe'' was transferred into the Royal Navy (as HMS ''Nymphe'') the following March after repairs at [[Portsmouth Dockyard]].<ref name= "Winfield"/>
+
+In the aftermath of ''La Nymphe'' being taken by ''Flora'', the [[Navy Board]] quickly became enamoured of the carronade and the weapon’s effectiveness in combat. As a result they were soon mounted on many Royal Navy ships.<ref name="AOS"/>
+
+==References==
+{{reflist}}
+
+===Bibliography===
+* {{cite book |last=Winfield |first=Rif |year=2008 |title=British Warships in the Age of Sail 1793–1817 |edition=2nd |publisher=Seaforth Publishing |location=London, UK |isbn=978-1-84415-717-4}}
+
+[[Category:Conflicts in 1780]]
+[[Category:Naval battles of the Anglo-French War (1778–1783)|10 August 1780]]
+[[Category:Military history of Brittany]]
+[[Category:1780 in France]]
+[[Category:Ushant|10 August 1780]]

@@ -45,6 +45,10 @@ This testing is just phase 1.  It gets WIKI-CAST to match at least one implement
 
 The testing against Parsoid will only be a "small" sample based on their tests and issues in implementing the english wikipedia.  We can also gain additional tests by comparing to other implementations, such as [parse_wiki_text](https://github.com/lovasoa/parse_wiki_text)
 
+## Versioning
+
+This project follows standard semver versioning.  Breaking changes will be changes to the [schema](config/wiki-cast.json).  Almost all other changes will be features or defect fixes.  There will be a changing major version that you can link to.  However, for security it is always advised to bind to the SHA of the git repo.
+
 ## Languages
 
 The current implementation has only tested against the english wikipedia.  This meets my intial needs, but to match the pipe dream, all languages must be verified.  This is a time consuming and costly effort.  With the right financial support, I hope to accomplish this goal.
@@ -102,7 +106,9 @@ cmake -S . -B build -DCMAKE_BUILD_TYPE=Debug
 cmake --build build -j"$(nproc)"
 ```
 
-## Node native addon (bindings/node)
+## Bindings
+
+### Node native addon (bindings/node)
 
 The Node native addon is built as part of the CMake `node_binding` target. The addon build is invoked with `node-gyp` using `--release` by default; when CMake is configured for `Debug` the addon will be built with `node-gyp --debug`.
 
@@ -123,6 +129,11 @@ npx node-gyp rebuild --debug
 - `src/` - implementation sources
 - `src/parser/` - parser stage implementations (redirect, comment_and_ext, ...)
 - `tests/` - C test harnesses
+
+### Python (bindings/python)
+
+See the [README.md](bindings/python/README.md)
+
 
 ## Sanitizers (ASan / UBSan / TSan)
 

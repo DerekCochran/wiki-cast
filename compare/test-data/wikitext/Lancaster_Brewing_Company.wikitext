@@ -1,0 +1,48 @@
+{{Short description|Brewer}}
+{{more citations needed|date=March 2013}}
+
+{{Infobox Brewery
+| name           = Lancaster Brewing Company
+| logo         = Lancaster Brewing Company (emblem).jpg
+| logo_size=180
+| logo_caption        = Step Up To Better Beer
+| image = Lancaster Brewing Company.jpg
+| location       = 302 N. Plum St, [[Lancaster, Pennsylvania]]<br/>[[United States]]
+| owner          = Peter Keares and Nick Keares
+| opened         = 1995
+| production     =
+| url        = {{URL|www.lancasterbrewing.com}}
+| active_beers   =Double Chocolate Milk Stout; Hop Hog IPA; Strawberry Wheat Ale; Milk Stout; Haze Farmer IPA; Shoo Fly Pie Porter; Winter Warmer; Etc.
+| seasonal_beers =Baked Pumpkin Ale; Blue Trail Shandy; Imperial Jo Espresso Stout; Lancaster Oktoberfest
+| other_beers    =Barrel Aged Series; Twin Hop Series
+}}
+
+The '''Lancaster Brewing Company''' is an American brewery, restaurant and distillery  business located in [[Lancaster, Pennsylvania]].<ref>{{Cite web |title=BREWERY |url=https://www.lancasterbrewing.com/dine/lbc-brewery/ |access-date=2023-05-12 |website=Lancaster Brewing Co |language=en-US}}</ref> 
+
+==History==
+Founded in 1995, the brewery and the restaurant are located in the [[Edward McGovern Tobacco Warehouse]], which was listed on the [[National Register of Historic Places]] in 1990.<ref name="nris">{{NRISref|version=2010a}}</ref> In 2024, Lancaster Craft Spirits, a whiskey distillery was added to the business.  
+
+The brewery has produced more than two hundred different beers since 1995.<ref>{{Cite web |title=our beer |url=https://www.lancasterbrewing.com/home/our-beer/ |access-date=2023-05-12 |website=Lancaster Brewing Co |language=en-US}}</ref><ref>{{Cite web |date=2013-09-20 |title=Lancaster Brewing Company Celebrates Oktoberfest |url=https://www.brewbound.com/news/lancaster-brewing-company-celebrates-oktoberfest |access-date=2024-03-15 |website=Brewbound |language=en-US}}</ref> Its products are sold throughout the [[Mid-Atlantic (United States)|Mid-Atlantic region]], with distribution in [[Pennsylvania]], [[New Jersey]], [[New York (state)|New York]], [[Washington, D.C.]], [[Delaware]], [[Maryland]] and [[Virginia]].
+
+The grain to glass distillery produces American single malt whiskey, bourbon, hop infused gin, rum and vodka.
+
+==Gallery==
+<gallery>
+File:McGovern Warehouse.JPG|[[File:STILL UP 1 1MB.jpg|thumb|151x151px|Newly added pot still and dining area[[File:Lancaster Craft whiskey bottles.jpg|thumb|165x165px|Lancaster Craft Bourbon and American Single Malt 6 year whiskey]]]]The brewery is housed in the McGovern Tobacco Warehouse, which is listed by the [[National Register of Historic Places]]
+</gallery>
+
+==See also==
+* [[Beer in the United States]]
+
+==References==
+{{Reflist}}
+
+==External links==
+* [http://www.lancasterbrewing.com Lancaster Brewing Company]
+
+[[Category:Companies based in Lancaster, Pennsylvania]]
+[[Category:Culture of Lancaster, Pennsylvania]]
+[[Category:Beer brewing companies based in Pennsylvania]]
+[[Category:1840 establishments in Pennsylvania]]
+[[Category:American companies established in 1840]]
+[[Category:Food and drink companies established in 1840]]

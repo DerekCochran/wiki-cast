@@ -1,0 +1,736 @@
+{{Short description|Political party in Bangladesh}}
+{{About|Bangladesh Jamaat-e-Islami|other organisations with similar names|Jamaat-e-Islami (disambiguation)}}
+{{pp-extended|small=yes}}
+{{protection padlock|small=yes}}
+{{Use dmy dates|date=December 2020}}
+{{Infobox political party
+| name = Bangladesh Jamaat-e-Islami
+| abbreviation = {{ubl|Jamaat-e-Islami (formal)|Jamaat (informal)|BJI (informal)}}
+| split = [[Jamaat-e-Islami Pakistan]]
+| predecessor = [[Islamic Democratic League]]<ref name="Banglapedia" /><ref>{{Cite web |title='একি কথা শুনি আজি মন্থরার মুখে' |url=https://bangla.bdnews24.com/opinion/55573 |access-date=2 April 2026 |website=[[bdnews24.com]] |language=bn}}</ref>
+| logo = File:Bangladesh Jamaat-e-Islami Emblem.svg
+| logo_size = 180px
+| colorcode = {{party color|Bangladesh Jamaat-e-Islami}}
+| leader1_title = Ameer
+| leader1_name = [[Shafiqur Rahman]]
+| leader2_title = Secretary-General
+| leader2_name = [[Mia Golam Parwar]]
+| leader3_title = Spokesperson
+| leader3_name = Mohammed Motiur Rahman Akanda
+| country = Bangladesh
+| foundation = {{Start date and age|1979|05|27|df=y}}<ref name="hasnat" />
+| slogan = 
+| ideology = <!-- Before adding to this parameter, please consider adding relative content with reliable source(s) to the "Ideology" section -->{{ubl|class=nowrap|
+ |[[Islamism]]
+ |[[Conservatism]] ([[Conservatism in Bangladesh|Bangladeshi]])
+ |[[Post-Islamism|Neo-Islamism]]
+ |[[Reformism]]
+}}
+| position = <!-- Before adding to this parameter, please consider adding relative content with reliable source(s) to the "Ideology" section -->[[Far-right politics|Far-right]]
+| religion = [[Islam]]
+| headquarters = 505, Elephant Road, [[Mogbazar]], [[Dhaka]]
+| membership = 
+| membership_year = 
+| newspaper = {{ubl|''[[The Daily Sangram|Daily Sangram]]''|''[[Daily Naya Diganta]]''|''Weekly Sonar Bangla''}}
+| colors = {{colour box|{{party color|Bangladesh Jamaat-e-Islami}}}} Light green
+| flag = Bangladesh Jamaat-e-Islami Flag Emblem.svg
+| flag_alt = [[File:Bjsna.jpg|thumb|Flag of Jamat-e-Islami]]
+| symbol = {{ubl|[[File:Daripalla.png{{!}}class=skin-invert|100px]]|'''[[Pan balance]]'''}}
+| website = {{URL|https://jamaat-e-islami.org/en/|jamaat-e-islami.org}}
+| student_wing = {{ubl|[[Bangladesh Islami Chhatra Shibir]] (''de facto'')|[[Bangladesh Islami Chhatri Sangstha]] (''de facto'')}}
+| womens_wing = Bangladesh Jamaat-e-Islami Women's Wing
+| native_name = বাংলাদেশ জামায়াতে ইসলামী
+| native_name_lang = bn
+| founder = [[Abbas Ali Khan]]<ref name="hasnat" />
+| seats1_title = [[Jatiya Sangsad]]
+| seats1 = {{composition bar|77|350|hex={{party colour|Bangladesh Jamaat-e-Islami}}}}
+| seats2_title = [[List of City Corporations of Bangladesh#List of city mayors|Mayors]]
+| seats2 = {{composition bar|0|1|hex={{party colour|Bangladesh Jamaat-e-Islami}}}}{{efn|Except [[Chattogram City Corporation|Chattogram]], mayoral post has been dissolved in all other city corporations of the country}}
+| seats3_title = [[List of City Corporations of Bangladesh#Councillors|Councillors]]
+| seats3 = ''Post dissolved''
+| seats4_title = [[District councils of Bangladesh|District councils]]
+| seats4 = ''Post dissolved''
+| seats5_title = [[Upazila Parishad|Subdistrict councils]]
+| seats5 = ''Post dissolved''
+| seats6_title = [[Union Parishad|Union councils]]
+| seats6 = ''Post dissolved''
+| seats7_title = [[List of municipal corporations in Bangladesh|Municipalities]]
+| seats7 = ''Post dissolved''
+| wing1 = [[Bangladesh Sramik Kalyan Federation]] (''de facto'')
+| wing1_title = Trade union
+| national = [[11 Party Alliance]]<br />{{collapsible list|title=Former:|[[Four Party Alliance]]|(1999–2012)|[[20 Party Alliance]]|(2012–2022)}}
+}}
+'''Bangladesh Jamaat-e-Islami'''{{efn|{{langx|bn|বাংলাদেশ জামায়াতে ইসলামী|Bāṅlādēś Jāmāẏātē Islāmī|Bangladesh Islamic Congress}},<ref name="Banglapedia">{{Cite Banglapedia|article=Jamaat-e-Islami Bangladesh}}</ref> {{IPA|bn|ˈbaŋlaˌdeʃ ˈdʒamaːte ˈisˌlaːmiː|pron}}; known as '''Jamaat-e-Islami Bangladesh''' until 2008.}} is a [[Far-right politics|far-right]] and the largest [[Islamist]] [[List of political parties in Bangladesh|political party in Bangladesh]]. It emerged from the [[East Pakistan]]i wing of the [[Jamaat-e-Islami Pakistan]] in 1979. It is one of the two contemporary mainstream political parties in the country, alongside the [[Bangladesh Nationalist Party]] (BNP).
+
+The origin of the party lies in the [[Jamaat-e-Islami]] movement founded by [[Abul A'la Maududi]] in 1941 in [[British India]]. Its predecessor, [[Jamaat-e-Islami Pakistan]], though actively participating in the pro-democracy movements of [[East Pakistan]], opposed the [[independence of Bangladesh]]. The party supported Pakistan during the [[Bangladesh Liberation War|Liberation War]], organized several pro-Pakistan groups, and participated in the [[Bangladesh genocide]] and other [[Bangladesh Liberation War#Atrocities|mass atrocities]]. Following the independence of Bangladesh, the party was banned by the [[Sheikh Mujibur Rahman]]'s government, but was subsequently lifted under [[Ziaur Rahman]], allowing the modern party to be formed on 27 May 1979. The party actively participated in the anti-[[Hussain Muhammad Ershad|Ershad]] and the pro-[[Caretaker government of Bangladesh|caretaker government]] movements. Two of its leaders served in the BNP's [[Third Khaleda ministry|coalition government]] between 2001 and 2006. During the second [[premiership of Sheikh Hasina]], Jamaat-e-Islami's registration was cancelled and its leaders were prosecuted by the [[International Crimes Tribunal (Bangladesh)|International Crimes Tribunal]] for [[war crimes]] of 1971. Her government also again banned the party for supporting the anti-government [[July Revolution (Bangladesh)|mass uprising]] in 2024. Following the [[resignation of Sheikh Hasina]], its ban was lifted by the [[Yunus ministry|interim government]] and its registration was reinstated. Since [[2026 Bangladeshi general election|2026]], it has been the main opposition in the [[Jatiya Sangsad]].
+
+Traditionally, the party is guided by the Maududi's vision for a totalitarian [[Islamic state]]. The party has since sought to portray itself [[reformist]]. The party supports a [[welfarist]] economy, and runs charity programmes. The party is controversial for its role in the Liberation War, ideological links to [[Islamic extremism]], [[human rights abuses]], and contradictory positions on women and [[sharia]]. As of 2026, the Bangladesh Jamaat-e-Islami's strongest demographics include younger and educated voters.<ref name="laila2026" />
+
+[[Shafiqur Rahman]] has been serving as the [[Emir|ameer]] (leader) and [[Mia Golam Parwar]] has been serving as the secretary-general of the party since 2019. The party maintains a network of affiliated organizations, including the [[Bangladesh Islami Chhatra Shibir]].
+
+== History ==
+===Origins===
+
+The origin of modern Bangladesh Jamaat-e-Islami party lies in the historical
+[[Jamaat-e-Islami]] movement, founded by ''Maulana'' [[Abul A'la Maududi]] during the [[British Raj]].<ref name="auto2">{{cite news |url=https://en.prothomalo.com/bangladesh/politics/mg3rtpr5m3 |title=Jamaat manoeuvring for 'electoral alliance' with other Islamists |work=[[Prothom Alo]] |author=Selim Zahid |date=25 September 2024}}</ref> The movement was established under the name of "[[Jamaat-e-Islami Hind]]" at Islamia Park, [[Lahore]] on 26 August 1941, as an "organizational platform" for promoting Maududi's vision of an [[Islamic state]]. Maududi was deeply concerned about the perceived decline of religious values due to the impact of Western secular ideologies on Muslim communities in India. Thus, he envisioned the Jamaat to be more than a political party – a "comprehensive Islamic movement" influencing all aspects of life through activities in social welfare, education, and political activism.<ref name="efas">{{Cite web |title=Revival in Motion? The Jamaat-e-Islami in Bangladesh and Pakistan |url=https://www.efsas.org/publications/articles-by-efsas/ji-bangladesh-and-pakistan-april-2024/ |access-date=27 February 2026 |publisher=[[European Foundation for South Asian Studies]] |language=en }}</ref> Though the movement's stated goal was to promote social and [[political Islam]], many analysts think that it was mainly formed from as an [[anti-communist]] force, which received favour from the British rulers.<ref name="hasnat" />
+
+Initially, Jamaat opposed the creation of a separate state of [[Pakistan]] for the Muslims of India, arguing that concept violated the Islamic doctrine of the ''[[ummah]]''.<ref name="Oh Irene 2007">{{cite book |last=Oh |first=Irene |year=2007 |title=The rights of God : Islam, human rights, and comparative ethics |url=https://archive.org/details/rightsofgodislam0000ohir |url-access=registration |publisher=[[Georgetown University Press]] |page=45 |isbn=978-1-58901-463-3 |quote="In the debate over whether Muslims should establish their own state, separate from a Hindu India, Maududi initially argued against such a creation and asserted that the establishment of a political Muslim state defined by borders violated the idea of the universal umma. Citizenship and national borders, which would characterize the new Muslim state, contradicted the notion that Muslims should not be separated by one another by these temporal boundaries. In this milieu, Maududi founded the organisation Jama'at-e Islami. ... The Jama'at for its first few years worked actively to prevent the partition, but once partition became inevitable, it established offices in both Pakistan and India."}}</ref> He saw the partition as creating a temporal border that would divide [[Muslims]] from one another,<ref>{{cite thesis |last=Rasheed |first=Nighat |date=2007 |title=A critical study of the reformist trends in the Indian Muslim society during the nineteenth century |url=https://shodhganga.inflibnet.ac.in/bitstream/10603/52379/13/13_chapter%207.pdf#page=74 |type=PhD |publisher=[[Aligarh Muslim University]] |page=336 |access-date=2 March 2020}} The Jama'at -i-Islami was founded in 1941. Maulana Maududi being its founder strongly opposed the idea of creating Pakistan, a separate Muslim country, by dividing India, but surprisingly after the creation of Pakistan, he migrated to Lahore. Again in the beginning, he was opposed to and denounced the struggle for Kashmir as un-Islamic, for which he was imprisoned in 1950, but later on in 1965, he changed his views and endorsed the Kashmir war as Jihad. Maulana Maududi took an active part in demanding discriminative legislation and executive action against the Ahmadi sect leading to widespread rioting and violence in Pakistan. He was persecuted arrested and imprisoned for advocating his political ideas through his writings and speeches. During the- military regime from 1958 the Jama'at-iIslami was banned and was revived only in 1962, Maududi was briefly imprisoned. He refused to apologize for his actions or to request clemency from the government. He demanded his freedom to speak and accepted the punishment of death as the will of God. His fierce commitment to his ideals caused his supporters worldwide to rally for his release and the government acceded commuting his death sentence to a term of life imprisonment. Eventually, the military government pardoned Maulana Maududi completely</ref> while advocating for the whole of India to be reclaimed for Islam.<ref>{{cite book |last1=Esposito |first1=John L. |last2=Sonn |first2=Tamara |last3=Voll |first3=John Obert |title=Islam and Democracy After the Arab Spring |date=2016 |publisher=[[Oxford University Press]] |isbn=978-0-19-514798-8 |page=96 |language=en |quote=Mawdudi (d. 1979) was opposed to the partition of India, preferring that Muslims reclaim all of India for Islam.}}</ref> However, Maududi eventually concluded supporting the creation of a Muslim-majority Pakistan as an opportunity to establish his envisioned Islamic state.<ref name="efas" />
+
+After the creation of Pakistan, Jamaat-e-Islami divided into separate Indian and Pakistani national organisations. When [[East Pakistan]] became independent as Bangladesh, the East Pakistan wing split out of the [[Jamaat-e-Islami Pakistan]] and became Jamaat-e-Islami Bangladesh.<ref name="efas" /><ref name="HHPBMM2010: 171">{{cite book |last1=Haqqani |first1=Husain |title=Pakistan: Between Mosque and Military |year=2005 |location=Washington, D.C. |publisher=[[Carnegie Endowment for International Peace]] |page=171 |isbn=978-0-87003-214-1}}</ref><ref>{{cite web | url=https://www.efsas.org/publications/study-papers/jamaat-e-islami-in-bangladesh-past,-present-and-future/ | title=Jamaat-e-Islami in Bangladesh: Past, Present and Future }}</ref>
+
+===In East Pakistan (1955–1971)===
+Following the establishment of Pakistan, significant imbalance emerged between the eastern and the western wings of the country. The [[East Bengal]] (later East Pakistan) remained structurally disadvantaged comparing to its western counterpart, in terms of both political and economic conditions. This also contributed to regional fractionalization of the party. For example, East Bengal chapter of Jamaat supported the [[Bengali Language Movement]] in 1952, which was opposed by the central party in West Pakistan as they classified it as "calls for a greater role for [[Bengalis|Bengali]] identity in the State".<ref name="efas" />
+
+Though initially favouring [[martial law]], the East Pakistan Jamaat-e-Islami participated in the democratic movement against president [[Ayub Khan (Field Marshal)|Ayub Khan]] following his government's family laws, which they deemed as un-Islamic.<ref name="efas" /> Ameer of Jamaat-e-Islami East Pakistan branch [[Ghulam Azam]] was a member of the all-party democratic alliance was formed in 1965 against Khan's regime, which also included [[Abdul Hamid Khan Bhashani|Maulana Abdul Hamid Khan Bhashani]] and [[Sheikh Mujibur Rahman|Bangabandhu Sheikh Mujibur Rahman]].<ref name="efas" /><ref>{{cite journal | url=https://journals.sagepub.com/doi/abs/10.1177/002088177501400105 | doi=10.1177/002088177501400105 | title=The Jama'At-I-Islami of Pakistan: Ideology and Political Action | date=1975 | last1=Bahadur | first1=Kalim | journal=International Studies | volume=14 | pages=69–84 | url-access=subscription }}</ref><ref>{{cite web | url=https://criterion-quarterly.com/jamaat-e-islami-pakistan/ | title=Jamaat-e-Islami (Pakistan) - Criterion Quarterly | date=16 July 2018 }}</ref><ref>{{cite journal | url=https://research.nu.edu.kz/en/publications/islam-in-bangladesh-politics-the-role-of-ghulam-azam-of-jamaat-i- | title=Islam in Bangladesh politics: The role of Ghulam Azam of Jamaat-I-Islami | journal=Inter-Asia Cultural Studies | date=2004 | volume=5 | issue=3 | pages=384–399 | last1=Hossain | first1=Ishtiaq | last2=Siddiquee | first2=Noore Alam | doi=10.1080/1464937042000288688 }}</ref>
+
+During the late 1960s, Jamaat‑e‑Islami strongly resisted the rising [[socialist]] programs promoted by leaders such as [[Zulfikar Ali Bhutto]] in [[West Pakistan]] and Bhashani in East Pakistan. The party actively campaigned against these agendas, organized a large coalition of Islamic scholars and clerics, over a hundred ''[[ulema]]'', who issued statements denouncing the [[Pakistan Peoples Party]]'s socialism as "[[Atheism|atheistic]]" and "[[Criticism of Islam|anti‑Islam]]".<ref>{{Cite web |title=Pakistan: Impact of Islamic Socialism |url=https://ciaotest.cc.columbia.edu/olj/sa/sa_jan02chb01.html |access-date=20 July 2025 |website=}}</ref><ref>{{Cite web |last=Paracha |first=Nadeem F. |date=21 February 2013 |title=Islamic Socialism: A history from left to right |url=https://www.dawn.com/news/787645/islamic-socialism-a-history-from-left-to-right |access-date=20 July 2025 |website=[[Dawn (newspaper)|Dawn]] |language=en}}</ref>
+
+As the [[Six Point movement|Six-Point Movement]] gained momentum in East Pakistan from 1966 onwards, Jamaat-e-Islami adopted a firm stance against it. The Six-Point Movement, put forth by the Awami League, demanded for extensive autonomy for East Pakistan and was viewed by [[Bengali nationalism|Bengali nationalists]] as a charter for self-rule. The party viewed the movement as a divisive, secessionist agenda that threatened the solidarity of the Muslim nation and the integrity of Pakistan, as Jamaat-e-Islami's [[Pan-Islamism|pan-Islamist]] ideology emphasized the unity of the country based on Islamic principles.<ref>{{Cite news |last=Manik |first=M. Waheeduzzaman |date=7 June 2008 |title=The historic six-point movement and its impact on the struggle for independence |url=https://www.thedailystar.net/news-detail-40021 |access-date=20 July 2025 |work=[[The Daily Star (Bangladesh)|The Daily Star]] |language=en}}</ref>
+
+In the [[1970 Pakistani general election|1970 general election]], Jamaat failed to gain any [[National Assembly of Pakistan|National Assembly]] seat from East Pakistan.<ref name="hasnat" />
+
+==== Bangladesh Liberation War (1971) ====
+[[File:Ghulam Azam meets Tikka Khan.jpg|thumb|[[Ghulam Azam]], leader of the East Pakistan Jamaat, meeting with the [[Governor of East Pakistan]] [[Tikka Khan]], 4 April 1971]]
+In 1971, Jamaat-e-Islami Pakistan opposed the independence of Bangladesh and the dismemberment of Pakistan. Ghulam Azam, then head of Jamaat-e-Islami East Pakistan, delivered several speeches after 25 March 1971, excerpts of which were regularly published in the party's mouthpiece, ''[[The Daily Sangram]]''. On 30 June in Lahore, while speaking to journalists, Azam stated that his party was making every effort to suppress what he described as the activities of "miscreants" in East Pakistan, and that many Jamaat workers had been killed by these elements as a result of their efforts.<ref name="sangram1971">{{cite news |date=11 January 2012 |script-title=bn:একাত্তরে গোলাম আযমের বিবৃতি |trans-title=Ghulam Azams speeches in 1971 |url=http://www.prothom-alo.com/detail/news/215745 |archive-url=https://web.archive.org/web/20120114120120/http://www.prothom-alo.com/detail/news/215745 |archive-date=14 January 2012 |newspaper=[[Prothom Alo]] |language=bn}}</ref>
+
+The party actively supported the [[Operation Searchlight|military intervention in East Pakistan]] and participated in a variety of [[human rights abuse]]s against the civilian population of the region.<ref name="efas" /> It played a key role in organizing pro‑Pakistan collaborationist bodies. On 4 April 1971, twelve pro‑Pakistan leaders, including [[Nurul Amin]], Azam, and [[Syed Khwaja Khairuddin]], met [[Tikka Khan|General Tikka Khan]] of the [[Pakistan Army]] and assured him of their cooperation in suppressing the independence movement. Following a series of meetings, they announced the formation of the [[East Pakistan Central Peace Committee]], which initially included 140 members, among them 96 Jamaat‑e‑Islami members who began training at an Ansar camp on Khanjahan Ali Road in [[Khulna]].<ref>{{Cite book |last=Rahman |first=Azadur |script-title=bn:একাত্তরের ঘাতক ও দালালরা |publisher=Jatiya Sahitya Prakash |location=[[Dhaka]] |publication-date=February 2011 |pages=48–54 |language=bn}}</ref><ref>{{Cite news |date=12 March 2012 |title=Ghulam Azam was on Peace Committee |url=https://www.thedailystar.net/news/ghulam-azam-was-on-peace-committee |access-date=20 July 2025 |work=The Daily Star |language=en}}</ref> The committee was also alleged to have been involved in recruiting [[Razakars (Pakistan)|Razakar]] paramilitaries to assist the Pakistan Army.<ref name=":1">{{Cite news |date=15 July 2013 |title=Guilty of all grisly acts |url=http://bdnews24.com/bangladesh/2013/07/15/guilty-of-all-grisly-acts |access-date=7 March 2016 |work=[[bdnews24.com]]}}</ref>
+
+On 12 October 1971, President [[Yahya Khan]] declared that elections would take place between 25 November and 9 December. Jamaat‑e‑Islami East Pakistan decided that the party would participate in the local elections. According to a government declaration issued on 2 November, 53 candidates were to be elected without contest, and Jamaat‑e‑Islami secured 14 of these uncontested seats.<ref name="muldhara">''Muldhara '71'' (মূলধারা '৭১ Mainstream '71) by Moidul Hasan, page. 128, footnote. 177. published by [[University Press Limited]].</ref><ref name="herald">{{cite news |last=Browne |first=Malcolm W. |date=4 November 1971 |title=53 Pakistan Assembly Seats To Be Filled Without a Vote |newspaper=[[International Herald Tribune]] |page=5 |quote=Nov 3 ... The Pakistani government announced yesterday that 53 of the National Assembly seats taken away from members of the outlawed Awami League in East Pakistan will be filled without contest ... The party getting the biggest bloc of seats from the 53 ... is the Jamaat-Islami ... to get 14 seats.}}</ref>
+
+On 2 December 1971, according to a report in ''[[The Daily Ittefaq]]'', Azam held a one‑hour and ten‑minute meeting with President Khan in [[Rawalpindi]]. After the meeting, Azam addressed a press conference where he urged the public to give their full support to the armed forces in dealing with the ongoing crisis. He again described the [[Mukti Bahini]] as an enemy force and stated that the Razakars were sufficient to confront them, further calling for an increase in the number of Razakars.<ref>{{Cite news |date=14 July 2013 |script-title=bn:মুক্তিযুদ্ধ ও মুক্তিযোদ্ধাদের নিয়ে গোলাম আযম |url=https://www.banglanews24.com/cat/news/bd/210466.details |access-date=20 July 2025 |work=[[banglanews24.com]] |language=bn}}</ref>
+
+===In Bangladesh (1971–present)===
+====Ban (1972–1976)====
+Following the [[independence of Bangladesh]], religion-based politics was banned by the government of [[Sheikh Mujibur Rahman]], then-prime minister of Bangladesh.<ref name="hasnat">{{cite web|first=Rakib|last=Hasnat|title=স্বাধীনতার বিরোধিতা থেকে সংসদের প্রধান বিরোধী দল, কীভাবে এতদূর এল জামায়াত|url=https://www.bbc.com/bengali/articles/cvg1mxg5gkzo|website=[[BBC Bangla]]|date=15 February 2025|language=bn}}</ref> Jamaat's top leaders fled to Pakistan, and Ghulam Azam's citizenship was scrapped by the Bangladeshi government.<ref name=autogenerated3>{{cite news |date=16 June 2015 |title=Bangladesh war crimes trial: Key accused |url=https://www.bbc.co.uk/news/world-asia-20970123 |work=[[BBC News]]}}</ref> Azam first fled to Pakistan and organized "''East Pakistan Recovery Week''". As information about his participation in the killing of civilians came to light "a strong groundswell of resentment against" East Pakistan JI leadership developed and Azam and [[Abdur Rahim (scholar)|Maulana Abdur Rahim]] were sent to Saudi Arabia. In Saudi Arabia, Azam and some of his followers successfully appealed for donations to "defend Islam" in Bangladesh, asserting that the ruling government was undermining Islam by imposing [[secularism]] and socialism, and the Hindu minority there were "killing Muslims and burning their homes."<ref name="BtNA-48">{{cite book|last1=Karlekar|first1=Hiranmay|title=Bangladesh: The Next Afghanistan?|date=2005|publisher=[[SAGE Publishing]]|page=48}}</ref><ref name="efas" /> Many of the Jamaat-aligned leaders in Bangladesh, hiding their identity, mixed with then-active opposition groups in Bangladesh, such as the [[Jatiya Samajtantrik Dal]].<ref name="hasnat" />
+
+====Rehabilitation (1976–1991)====
+[[File:Abbas Ali Khan speaking.jpg|thumb|[[Abbas Ali Khan]], the acting ameer of the Jamaat, speaking in a rally at [[Baitul Mukarram]], 1980s]]
+In 1975, [[Sheikh Mujibur Rahman]] was [[Assassination of Sheikh Mujibur Rahman|assassinated]] by a group of officers of [[Bangladesh Army]], which resulted a drastic change in Bangladeshi politics. Post-Mujibur governments were immediately recognized by both Saudi Arabia and Pakistan, and Jamaat-e-Islami resumed political activities in Bangladesh.<ref name=autogenerated3 /> In 1976, president [[Abu Sadat Mohammad Sayem|ASM Sayem]], lifted ban on religion-based parties in an ordinance. In the same year, Jamaat-aligned leaders, uniting with some other Islamist parties, formed a political platform named [[Islamic Democratic League]] (IDL). According to Jamaat's website, six Jamaat leaders were elected to the [[Jatiya Sangsad]] in [[1979 Bangladeshi general election|1979 general election]] from this platform.<ref name="hasnat" /> President [[Ziaur Rahman]] also allowed Azam to return to Bangladesh as the leader of Jamaat-e-Islami.<ref name=autogenerated3 />
+
+In May 1979, [[Abbas Ali Khan]] presided a convention of Jamaat-aligned IDL leaders under the name of "Jamaat-e-Islami". At the convention, Azam's speech was read out for the first time in independent Bangladesh. Jamaat's new constitution and the party's four-point programme was approved in the convention. On 27 May 1979, '''Jamaat-e-Islami Bangladesh''' publicly appeared and officially revealed itself in Bangladesh. Azam was elected as the ameer of the party, but did not appeared in public until 1981. As he wasn't given citizenship of Bangladesh until 1991, Khan served as the acting leader of the party.<ref name="hasnat" />
+
+Jamaat actively participed in the anti-Ershad movements throughout the 1980s. It participated in the [[1986 Bangladeshi general election|1986 general election]] and secured 10 seats, and boycotted the [[1988 Bangladeshi general election|1988 general election]].<ref name="hasnat" />
+
+====Entry into mainstream politics (1991–2013)====
+After the end of [[Hussain Muhammad Ershad|Ershad]]'s regime in 1990, Jamaat participated in the [[1991 Bangladeshi general election|1991 general election]] and secured 18 seats. The [[Bangladesh Nationalist Party]] (BNP), which won most seats, needed support from a party to form government. Jamaat extended support to the party on the condition of providing Azam with Bangladeshi citizenship.<ref name="hasnat" />
+
+In 1992, however, mass protests began against Ghulam Azam and Jamaat-e-Islami. The protests were headed by [[Jahanara Imam]], an author who lost her elder son, [[Shafi Imam Rumi]] in the [[Bangladesh War of Independence]]. Azam's citizenship was challenged in a case that went to the [[Bangladesh Supreme Court]], as he only held a Pakistani passport. Absent prosecution of Azam for war crimes, the Supreme Court ruled that he had to be allowed to have a Bangladeshi passport and the freedom to resume his political activities.<ref>{{Cite news|date=14 March 2016 |title=Citizenship Case: Bangladesh Vs. Professor Golam Azam and others |url=https://bdjls.org/bangladesh-vs-professor-golam-azam-others-46-dlr-ad-1994-192/ |archive-url=https://web.archive.org/web/20250120124043/https://bdjls.org/bangladesh-vs-professor-golam-azam-others-46-dlr-ad-1994-192/ |archive-date=20 January 2025 |access-date=7 June 2025 |work=Bangladesh Journal of Legal Studies |language=en-GB |url-status=live }}</ref>
+
+From 1995, Jamaat got involved with the [[Awami League]] and protested against the BNP government in support of the [[Caretaker government of Bangladesh|caretaker government system]]. The party boycotted the [[February 1996 Bangladeshi general election|February 1996 general election]]. Later, in the [[June 1996 Bangladeshi general election|June 1996 general election]], which held under the caretaker government, Jamaat secured only three seats.<ref name="hasnat" />
+
+The party allied with the BNP, [[Jatiya Party (Ershad)]] and the [[Jatiya Party (Naziur)]] to form [[Four Party Alliance]] in 1999. The alliance got landslide victory in the [[2001 Bangladeshi general election|2001 general election]], along with Jamaat got 17 seats. Following the election, the party got first chance to join a [[coalition government]], and two of its senior leaders, [[Motiur Rahman Nizami]] and [[Ali Ahsan Mohammad Mojaheed]], the ameer and the secretary-general respectively, became ministers in the [[Third Khaleda ministry|cabinet]] of [[Khaleda Zia]].<ref name="hasnat" /> During its alliance with the BNP, the Jamaat decisively contributed to the gradual [[Islamization in Bangladesh|Islamization in the country]].<ref name="efas" />
+
+During the [[2006–2008 Bangladeshi political crisis|2006–08 political crisis]], [[Bangladesh Police|police]] arrested Jamaat-e-Islami chief and former Industry Minister Nizami from his home in a graft case on 19 May 2008.<ref>{{cite news |title=Nizami executed |url=http://en.prothom-alo.com/bangladesh/news/104261/Nizami-executed |newspaper=[[Prothom Alo]] |access-date=10 May 2016 |archive-url=https://web.archive.org/web/20160511133902/http://en.prothom-alo.com/bangladesh/news/104261/Nizami-executed |archive-date=11 May 2016 |url-status=dead}}</ref> Earlier, two former cabinet ministers of the immediate past BNP-Jamaat led coalition government, Abdul Mannan Bhuiyan and Shamsul Islam were sent to [[Old Dhaka Central Jail|Dhaka Central Jail]], after they surrendered before the court.<ref>{{cite news |url=https://bdnews24.com/politics/bhuiyan-shamsul-islam-in-jail |title=Bhuiyan, Shamsul Islam in jail |work=bdnews24.com |date=18 May 2008}}</ref><ref>{{Cite news |date=19 May 2008 |title=Bhuiyan, Shamsul sent to prison; Nizami held; Anwar absconding |url=https://www.thedailystar.net/news-detail-37204 |work=[[The Daily Star (Bangladesh)|The Daily Star]]}}</ref>
+
+In [[2008 Bangladeshi general election|2008 general election]], the party only received two seats as a part of the alliance.<ref name="hasnat" /> The Bangladesh Nationalist Party was concerned as Jamaat-e-Islami had been their primary political partner in the Four-Party Alliance.<ref>{{cite news |last=Azad |first=M Abul Kalam |date=30 December 2008 |title=Jamaat in checkmate |url=https://www.thedailystar.net/news-detail-69281 |newspaper=[[The Daily Star (Bangladesh)|The Daily Star]] |access-date=30 October 2024}}</ref> At the same year, the party had to change its name from "Jamaat-e-Islami Bangladesh" to "'''Bangladesh Jamaat-e-Islami'''" on the pressure of the [[Bangladesh Election Commission]].<ref name="hasnat" /> Meanwhile, by the time, it already had emerged as the largest Islamist party in the country.<ref>{{cite magazine |date=30 December 2008 |title=Bangladesh's election: The tenacity of hope |url=https://www.economist.com/asia/2008/12/30/the-tenacity-of-hope-1 |magazine=[[The Economist]] |archive-url=https://web.archive.org/web/20210224143557/https://www.economist.com/asia/2008/12/30/the-tenacity-of-hope-1 |access-date=26 January 2015 |archive-date=24 February 2021 |quote=[The BNP] seems also to have been hurt by its alliance with Islamist parties, the largest of which, Jamaat-e-Islami, was reduced from 17 seats to just two.}}</ref><ref>{{cite magazine |date=1 July 2010 |title=Bangladesh and war crimes: Blighted at birth |url=https://www.economist.com/asia/2010/07/01/blighted-at-birth |magazine=[[The Economist]] |quote=West [Pakistan]'s army had the support of many of East Pakistan's Islamist parties. They included Jamaat-e-Islami, still Bangladesh's largest Islamist party ... [R]einstating and enforcing that original constitution might amount to an outright ban on Jamaat, the standard bearer in Bangladesh for a conservative strain of Islam.}}</ref>
+
+====Prosecution, deregistration and ban (2013–2024)====
+{{Further|International Crimes Tribunal (Bangladesh)|2013 Shahbag protests}}
+After Awami League formed government, it started to prosecute [[war crime]]s in the Liberation War. In 2011, the [[International Crimes Tribunal (Bangladesh)|International Crimes Tribunal]] (ICT) was formed for the prosecution of war crimes. Many of the Jamaat's top leaders were jailed and executed on the verdict of ICT. In December 2013, Jamaat leader [[Abdul Quader Mollah]] was executed for the war crimes. In 2014, [[Ghulam Azam]] died in prison. In 2015 and 2016, Mojaheed and Nizami were executed for war crimes, respectively. The detainment and execution of top leaders made the party functionally weak. While international observers, including the [[Office of the High Commissioner for Human Rights]], raised suspicions concerning the fairness of the trials, which targeted the ruling party's political opponents, the verdicts enjoyed widespread societal support. The condemnation of Mollah was the key motivation for the [[2013 Shahbag protests|Shahbag Movement]] in 2013, which demanded Mollah's execution, ban on Jamaat, and boycott of affiliated organizations.
+
+However, the trial also received counter protests from [[Bangladesh Islami Chhatra Shibir]], the male student wing of Jamaat. In February 2013, following the verdict by the ICT and the announcement of death sentence of [[Delwar Hossain Sayeedi]], a leader of Jamaat-e-Islami,<ref name="tg3Oct2011">{{cite news |title=Bangladesh party leader accused of war crimes in 1971 conflict |url=https://www.theguardian.com/world/2011/oct/03/bangladesh-party-leader-accused-war-crimes |newspaper=[[The Guardian]] |date=3 October 2011 |access-date=5 February 2013}}</ref><ref name="thedailystar.net">{{cite news |title=Tribunal hears war crimes of Sayedee |url=https://www.thedailystar.net/news-detail-149471 |newspaper=[[The Daily Star (Bangladesh)|The Daily Star]] |date=5 August 2010}}</ref> supporters of Jamaat and Shibir were involved in [[2013 Bangladesh anti-Hindu violence|anti-Hindu violence]]; law enforcement killed 44 protesters and wounded 250.<ref name="Hindu temple-3">{{cite news |title=Bagerhat, Barisal Hindu temples set ablaze |url=https://bdnews24.com/bangladesh/bagerhat-barisal-hindu-temples-set-ablaze |newspaper=[[Bdnews24.com]] |date=2 March 2013 |access-date=4 March 2013}}</ref><ref>{{cite news |date=1 March 2013 |title=At Least 44 Dead in Bangladesh Clashes |url=https://www.voanews.com/a/at-least-44-dead-in-bangladesh-clashes/1613160.html |publisher=[[Voice of America News]] |access-date=4 March 2013}}</ref><ref>{{cite news |last=Ahmed |first=Anis |title=Bangladesh Islamist's death sentence sparks deadly riots |url=https://www.reuters.com/article/us-bangladesh-tribunal-idUSBRE91R0AN20130228 |publisher=[[Reuters]] |date= 28 February 2013 |access-date=4 March 2013}}</ref> More than 50 temples were damaged, and more than 1,500 houses and business establishments of Hindus were torched in [[Gaibandha District|Gaibandha]], [[Chittagong]], [[Rangpur, Bangladesh|Rangpur]], [[Sylhet]], [[Chapainawabganj]], [[Bogra]] and in many other districts of the country,{{efn|Multiple references:<ref name="Hindu temple-2">{{cite news |title=Hindus under attack |url=https://www.thedailystar.net/news-detail-270925 |newspaper=[[The Daily Star (Bangladesh)|The Daily Star]] |date=1 March 2013 |access-date=4 March 2013}}</ref><ref name="Hindu temple-3"/><ref>{{cite news |title=Nine Die in Bogra violence |url=https://bdnews24.com/bangladesh/nine-die-in-bogra-violence |newspaper=[[bdnews24.com]] |date=3 March 2013 |access-date=10 March 2013}}</ref><ref>{{cite news |date=4 March 2013 |script-title=bn:সহিংসতায় সংখ্যালঘু সম্প্রদায়ের অর্ধশতাধিক উপাসনালয় ক্ষতিগ্রস্ত |trans-title=Violent Vandalism of More Than 50 Temples of Minority Communities |url=http://www.prothom-alo.com/detail/date/2013-03-04/news/333874 |newspaper=[[Prothom Alo]] |language=bn |archive-url=https://web.archive.org/web/20130307134415/http://www.prothom-alo.com/detail/date/2013-03-04/news/333874 |archive-date=7 March 2013 |access-date=8 March 2013}}</ref>}} By March 2013, more than 87 people had been killed by law enforcement agencies.<ref name=asianews>{{cite news |url=http://www.asianews.it/news-en/Islamic-party-wants-to-expel-minorities,-reunify-with-Pakistan-27323.html |title=BANGLADESH Islamic party wants to expel minorities, reunify with Pakistan |first1=Nozrul |last1=Islam |date=7 March 2013 |work=[[AsiaNews]] |access-date=26 January 2015}}</ref> During the violence, Jamaat-e-Islami supporters called for the fall of the Awami League regime.{{citation needed|date=February 2026}}
+
+On 27 January 2009, the Supreme Court issued a ruling after 25 people from different Islamic organisations, including [[Bangladesh Tarikat Federation]]'s Secretary General Syed Rezaul Haque Chandpuri, [[Zaker Party]]'s Secretary General Munshi Abdul Latif and Sammilita Islami Jote's President Maulana Ziaul Hasan, filed a joint petition. Jamaat-e-Islami chief Nizami, Secretary Mojaheed and the Election Commission Secretary were given six weeks time to reply, but they did not. The ruling asked to explain ''"why the Jamaat's registration should not be declared illegal"''. As a verdict of the ruling, [[Bangladesh Supreme Court|High Court]] cancelled the registration of the Jamaat-e-Islami on 1 August 2013,<ref name=SC>{{Cite web|url=http://www.supremecourt.gov.bd/nweb/case_history/case_history.php?div_id=2&case_id=179191|archive-url=https://web.archive.org/web/20151208063534/http://www.supremecourt.gov.bd/nweb/case_history/case_history.php?div_id=2&case_id=179191|url-status=dead|title=Writ Petition 630/2009|archive-date=8 December 2015}}</ref><ref>{{cite news|date=1 August 2013 |title=HC declares Jamaat registration illegal |url=http://theindependentbd.com/index.php?option=com_content&view=article&id=180166:hc-cancels-registration-of-jamaat-as-political-party&catid=187:online-edition&Itemid=223 |newspaper=[[The Independent (Bangladesh)|The Independent]] |location=[[Dhaka]] |archive-url=https://web.archive.org/web/20131217065607/http://theindependentbd.com/index.php?option=com_content&view=article&id=180166%3Ahc-cancels-registration-of-jamaat-as-political-party&catid=187%3Aonline-edition&Itemid=223 |archive-date=17 December 2013 |url-status=dead }}</ref> ruling that the party is unfit to contest national polls because its charter puts [[Allah]] above democratic process.{{efn|Multiple references:<ref name="aljazeera.com">{{cite news |title=Bangladesh court declares Jamaat illegal |url=http://www.aljazeera.com/news/asia/2013/08/2013819424198348.html |work=[[Al Jazeera]] |date=1 August 2013 |access-date=26 January 2015}}</ref><ref name="bbc.co.uk">{{cite news |date=1 August 2013 |title=Bangladesh high court restricts Islamist party Jamaat |url=https://www.bbc.co.uk/news/world-asia-23531826 |work=[[BBC News]] |access-date=26 January 2015}}</ref><ref name="CNN">{{cite news |author1=Farid Ahmed |author2=Saeed Ahmed |date=1 August 2013 |title=Bangladesh high court declares rules against Islamist party |url=https://edition.cnn.com/2013/08/01/world/asia/bangladesh-islamist-verdict/index.html |publisher=[[CNN]] |access-date=26 January 2015}}</ref><ref>{{cite magazine |title=Bangladesh's volatile politics: The battling begums |url=https://www.economist.com/news/asia/21583297-pendulum-swings-away-sheikh-hasina-and-her-government-battling-begums |magazine=[[The Economist]] |date=10 August 2013 |archive-url=https://web.archive.org/web/20130811103540/http://www.economist.com/news/asia/21583297-pendulum-swings-away-sheikh-hasina-and-her-government-battling-begums |archive-date=11 August 2013 |url-status=live}}</ref>}} On 5 August 2013, the Supreme Court rejected Jamaat's plea against the High Court.<ref>{{cite news |last=Habib |first=Haroon |date=5 August 2013 |title=Bangladesh SC rejects Jamaat's plea against disqualification |url=http://www.thehindu.com/news/international/south-asia/bangladesh-sc-rejects-jamaats-plea-against-disqualification/article4992375.ece |newspaper=[[The Hindu]] |agency=[[Press Trust of India]] |access-date=5 August 2013}}</ref> From that time, Jamaat became virtually absent from the mainstream politics.
+
+Following the cancellation of registration, the party could not participated in [[2014 Bangladeshi general election|2014]], [[2018 Bangladeshi general election|2018]] and [[2024 Bangladeshi general election|2024 general elections]]. Some of its leaders contested in the 2018 election from BNP's ticket, but could not secure any seats. The party boycotted the 2014 and 2024 elections.
+
+The Jamaat-e-Islami and its student wing Shibir extended their support and actively participated in the [[July Uprising]] in 2024.<ref>{{Cite news |url=https://en.prothomalo.com/bangladesh/7asvdqv0e3 |title=Student-mass movement: Death toll keeps rising, 757 till date |last=Hassan |first=Ahmadul |date=24 August 2024 |language=en |access-date=29 January 2025 |work=[[Prothom Alo]]}}</ref> On this pretext, [[Sheikh Hasina]]'s regime banned the party on 1 August 2024.{{efn|Multiple references:<ref>{{Cite news |agency=PTI |date=1 August 2024 |title=Bangladesh bans Jamaat-e-Islami and its student wing Islami Chhatra Shibir under anti-terrorism law |url=https://www.thehindu.com/news/international/bangladesh-bans-jamaat-e-islami-and-its-student-wing-islami-chhatra-shibir-under-anti-terrorism-law/article68472720.ece |access-date=1 August 2024 |work=[[The Hindu]] |language=en-IN |issn=0971-751X}}</ref><ref>{{cite news |title=Government bans Jamaat, Shibir |url=https://www.thedailystar.net/news/bangladesh/news/government-bans-jamaat-shibir-3667116 |work=[[The Daily Star (Bangladesh)|The Daily Star]] |date=1 August 2024 |language=en}}</ref><ref>{{cite news |title=Govt bans Jamaat-Shibir under Anti-Terrorism Act |url=https://www.tbsnews.net/bangladesh/politics/govt-bans-jamaat-shibir-907771 |work=[[The Business Standard]] |date=1 August 2024 |language=en}}</ref>}}
+
+====Resurgence (2024–present)====
+[[File:Bangladesh Jamaat-e-Islami Delegation Meeting Muhammad Yunus Dhaka 2024-11-28 (PID-0004922).jpg|thumb|Jamaat delegation led by [[Shafiqur Rahman]] meeting with the [[Chief Adviser of Bangladesh|chief adviser]] [[Muhammad Yunus]], 28 November 2024]]
+Following the [[Resignation of Sheikh Hasina]], the ban was reversed by the [[Yunus ministry|interim government]] on 28 August 2024.<ref>{{cite news |title=Ban on Jamaat-Shibir lifted |url=https://www.daily-sun.com/post/764208 |work=[[Daily Sun (Bangladesh)|Daily Sun]] |date=28 August 2024 |language=en}}</ref> Bangladesh Jamaat-e-Islami also regained registration after an order by the [[Appellate Division, Supreme Court of Bangladesh|Appellate Division]] of the [[Bangladesh Supreme Court]] on 1 June 2025.<ref name="auto">{{cite news |title=Bangladesh top court lifts ban on country's largest Muslim party |url=https://www.aljazeera.com/news/2025/6/1/bangladesh-top-court-lifts-ban-on-jamaat-e-islami-countrys-largest-muslim-party|access-date=2 June 2025 |work=[[Al Jazeera]] |date=1 June 2025 |archive-url=https://web.archive.org/web/20250602103830/https://www.aljazeera.com/news/2025/6/1/bangladesh-top-court-lifts-ban-on-jamaat-e-islami-countrys-largest-muslim-party |archive-date=2 June 2025 |language=en}}</ref><ref name="auto1">{{Cite news|url=https://dailynayadiganta.com/bangladesh/law-and-justice/BQF3eCU97pz6|title=|date=1 June 2025|language=bn|script-title=bn:জামায়াতের নিবন্ধন ফিরিয়ে দিতে আপিল বিভাগের নির্দেশ|access-date=1 June 2025|work=[[Daily Naya Diganta]]}}</ref>
+
+Following the [[July Uprising]], with BNP, it came out as one of the two mainstream parties in the country.<ref>{{cite web|first=Faisal|last=Mahmud|title=Analysis: Bangladesh's BNP seeks Hasina's liberal mantle before elections|url=https://www.aljazeera.com/news/2025/12/9/analysis-bangladeshs-bnp-seeks-hasinas-liberal-mantle-before-elections|website=[[Al Jazeera]]|date=10 December 2025}}</ref> It formed [[11 Party Alliance]] with several Islamist parties and the [[National Citizen Party]]. The party secured 68 seats in [[2026 Bangladeshi general election|2026 general election]], and became the main opposition for the first time.<ref name="hasnat" />
+
+== Ideology ==
+=== Political stance ===
+{{Islamism sidebar}}
+[[File:Bangladesh Jamaat-e-Islami rally at Suhrawardy Udyan, Dhaka.jpg|thumb|Jamaat's rally at [[Suhrawardy Udyan]] demanding [[proportional representation]], 2025]]
+Classified as [[Far-right politics|far-right]]<ref>{{Cite web |last=Sarkar |first=Alisha Rahaman |date=2026-02-12 |title=Voters in Bangladesh are asking the same question – where are the female candidates? |url=https://www.independent.co.uk/asia/south-asia/bangladesh-election-female-candidates-women-voters-b2919026.html |url-status=live |archive-url=https://web.archive.org/web/20260215224714/https://www.independent.co.uk/asia/south-asia/bangladesh-election-female-candidates-women-voters-b2919026.html |archive-date=15 Feb 2026 |access-date=2026-02-15 |website=[[The Independent]] |language=en |quote=The election is tightly fought between the Bangladeshi Nationalist Party (BNP) and the far-right Jamaat-e-Islami party.}}</ref><ref>{{cite web |last=Liton |first=Shakhawat |date=2026-02-14 |title=A verdict of the hour |url=https://www.tbsnews.net/bangladesh-election-2026/verdict-hour-1361106 |url-status=live |archive-url=https://web.archive.org/web/20260215225933/https://www.tbsnews.net/bangladesh-election-2026/verdict-hour-1361106 |archive-date=15 Feb 2026 |access-date=2026-02-15 |website=[[The Business Standard]] |language=en |quote=Yet the results also indicate a significant consolidation of far-right voters. Jamaat now emerges as the principal opposition force, a development that will reshape parliamentary dynamics.}}</ref><ref>{{Cite web |last=Marof |first=Mehedi Hasan |date=20 Jan 2026 |title=Bangladeshi Gen Z toppled ex-PM Hasina. Now they could decide next leader |url=https://www.aljazeera.com/features/2026/1/20/bangladeshi-youth-toppled-hasina-now-they-could-decide-next-prime-minister |url-status=live |archive-url=https://web.archive.org/web/20260125171349/https://www.aljazeera.com/features/2026/1/20/bangladeshi-youth-toppled-hasina-now-they-could-decide-next-prime-minister |archive-date=25 Jan 2026 |access-date=2026-02-15 |website=Al Jazeera |publisher=[[Al Jazeera Media Network]] |language=en |quote=A far-right Islamist party, the Jamaat’s opposition to Bangladesh’s independence during the 1971 war has long limited its mainstream appeal.}}</ref><ref>{{Cite news |last=Purohit |first=Devadeep |date=29 Dec 2025 |title=How things have got worse for women of Bangladesh in Muhammad Yunus's regime |url=https://www.telegraphindia.com/world/how-things-have-got-worse-for-women-of-bangladesh-in-muhammad-yunuss-regime/cid/2140056 |url-status=live |archive-url=https://web.archive.org/web/20251230015939/https://www.telegraphindia.com/world/how-things-have-got-worse-for-women-of-bangladesh-in-muhammad-yunuss-regime/cid/2140056 |archive-date=30 Dec 2025 |access-date=15 Feb 2026 |work=[[The Telegraph (India)|The Telegraph]] |quote=Not just a western educated liberal woman, the turn of events -- which can be linked to the rise of far-right political forces like the Jamaat-e-Islami and its associates -- has begun affecting ordinary women, many of whom had hit the streets against Hasina.}}</ref><ref>{{Cite web |last=Daniyal |first=Shoaib |date=2026-02-05 |title=Interview: 'If Bangladeshis want hijab law, we will support,' says Jamaat-e-Islami media head |url=https://scroll.in/article/1090499/interview-if-bangladeshis-want-hijab-law-we-will-support-says-jamaat-e-islami-media-head |access-date=2026-02-13 |website=Scroll.in |language=en}}</ref> in the [[left-right political spectrum|left-right spectrum]], Jamaat has been described as [[Islamism|Islamist]], [[conservatism|conservative]],<ref>{{cite news |url=https://www.nytimes.com/2025/04/01/world/asia/bangladesh-islam.html |title=As Bangladesh Reinvents Itself, Islamist Hard-Liners See an Opening |work=[[The New York Times]] |date=1 April 2025}}</ref><ref>{{cite web|first=Najmus|last=Sakib|title=Islamist Rise or Vote for Autonomy? How to Read Jamaat's Recent Win on Bangladeshi Campuses|url=https://southasianvoices.org/pol-m-bd-n-student-elections-islam-bangladesh-10-29-2025/|website=[[South Asian Voices]]|date=29 October 2025|quote=However, this does not rule out the possibility of a strategic instrumentalization of the Shibir victory by its more conservative parent organization, the Jamaat-e-Islami...}}</ref><ref name="laila2026" /> [[Post-Islamism|neo-Islamist]],<ref name="saj" /> and [[reformism|reformist]].<ref>{{cite web|first=Abrar|last=Hossain|title=Bangladesh's Islamist parties edge towards a coalition of convenience|url=https://eastasiaforum.org/2025/10/29/bangladeshs-islamist-parties-edge-towards-a-coalition-of-convenience/|date=29 October 2025|website=East Asia Forum|quote=The 'reformists' — most prominently BJI — operate electorally and have tried to present themselves as more than an Islamist party...}}</ref> Jamaat-e-Islami leaders and publications claim the party to be [[Islamic democrat]]. Its incumbent leader, [[Shafiqur Rahman]], described his party to be a "modern, [[liberal democratic]] party, whose ideal is Islam",<ref>{{cite news |script-title=bn:'জামায়াতে ইসলামী একটি আধুনিক-উদার-গণতান্ত্রিক দল' |url=https://www.alokitobangladesh.com/politics/247030/%E0%A6%9C%E0%A6%BE%E0%A6%AE%E0%A6%BE%E0%A7%9F%E0%A6%BE%E0%A6%A4%E0%A7%87-%E0%A6%87%E0%A6%B8%E0%A6%B2%E0%A6%BE%E0%A6%AE%E0%A7%80-%E0%A6%8F%E0%A6%95%E0%A6%9F%E0%A6%BF-%E0%A6%86%E0%A6%A7%E0%A7%81%E0%A6%A8%E0%A6%BF%E0%A6%95-%E0%A6%89%E0%A6%A6%E0%A6%BE%E0%A6%B0-%E0%A6%97%E0%A6%A3%E0%A6%A4%E0%A6%BE%E0%A6%A8%E0%A7%8D%E0%A6%A4%E0%A7%8D%E0%A6%B0%E0%A6%BF%E0%A6%95-%E0%A6%A6%E0%A6%B2 |work=[[Alokito Bangladesh]] |date=23 November 2024}}</ref><ref name="auto3">{{cite news |url=https://www.dhakatribune.com/bangladesh/politics/366810/jamaat-dreams-of-building-democratic-and-free |title=Jamaat dreams of building a democratic and free Bangladesh |work=[[Dhaka Tribune]] |date=1 December 2024}}</ref> while its incumbent deputy leader  Syed Abdullah Mohammad Taher, rejected calling his party "conservative", and instead described it a "moderate Islamist force".<ref>{{cite web|first=Masum|last=Billah|title=What is Bangladesh's Jamaat-e-Islami party? Could it lead the country next?|url=https://www.aljazeera.com/news/2026/1/21/what-is-bangladeshs-jamaat-e-islami-party-could-it-lead-the-country-next|website=Al Jazeera|date=21 January 2025|quote=He also rejected the "conservative" label placed on Jamaat, describing his party as a "moderate Islamist force" that seeks to govern through constitutional reforms rather than ideological enforcement.}}</ref>
+
+Traditionally, Jamaat's goal has been based on its founder Syed Abul A'la Maududi's visions for a [[sharia]]-based [[totalitarian state]], inspired by [[Benito Mussolini]]'s [[National Fascist Party|Fascist Party]] and the [[Communist Party of the Soviet Union]], where democracy, freedom, individualism, and equal rights for people would be non-existent, and all non-Muslims would enjoy "inferior" rights as ''[[Dhimmi]]s'', obligated to pay ''[[jizya]]''.<ref name="saj">{{cite web |last=Hashmi |first=Taj |date=30 January 2026 |title=Jamaat-e-Islami and Growing Islamism in Post-Hasina Bangladesh |url=https://southasiajournal.net/post/bangladesh/60818/jamaat-e-islami-and-growing-islamism-in-post-hasina-bangladesh#:~:text=The%20party%20rejects%20female%20leadership,of%20Allah%22%20to%20govern%20Bangladesh. |url-status=live |archive-url=https://web.archive.org/web/20260212015100/https://southasiajournal.net/post/bangladesh/60818/jamaat-e-islami-and-growing-islamism-in-post-hasina-bangladesh |archive-date=12 Feb 2026 |website=South Asia Journal}}</ref>
+
+In 2012, Jamaat-e-Islami had to amend some fundamental principles of its constitution to meet the conditions for the registration of parties set by the [[Election Commission of Bangladesh|Election Commission]], as the previous version allegedly conflicted to the "democratic and noncommunal structure" of the [[Constitution of Bangladesh]] and Representation of the People Order, 1972. After the amendments, the party replaced the establishment of an "Islamic system" with the "democratic system" as its stated goal. Likewise, "efforts to establish Islam as given by [[God in Islam|Allah]] and shown by the [[Muhammad|Messenger]]" was replaced with "to establish a society based on equality and justice through a democratic system and to achieve the pleasure of Allah Almighty" as main objective.<ref>{{cite web|title=শরিয়াহ আইনের দিকে যাবে না জামায়াত, অবস্থান বদল নাকি ভোটের কৌশল?|url=https://www.bbc.com/bengali/articles/czdq0mr9349o|website=[[BBC Bangla]]|date=25 January 2025|language=bn}}</ref>
+
+Following the execution and imprisonment of senior leaders convicted of involvement in the [[1971 Bangladesh genocide|1971 genocide]], Jamaat experienced internal fragmentation.<ref>{{cite web |title=Jamaat Faces Internal Crisis |url=https://www.newagebd.net/article/137510/jamaat-faces-internal-divide |publisher=New Age Bangladesh |access-date=2025-02-13}}</ref> The reformist factions proposed ideological moderation and democratic participation, while hardliners insisted on maintaining traditional Islamist aims. Multiple splinter groups emerged, some more radical, some abandoning formal politics.<ref>{{cite web |title=Islamist Splinter Groups in Bangladesh |url=https://www.dhakatribune.com/bangladesh/politics/2017/05/01/islamist-groups-splinter |publisher=Dhaka Tribune |access-date=2025-02-13}}</ref>
+
+===Social stance===
+In recent times, the party has become open on female-related issues, such as [[right to work]] outside and [[right to clothing|freedom of clothing]].<ref>{{cite web|title=জামায়াতে কৌশল পরিবর্তন, নারী নেতাকর্মী প্রকাশ্যে|url=https://samakal.com/bangladesh/article/286058/%E0%A6%9C%E0%A6%BE%E0%A6%AE%E0%A6%BE%E0%A7%9F%E0%A6%BE%E0%A6%A4%E0%A7%87-%E0%A6%95%E0%A7%8C%E0%A6%B6%E0%A6%B2-%E0%A6%AA%E0%A6%B0%E0%A6%BF%E0%A6%AC%E0%A6%B0%E0%A7%8D%E0%A6%A4%E0%A6%A8-%E0%A6%A8%E0%A6%BE%E0%A6%B0%E0%A7%80-%E0%A6%A8%E0%A7%87%E0%A6%A4%E0%A6%BE%E0%A6%95%E0%A6%B0%E0%A7%8D%E0%A6%AE%E0%A7%80-%E0%A6%AA%E0%A7%8D%E0%A6%B0%E0%A6%95%E0%A6%BE%E0%A6%B6%E0%A7%8D%E0%A6%AF%E0%A7%87|website=[[Samakal]]|date=18 March 2025|language=bn}}</ref> Similarly, the party also expressed support to the rights of religious minorities and protection of their properties.<ref>{{cite web|first=Saleh Uddin|last=Ahmad|title=বিএনপি ও জামায়াত কে কোন ফ্যাক্টরে এগিয়ে|url=https://www.prothomalo.com/opinion/column/29qk41p9t1|website=[[Prothom Alo]]|date=31 October 2025|language=bn}}</ref> The party also retracted from its stated goal of the establishment of a [[Islamic state|sharia-based state]], and focused on the creation of an "honest people's government".<ref name="saj" /> Despite these initiatives, the party still officially rejects female leadership and continues to uphold its traditional philosophy of introducing sharia through "electoral process".<ref name="saj" />
+
+===Economic stance===
+Maududi was a staunch critic of [[capitalism]].<ref>{{cite web|first=Altaf|last=Parvez|title=জামায়াতের আমির শফিকুর রহমান আর কত দূর এগোবেন|url=https://www.prothomalo.com/opinion/column/ptqz7h6szc|website=[[Prothom Alo]]|access-date=27 February 2026|language=bn}}</ref> According to a JI publication titled ''An Introduction to Bangladesh Jamaate Islami'', the party aims to turn Bangladesh into an "Islamic [[welfare state]]".<ref>{{cite magazine |first=Mubashar |last=Hasan |title=Will BNP and Jamaat-e-Islami Form an Alliance in Post-Hasina Bangladesh? |magazine=[[The Diplomat (magazine)|The Diplomat]] |url=https://thediplomat.com/2024/09/will-bnp-and-jamaat-e-islami-form-an-alliance-in-post-hasina-bangladesh/ |date=23 November 2024}}</ref> It also runs charities that provide religious, social, food, and medical services at the local level, which helped the party build a strong network at the grassroots.<ref name="mubashar2025">{{cite web|first=Mubashar|last=Hasan|title=Resurgence of Jamaat-e-Islami Shifts Bangladesh Politics to the Right|url=https://thediplomat.com/2025/08/resurgence-of-jamaat-e-islami-shifts-bangladesh-politics-to-the-right/|website=[[The Diplomat (magazine)|The Diplomat]]|date=19 August 2025}}</ref>
+
+Since the party's resurgence following the July Revolution, the party has focused on [[welfarism|welfarist]] issues like [[social justice]] and [[anti-corruption]].<ref name="islamicleft" /> The party supports extensive [[tax cut]]s, reducing [[Value Added Tax|VAT]], [[Interest-free economy|interest-free loans]] and [[Public-private partnership|public private ownership]] for factories with workers' ownership.<ref>{{cite web|first=Mehedi Hasan|last=Marof|title=Jobs, cash, loans: Can Bangladesh's parties deliver on election promises?|url=https://www.aljazeera.com/features/2026/2/3/jobs-cash-loans-can-bangladeshs-parties-deliver-on-election-promises|website=[[Al Jazeera]]|date=3 February 2026}}</ref><ref>{{cite web|title=Bangladesh Jamaat-e-Islami holds "Policy Summit 2026"|url=https://www.jamaat-e-islami.org/en/news-details.php?category=2&news=4655|website=Bangladesh Jamaat-e-Islami|date=20 January 2026}}</ref> Shafi Md Mostofa claimed that the party is rebranding itself in the aftermath of the revolution by putting itself in the "[[Islamic left]]".<ref name="islamicleft">{{cite web|title=Rebranding Jamaat: The Rise of the 'Islamist Left' in Bangladesh|url=https://thediplomat.com/2025/05/rebranding-jamaat-the-rise-of-the-islamist-left-in-bangladesh/|website=[[The Diplomat (magazine)|The Diplomat]]|date=3 May 2025}}</ref>
+
+===2026 manifesto===
+Before [[2026 Bangladeshi general election|2026 general election]], the party unveiled its [[electoral manifesto]] under the slogan "An uncompromising Bangladesh in the national interest", which prioritises 26 points:<ref>{{cite web|title=Jamaat sets 26 priorities including full dismantling of fascist system|url=https://en.prothomalo.com/bangladesh/krxv1mjbj2|website=[[Prothom Alo]]|date=4 February 2026}}</ref>
+#Building an uncompromising state based on independence, sovereignty and national interest;
+#Establishing a humane Bangladesh free from discrimination, founded on justice and fairness;
+#Empowering youth and prioritising their role in state governance;
+#Creating a safe, dignified and participatory state for women;
+#Ensuring a drug-free, extortion-free and terrorism-free society through overall improvement in law and order;
+#Building a modern, smart, technology-driven society;
+#Creating large-scale employment in technology, manufacturing, agriculture and industry;
+#Free applications for government jobs, merit-based recruitment and elimination of all discrimination;
+#Reforming the banking and financial sectors to restore confidence and build a sustainable, transparent, business-friendly economy;
+#Ensuring a fair electoral environment, including elections under [[proportional representation]] (PR), strengthening the caretaker government system, and consolidating effective democracy;
+#Bringing about an agricultural revolution through technology use and increased support for farmers
+#Ensuring completely adulteration-free food security by 2030 and implementing the "Three-Zero Vision" — zero [[environmental degradation]], zero waste and zero flood risk — to build a green, clean Bangladesh
+#Promoting small and medium enterprises and ensuring investment-friendly industrialisation and job creation;
+#Increasing workers' wages and living standards and ensuring safe, decent working conditions, especially for women;
+#Guaranteeing voting rights and all other rights of [[Bangladeshi diaspora|expatriates]] and ensuring their realistic participation in nation-building;
+#Establishing equal citizenship for all as [[Bangladeshis]], not as majority or minority, and ensuring special support for disadvantaged groups;
+#Providing modern, universal healthcare and gradually ensuring free advanced treatment for the poor and helpless;
+#Fundamentally reforming the education system in line with global needs and gradually ensuring free education;
+#Keeping prices within people's purchasing power and ensuring access to all basic needs;
+#Overhauling transport systems and reducing travel time between the capital and divisional cities to two to three hours; improving regional and urban transport;
+#Ensuring low-cost housing for lower- and middle-income families;
+#Continuing trials and reforms to fully dismantle the [[Fascist (insult)|fascist]] system and prevent its return;
+#Introducing a universal social security system to ensure safe working lives and international-standard protection for all citizens; and
+#Establishing good governance through transparency and accountability and building a happy, prosperous welfare state, with honest leadership and institutional reform to eliminate corruption.
+
+===Voter base===
+Following the [[July Uprising]], surveys show that the Jamaat-e-Islami's strongest demographic base are younger and more educated voters, who are likely to be impressed by the perceived discipline and integrity of the party.<ref name="laila2026">{{cite web|first=Nazam|last=Laila|title=Bangladesh election reveals a transformed political landscape|url=https://www.chathamhouse.org/2026/02/bangladesh-election-reveals-transformed-political-landscape|website=Chatham House|date=10 February 2026}}</ref> A June 2025 conducted survey by the [[South Asian Network on Economic Modeling]] (SANEM) on the [[Bangladeshis]] aged between 15 and 35 found that the Jamaat's projected vote share was comparatively high among the young males, comparing with the young females of the country. The survey found that 22.21% males and 20.57% females intended to vote the party in [[2026 Bangladeshi general election|2026 general election]]. The survey also found that 21.45% youths overall in the country intended to vote the party.<ref>{{cite news |script-title=bn:আসন্ন নির্বাচনে এগিয়ে বিএনপি, দ্বিতীয় জামায়াত: সানেমের জরিপ |trans-title=BNP ahead in the upcoming election, Jamaat second: SANEM survey |url=https://www.banglatribune.com/others/906082/%E0%A6%86%E0%A6%B8%E0%A6%A8%E0%A7%8D%E0%A6%A8-%E0%A6%A8%E0%A6%BF%E0%A6%B0%E0%A7%8D%E0%A6%AC%E0%A6%BE%E0%A6%9A%E0%A6%A8%E0%A7%87-%E0%A6%8F%E0%A6%97%E0%A6%BF%E0%A7%9F%E0%A7%87-%E0%A6%AC%E0%A6%BF%E0%A6%8F%E0%A6%A8%E0%A6%AA%E0%A6%BF-%E0%A6%A6%E0%A7%8D%E0%A6%AC%E0%A6%BF%E0%A6%A4%E0%A7%80%E0%A7%9F-%E0%A6%9C%E0%A6%BE%E0%A6%AE%E0%A6%BE%E0%A7%9F%E0%A6%BE%E0%A6%A4 |work=Bangla Tribune |date=7 July 2025 |language=bn}}</ref>
+
+==Organization==
+The party has a three-level decision-making body – Central Executive Council, Central Majlis-e-Shura and Central Working Council. Executive Council is the highest organ of the party, which is responsible for reviewing and executing the policies made by the Majlis-e-Shura and the Working Council. As of 2026, there is no women in the Central Executive Council.<ref name="jobayer">{{cite web|first=Abdullah Al|last=Jobayer|title=নতুন–পুরোনো মিলিয়ে জামায়াতে ইসলামীর কমিটি|url=https://www.prothomalo.com/politics/kdzmwyilly|website=[[Prothom Alo]]|access-date=27 February 2026|language=bn}}</ref>
+
+===Leadership===
+====Ameers====
+The Ameer of the Jamaat ({{langx|bn|আমীরে জামায়াত|link=no}}) is the title of the [[Party leader|head of the party]]. The position is ''de facto'' preserved for male only.<ref name="thediplomat" /> The ameer is assisted by a group of deputies known as ''nayeb-e-ameer'' (deputy ameer). As of February 2026, four nayeb-e-ameers include [[A. T. M. Azharul Islam]], Mojibur Rahman, Syed Abdullah Mohammad Taher, and A. N. M. Shamsul Islam.<ref name="jobayer" /> Following is the chronological list of emirs since formation of the East Pakistani wing of Jamaat-e-Islami:
+{| class="wikitable"
+|-
+!align=center|No.
+!align=center|Name
+!align=center|From
+!align=center|To
+|-
+| colspan=8 style="background:#B9B9B9; text-align:center;" | [[East Pakistan]]
+|-
+|01
+|[[Abdur Rahim (scholar)|Abdur Rahim]]
+|1956
+|1960
+|-
+|02
+|[[Ghulam Azam]]
+|1960
+|1971
+|-
+| colspan=8 style="background:#B9B9B9; text-align:center;" | [[Bangladesh]]
+|-
+|Acting
+|[[Abbas Ali Khan]]
+|1979
+|1992
+|-
+|01
+|[[Ghulam Azam]]
+|1992
+|2000
+|-
+|02
+|[[Motiur Rahman Nizami]]
+|2000
+|2016
+|-
+|03
+|[[Maqbul Ahmed]]
+|2016
+|2019
+|-
+|04
+|[[Shafiqur Rahman]]
+|2019
+|Present
+|}
+
+==== Secretary Generals ====
+The '''Secretary General of Jamaat''' ({{langx|bn|জামায়াতের সেক্রেটারি জেনারেল|link=no}}) is the chief administrative officer of the party. The following is the chronological list of Secretaries General since the formation of the East Pakistani wing of Jamaat-e-Islami:
+
+{| class="wikitable"
+|-
+!align=center|No.
+!align=center|Name
+!align=center|From
+!align=center|To
+|-
+| colspan=8 style="background:#B9B9B9; text-align:center;" | [[East Pakistan]]
+|-
+|01
+|[[Abdur Rahim (scholar)|Abdur Rahim]]
+|1956
+|1960
+|-
+|02
+|[[Khurshid Ahmad]]
+|1960
+|1971
+|-
+| colspan=8 style="background:#B9B9B9; text-align:center;" | [[Bangladesh]]
+|-
+|01
+|[[Abbas Ali Khan]]
+|1979
+|1987
+|-
+|02
+|[[Ali Ahsan Mohammad Mojaheed]]
+|1987
+|2000
+|-
+|03
+|[[Matiur Rahman Nizami]]
+|2000
+|2001
+|-
+|04
+|[[Ali Ahsan Mohammad Mojaheed]]
+|2001
+|2008
+|-
+|05
+|[[ATM Azharul Islam]]
+|2008
+|2011
+|-
+|06
+|[[Shafiqur Rahman]]
+|2011
+|2019
+|-
+|07
+|[[Mia Golam Porwar]]
+|2019
+|present
+|}
+
+==Controversies==
+
+Bangladesh Jamaat-e-Islami has been the subject of extensive controversy since the country's independence, largely due to its documented opposition to the [[Bangladesh Liberation War|1971 Liberation War]], convictions of its senior leaders for war crimes, allegations of violent extremism, repeated involvement in political violence, and sustained criticism from human rights groups, international observers, and the Bangladeshi public.<ref>{{cite web |title=Political Islam in Bangladesh |url=https://www.crisisgroup.org/asia/south-asia/bangladesh/political-islam-bangladesh |publisher=International Crisis Group |access-date=2025-02-13}}</ref> According to Ankita Sanyal, though the incumbent party chief Rahman reportedly sought "unconditional apology" multiple times for the mistakes committed since 1947 (including 1971), its leaders continue to indulge in [[historical negationism]] related to 1971.<ref>{{cite web|first=Ankita|last=Sanyal|title=The Curious Case of Bangladesh Jamaat-e-Islami 2.0: Attempts at Rebranding Do not Alter the Core|url=https://www.icpsnet.org/comments/the-curious-case-of-bangladesh-jamaat-e-islami-2.0-271225|website=International Centre for Peace Studies|date=28 December 2025}}</ref>
+
+=== Allegations of militant links and ideological extremism ===
+Bangladeshi security agencies have repeatedly reported ideological ties between Jamaat, its student wing [[Islami Chhatra Shibir]], and extremist organizations such as [[Jamaat-ul-Mujahideen Bangladesh]] (JMB) and [[Harkat-ul-Jihad al-Islami]] (HuJI-B).<ref>{{cite web |title=Bangladesh Militancy Probes |url=https://www.reuters.com/article/us-bangladesh-militancy-idUSKBN17S0P1 |publisher=Reuters |access-date=2025-02-13}}</ref> Historically, the Islami Chhatra Shibir has frequently been labeled one of the most violent student organizations in South Asia.<ref>{{cite web |title=Campus Violence by Chhatra Shibir |url=https://www.thedailystar.net/news-detail-226336 |publisher=The Daily Star |access-date=2025-02-13}}</ref> Although Jamaat denies institutional ties,<ref>{{cite web |title=Jamaat Denies Militancy Links |url=https://www.bdnews24.com/politics/2015/03/14/jamaat-denies-militancy-links |publisher=BDNews24 |access-date=2025-02-13}}</ref> extremism investigations have reported overlaps in recruitment patterns, ideological messaging, and activist networks.
+
+=== Violence and human rights abuses ===
+Following the war-crime verdict by ICT, Jamaat and Islami Chhatra Shibir engaged in violent street movements, including arson attacks, clashes with police, vandalism, and shutdowns of transportation networks during 2013–14 violence.<ref>{{cite web |title=Violence After Tribunal Verdict |url=https://www.bbc.com/news/world-asia-21611738 |publisher=BBC News |access-date=2025-02-13}}</ref> Jamaat–Shibir activists were widely reported to have engaged in firebombing, destruction of public property, and violent attacks on security forces.<ref>{{cite web |title=Arson and Political Violence |url=https://www.reuters.com/article/us-bangladesh-violence-idUSBRE9150J720130206 |publisher=Reuters |access-date=2025-02-13}}</ref> Its supporters were accused of murdering opponent political party activists and instigating religious riots by spreading fraudulent news.<ref name="START-1">{{cite web|title=National Consortium for the Study of Terrorism and Responses to Terrorism|url=http://www.start.umd.edu/start/data_collections/tops/terrorist_organisation_profile.asp?id=4065|publisher=[[University of Maryland]]|access-date=31 August 2013|archive-url=https://web.archive.org/web/20130727233321/http://www.start.umd.edu/start/data_collections/tops/terrorist_organisation_profile.asp?id=4065|archive-date=27 July 2013|url-status=dead}}</ref><ref name="DS-0002">{{cite news |title=A devil's design |url=https://www.thedailystar.net/news-detail-253751 |newspaper=[[The Daily Star (Bangladesh)|The Daily Star]] |date=14 October 2012 |access-date=31 August 2013}}</ref>
+
+Activists from Jamaat and particularly Islami Chhatra Shibir have been implicated in violent attacks, hacking assaults, extortion, and intimidation of rival student groups and journalists.<ref>{{cite web |title=Student Attacks Linked to Shibir |url=https://www.thedailystar.net/news-detail-165707 |publisher=The Daily Star |access-date=2025-02-13}}</ref> Reports by [[Human Rights Watch]] document repeated incidents in which Jamaat–Shibir supporters engaged in election-period violence, intimidation, and attacks on minority communities during political unrest.<ref>{{cite web |title=Election Violence in Bangladesh |url=https://www.hrw.org/report/2014/10/29/bangladesh-violence-elections |publisher=Human Rights Watch |access-date=2025-02-13}}</ref>
+
+=== International condemnation and public perception ===
+Jamaat's wartime role and ideological positions have attracted global criticism. Pakistan and Turkey condemned executions of Jamaat leaders, while India supported the war-crimes trials.<ref>{{cite web |title=Regional Reactions to ICT Verdicts |url=https://www.thehindu.com/news/international/india-supports-bangladesh-war-crimes-trials/article4292331.ece |publisher=The Hindu |access-date=2025-02-13}}</ref> Western governments expressed due-process concerns but acknowledged the severity of the crimes associated with Jamaat leadership.<ref>{{cite web |title=US Report on Human Rights |url=https://www.state.gov/human-rights-reports/bangladesh |publisher=US State Department |access-date=2025-02-13}}</ref>
+
+Public perception of Jamaat declined sharply after the rise of the [[2013 Shahbag protests|Shahbag movement]] in 2013, in which millions demanded a ban on the party and harsher punishment for convicted war criminals.<ref>{{cite web |title=Shahbag Movement Explained |url=https://www.aljazeera.com/indepth/features/2013/03/201331815154724683.html |publisher=Al Jazeera |access-date=2025-02-13}}</ref>
+
+===Contradictory positions===
+The party has been accused of "[[doublespeak]]" on minority, women and sharia-related issues. In 2008, the party amended its constitution to include non-Muslims as "associated members" in the pressure of the Election Commission. Yet, full membership or ''rukon'' is constitutionally restricted for the non-Muslims, means that the non-Muslims cannot participate in the decision-making, leadership or policy formulation, which challenges the party's claimed so-called "inclusive politics". Besides, its constitution continue to advocate for the implementation of sharia, yet, in recent times, the party's top leaders have shown tendency of avoiding the issue in formal statements. Despite this, such advocacy continue to surface in the grassroots level, and, even, there have been accusations against the party of describing voting as a "religious duty" and linking it to the attainment of [[Jannah|paradise]].<ref name="thediplomat">{{cite web|first=Siam Sarower|last=Jamil|title=Bangladesh Jamaat-e-Islami's Election Doublespeak|url=https://thediplomat.com/2026/02/bangladesh-jamaat-e-islamis-election-doublespeak/|website=[[The Diplomat (magazine)|The Diplomat]]|date=9 February 2026}}</ref>
+
+Although not stated in the constitution, the party ''[[de facto]]'' bars women from leadership position, arguing religious obligations. This contradictory stance doesn't only come to challenge the [[Constitution of Bangladesh]], but also questions its alignment with the Bangladesh Nationalist Party government between 2001 and 2006 under the female leader [[Khaleda Zia]].<ref name="thediplomat" />
+
+== Affiliated organisations ==
+===Bangladesh Islami Chhatrashibir===
+{{Main|Bangladesh Islami Chhatrashibir}}
+
+[[File:ICS Publication at Amar Ekushey Book Fair.jpg|thumb|[[Bangladesh Islami Chhatra Shibir]]'a book stall at [[Ekushey Book Fair]]]]
+[[Bangladesh Islami Chhatrashibir]] functions as the ''de facto'' [[student wing]] of Bangladesh Jamaat-e-Islami, with numerous former leaders advancing to hold prominent leadership roles within the party.<ref>{{cite news |url=https://indianexpress.com/article/world/bangladesh-bans-jamaat-e-islami-under-anti-terrorism-law-9489831/ |title=Bangladesh bans Jamaat-e-Islami and its student wing Islami Chhatra Shibir under anti-terrorism law |date=1 August 2024 |work=[[The Indian Express]] |agency=[[Press Trust of India|PTI]] |access-date=19 January 2025}}</ref> The organisation has significant presence at many colleges and universities of Bangladesh, including the [[Chittagong College]], [[Government Bangla College]], [[Dhaka College]], [[Government Titumir College]], [[University of Chittagong]], [[University of Dhaka]], [[University of Rajshahi|Rajshahi University]], [[Islamic University, Bangladesh|Islamic University]], [[Begum Rokeya University]], [[Carmichael College]] etc. It is also influential in [[Madrasa]]hs. It is the successor of East Pakistan Islami Chatra Sangha, the East Pakistani wing of [[Islami Jamiat-e-Talaba]].{{efn|Multiple references:<ref>{{cite web |url=http://www.trackingterrorism.org/group/islami-chhatra-shibir |title=Islami Chhatra Shibir |access-date=26 January 2015}}</ref><ref>{{cite news |last=Habib |first=Haroon |date=18 July 2013 |title=Jamaat secretary-general gets death penalty for war crimes |url=http://www.thehindu.com/todays-paper/tp-international/jamaat-secretarygeneral-gets-death-penalty-for-war-crimes/article4926010.ece |newspaper=[[The Hindu]]}}</ref><ref>{{cite news |date=3 August 2012 |title=Kamaruzzaman led Razakar, Al-Badr and Al-Shams: witness |url=http://old-archives.newagebd.net/detail.php?date=2012-08-03&nid=19421 |newspaper=[[New Age (Bangladesh)|New Age]] |location=[[Dhaka]] |url-status=dead |archive-url=https://web.archive.org/web/20160127070548/http://old-archives.newagebd.net/detail.php?date=2012-08-03&nid=19421 |archive-date=27 January 2016}}</ref><ref>{{cite news |date=10 May 2013 |title=Key man of Al-Badr |url=https://www.thedailystar.net/news/key-man-of-al-badr |newspaper=[[The Daily Star (Bangladesh)|The Daily Star]] |access-date=26 January 2015}}</ref><ref>{{cite news |date=17 September 2013 |title=Mirpur butcher Molla must die, says SC |url=https://bdnews24.com/bangladesh/mirpur-butcher-molla-must-die-says-sc |work=[[bdnews24.com]] |access-date=26 January 2015}}</ref><ref>{{cite news |date=22 June 2012 |title=Mojaheed indicted for genocide, crimes against humanity |url=http://old-archives.newagebd.net/detail.php?date=2012-06-22&nid=14609 |newspaper=[[New Age (Bangladesh)|New Age]] |location=[[Dhaka]] |access-date=10 October 2015 |archive-url=https://web.archive.org/web/20160127070548/http://old-archives.newagebd.net/detail.php?date=2012-06-22&nid=14609 |archive-date=27 January 2016 |url-status=dead}}</ref>}} It is a member of the [[International Islamic Federation of Student Organizations|International Islamic Federation of Student organizations]] and the [[World Assembly of Muslim Youth]].<ref name="New Age">{{cite news |title=Shibir collects tolls from the hostel residents in 2 Ctg colleges |url=http://newagebd.com/newspaper1/archive_details.php?date=2011-09-13&nid=33153 |date=13 September 2011 |newspaper=[[New Age (Bangladesh)|New Age]] |archive-url=https://web.archive.org/web/20131006100724/http://newagebd.com/newspaper1/archive_details.php?date=2011-09-13&nid=33153 |archive-date=6 October 2013}}</ref><ref name="The Daily Star">{{cite news |title=Shibir rented out RU hall seats |url=https://www.thedailystar.net/news-detail-128474 |date=3 March 2010 |newspaper=[[The Daily Star (Bangladesh)|The Daily Star]] |access-date=26 January 2015 |archive-date=14 October 2013 |archive-url=https://web.archive.org/web/20131014035005/http://archive.thedailystar.net/newDesign/news-details.php?nid=128474 |url-status=dead}}</ref>
+
+==== ''Natun Kishore Kantho'' ====
+''Natun Kishore Kantho'' ({{Langx|bn|নতুন কিশোরকণ্ঠ|4=New Teenage Voice}})<ref>{{Cite web |title= |script-title=bn:কিশোরকণ্ঠ |url=https://www.kishorkanthabd.com/ |url-status=dead |archive-url=https://web.archive.org/web/20250311091811/https://kishorkanthabd.com/ |archive-date=11 March 2025 |access-date=23 March 2025 |website=Kishore Kantho |language=bn}}</ref> is a monthly youth-oriented magazine published since 1984.<ref name="Bangla Tribune">{{Cite news |last=Shakil |first=Salman Tarek |date=3 August 2024 |title= |script-title=bn:জামায়াত-শিবিরের অঙ্গসংগঠন কীভাবে চিহ্নিত হবে? |url=https://www.banglatribune.com/politics/jamat-e-islam/856742/%E0%A6%9C%E0%A6%BE%E0%A6%AE%E0%A6%BE%E0%A7%9F%E0%A6%BE%E0%A6%A4-%E0%A6%B6%E0%A6%BF%E0%A6%AC%E0%A6%BF%E0%A6%B0%E0%A7%87%E0%A6%B0-%E0%A6%85%E0%A6%99%E0%A7%8D%E0%A6%97%E0%A6%B8%E0%A6%82%E0%A6%97%E0%A6%A0%E0%A6%A8-%E0%A6%95%E0%A7%80%E0%A6%AD%E0%A6%BE%E0%A6%AC%E0%A7%87-%E0%A6%9A%E0%A6%BF%E0%A6%B9%E0%A7%8D%E0%A6%A8%E0%A6%BF%E0%A6%A4-%E0%A6%B9%E0%A6%AC%E0%A7%87 |access-date=23 March 2025 |work=[[Bangla Tribune]] |language=bn}}</ref> The magazine has been linked to Islami Chhatrashibir.<ref name="Bangla Tribune"/>
+
+===Bangladesh Chasi Kalyan Samiti===
+Bangladesh Chasi Kalyan Samiti is a non-governmental organization and peasant wing of Bangladesh Jamaat-e-Islami. It was established in 1977 by Jamaat leader [[AKM Yusuf]].<ref name="bdnews24">{{Cite news |date=30 October 2018 |title= |script-title=bn:জঙ্গিবাদে অর্থায়ন: গ্রেপ্তার ৮, এনজিও গড়ে তুলে বিভিন্ন দেশ থেকে আনা অর্থ মৌলবাদ ও জঙ্গিবাদী প্রচারে ব্যয় এবং অর্থ আত্মসাতের অভিযোগে আটজনকে গ্রেপ্তার করেছে সিআইডি। |trans-title=Financing militancy: 8 arrested, CID has arrested eight people on charges of embezzling funds and spending them on radical and militant propaganda by establishing NGOs and bringing money from various countries. |url=https://bangla.bdnews24.com/bangladesh/article1555336.bdnews |access-date=12 May 2025 |work=[[bdnews24.com]] |language=bn}}</ref><ref>{{Cite book |url=https://books.google.com/books?id=XcMtAAAAIAAJ |title= |publisher=Muktiyuddha Cetanā Bikāśa Kendra |year=1989 |page=136 |language=bn |script-title=bn:একাওরা গাতক জামায়াতে ইসলামীর অতীত ও বর্তমান}}</ref> It and other Jamaat-linked NGOs were under pressure due to crackdowns launched under the Awami League regime from 2018 to 2019 and 2024.<ref name=":03">{{Cite news |date=13 February 2020 |title= |script-title=bn:জামায়াতী এনজিও চাষী কল্যাণ সমিতির মাধ্যমে অর্থায়ন |url=https://www.dailyjanakantha.com/national/news/480143 |access-date=22 March 2025 |work=[[Janakantha]] |language=bn}}</ref><ref name=":2">{{Cite news |date=9 November 2018 |title= |script-title=bn:জামায়াতের 'কৃষিবিদ ব্লক' |url=https://www.jugantor.com/tp-lastpage/109764 |access-date=22 March 2025 |work=[[Jugantor]] |language=bn}}</ref>
+
+===Bangladesh Islami Chhatri Sangstha===
+{{Main||Bangladesh Islami Chhatri Sangstha}}
+
+[[Bangladesh Islami Chhatri Sangstha]] functions as the female student wing of Jamaat-e-Islami, being established on 15 July 1978.<ref name="Bangla Tribune (3 Aug)">{{Cite news |last=Shakil |first=Salman Tarek |date=3 August 2024 |title= |script-title=bn:জামায়াত-শিবিরের অঙ্গসংগঠন কীভাবে চিহ্নিত হবে? |url=https://www.banglatribune.com/politics/jamat-e-islam/856742/%E0%A6%9C%E0%A6%BE%E0%A6%AE%E0%A6%BE%E0%A7%9F%E0%A6%BE%E0%A6%A4-%E0%A6%B6%E0%A6%BF%E0%A6%AC%E0%A6%BF%E0%A6%B0%E0%A7%87%E0%A6%B0-%E0%A6%85%E0%A6%99%E0%A7%8D%E0%A6%97%E0%A6%B8%E0%A6%82%E0%A6%97%E0%A6%A0%E0%A6%A8-%E0%A6%95%E0%A7%80%E0%A6%AD%E0%A6%BE%E0%A6%AC%E0%A7%87-%E0%A6%9A%E0%A6%BF%E0%A6%B9%E0%A7%8D%E0%A6%A8%E0%A6%BF%E0%A6%A4-%E0%A6%B9%E0%A6%AC%E0%A7%87 |access-date=20 March 2025 |work=[[Bangla Tribune]] |language=bn}}</ref>
+
+=== Bangladesh Mosque Mission ===
+Bangladesh Mosque Mission functions as the mosque wing of Bangladesh Jamaat-e-Islami.<ref>{{Cite news |last=Shakil |first=Salman Tarek |date=3 August 2024 |script-title=bn:জামায়াত-শিবিরের অঙ্গসংগঠন কীভাবে চিহ্নিত হবে? |trans-title=How to identify affiliate organisations of Jamaat-Shibir? |url=https://www.banglatribune.com/politics/jamat-e-islam/856742/%E0%A6%9C%E0%A6%BE%E0%A6%AE%E0%A6%BE%E0%A7%9F%E0%A6%BE%E0%A6%A4-%E0%A6%B6%E0%A6%BF%E0%A6%AC%E0%A6%BF%E0%A6%B0%E0%A7%87%E0%A6%B0-%E0%A6%85%E0%A6%99%E0%A7%8D%E0%A6%97%E0%A6%B8%E0%A6%82%E0%A6%97%E0%A6%A0%E0%A6%A8-%E0%A6%95%E0%A7%80%E0%A6%AD%E0%A6%BE%E0%A6%AC%E0%A7%87-%E0%A6%9A%E0%A6%BF%E0%A6%B9%E0%A7%8D%E0%A6%A8%E0%A6%BF%E0%A6%A4-%E0%A6%B9%E0%A6%AC%E0%A7%87 |access-date=17 June 2025 |work=[[Bangla Tribune]] |language=bn}}</ref> It is also registered as a social welfare organisation and non-governmental organisation.<ref name=":0">{{Cite news |last=Salman |first=Md Solamain |date=23 November 2019 |title=NGO by name Islamic, activities illegal |url=https://www.daily-sun.com/printversion/details/441069 |access-date=17 June 2025 |work=[[Daily Sun (Bangladesh)|Daily Sun]] |language=en}}</ref>
+
+Officially established on 25 November 1973, the organisation was registered with the [[Department of Social Services (Bangladesh)|Department of Social Services]] in 1976.<ref>{{Cite news |date=5 July 2020 |script-title=bn:মসজিদ মিশনের নিবন্ধন বাতিল করতে এমপি বাদশার ডিও |trans-title=MP Badshah's DO to cancel the registration of the Mosque Mission |url=https://www.risingbd.com/bangladesh/news/362986 |access-date=17 June 2025 |work=risingbd |language=bn}}</ref>
+
+It also manages three educational institutions:<ref name=":0" />
+* [[Masjid Mission Academy]]
+* Masjid Mission Academy School & College (boys)
+* Masjid Mission Academy School & College (girls)
+
+=== Other organisations ===
+* Bangladesh Jamaat-e-Islami Women's Wing<ref>{{cite web|title=জামায়াতের মহিলা শাখার সমাবেশ স্থগিত|url=https://www.bd-pratidin.com/current-politics/2026/01/29/1210720|website=[[Bangladesh Pratidin]]|date=29 January 2025|language=bn}}</ref>
+* [[Bangladesh Adarsha Shikkakh Federation]] (teachers wing)<ref name="Cumilla Accusation">{{Cite news |date=15 January 2025 |title= |script-title=bn:কুমিল্লায় জামায়াত কর্মীর বিরুদ্ধে কলেজের অধ্যক্ষকে লাঞ্ছিত করার অভিযোগ |url=https://www.prothomalo.com/bangladesh/district/ysgdx7s91b |access-date=24 March 2025 |work=[[Prothom Alo]] |language=bn}}</ref>
+* [[National Doctors Forum]] (doctors wing)<ref name="NDF">{{Cite news |last=Moral |first=Shishir |date=22 November 2024 |title=100 days of interim govt: Lack of priority implementation, conflict in appointments |url=https://en.prothomalo.com/bangladesh/k8fkk4ve14 |access-date=15 March 2025 |work=[[Prothom Alo]] |language=en}}</ref><ref name="bdnews">{{Cite news |date=13 March 2025 |title= |script-title=bn:জনগণের প্রত্যাশা পূরণে চিকিৎসকদের কাজ করতে হবে: শফিকুর |url=https://bangla.bdnews24.com/politics/86fefba022a8 |access-date=20 March 2025 |work=[[bdnews24.com]] |language=bn}}</ref>
+* [[Bangladesh Sramik Kalyan Federation]] (trade union)
+* [[Bangladesh Lawyers Council]] (lawyers wing)<ref name="Bangla Tribune (3 Aug)" />
+* [[Bangladesh Chasi Kalyan Samiti]] (peasant wing)
+* Samannito Sangskritik Sangsad (cultural wing)<ref name="Bangla Tribune (3 Aug)" />
+* Jatiyo Muktijoddha Parishad ([[Mukti Bahini|freedom fighter]] wing)<ref>{{Cite news |date=23 March 2025 |title= |script-title=bn:পাবনায় জাতীয় মুক্তিযোদ্ধা পরিষদের আলোচনা সভা |url=https://www.dainikdeshbartanews.com/print/1573/%E0%A6%AA%E0%A6%BE%E0%A6%AC%E0%A6%A8%E0%A6%BE%E0%A7%9F-%E0%A6%9C%E0%A6%BE%E0%A6%A4%E0%A7%80%E0%A7%9F-%E0%A6%AE%E0%A7%81%E0%A6%95%E0%A7%8D%E0%A6%A4%E0%A6%BF%E0%A6%AF%E0%A7%8B%E0%A6%A6%E0%A7%8D%E0%A6%A7%E0 |access-date=27 March 2025 |language=bn}}</ref>
+
+==Election results==
+
+=== Jatiya Sangsad elections ===
+{| class="wikitable"
+|-
+! Election year
+! Party leader
+! Votes
+! % of Percentage
+! Seats
+! +/–
+! Position
+! Outcome
+|-
+| [[1986 Bangladeshi general election|1986]]
+| rowspan="5" | [[Ghulam Azam]]
+| 1,314,057
+| 4.6
+| {{composition bar|10|300|hex={{party colour|Bangladesh Jamaat-e-Islami}}}}
+| {{increase}} 10
+| {{increase}} 3rd
+| {{no2|Opposition}}
+|-
+| [[1988 Bangladeshi general election|1988]]
+| colspan="2" | ''Boycotted''
+| {{composition bar|0|300|hex={{party colour|Bangladesh Jamaat-e-Islami}}}}
+| {{decrease}} 10
+| {{N/A}}
+| {{no|Extra-parliamentary}}
+|-
+| [[1991 Bangladeshi general election|1991]]
+| 4,117,737
+| 12.2
+| {{composition bar|18|300|hex={{party colour|Bangladesh Jamaat-e-Islami}}}}
+| {{increase}} 18
+| {{increase}} 3rd
+| {{yes2|[[Confidence and supply]]}}
+|-
+| [[February 1996 Bangladeshi general election|February 1996]]
+| colspan="2" | ''Boycotted''
+| {{composition bar|0|300|hex={{party colour|Bangladesh Jamaat-e-Islami}}}}
+| {{decrease}} 18
+| {{N/A}}
+| {{no|Extra-parliamentary}}
+|-
+| [[June 1996 Bangladeshi general election|June 1996]]
+| 3,653,013
+| 8.6
+| {{composition bar|3|300|hex={{party colour|Bangladesh Jamaat-e-Islami}}}}
+| {{increase}} 3
+| {{decrease}} 4th
+| {{no2|Opposition}}
+|-
+| [[2001 Bangladeshi general election|2001]]
+| rowspan="3" | [[Motiur Rahman Nizami]]
+| 2,385,361
+| 4.3
+| {{composition bar|17|300|hex={{party colour|Bangladesh Jamaat-e-Islami}}}}
+| {{increase}} 14
+| {{steady}} 4th
+| {{yes2|Coalition government}}
+|-
+| [[2008 Bangladeshi general election|2008]]
+| 3,186,384
+| 4.6
+| {{composition bar|2|300|hex={{party colour|Bangladesh Jamaat-e-Islami}}}}
+| {{decrease}} 15
+| {{steady}} 4th
+| {{no2|Opposition}}
+|-
+| [[2014 Bangladeshi general election|2014]]
+| colspan="2" | ''Did not contest''
+| {{composition bar|0|300|hex={{party colour|Bangladesh Jamaat-e-Islami}}}}
+| {{decrease}} 2
+| {{N/A}}
+| {{no|Extra-parliamentary}}
+|-
+| [[2018 Bangladeshi general election|2018]]
+| [[Maqbul Ahmed]]
+| colspan="2" | ''Did not contest''
+| {{composition bar|0|300|hex={{party colour|Bangladesh Jamaat-e-Islami}}}}
+| {{steady}} 0
+| {{N/A}}
+| {{no|Extra-parliamentary}}
+|-
+| [[2024 Bangladeshi general election|2024]]
+| rowspan="2" |  [[Shafiqur Rahman]]
+| colspan="2" | ''Did not contest''
+| {{composition bar|0|300|hex={{party colour|Bangladesh Jamaat-e-Islami}}}}
+| {{steady}} 0
+| {{N/A}}
+| {{no|Extra-parliamentary}}
+|-
+| [[2026 Bangladeshi general election|2026]]
+| 23,825,259
+| 31.8
+| {{composition bar|68|300|hex={{party colour|Bangladesh Jamaat-e-Islami}}}}
+| {{increase}} 68
+| {{increase}} 2nd
+| {{no2|Opposition}}
+|}
+
+===1991 election===
+{|class="wikitable sortable" style="text-align:center;"
+!#
+! Constituency
+! Member
+! Vote Percentages
+|-
+| 1
+| [[Dinajpur-6]]
+| [[Azizur Rahman Chowdhury]]
+| 28.7%
+|-
+| 2
+| [[Bogra-2]]
+| [[Shahaduzzaman]]
+| 34.0%
+|-
+| 3
+| [[Chapai Nawabganj-3]]
+| [[Latifur Rahman (politician)|Latifur Rahman]]
+| 35.3%
+|-
+| 4
+| [[Naogaon-4]]
+| [[Nasir Uddin (Naogaon politician)|Nasir Uddin]]
+| 49.8%
+|-
+| 5
+| [[Natore-3]]
+| [[Md. Abu Bakar]]
+| 36.0%
+|-
+| 6
+| [[Pabna-1]]
+| [[Motiur Rahman Nizami]]
+| 36.9%
+|-
+| 7
+| [[Pabna-5]]
+| [[Abdus Sobhan]]
+| 47.3%
+|-
+| 8
+| [[Chuadanga-2]]
+| [[Habibur Rahman (Jamaat-e-Islami politician)|Habibur Rahman]]
+| 36.6%
+|-
+| 9
+| [[Jessore-6]]
+| [[Md. Shakhawat Hossain]]
+| 47.3%
+|-
+| 10
+| [[Bagerhat-4]]
+| [[Abdus Sattar Akon]]
+| 42.9%
+|-
+| 11
+| [[Khulna-6]]
+| [[Shah Md. Ruhul Quddus]]
+| 40.5%
+|-
+| 12
+| [[Satkhira-1]]
+| [[Ansar Ali]]
+| 39.5%
+|-
+| 13
+| [[Satkhira-2]]
+| [[Kazi Shamsur Rahman]]
+| 38.6%
+|-
+| 14
+| [[Satkhira-3]]
+| [[AM Riasat Ali Biswas]]
+| 33.1%
+|-
+| 15
+| [[Satkhira-5]]
+| [[Gazi Nazrul Islam]]
+|
+|-
+| 16
+| [[Rajbari-2]]
+| [[AKM Aszad]]
+|
+|-
+| 17
+| [[Chittagong-14]]
+| [[Shajahan Chowdhury (Chittagong politician)|Shajahan Chowdhury]]
+| 46.2%
+|-
+| 18
+| [[Cox's Bazar-1]]
+| [[Enamul Haq Manju]]
+| 35.0%
+|}
+
+===June 1996 election===
+{|class="wikitable sortable" style="text-align:center;"
+!#
+! Constituency
+! Member
+! Vote Percentages
+|-
+| 1
+| [[Nilphamari-3]]
+| [[Mizanur Rahman Chowdhury (Jamaat-e-Islami politician)|Mizanur Rahman Chowdhury]]
+| 31.3%
+|-
+| 2
+| [[Satkhira-2]]
+| [[Kazi Shamsur Rahman]]
+| 31.9%
+|-
+| 3
+| [[Pirojpur-1]]
+| [[Delwar Hossain Sayeedi]]
+| 37.0%
+|}
+
+===2001 election===
+{|class="wikitable sortable" style="text-align:center;"
+!#
+! Constituency
+! Member
+! Vote Percentages
+|-
+| 1
+| [[Dinajpur-1]]
+| [[Abdullah Al Kafi]]
+| 44.9%
+|-
+| 2
+| [[Dinajpur-6]]
+| [[Azizur Rahman Chowdhury]]
+| 39.8%
+|-
+| 3
+| [[Nilphamari-3]]
+| [[Mizanur Rahman Chowdhury (Jamaat-e-Islami politician)|Mizanur Rahman Chowdhury]]
+| 38.0%
+|-
+| 4
+| [[Gaibandha-1]]
+| [[Abdul Aziz Mia]]
+| 40.9%
+|-
+| 5
+| [[Pabna-1]]
+| [[Motiur Rahman Nizami]]
+| 57.7%
+|-
+| 6
+| [[Pabna-5]]
+| [[Abdus Sobhan]]
+| 56.8%
+|-
+| 7
+| [[Jessore-2]]
+| [[Abu Sayeed Md. Shahadat Hussain]]
+| 52.3%
+|-
+| 8
+| [[Narail-2]]
+| [[Shahidul Islam (Mufti)|Shahidul Islam (Not Jamaat?)]]
+| 48.2% (96.6% by election)
+|-
+| 9
+| [[Bagerhat-4]]
+| [[Abdus Sattar Akon]]
+| 48.1%
+|-
+| 10
+| [[Khulna-5]]
+| [[Mia Golam Porwar]]
+| 49.6%
+|-
+| 11
+| [[Khulna-6]]
+| [[Shah Md. Ruhul Quddus]]
+| 56.9%
+|-
+| 12
+| [[Satkhira-2]]
+| [[Abdul Khaleque Mondal]]
+| 60.0%
+|-
+| 13
+| [[Satkhira-3]]
+| [[AM Riasat Ali Biswas]]
+| 55.0%
+|-
+| 14
+| [[Satkhira-5]]
+| [[Gazi Nazrul Islam]]
+| 54.9%
+|-
+| 15
+| [[Pirojpur-1]]
+| [[Delwar Hossain Sayeedi]]
+| 57.2%
+|-
+| 16
+| [[Sylhet-5]]
+| [[Farid Uddin Chowdhury]]
+| 49.1%
+|-
+| 17
+| [[Comilla-12]]
+| [[Syed Abdullah Muhammad Taher]]
+| 66.0%
+|}
+
+===2008 election===
+{|class="wikitable sortable" style="text-align:center;"
+!#
+! Constituency
+! Member
+! Vote Percentages
+|-
+| 1
+| [[Chittagong-14]]
+| [[Shamsul Islam (Chittagong politician)|Shamsul Islam]]
+| 51.1%
+|-
+| 2
+| [[Cox's Bazar-2]]
+| [[A. H. M. Hamidur Rahman Azad]]
+| 53.9%
+|}
+
+==See also==
+* [[List of Islamic political parties]]
+* [[Politics of Bangladesh]]
+* [[List of political parties in Bangladesh]]
+
+==Notes==
+'''Footnotes'''
+
+{{Notelist}}
+{{reflist|group=note}}
+
+==References==
+{{Reflist}}
+
+==Sources==
+* {{cite book |last=Baxter |first=C |year=1997 |title=Bangladesh, from a Nation to a State |publisher=Westview Press |isbn=0-8133-3632-5 |oclc=47885632}}
+
+==External links==
+* {{Commons-inline}}
+* {{Official website}}
+
+{{IslamismSA}}
+{{Bangladeshi political parties}}
+{{Islam topics|state=collapsed}}
+{{Islamism}}
+{{Authority control}}
+
+[[Category:Bangladesh Jamaat-e-Islami| ]]
+[[Category:Formerly banned Islamic political parties]]
+[[Category:Islamic political parties in Bangladesh]]
+[[Category:Conservatism in Bangladesh]]
+[[Category:Conservative parties in Bangladesh]]
+[[Category:Far-right political parties]]
+[[Category:Political parties established in 1941]]
+[[Category:Far-right politics in Bangladesh]]

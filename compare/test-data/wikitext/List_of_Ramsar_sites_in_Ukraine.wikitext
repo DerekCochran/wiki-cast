@@ -1,0 +1,98 @@
+{{short description|None}}
+{{Use dmy dates|date=August 2022}}
+Ukraine has 50 '''Ramsar sites''' designated as ''[[List of Ramsar wetlands of international importance|Wetlands of International Importance]]''. Ramsar sites in [[Ukraine]] have a total surface area of approximately {{Convert|802604|ha|acre}}. The [[Ramsar Convention]] on Wetlands came into effect for Ukraine on 1 December 1991.<ref name="Ramsar list">{{cite web|title=Ramsar List|url=http://www.ramsar.org/pdf/sitelist.pdf|publisher=Ramsar.org|accessdate=31 March 2013}}</ref>
+{{GeoGroup}}{{Clear}}
+
+==Ukraine Wetlands of International Importance==
+{{Update|date=September 2019}}
+{|class="wikitable sortable" width="98%"
+! style="background-color:{{RAMSAR color}}" width="25%" | Name<ref name="Ramsar list"/>
+! style="background-color:{{RAMSAR color}}" width="15%" | [[Administrative divisions of Ukraine|Oblast]]
+! style="background-color:{{RAMSAR color}}" | Area&nbsp;(km<sup>2</sup>) 
+! style="background-color:{{RAMSAR color}}" width="12%" | Designated
+! style="background-color:{{RAMSAR color}}" | Description
+! style="background-color:{{RAMSAR color}}" class="unsortable" | Image
+|-----
+| [[Bakota Bay]]<ref>{{Cite web | title=Бакотська затока {{!}} Водно-болотні угіддя | url=http://wetlands.biomon.org/?p=216 | archive-url=https://web.archive.org/web/20131225055145/http://wetlands.biomon.org/?p=216 | access-date=2025-09-22 | archive-date=2013-12-25}}</ref> || [[Khmelnytskyi Oblast|Khmelnytskyi]]<br /><small>{{coord|48|35|N|26|56|E|region:UA_type:waterbody|name=Bakota Bay}}</small>|| align=right | 15.9 || 29 July 2004 || part of National Park "[[Podilski Tovtry]]", [[Dniester]] valley || 
+|-----
+| [[Berda River mouth]], [[Berdiansk Spit]] and [[Berdiansk Bay]]<ref>{{Cite web | title=Not Found | url=http://wetlands.biomon.org/?p=192 | archive-url=https://web.archive.org/web/20131225055026/http://wetlands.biomon.org/?p=192 | archive-date=2013-12-25}}</ref> || [[Zaporizhzhia Oblast|Zaporizhzhia]]<br /><small>{{coord|46|44|N|36|48|E|region:UA_type:waterbody|name=Berda River mouth}}</small>|| align=right | 18 || || [[Sea of Azov]] near [[Berdyansk]] || 
+|-----
+| [[Bilosaraisk Bay]], [[Bilosaraisk Spit]]<ref>{{Cite web | title=Not Found | url=http://wetlands.biomon.org/?p=190 | archive-url=https://web.archive.org/web/20131225055417/http://wetlands.biomon.org/?p=190 | archive-date=2013-12-25}}</ref> || [[Donetsk Oblast|Donetsk]]<br /><small>{{coord|46|54|N|37|20|E|region:UA_type:waterbody|name=Bilosaraisk Bay}}</small>|| align=right | 20 || || [[Sea of Azov]] near [[Yalta, Donetsk Oblast]] || 
+|-----
+| [[Great Chapli Depression]]<ref>{{Cite web |url=http://wetlands.biomon.org/?p=229 |title=Великий Чапельський під &#124; Водно-болотні угіддя |access-date=2018-10-07 |archive-url=https://web.archive.org/web/20131225061633/http://wetlands.biomon.org/?p=229 |archive-date=2013-12-25 |url-status=dead }}</ref> || [[Kherson Oblast|Kherson]]<br /><small>{{coord|46|29|N|33|51|E|region:UA_type:waterbody|name=Great Chapli Depression}}</small>|| align=right | 23.59|| ||  part of [[Askania-Nova]] Reserve || 
+|-----
+| Cheremske Mire || [[Volyn Oblast|Volyn]] || align=right | 328 ||  || || [[File:Черемське болото. Стенд.jpg|100px]] 
+|-----
+| [[Chilia branch]] (Kilia) || [[Odesa Oblast|Odesa]] || align=right | 328 ||  || [[Danube Delta]] at [[Bystroye Channel]] || [[File:Danube delta chart.png|100px]] 
+|-----
+| [[Desna River]] floodplains || [[Sumy Oblast|Sumy]]<br /><small>{{coord|52|19|N|33|23|E|region:UA_type:waterbody|name=Desna River floodplains}}</small>|| align=right | 42.7 || ||  || 
+|-----
+| [[Dnieper River]] Delta|| [[Kherson Oblast|Kherson]]  || align=right | 260 ||  ||  || 
+|-----
+| [[Dnieper]]-[[Orli]] floodplains || [[Dnipropetrovsk Oblast|Dnipropetrovsk]] || align=right | 25.6 ||  || || 
+|-----
+| Northern area of the [[Dniester Liman]] || [[Odesa Oblast|Odesa]] || align=right | 200 ||  ||  || 
+|-----
+| Land of [[Dniester]]-[[Turunchuk]] || [[Odesa Oblast|Odesa]] || align=right | 760 ||  || || 
+|-----
+| Aquatic-cliff complex of [[Karadag (Crimea)|Karadag]] || [[Autonomous Republic of Crimea|Crimea]]  || align=right | 224 || 17 November 2003 || Sublittoral marine areas up to 6 metres depth, bays, a narrow strip of pebble-boulder coast and coastal cliffs up to 120 m high || 
+|-----
+| [[Karkinitska and Dzharylgatska Bays]]|| [[Kherson Oblast|Kherson]], [[Autonomous Republic of Crimea|Crimea]]<br /><small>{{coord|46|00|N|33|5|E|region:UA_type:waterbody|name=Karkinit and Dzharylgat Bays}}</small>|| align=right | 870 || 23 November 1995 ||The Karkinit Bay is a bay of the [[Black Sea]] that separates the southwestern [[Crimean Peninsula]] from mainland Ukraine.||[[File:Tarkhankut.jpg|100px]]
+|-----
+| [[Lake Kartal]] || [[Odesa Oblast|Odesa]] || align=right | 5 ||  ||  || 
+|-----
+| [[Cape Kazantyp]] rocky shore habitat || [[Autonomous Republic of Crimea|Crimea]]<br /><small>{{coord|45|28|N|35|51|E|region:UA_type:waterbody|name=Cape Kazantyp}}</small>|| align=right | 2.51 || 29 July 2004 ||A headland located in the northeastern part of the [[Crimea|Crimean peninsula]].|| [[File:Kazantyp.jpg|100px]]
+|-----
+| Kremenchuk Floodplains || [[Poltava Oblast|Poltava]]  || align=right |   ||  ||  || 
+|-----
+| [[Kryva Bay]] and [[Kryva Spit]]|| [[Donetsk Oblast|Donetsk]] || align=right | 14 ||  ||  || 
+|-----
+| [[Kuhurluy]] || [[Odesa Oblast|Odesa]] || align=right | 65 ||  ||  || 
+|-----
+| [[Molochnyi Liman|Molochnyi Estuary]]|| [[Zaporizhzhia Oblast|Zaporizhzhia]] || align=right | 224 || || || [[File:Molochnyi Lyman Kosykh.jpg|100px]]
+|-----
+| [[Obitochna Spit]] || [[Zaporizhzhia Oblast|Zaporizhzhia]] || align=right | 20 ||  ||  || 
+|-----
+| [[Cape Opuk]] nearshore habitat || [[Autonomous Republic of Crimea|Crimea]]<br /><small>{{coord|45|01|N|36|12|E|region:UA_type:waterbody|name=Cape Opuk}}</small>|| align=right | 7.75|| ||  || 
+|-----
+| [[Perebrody Peat Bogs]] || [[Rivne Oblast|Rivne]] || align=right | 127.18 ||  ||  || 
+|-----
+| [[Polissya Marshes]] || [[Zhytomyr Oblast|Zhytomyr]] || align=right | 21.45 || ||Marshes, mires, and floodplains surrounded by upland pine forests in [[Polissia Nature Reserve]]  || 
+|-----
+| [[Prypiat River]] floodplains || [[Volyn Oblast|Volyn]] || align=right | 120 ||  ||  || 
+|-----
+| [[Sasyk Lagoon]] || [[Odesa Oblast|Odesa]] || align=right | 210 || ||  || [[File:Sasyk Lagoon coast.jpg|100px]]
+|-----
+| [[Shahany Lagoon|Shahany]]-[[Alibey Lagoon|Alibei]]-[[Burnas Lagoon|Burnas]] lakes system || [[Odesa Oblast|Odesa]] || align=right | 190 ||  ||  || 
+|-----
+| [[Shatsk Lakes]] || [[Volyn Oblast|Volyn]] || align=right | 328.5 ||  ||The largest Ukrainian lake complex, with 23 lakes separated by peat bogs, meadows and forests.  || 
+|-----
+| Lower [[Smotrych River]] || [[Khmelnytskyi Oblast|Khmelnytskyi]] || align=right | 14.8 ||  ||  || 
+|-----
+| [[Stokhid River]] floodplains || [[Volyn Oblast|Volyn]] || align=right | 100 ||  || || 
+|-----
+| [[Synevyr|Lake Synevyr]] || [[Zakarpattia Oblast|Zakarpattia]] || align=right | 0.29 || ||The largest natural water body in the Ukrainian Carpathians || [[File:Synevyr lake 1.jpg|100px]]
+|-----
+| Central [[Syvash]] || [[Kherson Oblast|Kherson]], [[Autonomous Republic of Crimea|Crimea]]<br /><small>{{coord|46|07|N|34|15|E|region:UA_type:waterbody|name=Central Syvash}}</small>|| align=right | 800 || ||  || 
+|-----
+| [[Eastern Syvash]] || [[Kherson Oblast|Kherson]], [[Autonomous Republic of Crimea|Crimea]] || align=right | 1,650 ||  ||  || 
+|-----
+| [[Tendra Bay]] || [[Kherson Oblast|Kherson]] || align=right | 380 ||  ||  || 
+|-----
+| [[Tylihul Estuary]] || [[Odesa Oblast|Odesa]], [[Mykolaiv Oblast|Mykolaiv]] || align=right | 260 || || || [[File:Tyligul Estuary.jpg|100px]]
+|-----
+| [[Yahorlyk Bay]]<ref>{{Cite web | title=Ягорлицька затока {{!}} Водно-болотні угіддя | url=http://wetlands.biomon.org/?p=188 | archive-url=https://web.archive.org/web/20131225055830/http://wetlands.biomon.org/?p=188 | access-date=2025-09-22 | archive-date=2013-12-25}}</ref> || [[Kherson Oblast|Kherson]], [[Mykolaiv Oblast|Mykolaiv]] || align=right | 340 ||  || separated from [[Dnieper-Bug Estuary]] by [[Kinburn Peninsula]] || 
+|}
+
+== References ==
+{{reflist}}
+
+==External links==
+* [http://www.ramsar.org/cda/en/ramsar-documents-list-anno-ukraine/main/ramsar/1-31-218%5E15861_4000_0__ The Annotated Ramsar List of Wetlands of International Importance: Ukraine]
+* [https://web.archive.org/web/20130509050644/http://wetlands.biomon.org/ Wetlands of Ukraine] with a list of all wetlands including recognized by the Ramsar Convention and potentially to be recognized in the future
+
+{{Wetlands of Ukraine}}
+__NOTOC__
+
+[[Category:Ramsar sites in Ukraine| ]]
+[[Category:Lists of Ramsar sites|Ukraine]]

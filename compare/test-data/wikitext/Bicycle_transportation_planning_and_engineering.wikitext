@@ -1,0 +1,118 @@
+{{Short description|none}}
+{{Use dmy dates|date=December 2021}}
+[[File:Alternative dutch roundabout.png|thumb|Dutch-style roundabout, a type of [[protected intersection]]]]
+'''Bicycle transportation planning and engineering''' are the disciplines related to [[transportation engineering]] and [[transportation planning]] concerning [[bicycle]]s as a [[mode of transport]] and the concomitant study, design and implementation of [[cycling infrastructure]]. It includes the study and design of dedicated transport facilities for cyclists (e.g. cyclist-only paths) as well as mixed-mode environments (i.e. where cyclists share roads and paths with vehicular and foot traffic) and how both of these examples can be made to work safely.<ref>{{cite web|title=Association of Pedestrian and Bicycle Professionals|url=http://www.apbp.org|access-date=20 July 2015}}</ref> In jurisdictions such as the United States it is often practiced in conjunction with planning for pedestrians as a part of [[active transportation]] planning.<ref>{{cite web|title=Active Transportation|url=https://www.planning.dot.gov/focus_activeTrans.asp|archive-url=https://web.archive.org/web/20140417052847/http://www.planning.dot.gov/focus_activeTrans.asp|url-status=dead|archive-date=17 April 2014|website=Federal Administration Department|access-date=18 August 2015}}</ref>
+
+==Networks, signage and maps==
+{{globalize|section|Europe|date=April 2021}}
+{{see|Bicycle map|National cycling route network|Numbered-node cycle network}}
+
+Most [[national cycling route network]]s have long-distance named routes, rather like highways. However, the international [[numbered-node cycle network]] has a modular design that enables arbitrary routes using simple signage. Both aim to minimize map use with plentiful signs.
+
+Cycle networks of routes can be developed in co-ordination with cycle maps. Co-ordination can be local or national (the numbered-node cycle network has national co-ordination in some countries, and local co-ordination in others).
+
+<gallery mode=packed heights=300>
+File:Colliers Wood London 2011 07.jpg|alt=Destinations of CS7 in the style of a tube line, on a large upright sign.|Cycle Superhighway CS7 start point at [[Colliers Wood]] Underground Station]
+File:Milton Keynes Redway.gif|Cycleway network in Milton Keynes. NCR routes 6 and 51 are highlighted in red. In 1970 in the United Kingdom, the [[Milton Keynes Development Corporation]] produced the [[History of Milton Keynes#Milton Keynes Development Corporation: designing a city for 250,000 people|"Master Plan for Milton Keynes"]].<ref>[http://www.mkweb.co.uk/milton_keynes_general/displayarticle.asp?id=285 Modern Milton Keynes: the master plan] {{Webarchive|url=https://web.archive.org/web/20120728111624/http://www.mkweb.co.uk/milton_keynes_general/displayarticle.asp?ID=285 |date=28 July 2012 }} MK Web</ref>
+File:Biketrail map2detail.jpg| A [[locator map]] on the [[numbered-node cycle network]], at node 20 in [[Schoten]], near [[Antwerp]]. Each intersection is marked with a numbered circle; any route through the network can be represented as a string of numbers.
+</gallery>
+
+==Bikeways==
+Some examples of the types of [[Cycling infrastructure#Bikeway types|bikeways]] under the purview of bicycle transportation engineers include [[Cycling infrastructure#Separated in-roadway bikeway|partially segregated infrastructure in-road]] such as [[bike lane]]s, buffered bike lanes; [[Cycling infrastructure#Physically separated in-roadway bikeway|physically segregated in-road]] such as [[cycle track]]s; [[bike path]]s with their own right-of-way; and [[Cycling infrastructure#Shared in-roadway bikeways|shared facilities]] such as bicycle boulevards, shared lane markings, advisory bike lane, road shoulders, wide outside lanes, [[shared space|shared street]] schemes, and any roadways with legal access for cycling.
+
+===In roadway===
+{{see|Bikeway safety}}
+[[NACTO]] guidelines state "desired width for a cycle track should be 5 feet (1.5 m). In areas with high bicyclist volumes or uphill sections, the desired width should be 7 feet (2.1 m)".
+CROW standard width for one way cycle paths in the Netherlands is a minimum of 2.5 m (8′). For bidirectional use the minimum is 3.5 m (11′).
+
+====Unsegregated====
+{{See|Vehicular cycling}}
+<gallery>
+File:1dir-car, bike 2dir.png|One-way street with two-way shared cycling
+New Road, Brighton - shared space.jpg|Streetscape in which all [[modes of travel]] (pedestrians, cyclists, and motorists) share the road
+Lake Road Northshore Nov 08.jpg|Streetscape in which cyclists and motorists share the road
+</gallery>
+*[[Bicycle boulevard]]
+*[[Shared bus and cycle lane]]
+
+====Partially segregated====
+<gallery>
+
+Canberra bicycle lane.jpg|Streetscape with dedicated cycle facilities next to other traffic
+</gallery>
+*[[Cycle lane]]
+*[[Shared lane marking]]
+
+====Segregated====
+
+<gallery>
+File:1dir-car, 2x 1dir-cyc.png|One way street with two way cycle tracks and shared road
+File:1dir-car, 2dir-cyc re.png|One way street with a single two way cycle track on right
+File:1dir-car, 2dir-cyc left.png|One way street with a single two way cycle track on left
+File:Bicycle lane with concrete barrier ottawa 2011.jpeg|Cycle tracks with concrete barriers in downtown [[Ottawa]], Ontario, Canada on [[Laurier Avenue]] in 2011.
+File:DNK bicycle light 1.jpg|Separate [[traffic light]] for automobiles and bicycles on cycle track in [[Denmark]]
+File:Bicycle lanes in intersection ottawa 2011.jpeg|Cycle track with green lanes through intersection in [[Ottawa]], Ontario, Canada (also on Laurier) in 2011.
+</gallery>
+*[[Cycle track]]
+
+=====Barriers=====
+Options for barriers are soft-hit [[Road traffic control|posts]], raised [[curb]] or [[traffic barrier]]s.
+
+===Off road===
+<gallery>
+etawahagra.jpg|{{convert|207|km|mi|abbr=on}} long cycle highway between [[Etawah]] and [[Agra]] in [[India]]
+Søruten, Copenhagen.jpg|[[Copenhagen]], [[Denmark]]
+</gallery>
+*[[Bike path]]
+*[[Rail trail]]
+
+===Bike freeway===
+<gallery>
+Fietssnelweg F35 at Go Planet.jpg|The bicycle highway F35 in [[Enschede]].
+</gallery>
+*[[Bike freeway]]
+
+==Intersections and signals==
+<gallery>
+2 Fahrstreifen + 2-Richt-Fusz- u Radweg.png|Separation without sufficient space worsens conditions for cycling
+Cyclist advanced stop line Liverpool.jpg|Advanced stop line, Liverpool, UK
+Chine vert-partiel.JPG|Signals for cyclists in China
+Protected roundabout 3D.png|[[Protected intersection]]
+</gallery>
+
+Bicycle transportation engineers also are involved in improving [[Cycling infrastructure#Intersection and junction design|intersections/junctions and traffic lights]].
+[[Advanced stop line]]s are one example of road markings on mixed mode shared space as cycling infrastructure.
+
+==Other infrastructure==
+<gallery>
+File:Old bike shed at Chokai JHS.jpg|[[Bicycle parking]]
+Car shaped bicycle rack in Earlham Street - cropped.jpg|Bike rack shaped like a car
+</gallery>
+[[Road diet]]s, [[curb extension]], improving the [[Cycling infrastructure#Road surface|road surface]]; building [[bicycle parking]] such as [[bicycle lock]]s, [[bicycle stand]]s, [[bicycle locker|lockers]].
+
+==Legislation==
+{{main|Bikeway and legislation}}in California new bikeway design standards were last adopted in 1976. Those designs were adapted by the Association of American State Highway and Transportation Officials ([[AASHTO]]) to become the AASHTO Guide for Bicycle Facilities, which is followed in the USA.
+
+==See also==
+* [[Bikeway controversies]]
+* [[Bicycle Master Plan]]
+* [[Bikeway safety]]
+* [[Cyclability]]
+* [[CROW Design Manual for Bicycle Traffic]]
+* [[Bicycle mobility]]
+* [[Sustainable transport]]
+* [[Outline of cycling]]
+* [[Cycling infrastructure]]
+* [[Mikael Colville-Andersen]]
+
+==References==
+{{Reflist}}
+
+{{Cycling}}
+{{Cycling infrastructure}}
+
+{{DEFAULTSORT:Bicycle Transportation Engineering}}
+[[Category:Utility cycling]]
+[[Category:Transportation engineering]]
+[[Category:Bicycle transportation planning]]
+[[Category:Bicycle parking]]

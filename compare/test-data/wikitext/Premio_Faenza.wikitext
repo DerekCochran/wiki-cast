@@ -1,0 +1,154 @@
+{{use dmy dates|date=February 2018}}
+{{use list-defined references|date=February 2018}}
+{{Use British English|date=February 2018}}
+{{Infobox award
+| name             = Premio Faenza
+| subheader        = 
+| image            = 
+| image_size       = 
+| alt              = 
+| caption          = 
+| awarded_for      = contemporary [[ceramic art]]
+| sponsor          =
+| date             =  {{start date|1938}}
+| location         = [[Faenza]]
+| country          = [[Italy]]
+| presenter        = {{ill|Museo Internazionale delle Ceramiche in Faenza|it}}
+| host             = 
+| former name      = 
+| preshow_host     = 
+| reward           = 
+| year             = 
+| year2            = 
+| holder_label     = 
+| winners = 
+  {{collapsible list
+  |framestyle=border:none; padding:0;
+  |title=Full list of recipients{{r|mic}}
+   | 1938: {{ill|Pietro Melandri|it}}
+   | 1939: Pietro Melandri
+   | 1941: Emilio Casadio and Carlo Corvi
+   | 1942: Giuseppe Mazzullo
+   | 1946: Angelo Biancini and Anselmo Bucci
+   | 1949: Anselmo Bucci, Guido Gambone ''ex aequo''
+   | 1952: Antonio Scordia and Guerrino Tramonti
+   | 1953: Salvatore Meli, Carlo Zauli ''ex aequo''
+   | 1954: Leoncillo Leonardi
+   | 1955: Carlo Negri, Guerrino Tramonti ''ex aequo''
+   | 1956: Germano Belletti, Gian Battista Valentini ''ex aequo''
+   | 1957: Angelo Biancini
+   | 1958: Carlo Zauli
+   | 1959: Guido Gambone
+   | 1960: Guido Gambone
+   | 1961: Gian Battista Valentini
+   | 1962: Carlo Zauli
+   | 1963: Fulvio Ravaioli, Pompeo Pianezzola ''ex aequo''
+   | {{nobreak|1964:Leoncillo Leonardi, {{ill|Rogier Vandeweghe|nl}} ''ex aequo''}}
+   | 1965: Berndt Friberg
+   | 1966: Wilhelm and Elly Kuch
+   | 1967: Eduard Chapallaz
+   | 1968: Hilkka Liisa Ahola
+   | 1969: Vlastimil Květenský
+   | 1970: Goffredo Gaeta, Ivo Sassi ''ex aequo''
+   | 1971: Panos Tsolakos
+   | 1972: Yasuo Hayashi
+   | 1973: Wilhelm and Elly Kuch
+   | 1974: Georges Blom
+   | 1975: Colin Pearson
+   | 1976: Alfonso Leoni, Paul Donhauser ''ex aequo''
+   | 1977: Gian Battista Valentini
+   | 1978: Mirko Orlandini
+   | 1979: Maria Teresa Kuczynska
+   | 1980: Guido Mariani
+   | 1981: Michel Kuipers
+   | 1982: Aki Matsui Toshio
+   | 1983: Jo-Anne Caron Devroey, Emidio Galassi ''ex aequo''
+   | 1984: Giuseppe Lucietti
+   | 1985: [[Sueharu Fukami]]
+   | 1986: (no award)
+   | 1987: Franz Stähler
+   | 1989: Enrico Stropparo
+   | 1991: Svetlana Nikolaevna Pasechnaya
+   | 1993: Tjok Dessauvage, Aldo Rontini ''ex aequo''
+   | 1995: [[Ken Eastman]]
+   | 1997: Michael Cleff
+   | 1999: Torbjørn Kvasbø
+   | 2001: Ana Cecilia Hillar
+   | 2003: Jun Nishida
+   | 2005: Silvia Zotta, Tomoko Kawakami ''ex aequo''
+   | 2007: Simone Lucietti, Ian Mcdonald ''ex aequo''
+   | 2009: Tomonari Kato, Andrea Salvatori ''ex aequo''
+   | 2011: Shigeki Hayashi, Eri Dewa, Giovanni Ruggiero ''ex aequo''
+   | 2013: {{ill|Päivi Rintaniemi|fi}}, Alessandro Neretti
+   | 2015: Silvia Celeste Calcagno, Helene Kirchmair, Thomas Stollar ''ex aequo''
+  }}
+| most_awards      = <!-- or | most_wins = -->
+| most_nominations = 
+| award1_type      = 
+| award1_winner    = 
+| award2_type      = 
+| award2_winner    = 
+| award3_type      = 
+| award3_winner    = 
+| award4_type      = 
+| award4_winner    = 
+| award5_type      = 
+| award5_winner    = 
+| website          = {{url|https://www.premiofaenza.it/}}
+| image2           = 
+| image2size       = <!-- or | image_upright2 -->
+| alt2             = 
+| caption2         = 
+| precedence_label = 
+| individual       = 
+| higher           = 
+| same             = 
+| lower            = 
+| related          = 
+| previous         = 
+| main             = 
+| next             = 
+}}
+
+The '''Premio Faenza''' is an international prize for 
+Premio Faenza
+Awarded for	contemporary ceramic art
+Date	1938
+Location	Faenza
+Country	Italy
+Presented by	Museo Internazionale delle Ceramiche in Faenza
+Winners	
+Full list of recipients[1]
+Website	www.premiofaenza.it
+contemporary [[ceramic art]]. It is awarded by the {{ill|Museo Internazionale delle Ceramiche in Faenza|it}} at [[Faenza]], in [[Emilia-Romagna]] in northern Italy, and is the principal Italian prize of its kind.{{r|ennio|page=47}}
+
+== History ==
+
+The prize was established in 1931. In 1938 it became an annual national award and was named ''"Premio Faenza".''{{r|cris|page=48}} The first recipient of the Premio Faenza was {{ill|Pietro Melandri|it}}, who also won it in the following year.{{r|aldo|page=284}} The award was not made in some years of the [[Second World War]], and recommenced in 1946. In 1963 it became international in scope – although several foreign artists had already been invited to participate in earlier editions – and from 1989 it became a biennial award.{{r|cris|page=48|aldo|page2=284}}
+
+== Recipients ==
+
+Among the recipients of the award are the sculptors [[Angelo Biancini]] (1946, 1957), [[Leoncillo Leonardi]] (1954, 1964) and {{ill|Carlo Zauli|it}} (1953, 1958 and 1962),{{r|rola|page=17}} and the [[ceramic art]]ists [[Sueharu Fukami]] (1985) and [[Ken Eastman]] (1995).{{r|mic}}
+
+==References==
+{{reflist|45em|refs=
+
+<ref name=aldo>Aldo Cairola, Angela Cipriani (1981). [https://books.google.com/books?id=S8ULAQAAMAAJ ''Ceramica italiana dalle origini a oggi''] (in Italian). Roma: Editalia. {{ISBN|9788870600131}}.</ref>
+
+<ref name=cris>Cristiana Baietta (2001). [https://books.google.com/books?id=lmigTxURFwQC&pg=PA48 ''Le città della ceramica''] (in Italian). Milano: Touring Club Italiano. {{ISBN|9788836523641}}.</ref>
+
+<ref name=ennio>Ennio Golfieri (1977). [https://books.google.com/books?id=-ktJAQAAIAAJ ''L'arte a Faenza dal neoclassicismo ai nostri giorni''], Part 2 (in Italian). Faenza: Amministrazione Comunale.</ref>
+
+<ref name=mic>[http://www.micfaenza.org/it/concorso-internazionale-premio-faenza/storia.php Albo d'oro del "Premio Faenza"] (in Italian). Museo Internazionale delle Ceramiche in Faenza. Accessed February 2018.</ref>
+
+<ref name=rola>Rolando Giovannini, Lori-Ann Touchette (2016). [http://search.ebscohost.com/login.aspx?direct=true&db=a9h&AN=116871558 Ceramics That Change]. ''Ceramics: Art & Perception'' (103): 16–19. {{subscription required}}.</ref>
+
+== Further reading ==
+
+* Aldo Cairola (1983). ''Quaranta anni del Premio Faenza: Siena, Palazzo Pubblico, Magazzini del Sale, 26 marzo–30 aprile 1983'' (exhibition catalogue, in Italian). Siena : Centrooffset.
+
+}}
+
+[[Category:Awards established in 1938]]
+[[Category:Ceramic art awards]]
+[[Category:Arts awards in Italy]]

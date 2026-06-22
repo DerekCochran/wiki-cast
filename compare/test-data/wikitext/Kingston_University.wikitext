@@ -1,0 +1,410 @@
+{{Short description|Public university in London, England}}
+{{redirect|Kingston Polytechnic|the Indian school|Kingston Polytechnic College}}
+{{About|the university in London, England|other uses|Kingston University (disambiguation)}}
+{{Use dmy dates|date=May 2019}}
+{{Use British English|date=November 2014}}
+{{Infobox university
+ | name                   = Kingston University London
+ | image_name             = File:Shield of Kingston University.svg
+| image_size = 160px
+ | caption                = [[Coat of arms]] of the university
+ | motto                  = {{langx|la|Per Scientiam Progredimur}} <ref name="oclc.org">{{cite web|url=http://cdm16680.contentdm.oclc.org/cdm/ref/collection/p16680coll3/id/1406|title=File: Machines - Kingston College of Technology coat of arms :: Kingston University Historical Photographs|website=cdm16680.contentdm.oclc.org}}</ref>
+ | mottoeng               = "Through Learning We Progress" <ref name="oclc.org"/>
+ | established            = {{Start date|1992}} – gained [[Universities in the United Kingdom|University Status]]<br />{{Start date|1899}} – Kingston Technical Institute
+ | type                   = [[public university|Public]]
+ | endowment              = £2.3&nbsp;million (2022)<ref name="accounts">{{cite web |title=Strategic Review and Financial Statements 2021/22 |url=https://d68b3152cf5d08c2f050-97c828cc9502c69ac5af7576c62d48d6.ssl.cf3.rackcdn.com/documents/user-upload/kingston-university-f6da8fae3b5-strategic-view-and-financial-st.pdf |publisher=Kingston University London |access-date=21 February 2023}}</ref>
+ | budget                 = £218.7 million (2021-22)<ref name="accounts"/>
+ | chancellor             = 
+ | vice_chancellor        = [[Steven Spier]]<ref name="Vice Chancellor's Office - kingston.ac.uk">{{cite web|url=http://www.kingston.ac.uk/aboutkingstonuniversity/howtheuniversityworks/thevicechancellorsoffice/|title=Vice-Chancellor's Team - How the University works - Kingston University London|access-date=15 January 2017}}</ref>
+ | students               = {{HESA student population|INSTID=10003678}} ({{HESA year}})<ref name="HESA citation">{{HESA citation}}</ref>
+ | undergrad              = {{HESA undergraduate population|INSTID=10003678}} ({{HESA year}})<ref name="HESA citation"/>
+ | postgrad               = {{HESA postgraduate population|INSTID=10003678}} ({{HESA year}})<ref name="HESA citation"/> <!--|full time       = 19,246<ref name="Student Profiles">{{cite web|url=http://www.kingston.ac.uk/aboutkingstonuniversity/factsandfigures/ |title=Facts and figures - Kingston University London |publisher=Kingston.ac.uk |date=1 December 2013 |access-date=11 February 2014}}</ref> --><!--|part time       = 3,841<ref name="Student Profiles"/>-->
+ | city                   = Penrhyn Road, [[Kingston upon Thames]], [[London]] KT1 2EE
+ | country                = United Kingdom
+ | campus                 = Urban
+ | athletics              = 
+ | colours                = Blue and White {{color box|#1195d3}} {{color box|#FFFFFF}}
+ | website                = {{URL|kingston.ac.uk}}
+ | logo                   = [[File:KingstonUniLogo.png|175px|Logo of Kingston University]]
+ | administrative_staff   = 
+ | coor                   = {{Coord|51.4035|-0.3039|type:edu_region:GB-KTT|display=inline,title}}
+ | affiliations           = [[Association of MBAs]]<br /> [[Association of Commonwealth Universities|ACU]]<br /> [[University Alliance]]<br /> [[European University Association|EUA]]<br /> [[Universities UK]]
+}}
+'''Kingston University London''' is a [[Public university|public]] [[research university]] located within the [[Royal Borough of Kingston upon Thames]], in [[South London|South West London]], England. Its roots go back to the '''Kingston Technical Institute''', founded in 1899. It received university status in 1992, before which the institution was known as '''Kingston Polytechnic'''.
+
+Kingston has around 17,000 students and a turnover of £192 million.<ref>{{Cite web|url=https://www.kingston.ac.uk/aboutkingstonuniversity/factsandfigures/financialstatements/|title=Financial statements - Facts and figures - Kingston University London|website=www.kingston.ac.uk|language=en|access-date=2019-09-18}}</ref> It has four campuses situated in [[Kingston upon Thames|Kingston]] and [[Roehampton]]. The university specialises in the arts, design, fashion, science, engineering, and business and is organised into four faculties: [[Kingston School of Art]], Faculty of Business and Social Sciences (which combines [[Kingston Business School]] and the School of Law, Social and Behavioural Sciences), Faculty of Health, Science, Social Care and Education, and Faculty of Engineering, Computing and the Environment. The Kingston Business School is [[Council for National Academic Awards|CNAA]] [[Master of Business Administration|MBA]] degree approved. In 2017, the university won ''[[The Guardian]]'' University Award for teaching excellence.<ref name=":0" />  Kingston is a member of the [[European University Association]], the [[Association of Commonwealth Universities]], and [[University Alliance]] group.
+
+==History==
+Kingston was founded as Kingston Technical Institute in 1899, it offered courses in chemistry, electrical wiring, construction and nursing. In 1917 Gipsy Hill College for teacher training opened, a predecessor of Kingston University.<ref>{{Cite web |title=Gipsy Hill Teacher Training College Archive - Archives Hub |url=https://archiveshub.jisc.ac.uk/data/gb2108-kuas1 |access-date=2023-02-27 |website=archiveshub.jisc.ac.uk}}</ref> Gipsy Hill College was created by [[Belle Rennie]] and led by an Australian named [[Lillian Daphne de Lissa]].<ref>{{Cite ODNB |title=Rennie [née Moorhouse], Isabella Southern [Belle] (1875–1966), educationist |url=https://www.oxforddnb.com/display/10.1093/ref:odnb/9780198614128.001.0001/odnb-9780198614128-e-48580 |access-date=2023-02-27 |date=2004 |language=en |doi=10.1093/ref:odnb/48580}}</ref> In 1930 the [[Kingston School of Art]] separated from the Technical Institute, later to become Kingston College of Art in 1945. In 1946 Gipsy Hill College moved to Kingston Hill. In 1951, the first Penrhyn Road campus buildings opened. Kingston was recognised as a 'Regional College of Technology' by the [[Ministry of Education (United Kingdom)|Ministry of Education]] in 1957. In 1970, the College of Technology merged with the College of Art to become Kingston Polytechnic, offering 34 major courses, of which 17 were at degree level.<ref name=kuwebsite>{{cite web|url=http://www.kingston.ac.uk/aboutkingstonuniversity/factsandfigures/ourhistory/|title=Our history - Facts and figures|website=Kingston University Website|access-date=12 October 2014}}</ref> In 1975, Kingston merged with the Gipsy Hill College of Education, incorporating the college's faculty into Kingston's Division of Educational Studies.<ref>{{Cite web|url=http://cdn.kingston.ac.uk/documents/aboutkingstonuniversity/factsandfigures/ourhistory/documents/history-of-kingston-text.pdf|title=A History of Kingston university|last=Gibson|first=Michael|date=1999|publisher=Kingston University}}</ref>
+
+Kingston was granted university status under the [[Further and Higher Education Act 1992]]. In 1993, Kingston opened the Roehampton Vale campus building and in 1995, Kingston acquired [[Dorich House]].
+
+In June 2021, Kingston launched its Future Skills campaign, highlighting the importance of skills for innovation and the vital role they play in driving a thriving UK economy. The results of their 2021 and 2022 surveys, conducted with support from [[YouGov]], demonstrated key attributes such as problem-solving, critical thinking, communication, adaptability and creativity remain among the core skills most valued by employers.<ref>{{Cite web|url=https://www.kingston.ac.uk/aboutkingstonuniversity/future-skills/|title=Future Skills|website=www.kingston.ac.uk|language=en|access-date=2022-08-16}}</ref>
+
+==Campuses and estate==
+
+===Penrhyn Road===
+[[File:Universität Kingston.jpg|thumb|right|Main building, Penrhyn Road campus]]
+This is the main university campus located close to Kingston town centre. Students based here study Arts and Social Sciences, Civil Engineering, Computing and Information Systems and Mathematics, Earth Sciences and Geography, Statistics, Biosciences, Pharmacy, Chemistry and Pharmaceutical Science, and Radiography. Development at this site has extended to the Learning Resources Centre. In 2015, the [[Union of Kingston Students]], moved into the main building. Penrhyn Road also houses the refurbished Fitness Centre.<ref>{{cite web | url=https://www.kingston.ac.uk/sport/latest-news/2012/august/fitness-centre/ | title=Kingston University Fitness Centre - Sport and recreation news - Sport and Active Lifestyles - Kingston University London }}</ref>
+
+====Town House====
+Kingston University's Town House building was opened in January 2020 and is located on the Penrhyn Road campus. The six-storey building was the first by [[Royal Institute of British Architects]] (RIBA) Gold Medal-winning firm [[Grafton Architects]] in the [[United Kingdom]] and is open to students, staff and the local community.<ref>{{cite web|url=https://www.kingston.ac.uk/news/article/2288/06-jan-2020-flagship-multimillion-pound-town-house-building-opens-at-kingston-university/|title=Flagship multi-million pound Town House building opens at Kingston University|website=www.kingston.ac.uk|date=6 January 2020 }}</ref>
+
+The building work was carried out by [[Hertfordshire]]-based [[Willmott Dixon]]. It features a three-floor academic library, archive, dance studios and a studio theatre. It incorporates a covered internal courtyard, two cafes and external balconies and walkways culminating in a rooftop garden with views across [[Kingston upon Thames (parish)|Kingston upon Thames]] and the River Thames.
+
+Town House has been nominated for several awards, including two ''[[The Guardian]]'' University Awards,<ref>{{cite web|url=https://www.kingston.ac.uk/news/article/2308/13-mar-2020-kingston-university-shortlisted-for-two-guardian-university-awards/|title=Kingston University shortlisted for two Guardian University Awards
+|website=www.kingston.ac.uk}}</ref> and a RIBA London Regional Award.<ref name="kingston.ac.uk">{{cite web|url=https://www.kingston.ac.uk/news/article/2348/07-jul-2020-kingston-universitys-town-house-building-and-kingston-school-of-art-campus-regeneration-shortlisted-for-riba/|title=Kingston University's Town House building and Kingston School of Art campus regeneration shortlisted for RIBA London Regional Awards|website=www.kingston.ac.uk}}</ref> In October 2021, Town House was announced as the winner of the 25th RIBA [[Stirling Prize]].<ref>{{Cite web|title=RIBA Stirling Prize 2021|url=https://www.architecture.com/awards-and-competitions-landing-page/awards/riba-stirling-prize|access-date=2021-10-18|website=www.architecture.com}}</ref><ref>{{Cite web|date=2021-10-15|title=Student 'Town House' wins Stirling Prize to be named UK's best new building|url=https://www.independent.co.uk/arts-entertainment/architecture/riba-stirling-prize-2021-kingston-university-london-town-house-b1938726.html|access-date=2021-10-18|website=The Independent|language=en}}</ref> 
+In 2022 it won the [[European Union Prize for Contemporary Architecture]].<ref>{{Cite web|url=https://www.kingston.ac.uk/news/article/2661/26-apr-2022-kingston-universitys-town-house-carries-off-highest-accolade-in-european-architecture-winning-prestigious-eu-mies/|title=Kingston University's Town House carries off highest accolade in European architecture, winning prestigious EU Mies van der Rohe Award|website=www.kingston.ac.uk|date=26 April 2022 |language=en|access-date=2022-04-26}}</ref>
+
+===Kingston Hill===
+[[File:Kingston Hill campus.jpg|thumb|Kingston Hill campus, Kingston University]]
+Kingston Hill mainly caters to Nursing (adult, child, mental health and learning disability), Education, Business, Music and Social Care. Before 1989, this campus was known as Gipsy Hill.
+
+The Business School moved to a new building on the Kingston Hill Campus in 2012.<ref>{{cite news|author=Kieran Long |url= https://www.standard.co.uk/arts/architecture/look-and-learn-intelligent-design-for-education-7630998.html |title=Look and learn: intelligent design for education - Architecture - Arts |work=Evening Standard|location= London |date=11 April 2012|archive-url=https://web.archive.org/web/20121214002704/http://www.standard.co.uk/arts/architecture/look-and-learn-intelligent-design-for-education-7630998.html|archive-date=14 December 2012|access-date=31 March 2015}}</ref>
+
+===Knights Park===
+
+Located on Grange Road, the Knights Park campus is home to some of the students from Kingston School of Art (KSA) - architecture, art and design students. The campus is built on the northern banks of the [[Hogsmill River]] and opened in 1939.<ref>{{cite web|url=https://www.kingston.ac.uk/faculties/kingston-school-of-art/about/history/|title=A history of Kingston School of Art|website=www.kingston.ac.uk}}</ref>
+
+A £29 million refurbishment of the Mill Street workshops, studios and reception area, was completed in March 2020 and includes a gallery, a social space and an art shop.<ref>{{cite web|url=https://www.kingston.ac.uk/news/article/2309/30-mar-2020-refurbishment-of-kingston-school-of-arts-mill-street-building-shows-vision-for-the-future-of/|title=Refurbishment of Kingston School of Art's Mill Street Building shows vision for the future of art school education
+|website=www.kingston.ac.uk|date=30 March 2020
+}}</ref> The regeneration project was shortlisted for a [[Royal Institute of British Architects]] (RIBA) London Regional Award.<ref name="kingston.ac.uk"/>
+
+===Roehampton Vale===
+The Roehampton Vale campus was opened in 1993 by Sir William Barlow, the president of the [[Royal Academy of Engineering]]. The site is located on Friars Avenue, on the outskirts of Kingston. 
+This campus is purpose-built and completely dedicated to the study of engineering (aerospace, automotive, motor vehicle and mechanical engineering).<ref>{{Cite web|url=https://www.kingston.ac.uk/aboutkingstonuniversity/location/roehampton-vale-kingston/|title=Roehampton Vale - Location - About Kingston University - Kingston University London|website=www.kingston.ac.uk|access-date=2 August 2020}}</ref>
+
+Facilities on site include a wind tunnel, engineering workshops, a flight simulator, a range of vehicles, a Learjet 25 plane, several large 3D printers, plus automotive and aeronautical learning resources.{{citation needed|date=April 2023}}
+
+=== Reg Bailey Theatre Complex ===
+Former church converted into the Kingston [[Drama]] students' base, the Reg Bailey has two theatres with lighting and sound equipment, three rehearsal rooms and a [[costume]] room while its annexed Surrey Club is for [[Dance]] students. The Reg Bailey has been home to such alumni members as [[Ben Barnes (actor)|Ben Barnes]], [[Sam Chan]], [[Mandy Takhar]], [[Alphonsia Emmanuel]], [[Jessie Cave]], [[Laura Harling]] and [[Trevor Eve]].<ref>{{Cite web|url=https://moderngov.kingston.gov.uk/mgAi.aspx?ID=13601|title=Your council and democracy: REG BAILEY BUILDING|date=20 October 2009|website=Kingston Council|access-date=4 October 2018}}</ref>
+
+===Tolworth Court Sports Ground===
+The university's 55-acre sports ground houses twelve football pitches, two rugby pitches, three cricket squares, one American football pitch, one lacrosse pitch, two netball courts and three tennis courts.<ref>{{cite web|url=http://www.kingston.ac.uk/sport/tolworthcourtsportsground/|title=Tolworth Court sports ground - Sport and Active Lifestyles|date=12 October 2014|website=www.kingston.ac.uk|access-date=6 October 2017}}</ref>
+
+===Galleries and museums===
+The Stanley Picker Gallery is the Faculty's exhibition space which is now used to present a variety of research-based projects, fellowships and exhibitions.<ref name="stanleypickergallery.org">{{cite web|url=http://www.stanleypickergallery.org |title=The Stanley Picker Gallery at Kingston University is a public venue dedicated to the research, development, production and presentation of interdisciplinary contemporary art practice |publisher=Stanley Picker Gallery |access-date=11 February 2014}}</ref> In 2003, the Stanley Picker Gallery gave birth to Transitstation,<ref>{{cite web|url=http://www.transitstation.de |title=transitstation - Exhibition as Event |website=Transitstation.de |access-date=15 November 2012}}</ref> which was created/curated by Stanley Picker Fellow Dagmar Glausnitzer-Smith, and former gallery curator Charles Ryder. In 2003, the Director of Foundation Studies in Art and Design, Paul Stafford, converted a run-down public convenience in Kingston town centre into the Toilet Gallery.<ref>{{cite web |url=http://www.toiletgallery.org/ |title=育毛剤の人気ランキング情報 |publisher=Toiletgallery.org |access-date=15 November 2012 |archive-date=6 December 2020 |archive-url=https://web.archive.org/web/20201206002457/http://toiletgallery.org/ |url-status=dead }}</ref>
+
+Kingston University runs Dorich House Museum<ref>{{cite web |url=http://www.kingston.ac.uk/dorich/ |title=Dorich House Museum |publisher=Kingston University |access-date=15 November 2012 |archive-url=https://web.archive.org/web/20070416033550/http://www.kingston.ac.uk/dorich/ |archive-date=16 April 2007 |url-status=dead  }}</ref> which houses a huge collection of sculptor [[Dora Gordine]]'s work, and examples of [[Russian Imperial]] art and furniture. Dorich House is also used as a meeting and conference venue.{{citation needed|date=March 2025}}
+
+===Other locations===
+Additional to the four main campuses is an administration building: Hind Court on London Road which was home to the office of the Vice-Chancellor until 2018 when they moved to Holmwood House.<ref>{{cite web | url=https://riveronline.co.uk/vice-chancellor-spent-600000-on-his-new-office-space/ | title=Vice-chancellor spent £600,000 on his new office space | date=13 November 2018 }}</ref>
+
+Furthermore, art and design studies students from Kingston School of Art are based at River House, on the High Street in Kingston town centre.<ref>{{cite web | url=https://www.kingston.ac.uk/aboutkingstonuniversity/location/river-house-kingston/ | title=River House - Location - About Kingston University - Kingston University London }}</ref>
+
+==Organisation==
+Teaching and research are organised in four faculties.<ref>{{cite web|url=https://www.kingston.ac.uk/faculties/|title=Faculties and schools at Kingston University - Kingston University London|website=www.kingston.ac.uk}}</ref>
+
+===Kingston School of Art===
+[[Kingston School of Art]] (KSA) was established as part of Kingston Technical Institute founded in 1899. The School of Art separated from the Technical College in 1930 and left Kingston Hall Road to move to Knights Park in 1939. It became Kingston College of Art in 1945 and merged back with the Technical College to form Kingston Polytechnic in 1970. The Polytechnic later became Kingston University in 1992, under which the school was known as the Faculty of Art, Design and Architecture (FADA) until 2017 when it reverted to its historic name.<ref>{{cite web |url=http://www.kingston.ac.uk/aboutkingstonuniversity/factsandfigures/ourhistory/ |title=Our History |access-date=21 May 2013}}</ref><ref>{{Cite web|url=http://riveronline.co.uk/knights-park-celebrates-the-launch-of-the-kingston-school-of-art/|title=Knights Park celebrates the launch of the Kingston School of Art {{!}} River Online|website=riveronline.co.uk|date=4 October 2017|language=en-GB|access-date=4 November 2017 |last1=Cherubini |first1=Elena }}</ref>
+Kingston School of Art delivers undergraduate and postgraduate programmes of study across three schools:<ref>{{Cite web|url=https://www.kingston.ac.uk/faculties/kingston-school-of-art/study/|title=Study at Kingston School of Art|website=www.kingston.ac.uk|access-date=4 November 2017}}</ref>
+
+The Kingston School of Art runs a number of research centres:
+*Contemporary Art Research Centre ("CARC"), a Research Centre within the Department of Fine Art
+*Colour Design Research Centre
+*Screen Design Research Centre
+*Modern Interiors Research Design<ref>{{cite web|url=http://www.kingston.ac.uk/design/MIRC/ |title=Kingston University - Faculty of Art, Design and Architecture - Modern Interiors Research Centre |publisher=Kingston University |access-date=15 November 2012}}</ref>
+*Sustainable Design Research Centre<ref>{{cite web|url=http://www.kingston.ac.uk/design/research/sustainable.html |title=The Sustainable Design Research Centre|access-date=24 April 2007 |publisher=Kingston University |url-status=dead |archive-url=https://web.archive.org/web/20070313142605/http://www.kingston.ac.uk/design/research/sustainable.html |archive-date=13 March 2007 }}</ref>
+*Centre for the Contemporary Visual & Material Culture
+*Curating Contemporary Design Research Group
+*Real Estate Research Group
+*Fashion Industry Research Centre
+*Fire, Explosion and Fluid Dynamics (FEFD)
+*Centre for Research in Modern European Philosophy ([[CRMEP]])<ref>{{Cite web |title=Centre for Research in Modern European Philosophy (CRMEP) - Kingston School of Art – Kingston University |url=https://www.kingston.ac.uk/faculties/kingston-school-of-art/research-and-innovation/crmep/ |access-date=2023-08-10 |website=www.kingston.ac.uk |language=en-GB}}</ref>
+
+===Faculty of Business and Social Sciences===
+The Faculty of Business and Social Sciences combines Kingston Business School and the School of Law, Social and Behavioural Sciences.
+
+[[Kingston Business School]] (KBS) can be traced back to the 1960s. In 1985, the [[Council for National Academic Awards|CNAA]] approved the school's [[Master of Business Administration]] (MBA) degree and the following year KBS moved to Kingston Hill Campus. The Business School is divided into four departments:<ref>{{Cite web|url=http://business.kingston.ac.uk/about-us|title=Kingston Business School {{!}} Find Out About Our Faculty and Facilities {{!}} Kingston Business School, London|website=business.kingston.ac.uk|access-date=4 November 2017}}</ref>
+
+===Faculty of Health, Science, Social Care and Education===
+The Faculty of Health, Science, Social Care and Education was founded in August 2022 and contains courses including nursing, midwifery, social work and teacher training education. The faculty also contains life sciences and chemistry and pharmacy courses, which were previously part of Kingston's former Faculty of Science, Engineering and Computing – now the Faculty of Engineering, Computing and the Environment.
+
+The new Faculty of Health, Science, Social Care and Education was established after a formal partnership between Kingston University and [[St George's, University of London]] (SGUL) was mutually terminated in July 2022 after 26 years of working together training the next generation of healthcare workers, social workers and teachers.<ref>{{Cite web|url=https://www.kingston.ac.uk/faculties/faculty-of-health-social-care-education/|title=Faculty of Health, Science, Social Care and Education|website=www.kingston.ac.uk|date=15 August 2022|language=en-GB|access-date=15 August 2022}}</ref> The faculty is based at the University's Kingston Hill and Penrhyn Road campuses in Kingston upon Thames.
+
+===Faculty of Engineering, Computing and the Environment===
+The Faculty of Engineering, Computing and the Environment was founded in August 2022 and contains courses including mechanical, civil and aerospace engineering, computing, cyber security, quantity surveying and geography.<ref>{{Cite web|url=https://www.kingston.ac.uk/faculties/science-engineering-and-computing/|title=Faculty of Engineering, Computing and the Environment|website=www.kingston.ac.uk|date=15 August 2022|language=en-GB|access-date=15 August 2022}}</ref> The faculty is based at the University's Penrhyn Road and Roehampton Vale campuses.
+
+==Academic profile==
+===Rankings and reputation===
+{{Infobox UK university rankings
+| ARWU_N = 
+| ARWU_W = 
+| QS_N = 51
+| QS_W = 660=
+| THE_N = 79
+| THE_W = 801–1000
+| LINE_1 = –
+| Complete = 89
+| The_Guardian = 55
+| Times/Sunday_Times = 94
+}}
+''[[The Guardian]]'' placed Kingston 45th out of 128 surveyed universities.<ref>{{Cite web|url=https://www.theguardian.com/education/ng-interactive/2021/sep/11/the-best-uk-universities-2022-rankings|title=University league tables 2022|website=The Guardian|date=11 September 2021 |language=en|access-date=11 September 2021}}</ref> ''[[The Times]]/[[The Sunday Times]] Guide'' placed it at no. 92 ([[Rankings of universities in the United Kingdom|Good University Guide]], 2022). In 2018, Kingston was ranked 1st out of 121 institutions for its [[graphic design]] and [[product design]] courses by ''The Guardian'' in 2017.<ref>{{Cite news|url=https://www.itsnicethat.com/news/best-uk-university-design-courses-260516|title=The best design courses in the UK, according to The Guardian University Guide 2017|date=26 May 2016|work=It's Nice That|access-date=4 November 2017}}</ref> In 2017, Kingston University won ''The Guardian'' University Award for teaching excellence.<ref name=":0">{{cite web|url=http://www.kingston.ac.uk/news/article/1810/04-apr-2017-kingston-university-wins-guardian-university-award-for-teaching-excellence/|title=Kingston University wins Guardian University Award for teaching excellence|website=www.kingston.ac.uk|access-date=20 October 2017|archive-date=20 October 2017|archive-url=https://web.archive.org/web/20171020140606/http://www.kingston.ac.uk/news/article/1810/04-apr-2017-kingston-university-wins-guardian-university-award-for-teaching-excellence/|url-status=dead}}</ref>
+
+Kingston is ranked as one of the top 40 universities in the UK by ''[[The Guardian University Guide]]'' 2020, ranked in the top 250 in the world for Business & Economics by the ''[[Times Higher Education World University Rankings]]'' 2019 and ranked in the top 140 Global MBA rank according to "[[QS World University Rankings]]" (2020) Kingston was awarded a Gold rating in the Teaching Excellence Framework (TEF) in September 2023. It has also secured a Gold award in the framework's two new student experience and student outcomes categories. The announcement sees Kingston join an elite line up of 26 universities and colleges across the United Kingdom who have been awarded TEF Gold in all three categories, alongside Oxford, Cambridge, Exeter and Warwick.<ref>{{cite web|url=https://www.officeforstudents.org.uk/for-students/teaching-quality-and-tef/the-tef-a-guide-for-students/ |title=The TEF - a guide for students - Office for Students |date=19 January 2022 }}</ref>
+
+==Student life==
+===Union of Kingston Students===
+The [[Union of Kingston Students]] (UKS), formerly Kingston University Students' Union (KUSU), and in the 1990s KUGOS (Kingston University Guild of Students') is a charitable organisation representing the student body and aiming to provide services and activities beneficial to the student experience. It is a student union in the meaning of the term given in the [[Education Act 1994]], and whilst independent of the university is funded by a block grant from it.
+
+===Halls of residence===
+The university has six halls of residence. Chancellors' and Walkden are based at the Kingston Hill campus. Middle Mill is adjacent to the Knights Park campus, while Clayhill and [[Seething Wells]] are on opposite sides of [[Surbiton]]. Finally, there is Kingston Bridge House which is situated on the edge of [[Bushy Park]] at the [[Hampton Wick]] end of [[Kingston Bridge, London]].<gallery mode="packed-hover">
+File:Hogsmill River (part thereof) - geograph.org.uk - 151396.jpg|[[Hogsmill River]]
+File:Seething Wells - geograph.org.uk - 1318706.jpg|[[Seething Wells]]
+File:SeethingWells01.JPG|[[Seething Wells]]
+File:Water works building - geograph.org.uk - 1112648.jpg|[[Seething Wells]]
+</gallery>
+
+==Athletics==
+Kingston University London athletic teams are nicknamed the "Cougars".
+
+==International partners==
+The university holds a number of links with institutions from around the world to share teaching and research and facilitate staff and student exchanges. Kingston has a number of international 'Study Abroad' or 'Exchange' partner institutions.<ref>{{cite web|url=http://www.kingston.ac.uk/visitingstudents/studyabroad/partners/|title=International partner institutions - Study Abroad - Visiting students - Kingston University London|website=www.kingston.ac.uk}}</ref>
+
+==Controversies==
+{{criticism section|date=March 2025}}
+
+===Humanities department closure 2025===
+Kingston University has initiated the closure of its humanities department,<ref name="Kingston Axes Philosophy centre in humanities department shutdown">{{cite news|last=Grove|first=Jack|date=6 March 2025|title=Kingston axes philosophy centre in humanities department shutdown|work=Times Higher Education|url=https://www.timeshighereducation.com/news/kingston-axes-philosophy-centre-humanities-department-shutdown|access-date=14 March 2025}}</ref> including its graduate research teaching programme in philosophy, the Centre for Research in Modern European Philosophy (CRMEP). In February 2024, the Head of the School of Creative and Cultural Industries advised students that it had launched a review of its philosophy programme, citing declining enrolment, lack of government funding and the Philosophy programme’s focus on post-graduate teaching as reasons.<ref>{{Cite web |last=Grove |first=Jack |date=August 15, 2024 |title='Will the funding crisis confine UK research to elite universities?' |url=https://www.timeshighereducation.com/depth/will-funding-crisis-confine-uk-research-elite-universities |access-date=14 March 2025 |website=Times Higher Education}}</ref> The review was expected to complete in six weeks. The outcome of that review was not made public. On 26 February 2025, the Dean of Kingston School of Art advised students that Kingston had begun a 30 day consultation period to shut down teaching in the entirety of the humanities, to include closure of its English and philosophy programmes, stating that these programmes are inconsistent with Kingston’s new Town House strategy and future skills delivery.<ref name="Kingston Plans to Close Its Centre for Research in Modern European Philosophy">{{cite news|last=Weinberg|first=Justin|date=7 March 2025|title=Kingston Plans to Close Its Centre for Research in Modern European Philosophy|work=Daily Nous|url=https://dailynous.com/2025/03/07/kingston-plans-to-close-its-centre-for-research-in-modern-european-philosophy/|access-date=14 March 2025}}</ref>
+
+''The Times Higher Education'' noted that "Kingston has also suspended applications for new students to its foundation year humanities programme “with a view to it closing in the new longer term”, according to the email sent by Kingston School of Art dean Mandy Ure."<ref name="Kingston Axes Philosophy centre in humanities department shutdown"/> The closures are also expected to affect the creative writing program and the Kingston Language Scheme which teaches modern languages.<ref name="Kingston Axes Philosophy">{{cite news|last=Grove|first=Jack|date=6 March 2025|title=Kingston axes philosophy centre in humanities department shutdown|publisher=Times Higher Education|url=https://www.timeshighereducation.com/news/kingston-axes-philosophy-centre-humanities-department-shutdown|access-date=14 March 2025}}</ref> In an open letter, published in the contemporary art forum e-Flux and the British publishing house [[Verso Books|Verso]], the CRMEP students state they "unequivocally condemn" the closures, writing that the proposals are an "affront against a broadly humanist concept of education, in which the independence of culture and research from immediate market imperatives" affirms their social value.<ref name="Open Letter from CRMEP Students & Researchers on Kingston University’s Proposed Closure of the Department of Humanities">{{citation|author=MA, MPhil, and PhD students and researchers in the Centre for Research in Modern European Philosophy, Kingston University, London |date=5 March 2025|title=Open Letter from CRMEP Students & Researchers on Kingston University's Proposed Closure of the Department of Humanities|publisher=e-Flux Notes|url=https://www.e-flux.com/notes/658933/open-letter-from-crmep-students-researchers-on-kingston-university-s-proposed-closure-of-the-department-of-humanities}}</ref><ref>{{Cite web |date=5 March 2025 |title=Open Letter from CRMEP Students & Researchers on Kingston University's Proposed Closure of the Department of Humanities |url=https://www.versobooks.com/blogs/news/open-letter-from-crmep-students-researchers-on-kingston-university-s-proposed-closure-of-the-department-of-humanities |access-date=14 March 2025 |website=Verso}}</ref>  Kingston University's Senior Leadership Team led by the Vice-Chancellor Stephen Spier has expressed its intention to implement £20 million in savings and to lay-off staff and close programmes to take effect at the end of July.  The Kingston [[University and College Union|University College Union]] has since passed a motion of 'no-confidence' in the Senior Leadership Team.{{citation needed|date=March 2025}} 
+[[File:Judith-butler-CRMEP2-March2024.jpg|thumb|alt=Judith-Butler-speaking-on Kafka-CRMEP-Feb2024|Judith Butler speaking on Kafka at CRMEP Feb 2024]]
+
+===BMus external examiner===
+In 2008, the [[BBC]] obtained e-mails circulated within Kingston's School of Music, relating to the opinions of an [[external examiner]] moderating the BMus course.<ref name="BBCDroppedCriticism">{{cite news|last=Coughlan|first=Sean|date=24 June 2008|title=Examiner dropped course criticism|publisher=BBC|url=http://news.bbc.co.uk/1/hi/education/7470125.stm|access-date=25 June 2008}}</ref> The messages showed that her final report caused considerable concern within the department. The examiner was persuaded to moderate her criticism following contact from a member of the university's staff. The e-mails also detailed a plan to replace her (at the end of her term) with a more experienced and broad-based external examiner, a process which Kingston stressed breaks no rules relating to the appointment of such examiners.<ref name="BBCDroppedCriticism" />
+
+In October 2008, Peter Williams, Chief Executive of the UK Quality Assurance Agency (QAA), presented the agency's findings to a Parliamentary Select Committee charged with investigating standards in British higher education. Following an investigation of the allegations by a former University staff member that undue pressure was applied to the School of Music's External Examiner, QAA upheld all charges of wrongdoing, as alleged.<ref>{{cite web|author=The Committee Office, House of Commons|title=House of Commons - Innovation, Universities, Science and Skills - Minutes of Evidence|url=http://www.parliament.the-stationery-office.com/pa/cm200708/cmselect/cmdius/905/8071710.htm|url-status=dead|archive-url=https://web.archive.org/web/20110716215655/http://www.parliament.the-stationery-office.com/pa/cm200708/cmselect/cmdius/905/8071710.htm|archive-date=16 July 2011|access-date=15 November 2012|publisher=Parliament.the-stationery-office.com}}</ref><ref>{{cite web|title=Kingston University Special review of the circumstances surrounding the amendments to an external examiner's report|url=http://www.qaa.ac.uk/causesforconcern/kingston09.asp|url-status=dead|archive-url=https://web.archive.org/web/20090719205943/http://www.qaa.ac.uk/causesforconcern/Kingston09.asp|archive-date=19 July 2009|access-date=25 March 2009}}</ref><ref name="THESExtExaminer">{{cite news|last=Newman|first=Melanie|date=26 March 2009|title=Kingston Showed Lack of Regard for External Examiner's Role, Says QAA|publisher=Times Higher Education|url=http://www.timeshighereducation.co.uk/story.asp?sectioncode=26&storycode=405954&c=1|access-date=27 March 2008}}</ref>
+
+===Controversial speakers===
+In 2015, Prime Minister [[David Cameron]] named and shamed four British universities which gave platforms to allegedly 'extremist' speakers.<ref>[https://www.telegraph.co.uk/education/universityeducation/11870429/British-universities-that-give-the-floor-to-extremist-speakers-are-named-and-shamed.html British universities that give the floor to extremist speakers are named and shamed], ''The Telegraph''</ref><ref>{{Cite web|title='Show us the evidence David Cameron': Supporters rally after Kingston University listed for extremism|date=30 October 2015 |url=http://www.surreycomet.co.uk/news/13924322._Show_us_the_evidence_David_Cameron___Supporters_rally_after_Kingston_University_listed_for_extremism/#comments-anchor|publisher=Surrey Comet}}</ref>
+
+Kingston's Vice Chancellor [[Julius Weinberg]] defended his decision to allow controversial speakers in the name of free speech.<ref>[https://www.theguardian.com/higher-education-network/2016/feb/23/its-the-job-of-universities-to-challenge-ideas-we-cant-let-prevent-get-int-the-way I won't stop offering a platform to so-called 'hate speakers'], ''The Guardian''</ref>
+
+===National Student Survey exaggeration===
+In 2008, an audio recording obtained by student media included two psychology lecturers asking students to inflate their graded opinions given as part of the [[National Student Survey]].<ref name="BBCFakingSurvey">{{cite news|last=Coughlin|first=Sean|date=13 May 2008|title=University staff faking survey|publisher=BBC|url=http://news.bbc.co.uk/1/hi/education/7397979.stm|access-date=13 May 2008}}</ref> One member of staff was recorded as encouraging students to boost specific satisfaction scores, because "if Kingston comes down the bottom [of the league tables], then the bottom line is that nobody is going to want to employ you because they are going to think your degree is shit".<ref name="BBCFakingSurvey" /><ref>{{cite news|last=Mostrous|first=Alexi|date=14 May 2008|title=Kingston University students told to lie to boost college's rank in government poll|work=[[The Times]]|url=http://www.timesonline.co.uk/tol/news/uk/article3924417.ece|archive-url=https://web.archive.org/web/20080726195511/http://www.timesonline.co.uk/tol/news/uk/article3924417.ece|url-status=dead|archive-date=26 July 2008|access-date=28 June 2008}}</ref> In response, Vice-Chancellor [[Peter Scott (educationalist)|Peter Scott]] confirmed that the recording was genuine but added that he believed that the incident was an isolated one.<ref>{{cite news|date=14 May 2008|title=Statement in response to National Student Survey complaint|publisher=Kingston University Press Office|url=http://www.kingston.ac.uk/pressoffice/latestnews/2008/may/14-Statement-in-response-to-National-Student-Survey-complaint/|access-date=2 July 2008}}</ref> In July 2008, the Higher Education Funding Council of England removed the university's Department of Psychology of the Faculty of Arts and Social Sciences from the League Tables for the year as its sanction for having fraudulently manipulated the National Student Survey results.<ref name="BBCFacultyExpulsion">{{cite news|last=Coughlin|first=Sean|date=26 July 2008|title=Faculty in league table expulsion|publisher=BBC|url=http://news.bbc.co.uk/1/hi/education/7526061.stm|access-date=26 July 2008}}</ref>
+
+==Notable alumni==
+
+<gallery mode="packed">
+File:Eric-Clapton 1975.jpg|[[Eric Clapton]] is the only [[List of Rock and Roll Hall of Fame inductees|three-time inductee]] into the [[Rock and Roll Hall of Fame]].
+File:Ben Barnes by Gage Skidmore 2.jpg|[[Ben Barnes (actor)|Ben Barnes]] at 2017 [[San Diego Comic-Con|San Diego Comic- Con]].
+File:Sam Golden Flower Awards.jpg|[[Sam Chan]] at the 2016 Golden Flower Awards.
+File:Glenda bailey editor harpers bazaar christopher peterson.jpg|[[Glenda Bailey]]
+File:David Chipperfield.JPG|Sir [[David Alan Chipperfield]] 
+File:Dall England world cup winners.jpg|[[Lawrence Dallaglio]] holding the [[Rugby World Cup]].
+File:025 reeksen 60m philip (32505897124) (cropped).jpg|[[Asha Philip]] in 2017.
+File:上海 咪咕颁奖礼红毯 (1).jpg|[[Eason Chan]] in 2016.
+File:Ruby McGregor-Smith CEO of Mitie Group plc.jpg|[[Ruby McGregor-Smith]] in 2013.
+File:Ed McKeever portrait.jpg|[[Ed McKeever]] - [[2012 Summer Olympics|London 2012 Olympic Games]] Victory.
+File:Francis Yeoh.jpg|[[Francis Yeoh]] in 2015.
+File:Laura Woods (English presenter) 2022 (sq cropped).jpg|[[Laura Woods (English presenter)|Laura Woods]] presenting for [[ITV (TV network)|ITV]] in 2022.
+</gallery>
+
+{{columns-list|colwidth=35em|{{sp}}
+
+=== Film and entertainment ===
+
+*[[Ben Barnes (actor)|Ben Barnes]], actor and singer<ref>{{Cite web|url=https://www.surreylife.co.uk/people/celebrity-interviews/actor-ben-barnes-on-narnia-wimbledon-and-dorian-gray-1-1635096|title=Actor Ben Barnes on Narnia, Wimbledon and Dorian Gray|website=Surrey|date=30 November 2010|language=en|access-date=2020-04-21}}</ref><ref>{{Cite news|last=Barnes|first=Brooks|url=https://www.nytimes.com/2008/05/12/arts/12iht-barnes.1.12793013.html|title=Ben Barnes: An unknown on the brink of fame|date=2008-05-12|work=The New York Times|access-date=2020-04-21|language=en-US|issn=0362-4331}}</ref>
+*[[Angie Bowie]], American actress, former wife of [[David Bowie]] and mother of [[Duncan Jones]]<ref>{{Cite web|url=https://riveronline.co.uk/?p=18756|title=Angie Bowie on life at Kingston University, hanging out with rock stars, Celebrity Big Brother and David Bowie. {{!}} River Online|last=Brain|first=Eric|date=19 October 2017|language=en-GB|access-date=2020-04-28}}</ref>
+*[[Jessie Cave]], actress known for her role as [[Lavender Brown]] in the [[Harry Potter (film series)|Harry Potter film series]]<ref>{{Cite web|url=http://www.independent.co.uk/arts-entertainment/comedy/features/jessie-cave-interview-the-harry-potter-star-has-published-a-feminist-collection-of-cartoons-10359132.html|title=Harry Potter star has published a feminist collection of cartoons|date=2015-07-01|website=The Independent|language=en|access-date=2020-04-21}}</ref>
+*[[Sam Chan]], Hong Kong actor<ref>{{Cite book|last1=LLC|first1=General Books|url=https://books.google.com/books?id=bzq7bwAACAAJ|title=Alumni of Kingston University: Eric Clapton, Lawrence Dallaglio, Eason Chan, Charles Ingram, Ben Barnes, Graeme Le Saux, Robin Rimbaud|last2=Wikipedia|first2=Source|last3=LLC|first3=Books|date=2010|publisher=General Books|isbn=978-1-155-76148-0|language=en}}</ref><ref>{{Cite web|url=http://www.britishunited.net/seminar/kingston-university/|title=Kingston University|website=英國升學專家：英倫海外升學中心|language=zh-TW|access-date=2020-04-28}}</ref>
+*[[Trevor Cooper]], actor<ref>{{Cite web|url=http://news.whoviannet.co.uk/2014/09/exclusive-interview-trevor-cooper/|title=Exclusive Interview: Trevor Cooper • Doctor Who News • WhovianNet|access-date=2020-04-21}}</ref>
+*[[Sarah-Jane Crawford]], TV presenter, radio presenter and former model<ref>{{Cite web|url=http://www.standard.co.uk/showbiz/celebrity-news/xtra-factor-s-sarah-jane-crawford-reveals-she-ditched-banking-for-showbiz-9762215.html|title=Xtra Factor's Sarah-Jane Crawford reveals she ditched banking for|date=2014-09-29|website=Evening Standard|language=en|access-date=2020-04-28}}</ref>
+*[[Alphonsia Emmanuel]], actor<ref>{{Cite web|url=https://www.encyclopedia.com/education/news-wires-white-papers-and-books/emmanuel-alphonsia-1956|title=Emmanuel, Alphonsia 1956– {{!}} Encyclopedia.com|website=www.encyclopedia.com|access-date=2020-04-28}}</ref>
+*[[Trevor Eve]], actor<ref name="IndependentAZ" />
+*[[Laura Harling]], actor<ref>{{Cite book|last=Wilson|first=Snoo|url=https://books.google.com/books?id=9fXtBgAAQBAJ&q=laura+harling+kingston+university&pg=PP14|title=Lovesong of the Electric Bear|date=2015-05-05|publisher=Bloomsbury Publishing|isbn=978-1-4742-5532-5|language=en}}</ref>
+*[[June Kirby]], actress and designer
+*[[Jamal Osman (journalist)|Jamal Osman]], Africa correspondent for [[Channel 4]] News
+*[[Mandy Takhar]], British actress and singer in Indian film
+
+=== Humour ===
+*[[Harriet Kemsley]], standup comedian and actress<ref>{{Cite web|url=https://riveronline.co.uk/?p=29071|title=Kingston graduate Harriet Kemsley becomes a comic star {{!}} River Online|last=Robinson|first=Megan|date=18 March 2020|language=en-GB|access-date=2020-04-28}}</ref><ref>{{Cite news|last=Gil|first=Natalie|url=https://www.theguardian.com/education/2015/sep/14/learn-from-our-mistakes-freshers-week-regrets|title=Learn from our mistakes: freshers' week regrets|date=2015-09-14|work=The Guardian|access-date=2020-04-28|language=en-GB|issn=0261-3077}}</ref>
+*[[Chris McCausland]], stand-up comedian and actor<ref>{{Cite web|url=http://www.liverpoolecho.co.uk/news/liverpool-news/echo-meets-comedian-chris-mccausland-10709311|title=Meet the West Derby stand up who wouldn't let blindness ruin his comedy career|last=Samuelson|first=Kate|date=2016-01-09|website=liverpoolecho|access-date=2020-04-23}}</ref>
+
+=== Arts ===
+*[[Noor Al Suwaidi]], Emirati artist and curator
+*[[Eileen Aldridge]], artist and illustrator
+*[[Fiona Banner]], artist, [[Turner Prize]] nominee
+*[[Scott Barley]], filmmaker and artist
+*[[Zelma Blakely]], artist
+*[[John Bratby]], artist
+*[[Gail Brodholt]], [[oil painting]]s and [[linocut]] prints<ref>{{Cite book|last=Dyson|first=Anthony|url=https://books.google.com/books?id=vDW_XOBS60sC&q=gail+brodholt&pg=PA32|title=Printmakers' Secrets|date=2009-04-06|publisher=A&C Black|isbn=978-0-7136-8911-2|language=en}}</ref>
+*[[Richard Bryant (photographer)|Richard Bryant]], photographer
+*[[Pery Burge]], artist
+*[[Raphael Chikukwa]], curator and Executive Director of the [[National Gallery of Zimbabwe]]
+*[[Victoria Crowe]], painter
+*[[Adelaide Damoah]], artist
+*[[Lilian Dring]], artist
+*[[Anya Gallaccio]], artist<ref>{{Cite book|last=Fortnum|first=Rebecca|url=https://books.google.com/books?id=N6ifAAAAMAAJ&q=Anya+Gallaccio+kingston|title=Contemporary British women artists: in their own words|date=2007-01-23|publisher=I.B. Tauris|isbn=978-1-84511-224-0|language=en}}</ref><ref>Unattributed, "[http://collection.britishcouncil.org/collection/artist/5/18428 Anya Gallaccio] {{webarchive|url=https://web.archive.org/web/20110807035127/http://collection.britishcouncil.org/collection/artist/5/18428 |date= 7 August 2011 }}," British Council - online biography, retrieved, 22 August 2011</ref>
+*[[Karen Hall]], illustrator
+*[[Jim Holdaway]], illustrator
+*[[James Irvine (designer)|James Irvine]], product designer
+*[[Jasper Morrison]], product designer
+*[[David Nash (artist)|David Nash]], sculptor
+*[[Laura Noble]], art writer and photography gallerist
+*[[Bianca Raffaella]], artist
+*[[Yoshiko Shimada]] (''嶋田 美子''), Japanese video artist and performance artist
+*[[Fletcher Sibthorp]], artist<ref>{{Cite book|url=https://books.google.com/books?id=SL5UAAAAMAAJ&q=Fletcher+Sibthorp+kingston|title=Step by Step Graphics|date=1996|publisher=Dynamic Graphics, Incorporated|language=en}}</ref>
+*[[Michael Young (industrial designer)|Michael Young]], industrial designer
+
+=== Fashion ===
+*[[Glenda Bailey]], former [[editor-in-chief]] of ''[[Marie Claire|Marie-Claire]]'' and ''[[Harper's Bazaar]]''<ref>{{Cite web|url=https://www.mirror.co.uk/news/politics/new-year-honours-list-2019-13786682|title=New Year Honours list 2019 in full - from stars to heroes of tragedy and terror|last1=Crerar|first1=Pippa|last2=Bloom|first2=Dan|date=2018-12-28|website=mirror|access-date=2020-04-28|last3=Hornall|first3=Thomas}}</ref>
+*[[Felipe Oliveira Baptista]], [[artistic director]] of such brands as [[Lacoste]] or [[Kenzo (brand)|Kenzo]]<ref>{{Cite web|url=https://www.lexpress.fr/actualites/1/culture/felipe-oliveira-baptista-nouveau-directeur-artistique-de-la-maison-kenzo_2087185.html|title=Felipe Oliveira Baptista nouveau directeur artistique de la Maison Kenzo|date=2019-07-01|website=LExpress.fr|language=fr|access-date=2020-04-28}}</ref>
+*[[Caryn Franklin]], fashion journalist, broadcaster, writer, director and producer<ref>{{Cite news|last=Groskop|first=Viv|date=2013-03-05|title=Caryn Franklin: My double life as a carer|language=en-GB|work=The Guardian|url=https://www.theguardian.com/fashion/2013/mar/05/caryn-franklin-carer-partner-multiple-sclerosis|access-date=2020-05-01|issn=0261-3077}}</ref><ref>{{Cite web|title=Young designer puts on a fine clothes show|url=https://www.wakefieldexpress.co.uk/news/young-designer-puts-fine-clothes-show-809778|website=www.wakefieldexpress.co.uk|date=20 June 2017 |language=en|access-date=2020-05-01}}</ref>
+*[[Workers for Freedom|Richard Nott]], one half of 1989 [[British Fashion Awards|Designer of the Year]] winner Workers for Freedom
+*[[John Richmond (fashion designer)|John Richmond]], fashion designer
+
+=== Architecture ===
+*[[David Chipperfield]], architect
+*[[Sadie Morgan]], co-founder of dRMM Architects
+*[[Tom Wright (architect)|Tom Wright]], the architect best known as the designer of the [[Burj Al Arab]] in Dubai<ref>{{Cite web|url=https://www.idesign.wiki/tom-wright/|title=Tom Wright – i Design|date=24 December 2018 |language=en-US|access-date=2020-04-26}}</ref>
+
+=== Music ===
+*[[Richard Archer]], lead singer of [[Hard-Fi]]<ref>{{Cite web|title=Hard-Fi frontman's heartbreak|url=https://www.yourlocalguardian.co.uk/news/1608185.hard-fi-frontmans-heartbreak/|website=Your Local Guardian|date=9 August 2007 |language=en|access-date=2020-05-01}}</ref>
+*[[Eric Clapton]], musician<ref name="IndependentAZ">{{cite news|url= https://www.independent.co.uk/student/into-university/az-uni-colleges/kingston-university-458961.html|title= Kingston University &ndash; A&ndash;Z Unis & Colleges, Getting Into University|access-date= 8 December 2008|date= 27 July 2007|work= [[The Independent]]|publisher= Independent News and Media}}</ref> (did not graduate).
+*[[Eason Chan]], singer (did not graduate)
+*[[Sandy Denny]] (did not graduate)
+*[[Aleksandra Gintrowska]], Polish singer and actress<ref>{{Cite web|url=https://www.eska.pl/hotplota/news/eurowizja-2016-ola-gintrowska-missing-to-oszustwo-kim-jest-aleksandra-gintrowska-sprawdz-szczegoly-aa-WmkE-T5Pc-7XXL.html|title=Eurowizja 2016: Ola Gintrowska - Missing to OSZUSTWO? Kim jest Aleksandra Gintrowska? Sprawdź szczegóły!|website=www.eska.pl|access-date=2020-04-15}}</ref><ref>{{Cite web|url=https://www.filmweb.pl/person/Aleksandra+Gintrowska-1599856|title=Aleksandra Gintrowska|website=Filmweb|language=pl|access-date=2020-04-15}}</ref><ref>{{Cite web|url=https://www.se.pl/wiadomosci/gwiazdy/ona-ma-szanse-na-eurowizje-2016-kim-jest-ola-gintrowska-aa-9wZn-uyLH-fgpA.html|title=Ona ma szansę na Eurowizję 2016! Kim jest Ola Gintrowska?|website=www.se.pl|access-date=2020-04-15}}</ref><ref>{{Cite web|url=https://muzyka.interia.pl/news-aleksandra-gintrowska-biografia,nId,2147522|title=Aleksandra Gintrowska - biografia|website=muzyka.interia.pl|language=pl|access-date=2020-04-15}}</ref>
+*[[Just Jack]], musician<ref>{{cite web | url=https://www.oxfordreference.com/view/10.1093/oi/authority.20110803100027715 | title=Just Jack }}</ref>
+*[[Keith Relf]], lead singer of [[The Yardbirds]]<ref>{{Cite book|last=Delbrouck|first=Christophe|url=https://books.google.com/books?id=gxUrDwAAQBAJ&q=Keith+Relf+kingston&pg=PT57|title=British Rock. 1965-1968 : Swinging London: British Rock|date=2017-11-17|publisher=Le Castor Astral éditeur|isbn=979-10-278-0754-3|language=fr}}</ref><ref>{{Cite book|last=Sandbrook|first=Dominic|url=https://books.google.com/books?id=5vBVAAAAYAAJ&q=Keith+Relf+kingston|title=White Heat: A History of Britain in the Swinging Sixties|date=2007|publisher=Abacus|isbn=978-0-349-11820-8|language=en}}</ref>
+*[[John Renbourn]], guitarist<ref>{{Cite book|last=Sweers|first=Britta|url=https://books.google.com/books?id=nno8DwAAQBAJ&q=John+Renbourn+kingston&pg=PA80|title=Electric Folk: The Changing Face of English Traditional Music|date=2005-01-13|publisher=Oxford University Press, USA|isbn=978-0-19-515878-6|language=en}}</ref>
+*[[Robin Rimbaud]], [[electronic musician]] under the name '''Scanner'''
+
+=== Politics ===
+*[[Adel Al Toraifi]], Minister of Information and Culture of Saudi Arabia
+*[[Nigel Dakin]], Governor of the Turks and Caicos Islands and career diplomat and soldier
+*[[Princess Fadzilah Lubabul Bolkiah]], Bruneian princess
+*[[Guy de Faye]], former news presenter and former Deputy of the [[States of Jersey]]
+*[[Lee Freeman (police officer)|Lee Freeman]] Chief constable of [[Humberside Police]]<ref>{{cite news |last1=Elliott |first1=David |title=Humberside Police reveal preferred Chief Constable candidate |url=https://www.scunthorpetelegraph.co.uk/news/scunthorpe-news/humberside-police-reveal-preferred-chief-80860 |access-date=14 September 2018 |work=Scunthorpe Telegraph |date=30 May 2017}}</ref>
+*[[Kirsty Hayes]], [[British Ambassador to Portugal]]
+*[[John Le Fondré]], Chief Minister, States of Jersey
+*[[Salahuddin Rabbani]], former Minister of Foreign Affairs of Afghanistan
+*[[Hadia Tajik]], Pakistani-Norwegian [[jurist]], journalist and politician; appointed [[Minister of Culture (Norway)|Minister of Culture]], a [[Member of Parliament]] for the [[Norwegian Labour Party|Labour Party]] representing Oslo
+*[[Qubad Talabani]], Deputy [[Prime minister|Prime Minister]] of the [[Kurdistan Region]] and son of [[Iraq]]i former President [[Jalal Talabani]]<ref>{{Cite web|url=https://gov.krd/english/government/deputy-prime-minister/|title=Qubad Talabani|website=Kurdistan Regional Government|language=en|access-date=2020-04-23}}</ref>
+*[[Riad Yassin]], former Foreign Minister of Yemen
+
+=== Law ===
+*[[James Lewis (judge)|James Lewis]], Chief Justice of the [[Falkland Islands]] and the [[British Indian Ocean Territory]]
+*[[Imran Mahmood]], barrister and novelist
+*[[Leslie Thomas (barrister)|Leslie Thomas]] QC, barrister
+
+=== Literature ===
+*[[Lavinia Greenlaw]], poet and novelist<ref>{{cite web|url=https://literature.britishcouncil.org/writer/lavinia-greenlaw|title=Lavinia Greenlaw - Literature|website=literature.britishcouncil.org|publisher=British Council}}</ref>
+*[[Stewart Home]], avant-garde writer, [[art historian]] and [[agent provocateur]] ( Home left the college before graduating )
+
+=== Religion ===
+*[[Gregory Venables]], Bishop of Argentina
+
+=== Sports ===
+*[[Charlie Amesbury]], [[Rugby sevens|rugby]] player<ref>{{Cite web|url=http://www.cambridge-news.co.uk/sport/rugby/charlie-amesbury-continue-family-tradition-12277937|title=Charlie Amesbury to continue family tradition in Varsity Match|last=Georgeson|first=Andrew|date=2016-12-06|website=cambridgenews|access-date=2020-04-28}}</ref><ref>{{Cite web|url=https://www.thevarsitymatch.com/news/amesbury-hoping-end-oxford-winning-streak-cambridge-varsity-squad-announced/|title=AMESBURY HOPING TO END OXFORD WINNING STREAK AS CAMBRIDGE VARSITY SQUAD ANNOUNCED|website=The Varsity Match|language=en-US|access-date=2020-04-28}}</ref>
+*[[Lawrence Dallaglio]], rugby union player, and former captain of the English national team
+*[[Gail Emms]], badminton player, Commonwealth Gold and Olympic Silver medallist
+*[[Graeme Le Saux]], footballer
+*[[Ed McKeever]], Kayak World Champion and Olympic Gold Medallist
+*[[Asha Philip]], English sprinter, Olympic bronze medal at the [[2016 Summer Olympics|2016 Rio Games]] and silver at the [[2017 World Championships in Athletics]]
+
+=== Technology and engineering ===
+*[[Ed Parsons]], Geospatial technologist and tech evangelist
+
+=== Business and finance ===
+*[[Tony Ball]], marketer, former Chief Executive of [[BSkyB]]
+*[[Sima Kamil]], Deputy Governor of [[State Bank of Pakistan]]
+*[[Ruby McGregor-Smith]], CEO [[MITIE Group]]
+*[[Vin Murria]], Operating Partner of [[HgCapital]]
+*[[Marlene Taschen]], co-manages [[Taschen]]
+*[[John Tiner]], financial adviser, businessman
+*[[Francis Yeoh]], businessman, Executive Chairman of YTL Corporation
+*[[Ratheesan Yoganathan]], businessman, Chairman of [[Lebara Group]]
+
+}}
+
+== Notable faculty and staff ==
+<!-- Note to editors: alphabetical by surname-any current member of staff who merits an article on Wikipedia is de facto notable-->
+{{main|Category:Academics of Kingston University}}
+<gallery mode="packed">
+File:Laura Borràs 3471003114121118 00.jpg|[[Laura Borràs]]
+File:Hanif Kureishi.jpg|[[Hanif Kureishi]]
+File:Official portrait of Dr Rupa Huq MP crop 2.jpg|[[Rupa Huq]]
+File:Bond Henry Kensington neutral.jpg|[[Henry Bond]]
+File:Les Hatton 1.JPG|[[Les Hatton]]
+File:Alan Gillett.jpg|[[Alan Gillett (surveyor)|Alan Gillett]] at [[St Mary's Perivale]] in 2012. 
+</gallery>
+{{columns-list|colwidth=35em|{{sp}}
+
+=== Arts ===
+
+* [[Stephen Barber (writer)|Stephen Barber]], professor of [[art history]].<ref>{{Cite web|title=Stephen Barber|url=https://press.uchicago.edu/ucp/books/author/B/S/au5360931.html|access-date=2020-08-15|website=press.uchicago.edu}}</ref>
+* [[Henry Bond]], Senior lecturer in [[photography]].<ref>{{Cite web|title=Henry Bond |url=https://www.theguardian.com/profile/henry-bond|access-date=2020-08-15|website=The Guardian|language=en}}</ref>
+* [[Mike Chaplin | Michael Chaplin]], English intaglio printmaker and watercolour painter, lecturer in art (1970s & 80s)
+* [[Wilfred Fairclough]], English [[engraver]] and [[printmaker]].<ref>{{Cite web|date=1996-01-17|title=OBITUARY: Wilfred Fairclough|url=http://www.independent.co.uk/news/people/obituary-wilfred-fairclough-1324381.html|access-date=2020-08-15|website=The Independent|language=en}}</ref>
+* [[Henry Haig]], English painter, [[Sculpture|sculptor]] and [[glassblower]].<ref>{{Cite web|title=Fifehead Magdalen Parish - Who was Who|url=http://fifeheadmagdalen.btck.co.uk/WhowasWho|archive-url=https://web.archive.org/web/20160312045506/http://fifeheadmagdalen.btck.co.uk/WhowasWho|url-status=usurped|archive-date=12 March 2016|access-date=2020-08-15|website=fifeheadmagdalen.btck.co.uk}}</ref>
+* [[Carole Hodgson]], professor of [[fine art]]s and [[sculpture]].<ref>{{Cite book|last1=Castoro|first1=Manila|url=https://books.google.com/books?id=uz1jDwAAQBAJ&q=Carole+Hodgson%C2%A0kingston&pg=PA60|title=Urban Artscapes: Essays on Political and Cultural Contexts|last2=Vasilikou|first2=Carolina|date=2018-06-26|publisher=McFarland|isbn=978-1-4766-6540-5|language=en}}</ref>
+* [[Chris Horrocks (writer)|Chris Horrocks]], professor of [[art history]].<ref>{{Cite book|last=Stroinska|first=Magda|url=https://books.google.com/books?id=nSgvfw71694C&q=Chris+Horrocks%C2%A0kingston&pg=PA219|title=Relative Points of View: Linguistic Representation of Culture|date=2001|publisher=Berghahn Books|isbn=978-1-57181-202-5|language=en}}</ref>
+* [[Jane Manning]], research fellow & visiting [[music]] professor.<ref>{{Cite web|date=2020|title=Guildhall School of Music & Drama|url=https://www.gsmd.ac.uk/music/staff/teaching_staff/department/5-department-of-vocal-studies/302-dr-jane-manning/|access-date=2020-08-15|website=www.gsmd.ac.uk|archive-date=3 June 2020|archive-url=https://web.archive.org/web/20200603125447/https://www.gsmd.ac.uk/music/staff/teaching_staff/department/5-department-of-vocal-studies/302-dr-jane-manning/|url-status=dead}}</ref>
+
+=== Film and theatre ===
+*[[Felicity Colman]], Professor of Film and Media Arts
+*[[Alex McSweeney]], English, Creative Writing and Drama.
+*[[Catherine O'Brien (film scholar)|Catherine O'Brien]], emeritus lecturer in Film Studies and French
+*[[Paul Andrew Williams]], Film studies lecturer<ref>{{cite web |url=http://fass.kingston.ac.uk/activities/item.php?updatenum=591 |title=Paul Andrew Williams joins Film Team - Activities - Faculty of Arts and Social Sciences - Kingston University London |publisher=Kingston University |access-date=15 November 2012 |archive-date=2 May 2013 |archive-url=https://web.archive.org/web/20130502173154/http://fass.kingston.ac.uk/activities/item.php?updatenum=591 |url-status=dead }}</ref>
+
+=== Philosophy and literature ===
+*Eric Alliez, Professor of Contemporary French Philosophy
+*[[Étienne Balibar|Etienne Balibar]], Visiting Professor
+*[[Paul Bailey (British writer)|Paul Bailey]], Senior Researcher and Distinguished Writer in Residence, Creative Writing
+*[[Howard Caygill]], Professor of Philosophy
+*[[Peter J. Conradi]], Professor Emeritus
+*[[Rachel Cusk]], Reader in Creative Writing<ref>{{cite news|url=https://www.theguardian.com/books/2009/aug/30/rachel-cusk-lynn-barber|title=Rachel Cusk interview - Lynn Barber|first=Lynn|last=Barber|date=29 August 2009|work=The Guardian}}</ref>
+*[[Vic Duppa-Whyte]], Paper engineer, pop-up book creator
+*[[Vesna Goldsworthy]], Professor of English Literature and Creative Writing
+*[[Philippa Gregory]], Fellow
+*Peter Hallward, Professor of Modern European Philosophy
+*[[Hanif Kureishi]], Distinguished Writer in Residence, Creative Writing
+*[[Catherine Malabou]], Professor of Modern European Philosophy
+*[[Laura Noble]], [[England|English]] writer, [[gallerist]] and artist
+*[[Peter Osborne (writer and academic)|Peter Osborne]], Professor of Philosophy, Director of the Centre for Research in Modern European Philosophy 
+*Stella Sandford, Professor of Modern European Philosophy
+
+=== Fashion and design ===
+*[[Moya Bowler]], former fashion lecturer – shoe designer of the 1960s–1980s
+*[[Catherine McDermott]], Professor of Design
+*[[Workers for Freedom|Richard Nott]], former fashion lecturer and former student
+
+=== History and politics ===
+*[[Brian Brivati]], Visiting Professor
+*[[Steve Keen]] Professor and Head of the School of Economics, History and Politics
+
+=== Health ===
+*[[Robert Istepanian]], Professor of Data Communications
+*[[Fiona Ross (nurse)|Fiona Ross]], Professor of Health Research, formerly Executive Dean of the Faculty of Health and Social Care.
+
+=== Economy ===
+
+* [[Rima Horton]], senior [[economics]] lecturer.
+}}
+
+== See also ==
+* [[Armorial of UK universities]]
+* [[List of universities in the United Kingdom]]
+* [[Post-1992 universities]]
+
+==References==
+{{Reflist|30em}}
+
+==External links==
+*{{commons category-inline}}
+*{{official website|http://www.kingston.ac.uk/ }}
+
+{{Universities in the United Kingdom}}
+{{Universities and colleges in London}}
+{{University Alliance}}
+
+{{authority control}}
+
+[[Category:Kingston University| ]]
+[[Category:Educational institutions established in 1992]]
+[[Category:1992 establishments in England]]
+[[Category:University Alliance]]
+[[Category:Universities in London]]
+[[Category:Universities UK]]
+[[Category:Education in the Royal Borough of Kingston upon Thames]]

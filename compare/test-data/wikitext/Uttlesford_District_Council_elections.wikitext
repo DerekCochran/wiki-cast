@@ -1,0 +1,394 @@
+{{Short description|Local government elections in Essex, England}}
+{{Use dmy dates|date=April 2022}}
+[[Uttlesford]] District Council is elected every four years.
+
+==Council elections==
+
+{|class="wikitable plainrowheaders" style="text-align:center"
+!scope="col" rowspan="2"|Year
+!scope="col"|[[Conservative Party (UK)|Conservative]]
+!scope="col" style="width:1px"|[[Liberal Democrats (UK)|Liberal Democrats]]{{efn|Includes totals for the predecessors of the Liberal Democrats, the [[Liberal Party (UK)|Liberal Party]] and [[Social Democratic Party (UK)|SDP]] (both of which participated in the [[SDP-Liberal Alliance|Alliance]]).}}
+!scope="col"|[[Labour Party (UK)|Labour]]
+!scope="col"|[[Residents for Uttlesford|R4U]]
+!scope="col"|[[Independent politician|Independents]]<br>& Others
+!scope="col" rowspan="2" colspan="2"|Council control<br />after election
+|-
+|style="background:{{Party color|Conservative Party (UK)}}"|
+|style="background:{{Party color|Liberal Democrats (UK)}}"|
+|style="background:{{Party color|Labour Party (UK)}}"|
+|style="background:{{Party color|Residents for Uttlesford}}"|
+|style="background:{{Party color|Independent politician}}"|
+|-
+| colspan="9" |'''Local government reorganisation; council established (42 seats)'''
+|-
+!scope="row"|[[1973 Uttlesford District Council election|1973]]
+|style="background:#B9E4FF;"|<!--Conservative-->'''22'''
+|<!--Lib Dem-->2
+|<!--Labour-->7
+|<!--R4U-->{{N/A|–}}
+|<!--Ind/Others-->11
+|{{Party name with colour no link|Conservative Party (UK)}}
+|-
+| colspan="9" |'''New ward boundaries'''<ref>legislation.gov.uk – [http://www.legislation.gov.uk/uksi/1975/1672/made The District of Uttlesford (Electoral Arrangements) Order 1975]. Retrieved on 19 November 2015.</ref>
+|-
+!scope="row"|[[1976 Uttlesford District Council election|1976]]
+|style="background:#B9E4FF;"|<!--Conservative-->'''30'''
+|<!--Lib Dem-->4
+|<!--Labour-->3
+|<!--R4U-->{{N/A|–}}
+|<!--Ind/Others-->5
+|{{Party name with colour no link|Conservative Party (UK)}}
+|-
+!scope="row"|[[1979 Uttlesford District Council election|1979]]
+|style="background:#B9E4FF;"|<!--Conservative-->'''28'''
+|<!--Lib Dem-->3
+|<!--Labour-->4
+|<!--R4U-->{{N/A|–}}
+|<!--Ind/Others-->7
+|{{Party name with colour no link|Conservative Party (UK)}}
+|-
+!scope="row"|[[1983 Uttlesford District Council election|1983]]
+|style="background:#B9E4FF;"|<!--Conservative-->'''28'''
+|<!--Lib Dem-->6
+|<!--Labour-->1
+|<!--R4U-->{{N/A|–}}
+|<!--Ind/Others-->7
+|{{Party name with colour no link|Conservative Party (UK)}}
+|-
+!scope="row"|[[1987 Uttlesford District Council election|1987]]{{efn|District boundary changes took place but the number of seats remained the same.<ref>The Essex (District Boundaries) Order 1986</ref>}}
+|style="background:#B9E4FF;"|<!--Conservative-->'''24'''
+|<!--Lib Dem-->10
+|<!--Labour-->1
+|<!--R4U-->{{N/A|–}}
+|<!--Ind/Others-->7
+|{{Party name with colour no link|Conservative Party (UK)}}
+|-
+!scope="row"|[[1991 Uttlesford District Council election|1991]]{{efn|District boundary changes took place but the number of seats remained the same.<ref>legislation.gov.uk – [http://www.legislation.gov.uk/uksi/1989/133/made The Cambridgeshire, Essex, Hertfordshire and Lincolnshire (County Boundaries) Order 1989]. Retrieved on 5 November 2015.</ref>}}
+|style="background:#B9E4FF;"|<!--Conservative-->'''25'''
+|<!--Lib Dem-->10
+|<!--Labour-->1
+|<!--R4U-->{{N/A|–}}
+|<!--Ind/Others-->6
+|{{Party name with colour no link|Conservative Party (UK)}}
+|-
+!scope="row"|[[1995 Uttlesford District Council election|1995]]{{efn|District boundary changes took place but the number of seats remained the same.<ref>legislation.gov.uk – [http://www.legislation.gov.uk/uksi/1992/2119/made The Essex and Hertfordshire (County Boundaries) Order 1992]. Retrieved on 5 November 2015.</ref>}}
+|<!--Conservative-->12
+|style="background:#FEE1A8"|<!--Lib Dem-->'''19'''
+|<!--Labour-->4
+|<!--R4U-->{{N/A|–}}
+|<!--Ind/Others-->7
+|{{Party name with colour no link|No overall control}}
+|-
+!scope="row"|[[1999 Uttlesford District Council election|1999]]
+|<!--Conservative-->16
+|style="background:#FEE1A8"|<!--Lib Dem-->'''18'''
+|<!--Labour-->2
+|<!--R4U-->{{N/A|–}}
+|<!--Ind/Others-->6
+|{{Party name with colour no link|No overall control}}
+|-
+| colspan="9" |'''New ward boundaries; seats increased from 42 to 44'''<ref>legislation.gov.uk – [http://www.legislation.gov.uk/uksi/2001/2434/made The District of Uttlesford (Electoral Changes) Order 2001]. Retrieved on 4 October 2015.</ref>
+|-
+!scope="row"|[[2003 Uttlesford District Council election|2003]]
+|<!--Conservative-->10
+|style="background:#FEE1A8"|<!--Lib Dem-->'''31'''
+|<!--Labour-->0
+|<!--R4U-->{{N/A|–}}
+|<!--Ind/Others-->3
+|{{Party name with colour no link|Liberal Democrats (UK)}}
+|-
+!scope="row"|[[2007 Uttlesford District Council election|2007]]
+|style="background:#B9E4FF;"|<!--Conservative-->'''26'''
+|<!--Lib Dem-->15
+|<!--Labour-->0
+|<!--R4U-->{{N/A|–}}
+|<!--Ind/Others-->3
+|{{Party name with colour no link|Conservative Party (UK)}}
+|-
+!scope="row"|[[2011 Uttlesford District Council election|2011]]
+|style="background:#B9E4FF;"|<!--Conservative-->'''34'''
+|<!--Lib Dem-->8
+|<!--Labour-->0
+|<!--R4U-->{{N/A|–}}
+|<!--Ind/Others-->2
+|{{Party name with colour no link|Conservative Party (UK)}}
+|-
+| colspan="9" |'''New ward boundaries; seats decreased from 44 to 39'''<ref>legislation.gov.uk – [http://www.legislation.gov.uk/uksi/2014/1334/made The Uttlesford (Electoral Changes) Order 2014]. Retrieved on 3 November 2015.</ref>
+|-
+!scope="row"|[[2015 Uttlesford District Council election|2015]]
+|style="background:#B9E4FF;"|<!--Conservative-->'''23'''
+|<!--Lib Dem-->6
+|<!--Labour-->0
+|<!--R4U-->9
+|<!--Ind/Others-->1
+|{{Party name with colour no link|Conservative Party (UK)}}
+|-
+!scope="row"|[[2019 Uttlesford District Council election|2019]]
+|<!--Conservative-->4
+|<!--Lib Dem-->7
+|<!--Labour-->0
+|style="background:#a3f8eb;"|<!--R4U-->'''26'''
+|<!--Ind/Others-->2
+|{{Party name with colour no link|Residents for Uttlesford}}
+|-
+!scope="row"|[[2023 Uttlesford District Council election|2023]]
+|<!--Conservative-->11
+|<!--Lib Dem-->4
+|<!--Labour-->0
+|style="background:#a3f8eb;"|<!--R4U-->'''22'''
+|<!--Ind/Others-->2
+|{{Party name with colour no link|Residents for Uttlesford}}
+|-
+!
+!style="background-color: {{party color|Conservative Party (UK)}}; width: 3px;" |
+!style="background-color: {{party color|Liberal Democrats (UK)}}; width: 3px;" |
+!style="background-color: {{party color|Labour Party (UK)}}; width: 3px;" |
+!style="background-color: {{party color|Residents for Uttlesford}}; width: 3px;" |
+!style="background-color: {{party color|Independent politician}}; width: 3px;" |
+|}
+
+==Maps==
+
+===Results maps===
+
+<gallery>
+File:Uttlesford UK ward map with seats 1976.svg|1976 results map
+File:Uttlesford UK ward map with seats 1979.svg|1979 results map
+File:Uttlesford UK ward map with seats 1983.svg|1983 results map
+File:Uttlesford UK ward map with seats 1987.svg|1987 results map
+File:Uttlesford UK ward map with seats 1991.svg|1991 results map
+File:Uttlesford UK ward map with seats 1995.svg|1995 results map
+File:Uttlesford UK ward map with seats 1999.svg|1999 results map
+File:Uttlesford UK ward map with seats 2003.svg|2003 results map
+File:Uttlesford UK ward map with seats 2007.svg|2007 results map
+File:Uttlesford UK ward map with seats 2011.svg|2011 results map
+File:Uttlesford UK ward map with seats 2015.svg|2015 results map
+File:Uttlesford UK ward map with seats 2019.svg|2019 results map
+File:Uttlesford UK ward map with seats 2023.svg|2023 results map
+</gallery>
+
+===Other maps===
+
+<gallery>
+File:Uttlesford UK ward map 2003.svg|2003 ward map
+File:Uttlesford UK ward map 2007.svg|2007 ward map
+File:Uttlesford UK ward map 2011.svg|2011 ward map
+File:Uttlesford UK ward map 2015.svg|2015 ward map
+File:UTTLESFORD DC 2019 NOCHOLSCHEM.svg|2019 alternative results map
+File:Uttlesford District Council Election Results 2023.svg|2023 alternative results map
+</gallery>
+
+==By-election results==
+
+A [[by-election]] occurs when seats become vacant between council elections. Below is a summary of by-elections from 1983 onwards.<ref name=byelections>{{Cite web|url=https://www.electionscentre.co.uk/?page_id=3933 |title=By-elections |access-date=18 January 2026 |work=[[Colin Rallings]] & [[Michael Thrasher]] |publisher=The Elections Centre, [[Plymouth University]] |archive-url=https://web.archive.org/web/20260118204355/https://www.electionscentre.co.uk/?page_id=3933 |archive-date=18 January 2026}}</ref> Full by-election results are listed under the last regular election preceeding the by-election and can be found by clicking on the ward name.
+
+===1983-1994===
+
+{| class="wikitable"
+! Ward !! Date !! colspan=2 | Incumbent party !! colspan=2 | Winning party
+|-
+|-bgcolor=<!-- party shade if gain -->lightblue
+|[[<!-- council election -->1987 Uttlesford District Council election#<!-- By-elections section -->By-elections|<!-- ward name -->The Chesterfords]]
+|<!-- date -->29 March 1990
+| {{Party name with colour|<!-- inc party -->Liberal Democrats (UK)}}
+| {{Party name with colour|<!-- win party -->Conservative Party (UK)}}
+|-
+|-bgcolor=<!-- party shade if gain -->
+|[[<!-- council election -->1987 Uttlesford District Council election#<!-- By-elections section -->By-elections|<!-- ward name -->Felsted]]
+|<!-- date -->26 April 1990
+| {{Party name with colour|<!-- inc party -->Liberal Democrats (UK)}}
+| {{Party name with colour|<!-- win party -->Liberal Democrats (UK)}}
+|-
+|-bgcolor=<!-- party shade if gain -->
+|[[<!-- council election -->1987 Uttlesford District Council election#<!-- By-elections section -->By-elections|<!-- ward name -->Saffron Walden Castle]]
+|<!-- date -->9 May 1990
+| {{Party name with colour|<!-- inc party -->Liberal Democrats (UK)}}
+| {{Party name with colour|<!-- win party -->Liberal Democrats (UK)}}
+|-
+|-bgcolor=<!-- party shade if gain -->#ffcc66
+|[[<!-- council election -->1991 Uttlesford District Council election#<!-- By-elections section -->By-elections|<!-- ward name -->Takeley]]
+|<!-- date -->12 March 1992
+| {{Party name with colour|<!-- inc party -->Conservative Party (UK)}}
+| {{Party name with colour|<!-- win party -->Liberal Democrats (UK)}}
+|-
+|-bgcolor=<!-- party shade if gain -->#ffcc66
+|[[<!-- council election -->1991 Uttlesford District Council election#<!-- By-elections section -->By-elections|<!-- ward name -->The Rodings]]
+|<!-- date -->19 November 1992
+| {{Party name with colour|<!-- inc party -->Conservative Party (UK)}}
+| {{Party name with colour|<!-- win party -->Liberal Democrats (UK)}}
+|-
+|-bgcolor=<!-- party shade if gain -->
+|[[<!-- council election -->1991 Uttlesford District Council election#<!-- By-elections section -->By-elections|<!-- ward name -->Saffron Walden Castle]]
+|<!-- date -->1 April 1993
+| {{Party name with colour|<!-- inc party -->Liberal Democrats (UK)}}
+| {{Party name with colour|<!-- win party -->Liberal Democrats (UK)}}
+|-
+|-bgcolor=<!-- party shade if gain -->#ffcc66
+|[[<!-- council election -->1991 Uttlesford District Council election#<!-- By-elections section -->By-elections|<!-- ward name -->Saffron Walden Plantation]]
+|<!-- date -->14 April 1994
+| {{Party name with colour|<!-- inc party -->Conservative Party (UK)}}
+| {{Party name with colour|<!-- win party -->Liberal Democrats (UK)}}
+|-
+|}
+
+===1995-2006===
+
+{| class="wikitable"
+! Ward !! Date !! colspan=2 | Incumbent party !! colspan=2 | Winning party
+|-
+|-bgcolor=<!-- party shade if gain -->
+|[[<!-- council election -->1995 Uttlesford District Council election#<!-- By-elections section -->By-elections|<!-- ward name -->Great Dunmow South]]
+|<!-- date -->26 June 1997
+| {{Party name with colour|<!-- inc party -->Liberal Democrats (UK)}}
+| {{Party name with colour|<!-- win party -->Liberal Democrats (UK)}}
+|-
+|-bgcolor=<!-- party shade if gain -->lightblue
+|[[<!-- council election -->1995 Uttlesford District Council election#<!-- By-elections section -->By-elections|<!-- ward name -->Hatfield Broad Oak]]
+|<!-- date -->3 July 1997
+| {{Party name with colour|<!-- inc party -->Liberal Democrats (UK)}}
+| {{Party name with colour|<!-- win party -->Conservative Party (UK)}}
+|-
+|-bgcolor=<!-- party shade if gain -->lightblue
+|[[<!-- council election -->1995 Uttlesford District Council election#<!-- By-elections section -->By-elections|<!-- ward name -->The Sampfords]]
+|<!-- date -->25 September 1997
+| {{Party name with colour|<!-- inc party -->Independent politician}}
+| {{Party name with colour|<!-- win party -->Conservative Party (UK)}}
+|-
+|-bgcolor=<!-- party shade if gain -->#ffcc66
+|[[<!-- council election -->1995 Uttlesford District Council election#<!-- By-elections section -->By-elections|<!-- ward name -->Stebbing]]
+|<!-- date -->11 December 1997
+| {{Party name with colour|<!-- inc party -->Independent politician}}
+| {{Party name with colour|<!-- win party -->Liberal Democrats (UK)}}
+|-
+|-bgcolor=<!-- party shade if gain -->
+|[[<!-- council election -->1995 Uttlesford District Council election#<!-- By-elections section -->By-elections|<!-- ward name -->Stansted Mountfitchet]]
+|<!-- date -->7 May 1998
+| {{Party name with colour|<!-- inc party -->Liberal Democrats (UK)}}
+| {{Party name with colour|<!-- win party -->Liberal Democrats (UK)}}
+|-
+|-bgcolor=<!-- party shade if gain -->
+|[[<!-- council election -->1999 Uttlesford District Council election#<!-- By-elections section -->By-elections|<!-- ward name -->Stort Valley]]
+|<!-- date -->13 April 2000
+| {{Party name with colour|<!-- inc party -->Liberal Democrats (UK)}}
+| {{Party name with colour|<!-- win party -->Liberal Democrats (UK)}}
+|-
+|-bgcolor=<!-- party shade if gain -->
+|[[<!-- council election -->1999 Uttlesford District Council election#<!-- By-elections section -->By-elections|<!-- ward name -->Birchanger]]
+|<!-- date -->15 June 2000
+| {{Party name with colour|<!-- inc party -->Conservative Party (UK)}}
+| {{Party name with colour|<!-- win party -->Conservative Party (UK)}}
+|-
+|-bgcolor=<!-- party shade if gain -->#ffcc66
+|[[<!-- council election -->1999 Uttlesford District Council election#<!-- By-elections section -->By-elections|<!-- ward name -->The Chesterfords]]
+|<!-- date -->23 November 2000
+| {{Party name with colour|<!-- inc party -->Conservative Party (UK)}}
+| {{Party name with colour|<!-- win party -->Liberal Democrats (UK)}}
+|-
+|-bgcolor=<!-- party shade if gain -->
+|[[<!-- council election -->2003 Uttlesford District Council election#<!-- By-elections section -->By-elections|<!-- ward name -->Great Dunmow South]]
+|<!-- date -->21 October 2004
+| {{Party name with colour|<!-- inc party -->Liberal Democrats (UK)}}
+| {{Party name with colour|<!-- win party -->Liberal Democrats (UK)}}
+|-
+|-bgcolor=<!-- party shade if gain -->lightblue
+|[[<!-- council election -->2003 Uttlesford District Council election#<!-- By-elections section -->By-elections|<!-- ward name -->Great Dunmow South]]
+|<!-- date -->14 July 2005
+| {{Party name with colour|<!-- inc party -->Liberal Democrats (UK)}}
+| {{Party name with colour|<!-- win party -->Conservative Party (UK)}}
+|-
+|-bgcolor=<!-- party shade if gain -->lightblue
+|[[<!-- council election -->2003 Uttlesford District Council election#<!-- By-elections section -->By-elections|<!-- ward name -->Wimbish & Debden]]
+|<!-- date -->27 October 2005
+| {{Party name with colour|<!-- inc party -->Liberal Democrats (UK)}}
+| {{Party name with colour|<!-- win party -->Conservative Party (UK)}}
+|-
+|-bgcolor=<!-- party shade if gain -->
+|[[<!-- council election -->2003 Uttlesford District Council election#<!-- By-elections section -->By-elections|<!-- ward name -->Newport]]
+|<!-- date -->8 June 2006
+| {{Party name with colour|<!-- inc party -->Liberal Democrats (UK)}}
+| {{Party name with colour|<!-- win party -->Liberal Democrats (UK)}}
+|-
+|}
+
+===2007-2018===
+
+{| class="wikitable"
+! Ward !! Date !! colspan=2 | Incumbent party !! colspan=2 | Winning party
+|-
+|-bgcolor=<!-- party shade if gain -->lightblue
+|[[<!-- council election -->2007 Uttlesford District Council election#<!-- By-elections section -->By-elections|<!-- ward name -->Great Dunmow North]]
+|<!-- date -->5 June 2008
+| {{Party name with colour|<!-- inc party -->Liberal Democrats (UK)}}
+| {{Party name with colour|<!-- win party -->Conservative Party (UK)}}
+|-
+|-bgcolor=<!-- party shade if gain -->#dddddd
+|[[<!-- council election -->2011 Uttlesford District Council election#<!-- By-elections section -->By-elections|<!-- ward name -->Newport]]
+|<!-- date -->2 May 2013
+| {{Party name with colour|<!-- inc party -->Liberal Democrats (UK)}}
+| {{Party name with colour|<!-- win party -->Independent politician}}
+|-
+|-bgcolor=<!-- party shade if gain -->
+|[[<!-- council election -->2011 Uttlesford District Council election#<!-- By-elections section -->By-elections|<!-- ward name -->Felsted]]
+|<!-- date -->25 July 2013
+| {{Party name with colour|<!-- inc party -->Conservative Party (UK)}}
+| {{Party name with colour|<!-- win party -->Conservative Party (UK)}}
+|-
+|-bgcolor=<!-- party shade if gain -->#a3f8eb
+|[[<!-- council election -->2015 Uttlesford District Council election#<!-- By-elections section -->By-elections|<!-- ward name -->Elsenham & Henham]]
+|<!-- date -->16 February 2017
+| {{Party name with colour|<!-- inc party -->Liberal Democrats (UK)}}
+| {{Party name with colour|<!-- win party -->Residents for Uttlesford}}
+|-
+|-bgcolor=<!-- party shade if gain -->#a3f8eb
+|[[<!-- council election -->2015 Uttlesford District Council election#<!-- By-elections section -->By-elections|<!-- ward name -->Elsenham & Henham]]
+|<!-- date -->16 February 2017
+| {{Party name with colour|<!-- inc party -->Liberal Democrats (UK)}}
+| {{Party name with colour|<!-- win party -->Residents for Uttlesford}}
+|-
+|-bgcolor=<!-- party shade if gain -->
+|[[<!-- council election -->2015 Uttlesford District Council election#<!-- By-elections section -->By-elections|<!-- ward name -->Newport]]
+|<!-- date -->4 May 2017
+| {{Party name with colour|<!-- inc party -->Residents for Uttlesford}}
+| {{Party name with colour|<!-- win party -->Residents for Uttlesford}}
+|-
+|}
+
+===2019-present===
+
+{| class="wikitable"
+! Ward !! Date !! colspan=2 | Incumbent party !! colspan=2 | Winning party
+|-
+|-bgcolor=<!-- party shade if gain -->
+|[[<!-- council election -->2019 Uttlesford District Council election#<!-- By-elections section -->By-elections|<!-- ward name -->Newport]]
+|<!-- date -->6 May 2021
+| {{Party name with colour|<!-- inc party -->Residents for Uttlesford}}
+| {{Party name with colour|<!-- win party -->Residents for Uttlesford}}
+|-
+|-bgcolor=<!-- party shade if gain -->lightblue
+|[[<!-- council election -->2019 Uttlesford District Council election#<!-- By-elections section -->By-elections|<!-- ward name -->The Sampfords]]
+|<!-- date -->6 May 2021
+| {{Party name with colour|<!-- inc party -->Residents for Uttlesford}}
+| {{Party name with colour|<!-- win party -->Conservative Party (UK)}}
+|-
+|-bgcolor=<!-- party shade if gain -->lightblue
+|[[<!-- council election -->2019 Uttlesford District Council election#<!-- By-elections section -->By-elections|<!-- ward name -->Great Dunmow South & Barnston]]
+|<!-- date -->5 January 2023
+| {{Party name with colour|<!-- inc party -->Residents for Uttlesford}}
+| {{Party name with colour|<!-- win party -->Conservative Party (UK)}}
+|-
+|}
+
+==Notes==
+{{notelist}}
+
+==References==
+{{reflist}}
+
+==External links==
+*[http://www.uttlesford.gov.uk Uttlesford District Council]
+
+{{Essex elections}}
+
+[[Category:Uttlesford District Council elections| ]]
+[[Category:Council elections in Essex]]
+[[Category:District council elections in England]]

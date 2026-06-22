@@ -1,0 +1,53 @@
+{{Short description|Romanian weightlifter (born 1988)}}
+{{Infobox sportsperson
+|image =Weightlifting at the 2016 Summer Olympics-85kg-12.jpg
+|image_size=255px
+|caption=Sîncrăian (right) at the 2016 Olympics
+|birth_date={{birth date and age|1988|12|21|df=y}}
+|birth_place=[[Cluj-Napoca]], [[Romania]]
+|sport=[[Olympic weightlifting|Weightlifting]]
+|club=SCM Bistrita
+|height=174 cm<ref>[https://www.rio2016.com/en/athlete/gabriel-sincraian Gabriel Sîncrăian] {{webarchive|url=https://web.archive.org/web/20160806065634/https://www.rio2016.com/en/athlete/gabriel-sincraian |date=2016-08-06 }}. rio2016.com</ref>
+| weight = {{convert|84.3|kg|lb|abbr=on}} (2016)
+| website = www.gabrielsincraian.com
+|nationality = 
+|medaltemplates=
+{{MedalCountry|{{ROU}}}}
+{{MedalCompetition|[[Olympic Games]]}}
+{{Medal|Disqualified |{{nowrap|[[Weightlifting at the 2016 Summer Olympics|2016 Rio de Janeiro]]}}|{{nowrap|[[Weightlifting at the 2016 Summer Olympics – Men's 85 kg|85 kg]]}}}}
+{{MedalCompetition|[[European Weightlifting Championships]]}}
+{{MedalGold|[[2012 European Weightlifting Championships|2012 Antalya]]|–85 kg}}
+{{Medal|DQ|[[2016 European Weightlifting Championships|2016 Førde]]|–85 kg}}
+}}
+'''Gabriel Sîncrăian''' (born 21 December 1988) is a [[Romania]]n [[weightlifter]] who competes in the 85&nbsp;kg weight division.
+
+==Career==
+He took part in the [[Weightlifting at the 2012 Summer Olympics – Men's 85 kg|2012]] and 2016 Olympics and won a bronze medal in the same [[Weightlifting at the 2016 Summer Olympics – Men's 85 kg|85-kg]] event in 2016.<ref>{{ Cite sports-reference abriel Sîncrăian{{cite web|url=https://www.sports-reference.com/olympics/athletes/si/gabriel-sincraian-1.html |title=Gabriel Sîncrăian Bio, Stats, and Results &#124; Olympics at Sports-Reference.com |accessdate=2012-08-02 |url-status=dead |archiveurl=https://web.archive.org/web/20121217052010/http://www.sports-reference.com/olympics/athletes/si/gabriel-sincraian-1.html |archivedate=2012-12-17 }} | 3 = 11 August 2012}}</ref> Sîncrăian won two more medals at the European championships in 2012 and 2016.<ref>[http://www.iat.uni-leipzig.de/datenbanken/dbgwh/daten.php?spid=068B4219C1FA435096866F111E3090FC Sincraian Gabriel (ROU)]. iat.uni-leipzig.de</ref>
+
+On 13 October 2016, the [[International Weightlifting Federation|IWF]] reported that Sincraian had tested positive for excess testosterone in a test connected to the Rio Olympics, and he was stripped of the medal.<ref>{{cite web|url=http://www.espn.com/olympics/story/_/id/17783940/romanian-weightlifter-gabriel-sincraian-lose-bronze-medal-failed-rio-olympic-drug-test|title=Weightlifter Gabriel Sincraian fails Rio Olympic drug test|date=October 13, 2016|publisher=Associated Press|accessdate=2016-10-14}}</ref>
+
+In November 2020, the reanalysed doping tests from the 2012 Summer Olympics turned out positive for [[metenolone]] and [[stanozolol]] as well.<ref>[https://stillmedab.olympic.org/media/Document%20Library/OlympicOrg/IOC/Who-We-Are/Commissions/Disciplinary-Commission/2020/ITA-LD-LRTII-2718614-IOC-Disciplinary-Commission-Decision.pdf International Olympic Committee Disciplinary Commission Decision], [[International Olympic Committee]], 23 November 2020.</ref>
+
+In 2022 the [[International Weightlifting Federation]] annulled his results between 3 August 2012 and 17 January 2022. <ref>https://ita.sport/sanction/international-weightlifting-federation-iwf/</ref>
+== References ==
+{{Commons category|Gabriel Sîncrăian}}
+{{reflist}}
+
+{{DEFAULTSORT:Sincraian, Gabriel}}
+[[Category:Romanian male weightlifters]]
+[[Category:1988 births]]
+[[Category:Living people]]
+[[Category:Weightlifters at the 2012 Summer Olympics]]
+[[Category:Weightlifters at the 2016 Summer Olympics]]
+[[Category:Olympic weightlifters for Romania]]
+[[Category:Competitors stripped of Summer Olympics medals]]
+[[Category:Doping cases in weightlifting]]
+[[Category:Romanian sportspeople in doping cases]]
+[[Category:Summer World University Games medalists in weightlifting]]
+[[Category:FISU World University Games bronze medalists for Romania]]
+[[Category:European Weightlifting Championships medalists]]
+[[Category:Medalists at the 2013 Summer Universiade]]
+[[Category:Sportspeople from Cluj-Napoca]]
+[[Category:20th-century Romanian sportsmen]]
+[[Category:21st-century Romanian sportsmen]]
+{{Romania-weightlifting-bio-stub}}

@@ -1,0 +1,189 @@
+{{Short description|Scattering of photons off charged particles}}
+{{Use American English|date = March 2019}}
+{{Light–matter interaction}}
+'''Compton scattering''' (or the '''Compton effect''') is the [[Quantum mechanics|quantum theory]] of [[scattering]] of a high-frequency [[photon]] through an interaction with a [[charged particle]], usually an [[electron]]. Specifically, when the photon interacts with a loosely bound electron, it releases the electron from an outer [[Valence electron|valence shell]] of an atom or molecule.
+
+The effect was discovered in 1923 by [[Arthur Compton|Arthur Holly Compton]] while researching the scattering of [[X-ray]]s by light elements, which earned him the [[Nobel Prize in Physics]] in 1927. The Compton effect significantly deviated from dominating classical theories, using both [[special relativity]] and [[quantum mechanics]] to explain the interaction between high frequency photons and charged particles.
+
+Photons can interact with matter at the atomic level (e.g. [[photoelectric effect]] and [[Rayleigh scattering]]), at the nucleus, or with only an electron. [[Pair production]] and the Compton effect occur at the level of the electron.<ref>{{cite journal |last=Pattison |first=Philip |date=1975 |title=X-Ray and Gamma Ray Scattering |url=https://wrap.warwick.ac.uk/138656/1/WRAP_Theses_Pattison_1975.pdf |journal=Warwick Database |publisher=University of Warwick |page=10 |via=Warwick Library}}</ref> When a high-frequency photon scatters due to an interaction with a charged particle, the photon's [[energy]] is reduced, and thus its [[wavelength]] is increased.  This trade-off between wavelength and energy in response to the collision is the Compton effect.  Because of [[conservation of energy]], the energy that is lost by the photon is transferred to the recoiling particle (such an electron would be called a "Compton recoil electron").
+
+This implies that if the recoiling particle initially carried more energy than the photon has, the reverse would occur. This is known as '''inverse Compton scattering''', in which the scattered photon increases in energy.
+
+== Introduction ==
+[[File:Compton-en.svg|thumb|right|Fig. 1: Schematic diagram of Compton's experiment. Compton scattering occurs in the [[graphite]] target on the left. The slit passes X-ray photons scattered at the selected angle and their average energy rate is measured using [[Bragg scattering]] from the crystal on the right in conjunction with an ionization chamber.]]
+
+[[File:Dominant Photon-Matter Interaction.svg|thumb|Plot of photon energies calculated for a given element (atomic number ''Z'') at which the [[Cross section (physics)|cross section]] value for the process on the right becomes larger than the cross section for the process on the left. For calcium ({{nowrap|1=''Z'' = 20}}), Compton scattering starts to dominate at {{nowrap|1=''hυ'' = 0.08&nbsp;MeV}} and ceases at 12&nbsp;MeV.<ref>{{cite journal |date=2009-09-17 |title=XCOM: Photon Cross Sections Database |journal=NIST |doi=10.18434/T48G6X |language=en |last1=Seltzer |first1=Stephen }}</ref>]]
+In Compton's original experiment (see Fig.&nbsp;1), the energy of the X-ray photon (≈&nbsp;17&nbsp;keV) was significantly larger than the binding energy of the atomic electron, so the electrons could be treated as being free after scattering. The amount by which the light's wavelength changes is called the '''Compton shift'''. Although Compton scattering from a nucleus exists,<ref>{{cite journal |title=Nuclear Compton scattering |author=P. Christillin |year=1986 |journal= J. Phys. G: Nucl. Phys. |volume=12|pages=837–851 |url=https://iopscience.iop.org/article/10.1088/0305-4616/12/9/008/meta |doi=10.1088/0305-4616/12/9/008 |bibcode = 1986JPhG...12..837C |issue=9 |s2cid=250783416 |url-access=subscription}}</ref> Compton scattering usually refers to the interaction involving only the electrons of an atom. The Compton effect was observed by [[Arthur Holly Compton]] in 1923 at [[Washington University in St. Louis]] and further verified by his graduate student [[Wu Youxun|Y. H. Woo]] in the years following. Compton was awarded the 1927 [[Nobel Prize in Physics]] for the discovery.
+
+The effect is significant because it demonstrates that light cannot be explained purely as a [[wave]] phenomenon.<ref>
+{{cite book
+ | last = Griffiths | first = David
+ | title = Introduction to Elementary Particles
+ | publisher = Wiley
+ | date = 1987
+ | pages = 15, 91
+ | isbn = 0-471-60386-4
+}}</ref> [[Thomson scattering]], the classical theory of an [[electromagnetic wave]] scattered by charged particles, cannot explain shifts in wavelength at low intensity: classically, light of sufficient intensity for the electric field to accelerate a charged particle to a relativistic speed will cause radiation-pressure recoil and an associated Doppler shift of the scattered light,<ref>{{cite web |author=C. Moore |year=1995 |title=Observation of the Transition from Thomson to Compton Scattering in Optical Multiphoton Interactions with Electrons |url=http://www.lle.rochester.edu/media/publications/documents/theses/Moore.pdf |archive-url=https://web.archive.org/web/20250515104732/http://www.lle.rochester.edu/media/publications/documents/theses/Moore.pdf |archive-date=May 15, 2025}}</ref> but the effect would become arbitrarily small at sufficiently low light intensities ''regardless of wavelength''. Thus, if we are to explain low-intensity Compton scattering, light must behave as if it consists of particles. Or the assumption that the electron can be treated as free is invalid resulting in the effectively infinite electron mass equal to the nuclear mass (see e.g. the comment below on elastic scattering of X-rays being from that effect). Compton's experiment convinced physicists that light can be treated as a stream of particle-like objects (quanta called photons), whose energy is proportional to the light wave's frequency.
+
+As shown in Fig. 2, the interaction between an electron and a photon results in the electron being given part of the energy (making it recoil), and a photon of the remaining energy being emitted in a different direction from the original, so that the overall [[momentum]] of the system is also conserved. If the scattered photon still has enough energy, the process may be repeated. In this scenario, the electron is treated as free or loosely bound. Experimental verification of momentum conservation in individual Compton scattering processes by [[Walther Bothe|Bothe]] and [[Hans Geiger|Geiger]] as well as by Compton and Simon has been important in disproving the [[BKS theory]].
+
+Compton scattering is commonly described as [[inelastic scattering#Photons|inelastic scattering]]. This is because, unlike the more common Thomson scattering that happens at the low-energy limit, the energy in the scattered photon in Compton scattering is less than the energy of the incident photon.<ref>{{cite book |last1=Carron |first1=NJ |title=An Introduction to the Passage of Energetic Particles through Matter |date=2007 |publisher=CRC Press |location=Boca Raton, FL |isbn=978-1-4200-1237-8 |page=61}}</ref><ref>{{cite book |last1=Chen |first1=Sow-Hsin |last2=Kotlarchyk |first2=Michael |title=Interactions of Photons and Neutrons with Matter |date=2007 |publisher=World Scientific |location=Singapore |isbn=978-981-02-4214-5 |page=271 |edition=2nd}}</ref> As the electron is typically weakly bound to the atom, the scattering can be viewed from either the perspective of an electron in a potential well, or as an atom with a small ionization energy. In the former perspective, energy of the incident photon is transferred to the recoil particle, but only as kinetic energy. The electron gains no internal energy, respective masses remain the same, the mark of an [[elastic collision]]. From this perspective, Compton scattering could be considered elastic because the internal state of the electron does not change during the scattering process. In the latter perspective, the atom's state is changed, constituting an [[inelastic collision]]. Whether Compton scattering is considered elastic or inelastic depends on which perspective is being used, as well as the context.
+
+Compton scattering is one of four competing processes when photons interact with matter. At energies of a few eV to a few keV, corresponding to [[visible light]] through soft X-rays, a photon can be completely absorbed and its energy can eject an electron from its host atom, a process known as the photoelectric effect. High-energy photons of {{val|1.022|u=MeV}} and above may bombard the nucleus and cause an electron and a positron to be formed, a process called [[pair production]]; even-higher-energy photons (beyond a threshold energy of at least {{val|1.670|u=MeV}}, depending on the nuclei involved), can eject a nucleon or [[alpha particle]] from the nucleus in a process called [[photodisintegration]]. Compton scattering is the most important interaction in the intervening energy region, at photon energies greater than those typical of the photoelectric effect but less than the pair-production threshold.
+
+== Description of the phenomenon ==
+[[Image:Compton-scattering.svg|thumb|200px|right|Fig. 2: A photon of wavelength <math>\lambda</math> comes in from the left, collides with a target at rest, and a new photon of wavelength <math>\lambda'</math> emerges at an angle <math>\theta</math>. The target recoils, carrying away an angle-dependent amount of the incident energy.]]
+By the early 20th century, research into the interaction of [[X-ray]]s with matter was well under way. It was observed that when X-rays of a known wavelength interact with atoms, the X-rays are scattered through an angle <math>\theta</math> and emerge at a different wavelength related to <math>\theta</math>. Although [[classical electromagnetism]] predicted that the wavelength of scattered rays should be equal to the initial wavelength,<ref name="taylor_136-9">{{cite book|last1=Taylor|first1=J.R.| last2=Zafiratos|first2=C.D.|last3=Dubson|first3=M.A.|year=2004|title=Modern Physics for Scientists and Engineers| edition=2nd| publisher=[[Prentice Hall]]|isbn=0-13-805715-X|pages=136–9}}</ref> multiple experiments had found that the wavelength of the scattered rays was longer (corresponding to lower energy) than the initial wavelength.<ref name="taylor_136-9" />
+
+In 1923, Compton published a paper that explained the X-ray shift by attributing particle-like momentum to light quanta ([[Albert Einstein]] had proposed light quanta in 1905 in explaining the photo-electric effect, but Compton did not build on Einstein's work). The energy of light quanta depends only on the frequency of the light. In his paper, Compton derived the mathematical relationship between the shift in wavelength and the scattering angle of the X-rays by assuming that each scattered X-ray photon interacted with only one electron.  His paper concludes by reporting on experiments which verified his derived relation:
+<math display="block">\lambda' - \lambda = \frac{h}{m_\text{e} c}(1 - \cos{\theta}),</math>
+where
+* <math>\lambda</math> is the initial wavelength,
+* <math>\lambda'</math> is the wavelength after scattering,
+* <math>h</math> is the [[Planck constant]],
+* <math>m_\text{e}</math> is the [[electron mass]],
+* <math>c</math> is the [[speed of light]], and
+* <math>\theta</math> is the scattering angle.
+
+The quantity {{math|{{sfrac|''h''|''m''<sub>e</sub>''c''}}}} is known as the [[Compton wavelength]] of the electron; it is equal to {{val|2.43|e=-12|u=m}}. The wavelength shift {{math|''λ''′ − ''λ''}} is at least zero (for {{math|1=''θ'' = 0°}}) and at most twice the Compton wavelength of the electron (for {{math|1=''θ'' = 180°}}).
+
+Compton found that some X-rays experienced no wavelength shift despite being scattered through large angles; in each of these cases the photon failed to eject an electron.<ref name="taylor_136-9" /> Thus the magnitude of the shift is related not to the Compton wavelength of the electron, but to the Compton wavelength of the entire atom, which can be upwards of 10000 times smaller.  This is known as "coherent" scattering off the entire atom since the atom remains intact, gaining no internal excitation.
+
+In Compton's original experiments the wavelength shift given above was the directly measurable observable.  In modern experiments it is conventional to measure the energies, not the wavelengths, of the scattered photons.  For a given incident energy <math>E_\gamma = hc/\lambda</math>, the outgoing final-state photon energy, <math>E_{\gamma^\prime}</math>, is given by
+<math display="block">E_{\gamma^\prime} = \frac{E_\gamma}{1 + (E_\gamma/m_\text{e} c^2)(1-\cos\theta)}.</math>
+
+=== Derivation of the scattering formula ===
+{| border="1" cellpadding="5" cellspacing="0" align="right" style="width:220px; text-align:justify"
+! style="background:#ffdead;" | [[Feynman diagrams]] <small>(time from left to right)</small>
+|-
+| align="center" | '''s channel'''{{br}}[[Image:ComptonScattering-s.svg|220px]]
+|-
+| align="center" | '''u channel'''{{br}}[[Image:ComptonScattering-u.svg|220px]]
+|}
+[[File:ComptonEnergy-en.svg|thumb|Fig. 3: Energies of a photon at 500&nbsp;keV and an electron after Compton scattering.]]
+A photon {{math|γ}} with wavelength {{mvar|λ}} collides with an electron {{math|e}} in an atom, which is treated as being at rest. The collision causes the electron to [[recoil]], and a new photon {{math|''γ''′}} with wavelength {{math|''λ''′}} emerges at angle {{mvar|θ}} from the photon's incoming path. Let {{math|e′}} denote the electron after the collision. Compton allowed for the possibility that the interaction would sometimes accelerate the electron to speeds sufficiently close to the velocity of light as to require the application of Einstein's [[special relativity]] theory to properly describe its energy and momentum.
+
+At the conclusion of Compton's 1923 paper, he reported results of experiments confirming the predictions of his scattering formula, thus supporting the assumption that photons carry momentum as well as quantized energy.  At the start of his derivation, he had postulated an expression for the momentum of a photon from equating Einstein's already established mass-energy relationship of {{math|1=''E'' = ''mc''<sup>2</sup>}} to the quantized photon energies of {{math|''hf''}}, which Einstein had separately postulated. If {{math|1=''mc''<sup>2</sup> = ''hf''}}, the equivalent photon mass must be {{math|''hf''/''c''<sup>2</sup>}}. The photon's momentum is then simply this effective mass times the photon's frame-invariant velocity {{mvar|c}}. For a photon, its momentum <math>p=hf/c</math>, and thus {{math|''hf''}}  can be substituted for {{math|''pc''}} for all photon momentum terms which arise in course of the derivation below. The derivation which appears in Compton's paper is more terse, but follows the same logic in the same sequence as the following derivation.
+
+The [[conservation of energy]] {{math|''E''}} merely equates the sum of energies before and after scattering.
+: <math>E_\gamma + E_\text{e} = E_{\gamma'} + E_{\text{e}'}.</math>
+Compton postulated that photons carry momentum;<ref name="taylor_136-9" /> thus from the [[conservation of momentum]], the momenta of the particles should be similarly related by
+: <math>\mathbf{p}_\gamma = \mathbf{p}_{\gamma'} + \mathbf{p}_{\text{e}'},</math>
+in which {{math|'''p'''<sub>e</sub>}} is omitted as being negligible.
+
+The photon energies are related to the frequencies by
+: <math>E_{\gamma} = hf</math>
+: <math>E_{\gamma'} = hf'</math>
+where {{math|''h''}} is the [[Planck constant]].
+
+Before the scattering event, the electron is treated as sufficiently close to being at rest that its total energy consists entirely of the mass–energy equivalence of its rest mass {{math|''m''<sub>e</sub>}},
+: <math>E_\text{e} = m_\text{e} c^2.</math>
+After scattering, the possibility that the electron might be accelerated to a significant fraction of the speed of light, requires that its total energy be represented using the relativistic [[energy–momentum relation]]
+: <math>E_{\text{e}'} = \sqrt{(p_{\text{e}'}c)^2 + (m_\text{e} c^2)^2} ~.</math>
+
+Substituting these quantities into the expression for the conservation of energy gives
+: <math>hf + m_\text{e} c^2 = hf' + \sqrt{(p_{\text{e}'}c)^2 + (m_\text{e} c^2)^2}.</math>
+This expression can be used to find the magnitude of the momentum of the scattered electron,
+{{NumBlk||<math display="block">p_{\text{e}'}^{\, 2}c^2 = (hf - hf' + m_\text{e}c^2)^2-m_\text{e}^2c^4. </math>|{{EquationRef|1}}}}
+Note that this magnitude of the momentum gained by the electron (formerly zero) exceeds the energy/{{math|''c''}} lost by the photon,
+: <math>\frac{1}{c}\sqrt{(hf - hf' + m_\text{e}c^2)^2-m_\text{e}^2c^4} > \frac{hf - hf'}{c}~. </math>
+
+Equation (1) relates the various energies associated with the collision. The electron's momentum change involves a relativistic change in the energy of the electron, so it is not simply related to the change in energy   occurring in classical physics.  The change of the magnitude of the momentum of the photon is not just related to the change of its energy; it also involves a change in direction.
+
+Solving the conservation of momentum expression for the scattered electron's momentum gives
+: <math>\mathbf{p}_{\text{e}'} = \mathbf{p}_\gamma - \mathbf{p}_{\gamma'}.</math>
+
+Making use of the [[scalar product]] yields the square of its magnitude,
+: <math>\begin{align}
+p_{\text{e}'}^{\, 2} &= \mathbf{p}_{\text{e}'}\cdot\mathbf{p}_{\text{e}'} = (\mathbf{p}_\gamma - \mathbf{p}_{\gamma'}) \cdot (\mathbf{p}_\gamma - \mathbf{p}_{\gamma'}) \\
+ &= p_{\gamma}^{\, 2} + p_{\gamma'}^{\, 2} - 2 p_{\gamma}\, p_{\gamma'} \cos\theta. \end{align}</math>
+In anticipation of <math>p_{\gamma}c</math> being replaced  with {{math|''hf''}}, multiply both sides by {{math|''c''<sup>2</sup>}},
+: <math>p_{\text{e}'}^{\, 2}c^2 = p_{\gamma}^{\, 2}c^2 + p_{\gamma'}^{\, 2}c^2 - 2c^2 p_{\gamma}\, p_{\gamma'} \cos\theta.</math>
+
+After replacing the photon momentum terms with {{math|''hf''/''c''}}, we get a second expression for the magnitude of the momentum of the scattered electron,
+{{NumBlk||<math display="block">p_{e'}^{\, 2}c^2 = (h f)^2 + (h f')^2 - 2(hf)(h f')\cos{\theta}~. </math>|{{EquationRef|2}}}}
+
+Equating the alternate expressions for this momentum gives
+: <math> (hf - hf' + m_\text{e} c^2)^2 - m_\text{e}^{\, 2}c^4 = \left(h f\right)^2 + \left(h f'\right)^2 - 2h^2 ff'\cos{\theta},</math>
+which, after evaluating the square and canceling and rearranging terms, further  yields
+: <math> 2 h f m_\text{e} c^2-2 h f' m_\text{e} c^2   = 2 h^2 f f' \left( 1 - \cos \theta \right) .</math>
+Dividing both sides by {{math|2''hff''{{′}}''m''<sub>e</sub>''c''}} yields
+: <math> \frac{c}{f'} - \frac{c}{f} = \frac{h}{m_\text{e} c}\left(1-\cos \theta \right) .</math>
+
+Finally, since {{math|''fλ''}} = {{math|''f''{{&prime;}}''λ''&prime;}} = {{mvar|c}},
+{{NumBlk||<math display="block">\lambda'-\lambda = \frac{h}{m_\text{e} c}(1-\cos{\theta})~ .</math>|{{EquationRef|3}}}}
+
+It can further be seen that the angle {{mvar|φ}} of the outgoing electron with the direction of the incoming photon is specified by 
+{{NumBlk||<math display="block"> \cot \varphi = \left ( 1+\frac{hf}{m_\text{e} c^2} \right ) \tan (\theta/2)~. </math>|{{EquationRef|4}}}}
+
+== Applications ==
+
+Compton scattering is of prime importance to [[radiobiology]], as it is the most probable interaction of gamma rays and high energy X-rays with atoms in living beings and is applied in [[radiation therapy]].<ref>Camphausen KA, Lawrence RC. [http://www.cancernetwork.com/cancer-management-11/chapter02/article/10165/1399960 "Principles of Radiation Therapy"] {{Webarchive|url=https://web.archive.org/web/20090515031929/http://www.cancernetwork.com/cancer-management-11/chapter02/article/10165/1399960 |date=2009-05-15 }} in Pazdur R, Wagman LD, Camphausen KA, Hoskins WJ (Eds) [http://www.cancernetwork.com/cancer-management-11/ Cancer Management: A Multidisciplinary Approach] {{Webarchive|url=https://web.archive.org/web/20131004224102/http://www.cancernetwork.com/cancer-management-11/ |date=2013-10-04 }}. 11 ed. 2008.</ref>
+<ref>
+Ridwan, S. M., El-Tayyeb, F., Hainfeld, J. F., &amp; Smilowitz, H. M. (2020). Distributions of intravenous injected iodine nanoparticles in orthotopic U87 human glioma xenografts over time and tumor therapy. Nanomedicine, 15(24), 2369–2383. https://doi.org/10.2217/nnm-2020-0178</ref>
+
+Compton scattering is an important effect in [[gamma spectroscopy]] which gives rise to the [[Compton edge]], as it is possible for the gamma rays to scatter out of the detectors used. [[Compton suppression]] is used to detect stray scatter gamma rays to counteract this effect.
+
+=== Magnetic Compton scattering ===
+Magnetic Compton scattering is an extension of the previously mentioned technique which involves the magnetisation of a crystal sample hit with high energy, circularly polarised photons. By measuring the scattered photons' energy and reversing the magnetisation of the sample, two different Compton profiles are generated (one for spin up momenta and one for spin down momenta). Taking the difference between these two profiles gives the magnetic Compton profile  (MCP), given by <math>J_{\text{mag}}(\mathbf{p}_z)</math> – a one-dimensional projection of the electron spin density.
+<math display="block">J_{\text{mag}}(\mathbf{p}_z) = \frac{1}{\mu}\iint_{-\infty}^\infty (n_{\uparrow} (\mathbf{p}) - n_{\downarrow}(\mathbf{p})) d\mathbf{p}_x d\mathbf{p}_y</math>
+where <math>\mu</math> is the number of spin-unpaired electrons in the system, <math>n_\uparrow(\mathbf{p})</math> and <math>n_\downarrow(\mathbf{p})</math> are the three-dimensional electron momentum distributions for the majority spin and minority spin electrons respectively.
+
+Since this scattering process is [[Coherence (physics)|incoherent]] (there is no phase relationship between the scattered photons), the MCP is representative of the bulk properties of the sample and is a probe of the ground state. This means that the MCP is ideal for comparison with theoretical techniques such as [[density functional theory]].
+The area under the MCP is directly proportional to the spin moment of the system and so, when combined with total moment measurements methods (such as [[SQUID]] magnetometry), can be used to isolate both the spin and orbital contributions to the total moment of a system.
+The shape of the MCP also yields insight into the origin of the magnetism in the system.<ref name="Cooper2004">{{cite book|author=Malcolm Cooper|title=X-Ray Compton Scattering|url=https://books.google.com/books?id=m58jXIJDs3QC|access-date=4 March 2013|date=14 October 2004|publisher=[[OUP Oxford]]|isbn=978-0-19-850168-8}}</ref><ref>Barbiellini, B., Bansil, A. (2020). Scattering Techniques, Compton. Materials Science and Materials Engineering, Elsevier. https://doi.org/10.1016/B978-0-323-90800-9.00107-4
+</ref>
+
+=== Inverse Compton scattering ===
+Inverse Compton scattering is important in [[astrophysics]]. In [[X-ray astronomy]], the [[accretion disk]] surrounding a [[black hole]] is presumed to produce a thermal spectrum. The lower energy photons produced from this spectrum are scattered to higher energies by relativistic electrons in the surrounding [[stellar corona|corona]]. This is surmised to cause the power law component in the X-ray spectra (0.2–10&nbsp;keV) of accreting black holes.<ref>{{cite web |last1=Dr. Tortosa |first1=Alessia |title=Comptonization mechanisms in hot coronae in AGN. The NuSTAR view |url=http://www.matfis.uniroma3.it/Allegati/Dottorato/TESI/tortosa/tesi_PhD_Tortosa_Alessia.pdf |publisher=DIPARTIMENTO DI MATEMATICA E FISICA}}</ref>
+
+The effect is also observed when photons from the [[Cosmic microwave background radiation|cosmic microwave background]] (CMB) move through the hot gas surrounding a [[galaxy cluster]].  The CMB photons are scattered to higher energies by the electrons in this gas, resulting in the [[Sunyaev–Zel'dovich effect]]. Observations of the Sunyaev–Zel'dovich effect provide a nearly redshift-independent means of detecting galaxy clusters.
+
+Some synchrotron radiation facilities scatter laser light off the stored electron beam.
+This Compton backscattering produces high energy photons in the MeV to GeV range<ref>{{cite web|url=http://www.lnf.infn.it/~levisand/graal/graal.html |title=GRAAL home page |publisher=Lnf.infn.it |access-date=2011-11-08}}</ref><ref>{{cite web|url=https://tunl.duke.edu/research/our-facilities | title=Duke University TUNL HIGS Facility | access-date=2021-01-31}}</ref> subsequently used for nuclear physics experiments.
+
+=== Non-linear inverse Compton scattering ===
+[[Non-linear inverse Compton scattering]] (NICS) is the scattering of multiple low-energy photons, given by an intense electromagnetic field, in a high-energy photon (X-ray or gamma ray) during the interaction with a charged particle, such as an electron.<ref name=":0">{{Cite journal|last1=Di Piazza|first1=A.|last2=Müller|first2=C.|last3=Hatsagortsyan|first3=K. Z.|last4=Keitel|first4=C. H.|date=2012-08-16|title=Extremely high-intensity laser interactions with fundamental quantum systems|url=https://link.aps.org/doi/10.1103/RevModPhys.84.1177|journal=Reviews of Modern Physics|language=en|volume=84|issue=3|pages=1177–1228|doi=10.1103/RevModPhys.84.1177|issn=0034-6861|arxiv=1111.3886|bibcode=2012RvMP...84.1177D|s2cid=118536606}}</ref> It is also called non-linear Compton scattering and multiphoton Compton scattering. It is the non-linear version of inverse Compton scattering in which the conditions for multiphoton absorption by the charged particle are reached due to a very intense electromagnetic field, for example the one produced by a [[laser]].<ref>{{Cite journal|last=Meyerhofer|first=D.D.|date=1997|title=High-intensity-laser-electron scattering|journal=IEEE Journal of Quantum Electronics|volume=33|issue=11|pages=1935–1941|doi=10.1109/3.641308|bibcode=1997IJQE...33.1935M}}</ref>
+
+Non-linear inverse Compton scattering is an interesting phenomenon for all applications requiring high-energy photons since NICS is capable of producing photons with energy comparable to the charged particle rest energy and higher.<ref>{{Cite journal|last=Ritus|first=V. I.|date=1985|title=Quantum effects of the interaction of elementary particles with an intense electromagnetic field|url=http://link.springer.com/10.1007/BF01120220|journal=Journal of Soviet Laser Research|language=en|volume=6|issue=5|pages=497–617|doi=10.1007/BF01120220|s2cid=121183948|issn=0270-2010|url-access=subscription}}</ref> As a consequence NICS photons can be used to trigger other phenomena such as pair production, Compton scattering, [[nuclear reaction]]s, and can be used to probe non-linear quantum effects and non-linear [[Quantum electrodynamics|QED]].<ref name=":0" />
+
+== See also ==
+{{cmn|
+* [[Compton Gamma Ray Observatory]]
+* [[Klein–Nishina formula]]
+* [[Nuclear electromagnetic pulse]]
+* [[Pair production]]
+* [[Peter Debye]]
+* [[Photoelectric effect]]
+* [[Radiation pressure#Theory|Radiation pressure]]
+* [[Resonant inelastic X-ray scattering]]
+* [[Thomson scattering]]
+* [[Timeline of cosmic microwave background astronomy]]
+* [[Non-linear inverse Compton scattering]]
+}}
+
+== References ==
+{{reflist|30em}}
+
+== Further reading ==
+* {{cite journal|author=S. Chen|author2=H. Avakian |author3=V. Burkert |author4=L. Vandenaweele |author5=P. Eugenio |author6=the CLAS collaboration |title=Measurement of Deeply Virtual Compton Scattering with a Polarized Proton Target|journal=[[Physical Review Letters]] |volume=97|year=2006|arxiv=hep-ex/0605012|doi=10.1103/PhysRevLett.97.072002|article-number=072002|pmid=17026221|bibcode=2006PhRvL..97g2002C|issue=7|last7=Ambrozewicz |last8=Anghinolfi |last9=Asryan |last10=Bagdasaryan |last11=Baillie |last12=Ball |last13=Baltzell |last14=Barrow |last15=Batourine |last16=Battaglieri |last17=Beard |last18=Bedlinskiy |last19=Bektasoglu |last20=Bellis |last21=Benmouna |last22=Berman |last23=Biselli |last24=Bonner |last25=Bouchigny |last26=Boiarinov |last27=Bosted |last28=Bradford |last29=Branford |last30=Briscoe |s2cid=15326395 |display-authors=29 }}
+* {{cite journal|author=Compton, Arthur H.|title=A Quantum Theory of the Scattering of X-Rays by Light Elements|journal=[[Physical Review]]|volume=21|issue=5|pages=483–502|date=May 1923|doi=10.1103/PhysRev.21.483|bibcode=1923PhRv...21..483C|doi-access=free}} (the original 1923 paper on the [[American Physical Society|APS]] website)
+* Stuewer, Roger H. (1975), The Compton Effect: Turning Point in Physics (New York: Science History Publications)
+
+== External links ==
+* [http://hyperphysics.phy-astr.gsu.edu/Hbase/quantum/comptint.html Compton Scattering] – Georgia State University
+* [http://hyperphysics.phy-astr.gsu.edu/Hbase/quantum/compdat.html#c1 Compton Scattering Data] – Georgia State University
+* [http://www.miniphysics.com/derivation-of-compton-shift-equation.html Derivation of Compton shift equation]
+
+{{QED}}
+{{X-ray science}}
+{{Portal bar|Physics|Astronomy|Stars|Spaceflight|Outer space|Solar System}}
+{{Authority control}}
+
+{{DEFAULTSORT:Compton Scattering}}
+[[Category:Astrophysics]]
+[[Category:Observational astronomy]]
+[[Category:Atomic physics]]
+[[Category:Foundational quantum physics]]
+[[Category:Quantum electrodynamics]]
+[[Category:X-ray scattering]]

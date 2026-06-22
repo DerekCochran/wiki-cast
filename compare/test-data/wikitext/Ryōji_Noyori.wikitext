@@ -1,0 +1,135 @@
+{{Short description|Japanese chemist (born 1938)}}
+{{Eastern name order|Noyori Ryōji}}
+{{Infobox scientist
+| name              = Ryōji Noyori
+| honorific_suffix = ForMemRS
+| image             = Ryoji_Noyori_20021212.jpg
+| image_size        = 180px
+| caption           = Noyori in 2002
+| birth_date        = {{Birth date and age|1938|9|3|df=y}}
+| birth_place       = [[Kobe|Kobe, Japan]]
+| field             = {{Plainlist|
+* [[Chemistry]]
+* [[Green chemistry]]
+* [[Asymmetric catalysis]]}}
+| work_institutions = {{Plainlist|
+* [[Harvard University]]
+* [[RIKEN]]
+* [[Nagoya University]]}}
+| alma_mater        = [[Kyoto University]]
+| doctoral_advisor  = [[Hitoshi Nozaki]]
+| doctoral_students =
+| academic_advisors  = [[Elias J. Corey]]
+| known_for         =
+| prizes            = {{Plainlist|
+* [[Asahi Prize]]  {{small|(1992)}}
+* [[Tetrahedron Prize]] {{small| (1993)}} 
+* [[Arthur C. Cope Award]] {{small|(1997)}}
+* [[Nobel Prize for Chemistry]] {{small|(2001)}}
+*  [[Wolf Prize in Chemistry]] {{small|(2001)}}
+*  [[Lomonosov Gold Medal]] {{small|(2009)}}}}
+| website = {{URL|http://www.nobelprize.org/nobel_prizes/chemistry/laureates/2001/noyori-facts.html}}
+}}
+
+{{nihongo|'''Ryōji Noyori'''|野依 良治|Noyori Ryōji|born 3 September 1938}} is a Japanese [[chemist]]. He won the [[Nobel Prize in Chemistry]] in 2001, Noyori shared a half of the prize with [[William S. Knowles]] for the study of [[Asymmetric hydrogenation|chirally catalyzed hydrogenations]]; the second half of the prize went to [[K. Barry Sharpless]] for his study in chirally catalyzed oxidation reactions ([[Sharpless epoxidation]]).<ref>''Organic synthesis in Japan : past, present, and future : in commemoration of the 50th anniversary of the Society of Synthetic Organic Chemistry, Japan'' / editor in chief, Ryoji Noyori (1992)</ref><ref>''Asymmetric catalysis in organic synthesis'' (1994)</ref><ref>[http://www.ingentaconnect.com/content/matthey/pmr/2002/00000046/00000002/art00011 T. J. Colacot. "2001 Nobel Prize in Chemistry". ''Platinum Metals Review'' '''2002''', ''46(2)'', 82–83.]</ref><ref>[http://nobelprize.org/chemistry/laureates/2001/noyori-lecture.pdf Ryoji Noyori Nobel lecture (2001)]</ref><ref>[http://nobelprize.org/nobel_prizes/chemistry/laureates/2001/noyori-lecture.html Ryoji Noyori Nobel lecture video (2001)]</ref><ref>[http://nobelprize.org/nobel_prizes/chemistry/laureates/2001/noyori-autobio.html Autobiography]</ref><ref>[http://www.jce.divched.org/JCEWWW/Features/eChemists/document.php?chemid=47  Biographical snapshots: Ryoji Noyori], ''Journal of Chemical Education'' web site.</ref>
+
+==Education and career==
+Ryōji Noyori was born in [[Kobe|Kobe, Japan]]. Early in his school days Ryoji was interested in physics. His interest was kindled by the famous physicist [[Hideki Yukawa]] (1949 [[Nobel Prize in Physics]] winner), a close friend of his father. Later, he became fascinated with chemistry, after hearing a presentation on [[nylon]] at an industrial exposition.  He saw the power of chemistry as being the ability to "produce high value from almost nothing".  He was a student at the School of Engineering (Department of Industrial Chemistry) of the [[Kyoto University]], where he graduated in 1961. He subsequently obtained a [[Master's degree]] in [[Industrial Chemistry]] from the Graduate School of Engineering of the [[Kyoto University]]. Between 1963 and 1967, he was a research associate at the School of Engineering of the [[Kyoto University]], and an instructor in the research group of [[Hitoshi Nozaki]]. Noyori obtained a [[Doctor of Engineering]] degree (DEng) from the [[Kyoto University]] in 1967.<ref>[http://en.nagoya-u.ac.jp/people/nobel/ryoji_noyori/index.html Ryoji Noyori] – website Nagoya University</ref> He became an associate professor at the same university in 1968. After postdoctoral work with [[Elias J. Corey]] at [[Harvard University|Harvard]] he returned to Nagoya, becoming a full professor in 1972.  He is still based at Nagoya, and served as president of [[RIKEN]], a multi-site national research initiative with an annual budget of $800 million, from 2003 to 2015.<ref>RIKEN News March 24, 2015 [http://www.riken.jp/en/pr/topics/2015/20150324_1/], Nature News March 24, 2015 [http://www.nature.com/news/president-of-japan-s-riken-research-labs-resigns-1.17180]</ref>
+
+==Research==
+[[File:野依記念物質科学研究館 名古屋大学東山地区.jpg|thumb|Noyori Materials Science Laboratory in [[Nagoya University]]]]
+[[File:野依記念学術交流館a.jpg|thumb|Noyori Conference Hall in [[Nagoya University]]]]
+[[File:Study with a fresh and straightforward mind! Ryoji Noyori.jpg|thumb|''Study with a fresh and straightforward mind!'' <br />(in Nagoya University)]]
+[[File:Pre-Ceremony, 50th All-Japan Rugby Football Championship ‐03.JPG|thumb|Noyori and [[Shinya Yamanaka]] participating in the ceremony of the [[50th All Japan Rugby Football Championship]]]]
+Noyori believes strongly in the power of [[catalysis]] and of [[green chemistry]]; in a 2005 article he argued for the pursuit of "practical elegance in synthesis".<ref>{{cite journal|doi=10.1039/B502713F|pmid=15795753|title=Pursuing practical elegance in chemical synthesis|year=2005|last1=Noyori|first1=Ryoji|journal=Chemical Communications|issue=14|pages=1807–11 }}</ref> In this article he stated that "''our ability to devise straightforward and practical chemical syntheses is indispensable to the survival of our species.''"  Elsewhere he has said that "''Research is for nations and mankind, not for researchers themselves.''"  He encourages scientists to be politically active: "''Researchers must spur public opinions and government policies toward constructing the [[sustainable development|sustainable society]] in the 21st century.''"<ref>Keynote address, June 23, 2005, at the ''Second International Conference on Green and Sustainable Chemistry'', Washington DC.</ref>
+
+Noyori is currently a chairman of the Education Rebuilding Council, which was set up by Japan's PM [[Shinzō Abe]] after he came to power in 2006.<ref>[http://search.japantimes.co.jp/cgi-bin/nn20070120a1.htm Abe panel wants kids in class more, plus harsher discipline | The Japan Times Online]. Search.japantimes.co.jp (January 20, 2007). Retrieved on 2011-06-27.</ref>
+
+Noyori is most famous for [[asymmetric hydrogenation]] using as [[catalyst]]s [[Complex (chemistry)|complexes]] of [[rhodium]] and [[ruthenium]], particularly those based on the [[BINAP]] [[ligand]]. Asymmetric [[hydrogenation]] of an [[alkene]] in the presence of ((''S'')-[[BINAP]])Ru([[Acetate|OAc]])<sub>2</sub> is used for the commercial production of enantiomerically pure (97% [[Enantiomeric excess|ee]]) [[naproxen]], a [[Nonsteroidal anti-inflammatory drug|nonsteriodal anti-inflammatory drug]]. The [[antibacterial]] agent [[levofloxacin]] is manufactured by asymmetric hydrogenation of [[ketone]]s in the presence of a Ru(II) BINAP halide complex.{{Citation needed|date=March 2024}}
+
+He has also worked on other [[asymmetric synthesis|asymmetric processes]]. Each year 3000 [[tonnes]] (after new expansion) of [[menthol]] are produced (in 94% [[Enantiomeric excess|ee]]) by [[Takasago International Corporation]], using Noyori's method for [[isomerisation]] of [[allyl]]ic [[amine]]s.<ref>[http://www.flex-news-food.com/console/PageViewer.aspx?page=13467 Japan: Takasago to Expand L-Menthol Production in Iwata Plant]. FlexNews. January 10, 2008</ref>
+
+<imagemap>
+Image:Menthol synthesis.png|
+
+rect 6 14 131 92 [[myrcene]]
+rect 136 46 201 63 [[diethylamine]]
+rect 468 110 628 180 [[citronellal]]
+rect 387 112 458 135 [[zinc bromide]]
+rect 95 97 223 209 [[menthol]]
+
+desc bottom-left
+#Notes:
+#Details on the new coding for clickable images is here: [[mw:Extension:ImageMap]]
+#[https://web.archive.org/web/20080327003154/http://tools.wikimedia.de/~dapete/ImageMapEdit/ImageMapEdit.html?en This image editor] was used.
+</imagemap>
+
+More recently with Philip G. Jessop, Noyori has developed an industrial process for the manufacture of ''N,N''-[[dimethylformamide]] from [[hydrogen]], [[dimethylamine]] and [[Supercritical fluid|supercritical]] [[carbon dioxide]] in the presence of  {{chem2|RuCl2(P(CH3)3)4}} as catalyst.<ref>{{cite book|author1=Walter Leitner|author2=Philip G. Jessop|title=Chemical synthesis using supercritical fluids|url=https://books.google.com/books?id=-9yqpBozUuYC&pg=PA408|access-date=June 27, 2011|year=1999|publisher=Wiley-VCH|isbn=978-3-527-29605-7|pages=408–}}</ref>
+
+==Recognition==
+[[The Ryoji Noyori Prize]] is named in his honour. In 2000 Noyori became Honorary Doctor at the [[University of Rennes 1]], where he taught in 1995,<ref>{{in lang|fr}} [http://www.spc.univ-rennes1.fr/Rennes1Campus/2001/n61.pdf Ryoji Noyori, honorary doctorate awarded Nobel Prize] {{webarchive|url=https://web.archive.org/web/20090326074518/http://www.spc.univ-rennes1.fr/Rennes1Campus/2001/n61.pdf |date=March 26, 2009 }}, Rennes1 campus, November–December 2001</ref> and in 2005, he became Honorary Doctor at [[Technical University of Munich]] and [[RWTH Aachen University]], Germany. Noyori was elected a [[List of Fellows of the Royal Society elected in 2005|Foreign Member of the Royal Society (ForMemRS) in 2005]].<ref name=formemrs>{{cite web|title=Fellowship of the Royal Society 1660–2015|url=https://docs.google.com/spreadsheets/d/1RVVZY00MZNrK2YCTTzVrbTFH2t3RxoAZah128gQR-NM/pubhtml|publisher=Royal Society|archive-url=https://web.archive.org/web/20151015185820/https://docs.google.com/spreadsheets/d/1RVVZY00MZNrK2YCTTzVrbTFH2t3RxoAZah128gQR-NM/pubhtml|archive-date=October 15, 2015|url-status=dead}}</ref> and an Honorary Doctorate degree from the [[Institute of Chemical Technology]], Mumbai (formerly known as UDCT) on the 23rd day of February 2018.
+
+He has also been awarded:
+
+*1978 – Matsunaga prize
+*1982 – [[Chunichi Shimbun|Chuniichi Culture Award]]
+*1985 – The Chemical Society of Japan Award
+*1991 – John G. Kirkwood Award, [[American Chemical Society]] and [[Yale University]]
+*1992 – [[Asahi Prize]]
+*1993 – [[Tetrahedron Prize]]
+*1995 – [[Japan Academy Prize (academics)]]
+*1997 – [[Arthur C. Cope Award]]
+*1997 – [[Chirality Medal]]
+*1999 – [[King Faisal International Prize]]
+*2001 – [[Wolf Prize in Chemistry]]
+*2001 – [[Nobel Prize for Chemistry]]
+*2009 – [[Lomonosov Gold Medal]]
+
+==See also==
+{{Portal|Japan|Biography|Chemistry}}
+* [[List of Japanese Nobel laureates]]
+* [[List of Nobel laureates affiliated with Kyoto University]]
+
+==Further reading==
+* Ryoji Noyori: ''Research Should Be Fresh, Simple, and Clear.'' GNT Publishing, Berlin 2025, ISBN 978-3-86225-135-3, e-book: ISBN 978-3-86225-564-1, [[DOI:10.47261/1564]] (autobiography).
+* [https://l-i-c.org/ryoji-noyori-international-episodes.html My Long, Memorable Journey with the International Community]
+
+==References==
+{{Reflist}}
+
+==External links==
+* {{Nobelprize}} including the Nobel Lecture December 8, 2001 ''Asymmetric Catalysis: Science and Technology''
+
+{{commons category|Ryōji Noyori}}
+{{wikiquote|Ryōji Noyori}}
+
+{{Japanese Nobel laureates}}
+{{Nobel Prize in Chemistry Laureates 2001-2025}}
+{{2001 Nobel Prize winners}}
+{{Wolf Prize in Chemistry}}
+{{FRS 2005}}
+{{Authority control}}
+
+{{DEFAULTSORT:Noyori, Ryoji}}
+[[Category:1938 births]]
+[[Category:Living people]]
+[[Category:Scientists from Kobe]]
+[[Category:Harvard University staff]]
+[[Category:Kyoto University alumni]]
+[[Category:20th-century Japanese chemists]]
+[[Category:Nobel laureates in Chemistry]]
+[[Category:Recipients of the Order of Culture]]
+[[Category:Wolf Prize in Chemistry laureates]]
+[[Category:Recipients of the Lomonosov Gold Medal]]
+[[Category:Foreign members of the Royal Society]]
+[[Category:Members of the Pontifical Academy of Sciences]]
+[[Category:Foreign associates of the National Academy of Sciences]]
+[[Category:Foreign members of the Russian Academy of Sciences]]
+[[Category:Foreign members of the Chinese Academy of Sciences]]
+[[Category:Japanese Nobel laureates]]
+[[Category:Academic staff of Nagoya University]]
+[[Category:Nagoya University alumni]]
+[[Category:Riken personnel]]
+[[Category:Stereochemists]]
+[[Category:21st-century Japanese chemists]]
+[[Category:Scientists from Hyōgo Prefecture]]

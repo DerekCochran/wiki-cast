@@ -1,0 +1,473 @@
+{{Short description|Railway station in Linluo, Pingtung County, Taiwan}}
+{{Infobox station
+| name                = Linluo Station
+| native_name         = 麟洛車站
+| native_name_lang    = zh-tw
+| mlanguage           = {{Infobox Chinese/Chinese
+  | title           = Linluo Station
+  | t               = 麟洛車站
+  | bpmf            = ㄌㄧㄣˊ ㄌㄨㄛˋ ㄔㄜ ㄓㄢˋ
+  | p               = Línluò Chēzhàn
+}}
+| symbol_location     = tw
+| symbol              = tra
+| type                = [[Taiwan Railway]] railway station
+| image               = TRA-Linluo-Station-2016.JPG
+| caption             = 
+| alt                 = Linluo railway station entrance
+| connections         = 
+| borough             = [[Linluo|Linluo, Pintung]]
+| country             = [[Taiwan]]
+| coordinates         = {{coord|22|38|05.9|N|120|30|50.9|E|type:railwaystation_region:TW|display=inline,title}}
+| line                = [[Pingtung line]]
+| distance            = 25.9&nbsp;km to [[Kaohsiung Railway Station|Kaohsiung]]
+| platforms           = [[2 side platforms]]
+| structure           = Elevated
+| accessible          = 
+| code                = 192
+| opened              = {{Start date and age|1941|07|01|df=y}}
+| closed              = 
+| status              = 
+| passengers          = 38,786 per year<ref>{{cite web |title=各站客貨運起訖量 |url=https://www.railway.gov.tw/Upload/UserFiles/106t11.pdf |publisher=臺灣鐵路管理局 |accessdate=9 January 2019 |archive-url=https://web.archive.org/web/20180528214959/https://www.railway.gov.tw/Upload/UserFiles/106t11.pdf |archive-date=28 May 2018 |url-status=dead }}</ref>
+| pass_rank           = 179
+| pass_year           = 2017
+| services            = {{Adjacent stations|system=Taiwan Railways|line=Pingtung|left=Guilai|right=Xishi}}
+| map_type            = 
+}}
+
+'''Linluo railway station''' ({{zh|t=麟洛車站|p=Línluò Chēzhàn}}) is a railway station located in [[Linluo|Linluo Township]], [[Pingtung County]], [[Taiwan]]. It is located on the [[Pingtung line]] and is operated by [[Taiwan Railway]]. It is two kilometers away from [[Linluo]] and is near [[Provincial Highway 1 (Taiwan)|Provincial Highway 1]].  
+
+The station has two [[Side platform|side platforms]]. In line with the Kaohsiung Chaozhou Railway MRT project, this station was converted into an elevated station on June 25, 2013.<gallery width="220">
+File:TRA_EMC552_at_Linluo_Station_20160404.jpg|link=https://ja.wikipedia.org/wiki/%E3%83%95%E3%82%A1%E3%82%A4%E3%83%AB:TRA_EMC552_at_Linluo_Station_20160404.jpg|Image of train in the Station.
+</gallery>
+
+== History ==
+
+* On July 1, 1941: The '''Ailaoxi Signal Station''' was established to manage the Shicha Branch Line. 
+* 1949: "Ailiaoxi Station" was changed into a passenger and freight operating station to handle general passenger and freight transport. 
+* May 1, 1951: Because the station is located in [[Linluo|Linluo Township]], [[Pingtung County]], it was renamed to its current name.
+* April 1968: The ballast branch line was removed. 
+* August 1, 1982: Freight operations ceased. 
+* March 1, 1986: Downgraded from a third-class station to a Class A simple station and designated to be managed by [[Pingtung railway station|Pingtung Station]]. 
+* March 1, 1989: Downgraded from a Type A simple station to a call station.
+* June 25, 2013: Converted to an elevated station. 
+* August 23, 2015: The elevated double-track electrification line opened to traffic.
+* October 15, 2015: Multi-card card swipe machine launched.
+
+== Usage ==
+{| class="wikitable mw-collapsible mw-collapsed" style="text-align: right; font-size:85%"
+! colspan="7" |-2000年
+|-
+! rowspan="2" |Year
+! colspan="4" |Annual
+! colspan="2" |Daily
+|-
+!Get on the Bus
+!Get off the Bus
+!Both on and off the Bus
+! width="1em" |Source
+!Get on the Bus
+!Get off the Bus
+|-
+|1975
+|79,836
+|49,808
+|129,644
+|<ref>{{Cite report |url=https://twinfo.ncl.edu.tw/tiqry/hypage.cgi?HYPAGE=search%2Fmerge_pdf.hpg&dtd_id=11&type=s&sysid=T1936754 |title=臺灣鐵路統計年報 |author=交通部臺灣鐵路管理局 |publisher=國家圖書館 政府統計資訊網 |edition=中華民國64年 |pages=頁44–59 |access-date=2021-12-11 |archive-url=https://web.archive.org/web/20210824074529/https://twinfo.ncl.edu.tw/tiqry/hypage.cgi?HYPAGE=search%2Fmerge_pdf.hpg&dtd_id=11&type=s&sysid=T1936754 |archive-date=2021-08-24 |chapter=各站客貨運狀況 Volume of Passenger & Freight Traffic |date=June 1976 |url-status=live}}</ref>
+|219
+|355
+|-
+|1976
+|81,316
+|47,309
+|128,625
+|<ref>{{Cite report |url=https://twinfo.ncl.edu.tw/tiqry/hypage.cgi?HYPAGE=search%2Fmerge_pdf.hpg&dtd_id=11&type=s&sysid=T1936675 |title=臺灣鐵路統計年報 |author=交通部臺灣鐵路管理局 |publisher=國家圖書館 政府統計資訊網 |edition=中華民國65年 |pages=頁26–41 |access-date=2021-12-11 |archive-url=https://web.archive.org/web/20210824073241/https://twinfo.ncl.edu.tw/tiqry/hypage.cgi?HYPAGE=search%2Fmerge_pdf.hpg&dtd_id=11&type=s&sysid=T1936675 |archive-date=2021-08-24 |chapter=各站客貨運狀況 Volume of Passenger & Freight Traffic |date=June 1977 |url-status=live}}</ref>
+|222
+|351
+|-
+|1977
+|71,114
+|45,140
+|116,254
+|<ref>{{Cite report |url=https://twinfo.ncl.edu.tw/tiqry/hypage.cgi?HYPAGE=search%2Fmerge_pdf.hpg&dtd_id=11&type=s&sysid=T1936591 |title=臺灣鐵路統計年報 |author=交通部臺灣鐵路管理局 |publisher=國家圖書館 政府統計資訊網 |edition=中華民國66年 |pages=頁46–61 |access-date=2021-12-11 |archive-url=https://web.archive.org/web/20210824073250/https://twinfo.ncl.edu.tw/tiqry/hypage.cgi?HYPAGE=search%2Fmerge_pdf.hpg&dtd_id=11&type=s&sysid=T1936591 |archive-date=2021-08-24 |chapter=各站客貨運狀況 Volume of Passenger & Freight Traffic |date=June 1978 |url-status=live}}</ref>
+|195
+|319
+|-
+|1978
+| colspan="6" rowspan="2" |無資料
+|-
+|1979
+|-
+|1980
+|80,118
+|79,129
+|159,247
+|<ref>{{Cite report |url=https://twinfo.ncl.edu.tw/tiqry/hypage.cgi?HYPAGE=search%2Fmerge_pdf.hpg&dtd_id=11&type=s&sysid=T1936289 |title=臺灣鐵路統計年報 |author=交通部臺灣鐵路管理局 |publisher=國家圖書館 政府統計資訊網 |edition=中華民國69年 |pages=頁70–87 |access-date=2021-12-11 |archive-url=https://web.archive.org/web/20210824073254/https://twinfo.ncl.edu.tw/tiqry/hypage.cgi?HYPAGE=search%2Fmerge_pdf.hpg&dtd_id=11&type=s&sysid=T1936289 |archive-date=2021-08-24 |chapter=各站客貨運狀況 Volume of Passenger & Freight Traffic |date=June 1981 |url-status=live}}</ref>
+|219
+|435
+|-
+|1981
+|78,256
+|70,424
+|148,680
+|<ref>{{Cite report |url=https://twinfo.ncl.edu.tw/tiqry/hypage.cgi?HYPAGE=search%2Fmerge_pdf.hpg&dtd_id=11&type=s&sysid=T1936190 |title=臺灣鐵路統計年報 |author=交通部臺灣鐵路管理局 |publisher=國家圖書館 政府統計資訊網 |edition=中華民國70年 |pages=頁68–81 |access-date=2021-12-11 |archive-url=https://web.archive.org/web/20210824071018/https://twinfo.ncl.edu.tw/tiqry/hypage.cgi?HYPAGE=search%2Fmerge_pdf.hpg&dtd_id=11&type=s&sysid=T1936190 |archive-date=2021-08-24 |chapter=各站客貨運狀況 Volume of Passenger & Freight Traffic |date=June 1982 |url-status=live}}</ref>
+|214
+|407
+|-
+|1982
+|62,246
+|58,529
+|120,775
+|<ref>{{Cite report |url=https://twinfo.ncl.edu.tw/tiqry/hypage.cgi?HYPAGE=search%2Fmerge_pdf.hpg&dtd_id=11&type=s&sysid=T1936081 |title=臺灣鐵路統計年報 |author=交通部臺灣鐵路管理局 |publisher=國家圖書館 政府統計資訊網 |edition=中華民國71年 |pages=頁62–75 |access-date=2021-12-11 |archive-url=https://web.archive.org/web/20210824071019/https://twinfo.ncl.edu.tw/tiqry/hypage.cgi?HYPAGE=search%2Fmerge_pdf.hpg&dtd_id=11&type=s&sysid=T1936081 |archive-date=2021-08-24 |chapter=各站客貨運狀況 Volume of Passenger & Freight Traffic |date=June 1983 |url-status=live}}</ref>
+|171
+|331
+|-
+|1983
+|31,040
+|49,714
+|80,754
+|<ref>{{Cite report |url=https://twinfo.ncl.edu.tw/tiqry/hypage.cgi?HYPAGE=search%2Fmerge_pdf.hpg&dtd_id=11&type=s&sysid=T1935978 |title=臺灣鐵路統計年報 |author=交通部臺灣鐵路管理局 |publisher=國家圖書館 政府統計資訊網 |edition=中華民國72年 |pages=頁64–75 |access-date=2021-12-11 |archive-url=https://web.archive.org/web/20210824071047/https://twinfo.ncl.edu.tw/tiqry/hypage.cgi?HYPAGE=search%2Fmerge_pdf.hpg&dtd_id=11&type=s&sysid=T1935978 |archive-date=2021-08-24 |chapter=各站客貨運狀況 Volume of Passenger & Freight Traffic |date=June 1984 |url-status=live}}</ref>
+|85
+|221
+|-
+|1984
+|23,757
+|40,905
+|64,662
+|<ref>{{Cite report |url=https://twinfo.ncl.edu.tw/tiqry/hypage.cgi?HYPAGE=search%2Fmerge_pdf.hpg&dtd_id=11&type=s&sysid=T1935893 |title=臺灣鐵路統計年報 |author=交通部臺灣鐵路管理局 |publisher=國家圖書館 政府統計資訊網 |edition=中華民國73年 |pages=頁66–77 |access-date=2021-12-11 |archive-url=https://web.archive.org/web/20210824071018/https://twinfo.ncl.edu.tw/tiqry/hypage.cgi?HYPAGE=search%2Fmerge_pdf.hpg&dtd_id=11&type=s&sysid=T1935893 |archive-date=2021-08-24 |chapter=各站客貨運狀況 Volume of Passenger & Freight Traffic |date=June 1985 |url-status=live}}</ref>
+|65
+|177
+|-
+|1985
+|28,691
+|48,340
+|77,031
+|<ref>{{Cite report |url=https://twinfo.ncl.edu.tw/tiqry/hypage.cgi?HYPAGE=search%2Fmerge_pdf.hpg&dtd_id=11&type=s&sysid=T1935807 |title=臺灣鐵路統計年報 |author=交通部臺灣鐵路管理局 |publisher=國家圖書館 政府統計資訊網 |edition=中華民國74年 |pages=頁66–77 |access-date=2021-12-11 |archive-url=https://web.archive.org/web/20210906134614/https://twinfo.ncl.edu.tw/tiqry/hypage.cgi?HYPAGE=search%2Fmerge_pdf.hpg&dtd_id=11&type=s&sysid=T1935807 |archive-date=2021-09-06 |chapter=各站客貨運狀況 Volume of Passenger & Freight Traffic |date=June 1986 |url-status=live}}</ref>
+|79
+|211
+|-
+|1986
+|22,129
+|38,386
+|60,515
+|<ref>{{Cite report |url=https://twinfo.ncl.edu.tw/tiqry/hypage.cgi?HYPAGE=search%2Fmerge_pdf.hpg&dtd_id=11&type=s&sysid=T1935725 |title=臺灣鐵路統計年報 |author=交通部臺灣鐵路管理局 |publisher=國家圖書館 政府統計資訊網 |edition=中華民國75年 |pages=頁64–75 |access-date=2021-12-11 |archive-url=https://web.archive.org/web/20210824080015/https://twinfo.ncl.edu.tw/tiqry/hypage.cgi?HYPAGE=search%2Fmerge_pdf.hpg&dtd_id=11&type=s&sysid=T1935725 |archive-date=2021-08-24 |chapter=各站客貨運狀況 Volume of Passenger & Freight Traffic |date=June 1987 |url-status=live}}</ref>
+|61
+|166
+|-
+|1987
+|18,965
+|34,298
+|53,263
+|<ref>{{Cite report |url=https://twinfo.ncl.edu.tw/tiqry/hypage.cgi?HYPAGE=search%2Fmerge_pdf.hpg&dtd_id=11&type=s&sysid=T1935625 |title=臺灣鐵路統計年報 |author=交通部臺灣鐵路管理局 |publisher=國家圖書館 政府統計資訊網 |edition=中華民國76年 |pages=頁62–73 |access-date=2021-12-11 |archive-url=https://web.archive.org/web/20210824074609/https://twinfo.ncl.edu.tw/tiqry/hypage.cgi?HYPAGE=search%2Fmerge_pdf.hpg&dtd_id=11&type=s&sysid=T1935625 |archive-date=2021-08-24 |chapter=各站客貨運狀況 Volume of Passenger & Freight Traffic |date=June 1988 |url-status=live}}</ref>
+|52
+|146
+|-
+|1988
+|14,884
+|29,286
+|44,170
+|<ref>{{Cite report |url=https://twinfo.ncl.edu.tw/tiqry/hypage.cgi?HYPAGE=search%2Fmerge_pdf.hpg&dtd_id=11&type=s&sysid=T1935547 |title=臺灣鐵路統計年報 |author=交通部臺灣鐵路管理局 |publisher=國家圖書館 政府統計資訊網 |edition=中華民國77年 |pages=頁42–53 |access-date=2021-12-11 |archive-url=https://web.archive.org/web/20210824081431/https://twinfo.ncl.edu.tw/tiqry/hypage.cgi?HYPAGE=search%2Fmerge_pdf.hpg&dtd_id=11&type=s&sysid=T1935547 |archive-date=2021-08-24 |chapter=各站客貨運狀況 Volume of Passenger & Freight Traffic |date=June 1989 |url-status=live}}</ref>
+|41
+|121
+|-
+|1989
+|9,661
+|22,804
+|32,465
+|<ref>{{Cite report |url=https://twinfo.ncl.edu.tw/tiqry/hypage.cgi?HYPAGE=search%2Fmerge_pdf.hpg&dtd_id=11&type=s&sysid=T1935470 |title=臺灣鐵路統計年報 |author=交通部臺灣鐵路管理局 |publisher=國家圖書館 政府統計資訊網 |edition=中華民國78年 |pages=頁46–57 |access-date=2021-12-11 |archive-url=https://web.archive.org/web/20210906131727/https://twinfo.ncl.edu.tw/tiqry/hypage.cgi?HYPAGE=search%2Fmerge_pdf.hpg&dtd_id=11&type=s&sysid=T1935470 |archive-date=2021-09-06 |chapter=各站客貨運狀況 Volume of Passenger & Freight Traffic |date=June 1990 |url-status=live}}</ref>
+|26
+|89
+|-
+|1990
+|10,607
+|22,581
+|33,188
+|<ref>{{Cite report |url=https://twinfo.ncl.edu.tw/tiqry/hypage.cgi?HYPAGE=search%2Fmerge_pdf.hpg&dtd_id=11&type=s&sysid=T1935379 |title=臺灣鐵路統計年報 |author=交通部臺灣鐵路管理局 |publisher=國家圖書館 政府統計資訊網 |edition=中華民國79年 |pages=頁48–59 |access-date=2021-12-11 |archive-url=https://web.archive.org/web/20210906131729/https://twinfo.ncl.edu.tw/tiqry/hypage.cgi?HYPAGE=search%2Fmerge_pdf.hpg&dtd_id=11&type=s&sysid=T1935379 |archive-date=2021-09-06 |chapter=各站客貨運狀況 Volume of Passenger & Freight Traffic |date=June 1991 |url-status=live}}</ref>
+|29
+|91
+|-
+|1991
+|11,757
+|21,859
+|33,616
+|<ref>{{Cite report |url=https://twinfo.ncl.edu.tw/tiqry/hypage.cgi?HYPAGE=search%2Fmerge_pdf.hpg&dtd_id=11&type=s&sysid=T1935286 |title=臺灣鐵路統計年報 |author=交通部臺灣鐵路管理局 |publisher=國家圖書館 政府統計資訊網 |edition=中華民國80年 |pages=頁48–59 |access-date=2021-12-11 |archive-url=https://web.archive.org/web/20210906134620/https://twinfo.ncl.edu.tw/tiqry/hypage.cgi?HYPAGE=search%2Fmerge_pdf.hpg&dtd_id=11&type=s&sysid=T1935286 |archive-date=2021-09-06 |chapter=各站客貨運狀況 Volume of Passenger & Freight Traffic |date=June 1992 |url-status=live}}</ref>
+|32
+|92
+|-
+|1992
+|12,506
+|20,480
+|32,986
+|<ref>{{Cite report |url=https://twinfo.ncl.edu.tw/tiqry/hypage.cgi?HYPAGE=search%2Fmerge_pdf.hpg&dtd_id=11&type=s&sysid=T1935183 |title=臺灣鐵路統計年報 |author=交通部臺灣鐵路管理局 |publisher=國家圖書館 政府統計資訊網 |edition=中華民國81年 |pages=頁48–59 |access-date=2021-12-11 |archive-url=https://web.archive.org/web/20211204025204/https://twinfo.ncl.edu.tw/tiqry/hypage.cgi?HYPAGE=search%2Fmerge_pdf.hpg&type=s&dtd_id=11&sysid=T1935183 |archive-date=2021-12-04 |chapter=各站客貨運狀況 Volume of Passenger & Freight Traffic |date=June 1993 |url-status=live}}</ref>
+|34
+|90
+|-
+|1993
+|12,062
+|19,230
+|31,292
+|<ref>{{Cite report |url=https://twinfo.ncl.edu.tw/tiqry/hypage.cgi?HYPAGE=search%2Fmerge_pdf.hpg&dtd_id=11&type=s&sysid=T1935097 |title=臺灣鐵路統計年報 |author=交通部臺灣鐵路管理局 |publisher=國家圖書館 政府統計資訊網 |edition=中華民國82年 |pages=頁50–61 |access-date=2021-12-11 |archive-url=https://web.archive.org/web/20210906133238/https://twinfo.ncl.edu.tw/tiqry/hypage.cgi?HYPAGE=search%2Fmerge_pdf.hpg&dtd_id=11&type=s&sysid=T1935097 |archive-date=2021-09-06 |chapter=各站客貨運狀況 Volume of Passenger & Freight Traffic |date=June 1994 |url-status=live}}</ref>
+|33
+|86
+|-
+|1994
+|12,549
+|21,635
+|34,184
+|<ref>{{Cite report |url=https://twinfo.ncl.edu.tw/tiqry/hypage.cgi?HYPAGE=search%2Fmerge_pdf.hpg&dtd_id=11&type=s&sysid=T1934998 |title=臺灣鐵路統計年報 |author=交通部臺灣鐵路管理局 |publisher=國家圖書館 政府統計資訊網 |edition=中華民國83年 |pages=頁58–69 |access-date=2021-12-11 |archive-url=https://web.archive.org/web/20210906133244/https://twinfo.ncl.edu.tw/tiqry/hypage.cgi?HYPAGE=search%2Fmerge_pdf.hpg&dtd_id=11&type=s&sysid=T1934998 |archive-date=2021-09-06 |chapter=各站客貨運狀況 Volume of Passenger & Freight Traffic |date=June 1995 |url-status=live}}</ref>
+|34
+|94
+|-
+|1995
+|9,062
+|16,309
+|25,371
+|<ref>{{Cite report |url=https://twinfo.ncl.edu.tw/tiqry/hypage.cgi?HYPAGE=search%2Fmerge_pdf.hpg&dtd_id=11&type=s&sysid=S9610514 |title=臺灣鐵路統計年報 |author=交通部臺灣鐵路管理局 |publisher=國家圖書館 政府統計資訊網 |edition=中華民國84年 |pages=頁58–69 |access-date=2021-12-11 |archive-url=https://web.archive.org/web/20210906133249/https://twinfo.ncl.edu.tw/tiqry/hypage.cgi?HYPAGE=search%2Fmerge_pdf.hpg&dtd_id=11&type=s&sysid=S9610514 |archive-date=2021-09-06 |chapter=各站客貨運狀況 Volume of Passenger & Freight Traffic |date=June 1996 |url-status=live}}</ref>
+|25
+|70
+|-
+|1996
+|11,462
+|18,111
+|29,573
+|<ref>{{Cite report |url=https://twinfo.ncl.edu.tw/tiqry/hypage.cgi?HYPAGE=search%2Fmerge_pdf.hpg&dtd_id=11&type=s&sysid=S9713611 |title=臺灣鐵路統計年報 |author=交通部臺灣鐵路管理局 |publisher=國家圖書館 政府統計資訊網 |edition=中華民國85年 |pages=頁64–75 |access-date=2021-12-11 |archive-url=https://web.archive.org/web/20210906142429/https://twinfo.ncl.edu.tw/tiqry/hypage.cgi?HYPAGE=search%2Fmerge_pdf.hpg&dtd_id=11&type=s&sysid=S9713611 |archive-date=2021-09-06 |chapter=各站客貨運狀況 Volume of Passenger & Freight Traffic |date=June 1997 |url-status=live}}</ref>
+|31
+|81
+|-
+|1997
+|12,303
+|20,176
+|32,479
+|<ref>{{Cite report |url=https://twinfo.ncl.edu.tw/tiqry/hypage.cgi?HYPAGE=search%2Fmerge_pdf.hpg&dtd_id=11&type=s&sysid=S9808546 |title=臺灣鐵路統計年報 |author=交通部臺灣鐵路管理局 |publisher=國家圖書館 政府統計資訊網 |edition=中華民國86年 |pages=頁66–77 |access-date=2021-12-11 |archive-url=https://web.archive.org/web/20210707090638/https://twinfo.ncl.edu.tw/tiqry/hypage.cgi?HYPAGE=search%2Fmerge_pdf.hpg&dtd_id=11&type=s&sysid=S9808546 |archive-date=2021-07-07 |chapter=各站客貨運狀況 Volume of Passenger & Freight Traffic |date=June 1998 |url-status=live}}</ref>
+|34
+|89
+|-
+|1998
+|9,103
+|16,915
+|26,018
+|<ref>{{Cite report |url=https://twinfo.ncl.edu.tw/tiqry/hypage.cgi?HYPAGE=search%2Fmerge_pdf.hpg&dtd_id=11&type=s&sysid=S9903161 |title=臺灣鐵路統計年報 |author=交通部臺灣鐵路管理局 |publisher=國家圖書館 政府統計資訊網 |edition=中華民國87年 |pages=頁64–75 |access-date=2021-12-11 |archive-url=https://web.archive.org/web/20210906131949/https://twinfo.ncl.edu.tw/tiqry/hypage.cgi?HYPAGE=search%2Fmerge_pdf.hpg&dtd_id=11&type=s&sysid=S9903161 |archive-date=2021-09-06 |chapter=各站客貨運狀況 Volume of Passenger & Freight Traffic |date=June 1999 |url-status=live}}</ref>
+|25
+|71
+|-
+|1999
+|6,396
+|15,452
+|21,848
+|<ref>{{Cite report |url=https://twinfo.ncl.edu.tw/tiqry/hypage.cgi?HYPAGE=search%2Fmerge_pdf.hpg&dtd_id=11&type=s&sysid=T0001548 |title=臺灣鐵路統計年報 |author=交通部臺灣鐵路管理局 |publisher=國家圖書館 政府統計資訊網 |edition=中華民國88年 |pages=頁64–75 |access-date=2021-12-11 |archive-url=https://web.archive.org/web/20210906131911/https://twinfo.ncl.edu.tw/tiqry/hypage.cgi?HYPAGE=search%2Fmerge_pdf.hpg&dtd_id=11&type=s&sysid=T0001548 |archive-date=2021-09-06 |chapter=各站客貨運狀況 Volume of Passenger & Freight Traffic |date=June 2000 |url-status=live}}</ref>
+|18
+|60
+|-
+|2000
+|2,289
+|14,519
+|16,808
+|<ref>{{Cite report |url=https://twinfo.ncl.edu.tw/tiqry/hypage.cgi?HYPAGE=search%2Fmerge_pdf.hpg&dtd_id=11&type=s&sysid=T0103269 |title=臺灣鐵路統計年報 |author=交通部臺灣鐵路管理局 |publisher=國家圖書館 政府統計資訊網 |edition=中華民國89年 |pages=64–75 |access-date=2021-12-11 |archive-url=https://web.archive.org/web/20210906132009/https://twinfo.ncl.edu.tw/tiqry/hypage.cgi?HYPAGE=search%2Fmerge_pdf.hpg&dtd_id=11&type=s&sysid=T0103269 |archive-date=2021-09-06 |chapter=各站客貨運狀況 Volume of Passenger & Freight Traffic |date=June 2001 |url-status=live}}</ref>
+|6
+|46
+|}
+{| class="wikitable mw-collapsible" style="text-align: right; font-size:85%"
+! colspan="7" |2001年-
+|-
+! rowspan="2" |Year
+! colspan="4" |Annual
+! colspan="2" |Daily
+|-
+!Get on the Bus
+!Get off the Bus
+!Both on and off the Bus
+! width="1em" |Source
+!Get on the Bus
+!Get off the Bus
+|-
+|2001
+|7,422
+|15,323
+|22,745
+|<ref>{{cite report |url= |title=中華民國九十年臺灣鐵路統計年報 |author=交通部臺灣鐵路管理局 |date= |publisher=臺灣鐵路管理局 |pages=72–73 |issn=1683-5913 |docket= |quote= |author-link=臺灣鐵路管理局 |access-date= }}</ref>
+|20
+|62
+|-
+|2002
+|9,303
+|16,082
+|25,385
+|<ref>{{Cite report |url=https://twinfo.ncl.edu.tw/tiqry/hypage.cgi?HYPAGE=search%2Fmerge_pdf.hpg&type=s&dtd_id=11&sysid=T0307235 |title=臺灣鐵路統計年報 各站客貨運起訖量＝Volume of Passenger & Freight Traffic |author=交通部臺灣鐵路管理局 |publisher=國家圖書館 政府統計資訊網 |edition=中華民國91年 |pages=74–75 |access-date=2021-12-11 |archive-url=https://web.archive.org/web/20210906131946/https://twinfo.ncl.edu.tw/tiqry/hypage.cgi?HYPAGE=search%2Fmerge_pdf.hpg&type=s&dtd_id=11&sysid=T0307235 |archive-date=2021-09-06 |date=June 2003 |url-status=live}}</ref>
+|25
+|70
+|-
+|2003
+|8,811
+|11,970
+|20,781
+|<ref>{{Cite report |url=https://www.railway.gov.tw/tra-tip-web/tip/file/b060e143-3c0c-4980-af46-9608968b1d88 |title=臺灣鐵路統計年報 各站客貨運起訖量＝Volume of Passenger & Freight Traffic |publisher=交通部臺灣鐵路管理局 |edition=中華民國92年 |pages=頁66–77 |access-date=2021-12-11 |archive-url=https://web.archive.org/web/20211121061554/https://www.railway.gov.tw/tra-tip-web/tip/file/b060e143-3c0c-4980-af46-9608968b1d88 |archive-date=2021-11-21 |date=June 2004 |url-status=live}}</ref>
+|24
+|57
+|-
+|2004
+|8,073
+|10,605
+|18,678
+|<ref>{{Cite report |url=https://www.railway.gov.tw/tra-tip-web/tip/file/40c4ee52-72e8-438f-8fb2-237f81cdf29a |title=臺灣鐵路統計年報 各站客貨運起訖量＝Volume of Passenger & Freight Traffic |publisher=交通部臺灣鐵路管理局 |edition=中華民國93年 |pages=頁66–77 |access-date=2021-12-11 |archive-url=https://web.archive.org/web/20210309043441/https://www.railway.gov.tw/tra-tip-web/tip/file/40c4ee52-72e8-438f-8fb2-237f81cdf29a |archive-date=2021-03-09 |date=June 2005 |url-status=live}}</ref>
+|22
+|51
+|-
+|2005
+|8,178
+|10,850
+|19,028
+|<ref>{{Cite report |url=https://twinfo.ncl.edu.tw/tiqry/hypage.cgi?HYPAGE=search%2Fmerge_pdf.hpg&type=s&dtd_id=11&sysid=T0626090 |title=臺灣鐵路統計年報 各站客貨運起訖量＝Volume of Passenger & Freight Traffic |author=交通部臺灣鐵路管理局 |publisher=國家圖書館 政府統計資訊網 |edition=中華民國94年 |pages=頁70–71 |access-date=2021-12-11 |archive-url=https://web.archive.org/web/20210906133626/https://twinfo.ncl.edu.tw/tiqry/hypage.cgi?HYPAGE=search%2Fmerge_pdf.hpg&type=s&dtd_id=11&sysid=T0626090 |archive-date=2021-09-06 |date=April 2006 |url-status=live}}</ref>
+|22
+|52
+|-
+|2006
+|8,452
+|10,282
+|18,734
+| rowspan="4" |<ref>{{Cite web |title=每日各站點進出站人數 |url=https://data.gov.tw/dataset/8792 |archive-url=https://web.archive.org/web/20200324032456/https://data.gov.tw/dataset/8792 |archive-date=2020-03-24 |accessdate=2020-03-09 |url-status=dead}}</ref><!--要不是那幾年的年報就是沒記載客貨運起訖量，不然應該要以年報為準而不是進出站人數-->
+|23
+|51
+|-
+|2007
+|8,503
+|10,185
+|18,688
+|23
+|51
+|-
+|2008
+|10,633
+|12,672
+|23,305
+|29
+|64
+|-
+|2009
+|10,576
+|12,669
+|23,245
+|29
+|64
+|-
+|2010
+|11,407
+|13,608
+|25,015
+|<ref>{{Cite web |title=99年報 各站客貨運起訖量 |url=http://www.railway.gov.tw/Upload/intro/file/99Year/pdf/t11.pdf |archive-url=https://web.archive.org/web/20111229114537/http://www.railway.gov.tw/Upload/intro/file/99Year/pdf/t11.pdf |archive-date=2011-12-29 |access-date=2016-06-04 |url-status=dead}} 臺灣鐵路管理局</ref>
+|31
+|69
+|-
+|2011
+|11,564
+|13,972
+|25,536
+|<ref>{{Cite web |title=100年報 各站客貨運起訖量 |url=http://www.railway.gov.tw/Upload/intro/file/99Year/pdf/t11.pdf |archive-url=https://web.archive.org/web/20120616133631/http://www.railway.gov.tw/Upload/intro/file/99Year/pdf/t11.pdf |archive-date=2012-06-16 |access-date=2016-06-04 |url-status=dead}} 臺灣鐵路管理局</ref>
+|32
+|70
+|-
+|2012
+|11,131
+|13,617
+|24,748
+|<ref>{{Cite web |title=101年報 各站客貨運起訖量 |url=http://www.railway.gov.tw/Upload/intro/file/99Year/pdf/t11.pdf |archive-url=https://web.archive.org/web/20130602174154/http://www.railway.gov.tw/Upload/intro/file/99Year/pdf/t11.pdf |archive-date=2013-06-02 |access-date=2016-06-04 |url-status=dead}} 臺灣鐵路管理局</ref>
+|30
+|68
+|-
+|2013
+|11,459
+|14,695
+|26,154
+|<ref>{{Cite web |title=102年報 各站客貨運起訖量 |url=http://www.railway.gov.tw/Upload/intro/file/102Year/t11.pdf |archive-url=https://web.archive.org/web/20140514185404/http://www.railway.gov.tw/Upload/intro/file/102Year/t11.pdf |archive-date=2014-05-14 |access-date=2016-06-04 |url-status=dead}} 臺灣鐵路管理局</ref>
+|31
+|72
+|-
+|2014
+|11,645
+|15,169
+|26,814
+|<ref>{{Cite web |title=103年報 各站客貨運起訖量 |url=http://www.railway.gov.tw/Upload/intro/file/102Year/t11.pdf |archive-url=https://web.archive.org/web/20150924084601/http://www.railway.gov.tw/Upload/intro/file/102Year/t11.pdf |archive-date=2015-09-24 |access-date=2016-06-04 |url-status=dead}} 臺灣鐵路管理局</ref>
+|32
+|73
+|-
+|2015
+|14,852
+|18,936
+|33,788
+|<ref>{{Cite web |title=104年報 各站客貨運起訖量 |url=http://www.railway.gov.tw/Upload/intro/file/YearReport/t11.pdf |archive-url=https://web.archive.org/web/20160705200938/http://www.railway.gov.tw/Upload/intro/file/YearReport/t11.pdf |archive-date=2016-07-05 |access-date=2016-06-04 |url-status=dead}} 臺灣鐵路管理局</ref>
+|41
+|93
+|-
+|2016
+|29,695
+|34,297
+|63,992
+|<ref>{{Cite web |title=105年報 各站客貨運起訖量 |url=http://www.railway.gov.tw/Upload/intro/file/YearReport/t11.pdf |archive-url=https://web.archive.org/web/20170819150724/http://www.railway.gov.tw/Upload/intro/file/YearReport/t11.pdf |archive-date=2017-08-19 |access-date=2016-06-04 |url-status=dead}} 臺灣鐵路管理局</ref>
+|81
+|175
+|-
+|2017
+|38,786
+|42,649
+|81,435
+|<ref name="TRA2017">{{Cite web |title=106年報各站客貨運起訖量 Volume of Passenger & Freight Traffic |url=https://www.railway.gov.tw/tra-tip-web/tip/file/69c4ee1c-e3af-4665-b443-e514531232a4 |archive-url=https://web.archive.org/web/20190605050656/https://www.railway.gov.tw/tra-tip-web/tip/file/69c4ee1c-e3af-4665-b443-e514531232a4 |archive-date=2019-06-05 |accessdate=2019-05-05 |publisher=臺灣鐵路管理局 |url-status=live}}<!-- 如果上面連結失效，請改用{{Cite web|url=https://www.railway.gov.tw/Upload/UserFiles/106t11.pdf|publisher=臺灣鐵路管理局 |title=106年報 各站客貨運起訖量 |accessdate=2019-10-26 |archive-url=https://web.archive.org/web/20180528214959/https://www.railway.gov.tw/Upload/UserFiles/106t11.pdf |archive-date=2018-05-28 |dead-url=yes }}--></ref>
+|106
+|223
+|-
+|2018
+|45,339
+|50,090
+|95,429
+|<ref name="TRA2018">{{Cite web |title=107年報各站客貨運起訖量 Volume of Passenger & Freight Traffic |url=https://www.railway.gov.tw/tra-tip-web/tip/file/246eed46-c11a-476a-a29f-b253c05eb204 |archive-url=https://web.archive.org/web/20190604001216/https://www.railway.gov.tw/tra-tip-web/tip/file/246eed46-c11a-476a-a29f-b253c05eb204 |archive-date=2019-06-04 |accessdate=2019-05-25 |publisher=臺灣鐵路管理局 |url-status=live}}</ref>
+|124
+|261
+|-
+|2019
+|57,916
+|63,675
+|121,591
+|<ref>{{Cite web |date=2020-11-15 |title=2019台灣鐵路營運旅客起訖量表 |url=https://www.railway.gov.tw/tra-tip-web/tip/file/7703f24b-0378-4419-88a3-9363d0457d54 |archive-url=https://web.archive.org/web/20200514154143/https://www.railway.gov.tw/tra-tip-web/tip/file/7703f24b-0378-4419-88a3-9363d0457d54 |archive-date=2020-05-14 |access-date=2021-04-01 |publisher=台灣鐵路管理局 |url-status=live}}</ref>
+|159
+|333
+|-
+|2020
+|49,664
+|53,797
+|103,461
+|<ref>{{Cite web |title=中華民國109年 臺灣鐵路統計年報 Statistical Report of Taiwan Railways Administration －2020－ |url=https://www.railway.gov.tw/tra-tip-web/tip/file/3a678caa-5f96-48cf-870c-9b3aa93e076b |archive-url=https://web.archive.org/web/20210511215825/https://www.railway.gov.tw/tra-tip-web/tip/file/3a678caa-5f96-48cf-870c-9b3aa93e076b |archive-date=2021-05-11 |accessdate=2021-05-21 |publisher=臺灣鐵路管理局 |format=pdf |url-status=live}}</ref>
+|136
+|283
+|-
+|2021
+|42,218
+|47,028
+|89,246
+|<ref>{{Cite journal |title=各站客貨運起訖量表 |url=https://www.railway.gov.tw/tra-tip-web/tip/file/c4a1a90e-763a-416c-ae83-991feea0c6fe |journal=台灣鐵路管理局110年度年統計報表 |archive-url=https://web.archive.org/web/20220427100739/https://www.railway.gov.tw/tra-tip-web/tip/file/c4a1a90e-763a-416c-ae83-991feea0c6fe |archive-date=2022-04-27 |access-date=2023-01-22 |url-status=live}}</ref>
+|116
+|245
+|-
+|2022
+|45,496
+|50,031
+|95,527
+|<ref>{{Cite web |title=台灣鐵路管理局111年度年營運報表 |url=https://www.railway.gov.tw/tra-tip-web/adr/about-public-info-3?searchType=2&searchSub=0&searchSub=0&searchSub=203 |website=國營台灣鐵路股份有限公司| date=11 December 2008 }}</ref>
+|125
+|261
+|-
+|2023
+|
+|
+|
+|
+|
+|
+|}
+
+==References==
+{{Reflist}}
+
+{{commons category|TRA Linluo Station}}
+{{Pingtung Line}}
+
+[[Category:Railway stations in Taiwan opened in 1941]]
+[[Category:Railway stations in Pingtung County]]
+[[Category:Railway stations served by Taiwan Railways Administration]]

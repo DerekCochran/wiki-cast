@@ -1,0 +1,77 @@
+{{Short description|1864 painting}}
+{{Use American English|date=August 2023}}
+{{Use mdy dates|date=August 2023}}{{Infobox artwork
+| image_file=Emancipation proclamation.jpg
+| title=First Reading of the Emancipation Proclamation of President Lincoln
+| artist=[[Francis Bicknell Carpenter]]
+| year={{start date and age|1864}}
+| medium=[[Oil painting|Oil on canvas]]
+| height_metric=274.3
+| width_metric=457.2
+| height_imperial=108
+| width_imperial=180
+| metric_unit=cm
+| imperial_unit=in
+| city=Washington, D.C., U.S.
+| museum=[[United States Capitol]]
+}}
+
+'''''First Reading of the Emancipation Proclamation of President Lincoln''''' is an 1864 oil-on-canvas [[painting]] by [[Francis Bicknell Carpenter]]. In the painting, Carpenter depicts [[Abraham Lincoln]], the [[List of presidents of the United States|16th president of the United States]], and his [[Cabinet of the United States|Cabinet members]] reading over the [[Emancipation Proclamation]], which proclaimed the freedom of slaves in the ten [[Confederate States of America|states]] in rebellion against the [[Union (American Civil War)|Union]] in the [[American Civil War]] on January 1, 1863.<ref>[https://www.nps.gov/anjo/learn/historyculture/johnson-and-tn-emancipation.htm#:~:text=On%20January%201%2C%201863%2C%20Abraham,was%20serving%20as%20Military%20Governor. Eleven states had seceded, but Tennessee was under Union control.]</ref> Lincoln presented the preliminary Emancipation Proclamation to his Cabinet on July 22, 1862<ref>{{cite news| url=http://learning.blogs.nytimes.com/2011/09/22/sept-22-1862-preliminary-emancipation-proclamation-announced/ | work=The New York Times | title=Sept. 22, 1862 | date=September 22, 2011}}</ref> and issued it on September 22, 1862. The final Emancipation Proclamation took effect on January 1, 1863.
+
+Carpenter spent six months in the [[White House]] while he painted. The painting is displayed at the [[United States Capitol]] in [[Washington, D.C.]]
+
+==Background==
+Carpenter was deeply moved by Lincoln's [[Emancipation Proclamation]], issued on January 1, 1863, calling it "an act unparalleled for moral grandeur in the history of mankind."<ref>{{cite book |url=https://books.google.com/books?id=FTsl3N7hDpAC&q=six+months+at+the+white+house+carpenter  |first=Frank Bicknell |last=Carpenter |author-link=Francis Bicknell Carpenter |title=Six Months at the White House with Abraham Lincoln|year=1866 |pages=10–11 |publisher=Applewood Books |access-date=2010-02-20 |isbn=978-1-4290-1527-1}}</ref> Carpenter felt "an intense desire to do something expressive of ... the great moral issue involved in the war."<ref>Carpenter, p. 12.</ref>
+
+Carpenter, having formulated his idea for the subject of the painting and outlined its composition, met Frederick A. Lane, a friend who recently had earned a large amount of money. Lane agreed to bankroll Carpenter. By the influence of Samuel Sinclair of the ''[[New York Tribune]]'' and Representative [[Schuyler Colfax]] of Indiana, Carpenter gained Lincoln's assent to travel to Washington and work with him on the painting. Carpenter met with the President on February 6, 1864, who allowed him to live in the White House for four months, to work on the painting.<ref>{{cite book|title=The Fiery Trial: Abraham Lincoln and American Slavery|first=Eric|last=Foner|author-link=Eric Foner|year=2010|publisher=[[W. W. Norton & Company]]|page=240|title-link=The Fiery Trial: Abraham Lincoln and American Slavery}}</ref>
+
+Carpenter began with many sketches of Cabinet members and of Lincoln himself, working from life, as Lincoln worked, and from photographs taken by [[Mathew Brady]] of Lincoln and members of his Cabinet. Carpenter was given free access to Lincoln's White House office for the former purpose, and the [[State Dining Room]] was given him for a studio.<ref name=senate>[https://www.senate.gov/artandhistory/art/artifact/Painting_33_00005.htm U.S. Senate Art & History site] retrieved 2008</ref> On July 12, 1864, Lincoln led his cabinet into the State Dining Room to view the completed work.<ref name="ReferenceA">''A Genealogical History of the Rehoboth Branch of the Carpenter Family in America''.  Also known as the ''Carpenter Memorial''</ref>
+
+==Composition==
+<imagemap>
+Image:Emancipation proclamation.jpg|thumb|500px|''First Reading of the Emancipation Proclamation of President Lincoln'' by [[Francis Bicknell Carpenter]] (1864) <small>''(Clickable image—use cursor to identify.)''</small>|alt=A dark-haired, bearded, middle-aged man holding documents is seated among seven other men.]]
+
+poly 269 892 254 775 193 738 130 723 44 613 19 480 49 453 75 434 58 376 113 344 133 362 143 423 212 531 307 657 357 675 409 876 [[Edwin M. Stanton|Edwin Stanton]]
+poly 169 282 172 244 244 201 244 148 265 117 292 125 305 166 304 204 321 235 355 296 374 348 338 395 341 469 [[Salmon P. Chase|Salmon Chase]]
+poly 569 893 535 708 427 613 357 562 377 456 393 404 468 351 451 317 473 259 520 256 544 283 530 339 526 374 559 401 594 431 639 494 715 542 692 551 693 579 672 546 623 552 596 617 698 629 680 852 [[Abraham Lincoln]]
+poly 692 514 740 441 788 407 772 350 800 303 831 297 861 329 867 381 868 409 913 430 913 471 847 532 816 533 709 533 [[Gideon Welles]]
+poly 703 783 752 769 825 627 907 620 929 569 905 538 886 563 833 563 873 502 930 450 1043 407 1043 389 1036 382 1042 363 1058 335 1052 333 1052 324 1081 318 1124 338 1133 374 1116 412 1132 466 1145 509 1117 588 1087 632 1083 706 [[William H. Seward|William Seward]]
+poly 905 418 941 328 987 295 995 284 982 244 990 206 1036 207 1046 247 1047 284 1066 312 1071 314 1049 327 1044 354 1033 383 1033 407 921 453 [[Caleb Blood Smith|Caleb Smith]]
+poly 1081 308 1102 255 1095 220 1093 181 1109 161 1145 160 1169 191 1153 227 1153 246 1199 268 1230 310 1239 377 1237 443 1220 486 1125 451 1118 412 1136 378 1124 342 [[Montgomery Blair]]
+poly 1224 479 1298 416 1304 379 1295 329 1325 310 1360 324 1370 359 1371 385 1371 397 1413 425 1422 497 1440 563 1348 555 1232 517 [[Edward Bates]]
+poly 625 555 595 620 699 625 730 550 [[Emancipation Proclamation]]
+poly 120 80 120 300 3 300 3 80 [[Simon Cameron|Portrait of Simon Cameron]]
+poly 752 196 961 189 948 8 735 10 [[Andrew Jackson|Portrait of Andrew Jackson]]
+</imagemap>
+
+The setting of the painting is Lincoln's office, which also served as the Cabinet Room; it is now known as the [[Lincoln Bedroom]]. Lincoln indicated to Carpenter each person's position in the room on the day of the first reading. The artist had found the placement "fortunately entirely consistent with my purpose."<ref>Harold Holzer, Gabor S. Boritt, and Mark E. Neely, Jr., ''The Lincoln Image: Abraham Lincoln and the Popular Print'' (New York: Scribner, 1984; Reprint, Urbana: University of Illinois Press, 2001), p. 117.</ref> Carpenter intentionally avoided, as he wrote, "imaginary curtain or column, gorgeous furniture or allegorical statue."<ref>Carpenter, p. 18</ref> Shown from left to right are [[Edwin M. Stanton]], [[United States Secretary of War|Secretary of War]] (seated); [[Salmon P. Chase]], [[United States Secretary of the Treasury|Secretary of the Treasury]] (standing); Lincoln; [[Gideon Welles]], [[United States Secretary of the Navy|Secretary of the Navy]] (seated); [[Caleb Blood Smith]], [[United States Secretary of the Interior|Secretary of the Interior]] (standing); [[William H. Seward]], [[United States Secretary of State|Secretary of State]] (seated); [[Montgomery Blair]], [[United States Postmaster General]] (standing); and [[Edward Bates]], [[United States Attorney General]] (seated). Portraits of [[Simon Cameron]] and [[Andrew Jackson]] adorn the wall behind them.<ref name=senate/>
+
+Carpenter said, "There were two elements in the Cabinet—the radical and the conservative. Mr. Lincoln was placed at the head of the official table, between two groups, nearest that representing the radical; but the uniting point of both. The chief powers of a government are War and Finance: the ministers of these were at his right—the Secretary of War, symbolizing the great struggle, in the immediate foreground; the Secretary of the Treasury, actively supporting the new policy, standing by the President’s side.... To the Secretary of State, as the great expounder of the principles of the Republican party... would the attention of all at such a time be given.... The ... chief officers of the government were thus brought in accordance with their relations to the administration, nearest the person of the President, who, with the manuscript proclamation in his hand, which he had just read, was represented leaning forward, listening to, and intently considering the views presented by the Secretary of State."<ref>Carpenter, pp. 16, 18.</ref>
+
+The map shown at the bottom right corner of the painting is a map made by the US Coast Survey in 1861 by using census data from 1860, and shows the relative prevalence of slavery in Southern counties that year.<ref name="map">{{cite news| url=http://www.slate.com/blogs/the_vault/2013/09/04/abraham_lincoln_the_president_used_this_map_to_see_where_slavery_was_strongest.html/ | work=Slate | title=The Map That Lincoln Used to See the Reach of Slavery | date=September 4, 2013}}</ref>
+
+==Exhibition and reception==
+When Lincoln had the painting exhibited to the public in the [[East Room (White House)|East Room]] of the White House, Carpenter noted that the exhibition was thronged with visitors. An engraving of the painting was made by [[Alexander Hay Ritchie]] for mass reproduction. The painting was well received by critics, according to newspaper advertisements for those reproductions; also, many of the subjects in the painting commented favorably. The painting itself then toured the country.<ref name="ReferenceA" />
+
+Chase wrote a letter to Carpenter in 1866, remarking the composition of the work, noting that he and Stanton appear symbolically on Lincoln's right in the painting, having "thoroughly endorsed and heartily welcomed the measure," and the cabinet members who had at first "doubted, or advised delay, or even opposed" the proclamation appear on Lincoln's left.<ref>[[Harold Holzer]], [[Gabor S. Boritt]], and [[Mark E. Neely, Jr.]], ''The Lincoln Image: Abraham Lincoln and the Popular Print'' (New York: Scribner, 1984; Reprint, Urbana: University of Illinois Press, 2001), p. 117.</ref>
+
+Carpenter later wrote a memoir, ''Six Months at the White House with Abraham Lincoln'', of his experience painting the portrait.<ref>''Six Months at the White House with Abraham Lincoln: The Story of a Picture'', New York: Hurd and Houghton (1866); also published as ''The Inner Life of Abraham Lincoln: Six Months at the White House'', New York: Hurd and Houghton (1867).</ref><ref>According to Harold Holzer, "''The Inner Life of Abraham Lincoln'' ... was actually nothing more than a presumptuously re-titled edition of ''Six Months at the White House'' (its text unchanged)." [https://www.friendsofthelincolncollection.org/lincoln-lore/lincoln-through-the-eyes-of-history/ "Lincoln Through the Eyes of History," ''Lincoln Lore'']</ref>
+
+==Purchase and donation to Congress==
+Carpenter campaigned for Congress to purchase the painting, enlisting the help of fellow Homer native [[William O. Stoddard]], Lincoln's private secretary.  Congress did not appropriate the money.  The painting remained in Carpenter's possession until 1877, when he arranged for Elizabeth Thompson to purchase it for $25,000 and donate it to Congress.  A joint session of Congress was held in 1878, on Lincoln's birthday, to serve as a reception for the painting.  The artist was present at this event.<ref name="ReferenceA" />
+
+==References==
+{{Reflist}}
+
+==Further reading==
+*{{cite web | last=Masur | first=Louis P. | url=http://opinionator.blogs.nytimes.com/2012/07/25/the-painter-and-the-president/ | title=The Painter and the President | newspaper=[[The New York Times]] | date=July 25, 2012 | access-date=2013-08-04}}
+
+== External links ==
+{{Commons category-inline|First Reading of the Emancipation Proclamation of President Lincoln by Francis Bicknell Carpenter}}{{Abraham Lincoln|state=collapsed}}
+{{United States Capitol Complex}}
+
+[[Category:American Civil War in art]]
+[[Category:Abraham Lincoln in art]]
+[[Category:History paintings]]
+[[Category:Paintings in the United States Capitol]]
+[[Category:1864 paintings]]

@@ -1,0 +1,470 @@
+{{Use dmy dates|date=October 2020}}
+{{Infobox military unit
+| unit_name                       = 313th Military Intelligence Battalion
+| native_name                     = 
+| image                           = 313 MI Bn Coat of Arms.png
+| image_size                      = 125px
+| alt                             = 
+| caption                         = 313th Military Intelligence Battalion [[Armorial of the United States Army|Coat of Arms]]
+| dates                           = {{unbulleted list
+| 1942 - 1945
+| 1955 - 1957
+| 1962 - 2006
+}}
+| disbanded                       = {{end date and age|2006|}}
+| country                         = {{flag|United States}}
+| command_structure               = {{Flagicon image|Flag of the U.S. Army 82nd Airborne Division.svg|size=23px}} [[82nd Airborne Division]]
+| countries                       = 
+| allegiance                      = 
+| branch                          = {{army|United States}}
+| type                            = [[Airborne forces|Airborne]] [[Military Intelligence]]
+| role                            = {{Unbulleted list
+| [[UAVs in the U.S. military|Aerial Reconnaissance]]
+| [[Intelligence collection management|Collection Management]]
+| [[Joint Worldwide Intelligence Communications System|Communications]]
+| [[Counterintelligence]]
+| [[Radio jamming|Electronic Attack]]
+| [[Human intelligence (intelligence gathering)|Human Intelligence]]
+| [[Imagery Intelligence]]
+| [[Intelligence analysis management|Intelligence Analysis]]
+| [[Long-range surveillance|Long-Range Surveillance]]
+| [[Perimeter surveillance radar|Remote Battlefield Surveillance]]
+| [[Signals Intelligence]]
+| [[Maintenance (technical)|System Maintenance]] & [[Systems integrator|Integration]]
+}}
+| size                            = [[Battalion#United States Army|Battalion]]
+| garrison                        = [[Fort Bragg]]
+| garrison_label                  = 
+| nickname                        = {{Unbulleted list
+| ''Crimson Dragons'' (Official)
+| ''Snow Owls''
+| ''The most decorated MI Battalion in the Army''
+}}
+| patron                          = [[Michael (archangel)#Patronages and orders|Saint Michael]]
+| motto                           = {{Unbulleted list
+| ''Savoir c'est Pouvoir''
+| (Knowledge is Power)
+}}
+| colors                          = {{Unbulleted list
+| Teal Blue
+| Orange
+}}
+| colors_label                    = <!-- or | colours_label = -->
+| march                           = 
+| mascot                          = 
+| anniversaries                   = 
+| equipment                       = 
+| equipment_label                 = 
+| battles                         = {{unbulleted list
+| [[World War II]]
+| [[Dominican Civil War|Operation Power Pack]]
+| [[Vietnam War|Vietnam]]
+| [[United States invasion of Grenada|Operation Urgent Fury]]
+| [[Operation Golden Pheasant]]
+| [[United States invasion of Panama|Operation Just Cause]]
+| [[Gulf War#Military means|Operation Desert Shield]]
+| [[Gulf War#Ground campaign|Operation Desert Storm]]
+| [[Kosovo Force|Operation Joint Guardian]]
+| [[Operation Enduring Freedom]]
+| [[Operation Iraqi Freedom]]
+}}
+| battle_honours                  = 
+| battle_honours_label            = 
+| flying_hours                    = 
+| website                         = 
+<!-- Commanders -->
+| current_commander               = 
+| commander1                      = 
+| commander1_label                = 
+| commander2                      = 
+| commander2_label                = 
+| commander3                      = 
+| commander3_label                = 
+| commander4                      = 
+| commander4_label                = 
+| commander5                      = 
+| commander5_label                = 
+| commander6                      = 
+| commander6_label                = 
+| commander7                      = 
+| commander7_label                = 
+| commander8                      = 
+| commander8_label                = 
+| commander9                      = 
+| commander9_label                = 
+| notable_commanders              = 
+<!-- Insignia -->
+| identification_symbol           = [[File:313th_MI_BN_DUI.png|75px|center]]
+| identification_symbol_label     = [[Distinctive unit insignia|Distinctive Unit Insignia]]
+| identification_symbol_2         = [[File:313th_MI_BN_Flash.png|110px|center]]
+| identification_symbol_2_label   = [[United States military beret flash|Beret Flash]]
+| identification_symbol_3         = [[File:313th MI Background Trimming.png|155px|center]]
+| identification_symbol_3_label   = [[Parachutist Badge (United States)#Airborne background trimming|Background Trimming]]
+| identification_symbol_4         = [[File:313th MI Bn Colors.png|175px|center]]
+| identification_symbol_4_label   = [[Military colours, standards and guidons#United States Army|Organizational Colors]]
+| identification_symbol_5         = 
+| identification_symbol_5_label   = 
+<!-- Aircraft -->
+| aircraft_attack                 = 
+| aircraft_bomber                 = 
+| aircraft_electronic             = 
+| aircraft_fighter                = 
+| aircraft_helicopter             = 
+| aircraft_helicopter_attack      = 
+| aircraft_helicopter_cargo       = 
+| aircraft_helicopter_multirole   = 
+| aircraft_helicopter_observation = 
+| aircraft_helicopter_trainer     = 
+| aircraft_helicopter_utility     = 
+| aircraft_interceptor            = 
+| aircraft_patrol                 = 
+| aircraft_recon                  = 
+| aircraft_trainer                = 
+| aircraft_transport              = 
+| aircraft_tanker                 = 
+| aircraft_general                = 
+}}
+
+{{Military unit sidebar
+ | title = U.S. Army Military Intelligence Battalions
+ | previous = [[312th Military Intelligence Battalion (United States)|312th Military Intelligence Battalion]]
+ | next =[[314th Military Intelligence Battalion (United States)|314th Military Intelligence Battalion]]
+}}
+
+The '''313th Military Intelligence Battalion''' was an [[Regular Army (United States)|active duty]] [[Airborne forces|Airborne]] [[Military intelligence|Military Intelligence]] [[Battalion#United States Army|Battalion]] of the [[United States Army]].
+
+==Unit history==
+
+===Background===
+Before World War II, the [[United States Intelligence Community]] was fragmented and [[ad hoc]], comprising numerous government and military entities who were reluctant to share information with each other.<ref>Elphick, James. [https://www.wearethemighty.com/articles/us-intelligence-before-world-war-ii-was-basically-nonexistent ''US intelligence before World War II was basically nonexistent''.] 6 May 2016. Retrieved from [https://www.wearethemighty.com We Are the Mighty] on 12 August 2020.</ref> [[Franklin D. Roosevelt|President Roosevelt]] directed the [[Joint Chiefs of Staff#Joint Board|Joint Board]] to form the [[Office of the Coordinator of Information]] (COI) in mid-1941<ref name=OSS01>[https://web.archive.org/web/20150905093056/https://www.cia.gov/library/publications/intelligence-history/oss ''The Office of Strategic Services: America's First Intelligence Agency''.] 15 March 2007. Retrieved from [https://www.cia.gov Central Intelligence Agency] on 12 August 2020</ref> and the [[attack on Pearl Harbor]] later that year prompted the [[United States Department of War|War Department]] to expand the Army's existing entities into the [[Military Intelligence Service (United States)|Military Intelligence Service]], the [[Counterintelligence Corps]], and the [[Signal Intelligence Service|Signal Security Agency]].<ref name=NSAWWII01>Benson, Robert L. [https://www.nsa.gov/Portals/70/documents/about/cryptologic-heritage/historical-figures-publications/publications/wwii/history_us_comms.pdf ''A History of U.S. Communications Intelligence during World War II: Policy and Administration''.] Fort Meade, MD. National Security Agency Center for Cryptologic History. 1997.</ref> The Joint board also formed [[Office of Strategic Services]] from elements of the COI as America entered [[World War II]].<ref name=OSS01 />
+
+During the first decades of the Cold War, Army [[Intelligence agency|intelligence departments]] maintained [[Compartmentalization (information security)|compartmentalization]] by [[List of intelligence gathering disciplines|discipline]] for security purposes. Their [[Military operation|missions]] and assignments were [[Classified information in the United States|classified]], organizations utilized [[Military deception|deception]], while personnel operated in and out of [[Official cover|cover]] to protect their missions first and themselves second. Seemingly divergent organizations like the [[Army Security Agency]], the Army Intelligence Agency, and numerous [[Intelligence analysis|intelligence production]] units would eventually merge forming the [[United States Army Intelligence and Security Command|Intelligence and Security Command]]. During the decades leading up to the formation of the modern [[Military Intelligence Corps (United States Army)|Military Intelligence Corps]], these agencies and their personnel were laying the groundwork for what would become  ''"The Army's Most Decorated MI Battalion."''
+
+===World War II===
+
+====215th Signal Depot Company====
+The lineage of the 313th Military Intelligence Battalion is traced to the 215th Signal Depot Company, which was activated on 25 September 1942 at [[Camp Livingston, Louisiana]].<ref name=CMH01>[https://web.archive.org/web/20080620214916/http://www.history.army.mil/html/forcestruc/lineages/branches/mi/0313mibn.htm Lineage and Honors Information for the 313th Military Intelligence Battalion.] 29 September 1999. Retrieved from [[United States Army Center of Military History|US Army Center of Military History]] on 11 August 2020.</ref> The 215th, composed of approximately 190 personnel, arrived in [[Liverpool]], England in October 1943 and moved [[en masse]] by train to [[Taunton, Somerset]]. From there, the unit [[Detachment (military)|detached]] to perform various support activities, mostly repairing, maintaining, and issuing communications equipment to [[Combat arms#United States Army|field units]] marshaled there.<ref name=215HIST01>Bissey, Roland L., et al. [https://www.ibiblio.org/cizewski/signalcorps/215/215.html ''History of the 215th Signal Depot Company''.] 1943-1945. Retrieved from [https://www.ibiblio.org Ibiblio Digital Archive] on 13 August 2020.</ref>
+
+In April 1944, the 215th was attached to [[First United States Army|First Army]] and moved to [[Hindon, Wiltshire]] in southern England anticipating the invasion of mainland Europe. The unit [[Operations (military staff)|planned]] and made laborious efforts to prepare for [[Amphibious warfare|amphibious operations]] before sending three detachments to the southwestern English port towns of [[Paignton]], [[Pencalenick]], and [[Swanage]] in mid-May.<ref name=215HIST01 />
+
+=====''Normandy''=====
+
+:These detachments participated in the [[Normandy landings]]<ref>[https://web.archive.org/web/20080611135757/http://www.history.army.mil/html/reference/normandy/asltforce.html The Normandy Invasion: The Assault Force.] Retrieved from US Army Center of Military History on 12 August 2020.</ref> with the advance element [[Landing operation|landing]] on [[Utah Beach]] at 1030 hours on 6 June. 215th personnel were under sporadic fire from German artillery, aircraft, and even occasional sniper's bullet well into that first night as front-line units moved inland. One detachment, which landed at approximately 2200 hours, even captured two German [[Prisoner of war|prisoners]].<ref name=215HIST01 />
+
+:While awaiting deliveries of communications equipment to perform their assigned mission, detachments assisted other units in establishing [[Telecommunications link|communications networks]] along the [[Beachhead|beach]].<ref name=215HIST01 /> Another detachment of the 215th salvaged a [[SCR-584 radar|radar set]] from a sunken [[landing craft]]; drying, repairing, then reissuing it as an operational set. These radars were instrumental with ensuring air defense units were ready for enemy aircraft approaching the beach, protecting follow-on forces as they continued landing.<ref name=SIGCOR01>Thompson, George R. and Harris, Dixie R. [https://web.archive.org/web/20120927124114/http://www.history.army.mil/html/books/010/10-18/CMH_Pub_10-18.pdf ''The Signal Corps: The Outcome (Mid-1943 through 1945)''.] Washington, DC. US Army Center of Military History. 1991.</ref>
+
+:The third detachment landed on D+1, helping to establish a [[Logistics center|depot]] near [[Sainte-Marie-du-Mont, Manche|Sainte-Marie-du-Mont]] on the road to [[Cherbourg Naval Base]] from the Normandy beaches in support of [[VII Corps (United States)|VII Corps]] units. Because of the proximity to [[Sainte-Mère-Église]] and [[Carentan]], the American airborne forces' objectives, [[paratroopers]] from the [[82nd Airborne Division|82nd]] and [[101st Airborne Division]]s were supported from this depot, replenishing their communications equipment which was lost or battle-damaged during their [[American airborne landings in Normandy|combat parachute assault into Normandy]].<ref name=215HIST01 />
+
+:On D+2 one detachment established a signal supply depot in vicinity of [[Colleville-sur-Mer|Colleville]] issuing equipment ''"without formal requisitions in view of the tactical situation"'' before moving with an estimated 5,000 tons of equipment {{convert|12|mi}} on D+6 to establish a depot near [[Mosles]]. Here, the depot was engaged nightly at approximately 2300 hours by a lone German aircraft dubbed ''"Bed Check Charlie"'' who dropped flares and the occasional bomb with no damage to personnel, equipment, or supplies reported. On 6 August this depot moved to [[Torigni-sur-Vire]] where it remained until consolidating in Belgium in late-September.<ref name=215HIST01 />
+
+=====''Northern France''=====
+
+:The headquarters section and remainder of the 215th arrived in [[Saint-Laurent-sur-Mer]] on 15 June, assisting in the consolidation of depots near [[Bricqueville]]<ref name=215HIST01 /> while her detachments augmented various units as allied forces seized [[Battle of Cherbourg|Cherbourg]]. Some detachments relocated in order to support elements maneuvering to take [[Battle for Caen|Caen]] which was liberated in early-August. This opened the way for [[George S. Patton|Patton's]] [[United States Army Central#World War II|Third Army]] to advance {{convert|60|mi}} in just two weeks from [[Avranches]] to [[Argentan]], aided by [[Ultra (cryptography)|Ultra]] intelligence which apprised him of German counterattacks, indicating where to concentrate his forces.<ref>Axelrod, Alan. ''Patton: A Biography''. London. Palgrave Macmillan. 2006.</ref> The 215th moved along with 5,000 tons of equipment and supplies to [[Saint-Samson-de-Bonfossé]] in early August to support Patton's thrust.<ref name=215HIST01 />
+
+:As the allies raced through France toward Germany, the disparate 215th elements maneuvered behind the advance, occupying numerous depots throughout France eventually reaching Belgium, securing a warehouse in [[Verviers]] where the 215th consolidated for the first time since D-Day on 30 September. Equipment was stockpiled in anticipation of impending military operations and while front lines stabilized, friendly units refitted by sending their equipment to the 215th for repair or replacement. The work load was so great that the 215th was augmented by an additional signal repair company and three ordnance heavy automotive maintenance companies.<ref name=215HIST01 />
+
+=====''Battle of the Bulge''=====
+
+:After the onset of winter in late-1944, the 215th continued maintenance activities in support of front-line units. As inclement weather slowed the Allied tempo, the Germans initiated a counter-attack on 16 December which would later become known as the [[Battle of the Bulge]]. The 215th at Verviers was approximately {{convert|15|mi}} from the Germans on the [[Siegfried Line]] and were unaffected by the initial German artillery bombardment, the first phase of their counter-attack. In the early hours of 17 December, [[Fallschirmjäger|German paratroopers]] [[Operation Stösser|parachuted into the Allies' rear area]] intending to seize the crossroads at [[Jalhay]], just {{convert|5|mi}} from Verviers. Mis-drops of the paratroopers (some as far as {{convert|50|mi}} off-target) confused the Allies into believing the Germans conducted a division-level airborne operation,<ref>Goldstein, Donald M. ''Nuts!: The Battle of the Bulge: The Story and Photographs''. Potomac Books. 1994</ref> and the 215th was told that 500 Nazi paratroopers had seized the road between [[Eupen-Malmedy|Eupen and Malmedy]], within {{convert|10|mi}} of their location. In response, the company activated and drilled their base defense plan as several alerts were implemented over the coming days.<ref name=215HIST01 />
+
+:As the Germans approached Verviers, they shelled supply routes around the town. The commander of First Army ordered the evacuation of the depot to preserve its stocks and capability. Over 5,000 tons of equipment was loaded onto 400 rail cars and evacuated a reported {{convert|90|mi}} southwest to [[Charleroi]]. By 21 December the unit had resumed their mission, repairing equipment damaged by the German offensive while also installing communications equipment onto nearly 300 [[M4 Sherman]] tanks; a task made even more difficult by inadequate facilities, the biting winds, and the cold steel of the tanks. These tanks were largely responsible for repelling the German attack.<ref name=215HIST01 />
+
+=====''Central Europe''=====
+
+:Following the Battle of the Bulge, the 215th again detached from Verviers to support the [[Western Allied invasion of Germany|Allies crossing the Rhine]], integrating into numerous depots through Belgium then onward into Germany. The headquarters eventually occupied a depot near [[Jena]] in central Germany by 1 May before the war in Europe came to a close. The unit returned stateside and was inactivated in November 1945 at Camp Kilmer, [[New Jersey]]. The 215th commander encapsulated the spirit of his unit by reporting: ''"Satisfaction enough, however, for both officers and enlisted men, is in knowing that a piece of Signal equipment repaired by them will not fail the man with the rifle."''<ref name=215HIST01 />
+
+====82nd Counterintelligence Corps Detachment====
+
+The ''provisional Counterintelligence Corps'' (CIC) attached personnel to the 82nd Airborne Division<ref name=CICWWII>[https://fas.org/irp/agency/army/cic-wwii.pdf ''Counter Intelligence Corps History and Mission in World War II''.] The Counter Intelligence Corps School. [[Fort Holabird]], MD.</ref> who accompanied the division into combat on all major operations from Sicily to Germany; conducting [[interrogation]]s of captured enemy personnel and performing counterintelligence activities in occupied areas. [[HUMINT|Human Intelligence]] attachments included what would later become the 82nd CIC Detachment, four ''Interrogator Prisoner of War'' teams, and a ''Military Intelligence Interpreter'' team.<ref name=82ITAL01>[https://apps.dtic.mil/dtic/tr/fulltext/u2/a438100.pdf ''82d Airborne Division in Italy and Sicily''.] Retrieved from the [[Defense Technical Information Center]] on 13 August 2020.</ref>
+
+Before dawn on D-Day, the CIC personnel attached to the American airborne forces parachuted or landed by [[Waco CG-4|glider]] into Normandy. The initial D-Day mission of CIC troops was to locate, seize, and control all important [[Tactical operations center|communications centers]] and take charge of [[Forced displacement|civilian traffic]]. Some CIC detachments contacted [[French Resistance|resistance groups]] to facilitate their mission, but no specific mention of the 82nd doing so was found.<ref name=CICWWII /> Additionally, of the eight agents who parachuted in with the 101st Airborne, three were [[killed in action]] and two were wounded and captured,<ref>[https://fas.org/irp/agency/army/evolution.pdf ''The Evolution of American Military Intelligence''.] [[United States Army Intelligence Center|US Army Intelligence Center and School]]. [[Fort Huachuca]], AZ. May 1973.</ref> showing the inherent perils the airborne faced that day; though there were no reports of significant casualties amongst the CIC personnel accompanying the 82nd.
+
+On 12 July 1944, a month after landing on Normandy, the ''82nd Counter Intelligence Corps Detachment'' was formally constituted by the United States Army,<ref name=CMH01 /> after having already accompanied the 82nd into combat for the better part of a year.<ref name=82ITAL01 /> ''Constitute'' in this context merely means to place the designation of the new unit on the official rolls of the Army,<ref>Wilson, John B. [https://web.archive.org/web/20140808145719/http://www.history.army.mil/html/books/060/60-7/cmhPub_60-7-1.pdf ''Armies, Corps, Divisions, and Separate Brigades''.] Washington, DC. US Army Center of Military History. 1999.</ref> and the unit was formally activated the next month in England on 20 August 1944,<ref name=CMH01 /> no doubt while the unit prepared for the impending airborne assault into Holland.
+
+Records are spotty regarding the 82nd CIC Detachment, likely due to the sensitive nature of their work, but based on their official military honors, they went on to participate in [[Operation Market Garden]], the Battle of the Bulge, and the final push into Germany across the [[Ruhr]] River then finishing in [[Ludwigslust]] after crossing the [[Elbe]].
+
+====3191st Signal Service Company====
+
+Four days after D-Day, the 3191st Signal Service Company was constituted before being officially activated on 20 June 1944 at [[Fort Crowder|Camp Crowder]],<ref name=CMH01 /> [[Missouri]], the home of the Central Signal Corps Replacement Training Center.<ref>US Army Signal Corps. [https://www.ibiblio.org/cizewski/signalcorps/crowder/mag/mag.pdf ''A Camera Trip Through Camp Crowder, Missouri''.] San Antonio, TX. Universal Press.</ref>
+
+The unit likely consisted of a [[Cadre (military)|cadre]] of some seasoned, along with newly appointed, Officers and Non-Commissioned Officers leading soldiers who recently completed their [[United States Army Basic Training#AIT2|initial training]] at Camp Crowder.
+
+As with the 82nd CIC Detachment, little information is available about the 3191st, likely due to the sensitive nature of their work. What is available indicates that the company moved to [[Fort Monmouth]], New Jersey sometime after activation,<ref name=SIGCOR01 /> ostensibly to deploy to the European theater if needed. Based on their unit awards, the 3191st was not needed in Europe and instead deployed to the [[Asiatic-Pacific Theater]] taking part in the [[Philippines campaign (1944–1945)|liberation of the Philippines]] in the [[Battle of Luzon]]. The unit was deactivated in the Philippines on 25 October 1945, two months after Japan accepted the terms of the [[Potsdam Declaration]].
+
+===Post-World War II/Early Cold War===
+====215th Signal Depot Company====
+
+In 1955 the 215th was reactivated, converted and redesignated the 313th Communications Research Battalion, absorbing the 358th Communications Research Company (see ''3191st Signal Service Company'' below) as A Company and the 337th Communications Research Company as B Company; the 337th was first activated in 1952. On July 1, 1956, the 313th was redesignated as an Army Security Agency (ASA) Battalion, and the subordinate companies designated as ASA Companies. Ultimately, the battalion would be deactivated December 15, 1957<ref name=CMH01 /> at Fort Bragg, North Carolina, as part of a reorganization by the ASA.
+
+====82nd Counterintelligence Corps Detachment====
+
+The detachment returned to Fort Bragg with the 82nd after occupation duty and was allotted to the Regular Army<ref name=CMH01 /> shortly after the division itself was saved from deactivation and allotted to the Regular Army.<ref>[https://web.archive.org/web/20110514231920/http://www.history.army.mil/html/forcestruc/lineages/branches/div/082abdb.htm Lineage and Honors Information for 82d Airborne Division.] 9 March 2017. Retrieved from US Army Center of Military History on 11 August 2020.</ref> The CIC Detachment was further redesignated as the 82nd Military Intelligence Detachment in 1958.<ref name=CMH01 />
+
+====3191st Signal Service Company====
+
+As cold war tensions rose and the Americans bolstered their intelligence apparatus, the Army reactivated the 3191st Signal Service Detachment in mid-1951 at [[Fort Devens]], redesignating the unit the 358th Communications Reconnaissance Company. The 358th would fall under the 313th (as A Company) in 1955 before being deactivated again in late-1957.<ref name=CMH01 />
+
+===Vietnam===
+====313th Army Security Agency Battalion====
+
+The 313th was activated again on May 25, 1962, at Fort Bragg, with A Company and B Company maintaining their previous lineages of the 358th and 337th Communication Reconnaissance Companies.<ref name=CMH01 /> The battalion was reactivated in anticipation of the structured implementation of ASA [[Military operation plan|OPLAN]] 7-61 ([[Code name|codenamed]] [[US signals intelligence in the Cold War#Early days: American and Operational Perspective|WHITEBIRCH]]), designed to "''increase U.S. COMINT/DF capability against guerrilla communications of Communist forces in South Vietnam, North Vietnam and Laos.''"<ref>[https://www.nsa.gov/Portals/70/documents/news-features/declassified-documents/cryptologic-histories/on_watch.pdf ''On Watch: Profiles from The National Security {{sic|nolink=y|reason=error in source|Agencys'}} past 40 years''.] Fort Meade, MD. National Security Agency National Cryptographic School. 1984.</ref>
+
+When the 313th was slotted to [[Military deployment|deploy]] to Vietnam in 1966, the ASA removed its organic companies with A Company redesignated the 358th (supporting the 82nd Airborne Division), B Company reflagged as the 337th ASA Company (supporting the [[1st Infantry Division (United States)|1st Infantry Division]]), and C Company becoming the [[312th_Military_Intelligence_Battalion_(United_States)#Company_“A”_lineage|10th Radio Research Unit]] (supporting the [[1st Cavalry Division (United States)|1st Cavalry Division]]) and later, the 371st ASA.<ref name=CMH01 /><ref name=ASALives01>[http://www.asalives.org/ASAONLINE/asa02313.htm Army Security Agency Online: 313th Radio Research Battalion] retrieved from [http://www.asalives.org ASA Lives.org] on 12 August 2020.</ref> The reason for the reorganization was the impending deployment of numerous ASA Direct Support Units (DSUs) as the war in Vietnam escalated.  A DSU was an ASA company supporting an army division; the company would further organize detachments to support the brigades or regiments of that division and independent brigades were allotted their own ASA detachments.<ref name=Spartans01>Hanyok, Robert J. [https://www.nsa.gov/Portals/70/documents/news-features/declassified-documents/cryptologic-histories/spartans_in_darkness.pdf ''Spartans in Darkness: American SIGINT and the Indochina War, 1945-1975''.] Fort Meade, MD. National Security Agency Center for Cryptologic History. 2002.</ref> Once in-country, the 313th's anticipated mission would be to oversee DSU activities; while there were four DSUs operating in Vietnam in 1965, by 1968 the number exploded to sixteen.<ref name=Tide01>Wolfe, Hiram M., Schmidt, Raymond P., Thompson, Thomas N. [https://www.nsa.gov/Portals/70/documents/news-features/declassified-documents/cryptologic-histories/work_against_tide.pdf ''Working Against the Tide: COMSEC Monitoring and Analysis, Part One''.] Fort Meade, MD. National Security Agency Center for Cryptologic History. 1970.</ref>
+
+[[File:ASA_FFV-I_SSIs.png|thumb|300px|left|[[Shoulder Sleeve Insignia]] of the Army Security Agency ''(left)'' and the I Field Force, Vietnam ''(right)'']]In February 1966, with only about 60 percent of its authorized strength,<ref name=Tide01 /> the 313th ASA Battalion deployed to [[Nha Trang]] using the cover name ''13th Radio Research Unit'', and was assigned to the ''509th Radio Research Group''. Charged with supporting [[I Field Force, Vietnam|I Field Force]] (FFV-I), the battalion oversaw DSUs deployed in the [[II Corps Tactical Zone]] (AKA Military Region 2).<ref name=ASALives01 /> All collection, processing, and reporting efforts from the DSUs and [[Antenna farm|stations]] in II Corps were coordinated through the 313th, making them responsible for monitoring all communist communications in the [[Central Highlands (Vietnam)|Central Highlands]] from [[Quảng Nam Province]] south to [[Đắk Lắk Province]] (AKA ''Dar Lac'' or ''Darlac'').<ref name=Spartans01 /> The 313th also concentrated on FFV I headquarters [[telephone switchboard]]s and radio circuits,<ref name=Tide01 /> ostensibly [[Counterintelligence#Defensive counterintelligence|seeking to ferret out]] [[Mole (espionage)|hostile agents]] amongst the [[Vietnamese people|local employees]] and [[Army of the Republic of Vietnam|partner force]] personnel working at FFV-I.
+
+The battalion would see her previous companies again in-country, with operational control over the 371st (''formerly C Company''; as the ''10th Radio Research Unit'') supporting the 1st Cavalry Division. Also, the 358th (''formerly A Company'') deployed for a short time with the [[505th Infantry Regiment (United States)|3rd Brigade]] of the 82nd Airborne Division in response to the [[Tet Offensive]] of 1968, before returning stateside to support the [[Ready reaction force|82nd's global contingency mission]]. Additionally, the 337th ''(formerly B Company)'' deployed in support of the 1st Infantry Division in the [[I Corps Tactical Zone]] (AKA Military Region 1), falling under control the 303rd ASA Battalion.<ref name=ASALives01 />
+
+Personnel would be reassigned and some would return, but the 313th would stay in-country until July 1971,<ref name=ASALives01 /> earning five [[Meritorious Unit Commendation]]s, the [[Gallantry Cross (South Vietnam)#Unit award|Republic of Vietnam Cross of Gallantry with Palm]], and 12 [[campaign streamer]]s.<ref name=CMH01 />
+
+====82nd Military Intelligence Detachment====
+
+Along with the 358th ASA Company, the 3rd Brigade of the 82nd Airborne Division was supported in-country by the 82nd MI Detachment, who earned the [[Civil Actions Medal|Republic of Vietnam Civil Action Honor Medal]]. After redeploying to Fort Bragg with the brigade in late-1969, the detachment became the 82nd Military Intelligence Company in November 1970.<ref name=CMH01 />
+
+===Formation===
+
+The Headquarters of the 313th ASA Battalion was reorganized as the '''''313th Military Intelligence Battalion''''' and assigned to the 82nd Airborne Division on 16 October 1979. Simultaneously, the 358th ASA Company was restructured and designated A Company while the 82nd Military Intelligence Company reorganized and became B Company.
+
+On 1 November 1988, Companies A, B, and C were designated as direct support companies for each of the three infantry brigades while Company D was activated, assuming roles as the general support company for the division. The battalion continued to evolve in the 1990s, with the reassignment of the [[Long Range Surveillance Detachment]] from the 1st Squadron, [[17th Cavalry Regiment (United States)|17th Cavalry Regiment]], the division's cavalry squadron, to the 313th Military Intelligence Battalion.
+
+The unit provided direct and general support to the 82d Airborne Division in the form of intelligence collection, analysis, and dissemination; counterintelligence and interrogation; signals intelligence, including ground and air based intercept, jamming, and direction finding; remote battlefield sensors and ground surveillance radar; moving target indicators; and long range surveillance.
+
+The unit's lineage included 23 campaign and battle streamers from World War II, the [[Dominican Republic]], [[Vietnam War|Vietnam]], [[Invasion of Grenada|Grenada]], [[United States invasion of Panama|Panama]], and the [[Gulf War|Persian Gulf]]. The battalion earned seven Meritorious Unit Commendations, one Army Superior Unit Award, and five foreign unit awards.
+
+The 313th Military Intelligence Battalion was also one of the most diverse units in the [[United States Army]], with soldiers holding 47 different military occupational specialties and speaking eight different languages.<ref name=Bragg1>[https://web.archive.org/web/20040113044456/http://www.bragg.army.mil/AFVC-Z/bnhistory.html Archive of Official 313th Military Intelligence Battalion website.] ''313th MI Bn History''. Retrieved from [[Internet Archive]] on 16 August 2020.</ref>
+
+In 2006 the battalion was inactivated when, as part of the Army-wide reorganization of combat forces to the modular structure, it was broken up and most of its personnel and equipment were reassigned to the brigade support battalions in each of the division's brigade combat teams.<ref>[https://www.globalsecurity.org/military/agency/army/313mibn.htm 313th Military Intelligence Battalion.] Retrieved from [[GlobalSecurity.org]] on 16 August 2020.</ref> The battalion's long range surveillance detachment was reorganized, reflagged and reassigned as Company F ([[Pathfinder (military)|Pathfinder]]), 2nd Battalion, [[82nd Aviation Regiment (United States)|82d Aviation Regiment]], Combat Aviation Brigade, 82nd Airborne Division.
+
+===Battalion Monument===
+
+Former members of the battalion organized for a monument to be placed along the entranceway to the [[Airborne & Special Operations Museum]] in [[Fayetteville, North Carolina]], adjacent to Fort Bragg. The monument was formally dedicated on 9 September 2017 and features engravings of the Master Parachutist Badge, the Military Intelligence Corps' [[United States Army branch insignia|Branch Insignia]], and the 313th's Distinctive Unit Insignia. A list of the battalion's soldiers who were killed in action and in training accidents, unit coins, and other unit artifacts were placed under the stone.<ref>Brooks, Drew, [https://www.fayobserver.com/news/20170909/paratroopers-honor-history-of-inactivated-battalion Paratroopers honor history of inactivated battalion.] [[The Fayetteville Observer]], 9 September 2017.</ref>
+
+== Honors ==
+<ref name=CMH01 />
+
+=== [[Campaign streamer|Campaign Streamers]] ===
+
+{| border="0" cellpadding="1" cellspacing="0" align="center"
+! style="background: ;" | [[European–African–Middle Eastern Campaign Medal|World War II]]
+! style="background: ;" | [[Vietnam Service Medal|Vietnam]]
+! style="background: ;" | [[Armed Forces Expeditionary Medal|Armed Forces Expeditions]]
+! style="background: ;" | [[Southwest Asia Service Medal|Southwest Asia]]
+
+|-style="text-align: center;"
+|| [[File:European-African-Middle Eastern Campaign Medal streamer.png|200px]]<br />[[Normandy landings|Normandy]] ([[arrowhead device|with arrowhead]])
+|| [[File:Streamer VS.PNG|200px]]<br />Counteroffensive
+|| [[File:Streamer AFE.PNG|200px]]<br />[[Dominican Civil War#US intervention|Dominican Republic]]
+|| [[File:Streamer SAS.PNG|200px]]<br />[[Gulf War#Military means|Defense of Saudi Arabia]]
+
+|-style="text-align: center;"
+|| [[File:European-African-Middle Eastern Campaign Medal streamer.png|200px]]<br />[[Operation Overlord|Northern France]]
+|| [[File:Streamer VS.PNG|200px]]<br />Counteroffensive, Phase II 
+|| [[File:Streamer AFE.PNG|200px]] <br />[[United States invasion of Grenada|Grenada]]
+|| [[File:Streamer SAS.PNG|200px]]<br />[[Gulf War#Ground campaign|Liberation and Defense of Kuwait]]
+
+|-style="text-align: center;"
+|| [[File:European-African-Middle Eastern Campaign Medal streamer.png|200px]]<br />[[Allied advance from Paris to the Rhine|Rhineland]]
+|| [[File:Streamer VS.PNG|200px]]<br />Counteroffensive, Phase III
+|| ''''' Company A additionally entitled to: '''''
+|| [[File:Streamer SAS.PNG|200px]]<br />[[Gulf War#End of active hostilities|Cease-Fire]]<ref>[https://armypubs.army.mil/epubs/DR_pubs/DR_a/pdf/web/go0509.pdf General Orders Number 9.] [[United States Department of the Army|Department of the Army]]. 18 December 2005. Retrieved from [[United States Army Publishing Directorate|Army Publishing Directorate]] 17 August 2020.</ref>
+
+|-style="text-align: center;"
+|| [[File:European-African-Middle Eastern Campaign Medal streamer.png|200px]]<br />[[Battle of the Bulge|Ardennes-Alsace]] 
+|| [[File:Streamer VS.PNG|200px]]<br />Tet Counteroffensive<br /> 
+|| [[File:Streamer AFE.PNG|200px]]<br />[[United States invasion of Panama#Military operations|Panama]] (with arrowhead)
+||
+
+|-style="text-align: center;"
+|| [[File:European-African-Middle Eastern Campaign Medal streamer.png|200px]]<br />[[Western Allied invasion of Germany|Central Europe]]
+|| [[File:Streamer VS.PNG|200px]]<br />Counteroffensive, Phase IV
+|| <br />
+||
+
+|-style="text-align: center;"
+|| [[File:Streamer FCDG WWII.png|200px]]<br />[[Croix de Guerre 1939–1945|Normandy Beaches]]
+|| [[File:Streamer VS.PNG|200px]]<br /> Counteroffensive, Phase V 
+|| <br />
+||
+
+|-style="text-align: center;"
+|| [[Asiatic–Pacific Campaign Medal|''''' Company A additionally entitled to: ''''']]
+|| [[File:Streamer VS.PNG|200px]]<br />Counteroffensive, Phase VI
+|| <br />
+||
+
+|-style="text-align: center;"
+|| [[File:Streamer APC.PNG|200px]]<br />[[Battle of Luzon|Luzon]]
+|| [[File:Streamer VS.PNG|200px]]<br />Tet 69/Counteroffensive
+|| <br />
+||
+
+|-style="text-align: center;"
+|| [[File:Presidential Unit Citation (Philippines) Streamer.png|200px]]<br />[[Philippine Republic Presidential Unit Citation|Philippine Presidential Unit Citation]]
+|| [[File:Streamer VS.PNG|200px]]<br />Summer-Fall 1969
+|| <br />
+||
+
+|-style="text-align: center;"
+|| [[Military Order of William|''''' Company B additionally entitled to: ''''']]
+|| [[File:Streamer VS.PNG|200px]]<br />Winter-Spring 1970
+|| <br />
+||
+
+|-style="text-align: center;"
+|| [[File:Military Order of William (Netherlands) Campaign Streamer.png|200px]]<br />[[Operation Market Garden|Nijmegen 1944]]
+|| [[File:Streamer VS.PNG|200px]]<br />Sanctuary Counteroffensive
+|| <br />
+||
+
+|-style="text-align: center;"
+|| <br />
+|| [[File:Streamer VS.PNG|200px]]<br />Counteroffensive, Phase VII
+|| <br />
+||
+
+|-style="text-align: center;"
+|| <br />
+|| [[File:VGCP Streamer.jpg|200px]]<br />[[Gallantry Cross (South Vietnam)|Cross of Gallantry with Palm]]
+|| <br />
+||
+
+|-style="text-align: center;"
+|| <br />
+|| ''''' Company B additionally entitled to: '''''
+|| <br />
+||
+
+|-style="text-align: center;"
+||  <br />
+|| [[File:Streamer RVMUCCA.PNG|200px]]<br />[[Civil Actions Medal|Civil Actions Honor Medal (1st Class)]]
+|| <br />
+|| <br />
+|}
+
+=== Decorations ===
+
+{| border="0" cellpadding="1" cellspacing="0" align="center"
+! style="background: " | <br /> [[Valorous Unit Award]]
+! style="background: " | [[Meritorious Unit Commendation|Meritorious Unit<br />Commendation]] (7)
+! style="background: " | [[Superior Unit Award|Army Superior<br />Unit Award]]
+
+|-style="text-align: center;"
+|| {{Ribbon devices|number=0|type=oak|other_device=|ribbon=Valorous Unit Award ribbon.svg{{!}}border|width=150}}<br />
+|| {{Ribbon devices|number=6|type=oak|other_device=|ribbon=Meritorious Unit Commendation ribbon.svg{{!}}border|width=150}}<br />
+|| {{Ribbon devices|number=0|type=oak|other_device=|ribbon=Army Superior Unit Award ribbon.svg{{!}}border|width=150}}
+
+|-style="text-align: center;"
+|| Afghanistan
+|| France 1944
+|| 15 Oct - 19 Dec 1984<ref>[https://armypubs.army.mil/epubs/DR_pubs/DR_a/pdf/web/go8730.pdf General Orders Number 30.] Department of the Army. 1 July 1987. Retrieved from Army Publishing Directorate on 16 August 2020.</ref>
+
+|-style="text-align: center;"
+|| 17 Jan - 17 Aug 2003<ref>[https://armypubs.army.mil/epubs/DR_pubs/DR_a/pdf/web/go0924.pdf General Orders No. 2009-24.] Department of the Army. 10 December 2009. Retrieved from Army Publishing Directorate 17 August 2020.</ref>
+|| Vietnam 1966-1967
+||
+
+|-style="text-align: center;"
+|| <br />
+|| Vietnam 1967-1968
+||
+
+|-style="text-align: center;"
+|| <br />
+|| Vietnam 1968-1969
+||
+
+|-style="text-align: center;"
+|| <br />
+|| Vietnam 1969-1970
+||
+
+|-style="text-align: center;"
+|| <br />
+|| Vietnam 1971
+||
+
+|-style="text-align: center;"
+|| <br />
+|| Southwest Asia
+|| <br />
+|}
+
+{| border="0" cellpadding="1" cellspacing="15" align="center"
+! style="background: ;" | A Company Additionally Entitled to
+! style="background: ;" | B Company Additionally Entitled to
+! style="background: ;" | C Company Additionally Entitled to
+! style="background: ;" | E Company (LRSD) Additionally Entitled to
+
+|-style="text-align: center;"
+|| ''' Valorous Unit Award ''' <br />[[File:Valorous Unit Award ribbon.svg|150px]] <br /> Afghanistan <br /> 17 January - 17 August 2003<ref name=DAGO093-04>[https://web.archive.org/web/20091222070535/http://www.history.army.mil/html/forcestruc/HRC/2008/093-004_20080402_HRCMD.pdf Permanent Orders 093-04.] Department of the Army. 2 April 2008. Retrieved from US Army Center of Military History on 11 August 2020.</ref> 
+|| ''' [[Presidential Unit Citation (United States)|Presidential Unit Citation]] ''' <br /> [[File:U.S. Army and U.S. Air Force Presidential Unit Citation ribbon.svg|150px]] <br /> Iraq  <br /> 28 April - 1 May 2003<ref>[https://web.archive.org/web/20100608011953/http://www.history.army.mil/html/forcestruc/HRC/2009/110-015_20090420_HRCMD.pdf Permanent Orders 110-15.] Department of the Army. 20 April 2009. Retrieved from US Army Center of Military History on 11 August 2020.</ref>
+|| ''' Valorous Unit Award ''' <br />[[File:Valorous Unit Award ribbon.svg|150px]] <br /> Iraq <br /> 1 August 2003 – 31 March 2004<ref>[https://web.archive.org/web/20091222070405/http://www.history.army.mil/html/forcestruc/HRC/2008/050-006_20080219_HRCMD.pdf Permanent Orders 050-06.] Department of the Army. 19 February 2008. Retrieved from US Army Center of Military History on 11 August 2020.</ref>
+|| ''' Valorous Unit Award ''' <br /> [[File:Valorous Unit Award ribbon.svg|150px]] <br /> Afghanistan <br /> 17 January - 17 August 2003<ref name=DAGO093-04 />
+
+|-style="text-align: center;"
+|| ''' [[Philippine Republic Presidential Unit Citation|Philippine Presidential<br />Unit Citation]] ''' <br /> [[File:Philippines Presidential Unit Citation.png|150px]] <br /> 17 October 1944 – 4 July 1945
+|| <br /> <br />''' Valorous Unit Award ''' <br /> [[File:Valorous Unit Award ribbon.svg|150px]] <br /> Iraq <br /> 7 May 2003 – 15 February 2004<ref>[https://armypubs.army.mil/epubs/DR_pubs/DR_a/pdf/web/go1449.pdf General Orders No. 2014-49.] Department of the Army. 18 July 2014. Retrieved from Army Publishing Directorate 17 August 2020.</ref>
+|| <br />
+||
+
+|-style="text-align: center;"
+|| <br />
+|| ''' Netherlands Orange Lanyard ''' <br /> [[File:William_of_Orange_Lanyard,_Holland.png|150px]] <br /> [[Operation Market Garden]]
+|| <br />
+||
+
+|-style="text-align: center;"
+|| <br />
+|| ''' Belgian [[Fourragère]] ''' <br /> <div style=position:center; Transform-rotate|90|display=block> 
+[[File:BelgianFourragere.png|75px]] </div> <br /> Action in the [[Battle of the Bulge|Ardennes]] <br /> Action in [[Liberation of Belgium|Belgium]] and [[Western Allied invasion of Germany|Germany]]
+|| <br />
+|| <br />
+|}
+
+== Heraldry ==
+
+=== Coat of arms ===
+
+''' [[Blazon]] '''
+[[File:313 MI Bn Coat of Arms.png|thumb|125px|right|Coat of arms]]
+
+The coat of arms features an [[Azure (heraldry)|Azure]] (teal blue) [[Escutcheon (heraldry)|shield]] with an [[Ordinary (heraldry)|ordinary]] of an [[Argent]] (white) and [[Tenné]] (orange) [[Check (pattern)|checkered]] [[fess]]. The [[Charge (heraldry)|charge]] of the shield is an Argent six-pointed [[Star (heraldry)|mullet]] of the second. Atop the shield rests an Argent and Azure [[Torse|rolled wreath]] which forms the base of the [[Crest (heraldry)|crest]] featuring a [[Gules]] (red) [[Enfield (heraldry)|dragon]] trimmed in [[Or (heraldry)|Or]] (gold) in a [[Attitude (heraldry)#Passant|passant]] posture. The dragon stands in front of a [[Vert (heraldry)|Vert]] (green) [[Mount (heraldry)|mountain]] which is impaled with twelve [[Tincture (heraldry)#Proper|Proper]] [[bamboo]] spikes while the dragon's tail is interlaced through the spikes.
+
+''' Symbolism '''
+
+Azure and white are the colors used for units not assigned to a [[Structure of the United States Army#Branches and functional areas|branch]], referring to the unit's previous designation as the 313th ASA Battalion. The colors orange and white express the organization's former affiliation with the Signal Corps and the six points of the mullet allude to the battalion's decorations for World War II and Vietnam service.. The dragon symbolizes alertness and readiness, and its [[Chinese dragon|Asian styling]] denotes the unit's service in Vietnam. The green mountain represents the lush vegetation and [[Annamite Range|mountainous terrain]] while the twelve bamboo spikes represent the twelve campaigns the battalion participated in during the Vietnam war.<ref name=TIOH1 />
+
+=== Distinctive unit insignia ===
+
+''' Blazon '''
+[[File:313_MI_Flash_with_DUI_and_Oval_with_JM_Badge.png|thumb|right|250px|Flash with DUI ''(left)'' and background oval with master parachutist badge ''(right)'']]
+
+The unit's distinctive unit insignia (DUI) is a silver color metal and enamel device {{convert|1+1/8|in|cm}} in height overall consisting of a shield representing the unit's coat of arms with a silver [[Scroll (art)|scroll]] attached around the sides and bottom of the shield inscribed, "SAVOIR C'EST POUVOIR" (''Knowledge is power'', in French) with [[Sable (heraldry)|black]]-colored lettering.<ref name=TIOH1>[https://web.archive.org/web/20241030151501/https://tioh.army.mil/Catalog/HeraldryMulti.aspx?CategoryId=3869&grp=2&menu=Uniformed%20Services Distinctive Unit Insignia and Coat of Arms of the 313th Military Intelligence Battalion.] Retrieved from [[United States Army Institute of Heraldry|The Institute of Heraldry]] on 11 August 2020.</ref>
+
+=== Beret flash and background trimming ===
+
+The 313th's flash is a teal blue shield-shaped embroidered item with a semi-circular base. Around the edge of the flash is a {{convert|1/8|in|cm}} orange border, two white lightning bolts [[Bend (heraldry)#Bend sinister|bendwise sinister]], one issuing from the top of the flash and one issuing from the lower right side; the overall dimensions are {{convert|2+1/4|in|cm}} in height by {{convert|1+7/8|in|cm}} in width. The airborne background trimming is a teal blue oval-shaped embroidered item edged with a {{convert|1/8|in|cm}} orange border two white lightning bolts bendwise sinister, one issuing from the top of the item and one issuing from the right side. The overall dimensions are {{convert|1+3/8|in|cm}} in height by {{convert|2+1/4|in|cm}} width.<ref name=TIOH2>[https://web.archive.org/web/20231126001947/https://tioh.army.mil/Catalog/HeraldryMulti.aspx?CategoryId=4938&grp=2&menu=Uniformed%20Services Beret Flash and Background Trimming of the 313th Military Intelligence Battalion.] Retrieved from The Institute of Heraldry on 11 August 2020.</ref>
+
+== See also ==
+
+* [[T-10 parachute]]
+* [[US signals intelligence in the Cold War]]
+
+== References ==
+
+{{Reflist}}
+
+==External links==
+* [https://www.82ndairborneassociation.org/ 82nd Airborne Division Association]
+* [https://www.armysecurityagencyveterans.net/ Army Security Agency Veterans.net] online veteran locator.
+* [https://www.ibiblio.org/cizewski/signalcorps/215/215.html History of the 215th Signal Depot Company]
+* [https://archive.today/20121212040856/http://www.history.army.mil/html/forcestruc/lineages/branches/mi/0313mibn.htm Lineage and Honors information for the 313th Military Intelligence Battalion]
+* [https://army.togetherweserved.com/army/servlet/tws.webapp.WebApp?cmd=PublicUnitProfile&type=Unit&ID=67812 Together We Served, 82nd Military Intelligence Company] online veteran locator.
+
+{{DEFAULTSORT:313th Military Intelligence Battalion (United States Army)}}
+[[Category:Airborne units and formations of the United States Army]]
+[[Category:Battalions of the United States Army in World War II]]
+[[Category:Military Intelligence battalions of the United States Army]]
+[[Category:Military units and formations established in 1942]]
+[[Category:Military units and formations of the United States Army in the Vietnam War]]
+[[Category:Wikipedia articles incorporating text from the United States Army]]

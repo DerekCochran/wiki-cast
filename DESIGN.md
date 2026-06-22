@@ -207,3 +207,51 @@ The string `\0<n><ch>\x7F` is used throughout:
 
 ---
 
+## Token Type vs Token Subtype
+
+The parser intentionally stores both `type` and `subtype` on every `Token`.
+
+- `type` identifies the concrete token class and selects the `TokenData` union
+  payload branch in `include/wiki_cast/token.h`.
+- `subtype` identifies the semantic role/context name used for JS-parity
+  labeling, debug/json naming, and child-role disambiguation.
+
+This split is not redundant.
+
+- Multiple semantic roles share a broad structural `type`.
+  Example: many `TOKEN_PLAIN` tokens are distinguished by subtype
+  (`heading-title`, `parameter-value`, `table-inner`, `td-inner`, etc.).
+- Some parser steps intentionally preserve subtype while changing or rewrapping
+  type context (for example postprocess rebuild paths in `src/parse.c` use
+  `token_new_with_subtype(TOKEN_PLAIN, t->subtype)`).
+- Type-specific data is carried in `TokenData` and must still be keyed by
+  `type` (for example quote/html/ext/redirect/ext-link payload fields).
+
+### What `TOKEN_SUBTYPE_NONE` Means
+
+`TOKEN_SUBTYPE_NONE` is the fallback from `token_subtype_from_name()` when a
+name is null/empty/unknown (`src/token.c`). In normal parser construction,
+subtype names passed to `token_new(type, name)` are mapped, and no explicit
+`token_new_with_subtype(..., TOKEN_SUBTYPE_NONE)` construction is used by
+current parse paths in `src/`.
+
+So `NONE` exists as a defensive/default enum value, not as a primary semantic
+state for normal AST nodes.
+
+### Handler Strategy Guidance (Markdown Converter)
+
+Use both levels of dispatch:
+
+1. Prefer subtype-specific handlers first for semantic roles.
+2. Fall back to type-level handlers for structural behavior and payload access.
+
+Why not subtype-only:
+
+- Type fallback handles unknown/future/defensive subtype values.
+- Type dispatch is the natural place for behavior that depends on `TokenData`
+  fields keyed by token class.
+- It avoids forcing every structural case into a very large subtype-only table.
+
+In short: subtype gives fine-grained meaning; type gives structural guarantees.
+Both are required for robust conversion.
+

@@ -1,0 +1,529 @@
+{{Short description|none}}
+The [[United States|U.S.]] {{nobreak|[[Florida|State of Florida]]}} currently has 35 [[Statistical area (United States)|statistical areas]] that have been delineated by the [[Office of Management and Budget]] (OMB). On July 21, 2023, the OMB delineated 7 [[combined statistical area]]s, 22 [[metropolitan statistical area]]s, and 6 [[micropolitan statistical area]]s in Florida.<ref name="OMB_20230721">{{cite web |subject=Revised Delineations of Metropolitan Statistical Areas, Micropolitan Statistical Areas, and Combined Statistical Areas, and Guidance on Uses of the Delineations of These Areas |date=July 21, 2023 |title=0MB BULLETIN NO. 23-01 |url=https://bidenwhitehouse.archives.gov/wp-content/uploads/2023/07/OMB-Bulletin-23-01.pdf |access-date=October 23, 2023 |publisher=[[Office of Management and Budget]]}}</ref><ref>{{Cite web |title=OMB Bulletin |url=https://bidenwhitehouse.archives.gov/wp-content/uploads/2023/07/OMB-Bulletin-23-01.pdf}}</ref> As of 2023, the largest of these is the [[Miami-Port St. Lucie-Fort Lauderdale, FL CSA]], inclusive of the southeastern region of the state centered on [[Miami]].
+
+{{clear}}
+
+{{US state statistical areas boilerplate}}
+
+<!-- THE FOLLOWING TABLE CONTAINS DATA FROM THE UNITED STATES CENSUS BUREAU. DO NOT ALTER US CENSUS DATA. -->
+{|class=wikitable
+|+The 35 United States statistical areas and 67 counties of the State&nbsp;of&nbsp;Florida{{efn|reference=<span style="color:green;">An out-of-state area and its population are displayed in green.</span> <span style="color:purple;">An area that extends into more than one state is displayed in purple. A purple population number over </span>a black population number <span style="color:purple;">show the total population versus</span> the in-state population. The state's abbreviation is also shown next to the in-state total.}}
+|-
+!Combined statistical area<ref name="OMB_20230721"/>
+!2025 population (est.)<ref name="PopCBSA">{{cite web |date=March 2023 |title=County Population Totals and Components of Change: 2020-2023 |url=https://www2.census.gov/programs-surveys/popest/tables/2020-2023/counties/totals/co-est2023-pop.xlsx |access-date=January 27, 2026 |publisher=[[United States Census Bureau]], Population Division}}</ref>
+!Core-based statistical area<ref name="OMB_20230721"/>
+!2025 population (est.)<ref name="PopCBSA"/>
+!County
+!2025 population (est.)<ref name="PopCBSA"/>
+!Metropolitan division<ref name="OMB_20230721"/>
+!2025 population (est.)<ref name="PopCBSA"/>
+|-
+|rowspan=8|[[Miami metropolitan area|Miami-Port St. Lucie-Fort Lauderdale, FL CSA]]
+|rowspan=8 align=right|7,254,264
+|rowspan=3|[[Miami metropolitan area|Miami-Fort Lauderdale-West Palm Beach, FL MSA]]
+|rowspan="3" align="right" |6,391,072
+|[[Miami-Dade County, Florida]]
+|align=right|2,802,029
+|''Miami-Miami Beach-Kendall, FL MD''
+|align=right|2,802,029
+|-
+|[[Broward County, Florida]]
+|align=right|2,013,317
+|''Fort Lauderdale-Pompano Beach-Sunrise, FL MD''
+|align=right|2,013,317
+|-
+|[[Palm Beach County, Florida]]
+|align=right|1,575,726
+|''West Palm Beach-Boca Raton-Delray Beach, FL MD''
+|align=right|1,575,726
+|-
+|rowspan=2|[[Treasure Coast|Port St. Lucie, FL MSA]]
+|rowspan="2" align="right" |568,721
+|[[St. Lucie County, Florida]]
+|align=right|402,449
+|rowspan=13 colspan=2 align=center bgcolor=#EEEEEE|''none''
+|-
+|[[Martin County, Florida]]
+|align=right|166,272
+|-
+|rowspan=1|[[Indian River County, Florida|Sebastian-Vero Beach-West Vero Corridor, FL MSA]]
+|rowspan="1" align="right" |172,799
+|[[Indian River County, Florida]]
+|align=right|172,799
+|-
+|rowspan=1|[[Key West, FL μSA|Key West-Key Largo, FL μSA]]
+|rowspan="1" align="right" |78,797
+|[[Monroe County, Florida]]
+|align=right|78,797
+|-
+|rowspan=1|[[Okeechobee, FL μSA]]
+|rowspan="1" align="right" |42,875
+|[[Okeechobee County, Florida]]
+|align=right|42,875
+|-
+|rowspan=8|[[Greater Orlando|Orlando-Lakeland-Deltona, FL CSA]]
+|rowspan=8 align=right|4,737,167
+|rowspan=4|[[Greater Orlando|Orlando-Kissimmee-Sanford, FL MSA]]
+|rowspan="4" align="right" |2,957,672
+|[[Orange County, Florida]]
+|align=right|1,528,002
+|-
+|[[Seminole County, Florida]]
+|align=right|491,884
+|-
+|[[Osceola County, Florida]]
+|align=right|481,718
+|-
+|[[Lake County, Florida]]
+|align=right|456,068
+|-
+|rowspan=1|[[Lakeland-Winter Haven, FL MSA]]
+|rowspan="1" align="right" |874,790
+|[[Polk County, Florida]]
+|align=right|874,790
+|-
+|rowspan=2|[[Deltona–Daytona Beach–Ormond Beach, Florida Metropolitan Statistical Area|Deltona-Daytona Beach-Ormond Beach, FL MSA]]
+|rowspan="2" align="right" |746,933
+|[[Volusia County, Florida]]
+|align=right|606,573
+|-
+|[[Flagler County, Florida]]
+|align=right|140,360
+|-
+|rowspan=1|[[The Villages, FL Metropolitan Statistical Area|Wildwood-The Villages, FL MSA]]
+|rowspan="1" align="right" |157,772
+|[[Sumter County, Florida]]
+|align=right|157,772
+|-
+|rowspan=4 colspan=2 align=center bgcolor=#EEEEEE|''none''
+|rowspan=4|[[Tampa Bay area|Tampa-St. Petersburg-Clearwater, FL MSA]]
+|rowspan=4 align=right|3,418,895
+|[[Hillsborough County, Florida]]
+|align=right|1,574,115
+|rowspan="3"|''Tampa, FL MD''
+|rowspan="3" align=right|''2,470,332''
+|-
+|[[Pasco County, Florida]]
+| align="right" |674,516
+|-
+|[[Hernando County, Florida]]
+| align="right" |221,701
+|-
+|[[Pinellas County, Florida]]
+| align="right" |948,563
+|''St. Petersburg-Clearwater-Largo, FL MD''
+|align="right"|''948,563''
+|-
+| rowspan="7" |[[Jacksonville-Palatka-St. Marys, FL-GA CSA|<span style="color:purple;">Jacksonville-Kingsland-Palatka, FL-GA CSA</span>]]
+| rowspan="7" align="right"|<span style="color:purple;">1,925,016</span><br/>1,863,795<small>({{Abbr|FL|Florida}})</small>
+| rowspan="5" |[[Jacksonville metropolitan area|Jacksonville, FL MSA]]
+| rowspan="5" align="right" |1,785,500
+|[[Duval County, Florida]]
+| align="right" |1,062,963
+|rowspan=50 colspan=2 align=center bgcolor=#EEEEEE|''none''
+|-
+|[[St. Johns County, Florida]]
+| align="right" |346,328
+|-
+|[[Clay County, Florida]]
+| align="right" |239,593
+|-
+|[[Nassau County, Florida]]
+| align="right" |106,879
+|-
+|[[Baker County, Florida]]
+| align="right" |29,737
+|-
+| rowspan="1" |[[Palatka, FL μSA]]
+| rowspan="1" align="right" |78,295
+|[[Putnam County, Florida]]
+| align="right" |78,295
+|-
+| rowspan="1" |[[St. Marys, GA μSA|<span style="color:green;">Kingsland, GA μSA</span>]]
+| rowspan="1" align="right" |<span style="color:green;">61,221</span>
+|[[Camden County, Georgia|<span style="color:green;">Camden County, Georgia</span>]]
+| align="right" |<span style="color:green;">61,221</span>
+|-
+| rowspan="4" |[[Cape Coral-Fort Myers-Naples, FL CSA]]
+| rowspan="4" align="right" |1,356,003
+| rowspan="1" |[[Cape Coral-Fort Myers, FL MSA]]
+| rowspan="1" align="right" |875,607
+|[[Lee County, Florida]]
+| align="right" |875,607
+|-
+| rowspan="1" |[[Naples-Marco Island, FL MSA]]
+| rowspan="1" align="right" |417,131
+|[[Collier County, Florida]]
+| align="right" |417,131
+|-
+| rowspan="2" |[[Clewiston micropolitan area|Clewiston, FL μSA]]
+| rowspan="2" align="right" |63,265
+|[[Hendry County, Florida]]
+| align="right" |48,276
+|-
+|[[Glades County, Florida]]
+| align="right" |13,270
+|-
+| rowspan="4" |[[Sarasota metropolitan area|North Port-Bradenton, FL CSA]]
+| rowspan="4" align="right" |1,202,637
+| rowspan="2" |[[Sarasota metropolitan area|North Port-Bradenton-Sarasota, FL MSA]]
+| rowspan="2" align="right" |948,158
+|[[Sarasota County, Florida]]
+| align="right" |479,958
+|-
+|[[Manatee County, Florida]]
+| align="right" |468,200
+|-
+| rowspan="1" |[[Punta Gorda, FL MSA]]
+| rowspan="1" align="right" |217,212
+|[[Charlotte County, Florida]]
+| align="right" |217,212
+|-
+| rowspan="1" |[[Arcadia, FL μSA]]
+| rowspan="1" align="right" |37,267
+|[[DeSoto County, Florida]]
+| align="right" |37,267
+|-
+| colspan="2" rowspan="3" align="center" bgcolor="#EEEEEE" |''none''
+| rowspan="1" |[[Palm Bay-Melbourne-Titusville, FL MSA]]
+| rowspan="1" align="right" |663,982
+|[[Brevard County, Florida]]
+| align="right" |663,982
+|-
+| rowspan="2" |[[Pensacola metropolitan area|Pensacola-Ferry Pass-Brent, FL MSA]]
+| rowspan="2" align="right" |544,949
+|[[Escambia County, Florida]]
+| align="right" |333,834
+|-
+|[[Santa Rosa County, Florida]]
+| align="right" |211,115
+|-
+| rowspan="4" |[[Gainesville-Lake City, FL CSA]]
+| rowspan="4" align="right" |433,503
+| rowspan="3" |[[Gainesville metropolitan area, Florida|Gainesville, FL MSA]]
+| rowspan="3" align="right" |359,036
+|[[Alachua County, Florida]]
+| align="right" |290,028
+|-
+|[[Levy County, Florida]]
+| align="right" |48,520
+|-
+|[[Gilchrist County, Florida]]
+| align="right" |20,488
+|-
+| rowspan="1" |[[Lake City, FL μSA]]
+| rowspan="1" align="right" |74,467
+|[[Columbia County, Florida]]
+| align="right" |74,467
+|-
+| colspan="2" rowspan="1" align="center" bgcolor="#EEEEEE" |''none''
+| rowspan="1" |[[Ocala, FL MSA]]
+| rowspan="1" align="right" |442,660
+|[[Marion County, Florida]]
+| align="right" |442,660
+|-
+| rowspan="5" |[[Tallahassee-Bainbridge, FL-GA CSA|<span style="color:purple;">Tallahassee-Bainbridge, FL-GA CSA</span>]]
+| rowspan="5" align="right"|<span style="color:purple;">426,843</span><br />397,442<small>(FL)</small>
+| rowspan="4" |[[Tallahassee metropolitan area|Tallahassee, FL MSA]]
+| rowspan="4" align="right" |397,442
+|[[Leon County, Florida]]
+| align="right" |299,048
+|-
+|[[Gadsden County, Florida]]
+| align="right" |44,298
+|-
+|[[Wakulla County, Florida]]
+| align="right" |38,089
+|-
+|[[Jefferson County, Florida]]
+| align="right" |16,007
+|-
+| rowspan="1" |[[Bainbridge, GA μSA|<span style="color:green;">Bainbridge, GA μSA</span>]]
+| rowspan="1" align="right" |<span style="color:green;">29,401</span>
+|[[Decatur County, Georgia|<span style="color:green;">Decatur County, Georgia</span>]]
+| align="right" |<span |align=right style="color:green;">29,401</span>
+|-
+| colspan="2" rowspan="21" align="center" bgcolor="#EEEEEE" |''none''
+| rowspan="2" |[[Crestview–Fort Walton Beach–Destin metropolitan area|Crestview-Fort Walton Beach-Destin, FL MSA]]
+| rowspan="2" align="right" |315,098
+|[[Okaloosa County, Florida]]
+| align="right" |221,810
+|-
+|[[Walton County, Florida]]
+| align="right" |93,288
+|-
+| rowspan="2" |[[Panama City, Florida metropolitan area|Panama City-Panama City Beach, FL MSA]]
+| rowspan="2" align="right" |231,174
+|[[Bay County, Florida]]
+| align="right" |204,479
+|-
+|[[Washington County, Florida]]
+| align="right" |26,695
+|-
+| rowspan="1" |[[Homosassa Springs, FL MSA]]
+| rowspan="1" align="right" |171,666
+|[[Citrus County, Florida]]
+| align="right" |171,666
+|-
+| rowspan="1" |[[Sebring, FL MSA]]
+| rowspan="1" align="right" |111,122
+|[[Highlands County, Florida]]
+| align="right" |111,122
+|-
+| colspan="2" rowspan="15" align="center" bgcolor="#EEEEEE" |''none''
+|[[Jackson County, Florida]]
+| align="right" |49,629
+|-
+|[[Suwannee County, Florida]]
+| align="right" |48,149
+|-
+|[[Bradford County, Florida]]
+| align="right" |28,307
+|-
+|[[Hardee County, Florida]]
+| align="right" |25,932
+|-
+|[[Taylor County, Florida]]
+| align="right" |21,210
+|-
+|[[Holmes County, Florida]]
+| align="right" |20,119
+|-
+|[[Madison County, Florida]]
+| align="right" |18,759
+|-
+|[[Dixie County, Florida]]
+| align="right" |18,038
+|-
+|[[Gulf County, Florida]]
+| align="right" |15,943
+|-
+|[[Union County, Florida]]
+| align="right" |16,250
+|-
+|[[Hamilton County, Florida]]
+| align="right" |14,180
+|-
+|[[Calhoun County, Florida]]
+| align="right" |13,289
+|-
+|[[Franklin County, Florida]]
+| align="right" |13,029
+|-
+|[[Lafayette County, Florida]]
+| align="right" |8,792
+|-
+|[[Liberty County, Florida]]
+| align="right" |8,035
+|- style="font-weight:bold;" bgcolor="#FFFFBB"
+| colspan="5" align="center" |[[Florida|State&nbsp;of&nbsp;Florida]]
+| align="right" |23,462,299
+|}
+<!-- THE PRECEDING TABLE CONTAINS DATA FROM THE UNITED STATES CENSUS BUREAU. DO NOT ALTER US CENSUS DATA. -->
+
+<!-- THE FOLLOWING TABLE CONTAINS DATA FROM THE UNITED STATES CENSUS BUREAU. DO NOT ALTER US CENSUS DATA. -->
+{|class="wikitable sortable"
+|+The 28 core-based statistical areas of the State&nbsp;of&nbsp;Florida
+|-
+!scope=col rowspan=2|2025 rank
+!scope=col rowspan=2|[[Primary statistical area]]<ref name="OMB_20230721"/>
+!colspan=5|Population
+|-
+!scope=col|2025 estimate<ref name="PopCBSA"/>
+!scope=col|Change
+!scope=col|[[2020 United States census|2020 Census]]<ref name="USC2020">{{cite web|url=https://data.census.gov/table/DECENNIALDP2020.DP1|title=PROFILE OF GENERAL POPULATION AND HOUSING CHARACTERISTICS|publisher=[[U.S. Census Bureau]]|date=2020|access-date=January 27, 2026}}</ref>
+!scope=col|Change
+!scope=col|[[2010 United States census|2010 Census]]<ref name="USC2010">{{cite web|url=https://www2.census.gov/programs-surveys/popest/tables/2010-2019/counties/totals/co-est2019-annres.xlsx|title=Annual Estimates of the Resident Population for Counties: April 1, 2010 to July 1, 2019|publisher=[[U.S. Census Bureau]]|date=2019|access-date=January 27, 2026}}</ref>
+|-
+!scope=row|{{nts|1}}
+|[[Miami-Fort Lauderdale-West Palm Beach, FL MSA]]
+{{changes|order=d|6391072|6138333|5564635}}
+|-
+!scope=row|{{nts|2}}
+|[[Tampa-St. Petersburg-Clearwater, FL MSA]]
+{{changes|order=d|3418895|3175275|2783243}}
+|-
+!scope=row|{{nts|3}}
+|[[Orlando-Kissimmee-Sanford, FL MSA]]
+{{changes|order=d|2957672|2673376|2134411}}
+|-
+!scope=row|{{nts|4}}
+|[[Jacksonville, FL MSA]]
+{{changes|order=d|1785500|1605848|1345596}}
+|-
+!scope=row|{{nts|5}}
+|[[North Port-Bradenton-Sarasota, FL MSA]]
+{{changes|order=d|948158|833716|702281}}
+|-
+!scope=row|{{nts|6}}
+|[[Cape Coral-Fort Myers, FL MSA]]
+{{changes|order=d|875607|760822|618754}}
+|-
+!scope=row|{{nts|7}}
+|[[Lakeland-Winter Haven, FL MSA]]
+{{changes|order=d|874790|725046|602095}}
+|-
+!scope=row|{{nts|8}}
+|[[Deltona-Daytona Beach-Ormond Beach, FL MSA]]
+{{changes|order=d|746933|668921|590289}}
+|-
+!scope=row|{{nts|9}}
+|[[Palm Bay-Melbourne-Titusville, FL MSA]]
+{{changes|order=d|663982|606612|543376}}
+|-
+!scope=row|{{nts|10}}
+|[[Port St. Lucie, FL MSA]]
+{{changes|order=d|568721|487657|424107}}
+|-
+!scope=row|{{nts|11}}
+|[[Pensacola-Ferry Pass-Brent, FL MSA]]
+{{changes|order=d|544949|509905|448991}}
+|-
+!scope=row|{{nts|12}}
+|[[Ocala, FL MSA]]
+{{changes|order=d|442660|375908|331298}}
+|-
+!scope=row|{{nts|13}}
+|[[Naples-Marco Island, FL MSA]]
+{{changes|order=d|417131|375752|321520}}
+|-
+!scope=row|{{nts|14}}
+|[[Tallahassee, FL MSA]]
+{{changes|order=d|397442|384298|367413}}
+|-
+!scope=row|{{nts|15}}
+|[[Gainesville, FL MSA]]
+{{changes|order=d|359036|339247|305076}}
+|-
+!scope=row|{{nts|16}}
+|[[Crestview-Fort Walton Beach-Destin, FL MSA]]
+{{changes|order=d|315098|286973|235865}}
+|-
+!scope=row|{{nts|17}}
+|[[Panama City, FL MSA]]
+{{changes|order=d|231174|200534|193748}}
+|-
+!scope=row|{{nts|18}}
+|[[Punta Gorda, FL MSA]]
+{{changes|order=d|217212|186847|159978}}
+|-
+!scope=row|{{nts|19}}
+|[[Indian River County, Florida|Sebastian-Vero Beach-West Vero Corridor, FL MSA]]
+{{changes|order=d|172799|159788|138028}}
+|-
+!scope=row|{{nts|20}}
+|[[Homosassa Springs, FL MSA]]
+{{changes|order=d|171666|153843|141236}}
+|-
+!scope=row|{{nts|21}}
+|[[The Villages, FL Metropolitan Statistical Area|Wildwood-The Villages, FL MSA]]
+{{changes|order=d|157772|129752|93420}}
+|-
+!scope=row|{{nts|22}}
+|[[Sebring, FL MSA]]
+{{changes|order=d|111122|101235|98786}}
+|-
+!scope=row|{{nts|23}}
+|[[Key West, FL μSA|Key West-Key Largo, FL μSA]]
+{{changes|order=d|78797|82874|73090}}
+|-
+!scope=row|{{nts|24}}
+|[[Palatka, FL μSA]]
+{{changes|order=d|78295|73321|74364}}
+|-
+!scope=row|{{nts|25}}
+|[[Lake City, FL μSA]]
+{{changes|order=d|74467|69698|67531}}
+|-
+!scope=row|{{nts|26}}
+|[[Clewiston, FL μSA]]
+{{changes|order=d|63265|51745|52024}}
+|-
+!scope=row|{{nts|27}}
+|[[Okeechobee, FL μSA]]
+{{changes|order=d|42875|39644|39996}}
+|-
+!scope=row|{{nts|28}}
+|[[Arcadia, FL μSA]]
+{{changes|order=d|37267|33976|34862}}
+|}
+
+<!-- THE FOLLOWING TABLE CONTAINS DATA FROM THE UNITED STATES CENSUS BUREAU. DO NOT ALTER US CENSUS DATA. -->
+{|class="wikitable sortable"
+|+The seven combined statistical areas of the State&nbsp;of&nbsp;Florida{{efn|reference=For CSAs comprising populations from multiple states, they are listed twice to show both their intrastate population within that CSA as well as the CSA's total population. Only the intrastate population is ranked.}}
+|-
+!scope=col rowspan=2|2025 rank
+!scope=col rowspan=2|[[Primary statistical area]]<ref name="OMB_20230721"/>
+!colspan=5|Population
+|-
+!scope=col|2025 estimate<ref name="PopCBSA"/>
+!scope=col|Change
+!scope=col|[[2020 United States census|2020 Census]]<ref name="USC2020"/>
+!scope=col|Change
+!scope=col|[[2010 United States census|2010 Census]]<ref name="USC2010"/>
+|-
+!scope=row|{{nts|1}}
+|[[Miami-Port St. Lucie-Fort Lauderdale, FL CSA]]
+{{changes|order=d|7254264|6908296|6239856}}
+|-
+!scope=row|{{nts|2}}
+|[[Orlando-Lakeland-Deltona, FL CSA]]
+{{changes|order=d|4737167|4197095|3420215}}
+|-
+!scope=row|{{nts|3}}
+|[[Jacksonville-St. Marys-Palatka, FL-GA CSA|Jacksonville-Kingsland-Palatka, FL-GA CSA]] <small>(FL)</small>
+{{changes|order=d|1863795|1679169|1419960}}
+|-
+!scope=row|{{nts|4}}
+|[[Cape Coral-Fort Myers-Naples, FL CSA]]
+{{changes|order=d|1356003|1188319|992298}}
+|-
+!scope=row|{{nts|5}}
+|[[Sarasota metropolitan area|North Port-Bradenton, FL CSA]]
+{{changes|order=d|1202637|1054539|897121}}
+|-
+!scope=row|{{nts|6}}
+|[[Gainesville-Lake City, FL CSA]]
+{{changes|order=d|433503|408945|372607}}
+|-
+!scope=row|{{nts|7}}
+|[[Tallahassee-Bainbridge, FL-GA CSA]] <small>(FL)</small>
+{{changes|order=d|397442|384298|367413}}
+|-
+|
+|''[[Jacksonville-St. Marys-Palatka, FL-GA CSA|<span style="color:purple;">Jacksonville-Kingsland-Palatka, FL-GA CSA</span>]]''
+{{changes|order=d|1925016|1733937|1470473}}
+|-
+|
+|''[[Tallahassee-Bainbridge, FL-GA CSA|<span style="color:purple;">Tallahassee-Bainbridge, FL-GA CSA</span>]]''
+{{changes|order=d|426843|413665|395255}}
+|}
+
+==See also==
+{{portal|Geography|United States|Florida}}
+*[[Geography of Florida]]
+**[[Demographics of Florida]]
+<!-- ***[[:Category:Florida statistical areas]] -->
+{{clear}}
+
+==Notes==
+{{notelist}}
+
+==References==
+{{reflist}}
+
+==External links==
+{{sister project links|Florida|auto=yes}}
+*[https://www.whitehouse.gov/omb/ Office of Management and Budget]
+*[https://www.census.gov/ United States Census Bureau]
+
+{{Florida|show}}
+{{U.S. statistical areas}}
+{{authority control}}
+{{coord|28.6305|-82.4497|dim:300000_region:US-FL_type:adm1st|name=State of Florida|display=title}}
+
+{{DEFAULTSORT:Florida Statistical Areas}}
+[[Category:United States statistical areas]]
+[[Category:Florida geography-related lists|Statistical Areas Of Florida]]
+[[Category:Demographics of Florida|Statistical Areas Of Florida]]
+[[Category:Lists of places in Florida|Statistical Areas Of Florida]]

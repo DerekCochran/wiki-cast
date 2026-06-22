@@ -1,0 +1,666 @@
+{{Short description|County of England}}
+{{About|the county in England}}
+{{Use British English|date=February 2014}}
+{{Use dmy dates|date=February 2022}}
+{{Infobox English county
+| official_name           = Cheshire
+| other_name              = 
+| image_main              = {{multiple images |border=infobox |perrow=1 2 |total_width=250px
+ | image1 = The view north west from Beeston Castle - geograph.org.uk - 4547395 (edited, cropped).jpg
+ | image2 = Eastgate Clock, Chester 2 (cropped, edited).jpg
+ | image3 = Little Moreton Hall - geograph.org.uk - 3625859.jpg
+ }}
+| image_caption           = The [[Cheshire Plain]] from [[Beeston Castle]], [[Eastgate Clock]] in [[Chester]], and [[Little Moreton Hall]]
+| locator_map             = File:Cheshire UK locator map 2010.svg
+| map_caption             = Cheshire shown within England
+| coordinates             = {{coord|53|10|N|2|35|W|type:adm2nd_region:GB-ENG|display=title, inline}}
+| region                  = [[North West England|North West]]
+| established_date        = [[Historic counties of England|Ancient]]
+| established_by          = 
+| preceded_by             = 
+| origin                  = 
+| MPs                     = [[Parliamentary constituencies in Cheshire|12 MPs]]
+| police                  = [[Cheshire Constabulary]]
+| largest_town            = [[Warrington]]
+<!-- Ceremonial county fields -->
+| lord_lieutenant_office  = Lord Lieutenant of Cheshire
+| lord_lieutenant_name    = Alexis, Lady Redmond
+| high_sheriff_office     = High Sheriff of Cheshire
+| high_sheriff_name       = Joelle Susan Warren<ref>{{London Gazette|issue=64681|page=5010|date=14 March 2025}}</ref>
+| ethnicity               = 
+| ethnicity_year          = 
+| ethnicity_footnotes     = 
+<!-- Districts map -->
+| districts_map           = [[File:Cheshire numbered districts 2009.svg|200px]]
+| districts_key           = {{Colorsample|#FFFF99}} Unitary
+| districts_list          =
+# [[Cheshire West and Chester]]
+# [[Cheshire East]]
+# [[Borough of Warrington|Warrington]]
+# [[Borough of Halton|Halton]]
+}}
+
+'''Cheshire''' ({{IPAc-en|ˈ|tʃ|ɛ|ʃ|ər|,_|-|ɪər}} {{respell|CHESH|ər|,_|-eer}})<ref>[http://www.dictionary.com/browse/cheshire "Cheshire"] {{Webarchive|url=https://web.archive.org/web/20180121190206/http://www.dictionary.com/browse/cheshire|date=21 January 2018}}. ''[[Random House Webster's Unabridged Dictionary]]''</ref> is a [[Ceremonial counties of England|ceremonial county]] in [[North West England]]. It is bordered by [[Merseyside]] to the north-west, [[Greater Manchester]] to the north-east, [[Derbyshire]] to the east, [[Staffordshire]] to the south-east, and [[Shropshire]] to the south; to the west it is bordered by the Welsh counties of [[Flintshire]] and [[Wrexham County Borough|Wrexham]], and has a short coastline on the [[Dee Estuary]]. The largest settlement is [[Warrington]].
+
+The county has an area of {{convert|905|sqmi|km2|0}} and had a population of {{English cerem counties|POP=Cheshire}} in {{English cerem counties|TXT=Year}}. The areas around the [[River Mersey]] in the north of the county are the most densely populated, with Warrington, [[Runcorn]], [[Widnes]], and [[Ellesmere Port]] located on the river. The city of [[Chester]] lies in the west of the county, [[Crewe]] in the south, and [[Macclesfield]] in the east. For [[Local government in England|local government]] purposes Cheshire comprises four [[Unitary authorities of England|unitary authority]] areas: [[Cheshire East]], [[Cheshire West and Chester]], [[Borough of Halton|Halton]], and [[Borough of Warrington|Warrington]]. [[Halton Borough Council]] is a member of the [[Liverpool City Region Combined Authority]], and the councils of the other three areas collaborate through the [[Cheshire and Warrington Combined Authority]]. The county [[Historic counties of England|historically]] included all of the [[Wirral Peninsula]] and parts of southern Greater Manchester and northern Derbyshire, but excluded Widnes and Warrington.
+
+The landscape of the county is dominated by the [[Cheshire Plain]], an area of relatively flat land divided by the [[Mid Cheshire Ridge|Mid-Cheshire Ridge]]. To the west, Cheshire contains the south of the Wirral Peninsula, and to the east the landscape rises to the [[Pennines]], where the county contains part of the [[Peak District]]. The River Mersey runs through the north of Cheshire before broadening into its wide estuary; the [[River Dee, Wales|River Dee]] forms part of the county's border with Wales, then fully enters England and flows through Chester before re-entering Wales upstream of its estuary. Red [[Triassic]] [[sandstone]] forms the bedrock of much of the county, and was used in the construction of many of its buildings.
+
+==Toponymy==
+Cheshire's name was originally derived from an early name for Chester, and was first recorded as ''Legeceasterscir'' in the ''[[Anglo-Saxon Chronicle]]'',<ref name="vch-vol1-p237">Harris, B. E. and Thacker, A. T. (1987). p. 237.</ref> meaning "the shire of the city of legions".<ref name="crosby-p31">Crosby, A. (1996). page 31.</ref> Although the name first appears in 980, it is thought that the county was created by [[Edward the Elder]] around 920.<ref name="crosby-p31"/> In the [[Domesday Book]], Cheshire was recorded as having the name ''Cestrescir'' (Chestershire), derived from the name for Chester at the time.<ref name="vch-vol1-p237"/> Through the next few centuries a [[Middle English|series of changes]] that occurred in the English language, which have included simplifications and [[elision]], has resulted in the name Cheshire.<ref name=":0">{{cite web|url=http://www.geiriadur.net/atebion.php?PHPSESSID=6629e0a737dd330fd4fecaf52d21efd7&uni=y&prefLang=en&term=Swydd+Gaerlleon&direction=we&whichpart=exact&type=noun|title= Welsh dictionary entry for Cheshire|website=www.geriadur.net |publisher= Department of Welsh, University of Wales, Lampeter|archive-url= https://web.archive.org/web/20081231110756/http://www.geiriadur.net/atebion.php?PHPSESSID=6629e0a737dd330fd4fecaf52d21efd7&uni=y&prefLang=en&term=Swydd+Gaerlleon&direction=we&whichpart=exact&type=noun|access-date= 21 February 2008|archive-date= 31 December 2008}}</ref>
+
+Because of the historically close links with the land bordering Cheshire to the west, which became modern [[Wales]], there is a history of interaction between Cheshire and North Wales. The Domesday Book records Cheshire as having two complete [[Hundreds of Cheshire|Hundreds]] (Atiscross and Exestan) that later became the principal part of [[Flintshire (historic)|Flintshire]]. Additionally, another large portion of the Duddestan Hundred later became known as [[English Maelor]] (Maelor Saesneg) when it was transferred to North Wales.<ref>Harris, B.E. and Thacker, A.T. (1987). pp. 340–341.</ref> For this and other reasons, the [[Welsh language]] name for Cheshire, {{lang|cy|Swydd Gaerlleon}}, is sometimes used.<ref name=":0" />
+
+==History==
+{{Main|History of Cheshire|Timeline of Cheshire history}}
+
+===Earldom===
+[[File: Doomsday Book - Counties of England - 1086.png|thumb|left|The counties of England following the [[Norman Conquest]]. Cheshire held a strategic position on the Welsh border with the [[Hundred (county division)|hundreds]] between the rivers [[River Mersey|Mersey]] and [[River Ribble|Ribble]] (Inter Ripam et Mersam) to the north.]]
+[[File:Wales 1234 (Marchia Wallie and Pura Wallia).svg|thumb|The strategic location of the [[Earl of Chester|Earldom of Chester]]; the only [[county palatine]] on the Welsh Marches.<ref>{{cite web |url=http://www.wrexham.gov.uk/english/heritage/medieval_exhibition/struggles.htm |title=Wrexham County Borough Council: The Princes and the Marcher Lords |publisher=Wrexham.gov.uk |access-date=14 May 2014 |archive-url=https://web.archive.org/web/20131230232130/http://www.wrexham.gov.uk/english/heritage/medieval_exhibition/struggles.htm |archive-date=30 December 2013 |url-status=dead }}</ref><br /><br />{{legend|#87de87|Pura Wallia (independent Wales)}}{{legend|#aaeeff|Lands gained by [[Llywelyn the Great]] in 1234}}{{legend|#ffb380|Marchia Wallie (lands controlled by Norman Marcher barons)}}]]
+
+After the [[Norman Conquest]] of 1066 by [[William the Conqueror|William I]], dissent and resistance continued for many years after the invasion. In 1069 local resistance in Cheshire was finally put down using draconian measures as part of the [[Harrying of the North]]. The ferocity of the campaign against the English populace was enough to end all future resistance. Examples were made of major landowners such as Earl [[Edwin of Mercia]], their properties confiscated and redistributed amongst Norman barons.
+
+The earldom was sufficiently independent from the kingdom of England that the 13th-century [[Magna Carta]] did not apply to the shire of [[Chester]], so the [[Ranulf de Blondeville, 6th Earl of Chester|earl]] wrote up his own [[Magna Carta of Chester|Chester Charter]] at the petition of his barons.<ref name=Hewitt>{{cite book |title=Mediaeval Cheshire: An Economic and Social History of Cheshire in the Reigns of the Three Edwards |last1=Hewitt |first1=Herbert James |location=Manchester |publisher=Manchester University Press |page=9 |date=1929 }}</ref>
+
+===County Palatine===
+William I made Cheshire a [[county palatine]] and gave [[Gerbod the Fleming, 1st Earl of Chester|Gerbod the Fleming]] the new title of [[Earl of Chester]]. When Gerbod returned to [[Normandy]] in about 1070, the king used his absence to declare the earldom forfeit and gave the title to [[Hugh d'Avranches]] (nicknamed Hugh Lupus, or "wolf"). Because of Cheshire's strategic location on the [[Welsh Marches]], the Earl had complete autonomous powers to rule on behalf of the king in the county palatine.
+
+====Hundreds====
+[[File:Cheshire domesday hundreds.svg|thumb|left|Hundreds of Cheshire in Domesday Book. Areas highlighted in pink became part of [[Flintshire (historic)|Flintshire]] in Wales.]]
+Cheshire in the [[Domesday Book]] (1086) is recorded as a much larger county than it is today. It included two [[hundred (division)|hundreds]], Atiscross and Exestan, that later became part of North [[Wales]]. At the time of the Domesday Book, it also included as part of Duddestan Hundred the area of land later known as [[English Maelor]] (which used to be a detached part of [[Flintshire (historic)|Flintshire]]) in Wales.<ref>{{cite book |last=Davies |first=R. |title=The Age of Conquest: Wales 1063–1415 |year=2000 }}</ref> The area between the [[River Mersey|Mersey]] and [[River Ribble|Ribble]] (referred to in the Domesday Book as "Inter Ripam et Mersam") formed part of the returns for Cheshire.<ref>Morgan (1978). pp.269c–301c,d.</ref><ref name=sylvesterp14>Sylvester (1980). p. 14.</ref> Although this has been interpreted to mean that at that time south Lancashire was part of Cheshire,<ref name=sylvesterp14/><ref>Roffe (2000)</ref> more exhaustive research indicates that the boundary between Cheshire and what was to become Lancashire remained the [[River Mersey]].<ref>Harris and Thacker (1987) write on page 252: {{blockquote|Certainly there were links between Cheshire and south Lancashire before 1000, when [[Wulfric Spot]] held lands in both territories. Wulfric's estates remained grouped together after his death when they were left to his brother Aelfhelm, and indeed there still seems to have been some kind of connexion in 1086, when south Lancashire was surveyed together with Cheshire by the Domesday commissioners. Nevertheless, the two territories do seem to have been distinguished from one another in some way and it is not certain that the shire-moot and the reeves referred to in the south Lancashire section of Domesday were the Cheshire ones.}}</ref><ref>Phillips and Phillips (2002); pp. 26–31.</ref><ref>Crosby, A. (1996) writes on page 31: {{blockquote|The Domesday Survey (1086) included south Lancashire with Cheshire for convenience, but the Mersey, the name of which means 'boundary river' is known to have divided the kingdoms of Northumbria and Mercia and there is no doubt that this was the real boundary.}}</ref> With minor variations in spelling across sources, the complete list of [[hundreds of Cheshire]] at this time are: Atiscross, Bochelau, Chester, Dudestan, Exestan, Hamestan, Middlewich, Riseton, Roelau, Tunendune, Warmundestrou and Wilaveston.<ref>Harris, B. E., and Thacker, A. T. (1987); pages 340–341.</ref>
+
+====Feudal baronies====
+There were 8 feudal baronies in Chester, the barons of Kinderton, Halton, Malbank, Mold, Shipbrook, Dunham-Massey, and the honour of Chester itself. Feudal baronies or baronies by tenure were granted by the Earl as forms of [[feudal land tenure]] within the palatinate in a similar way to which the king granted [[English feudal barony|English feudal baronies]] within England proper. An example is the barony of Halton.<ref>Sanders, I.J. English Baronies, a Study of their Origin and Descent 1086–1327, Oxford, 1960, p.138, refers to the "Lord" of Halton being the hereditary constable of the County Palatine of Chester, but omits Halton from both his lists of English feudal baronies</ref> One of Hugh d'Avranche's barons has been identified as Robert Nicholls, Baron of Halton and Montebourg.<ref>Crosby, A. A History of Cheshire; Norman Chapter</ref>
+
+====North Mersey to Lancashire====
+In 1182, the land north of the Mersey became administered as part of the new county of [[Lancashire]], resolving any uncertainty about the county in which the land "Inter Ripam et Mersam" was.<ref>{{cite book |last=George |first=D. |title=Lancashire |url=https://archive.org/details/lancashireREED00georuoft |year=1991 |access-date=18 November 2019 |archive-url=https://web.archive.org/web/20160901105954/https://archive.org/details/lancashireREED00georuoft |archive-date=1 September 2016 |url-status=live }}</ref> Over the years, the ten hundreds consolidated and changed names to leave just seven—Broxton, Bucklow, Eddisbury, Macclesfield, Nantwich, Northwich and Wirral.<ref>{{cite web |title=Cheshire ancient divisions |work=Vision of Britain website |url=http://www.visionofbritain.org.uk/relationships.jsp?u_id=10193850 |access-date=6 March 2007 |archive-url=https://web.archive.org/web/20070506230322/http://www.visionofbritain.org.uk/relationships.jsp?u_id=10193850 |archive-date=6 May 2007 |url-status=live }}</ref>
+
+===Principality: Merging of Palatine and Earldom===
+[[File:Cestriae (Cheshire) Comitatus (Romanis Legionibus et Colonys olim infignis) vera et abfoluta effigies. Chriftophorus Saxton defcripfit. Francifcus Scatterus fculpfit Anno Dno 1577. RMG L8558-001.jpg|thumb|Map of Cheshire by Christopher Saxton from 1577.]]
+In 1397 the county had lands in the [[march of Wales]] added to its territory, and was promoted to the rank of principality. This was because of the support the men of the county had given to King Richard II, in particular by his standing armed force of about 500 men called the "Cheshire Guard". As a result, the King's title was changed to "King of England and France, Lord of Ireland, and Prince of Chester". No other English county has been honoured in this way, although it lost the distinction on Richard's fall in 1399.<ref>Davies, R. R. 'Richard II and the Principality of Chester' in ''The Reign of Richard II: Essays in Honour of May McKisack'', ed. [[F. R. H. Du Boulay]] and Caroline Baron (1971)</ref>
+
+===Lieutenancy: North split-off===
+====District====
+The [[Redcliffe-Maud Report]] of 1969 suggested that Cheshire be abolished as an administrative county, with its parts subdivided between Merseyside, Stoke-on-Trent and [what was then called] South-East Lancashire & North East Cheshire (SELNEC). A series of compromises between the report and its implementation retained Cheshire as an administrative county.
+
+Through the [[Local Government Act 1972]], which came into effect on 1 April 1974, some areas in the north became part of the metropolitan counties of [[Greater Manchester]] and [[Merseyside]].<ref>{{cite book |last=Jones |first=B. |title=Politics UK |year=2004 |display-authors=etal}}</ref> [[Stockport]] (previously a county borough), [[Altrincham]], [[Hyde, Greater Manchester|Hyde]], [[Dukinfield]] and [[Stalybridge]] in the north-east became part of Greater Manchester. Much of the [[Wirral Peninsula]] in the north-west, including the county boroughs of Birkenhead and Wallasey, joined Merseyside as the [[Metropolitan Borough of Wirral]]. At the same time the [[Tintwistle Rural District]] was transferred to [[Derbyshire]]. The area of south Lancashire not included within either the Merseyside or Greater Manchester counties, including [[Widnes]] and the county borough of [[Warrington]], was added to the new non-metropolitan county of Cheshire.<ref name="fipqxl">Local Government Act 1972</ref>
+
+====District and Unitary====
+[[Halton (borough)|Halton]] and [[Warrington]] became unitary authorities independent of Cheshire County Council on 1 April 1998, but remain part of Cheshire for ceremonial purposes and also for fire and policing.<ref name="Ref-1">{{cite web |title=The Cheshire (Boroughs of Halton and Warrington) (Structural Change) Order 1996 |work=Office of Public Sector Information |url=http://www.legislation.gov.uk/uksi/1996/1863/contents/made |access-date=6 March 2007 |archive-url=https://web.archive.org/web/20101219141424/http://www.legislation.gov.uk/uksi/1996/1863/contents/made |archive-date=19 December 2010 |url-status=live }}</ref> Halton is part of [[Liverpool City Region]] [[combined authority]], which also includes the five [[metropolitan borough]]s of [[Merseyside]].
+
+A referendum for a further local government reform connected with an elected [[regional assemblies in England|regional assembly]] was planned for 2004, but was abandoned following the decisive 'no' vote in [[2004 North East England devolution referendum|a similar referendum in North East England]].
+
+====Unitary====
+As part of the [[2009 structural changes to local government in England|local government restructuring]] in April 2009, [[Cheshire County Council]] and the Cheshire districts were abolished and replaced by two new unitary authorities, [[Cheshire East]] and [[Cheshire West and Chester]]. The existing unitary authorities of [[Halton (borough)|Halton]] and [[Warrington]] were not affected by the change.
+
+== Governance ==
+{{see also|List of Parliamentary constituencies in Cheshire}}
+
+===Current===
+<imagemap>
+File:Cheshire unitary labell.png|220px|thumb|The ceremonial county showing the four unitary authorities. Click on the map for more information
+poly 132 343 74 237 19 152 25 129 215 134 231 120 255 121 298 172 293 195 263 221 221 222 179 257 152 293 175 350 [[Cheshire West and Chester]]
+poly 168 293 241 241 285 239 325 225 382 264 383 272 316 308 312 348 225 368 [[Cheshire East]]
+poly 333 175 269 130 267 103 300 82 357 102 480 90 491 189 410 239 [[Cheshire East]]
+poly 313 228 334 183 419 219 354 293 [[Cheshire East]]
+poly 131 105 166 58 182 73 182 94 201 99 207 91 218 105 210 129 183 127 161 121 131 107 [[Borough of Halton|Halton]]
+poly 188 75 192 30 266 9 296 73 267 82 251 107 234 112 [[Borough of Warrington|Warrington]]
+desc none
+</imagemap>
+
+{| class="wikitable sortable"
+|-
+! Unit
+! Admin-HQ
+! Population<br />({{English statistics year}})
+! Area (km<sup>2</sup>)
+! Density (km<sup>2</sup>)
+! Head
+! colspan="2" | [[Political make-up of local councils in the United Kingdom#Unitary authorities|Party]]
+! Combined authority
+|-
+| [[Cheshire East]]
+| [[Sandbach]]
+| {{English district population|GSS=E06000049}}
+| {{English district area|GSS=E06000049}}
+| {{English district density|GSS=E06000049}}
+|Sam Corcoran
+| style="color:inherit;background:{{party color|No overall control}}" |
+|<!--{{English district control|GSS=E06000049}}-->
+| Cheshire and Warringon
+|-
+| [[Cheshire West and Chester]]
+| [[Winsford]], [[Ellesmere Port]]
+| {{English district population|GSS=E06000050}}
+| {{English district area|GSS=E06000050}}
+| {{English district density|GSS=E06000050}}
+|Louise Gittins
+| style="color:inherit;background:{{party color|Labour Party (UK)}}" |
+|{{English district control|GSS=E06000050}}
+| Cheshire and Warringon
+|-
+| [[Borough of Halton|Halton]]
+| [[Widnes]]
+| {{English district population|GSS=E06000006}}
+| {{English district area|GSS=E06000006}}
+| {{English district density|GSS=E06000006}}
+| Mike Wharton
+| style="color:inherit;background:{{party color|Labour Party (UK)}}" |
+| {{English district control|GSS=E06000006}}
+| Liverpool City Region
+|-
+| [[Borough of Warrington|Warrington]]
+| [[Warrington]]
+| {{English district population|GSS=E06000007}}
+| {{English district area|GSS=E06000007}}
+| {{English district density|GSS=E06000007}}
+| Russ Bowden
+| style="color:inherit;background:{{party color|Labour Party (UK)}}" |
+| {{English district control|GSS=E06000007}}
+| Cheshire and Warringon
+|}
+Cheshire has no county-wide elected local council, but it does have a [[Lord Lieutenant]] under the [[Lieutenancies Act 1997]] and a [[High Sheriff of Cheshire|High Sheriff]] under the [[Sheriffs Act 1887]].
+
+Local government functions apart from the Police and Fire/Rescue services are carried out by four smaller unitary authorities: [[Cheshire East]], [[Cheshire West and Chester]], [[Halton (borough)|Halton]], and [[Borough of Warrington|Warrington]]. All four unitary authority areas have [[Borough status in the United Kingdom|borough status]].
+
+Policing and fire and rescue services are still provided across the county as a whole. The [[Cheshire Fire and Rescue Service|Cheshire Fire Authority]] consist of members of the four councils, while governance of [[Cheshire Constabulary]] is performed by the elected [[Cheshire Police and Crime Commissioner]].
+
+Winsford is a major administrative hub for Cheshire with the Police and Fire & Rescue Headquarters based in the town as well as a majority of Cheshire West and Chester Council. It was also home to the former Vale Royal Borough Council and Cheshire County Council.
+
+Devolution talks for the county were scheduled for Autumn 2024.<ref>{{Cite web |date=2024-08-17 |title=Cheshire: County to start devolution talks 'within weeks' |url=https://www.bbc.co.uk/news/articles/c703z3l6j0zo |access-date=2024-08-17 |website=BBC News |language=en-GB}}</ref> [[Halton Borough Council]] has been a member of the [[Liverpool City Region Combined Authority]] since that authority was established in 2014.<ref>{{Cite web |title=Liverpool City Region Combined Authority |url=https://www.liverpoolcityregion-ca.gov.uk/ |access-date=2026-03-06 |website=www.liverpoolcityregion-ca.gov.uk}}</ref> The [[Cheshire and Warrington Combined Authority]], which includes [[Cheshire East Council]], [[Cheshire West and Chester Council]], and [[Warrington Borough Council]], was established in February 2026 and will hold its first elections in May 2027.<ref>{{Cite web |title=24/02/2026 - Major step forward as powers move from Westminster to Cheshire and Warrington |url=https://www.cheshireeast.gov.uk/council_and_democracy/council_information/media_hub/media_releases/major-step-forward-as-powers-move-from-westminster-to-cheshire-and-warrington.aspx |access-date=2026-03-06 |website=www.cheshireeast.gov.uk |language=en-GB}}</ref>
+
+===Transition into a lieutenancy===
+From 1 April 1974 the area under the control of the county council was divided into eight local government districts; [[Chester (non-metropolitan district)|Chester]], [[Congleton (borough)|Congleton]], [[Crewe and Nantwich]], [[Ellesmere Port and Neston]], [[Halton (borough)|Halton]], [[Macclesfield (borough)|Macclesfield]], [[Vale Royal]] and [[Warrington]].<ref>[http://www.visionofbritain.org.uk/relationships.jsp?u_id=10032957 Vision of Britain] {{webarchive|url=https://web.archive.org/web/20070506230350/http://www.visionofbritain.org.uk/relationships.jsp?u_id=10032957|date=6 May 2007}} – Divisions of Cheshire</ref><ref>[http://www.cheshire.gov.uk/Council/districtcouncils.htm Cheshire County Council] {{webarchive|url=https://web.archive.org/web/20061005172200/http://www.cheshire.gov.uk/Council/districtcouncils.htm|date=5 October 2006}} – Map of Cheshire districts</ref> [[Halton (borough)|Halton]] (which includes the towns of [[Runcorn]] and [[Widnes]]) and [[Warrington]] became [[unitary authority|unitary authorities]] in 1998.<ref name="Ref-1" /><ref>{{cite web|title=The Lord Lieutenant of Cheshire|url=http://www.cheshire.gov.uk/aboutcheshire/lord.htm|archive-url=https://web.archive.org/web/20070203042519/http://www.cheshire.gov.uk/aboutcheshire/lord.htm <!-- Bot retrieved archive -->|archive-date=3 February 2007|access-date=6 March 2007|work=Cheshire County Council}}</ref> The remaining districts and the county were abolished as part of local government restructuring on 1 April 2009.<ref>{{cite web|title=Cheshire (Structural Changes) Order 2008|url=http://www.legislation.gov.uk/uksi/2008/634/contents/made|url-status=live|archive-url=https://web.archive.org/web/20090517000027/http://www.opsi.gov.uk/si/si2008/uksi_20080634_en_2|archive-date=17 May 2009|access-date=25 September 2010|publisher=Opsi.gov.uk}}</ref> The Halton and Warrington boroughs were not affected by the 2009 restructuring.
+
+On 25 July 2007, the Secretary of State [[Hazel Blears]] announced she was 'minded' to split Cheshire into two new unitary authorities, [[Cheshire West and Chester]], and [[Cheshire East]]. She confirmed she had not changed her mind on 19 December 2007 and therefore the proposal to split two-tier Cheshire into two would proceed. Cheshire County Council leader Paul Findlow, who attempted High Court legal action against the proposal, claimed that splitting Cheshire would only disrupt excellent services while increasing living costs for all. On 31 January 2008 ''The Standard'', Cheshire and district's newspaper, announced that the legal action had been dropped. Members against the proposal were advised that they may be unable to persuade the court that the decision of Hazel Blears was "manifestly absurd".
+
+The Cheshire West and Chester unitary authority covers the area formerly occupied by the City of Chester and the boroughs of Ellesmere Port and Neston and Vale Royal; Cheshire East now covers the area formerly occupied by the boroughs of Congleton, Crewe and Nantwich, and Macclesfield. The changes were implemented on 1 April 2009.<ref>{{cite news|date=25 July 2007|title=BBC News, 25 July 2007 – County split into two authorities|work=BBC News|url=https://news.bbc.co.uk/2/hi/uk_news/england/staffordshire/6916055.stm|url-status=live|access-date=25 September 2010|archive-url=https://web.archive.org/web/20090107084113/http://news.bbc.co.uk/1/hi/england/staffordshire/6916055.stm|archive-date=7 January 2009}}</ref><ref>{{cite web|title=The Cheshire (Structural Changes) Order 2008|url=http://www.opsi.gov.uk/si/si2008/uksi_20080634_en_1|url-status=dead|archive-url=https://web.archive.org/web/20081223124157/http://www.opsi.gov.uk/si/si2008/uksi_20080634_en_1|archive-date=23 December 2008|access-date=25 February 2009|work=Office of Public Sector Information}}</ref>
+
+[[Congleton|Congleton Borough Council]] pursued an appeal against the judicial review it lost in October 2007. The appeal was dismissed on 4 March 2008.<ref>{{cite web|title=Unitary legal fight over in 60 seconds|url=http://www.localgov.co.uk/index.cfm?method=news.detail&ID=64451|url-status=dead|archive-url=https://web.archive.org/web/20110722194509/http://www.localgov.co.uk/index.cfm?method=news.detail&ID=64451|archive-date=22 July 2011|access-date=25 February 2009|work=LocalGov.co.uk}}</ref>
+
+==Geography==
+===Physical===
+{{Main|Geology of Cheshire}}
+A plain of glacial [[till]] and other [[Fluvioglacial landform|glacio-fluvial sediments]] extends across much of Cheshire, separating the hills of [[North Wales]] and the [[Pennines]]. Known as the [[Cheshire Plain]], it was formed following the retreat of a [[Quaternary glaciation|Quaternary]] [[ice sheet]] which left the area dotted with [[kettle hole]]s, those which hold water being referred to as [[mere (lake)|meres]]. The bedrock of this region is almost entirely [[Triassic]] [[sandstone]], outcrops of which have long been quarried, notably at [[Runcorn]], providing the distinctive red stone for [[Liverpool Cathedral]] and [[Chester Cathedral]].
+
+The eastern half of the county is Upper Triassic [[Mercia Mudstone Group|Mercia Mudstone]] laid down with large [[table salt|salt]] deposits which were mined for hundreds of years around [[Winsford]]. Separating this area from Lower Triassic Sherwood Sandstone to the west is a prominent sandstone ridge known as the [[Mid Cheshire Ridge]]. A {{convert|55|km|mi|0|adj=on}} footpath,<ref>[http://www.cheshire.gov.uk/countryside/Walking/] {{webarchive|url=https://web.archive.org/web/20100502190858/http://www.cheshire.gov.uk/countryside/Walking/|date=2 May 2010}}</ref> the [[Sandstone Trail]], follows this ridge from [[Frodsham]] to [[Whitchurch, Shropshire|Whitchurch]] passing [[Delamere Forest]], [[Beeston Castle]] and earlier [[Iron Age]] forts.<ref>{{cite web |url=http://www.sandstonetrail.co.uk/ |title=Walking Cheshire's Sandstone Trail |url-status=dead |archive-url=https://web.archive.org/web/20110722134452/http://www.sandstonetrail.co.uk/ |archive-date=22 July 2011  }}</ref>
+
+The western fringes of the [[Peak District]] - the southernmost extent of the Pennine range - form the eastern part of the county. The highest point (county top) in the historic county of Cheshire was [[Black Hill (Peak District)|Black Hill]] ({{convert|582|m|abbr=on}}) near [[Crowden, Derbyshire|Crowden]] in the Cheshire Panhandle, a long eastern projection of the county which formerly stretched along the northern side of [[Longdendale]] and on the border with the [[West Riding of Yorkshire]].<ref>Bradt Guides, [https://www.bradtguides.com/destinations/british-isles/cheshire/stockport-and-cheshire-panhandle/ Stockport & the Cheshire Panhandle], accessed 8 January 2022</ref><ref>AbeBooks, [https://www.abebooks.com/servlet/BookDetailsPL?bi=22650568687 Framed 19th Century Lithograph - Map of Cheshire], showing the Panhandle to the north east of the county, accessed 8 January 2022</ref> Black Hill is now the highest point in the ceremonial county of [[West Yorkshire]].
+
+Within the current ceremonial county and the unitary authority of [[Cheshire East]] the highest point is [[Shining Tor]] on the Derbyshire/Cheshire border between [[Macclesfield]] and [[Buxton]], at {{convert|559|m}} above sea level. After Shining Tor, the next highest point in Cheshire is [[Shutlingsloe]], at {{convert|506|m}} above sea level. Shutlingsloe lies just to the south of [[Macclesfield Forest]] and is sometimes humorously referred to as the "[[Matterhorn]] of Cheshire" thanks to its distinctive steep profile.
+
+{{wide image|Beeston walk.JPG|1000px|align-cap=center|The [[Cheshire Plain]] from the [[Mid-Cheshire Ridge]].}}
+
+===Human===
+====Green belt====
+{{main|North West Green Belt|Stoke-on-Trent Green Belt}}
+Cheshire contains portions of two [[Green belt (United Kingdom)|green belt]] areas surrounding the large conurbations of Merseyside and Greater Manchester (North Cheshire Green Belt, part of the North West Green Belt) and Stoke-on-Trent (South Cheshire Green Belt, part of the Stoke-on-Trent Green Belt), these were first drawn up from the 1950s. Contained primarily within Cheshire East<ref>{{cite web|title=Cheshire East Council Green Belt Assessment Update 2015 – Final Consolidated Report|url=http://cheshireeast-consult.limehouse.co.uk/file/3478926|publisher=Cheshire East Council|access-date=1 January 2018|archive-date=24 February 2023|archive-url=https://web.archive.org/web/20230224123120/https://cheshireeast-consult.limehouse.co.uk/file/3478926|url-status=dead}}</ref> and Chester West & Chester,<ref>{{cite web|title=Local Plan – Green Belt Study Part One|url=http://consult.cheshirewestandchester.gov.uk/file/2790437|publisher=Cheshire West and Chester Council|access-date=1 January 2018|archive-date=27 October 2020|archive-url=https://web.archive.org/web/20201027175227/http://consult.cheshirewestandchester.gov.uk/file/2790437|url-status=dead}}</ref> with small portions along the borders of the Halton<ref>{{cite web|title=Widnes and Hale Green Belt Study|url=https://www3.halton.gov.uk/Pages/planning/policyguidance/pdf/siteassessmentsWidHale.pdf|website=www3.halton.gov.uk|publisher=Halton Council|access-date=15 February 2018|archive-url=https://web.archive.org/web/20180215143854/https://www3.halton.gov.uk/Pages/planning/policyguidance/pdf/siteassessmentsWidHale.pdf|archive-date=15 February 2018|url-status=dead}}</ref> and Warrington<ref>{{cite web|title=Warrington Borough Council Green Belt Assessment Final Report Final – 21 October 2016|url=https://www.warrington.gov.uk/download/downloads/id/11804/green_belt_assessment_final_report_oct_2016pdf.pdf|website=www.warrington.gov.uk|publisher=Warrington Council|access-date=15 February 2018|archive-url=https://web.archive.org/web/20180216025109/https://www.warrington.gov.uk/download/downloads/id/11804/green_belt_assessment_final_report_oct_2016pdf.pdf|archive-date=16 February 2018|url-status=dead}}</ref> districts, towns and cities such as Chester, Macclesfield, Alsager, Congleton, Northwich, Ellesmere Port, Knutsford, Warrington, Poynton, Disley, Neston, Wilmslow, Runcorn, and Widnes are either surrounded wholly, partially enveloped by, or on the fringes of the belts. The North Cheshire Green Belt is contiguous with the [[Peak District|Peak District Park]] boundary inside Cheshire.
+
+====Borders====
+The [[Ceremonial counties of England|ceremonial county]] borders [[Merseyside]], [[Greater Manchester]], [[Derbyshire]], [[Staffordshire]] and [[Shropshire]] in England along with [[Flintshire]] and [[Wrexham County Borough|Wrexham]] in Wales, arranged by compass directions as shown in the table below. Cheshire also forms part of the [[North West England]] region.<ref>{{cite web|title=Local Authorities |work=Government Offices of the North West |url=http://www.gonw.gov.uk/gonw/OurRegion/LocalAuthorities/ |access-date=6 March 2007 |url-status=dead |archive-url=https://web.archive.org/web/20070926222552/http://www.gonw.gov.uk/gonw/OurRegion/LocalAuthorities/ |archive-date=26 September 2007 }}</ref>
+
+{{Adjacent communities
+| Centre    = Cheshire
+| Northeast = [[Greater Manchester]]
+| East      = [[Derbyshire]]
+| Southeast = [[Staffordshire]]
+| South     = [[Shropshire]]
+| Southwest = [[Wrexham County Borough|Wrexham]]
+| West      = [[Flintshire]]
+| Northwest = [[Merseyside]]
+| North     = Merseyside/Greater Manchester
+}}
+
+=== Flora and fauna ===
+{{Expand section|date=July 2022}}
+In July 2022, [[Eurasian beaver]]s bred in Cheshire for the first time in 400 years, following a reintroduction scheme.<ref>{{Cite news |date=12 July 2022 |title=First beaver born in Cheshire for more than 400 years |language=en-GB |work=BBC News |url=https://www.bbc.com/news/uk-england-merseyside-62134998 |access-date=2022-07-13}}</ref>
+
+==Demography==
+===Population===
+{{see also|List of Cheshire settlements by population}}
+[[File:Bridge Street and the Rows at Chester - geograph.org.uk - 4396746.jpg|thumb|[[Chester]]]]
+[[File:Crewe (33916958155).jpg|thumb|[[Crewe]]]]
+
+Based on the Census of 2001, the overall population of Cheshire East and Cheshire West and Chester is 673,781, of which 51.3% of the population were male and 48.7% were female. Of those aged between 0–14 years, 51.5% were male and 48.4% were female; and of those aged over 75 years, 62.9% were female and 37.1% were male.<ref name="Census2001" /> This increased to 699,735 at the 2011 Census.<ref>{{cite web |url=http://www.cheshireeast.gov.uk/council_and_democracy/council_information/research_and_consultation/census/census.aspx |title=2011 Census: Helping tomorrow take shape |quote=A population estimate for Cheshire East of 370,127 |access-date=9 December 2018 |archive-url=https://web.archive.org/web/20170825121307/http://www.cheshireeast.gov.uk/council_and_democracy/council_information/research_and_consultation/census/census.aspx |archive-date=25 August 2017 |url-status=dead}}</ref><ref>{{cite web |url=http://inside.cheshirewestandchester.gov.uk/GetFile?fileUrl=/keystatistics/2011censuschangereport.pdf&extension=pdf |title=2011 Census Cheshire West |quote=329,608 residents in Cheshire West and Chester |access-date=8 December 2019 |archive-url=https://web.archive.org/web/20170414164311/http://inside.cheshirewestandchester.gov.uk/GetFile?fileUrl=%2Fkeystatistics%2F2011censuschangereport.pdf&extension=pdf |archive-date=14 April 2017 |url-status=dead }}</ref> The population for 2021 is forecast to be 708,000.<ref>{{cite web |title=CCC Long Term Population Forecasts |work=Cheshire County Council |url=http://www.cheshire.gov.uk/NR/rdonlyres/F648E8B3-E5AF-4832-9AB5-619CACFA87B1/0/PopF1.pdf |access-date=6 March 2007 |archive-url=https://web.archive.org/web/20070605061908/http://www.cheshire.gov.uk/NR/rdonlyres/F648E8B3-E5AF-4832-9AB5-619CACFA87B1/0/PopF1.pdf <!-- Bot retrieved archive --> |archive-date=5 June 2007 }}</ref>
+
+In 2001, the population density of Cheshire East and Cheshire West and Chester was 32 people per km<sup>2</sup>, lower than the North West average of 42 people/km<sup>2</sup> and the England and Wales average of 38 people/km<sup>2</sup>. [[Ellesmere Port]] and [[Neston]] had a greater [[urban density]] than the rest of the county with 92 people/km<sup>2</sup>.<ref name="Census2001">{{cite web |title=Census 2001 – Population |work=Cheshire Census Consortium |url=http://www.cheshire.gov.uk/NR/rdonlyres/2BA86039-3905-4E03-B2CC-1A56FF239192/0/Population.pdf |access-date=6 March 2007 |archive-url=https://web.archive.org/web/20070605061912/http://www.cheshire.gov.uk/NR/rdonlyres/2BA86039-3905-4E03-B2CC-1A56FF239192/0/Population.pdf <!-- Bot retrieved archive --> |archive-date=5 June 2007 }}</ref>
+
+{| class="wikitable" style="text-align:center"
+|-
+|+Population totals for Cheshire East, Cheshire West and Chester{{efn|Pre-1974 statistics were gathered from local government areas that now compose Cheshire<br />'''Source:''' [[Great Britain Historical GIS]].<ref>{{cite web|url=http://www.visionofbritain.org.uk/data_cube_page.jsp?data_theme=T_POP&data_cube=N_TOT_POP&u_id=10032957&c_id=10001043&add=N|title=Cheshire Modern (post 1974) County: Total Population|author=[[A Vision of Britain through Time]]|access-date=10 January 2010|archive-url=https://web.archive.org/web/20121103122934/http://www.visionofbritain.org.uk/data_cube_page.jsp?data_theme=T_POP&data_cube=N_TOT_POP&u_id=10032957&c_id=10001043&add=N|archive-date=3 November 2012|url-status=live}}</ref>}}
+|-
+! Year
+! Population
+! Chart
+|-
+! 1801
+| 124,570
+| Rowspan="23"|{{Chart|definition=Population of Cheshire by year.chart|data=Population of Cheshire by year.tab|Width=200}}
+|-
+! 1811
+| 141,672
+|-
+! 1821
+| 167,730
+|-
+! 1831
+| 191,965
+|-
+! 1841
+| 206,063
+|-
+! 1851
+| 224,739
+|-
+! 1861
+| 250,931
+|-
+! 1871
+| 277,123
+|-
+! 1881
+| 303,315
+|-
+! 1891
+| 324,494
+|-
+! 1901
+| 343,557
+|-
+! 1911
+| 364,179
+|-
+! 1921
+| 379,157
+|-
+! 1931
+| 395,717
+|-
+! 1941
+| 431,335
+|-
+! 1951
+| 471,438
+|-
+! 1961
+| 533,642
+|-
+! 1971
+| 605,918
+|-
+! 1981
+| 632,630
+|-
+! 1991
+| 656,050
+|-
+! 2001
+| 673,777
+|-
+! 2011
+| 699,735
+|-
+! 2021
+| 755,835
+|}
+<!-- Self-maintaining population table -->
+{{Cheshire population table}}
+
+===Ethnicity===
+In 2001, ethnic white groups accounted for 98% (662,794) of the population, and 10,994 (2%) in ethnic groups other than white.
+
+Of the 2% in non-white ethnic groups:
+
+* 3,717 (34%) belonged to mixed ethnic groups
+* 3,336 (30%) were Asian or Asian British
+* 1,076 (10%) were black or black British
+* 1,826 (17%) were of Chinese ethnic groups
+* 1,039 (9%) were of other ethnic groups.<ref name="ahhcpy">{{cite web |title=Key Statistics Interim Profile |work=Cheshire County Council |url=http://www.cheshire.gov.uk/NR/rdonlyres/71754661-E7D9-4ECD-B71C-6163FD3574D1/0/PopC4.pdf |access-date=6 March 2007 |archive-url=https://web.archive.org/web/20070605061922/http://www.cheshire.gov.uk/NR/rdonlyres/71754661-E7D9-4ECD-B71C-6163FD3574D1/0/PopC4.pdf <!-- Bot retrieved archive --> |archive-date=5 June 2007 }}</ref>
+
+==Religion==
+{{Main|Religion in Cheshire}}
+
+[[File:Wilmslow Church.jpg|thumb|right|[[St Bartholomew's Church, Wilmslow|St Bartholomew's Church]] in [[Wilmslow]]]]
+
+In the 2001 Census, 81% of the population (542,413) identified themselves as Christian; 124,677 (19%) did not identify with any religion or did not answer the question; 5,665 (1%) identified themselves as belonging to other major world religions; and 1,033 belonged to other religions.<ref name="ahhcpy" />
+
+The boundary of the [[Church of England]] [[Diocese of Chester]] follows most closely the pre-1974 county boundary of Cheshire, so it includes all of [[Metropolitan Borough of Wirral|Wirral]], [[Stockport]], and the Cheshire panhandle that included [[Tintwistle Rural District]] council area.<ref>[http://www.chester.anglican.org/diocese/ Chester Diocese (Church of England).] {{webarchive|url=https://web.archive.org/web/20081231181850/http://www.chester.anglican.org/diocese/ |date=31 December 2008 }} ''Official website''. Accessed on 30 September 2007.</ref> In terms of Roman Catholic church administration, most of Cheshire falls into the Roman Catholic [[Diocese of Shrewsbury]].<ref>[http://www.dioceseofshrewsbury.org/index.asp Diocese of Shrewsbury (Roman Catholic).] {{webarchive|url=https://web.archive.org/web/20100729184948/http://www.dioceseofshrewsbury.org/index.asp |date=29 July 2010 }} ''Official website''. Accessed on 30 September 2007.</ref>
+
+==Economy==
+{{Main|Economy of Cheshire}}
+
+{{More citations needed section|date=December 2022}}
+
+{| class="wikitable sortable" style="text-align:right;"
+|+ GVA and GDP by local authority district in 2021<ref name="ONS GVA and GDP">{{cite web |url=https://www.ons.gov.uk/economy/grossdomesticproductgdp/datasets/regionalgrossdomesticproductlocalauthorities |title=Regional gross domestic product: local authorities |last=Fenton |first=Trevor |date=25 April 2023 |website=Office for National Statistics |access-date=13 December 2023}}</ref>
+|- style="text-align:left;"
+! District
+! GVA (£ billions)
+! GVA per capita (£)
+! GDP (£ billions)
+! GDP per capita (£)
+|-
+| style="text-align:left;" | Cheshire East
+| £14.6
+| £36,559
+| £16.1
+| £40,142
+|-
+| style="text-align:left;" | Cheshire West and Chester
+| £11.7
+| £32,846
+| £13.1
+| £36,518
+|-
+| style="text-align:left;" | Warrington
+| £8.5
+| £40,085
+| £9.3
+| £44,205
+|-
+! style="text-align:left;" | Cheshire*
+! style="text-align:right;" | £34.9
+! style="text-align:right;" | £35,957
+! style="text-align:right;" | £38.5
+! style="text-align:right;" | £39,689
+|-
+! style="text-align:left;" colspan="5" | *Excluding Halton which forms part of the Liverpool City Region for economic purposes
+|}
+
+Cheshire has a diverse economy with significant sectors including agriculture, automotive, bio-technology, chemical, financial services, food and drink, ICT, and tourism. The county is famous for the production of [[Cheshire cheese]], [[Salt in Cheshire|salt]] and silk. The county has seen a number of [[Cheshire Inventions, Innovations and Firsts|inventions and firsts]] in its history.
+
+A mainly rural county, Cheshire has a high concentration of villages. Agriculture is generally based on the dairy trade, and cattle are the predominant livestock. Land use given to agriculture has fluctuated somewhat, and in 2005 totalled 1558&nbsp;km<sup>2</sup> over 4,609 holdings.<ref>{{cite web |title=Agricultural Holdings – Land and Employment – Cheshire – 2002 to 2005 |work=Cheshire County Council |url=http://www.cheshire.gov.uk/NR/rdonlyres/8AC07978-47FE-4BA6-8063-39F5AFB0978D/0/EcE3.pdf |access-date=3 June 2007 |archive-url=https://web.archive.org/web/20070605061926/http://www.cheshire.gov.uk/NR/rdonlyres/8AC07978-47FE-4BA6-8063-39F5AFB0978D/0/EcE3.pdf <!-- Bot retrieved archive --> |archive-date=5 June 2007 }}</ref> Based on holdings by EC farm type in 2005, 8.51&nbsp;km<sup>2</sup> was allocated to dairy farming, with another 11.78&nbsp;km<sup>2</sup> allocated to cattle and sheep.
+[[File:Man Sanding the street in Knutsfrod for May Day 1920.jpg|right|thumb|upright|A resident of [[Knutsford]] sanding the street in celebration of [[May Day]] in 1920]]
+
+The chemical industry in Cheshire was founded in [[Roman Britain|Roman]] times, with the [[Salt in Cheshire|mining of salt]] in Winsford, Middlewich and Northwich. Salt is still mined in the area by [[British Salt]]. The salt mining has led to a continued chemical industry around Northwich, with [[Brunner Mond]] based in the town. Other chemical companies, including [[Ineos]] (formerly [[Imperial Chemical Industries|ICI]]), have plants at [[Runcorn]]. The Essar Refinery (formerly [[Royal Dutch Shell|Shell]] [[Stanlow Refinery]]) is at Ellesmere Port. The oil refinery has operated since 1924 and has a capacity of 12&nbsp;million tonnes per year.<ref>{{Cite web|title=Stanlow|publisher=Essar Oil (UK) Limited|url=http://www.essaroil.co.uk/our-work/stanlow/|access-date=18 February 2022|archive-date=18 February 2022|archive-url=https://web.archive.org/web/20220218010457/http://www.essaroil.co.uk/our-work/stanlow/|url-status=dead}}</ref>
+
+Crewe was once the centre of the [[Rail transport in Great Britain|British railway industry]], and remains a major railway junction. The [[Crewe Works|Crewe railway works]], built in 1840, employed 20,000 people at its peak, although the workforce is now less than 1,000. Crewe is also the home of [[Bentley]] cars. Also within Cheshire are manufacturing plants for [[Jaguar (car)|Jaguar]] and [[Vauxhall Motors]] in Ellesmere Port.
+
+The county also has an aircraft industry. On the Cheshire border with [[Flintshire]] is the [[Broughton, Flintshire|Broughton]] aircraft factory, more recently associated with [[Airbus]]. For nearly 80 years until it closed in 2011,<ref>{{cite news |url=http://menmedia.co.uk/manchestereveningnews/news/s/1393066_bae_woodford_site_closing_a_year_early |title=BAE Woodford site closing a year early |date=15 December 2010 |publisher=M.E.N. Media |access-date=16 December 2010|work=Manchester Evening News |archive-url=https://web.archive.org/web/20121112163338/http://menmedia.co.uk/manchestereveningnews/news/s/1393066_bae_woodford_site_closing_a_year_early | archive-date=12 November 2012}}</ref> aircraft were designed and built at [[Woodford Aerodrome]], including [[Avro Lancaster]] and [[Avro Vulcan]] bombers and the [[Hawker-Siddeley Nimrod]].
+
+Tourism in Cheshire from within the UK and overseas continues to perform strongly. Over 8&nbsp;million nights of accommodation (both UK and overseas) and over 2.8&nbsp;million visits to Cheshire were recorded during 2003.<ref name="ygcyzn">{{cite web |title=Cheshire Economy (page 64) |work=Cheshire County Council |url=http://www.cheshire.gov.uk/NR/rdonlyres/5F4B2042-1BCB-4F74-B53B-6EE65E28372E/0/CheshireEconomy.pdf |access-date=6 March 2007 |archive-url=https://web.archive.org/web/20070616135020/http://www.cheshire.gov.uk/NR/rdonlyres/5F4B2042-1BCB-4F74-B53B-6EE65E28372E/0/CheshireEconomy.pdf <!-- Bot retrieved archive --> |archive-date=16 June 2007 }}</ref>
+
+At the start of 2003, there were 22,020 VAT-registered enterprises in Cheshire, an increase of 7% since 1998, many in the business services (31.9%) and wholesale/retail (21.7%) sectors. Between 2002 and 2003 the number of businesses grew in four sectors: public administration and other services (6.0%), hotels and restaurants (5.1%), construction (1.7%), and business services (1.0%).<ref name="ygcyzn" /> The county saw the largest proportional reduction between 2001 and 2002 in employment in the energy and water sector and there was also a significant reduction in the manufacturing sector. The largest growth during this period was in the other services and distribution, hotels and retail sectors.<ref name="ygcyzn" />
+
+Cheshire is considered to be an affluent county.<ref>{{cite news|url=https://www.telegraph.co.uk/finance/economics/10054043/Top-ten-most-affluent-villages-in-UK.html|title=Top Ten Most Affluent Villages in the UK|access-date=24 February 2017|newspaper=The Telegraph|date=17 February 2017|archive-url=https://web.archive.org/web/20170224201937/http://www.telegraph.co.uk/finance/economics/10054043/Top-ten-most-affluent-villages-in-UK.html|archive-date=24 February 2017|url-status=live}}</ref><ref>{{cite news|url=http://www.chesterchronicle.co.uk/news/chester-cheshire-news/chester-named-top-place-live-10103325|title=Chester Named Top Place to Live in UK|access-date=24 February 2017|newspaper=The Chester Chronicle|date=21 September 2015|archive-url=https://web.archive.org/web/20170224211512/http://www.chesterchronicle.co.uk/news/chester-cheshire-news/chester-named-top-place-live-10103325|archive-date=24 February 2017|url-status=live}}</ref> However, towns such as Crewe and Winsford have significant deprivation.<ref>{{cite web|title=Area Profile|url=https://moderngov.cheshireeast.gov.uk/documents/s41093/SOGP%20-%20Area%20Profile%20-%20Appendix%201%20TB.pdf|website=Cheshire East Council|access-date=11 September 2017|archive-url=https://web.archive.org/web/20170912013402/https://moderngov.cheshireeast.gov.uk/documents/s41093/SOGP%20-%20Area%20Profile%20-%20Appendix%201%20TB.pdf|archive-date=12 September 2017|url-status=dead}}</ref> The county's proximity to the cities of [[Manchester]] and [[Liverpool]] means [[counter urbanisation]] is common. Cheshire West has a fairly large proportion of residents who work in Liverpool and Manchester, while the town of Northwich and area of Cheshire East falls more within Manchester's sphere of influence.
+
+==Education==
+{{see also|List of schools in Cheshire East|List of schools in Cheshire West and Chester|List of schools in Halton|List of schools in Warrington}}
+[[File:Chester University Wheeler (52877897464).jpg|thumb|[[University of Chester]]]]
+All four [[Local Education Authority|local education authorities]] in Cheshire operate only comprehensive state school systems. When [[Altrincham]], [[Sale, Greater Manchester|Sale]] and [[Bebington]] were moved from Cheshire to [[Metropolitan Borough of Trafford|Trafford]] and [[Merseyside]] in 1974, they took some former Cheshire selective schools. There are two universities based in the county, the [[University of Chester]] and the Chester campus of [[The University of Law]]. The [[Crewe]] campus of [[Manchester Metropolitan University]] was scheduled to close in 2019.<ref>{{cite web|url=https://www.bbc.com/news/uk-england-38110375|title=Crewe's university campus set to shut|last=McCann|first=Phil|date=25 November 2016|publisher=BBC |access-date=17 November 2020}}</ref>
+
+==Culture==
+===Arts and entertainment===
+[[File:Flag of Cheshire.svg|thumb|The flag of the historic county of Cheshire]][[File:Detail of Lewis Carroll memorial window - geograph.org.uk - 284592.jpg|thumb|right|[[Lewis Carroll]] memorial window (featuring the [[Hatter (Alice's Adventures in Wonderland)|Hatter]] and [[March Hare]])]]
+Cheshire has produced musicians such as [[Joy Division]] members [[Ian Curtis]]<ref>{{cite book |last=Curtis |first=Deborah |title=Touching from a Distance |year=1995 |edition= 2014 |url=https://books.google.com/books?id=LmSwBAAAQBAJ |publisher=[[Faber and Faber|Faber]] |location=London |chapter-url=https://books.google.com/books?id=LmSwBAAAQBAJ&pg=PT22 |chapter=Chapter 1 |isbn=0-57132241-7 }}</ref> and [[Stephen Morris (drummer)|Stephen Morris]],<ref>{{cite web|url=https://www.heraldscotland.com/arts_ents/17636955.stephen-morris-joy-division-depression-summoning-devil/|title=Stephen Morris on Joy Division, depression and summoning the devil|last=Jamieson|first=Teddy|date=18 May 2019|work=The Herald}}</ref> [[One Direction]] member [[Harry Styles]],<ref>{{Cite web|url=https://www.cheshire-live.co.uk/news/chester-cheshire-news/friendly-cheshire-village-harry-styles-21592690|title=The friendly Cheshire village that Harry Styles calls home|last=McIntyre|first=Alex|date=18 September 2021|work=Cheshire Live}}</ref> the members of [[the 1975]],<ref>{{cite web|last1=Bono|first1=Salvatore|title=Speaking With Your New Favorite Band – The 1975|url=http://www.huffingtonpost.com/salvatore-bono/speaking-with-your-new-fa_b_3927658.html|website=Huffington Post|date=16 September 2013|access-date=5 May 2015|archive-url=https://web.archive.org/web/20151006214101/http://www.huffingtonpost.com/salvatore-bono/speaking-with-your-new-fa_b_3927658.html|archive-date=6 October 2015|url-status=live}}</ref> [[Take That]] member [[Gary Barlow]],<ref>{{cite web|url=http://malextra.com/celebrity/Gary+Barlow-29096.html |title=Gary Barlow 'devastated' by Dad's Death |publisher=Malextra.com }}</ref> [[the Cult]] member [[Ian Astbury]],<ref>Larkin, Colin (2011) ''The Encyclopedia of Popular Music'', Bish Bash Books, {{ISBN|978-1846098567}}, p. 461</ref> [[Catfish and the Bottlemen]] member Van McCann,<ref>{{Cite web|url=https://www.nme.com/news/music/catfish-and-the-bottlemen-28-1221499|title=Catfish And The Bottlemen's Van McCann: 'America thinks we're Oasis but with better manners'|website=NME|author-first1=Luke Morgan|author-last1=Britton|date=8 May 2015|access-date=6 June 2020}}</ref> [[Girls Aloud]] member [[Nicola Roberts]],<ref>{{harvnb|''Dreams That Glitter''|2009|p=218}}</ref> [[Stephen Hough]],<ref>{{cite web|title=Classic FM Meets Stephen Hough|url=http://www.classicfm.com/artists/stephen-hough/guides/classic-fm-meets-stephen-hough/|publisher=[[Classic FM (UK)|Classic FM]]|access-date=14 October 2016}}</ref> [[John Mayall]],<ref>[http://www.johnmayall.com/bio.html John Mayall biographical details.] {{webarchive|url=https://web.archive.org/web/20111226200336/http://johnmayall.com/bio.html |date=26 December 2011 }} www.johnmayall.com website. Accessed on 21 February 2008.</ref> [[The Charlatans (English band)|the Charlatans]] member [[Tim Burgess (artist)|Tim Burgess]],<ref>{{cite web|url=http://www.northwichguardian.co.uk/news/951273.north_country_boy_tims_back_in_town/|title=North country boy Tim's back in town|date=7 October 2006 }}</ref> and [[Nigel Stonier]].<ref>{{cite news|title=Music Spotlight: South Cheshire's Dayve Dean and Nick Bayes form unlikely duo|url=http://www.flintshirechronicle.co.uk/entertainment-flintshire/2010/06/09/music-spotlight-south-cheshire-s-dayve-dean-and-nick-bayes-form-unlikely-duo-59067-26613281/|access-date=24 January 2011|newspaper=[[Flintshire Chronicle]]|date=9 June 2010|author=James A Oliver|archive-date=20 July 2011|archive-url=https://web.archive.org/web/20110720013034/http://www.flintshirechronicle.co.uk/entertainment-flintshire/2010/06/09/music-spotlight-south-cheshire-s-dayve-dean-and-nick-bayes-form-unlikely-duo-59067-26613281/|url-status=dead}}</ref>
+
+Actors from Cheshire include [[Russ Abbot]],<ref>{{cite web |url=http://www.surreylife.co.uk/people/celebrity-interviews/comedian-russ-abbot-on-switching-to-the-madhouse-the-workhouse-and-wentworth-1-1640298 |title=Comedian Russ Abbot on switching to the madhouse, the workhouse and Wentworth |date=9 November 2010 |access-date=2 January 2022 |archive-date=29 November 2020 |archive-url=https://web.archive.org/web/20201129111942/https://www.surreylife.co.uk/people/celebrity-interviews/comedian-russ-abbot-on-switching-to-the-madhouse-the-workhouse-and-wentworth-1-1640298 |url-status=dead }}</ref> [[Warren Brown (actor)|Warren Brown]],<ref>{{Cite web|url=https://www.mmaweekly.com/former-muay-thai-champ-warren-brown-walks-the-talk-in-cinemaxs-strike-back|title=Former Muay Thai Champ Warren Brown Walks the Talk in Cinemax's 'Strike Back'|date=2 March 2018|website=MMAWeekly.com|language=en-US|access-date=9 June 2019|archive-date=9 June 2019|archive-url=https://web.archive.org/web/20190609173506/https://www.mmaweekly.com/former-muay-thai-champ-warren-brown-walks-the-talk-in-cinemaxs-strike-back|url-status=live}}</ref> [[Julia Chan]],<ref name="TVG">{{Cite web |title=Julia Taylor Ross; Biography |url=http://www.tvguide.com/celebrities/julia-taylor-ross/bio/375012/ |access-date=22 April 2017 |website=TV Guide}}</ref> [[Ray Coulthard]],<ref>{{Cite web|url=https://www.bbc.co.uk/drama/people/ray_coulthard_person_page.shtml|title=People Index Ray Coulthard|website=www.bbc.co.uk|language=en-gb|access-date=11 November 2019}}</ref> [[Daniel Craig]],<ref>{{cite web|url=https://metro.co.uk/2020/08/26/james-bond-star-daniel-craigs-father-tim-dies-aged-77-13183007/ |title=James Bond Star Daniel Craig's Father Tim Craig Dies Aged 77|work=Metro|first=Kim |last=Novak |date=26 August 2020|access-date=17 January 2021}}</ref> [[Tim Curry]],<ref name=Standard>{{cite news| url=https://www.standard.co.uk/goingout/theatre/tim-currys-back-on-the-grail-trail-7174713.html| title=Tim Curry's back on the Grail trail| work=[[Evening Standard]]| date=25 September 2006| access-date=8 October 2015}}</ref> [[Wendy Hiller]],<ref name="ODNB">{{Cite ODNB|id=89982|title=Hiller, Dame Wendy Margaret (1912–2003)}}</ref> [[Tom Hughes (actor)|Tom Hughes]],<ref>{{cite episode | url = http://www.skysports.com/watch/video/9861469/soccer-am-tom-hughes | title = Soccer AM - Tom Hughes | series = [[Soccer AM]] | first = Tom | last = Hughes | network = [[Sky Sports]] | date = 23 May 2015 | quote="It was 1997. My birthday's 18th April. I was 12." | access-date = 20 July 2017 }}</ref> [[Tim McInnerny]],<ref>{{Cite book|title=The True History of the Black Adder: At Last, the Cunning Plan, in All Its Hideous Hilarity|last=Roberts|first=J F|publisher=Random House UK|year=2014|isbn=9780099564164|pages=23}}</ref> [[Ben Miller]],<ref>{{Cite web |url=https://www.bbc.co.uk/programmes/p038xdzt |title=Ben Miller finds out an amazing fact, Series 10, Coming Home |first=Ben |last=Miller|website=BBC |access-date=16 May 2017 |date=23 November 2015 }}</ref> [[Pete Postlethwaite]],<ref>{{cite news|url=https://www.nytimes.com/2011/01/04/arts/04postlethwaite.html|work=The New York Times|first=Bruce|last=Weber|title=Pete Postlethwaite, British Actor, Dies at 64|date=3 January 2011}}</ref> [[Adam Rickitt]],<ref>[https://www.independent.co.uk/news/people/profiles/adam-rickitt-true-blue-hunk-478088.html The Independent (Adam Rickitt - True Blue Hunk)] {{webarchive|url=https://web.archive.org/web/20121109152219/http://www.independent.co.uk/news/people/profiles/adam-rickitt-true-blue-hunk-478088.html |date=9 November 2012 }}</ref> [[John Steiner]],<ref>{{Cite web|url=https://www.allmovie.com/artist/john-steiner-p67917/filmography|title=John Steiner &#124; Movies and Filmography|website=AllMovie}}</ref> and [[Ann Todd]].<ref name=NorthGuard>{{cite web|url=https://www.northwichguardian.co.uk/news/16218417.a-look-back-at-film-star-ann-todd-from-northwich/|title=A look back at film star Ann Todd from Northwich|author=Carla Flynn|work=Northwich Guardian|date=10 May 2018|access-date=12 April 2019}}</ref> The most famous author from the county is [[Lewis Carroll]], who wrote ''[[Alice's Adventures in Wonderland]]'' and named the [[Cheshire Cat]] character after it.<ref>{{cite web |title=Brimstage |url=http://www.cheshirenow.co.uk/brimstage.html |website=Cheshire Now |access-date=30 August 2020}}</ref> Other notable Cheshire writers include [[Hall Caine]],<ref>{{cite news|last1=Runcorn Urban District Council|title=Council meeting minutes|date=7 September 1931}}</ref> [[Alan Garner]],{{sfn|Philip|1981|p=11}} and [[Elizabeth Gaskell]].<ref>{{cite book |title=Mrs. Gaskell: Novelist and Biographer |url=https://archive.org/details/mrsgaskellnoveli0000poll |url-access=registration |last=Pollard |first=Arthur |year=1965 |publisher=Manchester University Press |isbn=0-674-57750-7 |page=[https://archive.org/details/mrsgaskellnoveli0000poll/page/12 12] }}</ref> Artists from Cheshire include ceramic artist [[Emma Bossons]]<ref name="abitofbritain">{{cite web | title =Emma Bossons  | publisher = abitofbritain.com| url =http://www.abitofbritain.com/bossons.htm| date = | access-date =7 January 2008 }}</ref> and sculptor/photographer [[Andy Goldsworthy]].<ref name="Grove Art Online">Stonard, John Paul (10 December 2000). "Goldsworthy, Andy". [http://www.groveart.com Grove Art Online] {{Webarchive|url=https://web.archive.org/web/20080821130425/http://www.groveart.com./ |date=21 August 2008 }}. Retrieved on 15 May 2007.</ref>
+
+Local news and television programmes are provided by [[BBC North West]] and [[ITV Granada]]. Television signals are received from the [[Winter Hill transmitting station|Winter Hill]] TV transmitter.<ref>{{cite web |url=https://ukfree.tv/transmitters/tv/Winter_Hill |title=Full Freeview on the Winter Hill (Bolton, England) transmitter |date=May 2004 |publisher=UK Free TV |access-date=21 September 2023}}</ref>
+
+Local radio stations in the county include [[Dee 106.3|Chester's Dee Radio]], [[Capital North West and Wales]], [[Smooth Wales]], [[Silk FM|Cheshire's Silk Radio]] and [[Hits Radio Staffordshire & Cheshire]]. It is one of only four counties in the country (along with [[County Durham]], [[Dorset]], and [[Rutland]]) that does not have its own designated [[BBC]] radio station; the south and parts of the east are covered by [[BBC Radio Stoke]], while [[BBC Radio Merseyside]] tends to cover the west, and [[BBC Radio Manchester]] covers the north and parts of the east.<ref>{{cite web |url=http://forums.digitalspy.co.uk/showthread.php?t=311275 |title=BBC Radio Cheshire – Radio |publisher=Forums.digitalspy.co.uk |access-date=14 May 2014 |archive-url=https://web.archive.org/web/20140108184541/http://forums.digitalspy.co.uk/showthread.php?t=311275 |archive-date=8 January 2014 |url-status=dead }}</ref> The BBC directs readers to [[Stoke-on-Trent|Stoke]] and [[Staffordshire]] when Cheshire is selected on their website.<ref>{{cite web |url=https://www.bbc.co.uk/news/england/stoke_and_staffordshire |title=Stoke & Staffordshire |publisher=bbc.co.uk |access-date=14 May 2014 |archive-url=https://web.archive.org/web/20140521172804/http://www.bbc.co.uk/news/england/stoke_and_staffordshire/ |archive-date=21 May 2014 |url-status=live }}</ref> There were plans to launch BBC Radio Cheshire, but those were shelved in 2007 after the BBC license fee settlement was lower than expected.
+
+===Sports===
+Athletes native to Cheshire include sailor [[Ben Ainslie]], cricketer [[Ian Botham]], rock climber [[Shauna Coxsey]], boxer [[Tyson Fury]], oarsman [[Matt Langridge]], mountaineer [[George Mallory]], marathon runner [[Paula Radcliffe]], cyclist [[Sarah Storey]], and hurdler [[Shirley Strong]]. It has also been home to numerous athletes from outside the county. Many [[Premier League]] footballers have relocated there over the years upon joining nearby teams such as [[Manchester United F.C.]], [[Manchester City F.C.]], [[Everton F.C.]], and [[Liverpool F.C.]]. These include [[Dean Ashton]], [[Seth Johnson (footballer)|Seth Johnson]], [[Jesse Lingard]] and [[Michael Owen]]. The "[[Golden Triangle (Cheshire)|Cheshire Golden Triangle]]" is the collective name for a group of adjacent Cheshire villages where the number of footballers, actors, and entrepreneurs moving in over the years led to the average house prices becoming some of the most expensive in the UK.{{cn|date=June 2025}}
+
+Cheshire has one Football League team, [[Crewe Alexandra F.C.|Crewe Alexandra]], which plays in {{English football updater|CreweAle}}. The next highest-placed teams are [[Chester F.C.|Chester]], [[Warrington Town F.C.|Warrington Town]] and [[Macclesfield F.C.|Macclesfield]], who compete in the [[National League North]], the sixth tier of English football. [[Macclesfield Town F.C.|Macclesfield Town]], a former League club, went into liquidation in 2020;<ref>{{cite news |title=Silkmen expelled from National League |url=https://www.bbc.co.uk/sport/football/54341314 |access-date=17 November 2020 |work=BBC Sport |date=29 September 2020}}</ref> a phoenix club, Macclesfield F.C., was formed in 2021,<ref>{{cite web |url=https://www.bbc.co.uk/sport/football/57163012 |title=Macclesfield FC: Reformed club to join North West Counties Premier Division next season |publisher=BBC Sport |date=18 May 2021 |access-date=8 April 2023 |archive-date=18 May 2021 |archive-url=https://web.archive.org/web/20210518164423/https://www.bbc.co.uk/sport/football/57163012 |url-status=live }}</ref> and was promoted to the National League North in 2025.<ref>{{cite news |last1=Conrad |first1=Alex |title=Robbie Savage guides non-league side to within two divisions of promised land |url=https://talksport.com/football/3043343/robbie-savage-macclesfield-promotion-national-league/ |access-date=27 March 2025 |work=TalkSport |date=22 March 2025}}</ref> [[Northwich Victoria F.C.|Northwich Victoria]], another ex-League team and founding member of the Football League Division Two in 1892/1893, now represents Cheshire in the [[Northern Premier League]] along with [[Nantwich Town F.C.|Nantwich Town]]. 
+
+The [[Warrington Wolves]] and [[Widnes Vikings]] are the premier [[rugby league]] teams in Cheshire; the former plays in the [[Super League]], while the latter plays in the [[RFL Championship|Championship]]. There are also numerous junior clubs in the county, including Chester Gladiators. [[Cheshire County Cricket Club]] is one of the clubs that make up the [[minor counties of English and Welsh cricket]]. Cheshire also is represented in the highest level basketball league in the UK, the [[British Basketball League|BBL]], by [[Cheshire Phoenix]] (formerly Cheshire Jets). Europe's largest motorcycle event, the [[Thundersprint]], is held in [[Northwich]] every May.<ref>{{cite web|url=http://www.thundersprint.com/first_timers_guide.html |title=The Thundersprint |access-date=12 May 2011 |url-status=dead |archive-url=https://web.archive.org/web/20111114161144/http://www.thundersprint.com/first_timers_guide.html |archive-date=14 November 2011 }}</ref>
+
+===Other===
+The Royal Cheshire Show, an annual agricultural show, has taken place since the 1800s.<ref>{{Cite web|url=http://www.royalcheshireshow.org/about/|title=About The Royal Cheshire County Show {{!}} The Royal Cheshire County Show|website=The Royal Cheshire County Show 2016|language=en-US|access-date=29 May 2017|archive-url=https://web.archive.org/web/20170616170744/http://www.royalcheshireshow.org/about/|archive-date=16 June 2017|url-status=dead}}</ref>
+
+Cheshire also produced a military hero in [[Norman Cyril Jones]], a World War I [[flying ace]] who won the [[Distinguished Flying Cross (United Kingdom)|Distinguished Flying Cross]].<ref>Shores, et al, p. 217.</ref>
+
+===Unofficial county flower===
+As part of a 2002 marketing campaign, the plant conservation charity [[Plantlife]] chose the [[Cardamine pratensis|cuckooflower]] as the [[county flower]].<ref name="plantlife">{{cite web |url=http://www.plantlife.org.uk/things_to_do/regions/north_west |title=Things to do – Plantlife in your area – North-west England |publisher=Plantlife |access-date=11 July 2012 |url-status=dead |archive-url=https://web.archive.org/web/20130501110914/http://www.plantlife.org.uk/things_to_do/regions/north_west/ |archive-date=1 May 2013  }}</ref> Previously, a sheaf of golden wheat was the county emblem, a reference to the Earl of Chester's arms in use from the 12th century.
+
+===Landmarks===
+{{multiple images
+| total_width       = 350px
+| perrow            = 3
+| header            = Buildings and structures of Cheshire
+| image1            = The Parish Church of St. Mary, Nantwich (1).JPG
+| image2            = Municipal Buildings, Crewe.jpg
+| image3            = The Wizard - geograph.org.uk - 270816.jpg
+| image4            = The Cross and Rows, Chester, Cheshire, England, ca. 1895.jpg
+| image5            = Capesthorne Hall.jpg
+| image6            = LittleMoretonHall.jpg
+| image7            = Beeston Castle Gate.jpg
+| image8            = Eaton Hall c 1880 - Waterhouse's version. Photo by Francis Bedford (died 1894).JPG
+| image9            = Chester Cathedral (South View).JPG
+| alt1              = Nantwich St Mary Church
+| alt2              = Crewe Town Council buildings
+| alt3              = The Wizard Pub
+| alt4              = Chester Rows
+| alt5              = Capesthorne Hall
+| alt6              = Little Moreton Hall
+| alt7              = Beeston Castle
+| alt8              = Eaton Hall
+| alt9              = Chester Cathedral
+| footer            = From top left to bottom right: [[St Mary's Church, Nantwich|St Mary Church]] in [[Nantwich]], [[Crewe Town Council]], The Wizard Pub ([[Alderley Edge]]), [[Chester Rows]] ([[Chester]]), [[Capesthorne Hall]], [[Little Moreton Hall]], [[Beeston Castle]], [[Eaton Hall, Cheshire|Eaton Hall]], and [[Chester Cathedral]]
+}}
+
+Prehistoric burial grounds have been discovered at [[The Bridestones]] near [[Congleton]] ([[Neolithic]]) and Robin Hood's Tump near [[Alpraham]] ([[Bronze Age]]).<ref>{{cite web|date=1 September 2004|title=Cheshire County Council: Revealing Cheshire's Past|url=http://www2.cheshire.gov.uk/Archaeology/RCP/PrehistoricSitesToVisit.htm|url-status=dead|archive-url=https://web.archive.org/web/20041117003106/http://www.cheshire.gov.uk/archaeology/RCP/PrehistoricSitesToVisit.htm|archive-date=17 November 2004|access-date=25 September 2010|publisher=.cheshire.gov.uk}}</ref> The remains of Iron Age [[hill fort]]s are found on sandstone ridges at several locations in Cheshire. Examples include [[Maiden Castle, Cheshire|Maiden Castle]] on [[Bickerton Hill]], [[Helsby]] Hillfort and Woodhouse Hillfort at [[Frodsham]]. The Roman fortress and walls of [[Chester]], perhaps the earliest building works in Cheshire remaining above ground, are constructed from purple-grey sandstone.
+
+The distinctive local red sandstone has been used for many monumental and ecclesiastical buildings throughout the county: for example, the medieval [[Beeston Castle]], [[Chester Cathedral]] and numerous parish churches. Occasional residential and industrial buildings, such as [[Helsby railway station]] (1849),<ref>{{National Heritage List for England|num=1261746|desc=Shelter on island platform at Helsby Railway Station|grade=II|access-date=22 January 2013}}</ref> are also in this sandstone.
+
+Many surviving buildings from the 15th to 17th centuries are timbered, particularly in the southern part of the county. Notable examples include the moated manor house [[Little Moreton Hall]], dating from around 1450, and many commercial and residential buildings in Chester, [[Nantwich]] and surrounding villages.
+
+Early brick buildings include [[Peover Hall]] near [[Macclesfield]] (1585), [[Tattenhall Hall]] (pre-1622), and the [[Pied Bull Hotel]] in Chester (17th-century). From the 18th century, orange, red or brown brick became the predominant building material used in Cheshire, although earlier buildings are often faced or dressed with stone. Examples from the Victorian period onwards often employ distinctive brick detailing, such as brick patterning and ornate chimney stacks and gables. Notable examples include [[Arley Hall]] near [[Northwich]], [[Willington Hall]]<ref>{{NHLE|num=1137030|desc=Willington Hall|grade=II|fewer-links=yes|access-date=25 September 2010}}</ref> near Chester (both by Nantwich architect [[George Latham (architect)|George Latham]]) and [[Overleigh Lodge]], Chester. From the Victorian era, brick buildings often incorporate timberwork in a mock Tudor style, and this hybrid style has been used in some modern residential developments in the county. Industrial buildings, such as the Macclesfield silk mills (for example, Waters Green New Mill<ref>{{NHLE |num=1280023 |desc=Waters Green New Mill |grade=II |fewer-links=yes |access-date=29 August 2022}}</ref>), are also usually in brick.
+
+==Settlements==
+{{Main|List of places in Cheshire|List of Cheshire settlements by population}}
+
+{{Location map+|Cheshire
+ |caption={{center|[[File:Red pog.svg|12px]] Notable places in Cheshire&nbsp;– red. <br />[[File:Orange pog.svg|12px]] Towns historically in Cheshire&nbsp;– orange.}}
+ |float=right
+ |width=350
+ |places=
+ <!-- First four have population over 70,000 according to their articles, listed in descending order-->
+ {{Location map~|Cheshire|lat=53.38732|long=-2.60288|label='''[[Warrington]]'''|label_size=100|marksize=12|position=top}}
+ {{Location map~|Cheshire|lat=53.1926|long=-2.8918|label='''[[Chester]]'''|label_size=100|marksize=12|position=left}}
+ {{Location map~|Cheshire|lat=53.4083|long=-2.1494|label='''[[Stockport]]'''|label_size=100|marksize=12|mark=Orange pog.svg|position=top}}
+ {{Location map~|Cheshire|lat=53.393|long=-3.014|label='''[[Birkenhead]]'''|label_size=100|marksize=12|mark=Orange pog.svg|position=right}}
+ <!-- Below all have population over 30,000 according to their articles, listed in descending order-->
+ {{Location map~|Cheshire|lat=53.099|long=-2.44|label=[[Crewe]]|label_size=85|position=right}}
+ {{Location map~|Cheshire|lat=53.3923|long=-2.264|label=[[Wythenshawe|W'shawe]]|label_size=85|mark=Orange pog.svg|position=bottom}}
+ {{Location map~|Cheshire|lat=53.279|long=-2.897|label=[[Ellesmere Port]]|label_size=85|position=right}}
+ {{Location map~|Cheshire|lat=53.328|long=-2.712|label=[[Runcorn]]|label_size=85|position=right}}
+ {{Location map~|Cheshire|lat=53.423|long=-3.065|label=[[Wallasey]]|label_size=85|mark=Orange pog.svg|position=right}}
+ {{Location map~|Cheshire|lat=53.363|long=-2.728|label=[[Widnes]]|label_size=85|position=right}}
+ {{Location map~|Cheshire|lat=53.424|long=-2.322|label=[[Sale, Greater Manchester|Sale]]|label_size=85|mark=Orange pog.svg|position=left}}
+ {{Location map~|Cheshire|lat=53.2581|long=-2.1274|label=[[Macclesfield]]|label_size=85|position=bottom}}
+ {{Location map~|Cheshire|lat=53.3838|long=-2.3547|label=[[Altrincham]]|label_size=85|mark=Orange pog.svg|position=top}}
+ {{Location map~|Cheshire|lat=53.193|long=-2.52|label=[[Winsford]]|label_size=90|position=left}}
+ {{Location map~|Cheshire|lat=53.4474|long=-2.082|label=[[Hyde, Greater Manchester|Hyde]]|label_size=85|mark=Orange pog.svg|position=right}}
+ {{Location map~|Cheshire|lat=53.325|long=-2.239|label=[[Wilmslow]]|label_size=85|position=left}}
+ <!-- Below all have population over 20,000 according to their articles, listed in descending order-->
+ {{Location map~|Cheshire|lat=53.3761|long=-2.1897|label=[[Cheadle Hulme|Cheadle&nbsp;Hulme]]|label_size=70|mark=Orange pog.svg|position=right}}
+ {{Location map~|Cheshire|lat=53.162|long=-2.217|label=[[Congleton]]|label_size=70|position=left}}
+ {{Location map~|Cheshire|lat=53.35745|long=-2.164542|label=[[Bramhall]]|label_size=70|mark=Orange pog.svg|position=right}}
+ {{Location map~|Cheshire|lat=53.3974|long=-2.0617|label=[[Marple, Greater Manchester|Marple]]|label_size=70|mark=Orange pog.svg|position=right}}
+ {{Location map~|Cheshire|lat=53.4834|long=-2.04|label=[[Stalybridge]]|label_size=70|mark=Orange pog.svg|position=left}}
+ {{Location map~|Cheshire|lat=53.3|long=-2.371|label=[[Knutsford]]|label_size=70|mark_size=12|position=right}}
+ {{Location map~|Cheshire|lat=53.259|long=-2.518|label=[[Northwich]]|label_size=70|mark_size=12|position=right}}
+ <!-- Below are smaller settlements that are of significance historically for previously having city/capital status, or have recently been designated for expansion-->
+ {{Location map~|Cheshire|lat=53.376|long=-2.546|label='''[[Thelwall]]'''|label_size=70|position=right}}
+ {{Location map~|Cheshire|lat=53.340|long=-3.080|label='''[[Thingwall]]'''|label_size=70|mark=Orange pog.svg|position=right}}
+ {{Location map~|Cheshire|lat=53.189|long=-2.35|label=[[Holmes Chapel]]|label_size=80|position=top}}
+ {{Location map~|Cheshire|lat=53.339|long=-2.1640|label=[[Woodford, Greater Manchester|Woodford Garden Village]]|label_size=70|mark=Orange pog.svg|position=right}}
+}}
+
+The county is home to some of the most affluent areas of northern England, including [[Alderley Edge]], [[Wilmslow]], [[Prestbury, Cheshire|Prestbury]], [[Tarporley]] and [[Knutsford]], named in 2006 as the most expensive place to buy a house in the north of England. The former Cheshire town of [[Altrincham]] was in second place. The area is sometimes referred to as [[Golden Triangle (Cheshire)|The Golden Triangle]] on account of the area in and around the aforementioned towns and villages.<ref>{{cite news |title=Why Cheshire fat cats smile |work=The Times |location=London |url=http://property.timesonline.co.uk/tol/life_and_style/property/buying_and_selling/article1087249.ece |access-date=6 March 2006 |archive-url=https://web.archive.org/web/20080719035414/http://property.timesonline.co.uk/tol/life_and_style/property/buying_and_selling/article1087249.ece |archive-date=19 July 2008 |url-status=dead }}</ref> [[Holmes Chapel]] has increasingly become a sought out tourist destination due to being the former hometown of celebrity [[Holmes Chapel#Notable people|Harry Styles]], and is also undergoing a planned population increase.<ref>{{cite web |title=Holmes Chapel Parish Council: Our Village |url=https://www.holmeschapelparishcouncil.gov.uk/village |access-date=24 January 2025 |website=holmeschapelparishcouncil.gov.uk}}</ref>
+
+[[Thingwall]], currently in the county of [[Merseyside]] but historically part of Cheshire until 1974, is known for having once been the base of a Viking parliament established by [[Wirral Peninsula#English and Norse|Norse settlers in the area]].<ref>{{cite web |title=Vikings in Bromborough |url=https://www.bbc.co.uk/liverpool/content/articles/2004/10/12/wirral_vikings_feature.shtml |access-date=30 January 2025 |website=BBC}}</ref>
+
+There is currently one city in the county officially, [[Chester]]. However, it remains a disputed piece of folklore that the village of [[Thelwall]] (today administratively paired with its neighbour [[Grappenhall and Thelwall|Grappenhall]] in a [[civil parish]]) was at one time considered a city.<ref>{{cite web |title=The Parish of Grappenhall and Thelwall (Parish website) |url=https://grappenhallandthelwallpc.org.uk/the-parish |access-date=24 January 2025 |website=grappenhallandthelwallpc.org.uk}}</ref><ref>{{cite web |title=Bone fragment of man who declared Thelwall a 'city' found |url=https://www.warringtonguardian.co.uk/news/10945800.bone-fragment-of-the-man-who-declared-thelwall-a-city-found/ |access-date=24 January 2025 |website=Warrington Guardian}}</ref> [[Warrington]] is currently the largest urban settlement in the county overall despite its town status, and was one of the [[New towns in the United Kingdom#Third wave|third wave]] of post-[[Second World War]] UK new towns designated for expansion. Other core settlements across Cheshire are:
+
+<!---IF POPULATING THIS TABLE, PLEASE ARRANGE IN ALPHABETICAL ORDER. PLEASE BE MINDFUL THAT A DISTRICT OF A SETTLEMENT ALREADY MENTIONED IS NOT APPROPRIATE TO LINK HERE - THESE SHOULD BE WITHIN THEIR SETTLEMENT'S ARTICLE--->
+{| class="wikitable"
+|-
+! Ceremonial county
+! District
+! Centre of administration
+! Other towns or cities
+|-
+|rowspan="4"| '''Cheshire'''
+| [[Cheshire East]] (unitary)
+| [[Sandbach]]
+| [[Alderley Edge]], [[Alsager]], [[Bollington]], [[Crewe]], [[Congleton]], [[Handforth]], [[Holmes Chapel]], [[Knutsford]], [[Macclesfield]], [[Middlewich]], [[Nantwich]], [[Poynton]], [[Wilmslow]]
+|-
+| [[Cheshire West and Chester]] (unitary)
+| Chester
+| [[Ellesmere Port]], [[Frodsham]], [[Malpas, Cheshire|Malpas]], [[Neston]], [[Northwich]], [[Saltney]] (eastern part), [[Tarporley]], [[Tarvin]], [[Winsford]]
+|-
+| [[Borough of Halton|Halton]] (unitary)
+| [[Widnes]]
+| [[Runcorn]]
+|-
+| [[Borough of Warrington|Warrington]] (unitary)
+| Warrington
+| [[Birchwood, Cheshire|Birchwood]], [[Culcheth]], Grappenhall and Thelwall, [[Lymm]]
+|}
+
+Some settlements which were historically part of the county now fall under the ceremonial counties of Derbyshire, Merseyside and Greater Manchester:<ref name="fipqxl"/><ref>{{cite book |last=Chandler |first=J. |title=Local Government Today |year=2001 }}</ref><ref>{{cite web |title=Cheshire ancient county boundaries |work=Vision of Britain website |url=http://www.visionofbritain.org.uk/bound_map_page.jsp?first=true&u_id=10193850&c_id=10001043 |access-date=6 March 2007 |archive-url=https://web.archive.org/web/20070506230504/http://www.visionofbritain.org.uk/bound_map_page.jsp?first=true&u_id=10193850&c_id=10001043 <!-- Bot retrieved archive --> |archive-date=6 May 2007 }}</ref><ref>{{cite web |title=Cheshire 1974 boundaries |work=Vision of Britain website |url=http://www.visionofbritain.org.uk/bound_map_page.jsp?first=true&u_id=10032957&c_id=10001043 |access-date=6 March 2007 |archive-url=https://web.archive.org/web/20070506230240/http://www.visionofbritain.org.uk/bound_map_page.jsp?first=true&u_id=10032957&c_id=10001043 <!-- Bot retrieved archive --> |archive-date=6 May 2007 }}</ref>
+
+{| class="wikitable" style="width:auto"
+|-
+!scope="row"| Derbyshire
+| [[Crowden, Derbyshire|Crowden]], [[Newtown, Derbyshire|Newtown]], [[Tintwistle]], [[Whaley Bridge]] (western part), [[Woodhead, Derbyshire|Woodhead]]
+|-
+!scope="row"| Greater Manchester
+| [[Altrincham]], [[Bramhall]], [[Bredbury]], [[Cheadle, Greater Manchester|Cheadle]], [[Cheadle Hulme]], [[Dukinfield]], [[Gatley]], [[Hale, Greater Manchester|Hale]], [[Hale Barns]], [[Hattersley]], [[Hazel Grove]], [[Heald Green]], [[High Lane, Greater Manchester|High Lane]], [[Hyde, Greater Manchester|Hyde]], [[Marple, Greater Manchester|Marple]], [[Mossley]] (part), [[Partington]], [[Romiley]], [[Sale, Greater Manchester|Sale]], [[Stalybridge]], [[Stockport]], [[Timperley]], [[Woodford, Greater Manchester|Woodford Garden Village]], [[Woodley, Greater Manchester|Woodley]], [[Wythenshawe]]
+|-
+!scope="row"| Merseyside
+| [[Bebington]], [[Bidston]], [[Birkenhead]], [[Brimstage]], [[Bromborough]], [[Eastham, Merseyside|Eastham]], [[Greasby]], [[Heswall]], [[Hoylake]], [[Irby, Merseyside|Irby]], [[Leasowe]], [[Moreton, Merseyside|Moreton]], [[New Ferry]], [[Pensby]], [[Port Sunlight]], [[Thingwall]], [[Upton, Merseyside|Upton]], [[Wallasey]], [[West Kirby]]
+|}
+
+==Transport==
+===Railways===
+[[File:Chester Railway Station.jpg|thumb|[[Chester railway station|Chester station]] in November 2017]]
+[[File:Alderley Edge Station geograph-2165327.jpg|thumb|[[Alderley Edge railway station|Alderley Edge station]] in July 1951]]
+The main railway line through the county is the [[West Coast Main Line]]. Trains on the main London to Scotland line call at [[Crewe railway station|Crewe]] (in the south of the county) and [[Warrington Bank Quay railway station|Warrington Bank Quay]] (in the north of the county). Trains stop at Crewe and Runcorn on the Liverpool branch of the WCML; Crewe and Macclesfield are each hourly stops on the two Manchester branches. The major interchanges are:
+*[[Crewe railway station|Crewe]] (the biggest station in Cheshire) for trains to [[Euston railway station|London Euston]], [[Glasgow Central railway station|Glasgow Central]], [[Edinburgh Waverley railway station|Edinburgh Waverley]], [[Manchester Piccadilly railway station|Manchester Piccadilly]] and [[Liverpool Lime Street railway station|Liverpool Lime Street]] (via the WCML). Trains on other routes travel to Wales, the Midlands ([[Birmingham New Street railway station|Birmingham]], [[Stoke-on-Trent railway station|Stoke]] and [[Derby railway station|Derby]]) as well as suburban services to Manchester Piccadilly, [[Chester railway station|Chester]] and Liverpool Lime Street.
+*[[Warrington]] stations ([[Warrington Central railway station|Central]] and [[Warrington Bank Quay railway station|Bank Quay]]) for suburban services to Manchester Piccadilly, [[Chester railway station|Chester]] and Liverpool Lime Street and regional express services to North Wales, London, Scotland, Yorkshire, the East Coast and the East Midlands
+*[[Chester railway station|Chester]] for urban services (via [[Merseyrail]]) to [[Liverpool Central railway station|Liverpool Central]], suburban services to [[Manchester Piccadilly railway station|Manchester]], [[Warrington Bank Quay railway station|Warrington]], [[Wrexham General railway station|Wrexham General]] and rural Cheshire and express services to [[Llandudno railway station|Llandudno]], [[Holyhead railway station|Holyhead]], [[Birmingham New Street railway station|Birmingham]], the West Midlands, London and [[Cardiff Central railway station|Cardiff]] and, from May 2019, to [[Leeds railway station|Leeds]].
+
+In the east of Cheshire, [[Macclesfield railway station|Macclesfield]] station is served by [[Avanti West Coast]], [[CrossCountry]] and [[Northern (train operating company)|Northern]], on the Manchester–London line. Services from Manchester to the south coast frequently stop at Macclesfield. [[Neston]] on the Wirral Peninsula is served by a [[Neston railway station|railway station]] on the [[Borderlands line]] between [[Bidston railway station|Bidston]] and [[Wrexham Central railway station|Wrexham]].
+
+===Roadways===
+[[File:Runcorn - Silver Jubilee Bridge - geograph.org.uk - 3085950.jpg|thumb|[[Silver Jubilee Bridge]] in August 2012]]
+Cheshire has {{convert|3417|mi|km|0}} of roads, including {{convert|214|mi|km|0}} of the [[M6 motorway|M6]], [[M62 motorway|M62]], [[M53 motorway|M53]] and [[M56 motorway|M56]] motorways; there are 23 interchanges and four service areas. It also has the [[A580 road|A580 "East Lancashire Road"]] at its border with [[Greater Manchester]] at [[Leigh, Greater Manchester|Leigh]]. The M6 motorway at the [[Thelwall Viaduct]] carries 140,000 vehicles every 24 hours.<ref>{{cite web |title=Road policing |work=Cheshire Police website |url=http://www.cheshire.police.uk/showcontent.php?pageid=1071 |access-date=14 June 2009 |url-status=dead |archive-url=http://webarchive.nationalarchives.gov.uk/20081105163228/http%3A//www.cheshire.police.uk/showcontent.php?pageid%3D1071 |archive-date=5 November 2008}}</ref>
+
+Bus transport in Cheshire is provided by various operators. The major bus operator in the Cheshire area is D&G Bus. Other operators in Cheshire include Stagecoach Chester & Wirral and Warrington's Own Buses.
+
+There are also several operators based outside of Cheshire, who either run services wholly within the area or services which start from outside the area. Companies include Arriva Buses Wales, Aimee's Travel, High Peak, Metroline Manchester, D&G bus and Stagecoach Manchester.
+
+Some services are run under contract to Cheshire West and Chester, Cheshire East, Borough of Halton and Warrington Councils.
+
+===Waterways===
+{{Main|Canals in Cheshire}}
+
+[[File:Anderton Boat Lift (30187739816).jpg|thumb|[[Anderton Boat Lift]] in October 2016]]
+[[Canals in Cheshire|The Cheshire canal system]] includes several [[canal]]s originally used to transport the county's industrial products (mostly chemicals). Nowadays they are mainly used for tourist traffic. The [[Cheshire Ring]] is formed from the [[Rochdale Canal|Rochdale]], [[Ashton Canal|Ashton]], [[Peak Forest Canal|Peak Forest]], [[Macclesfield Canal|Macclesfield]], [[Trent and Mersey Canal|Trent and Mersey]] and [[Bridgewater Canal|Bridgewater]] canals.
+
+The [[Manchester Ship Canal]] is a wide, {{convert|36|mi|km|0|adj=on}} stretch of water opened in 1894. It consists of the rivers [[River Irwell|Irwell]] and [[River Mersey|Mersey]] made navigable to Manchester for seagoing ships leaving the Mersey estuary. The canal passes through the north of the county via Runcorn and Warrington. Rivers and canals in the county are:
+{|
+|width=60%|
+* [[River Bollin]]
+* [[River Croco]]
+* [[River Dane]]
+* [[River Dean]]
+* [[River Dee (Wales)|River Dee / Afon Dyfrdwy]]
+* [[River Gowy]]
+* [[River Goyt]]
+* [[River Mersey]]
+* [[River Weaver|River Weaver and Weaver Navigation]]
+* [[River Wheelock]]
+|
+* [[Bridgewater Canal]]
+* [[Macclesfield Canal]]
+* [[Manchester Ship Canal]]
+* [[Shropshire Union Canal]] and the [[Llangollen Canal|Llangollen branch]]
+* [[Trent and Mersey Canal]]
+|}
+
+==See also==
+{{Portal|Cheshire|North West England}}
+* [[Cheshire (UK Parliament constituency)]], historical list of MPs for Cheshire constituency
+* [[Constable of Chester]]
+* [[Custos Rotulorum of Cheshire]] – Keepers of the Rolls
+* [[Healthcare in Cheshire]]
+* [[High Sheriff of Cheshire]]
+* [[Lord Lieutenant of Cheshire]]
+* [[Outline of England]]
+* [[List of English and Welsh endowed schools (19th century)#Cheshire]]
+
+==Notes==
+{{notelist}}
+
+==References==
+{{reflist}}
+
+==Bibliography==
+{{refbegin}}
+* Crosby, A. (1996). ''A History of Cheshire''. The Darwen County History Series. Chichester, UK: Phillimore & Co {{ISBN|0-85033-932-4}}.
+* {{cite book |author=Girls Aloud |date=2009 |title=Dreams That Glitter |url=https://books.google.com/books?id=KFIhGmL72R0C |publisher=Transworld Publishers Limited |isbn=978-0-552-15760-5 |language=en |ref={{harvid|Dreams That Glitter|2009}}}}
+* Harris, B. E., and Thacker, A. T. (1987). ''The Victoria History of the County of Chester''. Volume 1: ''Physique, Prehistory, Roman, Anglo-Saxon, and Domesday''. Oxford: Oxford University Press. {{ISBN|0-19-722761-9}}.
+* Morgan, P. (ed.) (1978). ''Domesday Book''. Volume 26: ''Cheshire''. Chichester, Sussex: Phillmore and Company Limited. {{ISBN|0-85033-140-4}}.
+* {{cite book |title=A Fine Anger: A Critical Introduction to the Work of Alan Garner |last=Philip |first=Neil |year=1981 |publisher=Collins |location=London |isbn=978-0-00-195043-6 }}
+* Phillips, A. D. M., and Phillips, C. B. (eds.) (2002). ''A New Historical Atlas of Cheshire''. Chester, UK: Cheshire County Council and Cheshire Community Council Publications Trust. {{ISBN|0-904532-46-1}}.
+* Shores, Christopher; [[Norman Franks|Franks, Norman]]; Guest, Russell (1990). ''Above the Trenches: A Complete Record of the Fighter Aces and Units of the British Empire Air Forces 1915–1920''. Grub Street. {{ISBN|0-948817-19-4}}, {{ISBN|978-0-948817-19-9}}.
+* Sylvester, D. (1980) [first ed.: 1971]. ''A History of Cheshire''. Second edition. The Darwen County History Series. London and Chichester, UK: Phillimore & Co. Ltd. {{ISBN|0-85033-384-9}}.
+{{refend}}
+
+==Further reading==
+{{refbegin}}
+* Beck, J. (1969). ''Tudor Cheshire''. Volume 7 of Cheshire Community Council Series: A History of Cheshire. Series Editor: J. J. Bagley. Chester, UK: Cheshire Community Council.
+* Bu'Lock, J. D. (1972). ''Pre-Conquest Cheshire 383–1066''. Volume 3 of Cheshire Community Council Series: A History of Cheshire. Series Editor: J. J. Bagley. Chester, UK: Cheshire Community Council.
+* Dore, R. N. (1966). ''The Civil Wars in Cheshire''. Volume 8 of Cheshire Community Council Series: A History of Cheshire. Series Editor: J. J. Bagley. Chester, UK: Cheshire Community Council.
+* Driver, J. T. (1971). ''Cheshire in the Later Middle Ages 1399–1540''. Volume 6 of Cheshire Community Council Series: A History of Cheshire. Series Editor: J. J. Bagley. Chester, UK: Cheshire Community Council.
+* Harris, B. E. (1979). '''The Victoria History of the County of Chester''. Volume 2. Oxford: Oxford University Press. {{ISBN|0-19-722749-X}}.
+* Harris, B. E. (1980). '''The Victoria History of the County of Chester''. Volume 3. Oxford: Oxford University Press. {{ISBN|0-19-722754-6}}.
+* Hewitt, H. J. (1967). ''Cheshire Under the Three Edwards''. Volume 5 of Cheshire Community Council Series: A History of Cheshire. Series Editor: J. J. Bagley. Chester, UK: Cheshire Community Council.
+* Higham, N. J. (1993). ''The Origins of Cheshire''. Manchester, UK: Manchester University Press. {{ISBN|0-7190-3160-5}}.
+* Hodson, J. H. (1978). ''Cheshire, 1660–1780: Restoration to Industrial Revolution''. Volume 9 of Cheshire Community Council Series: A History of Cheshire. Series editor: J. J. Bagley. Chester, UK: Cheshire Community Council. {{ISBN|0-903119-11-0}}.
+* Husain, B. M. C. (1973). ''Cheshire Under the Norman Earls 1066–1237''. Volume 4 of Cheshire Community Council Series: A History of Cheshire. Series editor: J. J. Bagley. Chester, UK: Cheshire Community Council.
+* Morgan, V., and Morgan, P. (2004). ''Prehistoric Cheshire''. Ashbourne, Derbyshire: Landmark Publishing Company. {{ISBN|1-84306-140-6}}.
+* Scard, G. (1981). ''Squire and Tenant: Rural Life in Cheshire 1760–1900''. Volume 10 of Cheshire Community Council Series: A History of Cheshire. Series editor: J. J. Bagley. Chester, UK: Cheshire Community Council. {{ISBN|0-903119-13-7}}.
+* Scholes, R. (2000). ''The Towns and Villages of Britain: Cheshire''. Wilmslow, Cheshire: Sigma Press. {{ISBN|1-85058-637-3}}.
+* {{Cite book |last=Starkey |first=H. F. |title=Old Runcorn |publisher=Halton Borough Council |year=1990}}
+* Sylvester. D., and Nulty, G. (1958). ''The Historical Atlas of Cheshire''. Third Edition. Chester, UK: Cheshire Community Council.
+* Thompson, F. H. (1965). ''Roman Cheshire''. Volume 2 of Cheshire Community Council Series: A History of Cheshire. Series Editor: J. J. Bagley. Chester, UK: Cheshire Community Council.
+* Tigwell, R. E. (1985). ''Cheshire in the Twentieth Century''. Volume 11 of Cheshire Community Council Series: A History of Cheshire. Series Editor: J. J. Bagley. Chester, UK: Cheshire Community Council.
+* Varley, W. J. (1964). ''Cheshire Before the Romans''. Volume 1 of Cheshire Community Council Series: A History of Cheshire. Series Editor: J. J. Bagley. Chester, UK: Cheshire Community Council.
+* Youngs, F. A. (1991). ''Guide to the Local Administrative Units of England''. Volume 1: Northern England. London: Royal Historical Society. {{ISBN|0-86193-127-0}}.
+{{refend}}
+
+==External links==
+{{Sister project links|voy=Cheshire}}
+* [http://www.cheshirelieutenancy.org.uk/ Cheshire Lieutenancy]
+* [http://www.visitcheshire.com Chester, Cheshire & Beyond – The official tourist board for Chester & Cheshire]
+* [https://web.archive.org/web/20090326015935/http://www.statistics.gov.uk/census2001/bicentenary/pdfs/cheshire.pdf Office for National Statistics – 2001 Bicentenary – Cheshire]
+
+{{Adjacent communities
+| Centre    = Cheshire
+| Northeast = [[Greater Manchester]]
+| East      = [[Derbyshire]]
+| Southeast = [[Staffordshire]]
+| South     = [[Shropshire]]
+| Southwest = [[Wrexham County Borough|Wrexham]]
+| West      = [[Flintshire]]
+| Northwest = [[Merseyside]]
+| North     = Merseyside/Greater Manchester
+}}
+{{Cheshire}}
+{{NW England}}
+{{England counties}}
+{{Authority control}}
+
+[[Category:Cheshire| ]]
+[[Category:Ceremonial counties of England]]
+[[Category:Counties of England established in antiquity]]
+[[Category:Former non-metropolitan counties]]
+[[Category:North West England]]
+[[Category:NUTS 2 statistical regions of the United Kingdom]]

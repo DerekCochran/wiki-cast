@@ -5,7 +5,7 @@ const fs = require('fs');
 const path = require('path');
 
 const repoRoot = path.resolve(__dirname, '..');
-const origRoot = path.join(repoRoot, 'new-js');
+const origRoot = path.join(repoRoot, 'compare/wikiparser-node');
 const coverageDir = path.resolve(process.env.COVERAGE_DIR || path.join(repoRoot, '.artifacts', 'v8cov-origjs'));
 const outDir = path.resolve(process.env.OUT_DIR || path.join(repoRoot, '.artifacts', 'origjs-usage'));
 
@@ -137,7 +137,7 @@ function buildStaticGraph(origFiles) {
 }
 
 if (!fs.existsSync(origRoot)) {
-  console.error('new-js folder not found:', origRoot);
+  console.error('compare/wikiparser-node folder not found:', origRoot);
   process.exit(1);
 }
 if (!fs.existsSync(coverageDir)) {
@@ -227,9 +227,9 @@ const high = [];
 const medium = [];
 const low = [];
 const entrypointAllowlist = new Set([
-  'new-js/dist/index.js',
-  'new-js/dist/base.js',
-  'new-js/dist/src/index.js',
+  'compare/wikiparser-node/dist/index.js',
+  'compare/wikiparser-node/dist/base.js',
+  'compare/wikiparser-node/dist/src/index.js',
 ]);
 
 for (const row of summaryRows) {
@@ -295,7 +295,7 @@ writeCsv(
 );
 
 console.log('Coverage files scanned:', coverageFiles.length);
-console.log('new-js files discovered:', origFiles.length);
+console.log('compare/wikiparser-node files discovered:', origFiles.length);
 console.log('Output dir:', outDir);
 console.log('Wrote:', path.join(outDir, 'executed-functions.csv'));
 console.log('Wrote:', path.join(outDir, 'non-executed-functions.csv'));

@@ -429,6 +429,26 @@ cdef class PyToken:
             with nogil:
                 token_free(self._c_token)
 
+    def to_json(self, bint pretty=False):
+        if self._c_token == NULL:
+            return "null"
+            
+        # Call your imported function directly with the internal pointer
+        cdef char* c_str = json_stringify_wikiparser_node(self._c_token, pretty)
+        if c_str == NULL:
+            return "null"
+            
+        try:
+            # Decode the C string into a standard Python string
+            py_string = c_str.decode('utf-8', errors='replace')
+        finally:
+            # CRITICAL: If your C function allocates memory (e.g., using malloc/strdup) 
+            # for the JSON string, you MUST free it here to prevent memory leaks!
+            # free(c_str) 
+            pass
+            
+        return py_string
+
     # ── Common Fields ────────────────────────────────────────────────────────
     @property
     def type(self):

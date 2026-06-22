@@ -1,0 +1,169 @@
+{{Short description|American lawyer and politician (1813–1883)}}
+{{Use mdy dates|date=May 2021}}
+{{Use American English|date=June 2025}}
+{{Infobox officeholder
+| name          = Montgomery Blair
+| image         = Montgomery Blair, photo three-quarters length seated.jpg
+| caption       = Blair, {{Circa|1855-1865}}
+| office        = 20th [[United States Postmaster General]]
+| president     = [[Abraham Lincoln]]
+| term_start    = March 5, 1861
+| term_end      = September 24, 1864
+| predecessor   = [[Horatio King]]
+| successor     = [[William Dennison Jr.|William Dennison]]
+| birth_date    = {{birth date|1813|5|10}}
+| birth_place   = [[Franklin County, Kentucky]], U.S.
+| death_date    = {{death date and age|1883|7|27|1813|5|10}}
+| death_place   = [[Silver Spring, Maryland]], U.S.
+| resting_place = [[Rock Creek Cemetery]]<br />[[Washington, D.C.]], U.S.
+| party         = [[Democratic Party (United States)|Democratic]] {{small|(Before 1854; 1865–1883)}}<br>[[Republican Party (United States)|Republican]] {{small|(1854–1865)}}
+| spouse        = {{marriage|Caroline Buckner|1836|1844|end=died}}<br>Mary Woodbury
+| children      = 4
+| father        = [[Francis Preston Blair]]
+| relatives     = {{plainlist|
+*[[Francis Preston Blair Jr.]] (brother)
+*[[Elizabeth Blair Lee]] (sister)
+*[[Blair Lee I]] (nephew)
+*[[Montgomery Clift]] (alleged great-grandson)
+}}
+| education     = [[United States Military Academy]] {{small|([[Bachelor of Science|BS]])}}<br>[[Transylvania University]] {{small|([[Bachelor of Laws|LLB]])}}
+| allegiance    = {{flag|United States}}
+| branch        = {{army|United States}}
+| service_years = 1835–1836
+| rank          = [[Second lieutenant|Second Lieutenant]]
+| battles       = [[Seminole Wars]]
+| signature     = Signature of Montgomery Blair (1813–1883).png
+}}
+'''Montgomery Blair''' (May 10, 1813 – July 27, 1883) was an American politician and lawyer from [[Maryland]]. He served in the [[Lincoln administration]] [[United States Cabinet|cabinet]] as [[United States Postmaster General|Postmaster-General]] from 1861 to 1864, during the [[American Civil War|Civil War]]. He was the son of [[Francis Preston Blair]], elder brother of [[Francis Preston Blair Jr.]] and cousin of [[B. Gratz Brown]].
+
+==Early life and education==
+Blair was born in [[Franklin County, Kentucky]], site of the state capital of [[Frankfort, Kentucky|Frankfort]].<ref name= prominent/> His father, [[Francis Preston Blair|Francis Preston Blair, Sr.]],<ref name= prominent/> was editor of ''The Washington Globe'' and a prominent figure in the [[Democratic Party (US)|Democratic Party]] during the [[Jacksonian democracy|Jacksonian era]]. As a boy, Montgomery "often listened to the talk of his father and [[Andrew Jackson]]."<ref>Allan Nevins, ''The War for the Union'', vol. 1: ''The Improvised War, 1861-1862'' (New York: Charles Scribner's Sons, 1959), p. 43.</ref>
+
+Blair graduated from the [[United States Military Academy]] at [[West Point, New York|West Point]]. After a year of service in the [[Seminole War]], however, he left the [[United States Army|U.S. Army]], married Caroline Rebecca Buckner of [[Virginia]], and began studying law at [[Transylvania University]] in [[Lexington, Kentucky]].
+
+==Career==
+
+Blair began to practice law in 1839 in [[St. Louis]], Missouri.  He served as [[United States district attorney|U.S. District Attorney]] from 1839 to 1843 and later as judge of the court of common pleas from 1843 to 1849. After the death of his first wife, Carolina, in 1844, he later married Mary Elizabeth Woodbury, daughter of [[Levi Woodbury]].<ref>Moroney, p. 5;https://hdl.handle.net/2027/mdp.39015016417332 {{Webarchive|url=https://web.archive.org/web/20240208220354/https://babel.hathitrust.org/cgi/pt?id=mdp.39015016417332 |date=February 8, 2024 }}</ref><ref name= prominent/>
+
+Blair moved to [[Maryland]] in 1852 and devoted himself to the practice of law, principally in the [[Supreme Court of the United States]].<ref name= prominent/> He was United States Solicitor in the Court of Claims from 1855 to 1858.<ref name= prominent/>
+
+<imagemap>
+Image:Emancipation proclamation.jpg|thumb|350px|''[[First Reading of the Emancipation Proclamation of President Lincoln]]'' by [[Francis Bicknell Carpenter]] (1864) <small>''(Clickable image—use cursor to identify.)''</small>|alt=A dark-haired, bearded, middle-aged man holding documents is seated among seven other men.]]
+
+poly 269 892 254 775 193 738 130 723 44 613 19 480 49 453 75 434 58 376 113 344 133 362 143 423 212 531 307 657 357 675 409 876 [[Edwin M. Stanton|Edwin Stanton]]
+poly 169 282 172 244 244 201 244 148 265 117 292 125 305 166 304 204 321 235 355 296 374 348 338 395 341 469 [[Salmon P. Chase|Salmon Chase]]
+poly 569 893 535 708 427 613 357 562 377 456 393 404 468 351 451 317 473 259 520 256 544 283 530 339 526 374 559 401 594 431 639 494 715 542 692 551 693 579 672 546 623 552 596 617 698 629 680 852 [[Abraham Lincoln]]
+poly 692 514 740 441 788 407 772 350 800 303 831 297 861 329 867 381 868 409 913 430 913 471 847 532 816 533 709 533 [[Gideon Welles]]
+poly 703 783 752 769 825 627 907 620 929 569 905 538 886 563 833 563 873 502 930 450 1043 407 1043 389 1036 382 1042 363 1058 335 1052 333 1052 324 1081 318 1124 338 1133 374 1116 412 1132 466 1145 509 1117 588 1087 632 1083 706 [[William H. Seward|William Seward]]
+poly 905 418 941 328 987 295 995 284 982 244 990 206 1036 207 1046 247 1047 284 1066 312 1071 314 1049 327 1044 354 1033 383 1033 407 921 453 [[Caleb Blood Smith|Caleb Smith]]
+poly 1081 308 1102 255 1095 220 1093 181 1109 161 1145 160 1169 191 1153 227 1153 246 1199 268 1230 310 1239 377 1237 443 1220 486 1125 451 1118 412 1136 378 1124 342 [[Montgomery Blair]]
+poly 1224 479 1298 416 1304 379 1295 329 1325 310 1360 324 1370 359 1371 385 1371 397 1413 425 1422 497 1440 563 1348 555 1232 517 [[Edward Bates]]
+poly 625 555 595 620 699 625 730 550 [[Emancipation Proclamation]]
+poly 120 80 120 300 3 300 3 80 [[Simon Cameron|Portrait of Simon Cameron]]
+poly 752 196 961 189 948 8 735 10 [[Andrew Jackson|Portrait of Andrew Jackson]]
+</imagemap>
+
+The Blairs, like many other nationalist Democrats, but unusual for politicians from the border states, had abandoned the Democratic Party in the wake of the [[Kansas–Nebraska Act]]<ref name=prominent /> and had been among the founding leaders of the new [[Republican Party (US)|Republican Party]]. Four years after Blair switched political parties, President Buchanan removed Blair from his position as Solicitor of the [[United States Court of Claims]] in 1858.<ref name=prominent />
+ 
+While the Blairs, as a family, were often characterized as conservative on the issue of slavery, Blair notably served as counsel for [[Dred Scott]], in association with [[George T. Curtis]], when the enslaved African-American took [[Dred Scott v. Sandford|his case to the Supreme Court]] in 1857. Scott was the slave of an [[United States Army|U.S. Army]] doctor who took his enslaved servant along for prolonged stays in free territory.
+
+On Scott's behalf, Blair argued that the time the black man had spent in the free state of [[Illinois]] and in [[Minnesota]], free territory since the Northwest Ordinance of 1787, made him a free man. The ruling by Court's majority against Scott's right to freedom is often cited as one of the contributing causes of the [[American Civil War]]. Writing for the majority, Chief Justice [[Roger B. Taney]] affirmed that the black man had no rights "that the white man was bound to respect" and that black slaves could not be considered American citizens despite having been born in the U.S. This landmark decision was denounced as a step toward the "nationalization" of slavery by Lincoln and others opposed to the expansion of that institution. Conservative as he may have been on other aspects of the slavery issue, Blair's work in the case of ''Dred Scott vs. Sandford'' suggests a willingness to embrace more progressive viewpoints.
+
+In 1860, Blair took an active part in support of [[Abraham Lincoln]]'s [[1860 United States presidential election|presidential campaign]].<ref name=prominent /> After his election, Lincoln appointed Blair to his cabinet as [[United States Postmaster General|Postmaster General]] in 1861.<ref name=prominent /> Lincoln expected Blair, who advocated taking a firm stance with the southern states, to help balance more conciliatory members of his cabinet.<ref>Goodwin, 2005, Chapter 11.</ref> While Postmaster-General, Blair instituted a uniform rate of postage and free delivery in cities, began the sale of [[money orders]] by post offices to reduce the mailing of currency to reduce post office robberies, and also started the use of railway mail cars, an idea which had been suggested by George B. Armstrong (d. 1871), of [[Chicago]], general superintendent of the United States railway mail service from 1860 to his death.<ref>{{Cite book |last=Moroney |first=Rita Lloyd |title=Montgomery Blair, Postmaster General |publisher=Government Printing Office |year=1963 |location=Washington, D.C. |pages=23–25}}</ref><ref>{{Cite journal |last=Shaw |first=Christopher W. |date=2025 |title='The Duty of Government': The Politics of the Domestic Postal Money Order, 1837–1911 |url=https://chriswshaw.com/wp-content/uploads/2025/05/4-DutyOfGovt_SHFG_April2025_web.pdf |journal=Federal History |volume=17 |pages=11–33}}</ref><ref>{{Cite web |last=Buchanan |first=Britta |title=Railway Mail |url=https://postalmuseum.si.edu/research-articles/montgomery-blair-blair-steps-in/railway-mail |website=Smithsonian National Postal Museum}}</ref>
+
+Blair called for the First International Postal Conference, which was held in [[Paris]] in 1863 and began the process that led to the [[Universal Postal Union]].<ref>{{Cite web |url=http://www.upu.int/en/the-upu/history/about-history.html |title=Universal Postal Union About history |access-date=February 12, 2016 |archive-date=May 10, 2020 |archive-url=https://web.archive.org/web/20200510150428/http://www.upu.int/en/the-upu/history/about-history.html |url-status=dead }}</ref>
+
+In September 1864, Lincoln accepted an earlier offer by Blair to resign. Lincoln's action may have been a response to the hostility of the [[Radical Republicans|Radical Republican]] faction, which believed Blair's retirement should follow the withdrawal of [[John C. Frémont]] as a candidate in the [[1864 United States presidential election|1864 presidential election]]. Blair told his wife that Lincoln acted "from the best motives" and that "it is for the best all around." After he left the cabinet, Blair still campaigned for Lincoln's re-election in 1864, and Lincoln and the Blair family retained close ties.<ref>Goodwin, 2005, Chapter 24.</ref>
+
+==Post-war==
+[[File:PG-MBlair-Postbellum.jpg|thumb|250px|Montgomery Blair in his post-war life]]
+
+Differing from the Republican Party on the [[Reconstruction era of the United States|Reconstruction]] policy, Blair gave his adherence to the [[United States Democratic Party|Democratic Party]] after the Civil War, along with his brother, Francis Preston Blair Jr., who was the Democratic vice presidential candidate in [[1868 United States presidential election|1868]].
+
+In 1876, Blair, along with [[Matthew H. Carpenter]] and [[Jeremiah S. Black]], was counsel to Secretary of War [[William W. Belknap]] during the House of Representatives investigation into the [[Trader post scandal]].<ref name=Poore>[https://archive.org/details/perleysreminisce02poor/page/310/mode/1up?view=theater Poore, Ben. Perley, ''Perley's Reminiscences of Sixty Years in the National Metropolis'', Vol.2, pp.310-311 (1886)].</ref> Blair asked the House Investigation Committee chaired by [[Hiester Clymer]] to drop the charges against Belknap if the latter resigned office. Clymer, however, declined Blair's offer.
+
+Belknap was impeached by the [[United States House of Representatives|House of Representatives]] for receiving illicit payments from the [[Fort Sill]] trader post on the [[American frontier]] as [[Secretary of War]]. Belknap had been granted sole power by Congress to choose [[sutler]]s to operate lucrative trader posts that sold supplies to U.S. soldiers and Indians. Belknap resigned over the scandal and was acquitted in a [[United States Senate]] trial during the summer of 1876. Many senators did not believe that Congress could convict a private citizen, but the Senate passed a resolution that stated Congress had that power.
+
+In 1882, Blair unsuccessfully ran for U.S. Representative from [[Maryland's 6th congressional district|Maryland's sixth district]].<ref name=prominent />
+
+Blair's {{convert|600|acre|km2|adj=on}} manor in present-day [[Silver Spring, Maryland]] was named Falkland. In 1864, during the [[American Civil War|Civil War]],  [[Confederate States Army|Confederate]] General [[Jubal Anderson Early|Jubal Early]] occupied Silver Spring before the [[Battle of Fort Stevens]]. After the engagement, fleeing Confederate soldiers burnt the mansion.<ref>{{cite news |title=Interesting Particulars of the Rebel Invasion |work=Evening Star |date=July 15, 1864 |page=2 |url=http://infoweb.newsbank.com/iw-search/we/HistArchive/?p_product=EANX-NB&p_theme=ahnp&p_nbid=C60H50SGMTQxMTY2ODA4Ni43NTc1ODE6MTo3OnJhLTk2NjY&p_action=doc&s_lastnonissuequeryname=6&d_viewref=search&p_queryname=6&p_docnum=2&p_docref=v2:13D5DA85AE05A305@EANX-NB-13DAD1F38DE812E8@2402068-13D889C51F2B37B0@1-13DB45353A703C50@ |access-date=September 25, 2014 |archive-date=February 7, 2024 |archive-url=https://web.archive.org/web/20240207050722/https://infoweb.newsbank.com/home/login?destination=infoweb.newsbank.com%3Fdb%3DEANX-NB%26wedirect%3Dtrue |url-status=live}}</ref>
+
+==Death==
+[[File:Montgomery Blair Mausoleum.JPG|thumb|The Montgomery Blair mausoleum in [[Rock Creek Cemetery]]]]
+After several years afflicted with "[[Meningitis|inflammation of the spinal membranes]]," he died in [[Silver Spring, Maryland]] on July 27, 1883.
+
+Funeral services were held at [[St. Paul's Episcopal Church, Rock Creek Parish (Washington, D.C.)|Rock Creek Church]], and he was buried at [[Rock Creek Cemetery]].<ref name= prominent>{{cite news |title= Montgomery Blair: A Prominent Figure in Political History Passes Away |newspaper= The Washington Post |date= July 28, 1883 |page= 1 |id= {{ProQuest|137873011}} }}</ref> In memory of Blair, the United States Post Office closed on July 30, 1883.<ref name= prominent/>
+
+==Personal life==
+Blair's first wife was Caroline Rebecca Buckner of Virginia; they married in 1836, and she died in 1844. His second wife was Mary Woodbury, a daughter of [[Levi Woodbury]]. They had one daughter, Minnie Blair, and three sons, Woodbury Blair, Gist Blair, and Montgomery Blair Jr., all of whom became attorneys.<ref name= prominent/> Montgomery Blair and Mary Woodbury Blair are the great-grandparents of actor [[Montgomery Clift]].
+
+==In popular culture==
+*Blair is portrayed by actor [[Lew Temple]] in the 2012 film ''[[Saving Lincoln]]''.
+*In the 2012 film ''[[Lincoln (film)|Lincoln]]'', Blair is inaccurately portrayed by actor Byron Jennings. In the film, Blair is incorrectly depicted as being opposed to the [[Thirteenth Amendment to the United States Constitution|13th Amendment]], referring to it as "rash and dangerous." In reality, though Blair began the [[American Civil War|Civil War]] more concerned with punishing secessionists and restoring the union than abolishing slavery, he accepted the abolition of slavery as necessary despite disliking abolitionists by 1863.<ref>{{cite news| url = https://www.washingtonpost.com/local/md-politics/the-not-quite-free-state-maryland-dragged-its-feet-on-emancipation-during-civil-war/2013/09/13/a34d35de-fec7-11e2-bd97-676ec24f1f3f_story.html| title = The not-quite-Free State: Maryland dragged its feet on emancipation during Civil War - The Washington Post| newspaper = [[The Washington Post]]| access-date = June 29, 2020| archive-date = June 26, 2020| archive-url = https://web.archive.org/web/20200626184050/https://www.washingtonpost.com/local/md-politics/the-not-quite-free-state-maryland-dragged-its-feet-on-emancipation-during-civil-war/2013/09/13/a34d35de-fec7-11e2-bd97-676ec24f1f3f_story.html| url-status = live}}</ref>
+*To commemorate the centennial of the First International Postal Conference, Blair's portrait appeared on a [[List of United States airmail stamps|U.S. airmail stamp]], [[Scott catalogue]] C66, was issued in 1963.
+
+==Works==
+* ''Speech on the Causes of the [[American Civil War|Rebellion]]'' (1864)
+
+==Legacy==
+[[Montgomery Blair High School]] in [[Silver Spring, Maryland]] is named after Blair.
+
+==References==
+'''Notes'''
+{{reflist}}
+
+'''Bibliography'''
+* {{EB1911|wstitle=Blair, Francis Preston|volume=4|pages=33–34}}
+* {{NIE}}
+* [[Doris Kearns Goodwin|Goodwin, Doris Kearns]]. ''Team of Rivals: The Political Genius of Abraham Lincoln''. New York: Simon & Schuster, 2005. {{ISBN|1-4165-4983-8}} (electronic edition).
+
+'''Further reading'''
+* Davis, Madison. ''The Public Career of Montgomery Blair: particularly with reference to his services as Postmaster General of the United States''. Washington, D.C.: Columbia Historical Society, 1910
+* Moroney, Rita Lloyd. 	''Montgomery Blair, Postmaster General''. Washington, D.C.: U.S. Government Printing Office, 1963 44p.
+
+==External links==
+{{commons category}}
+*[http://www.mlwh.org/inside.asp?ID=84&subjectID=2 Biography]
+*[http://www.mrlincolnandfriends.org/inside.asp?pageID=83&subjectID=7 Mr. Lincoln and Friends: Montgomery Blair] {{Webarchive|url=https://web.archive.org/web/20160303173315/http://www.mrlincolnandfriends.org/inside.asp?pageID=83&subjectID=7 |date=March 3, 2016 }}
+*[http://www.mrlincolnandfreedom.org/inside.asp?ID=67&subjectID=4 Mr. Lincoln and Freedom: Montgomery Blair] {{Webarchive|url=https://web.archive.org/web/20160304031735/http://www.mrlincolnandfreedom.org/inside.asp?ID=67&subjectID=4 |date=March 4, 2016 }}
+*[http://www.mlwh.org/inside.asp?ID=84&subjectID=2 Mr. Lincoln's White House: Montgomery Blair]
+
+{{s-start}}
+{{s-off}}
+{{U.S. Cabinet official box
+| before= [[Horatio King]]
+| after= [[William Dennison, Jr.]]
+| years= 1861 – 1864
+| president= [[Abraham Lincoln]]
+| office= [[United States Postmaster General]]}}
+{{s-end}}
+
+{{USPostGen}}
+{{Lincoln cabinet}}
+
+{{Authority control}}
+
+{{DEFAULTSORT:Blair, Montgomery}}
+[[Category:1813 births]]
+[[Category:1883 deaths]]
+[[Category:People from Franklin County, Kentucky]]
+[[Category:United States Military Academy alumni]]
+[[Category:American people of the Seminole Wars]]
+[[Category:Maryland state court judges]]
+[[Category:United States attorneys for the District of Missouri]]
+[[Category:United States postmasters general]]
+[[Category:American political writers]]
+[[Category:American male non-fiction writers]]
+[[Category:People of Maryland in the American Civil War]]
+[[Category:Union (American Civil War) political leaders]]
+[[Category:Burials at Rock Creek Cemetery]]
+[[Category:Maryland Democrats]]
+[[Category:Maryland Republicans]]
+[[Category:Lincoln administration cabinet members]]
+[[Category:19th-century American politicians]]
+[[Category:Missouri Democrats]]
+[[Category:19th-century Maryland state court judges]]
+[[Category:Deaths from meningitis in Maryland]]
+[[Category:Blair family (United States)|Montgomery]]
+[[Category:Politicians from Silver Spring, Maryland]]
+[[Category:19th-century American male writers]]

@@ -32,9 +32,9 @@ build_asan/
 build_profile/
 build_profile_regex/
 dist/
-# Keep the new-js mirror checked in for parser parity work.
-!new-js/dist/
-!new-js/dist/**
+# Keep the compare/wikiparser-node mirror checked in for parser parity work.
+!compare/wikiparser-node/dist/
+!compare/wikiparser-node/dist/**
 *.egg-info/
 
 # --- VS Code ---
@@ -64,3 +64,5 @@ html/
 latex/
 bindings/python/build_sources/
 bindings/python/src/wiki_cast/_binding.c
+
+compare/parse_wiki_text/target

@@ -1,0 +1,193 @@
+{{Short description|United States Secretary of the Navy from 1861 to 1869}}
+{{Use American English|date=December 2025}}
+{{Use mdy dates|date=May 2014}}
+{{Infobox officeholder
+| name                = Gideon Welles
+| image               = Gideon Welles cph.3b20114 (3x4a).jpg
+| office              = 24th [[United States Secretary of the Navy]]
+| president           = [[Abraham Lincoln]]<br>[[Andrew Johnson]]
+| term_start          = March 7, 1861
+| term_end            = March 4, 1869
+| predecessor         = [[Isaac Toucey]]
+| successor           = [[Adolph E. Borie]]
+| office1             = Chief of the Bureau of Provisions and Clothing for the [[US Navy]]
+| term_start1         = 1846
+| term_end1           = 1849
+| office2             = Postmaster of [[Hartford, Connecticut|Hartford]]
+| term_start2         = 1836
+| term_end2           = 1841
+| office3             = [[Connecticut State Comptroller|Comptroller of Connecticut]]
+| term_start3         = 1842
+| term_end3           = 1844
+| governor3           = [[Chauncey Fitch Cleveland]]
+| predecessor3        = Henry Kilbourn
+| successor3          = Abijah Carrington
+| term_start4         = 1835
+| term_end4           = 1836
+| governor4           = [[Henry W. Edwards]]
+| predecessor4        = Roger Huntington
+| successor4          = [[William Field (American politician)|William Field]]
+| office5             = Member of the [[Connecticut House of Representatives]]
+| term_start5         = 1827
+| term_end5           = 1835
+| birth_date          = {{birth date|1802|7|1}}
+| birth_place         = [[Glastonbury, Connecticut|Glastonbury]], Connecticut, U.S.
+| death_date          = {{death date and age|1878|2|11|1802|7|1}}
+| death_place         = [[Hartford, Connecticut|Hartford]], Connecticut, U.S.
+| party               = [[Democratic Party (United States)|Democratic]] {{small|(before 1848)}}<br>[[Free Soil Party|Free Soil]] {{small|(1848–1854)}}<br>[[Republican Party (United States)|Republican]] {{small|(1854–1878)}}
+| spouse              = [[Mary Jane Hale Welles|Mary Jane Hale]]
+| children            = 8
+| relatives           = 
+| education           = [[Norwich University]] {{small|([[Bachelor of Arts|BA]])}}
+| signature           = Gideon Welles Signature.svg
+| caption             = Welles {{circa}} 1855–1865
+| resting_place       = [[Cedar Hill Cemetery (Hartford, Connecticut)|Cedar Hill Cemetery]]
+}}
+'''Gideon Welles''' (July 1, 1802 – February 11, 1878) was an American government official who was the [[United States Secretary of the Navy]] from 1861 to 1869, a cabinet post he was awarded after supporting [[Abraham Lincoln]] in the [[1860 United States presidential election|1860 election]]. Although opposed to the [[Union blockade]] of Southern ports, he duly carried out his part of the [[Anaconda Plan]], largely sealing off the Confederate coastline and preventing the exchange of cotton for war supplies. This is viewed as a major cause of Union victory in the [[American Civil War|Civil War]], and his achievement in expanding the Navy almost tenfold was widely praised. Welles was also instrumental in the Navy's creation of the [[Medal of Honor]]. Lincoln nicknamed him his "Neptune".
+
+==Early life and marriage==
+Gideon Welles, the son of Samuel Welles and Ann Hale,{{sfn |Hale |1909|p=[https://archive.org/details/ancestrydescenda00hale/page/112/mode/2up 113]}} was born on July 1, 1802, in [[Glastonbury, Connecticut]].<ref name="NYTobit"/>
+His father was a shipping merchant and fervent [[Jeffersonian democracy|Jeffersonian]];{{sfn |Niven |1973 |p=6}} he was a member of the Convention, which formed the first state [[Connecticut Constitution]] in 1818 that abolished the colonial charter and officially severed the pre-[[American Revolution]] political ties to England. In contrast to the [[Fundamental Orders of Connecticut]], the successor constitution of 1818 provided for freedom of religion.  He was a member of the seventh generation of his family in America. His original immigrant ancestor was [[Thomas Welles]],{{sfn |Norton |1905|pp=19–21}}{{sfn |Niven |1973 |p=7}} who arrived in 1635 and was the only man in Connecticut's history to hold all four top offices: governor, deputy governor, treasurer, and secretary. He was also the transcriber of the Fundamental Orders. Welles was the second great-grandson of Capt. Samuel Welles and Ruth (Rice) Welles, the daughter of [[Edmund Rice (1638)|Edmund Rice]], a 1638 immigrant to [[Sudbury, Massachusetts|Sudbury]] and founder of [[Marlborough, Massachusetts]].<ref>{{cite web | url=http://www.edmund-rice.org/era5gens/p37.htm#i350937 | title=Gideon Welles in ERA database | publisher=[[Edmund Rice (1638)]] Association, Inc. | access-date=March 15, 2011 | archive-date=July 25, 2011 | archive-url=https://web.archive.org/web/20110725010813/http://www.edmund-rice.org/era5gens/p37.htm#i350937 | url-status=dead }}</ref>
+
+He married on June 16, 1835, at Lewiston, Mifflin County, Pennsylvania, [[Mary Jane Hale Welles|Mary Jane Hale]],<ref name="NYTobit1">{{cite web
+  | title = Death of Mrs. Gideon Welles
+  | work = [[The New York Times]]
+  | date = March 4, 1886
+  | url = https://timesmachine.nytimes.com/timesmachine/1886/03/04/106181617.pdf
+  | page = 4
+  | access-date = 2025-10-23}}</ref> who was born on June 18, 1817, in Glastonbury, Connecticut, the daughter of Elias White Hale and Jane Mullhallan.  Her father, Elias, graduated from [[Yale College]] in 1794 and practiced law in Mifflin and Centre Counties, Pennsylvania.{{sfn |Niven |1973 |p=16}} She died on February 28, 1886, in Hartford, Connecticut, and was buried next to her husband in Cedar Hill Cemetery in Hartford. Gideon and Mary Jane were the parents of six children.
+
+He was educated at the [[Cheshire Academy|Episcopal Academy at Cheshire, Connecticut]], and earned a degree at the American Literary, Scientific, and Military Academy at Norwich, Vermont  (later [[Norwich University]]).<ref name="NYTobit"/> He became a lawyer through the then-common practice of reading the law, but soon shifted to journalism and became the founder and editor of the ''[[Hartford Times]]'' in 1826. 
+
+==Early political career==
+After successfully gaining admission, from 1827 to 1835, he participated in the [[Connecticut House of Representatives]] as a Democrat. Following his service in the [[Connecticut General Assembly]], he served in various posts, including State Controller of Public Accounts in 1835, [[Postmaster]] of [[Hartford, Connecticut|Hartford]] (1836–41), and Chief of the [[United States Navy bureau system|Bureau of Provisions and Clothing]] for the Navy (1846–49).<ref name="Gideon Welles papers, 1777-1911">{{cite web |title=Gideon Welles papers, 1777–1911 |website=Library of Congress Finding Aid |url=https://hdl.loc.gov/loc.mss/eadmss.ms003053}}</ref>
+
+Welles was a [[Jacksonian democracy|Jacksonian Democrat]] who worked very closely with [[Martin Van Buren]] and [[John Milton Niles]]. His chief rival in the Connecticut Democratic Party was [[Isaac Toucey]], whom Welles would later replace at the Navy Department. While Welles dutifully supported [[James K. Polk]] in the 1844 election, he would abandon the Democrats in 1848 to support Van Buren's [[Free Soil Party|Free Soil]] campaign.{{sfn |Earle |2004 |pp=73–75}}
+
+Mainly because of his strong [[abolitionism in the United States|anti-slavery]] views, Welles shifted allegiance in 1854 to the newly established [[United States Republican Party|Republican Party]] and founded a newspaper in 1856 (the ''Hartford Evening Press'') that would espouse Republican ideals for decades thereafter.  He was the Republican nominee for governor in the [[1856 Connecticut gubernatorial election]], coming in third behind [[William T. Minor]] and [[Samuel Ingham]].
+
+==Secretary of the Navy==
+<imagemap>
+Image:Emancipation proclamation.jpg|thumb|upright=1.25|''[[First Reading of the Emancipation Proclamation of President Lincoln]]'' by [[Francis Bicknell Carpenter]] (1864) <small>''(Clickable image – use cursor to identify.)''</small>|alt=A dark-haired, bearded, middle-aged man holding documents is seated among seven other men.]]
+
+poly 269 892 254 775 193 738 130 723 44 613 19 480 49 453 75 434 58 376 113 344 133 362 143 423 212 531 307 657 357 675 409 876 [[Edwin M. Stanton|Edwin Stanton]]
+poly 169 282 172 244 244 201 244 148 265 117 292 125 305 166 304 204 321 235 355 296 374 348 338 395 341 469 [[Salmon P. Chase|Salmon Chase]]
+poly 569 893 535 708 427 613 357 562 377 456 393 404 468 351 451 317 473 259 520 256 544 283 530 339 526 374 559 401 594 431 639 494 715 542 692 551 693 579 672 546 623 552 596 617 698 629 680 852 [[Abraham Lincoln]]
+poly 692 514 740 441 788 407 772 350 800 303 831 297 861 329 867 381 868 409 913 430 913 471 847 532 816 533 709 533 [[Gideon Welles]]
+poly 703 783 752 769 825 627 907 620 929 569 905 538 886 563 833 563 873 502 930 450 1043 407 1043 389 1036 382 1042 363 1058 335 1052 333 1052 324 1081 318 1124 338 1133 374 1116 412 1132 466 1145 509 1117 588 1087 632 1083 706 [[William H. Seward|William Seward]]
+poly 905 418 941 328 987 295 995 284 982 244 990 206 1036 207 1046 247 1047 284 1066 312 1071 314 1049 327 1044 354 1033 383 1033 407 921 453 [[Caleb Blood Smith|Caleb Smith]]
+poly 1081 308 1102 255 1095 220 1093 181 1109 161 1145 160 1169 191 1153 227 1153 246 1199 268 1230 310 1239 377 1237 443 1220 486 1125 451 1118 412 1136 378 1124 342 [[Montgomery Blair]]
+poly 1224 479 1298 416 1304 379 1295 329 1325 310 1360 324 1370 359 1371 385 1371 397 1413 425 1422 497 1440 563 1348 555 1232 517 [[Edward Bates]]
+poly 625 555 595 620 699 625 730 550 [[Emancipation Proclamation]]
+poly 120 80 120 300 3 300 3 80 [[Simon Cameron|Portrait of Simon Cameron]]
+poly 752 196 961 189 948 8 735 10 [[Andrew Jackson|Portrait of Andrew Jackson]]
+</imagemap>
+[[File:Running the "machine" LCCN2003689257.jpg|thumb|''The Running Machine'':<br /> An 1864 cartoon takes a swing at the Lincoln administration.    It features Welles, [[William P. Fessenden]], [[Edwin M. Stanton]], [[Abraham Lincoln]] and [[William H. Seward]].]]
+Welles' strong support of [[Abraham Lincoln]] in the [[1860 United States presidential election|1860 presidential election]] made him the logical candidate from New England for Lincoln's cabinet. In March 1861, Lincoln named Welles his [[United States Secretary of the Navy|Secretary of the Navy]].
+
+Welles found the [[United States Department of the Navy|Naval Department]] in disarray, with Southern officers resigning en masse. His first major action was to dispatch the Navy's most powerful warship, the [[USS Powhatan (1850)|USS ''Powhatan'']], to relieve Fort Sumter on Lincoln's instructions. Unfortunately, Secretary of State [[William H. Seward|Seward]] had just ordered the ''Powhatan'' to [[Fort Pickens]], Florida on his own authority, ruining whatever chance Major [[Robert Anderson (Union officer)|Robert Anderson]] had of withstanding the assault. Several weeks later, when Seward argued for a blockade of Southern ports, Welles argued vociferously against the action but was eventually overruled by Lincoln. Despite his misgivings, Welles' efforts to rebuild the Navy and implement the blockade proved extraordinarily effective. From 76 ships and 7,600 sailors in 1861, the Navy expanded almost tenfold by 1865. His implementation of the Naval portion of the [[Anaconda Plan]] strongly weakened the Confederacy's ability to finance the war by limiting the cotton trade, and while never completely effective in sealing off all 3,500 miles of Southern coastline, it was a major contribution towards Northern victory. Lincoln nicknamed Welles his "[[Neptune (mythology)|Neptune]]."<ref name="Marinaro, Michael.">{{cite web|url=http://connecticuthistory.org/gideon-welles-us-secretary-of-the-navy-and-lincolns-neptune/|title=Gideon Welles, US Secretary of the Navy and Lincoln's 'Neptune' |author=Marinaro, Michael. |website=Connecticut History |access-date= April 9, 2016}}
+</ref>
+
+After Lincoln's assassination, Welles was retained by President [[Andrew Johnson]] as Secretary of the Navy. In 1866, Welles, along with Seward, was instrumental in launching the National Union Party as a third party alternative supportive of Johnson's reconciliation policies. Welles also played a prominent part in Johnson's ill-fated "[[Swing Around the Circle]]" campaign that autumn.<ref>{{Cite book |url=https://books.google.com/books?id=DOC3SMl00cgC&pg=PA230 |title=Lincoln's Avengers: Justice, Revenge, and Reunion After the Civil War |first=Elizabeth D. |last=Leonard |author-link=Elizabeth D. Leonard |publisher=[[W. W. Norton & Company]] |isbn=9780393048681 |page=230 |date=2004 |access-date=2025-10-23 |via=Google Books}}</ref> Although Welles admitted in his diary that he was dismayed by Johnson's behavior on the trip, particularly the president's penchant for invective and engaging directly with hecklers, Welles remained loyal to Johnson, and supported him during [[Impeachment of Andrew Johnson|his impeachment]].<ref name="Marinaro, Michael."/> On April 17 and 18, 1868, Welles testified in [[Impeachment trial of Andrew Johnson|the impeachment trial of Johnson]], having been called as a witness by Johnson's defense team.<ref>{{cite book |title=Extracts from the Journal of the United States Senate In All Cases of Impeachment Presented By The United States House of Representatives (1798–1904) |series=Congressional serial set |pages=278–281 |date=1912 |publisher=Washington Government Printing Office |url=https://babel.hathitrust.org/cgi/pt?id=uc1.$b628530&view=1up&seq=286}}</ref> His son Edgar also testified that day.<ref>{{cite news |title=By Telegraph Saturday's Dispatches From Washington |url=https://www.newspapers.com/article/the-st-louis-republic-by-telegraph-satur/183532121/ |newspaper=Daily [[Missouri Republican]] |publication-place=St. Louis |page=1 |via=Newspapers.com |access-date=2025-10-23 |language=en |date=April 20, 1980}}</ref>
+
+==Later life and death==
+[[File:GideonWellesPortrait.jpg|thumb|upright|Gideon Welles]]
+After leaving politics, Welles returned to Connecticut and to writing, editing his journals, and authoring several books before his death, including a biography, ''Lincoln and Seward'', published in 1874.<ref name="NYTobit"/>
+
+He was a Third Class Companion of the [[Military Order of the Loyal Legion of the United States]].  While the Loyal Legion did consist predominantly of Union officers who had served in the [[American Civil War]] the Order's constitution provided for honorary members (i.e. Third Class Companions) who were civilians who had made significant contributions to the war effort. Welles was also instrumental in the Navy's creation of the [[Medal of Honor]].<ref name="MOH">{{cite web|title=The Navy's Medal of Honor|publisher=Department of the Navy – Naval Historical Center|date=October 30, 2007|url=http://www.history.navy.mil/faqs/faq38-1.htm|archive-url=https://web.archive.org/web/19970709142530/http://www.history.navy.mil/faqs/faq38-1.htm|url-status=dead|archive-date=July 9, 1997|access-date=August 21, 2010|df=mdy-all}}</ref>
+
+Towards the end of 1877, his health began to wane. Welles died from a streptococcal throat infection, at the age of seventy-five, on February 11, 1878.<ref name="NYTobit">{{cite web
+  | title = Obituary: Hon. Gideon Welles
+  | work = [[The New York Times]]
+  | date = February 12, 1878
+  | url = https://timesmachine.nytimes.com/timesmachine/1878/02/12/80675443.pdf
+  | page = 6
+  | access-date = 2025-10-23}}</ref> His body was interred at [[Cedar Hill Cemetery (Hartford, Connecticut)|Cedar Hill Cemetery]] in [[Hartford, Connecticut]].
+
+==Legacy==
+Two ships have been named [[USS Welles|USS ''Welles'']] in his honor. The Dining Commons at [[Cheshire Academy]] and the Gideon Welles School in [[Glastonbury, Connecticut]], are also named after him.<ref>{{Cite web|url=http://www.cheshireacademy.org/page/student-life/campus-resources/gideon-welles-dining-hall|title=Gideon Welles Dining Hall|website=www.cheshireacademy.org|publisher=Cheshire Academy|language=en|access-date=2017-01-24|archive-date=February 2, 2017|archive-url=https://web.archive.org/web/20170202032817/http://www.cheshireacademy.org/page/student-life/campus-resources/gideon-welles-dining-hall|url-status=dead}}</ref><ref>{{Cite web|url=https://sites.google.com/a/glastonburyus.org/gideon/|title=Gideon Welles School|website=sites.google.com|access-date=2017-01-24}}</ref> In the [[Lincoln Square, Chicago|Lincoln Square]] neighborhood of Chicago, [[Welles Park (Chicago)|Welles Park]] was dedicated in his honor in 1910,<ref>{{Cite web|url=https://www.chicagoparkdistrict.com/parks-facilities/Welles-Park/|title=Welles (Gideon) Park &#124; Chicago Park District|website=www.chicagoparkdistrict.com}}</ref> and an adjacent restaurant, opened in 2014, was also named after Gideon Welles.<ref>{{Cite web|url=http://www.gideonchicago.com|title=Home {{!}} Gideon Welles in Chicago, IL {{!}} Food & Drink|website=Gideon Welles|language=en-US|access-date=2018-03-28}}</ref>
+
+He was not an ancestor of [[Orson Welles]] as the actor had claimed on ''[[The Dick Cavett Show]]''.<ref>{{Cite web|url=https://newenglandhistoricalsociety.com/gideon-welles-civil-war-diplomacy-gossip-band-concerts/|title=Gideon Welles, June 8, 1863: Civil War, Diplomacy, Mrs. Lincoln and Weekly Marine Band Concerts|first=Leslie|last=Landrigan|date=June 8, 2014|website=New England Historical Society}}</ref>
+
+==See also==
+* [[Bibliography of early American naval history]]
+
+==Notes==
+{{Reflist}}
+
+==References==
+* Boulard, Garry "The Swing Around the Circle – Andrew Johnson and the Train Ride that Destroyed a Presidency" (iUniverse, 2008)
+* {{cite book |last=Earle |first=Jonathan Halperin |title=Jacksonian antislavery and the politics of free soil, 1824–1854 |location=Chapel Hill, NC |publisher=The University of North Carolina Press |year=2004 |url=https://www.questia.com/read/118937526/jacksonian-antislavery-and-the-politics-of-free-soil |isbn=978-0-8078-2888-5 |oclc=1098629620 |access-date=July 7, 2016 |archive-date=August 19, 2016 |archive-url=https://web.archive.org/web/20160819083600/https://www.questia.com/read/118937526/jacksonian-antislavery-and-the-politics-of-free-soil |url-status=dead }} 
+* {{cite book |last=Hale |first=Oscar Fitzalan |title=Ancestry and descendants of Josiah Hale : fifth in descent from Samuel Hale of Hartford, Conn., 1637 |location=Rutland, VT |publisher=Tuttle |year=1909 |oclc=608535741 |url=https://archive.org/details/ancestrydescenda00hale/page/n8/mode/2up}}
+* {{cite book |last=Niven |first=John |title=Gideon Welles; Lincoln's Secretary of the Navy |publisher=Oxford University Press |location=New York |year=1973 |oclc=797990 |isbn=9780195016932 |url=https://archive.org/details/gideonwelleslinc00john}}
+* {{cite book |last=Norton |first=Frederick Calvin |title=The governors of Connecticut : biographies of the chief executives of the commonwealth that gave to the world the first written constitution known to history |year=1905 |oclc=958732197 |url=https://archive.org/details/governorsofconne00norton/page/18/mode/2up}}
+* Siemiatkoski, Donna Holt. ''The Descendants of Governor Thomas Welles of Connecticut, 1590–1658, and His Wife, Alice Tomes''  Baltimore: Publisher, Gateway Press, 1990.
+* {{cite book |last=Winters |first=John |author-link=John D. Winters |title=The Civil War in Louisiana |publisher=Louisiana State University Press |location=Baton Rouge |year=1963 |isbn=978-0-8071-0834-5 |oclc=1391726}}
+
+==Further reading==
+* {{cite book |last=Welles |first=Gideon |title=Diary of Gideon Welles, Secretary of the Navy under Lincoln and Johnson |volume=I |publisher=Boston; New York : Houghton Mifflin Company |year=1911 |url=https://archive.org/details/diaryofgideonwelv1well }}
+* {{cite book |last=Welles |first=Gideon |title=Diary of Gideon Welles, Secretary of the Navy under Lincoln and Johnson |volume=II |publisher=Boston; New York : Houghton Mifflin Company |year=1911 |url=https://archive.org/details/diaryofgideonwelv2well }}
+* {{cite book |last=Welles |first=Gideon |title=Diary of Gideon Welles, Secretary of the Navy under Lincoln and Johnson |volume=III |publisher=Boston; New York : Houghton Mifflin Company |year=1911 |url=https://archive.org/details/diaryofgideonwelv3well }}
+
+==External links==
+{{Commons category|Gideon Welles}}
+{{Wikiquote}}
+{{EB1911 poster|Welles, Gideon}}
+* [https://books.google.com/books?id=6S4OAAAAIAAJ&q=Lincoln+and+Seward, Lincoln and Seward]: by Gideon Welles, New York: Publisher, Sheldon and Company, 1874.
+* [http://www.mlwh.org/inside.asp?ID=200&subjectID=2 Mr. Lincoln's White House: Gideon Welles]
+* [http://www.history.navy.mil/danfs/w5/welles-i.htm Gideon Welles] {{Webarchive|url=https://web.archive.org/web/20070822072926/http://www.history.navy.mil/danfs/w5/welles-i.htm |date=August 22, 2007 }} at the [[Naval Historical Center]]
+* [http://www.wellesfamily.com/ Welles Family Association, Inc.] {{Webarchive|url=https://web.archive.org/web/20211230171617/http://www.wellesfamily.com/ |date=December 30, 2021 }}
+* [https://web.archive.org/web/20090103180302/http://www.cslib.org/gov/wellest.htm Biographical sketch of Thomas Welles Connecticut State Library]
+* [https://www.forbes.com/2009/04/24/collecting-lincoln-valuable-lifestyle-collecting-lincoln.html Lost Letters of Gideon Welles]
+* [https://rose.library.emory.edu/ Stuart A. Rose Manuscript, Archives and Rare Book Library], Emory University: [http://pid.emory.edu/ark:/25593/9014z Welles family papers, 1712–1871]
+
+{{s-start}}
+{{succession box|title=[[Connecticut State Comptroller]]|before=Roger Huntington|after=[[William Field (American politician)|William Field]]|years=1835–1836}}
+{{succession box|title=[[Connecticut State Comptroller]]|before=Henry Kilbourn|after=Abijah Carrington|years=1842–1844}}
+{{s-ppo}}
+{{s-new|party}}
+{{s-ttl|title=[[Republican Party (United States)|Republican]] nominee for [[List of Governors of Connecticut|Governor of Connecticut]]|years=[[1856 Connecticut gubernatorial election|1856]]}}
+{{s-aft|after=[[Alexander H. Holley]]}}
+|-
+{{s-off}}
+{{s-bef|before=[[Isaac Toucey]]}}
+{{s-ttl|title=[[United States Secretary of the Navy]]|years=1861–1869}}
+{{s-aft|after=[[Adolph E. Borie]]}}
+{{s-end}}
+
+{{USSecNavy}}
+{{Lincoln cabinet}}
+{{Andrew Johnson cabinet}}
+{{Battle of Hampton Roads|state=autocollapse}}
+{{American Civil War|Leaders}}
+{{Impeachment and impeachment trial of Andrew Johnson}}
+{{Authority control}}
+
+{{DEFAULTSORT:Welles, Gideon}}
+[[Category:1802 births]]
+[[Category:1878 deaths]]
+[[Category:19th-century American journalists]]
+[[Category:19th-century American newspaper publishers (people)]]
+[[Category:American abolitionists]]
+[[Category:American naval historians]]
+[[Category:American newspaper editors]]
+[[Category:Connecticut postmasters]]
+[[Category:Andrew Johnson administration cabinet members]]
+[[Category:Burials at Cedar Hill Cemetery (Hartford, Connecticut)]]
+[[Category:Connecticut comptrollers]]
+[[Category:Connecticut Democrats]]
+[[Category:Connecticut Jacksonians]]
+[[Category:Connecticut lawyers]]
+[[Category:Connecticut Republicans]]
+[[Category:Lincoln administration cabinet members]]
+[[Category:Members of the Connecticut House of Representatives]]
+[[Category:Norwich University alumni]]
+[[Category:People from Glastonbury, Connecticut]]
+[[Category:People of Connecticut in the American Civil War]]
+[[Category:Union (American Civil War) political leaders]]
+[[Category:United States secretaries of the navy]]
+[[Category:Cheshire Academy alumni]]
+[[Category:Historians from Connecticut]]
+[[Category:Testifying witnesses of the impeachment trial of Andrew Johnson]]
+[[Category:19th-century members of the Connecticut General Assembly]]
+[[Category:19th-century American male journalists]]
