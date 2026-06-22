@@ -21,10 +21,10 @@ pip install "git+[https://github.com/YOUR_USERNAME/wiki-cast.git#subdirectory=bi
 ## Development
 
 ```bash
-cd bindings/python
 python3 -m venv .venv
 source .venv/bin/activate
 pip install --upgrade pip setuptools wheel pytest
+cd bindings/python
 pip install -e .
 python samples/simple.py
 ```

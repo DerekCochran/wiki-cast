@@ -179,16 +179,14 @@ cJSON* token_to_json(const Token *token) {
             Child *child = &token->children[i];
             if (child->is_text) {
 				cJSON *child_obj = cJSON_CreateObject();
-				cJSON_AddStringToObject(child_obj, "kind", "text");
+				cJSON_AddStringToObject(child_obj, "type", "text");
+				cJSON_AddStringToObject(child_obj, "Type", "TOKEN_TEXT");
+				cJSON_AddStringToObject(child_obj, "SubType", "TOKEN_SUBTYPE_NONE");
 				cJSON_AddItemToObject(child_obj, "text", token_text_to_json_string(child->text, child->text_len));
 				// cJSON_AddNumberToObject(child_obj, "textLen", child->text_len);
 				// cJSON_AddBoolToObject(child_obj, "textOwned", child->text_owned);
 				cJSON_AddItemToArray(children_arr, child_obj);
             } else {
-				cJSON *child_obj = cJSON_CreateObject();
-				// cJSON_AddStringToObject(child_obj, "kind", "token");
-				// cJSON_AddItemToObject(child_obj, "token", token_to_json(child->token));
-				// cJSON_AddItemToArray(children_arr, child_obj);
 				cJSON_AddItemToArray(children_arr, token_to_json(child->token));
             }
         }
