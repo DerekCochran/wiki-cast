@@ -7,7 +7,6 @@ set -e
 # Automatically detects repo info, or you can hardcode them if needed
 REPO_OWNER=$(gh repo view --json owner -q .owner.login)
 REPO_NAME=$(gh repo view --json name -q .name)
-ASSETS_DIR="./dist" # Change this to your build/artifacts folder
 
 # --- FUNCTIONS ---
 log() {
@@ -48,21 +47,8 @@ log "Tagging repository with ${TAG}..."
 git tag -a "$TAG" -m "Release $TAG"
 git push origin "$TAG"
 
-# 2. Gather assets to upload (DRY approach to asset management)
-ASSET_PARAMS=""
-if [ -d "$ASSETS_DIR" ] && [ "$(ls -A $ASSETS_DIR)" ]; then
-    log "Finding assets in ${ASSETS_DIR}..."
-    for file in "$ASSETS_DIR"/*; do
-        if [ -f "$file" ]; then
-            ASSET_PARAMS="$ASSET_PARAMS \"$file\""
-        fi
-    done
-else
-    log "No assets found in ${ASSETS_DIR} (skipping uploads)."
-fi
-
 # 3. Create the GitHub Release
 log "Creating GitHub release..."
-eval "gh release create \"$TAG\" $ASSET_PARAMS $NOTES_ARG --title \"Release $TAG\""
+eval "gh release create \"$TAG\" $NOTES_ARG --title \"Release $TAG\""
 
 log "Successfully released $TAG!"
